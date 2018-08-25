@@ -29,8 +29,8 @@ export default {
     }
   }
 }
-
 </script>
+
 <style>
 .counter-warp {
   text-align: center;
@@ -43,5 +43,4 @@ export default {
   color: blue;
   border: 1px solid blue;
 }
-
 </style>
