@@ -56,6 +56,7 @@
     "rimraf": "^2.6.0",
     "url-loader": "^0.5.8",
     "vue-style-loader": "^3.0.1",
+    "eslint-plugin-vue": "^5.0.0-beta.1",
     "webpack": "^2.6.1",
     "webpack-dev-middleware-hard-disk": "^1.10.0",
     "webpack-merge": "^4.1.0",
@@ -64,6 +65,21 @@
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "plugin:vue/essential"
+    ],
+    "rules": {
+      "no-console": "off",
+      "generator-star-spacing": "off"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
     "> 1%",
