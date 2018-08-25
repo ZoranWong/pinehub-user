@@ -93,9 +93,14 @@ export default class Application {
   }
   vueMixin() {
     let self = this;
+    let config = this.config;
+    console.log(config);
     this.$vm.mixin({
-      data(){
-        return _.extend(self.instances, {config: self.config, application: self});
+      data() {
+        let extend = {};
+        extend['config'] = self.config;
+        extend['$application'] = self;
+        return _.extend(self.instances, extend);
       },
       methods: self.mixinMethods
     });

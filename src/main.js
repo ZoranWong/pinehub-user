@@ -1,8 +1,6 @@
-import Vue from 'vue'
-import App from './App'
+import App from './App';
+import Application from './Application';
 
-Vue.config.productionTip = false
-App.mpType = 'app'
-
-const app = new Vue(App)
-app.$mount()
+App.mpType = 'app';
+const application = new Application(App);
+application.run();
