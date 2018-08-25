@@ -6,8 +6,6 @@ import '../static/css/font-awesome.min.css'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
-import 'element-ui/lib/theme-chalk/index.css';
-import env from './env';
 export default class Application {
   constructor(component) {
     this.applicationBootStartTime = Date.now();
@@ -18,7 +16,6 @@ export default class Application {
     this.serviceProviders = [];
     this.config = {};
     this.exceptionHandlers = {};
-    this.env = env;
     this.mixinMethods = {};
     this.mountComponent = component;
   }
