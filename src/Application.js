@@ -17,13 +17,16 @@ export default class Application {
     this.exceptionHandlers = {};
     this.mixinMethods = {};
     this.mountComponent = component;
+    this.hasMixin = false;
   }
   mock() {
     return this.config.app.mock;
   }
+  //插件
   use($class) {
     this.$vm.use($class);
   }
+  //全局方法封装
   mixin(methods) {
     this.mixinMethods = methods;
   }
@@ -34,15 +37,18 @@ export default class Application {
     let command = params.shift();
     this.commands[command].handle.apply(this.commands[command], params);
   }
+  //实例化注册对象
   instanceRegister(instance) {
     if(_.isFunction(instance)) {
       instance = new instance(this);
     }
     return instance;
   }
+  //注册配置
   registerConfig(name, config) {
     this.config[name] = config;
   }
+  //注册服务提供者
   registerServiceProviders() {
     let app = this;
     _.each(ServiceProviders, function(value, key) {
@@ -79,6 +85,7 @@ export default class Application {
   resetForm(form) {
     form.resetFields();
   }
+  //vue全局事件绑定
   $on(event, callback) {
     this.vueApp.$on(event, callback);
   }
@@ -93,17 +100,10 @@ export default class Application {
   }
   vueMixin() {
     let self = this;
-    let config = this.config;
-    console.log(config);
-    this.$vm.mixin({
-      data() {
-        let extend = {};
-        extend['config'] = self.config;
-        extend['$application'] = self;
-        return _.extend(self.instances, extend);
-      },
-      methods: self.mixinMethods
-    });
+    	self.hasMixin = true;
+    let extend = {};
+    extend['config'] = self.config;
+    this.use(_.extend(self.instances, extend));
   }
 
   run() {
@@ -112,16 +112,13 @@ export default class Application {
     Vue.use(Vuex);
     let self = this;
     self.registerServiceProviders();
-    let store = this.instances['vue-store'];
-    //let router = this.instances['vue-router'];
     this.vueMixin();
-    self.vueApp = new Vue({
-      //router: router,
+    let store = this.instances['vue-store'];
+    this.mountComponent = _.extend({
       store: store,
       render: h => h(App),
       beforeCreate: function() {
         self.vueApp = this;
-        //self.instances['vue-router'] = this.$router;
         self.instances['vue-store'] = this.$store;
         _.each(self.exceptionHandlers, function(exception, key) {
           self.$on(key, function(message) {
@@ -141,6 +138,8 @@ export default class Application {
         self.afterBoot();
         console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
       }
-    }).$mount(this.mountComponent);
+    }, this.mountComponent);
+    self.vueApp = new Vue(this.mountComponent).$mount();
+    return self.vueApp;
   }
 }
