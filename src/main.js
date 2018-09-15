@@ -1,10 +1,13 @@
-import App from './App';
-//import Vue from 'vue';
+import Vue from 'vue';
 import Application from './Application';
-//Vue.config.productionTip = false;
-App.mpType = 'app';
-console.log('created 1');
+import App from './App';
+import _ from 'underscore';
+
+
 const application = new Application(App);
-application.run();
-//const app = new Vue(App);
-//app.mount(App);
+application.run(function(mountComponent) {
+	 // _.extend(App,mountComponent);
+	 // const app = new Vue(App);
+	 // app.$mount();
+	 // return app;
+});

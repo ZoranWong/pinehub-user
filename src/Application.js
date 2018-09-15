@@ -111,11 +111,16 @@ export default class Application {
 
   }
 
-  run() {
+  run(before = null, created = null) {
     this.$vm = Vue;
     Vue.use(VueAxios, axios);
     Vue.use(Vuex);
     let self = this;
+    if(before && created && _.isFunction(before) && _.isFunction(creaded)) {
+      before(this);
+    }else if(!created) {
+      created = before;
+    }
     self.registerServiceProviders();
     this.vueMixin();
     let store = this.instances['vue-store'];
@@ -144,7 +149,10 @@ export default class Application {
         console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
       }
     }, this.mountComponent);
-    self.vueApp = new Vue(this.mountComponent).$mount();
-    return self.vueApp;
+    if(_.isFunction(created)){
+      created(this.mountComponent);
+    }
+    //self.vueApp = new Vue(this.mountComponent).$mount();
+    return this;
   }
 }
