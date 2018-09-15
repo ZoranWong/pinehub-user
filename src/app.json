@@ -1,7 +1,7 @@
 {
 	"pages": [
-		"pages/index/main",
 		"pages/store/mystore/main",
+		"pages/index/main",
 		"pages/store/location/main",
 		"pages/logs/main",
 		"pages/counter/main"

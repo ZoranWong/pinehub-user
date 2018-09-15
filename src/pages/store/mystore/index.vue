@@ -1,12 +1,22 @@
 <template>
 	<div id="mystore">
-		
+		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
 
 <script>
-	export default {
+	import FooterNav from '@/components/FooterNav';
 
+	export default {
+		components: {
+			'footer-nav': FooterNav
+		},
+		data() {
+			return {
+				navName: "my"
+			};
+		},
+		created() {}
 	}
 </script>
 

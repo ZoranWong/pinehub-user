@@ -1,0 +1,7 @@
+{
+	"index": "pages/index/main",
+	"mystore": "pages/store/mystore/main",
+	"store":	 "pages/store/location/main",
+	"logs":	 "pages/logs/main",
+	"couter": "pages/counter/main"
+}
