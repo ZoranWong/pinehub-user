@@ -104,19 +104,9 @@ export default class Application {
     let self = this;
     let extend = {};
     extend['config'] = self.config;
-<<<<<<< HEAD
     extend['appName'] = this.name;
     this.instances= _.extend(self.instances, extend, this.mixinMethods);
     _.extend(this.$vm.prototype, this.instances);
-=======
-    extend = _.extend(self.instances, extend);
-    console.log('vue mixin', self.hasMixin);
-    if(!self.hasMixin){
-      self.hasMixin = true;
-      _.extend(this.$vm.prototype, extend, self.mixinMethods);
-    }
-
->>>>>>> fac77d8a994dd96f6968d3aee9d597c2c76eb9c5
   }
 
   run(before = null, created = null) {

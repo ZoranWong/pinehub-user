@@ -24,9 +24,10 @@
 <script>
 	export default {
 		name: 'FooterNav',
+		props: ['navName'],
 		data() {
 			return {
-				navName:"index",
+				navName:"",
 				index:"/static/images/index.png",
 				scanning:"/static/images/scanning.png",
 				order:"/static/images/order.png",
@@ -56,6 +57,7 @@
 		},
 		created(){
 			this.nowNav(this.navName);
+			console.log(this.navName);
 		}
 	}
 </script>

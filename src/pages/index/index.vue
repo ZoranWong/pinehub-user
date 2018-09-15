@@ -26,21 +26,21 @@
 			</dl>
 
 		</div>
-		<footer-nav></footer-nav>
+		<footer-nav :navName="navName"></footer-nav>
 	</div>
 
 </template>
 
 <script>
 	import FooterNav from '@/components/FooterNav';
-	
+
 	export default {
 		components: {
 			'footer-nav': FooterNav
 		},
 		data() {
 			return {
-
+				navName: "index"
 			};
 		},
 		created() {}
