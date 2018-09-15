@@ -8,4 +8,5 @@ index.run(function(mountComponent) {
 	let app = new Vue(App);
 	app.$mount();
 	return app;
+
 });

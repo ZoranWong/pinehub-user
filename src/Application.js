@@ -114,13 +114,14 @@ export default class Application {
     Vue.use(VueAxios, axios);
     Vue.use(Vuex);
     let self = this;
-     self.registerServiceProviders();
-    if(before && created && _.isFunction(before) && _.isFunction(created)){
-    		before(this);
-    }else if(!created){
-    		created = before;
+    self.registerServiceProviders();
+    if(before && created && _.isFunction(before) && _.isFunction(created)) {
+      before(this);
+    }else if(!created) {
+      created = before;
     }
     this.vueMixin();
+ 
     let store = this.instances['vue-store'];
     this.mountComponent = _.extend({
       store: store,

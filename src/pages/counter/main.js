@@ -9,4 +9,3 @@ counter.run(function(mountComponent) {
 	app.$mount();
 	return app;
 });
-

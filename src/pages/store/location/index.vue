@@ -45,7 +45,9 @@
 		//普通方法
 		methods: {
 			async flashLocation() {
+				console.log('ddd', this.appName, this.map);
 				let result = await this.map.getLocation();
+				console.log(result);
 				this.latitude = result.lat;
 				this.longitude = result.lng;
 				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
@@ -64,7 +66,15 @@
 		},
 		created() {
 			this.flashLocation();
-		}
+		},
+		onLoad:function(options){
+    		wx.setNavigationBarTitle({
+     	 	title: '定位',
+      		success: function(res) {
+        // success
+      }
+    })
+  },
 	}
 </script>
 

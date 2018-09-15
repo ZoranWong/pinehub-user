@@ -24,7 +24,12 @@
 				</dd>
 				<dt>预定商城</dt>
 			</dl>
-
+      <dl>
+        <dd>
+          <img src="" />
+        </dd>
+        <dt>新品预定</dt>
+      </dl>
 		</div>
 		<footer-nav :navName="navName"></footer-nav>
 	</div>
@@ -132,7 +137,11 @@
 	#index_menu dl:nth-child(2) {
 		margin-left: 30rpx;
 	}
-	
+	#index_menu dl:nth-child(3) {
+    width: 669rpx;
+    height:198rpx; 
+    margin-top: 20rpx;
+  }
 	#index_menu dl dd {
 		padding-top: 40rpx;
 	}
@@ -183,3 +192,4 @@
 		line-height: 24rpx;
 	}
 </style>
+

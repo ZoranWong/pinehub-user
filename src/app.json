@@ -1,15 +1,17 @@
 {
 	"pages": [
+		"pages/store/location/main",
 		"pages/store/mystore/main",
 		"pages/index/main",
-		"pages/store/location/main",
+		"pages/todayOrder/main",
+		"pages/newProduct/main",
 		"pages/logs/main",
 		"pages/counter/main"
 	],
 	"window": {
 		"backgroundTextStyle": "light",
 		"navigationBarBackgroundColor": "#fece00",
-		"navigationBarTitleText": "WeChat",
+		"navigationBarTitleText": "",
 		"navigationBarTextStyle": "black"
 	}
 }
