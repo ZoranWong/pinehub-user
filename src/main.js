@@ -3,7 +3,9 @@ import App from './App';
 import Application from './Application';
 //Vue.config.productionTip = false;
 App.mpType = 'app';
-const application = new Application(App);
-application.run();
+var application = new Application(App, 'undefined');
+application.run(function(){
+		
+});
 //const app = new Vue(App);
 //app.mount(App);

@@ -1,5 +1,11 @@
-import Application from '../../Application';
+import Vue from 'vue';
 import App from './index';
-console.log(444444);
-const app = new Application(App);
-app.run();
+import Application from '../../Application';
+import _ from 'underscore';
+const log = new Application(App, 'log');
+log.run(function(mountComponent) {
+	_.extend(App,mountComponent);
+	let app = new Vue(App);
+	app.$mount();
+	return app;
+});

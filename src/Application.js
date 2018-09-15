@@ -6,7 +6,8 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 export default class Application {
-  constructor(component) {
+  constructor(component, name = null) {
+  	this.name = name;
     this.applicationBootStartTime = Date.now();
     Vue.config.productionTip = false;
     this.version = '1.0.1';
@@ -30,6 +31,7 @@ export default class Application {
   mixin(methods) {
     this.mixinMethods = methods;
   }
+  //注册命令
   registerCommand(name, command) {
     return (this.commands[name]  = new command(this));
   }
@@ -103,15 +105,22 @@ export default class Application {
     	self.hasMixin = true;
     let extend = {};
     extend['config'] = self.config;
-    this.use(_.extend(self.instances, extend));
+    extend['appName'] = this.name;
+    this.instances= _.extend(self.instances, extend, this.mixinMethods);
+    _.extend(this.$vm.prototype, this.instances);
   }
 
-  run() {
+  run(before = null, created = null) {
     this.$vm = Vue;
     Vue.use(VueAxios, axios);
     Vue.use(Vuex);
     let self = this;
-    self.registerServiceProviders();
+     self.registerServiceProviders();
+    if(before && created && _.isFunction(before) && _.isFunction(created)){
+    		before(this);
+    }else if(!created){
+    		created = before;
+    }
     this.vueMixin();
     let store = this.instances['vue-store'];
     this.mountComponent = _.extend({
@@ -139,7 +148,13 @@ export default class Application {
         console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
       }
     }, this.mountComponent);
-    self.vueApp = new Vue(this.mountComponent).$mount();
+    self.vueApp = _.isFunction(created) ? created(this.mountComponent) : console.log(created);
+    if(self.vueApp) {
+    		_.extend(self.vueApp, self.instances);
+    }
     return self.vueApp;
+  }
+  mount() {
+  	  self.vueApp.$mount();
   }
 }
