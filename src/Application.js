@@ -6,7 +6,8 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 export default class Application {
-  constructor(component) {
+  constructor(component, name = null) {
+  	this.name = name;
     this.applicationBootStartTime = Date.now();
     Vue.config.productionTip = false;
     this.version = '1.0.1';
@@ -30,6 +31,7 @@ export default class Application {
   mixin(methods) {
     this.mixinMethods = methods;
   }
+  //注册命令
   registerCommand(name, command) {
     return (this.commands[name]  = new command(this));
   }
@@ -102,6 +104,11 @@ export default class Application {
     let self = this;
     let extend = {};
     extend['config'] = self.config;
+<<<<<<< HEAD
+    extend['appName'] = this.name;
+    this.instances= _.extend(self.instances, extend, this.mixinMethods);
+    _.extend(this.$vm.prototype, this.instances);
+=======
     extend = _.extend(self.instances, extend);
     console.log('vue mixin', self.hasMixin);
     if(!self.hasMixin){
@@ -109,6 +116,7 @@ export default class Application {
       _.extend(this.$vm.prototype, extend, self.mixinMethods);
     }
 
+>>>>>>> fac77d8a994dd96f6968d3aee9d597c2c76eb9c5
   }
 
   run(before = null, created = null) {
@@ -116,12 +124,21 @@ export default class Application {
     Vue.use(VueAxios, axios);
     Vue.use(Vuex);
     let self = this;
+<<<<<<< HEAD
     if(before && created && _.isFunction(before) && _.isFunction(creaded)) {
       before(this);
     }else if(!created) {
       created = before;
     }
     self.registerServiceProviders();
+=======
+     self.registerServiceProviders();
+    if(before && created && _.isFunction(before) && _.isFunction(created)){
+    		before(this);
+    }else if(!created){
+    		created = before;
+    }
+>>>>>>> 07130b95d588a260b3f4d6dc361f14673c6ddd7b
     this.vueMixin();
     let store = this.instances['vue-store'];
     this.mountComponent = _.extend({
@@ -149,10 +166,21 @@ export default class Application {
         console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
       }
     }, this.mountComponent);
+<<<<<<< HEAD
     if(_.isFunction(created)){
       created(this.mountComponent);
     }
     //self.vueApp = new Vue(this.mountComponent).$mount();
     return this;
+=======
+    self.vueApp = _.isFunction(created) ? created(this.mountComponent) : console.log(created);
+    if(self.vueApp) {
+    		_.extend(self.vueApp, self.instances);
+    }
+    return self.vueApp;
+>>>>>>> 07130b95d588a260b3f4d6dc361f14673c6ddd7b
+  }
+  mount() {
+  	  self.vueApp.$mount();
   }
 }

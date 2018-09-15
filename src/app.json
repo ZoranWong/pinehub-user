@@ -1,9 +1,12 @@
 {
+
   "pages": [
+    "pages/store/mystore/main",
     "pages/index/main",
     "pages/todayOrder/main",            
     "pages/newProduct/main",
-  
+    
+		"pages/store/location/main",
     "pages/logs/main",
     "pages/counter/main"
   ],
@@ -13,4 +16,5 @@
     "navigationBarTitleText": "首页",
     "navigationBarTextStyle": "black"
   }
+
 }
