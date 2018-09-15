@@ -7,5 +7,3 @@ var application = new Application(App, 'undefined');
 application.run(function(){
 		
 });
-//const app = new Vue(App);
-//app.mount(App);
