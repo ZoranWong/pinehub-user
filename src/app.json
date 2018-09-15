@@ -1,19 +1,18 @@
 {
 
   "pages": [
+    "pages/store/location/main",
     "pages/store/mystore/main",
     "pages/index/main",
     "pages/todayOrder/main",            
     "pages/newProduct/main",
-    
-		"pages/store/location/main",
     "pages/logs/main",
     "pages/counter/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fece00",
-    "navigationBarTitleText": "首页",
+    "navigationBarTitleText": "",
     "navigationBarTextStyle": "black"
   }
 

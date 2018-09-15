@@ -114,22 +114,14 @@ export default class Application {
     Vue.use(VueAxios, axios);
     Vue.use(Vuex);
     let self = this;
-<<<<<<< HEAD
-    if(before && created && _.isFunction(before) && _.isFunction(creaded)) {
+    self.registerServiceProviders();
+    if(before && created && _.isFunction(before) && _.isFunction(created)) {
       before(this);
     }else if(!created) {
       created = before;
     }
-    self.registerServiceProviders();
-=======
-     self.registerServiceProviders();
-    if(before && created && _.isFunction(before) && _.isFunction(created)){
-    		before(this);
-    }else if(!created){
-    		created = before;
-    }
->>>>>>> 07130b95d588a260b3f4d6dc361f14673c6ddd7b
     this.vueMixin();
+ 
     let store = this.instances['vue-store'];
     this.mountComponent = _.extend({
       store: store,
@@ -156,19 +148,11 @@ export default class Application {
         console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
       }
     }, this.mountComponent);
-<<<<<<< HEAD
-    if(_.isFunction(created)){
-      created(this.mountComponent);
-    }
-    //self.vueApp = new Vue(this.mountComponent).$mount();
-    return this;
-=======
     self.vueApp = _.isFunction(created) ? created(this.mountComponent) : console.log(created);
     if(self.vueApp) {
     		_.extend(self.vueApp, self.instances);
     }
     return self.vueApp;
->>>>>>> 07130b95d588a260b3f4d6dc361f14673c6ddd7b
   }
   mount() {
   	  self.vueApp.$mount();
