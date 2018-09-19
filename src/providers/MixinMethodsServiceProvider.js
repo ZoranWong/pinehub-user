@@ -1,3 +1,4 @@
+//全局方法
 import ServiceProvider from './ServiceProvider';
 export default class MixinMethodsServiceProvider extends ServiceProvider {
   constructor(app) {

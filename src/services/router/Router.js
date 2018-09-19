@@ -1,7 +1,7 @@
 export default class Router {
 	constructor(options) {
 		this.routes = options['routes'];
-		console.log(this.routes);
+//		console.log(this.routes);
 	}
 	
 	beforeEach(callback) {

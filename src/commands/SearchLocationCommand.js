@@ -1,4 +1,3 @@
-
 import Command from './Command';
 export default class SearchLocationCommand extends Command {
   constructor(app) {

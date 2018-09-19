@@ -1,7 +1,9 @@
 {
 	"pages": [
-		"pages/store/location/main",
-		"pages/store/mystore/main",
+		"pages/my/order/main",
+		"pages/my/main",
+		"pages/my/mystore/main",
+		"pages/my/location/main",
 		"pages/index/main",
 		"pages/todayOrder/main",
 		"pages/newProduct/main",
