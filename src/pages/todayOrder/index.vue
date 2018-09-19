@@ -1,27 +1,29 @@
 <template>
   <div class="body">
     <!-- 轮播图 -->
-    <mp-swiper></mp-swiper>
+    <MpSwiper></MpSwiper>
     <!-- 配送范围弹窗 -->
-   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup> -->
+   <!--  <Popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></Popup> -->
     <!-- 定位最近的店面 -->
-    <location></location>
-    <div class="goods" >
-        <menus></menus>
-        <m-list @show-cart ="hdlShowCart"></m-list>
-    </div>
-    <cart  v-if="isShowCart"></cart>
+    <Location></Location>
+ <!--    <div class="goods" >
+        <Menus ></Menus>
+        <MList @show-cart ="hdlShowCart" ></MList>
+    </div> -->
+    <Cart  v-if="isShowCart"></Cart>
    
   </div>
 </template>
 
 <script>
-  import popup from '@/components/popup'
-  import swiper from '@/components/swiper'
-  import location from '@/components/location'
-  import foodsList from '@/components/foodsList'
-  import menus from '@/components/menus'
-  import cart from '@/components/cart'
+  import Popup from '@/components/Popup'
+  import MpSwiper from '@/components/Swiper'
+  import Location from '@/components/Location'
+  import MList from '@/components/FoodsList'
+  import Menus from '@/components/Menus'
+  import Cart from '@/components/Cart'
+
+  import BScroll from 'better-scroll'
   export default{
     data(){
       return{
@@ -30,12 +32,12 @@
       }
     },
     components: {
-      popup:popup,
-      'mp-swiper': swiper,
-      location:location,
-      menus: menus,
-      'm-list': foodsList,
-      cart: cart,
+      Popup:Popup,
+      MpSwiper: MpSwiper,
+      Location:Location,
+      Menus: Menus,
+      MList: MList,
+      Cart: Cart,
       
    },
    onLoad:function(options){
@@ -52,8 +54,8 @@
       },
       hdlShowCart:function(){
         this.isShowCart =  true;
-       
-      }
+      },
+     
   }
 
 }

@@ -5,7 +5,7 @@
         <i class="i-icon cart"></i>
         <i class="i-icon num-icon">1</i>
         <div class="clearfix">
-          <span class="total-price">¥20.00</span>
+          <span class="total-price">¥{{totalPrice}}</span>
           <label class="choose fr" @click="popShow">选好了
           <i class="i-icon next-icon"></i>
           </label>
@@ -32,13 +32,48 @@
 </template>
 <script>
 	export default{
+    props:{
+      selectFoods:{
+        type:Array,
+        default(){
+          return[
+            {
+              price:10,
+              count:1
+            }
+          ];
+        }
+      }
+    },
 		data(){
 			return{
-			}
+              "name": "单人精彩套餐",
+              "type": 2,
+              "foods": [
+                {
+                  "name": "红枣山药粥套餐",
+                  "price": 29,
+                  "oldPrice": 36,
+                  "description": "红枣山药糙米粥,素材包,爽口莴笋丝,四川泡菜或八宝酱菜,配菜可备注",
+                  "sellCount": 17,
+                  "rating": 100,
+                  "info": "",
+                }
+              ],
+            }
 		},
     methods:{
       popShow:function(){
         this.$emit('hdlShowPopup')
+      }
+    },
+    computed:{
+      totalPrice(){
+        let total = 0;
+        this.selectFoods.forEach( (food) => {
+            total += food.price * food.count;
+        });
+        return total;
       }
     }
 	}

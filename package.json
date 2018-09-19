@@ -31,7 +31,8 @@
     "underscore.string": "^3.3.4",
     "vue-axios": "^2.1.1",
     "vue-echarts-v3": "^1.0.19",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "better-scroll": "^0.1.7"
   },
   "devDependencies": {
     "mpvue-loader": "^1.1.2",
