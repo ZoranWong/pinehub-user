@@ -47,8 +47,6 @@
     },
 		data(){
 			return{
-              "name": "单人精彩套餐",
-              "type": 2,
               "foods": [
                 {
                   "name": "红枣山药粥套餐",
@@ -70,7 +68,7 @@
     computed:{
       totalPrice(){
         let total = 0;
-        this.selectFoods.forEach( (food) => {
+        this.foods.forEach( (food) => {
             total += food.price * food.count;
         });
         return total;

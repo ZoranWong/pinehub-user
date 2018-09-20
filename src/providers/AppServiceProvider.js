@@ -6,6 +6,7 @@ import SessionService from '../services/cache/SessionService';
 import Base64Service from '../services/encrypt/Base64Service';
 import MD5Service from '../services/encrypt/MD5Service';
 import JsonService from '../services/encrypt/JsonService';
+import HrefService from '../services/mp/HrefService';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
 		super(app);
@@ -36,6 +37,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('json', JsonService);
 		this.app.register('session', SessionService);
 		this.app.register('token', TokenService);
+		this.app.register('href', HrefService);
 	}
 	boot() {
 

@@ -1,24 +1,24 @@
 <template>
   <div class="body">
-    <MList></MList>
+    <m-list></m-list>
     <cart></cart>  
-    <MCard></MCard>
+    <m-card></m-card>
   </div>
 </template>
 
 <script>
-  import MList from '@/components/FoodsList';
-  import Cart from '@/components/Cart'
-  import MCard from '@/components/MerchandiseCard'
+  import FoodsList from '@/components/FoodsList';
+  import cart from '@/components/Cart'
+  import MerchandiseCard from '@/components/MerchandiseCard'
   export default{
     data(){
       return{
       }
     }, 
     components: {
-      MList:MList,
-      Cart:Cart,
-      MCard:MCard,
+      'm-list':FoodsList,
+      cart:cart,
+      'm-card':MerchandiseCard,
    },
    onLoad:function(options){
     wx.setNavigationBarTitle({
@@ -28,7 +28,6 @@
       }
     })
   },
-  
 }
 
 </script>

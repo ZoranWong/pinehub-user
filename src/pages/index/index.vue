@@ -32,16 +32,19 @@
       </dl>
 		</div>
 		<footer-nav :navName="navName"></footer-nav>
+		<pop-location></pop-location>
 	</div>
 
 </template>
 
 <script>
 	import FooterNav from '@/components/FooterNav';
+	import PopupLocation from'@/components/PopupLocation';
 
 	export default {
 		components: {
-			'footer-nav': FooterNav
+			'footer-nav': FooterNav,
+			'pop-location':PopupLocation
 		},
 		data() {
 			return {

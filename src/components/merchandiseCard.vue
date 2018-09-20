@@ -91,9 +91,9 @@
 </template>
 
 <script>
-import MList from './FoodsList';
-import Menus from './Menus';
-// import popup from '@/components/popup'
+import FoodsList from './FoodsList';
+import menus from './Menus';
+
 export default {
 	data(){
 		return{
@@ -102,9 +102,8 @@ export default {
 		}
 	},
   components:{
-    MList: MList,
-    Menus: Menus,
-     // popup:popup,
+    'm-list': FoodsList,
+     menus: menus,
   },
   computed:{
     currentIndex(){

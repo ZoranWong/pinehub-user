@@ -1,29 +1,28 @@
 <template>
   <div class="body">
     <!-- 轮播图 -->
-    <MpSwiper></MpSwiper>
+    <mp-swiper></mp-swiper>
     <!-- 配送范围弹窗 -->
-   <!--  <Popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></Popup> -->
+    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
     <!-- 定位最近的店面 -->
-    <Location></Location>
- <!--    <div class="goods" >
-        <Menus ></Menus>
-        <MList @show-cart ="hdlShowCart" ></MList>
-    </div> -->
-    <Cart  v-if="isShowCart"></Cart>
+    <location></location>
+    <div class="goods" >
+        <menus></menus>
+        <m-list @show-cart ="hdlShowCart" ></m-list>
+    </div>
+    <cart  v-if="isShowCart"></cart>
    
   </div>
 </template>
 
 <script>
-  import Popup from '@/components/Popup'
-  import MpSwiper from '@/components/Swiper'
-  import Location from '@/components/Location'
-  import MList from '@/components/FoodsList'
-  import Menus from '@/components/Menus'
-  import Cart from '@/components/Cart'
+  import popup from '@/components/Popup'
+  import swiper from '@/components/Swiper'
+  import location from '@/components/Location'
+  import FoodsList from '@/components/FoodsList'
+  import menus from '@/components/Menus'
+  import cart from '@/components/Cart'
 
-  import BScroll from 'better-scroll'
   export default{
     data(){
       return{
@@ -32,12 +31,12 @@
       }
     },
     components: {
-      Popup:Popup,
-      MpSwiper: MpSwiper,
-      Location:Location,
-      Menus: Menus,
-      MList: MList,
-      Cart: Cart,
+      popup:popup,
+      'mp-swiper': swiper,
+      location:location,
+      menus: menus,
+      'm-list': FoodsList,
+      cart: cart
       
    },
    onLoad:function(options){
@@ -63,31 +62,11 @@
 </script>
 
 <style scoped>
-/*.pop-mask{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height: 100%;
-  z-index: 40;
-  background-filter:blur(10px);
-  transition: all 0.5s
-}
-.pop-mask .fade-transtion{
-  opacity: 1;
-  background:rgba(7,17,27,0.6);
-}
-.pop-mask .fade-enter,.pop-mask .fade-leave{
-  opacity: 0;
-  background:rgba(7,17,27,0);
-}*/
+
 .goods{
   display: flex;
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
- 
- /* bottom:98rpx;*/
- /* border:1px solid blue;*/
 }
 </style>
