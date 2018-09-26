@@ -7,7 +7,7 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>
@@ -39,7 +39,7 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>
@@ -71,7 +71,7 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>

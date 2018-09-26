@@ -2,8 +2,8 @@ import Vue from 'vue';
 import ServiceProviders from './providers';
 import _ from 'underscore';
 import App from './App';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+//import axios from 'axios';
+//import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 export default class Application {
   constructor(component, name = null) {
@@ -111,8 +111,6 @@ export default class Application {
 
   run(before = null, created = null) {
     this.$vm = Vue;
-    Vue.use(VueAxios, axios);
-    Vue.use(Vuex);
     let self = this;
     self.registerServiceProviders();
     if(before && created && _.isFunction(before) && _.isFunction(created)) {

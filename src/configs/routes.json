@@ -3,6 +3,7 @@
 	"my": "/pages/my/main",
 	
 	"myorder":"/pages/my/order/main",
+	"mypay":"/pages/my/pay/main",
 
 	"location": "/pages/my/location/main",
 	"logs": "/pages/logs/main",

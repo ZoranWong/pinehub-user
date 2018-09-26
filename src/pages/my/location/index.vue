@@ -9,7 +9,7 @@
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
-					<picker mode="date" value="" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
+					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
 				<div class="select_li">
 					<span class="select_li_title">时间</span>
