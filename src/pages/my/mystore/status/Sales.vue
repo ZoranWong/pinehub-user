@@ -37,11 +37,14 @@
 <script>
 	import WxCharts from '@/components/WxCharts';
 	const data = [
-		[551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619],
-		[934, 934, 934, 934, 934, 932, 901]
+		[680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619],
+		[934, 934, 934, 934, 934, 932, 901],
+		[910, 445, 143, 643, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619]
 	]
-	//	const datedata = ['一', '二', '三', '四', '五', '六', '日']
-	const datedata = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+	const day = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+	const week = ['一', '二', '三', '四', '五', '六', '日'];
+	const mouth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+	const dateData = [day, week, mouth];
 	let i = 0
 
 	export default {
@@ -104,31 +107,15 @@
 			selectDateNow(e) {
 				let num = e.target.value;
 				this.nowSelectDate = num;
-				if(num == 0) {
-					console.log(666);
-				} else if(num == 1) {
-					console.log(888)
-				} else {
-					console.log(999)
-				}
+				this.wxOptions = this.getOptions(num, true);
+				console.log(dateData);
 			},
-
-			changeEcharts: function() {
-				if(i) {
-					i = 0
-				} else {
-					i = 1
-				}
-				setTimeout(() => {
-					this.wxOptions = this.getOptions(i)
-				}, 3000)
-			},
-			getOptions: function(i) {
+			getOptions: function(i, refresh = false) {
 				let option = {
-
+					refresh: refresh,
 					xAxis: {
 						type: 'category',
-						data: datedata,
+						data: dateData[i],
 						axisLabel: {
 							show: true,
 							textStyle: {

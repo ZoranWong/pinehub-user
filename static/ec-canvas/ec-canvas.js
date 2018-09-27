@@ -12,8 +12,12 @@ Component({
 
 		ec: {
 			type: Object,
-			observer: function() {
-				this.init()
+			observer: function(n, o) {
+				if(n.options.refresh) {
+					this.clear();
+					this.init();
+//					console.log(n, o)
+				}
 			}
 		}
 	},
@@ -24,16 +28,24 @@ Component({
 
 	ready: function() {
 		// 异步获取
-		setTimeout(() => {
-			if(!this.data.ec) {
-				console.warn('组件需绑定 ec 变量，例：<ec-canvas id="mychart-dom-bar" ' +
-					'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>');
-				return;
-			}
-			if(!this.data.ec.lazyLoad) {
-				this.init();
-			}
-		}, 10)
+		//		setTimeout(() => {
+		//			if(!this.data.ec) {
+		//				console.warn('组件需绑定 ec 变量，例：<ec-canvas id="mychart-dom-bar" ' +
+		//					'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>');
+		//				return;
+		//			}
+		//			if(!this.data.ec.lazyLoad) {
+		//				this.init();
+		//			}
+		//		}, 0)
+		if(!this.data.ec) {
+			console.warn('组件需绑定 ec 变量，例：<ec-canvas id="mychart-dom-bar" ' +
+				'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>');
+			return;
+		}
+		if(!this.data.ec.lazyLoad) {
+			this.init();
+		}
 	},
 
 	methods: {
@@ -80,7 +92,11 @@ Component({
 			}).exec();
 		},
 
-		canvasToTempFilePath(opt) {
+	clear() {
+		if(this.chart)
+			this.chart.clear();
+	},
+	canvasToTempFilePath(opt) {
 			if(!opt.canvasId) {
 				opt.canvasId = this.data.canvasId;
 			}

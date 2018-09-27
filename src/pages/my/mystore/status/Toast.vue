@@ -11,7 +11,7 @@
 						<div class="input_num">
 							{{merchandise['stock_num']}}
 						</div>
-						<input class="input_num input_num_right" type="number" v-model="productInfo.num" />
+						<input class="input_num input_num_right" type="number" v-model="productInfo.modify_stock_num" />
 					</div>
 					<div id="input_change_info">
 						修改原因
@@ -72,18 +72,20 @@
 		methods: {
 			radioSelect(num, id) {
 				this.radioCur = num;
-				this.productInfo['changeAnswerId'] = id;
-				//				console.log(num + 'aaa' + id);
+				this.productInfo.reason = id;
 			},
 			returnBtn() {
-				let productNum = parseInt(this.productInfo.num);
+				let productNum = parseInt(this.productInfo.modify_stock_num);
 				if(isNaN(productNum) || productNum < 0) {
 					wx.showToast({
 						title: "正确填写库存",
 						icon: "none"
 					})
 				} else {
-
+					this.productInfo.merchandise_id = this.merchandise['id'];
+					this.productInfo.primary_stock_num = this.merchandise['stock_num'];
+					this.productInfo['comment'] = "";
+					console.log(this.productInfo);
 				}
 			},
 			toastClose() {
@@ -91,7 +93,7 @@
 			}
 		},
 		created() {
-			this.productInfo['changeAnswerId'] = this.radioCur;
+			this.productInfo.reason = this.selectCause[0].id;
 		},
 		beforeUpdate() {
 			//数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。

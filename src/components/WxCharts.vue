@@ -25,7 +25,7 @@
 		watch: {
 			options: {
 				handler(newValue, oldValue) {
-					this.getOptions(newValue)
+					this.ec.options = newValue;
 				},
 				deep: true
 			}

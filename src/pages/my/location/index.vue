@@ -45,7 +45,7 @@
 		//普通方法
 		methods: {
 			async flashLocation() {
-				console.log('ddd', this.appName, this.map);
+				console.log('定位打印', this.appName, this.map);
 				let result = await this.map.getLocation();
 				console.log(result);
 				this.latitude = result.lat;
