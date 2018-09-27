@@ -7,10 +7,16 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order></my-order>
-			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
-				<my-order></my-order>
-			</div>-->
+			<div class="tab_content_item" v-if="cur === 0">
+				<order></order>
+			</div>
+			<div class="tab_content_item" v-else-if="cur === 1">
+				2
+				Sales statistics
+			</div>
+			<div class="tab_content_item" v-else-if="cur === 2">
+				3
+			</div>
 		</div>
 		<div id="footNav_height"></div>
 		<footer-nav :navName="navName"></footer-nav>
@@ -18,24 +24,25 @@
 </template>
 
 <script>
-	import MyOrder from '@/components/MyOrder';
+	import Order from './Order';
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
 			"mp-title": MpTitle,
-			"my-order": MyOrder,
+			"order": Order,
 			'footer-nav': FooterNav
 		},
 		data() {
 			return {
-				title: "我的订单",
+				title: "店铺状态",
 				navName: "order",
-				nowCom: "",
 				tabs: [{
-					name: "全部"
+					name: "销售统计"
 				}, {
-					name: "未核销"
+					name: "进货统计"
+				}, {
+					name: "库存统计"
 				}],
 				cur: 0
 			};
@@ -55,7 +62,6 @@
 			}
 		},
 		created() {
-			this.nowCom = "card"
 		}
 	}
 </script>
@@ -110,7 +116,6 @@
 	}
 	
 	.tab_content_item {
-		display: none;
 	}
 	
 	.tab_content_now {

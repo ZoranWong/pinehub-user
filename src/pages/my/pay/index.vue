@@ -3,39 +3,34 @@
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
-				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)">{{tab.name}}</li>
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order></my-order>
-			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
+			<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
-			</div>-->
+			</div>
 		</div>
-		<div id="footNav_height"></div>
-		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
 
 <script>
 	import MyOrder from '@/components/MyOrder';
 	import MpTitle from '@/components/MpTitle';
-	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
 			"mp-title": MpTitle,
-			"my-order": MyOrder,
-			'footer-nav': FooterNav
+			"my-order": MyOrder
 		},
 		data() {
 			return {
-				title: "我的订单",
-				navName: "order",
-				nowCom: "",
+				title: "我的充值",
 				tabs: [{
 					name: "全部"
 				}, {
 					name: "未核销"
+				}, {
+					name: "已核销"
 				}],
 				cur: 0
 			};
@@ -54,30 +49,26 @@
 				console.log(num);
 			}
 		},
-		created() {
-			this.nowCom = "card"
-		}
+		created() {}
 	}
 </script>
 
 <style>
 	page {
 		height: 100%;
-		background: #fafafa;
-	}
-	
-	#footNav_height {
-		height: 109rpx;
 	}
 	
 	#myorder {
+		background: #fafafa;
 		position: relative;
+		height: 100%;
+		width: 100%;
 	}
 	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
-		height: 74rpx;
+		height: 68rpx;
 		position: fixed;
 		left: 0;
 		top: 0;
@@ -85,8 +76,8 @@
 	}
 	
 	#tab_select ul li {
-		height: 74rpx;
-		line-height: 74rpx;
+		height: 68rpx;
+		line-height: 68rpx;
 		float: left;
 		background: #FFFFFF;
 		text-align: center;
@@ -95,18 +86,12 @@
 	}
 	
 	#tab_select ul li.tab_select_now {
-		color: #FECE00;
-	}
-	
-	#tab_select ul li.tab_select_now span {
-		display: inline-block;
-		width: 68%;
-		line-height: 64rpx;
-		border-bottom: 5rpx solid #FECE00;
+		background: #FECE00;
+		color: #FFFFFF;
 	}
 	
 	#tab_content {
-		padding-top: 74rpx;
+		padding-top: 68rpx;
 	}
 	
 	.tab_content_item {

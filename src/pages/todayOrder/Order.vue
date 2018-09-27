@@ -12,10 +12,10 @@
 	</div>
 </template>
 <script>
-	import MpTitle from '@/components/MpTitle'
-	import Consignee from '@/components/Consignee'
-	import TabDelivery from '@/components/TabDelivery'
-	import Payment from '@/components/Payment'
+	import MpTitle from '@/components/MpTitle';
+	import Consignee from '@/components/Consignee';
+	import TabDelivery from '@/components/TabDelivery';
+	import Payment from '@/components/Payment';
 	export default{
 		name:"confirmationOrder",
 		data(){

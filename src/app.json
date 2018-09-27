@@ -1,18 +1,19 @@
 {
-
   "pages": [
-    "pages/confirmationOrder/main",
-    "pages/confirmationOrderThree/main",
-    "pages/confirmationOrderTwo/main",
+   
     "pages/index/main",
+    "pages/my/location/main",
+    "pages/my/mystore/main",
+    "pages/my/order/main",
     "pages/todayOrder/main", 
     "pages/reserveShop/main",
     "pages/activity/main",
-    "pages/my/location/main", 
-    "pages/my/mystore/main",
-    "pages/my/order/main",
+    "pages/my/status/main",
     "pages/logs/main",
-    "pages/counter/main"
+    "pages/counter/main",
+    "pages/confirmationOrder/main",
+    "pages/confirmationOrderThree/main",
+    "pages/confirmationOrderTwo/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

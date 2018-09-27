@@ -139,7 +139,7 @@
 .shoppingcart-bottom .choose{
   width:200rpx;
   color: #fece00; 
-  background-color: red;
+  /*background-color: red;*/
 /*  border:1rpx solid red;*/
 }
 .next-icon{

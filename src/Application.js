@@ -2,8 +2,8 @@ import Vue from 'vue';
 import ServiceProviders from './providers';
 import _ from 'underscore';
 import App from './App';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+//import axios from 'axios';
+//import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
 // const eval = binding.eval;
 export default class Application {
@@ -113,8 +113,6 @@ export default class Application {
 
   run(before = null, created = null) {
     this.$vm = Vue;
-    Vue.use(VueAxios, axios);
-    Vue.use(Vuex);
     let self = this;
     self.registerServiceProviders();
     this.vueMixin();

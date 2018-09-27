@@ -1,87 +1,82 @@
 <template>
 	<div id="mystore">
-		<div id="mystore_header">
-			<div id="mystore_userinfo">
-				<div id="mystore_userinfo_face-lv">
-					<img id="mystore_userinfo_face" src="../../../../static/images/index_now.png" />
-					<div id="mystore_userinfo_lv">
-						LV:10
+		<mp-title :title="title"></mp-title>
+		<div id="mystore_buyinfo">
+			<ul>
+				<li>
+					<i class="my_store_ico ico_week_buy" />
+					<div class="info_list">
+						<em>800</em>
+						<i>本周用户购买数</i>
 					</div>
-				</div>
-				<div id="mystore_userinfo_name-nickname">
-					<div id="mystore_userinfo_name">
-						没有昵称可以起
+				</li>
+				<li>
+					<i class="my_store_ico ico_week_sell" />
+					<div class="info_list">
+						<em>800</em>
+						<i>本周销售额</i>
 					</div>
-					<div id="mystore_userinfo_nickname">
-						ID:1234567890
+				</li>
+				<li>
+					<i class="my_store_ico ico_today_buy" />
+					<div class="info_list">
+						<em>800</em>
+						<i>今日购买数</i>
 					</div>
-				</div>
-				<div id="mystore_userinfo_otherinfo">
-					<ul>
-						<li>
-							<img src="../../../../static/images/index_now.png" />
-							<i>余额</i>
-						</li>
-						<li>
-							<img src="../../../../static/images/index_now.png" />
-							<i>卡券</i>
-						</li>
-						<li>
-							<img src="../../../../static/images/index_now.png" />
-							<i>积分</i>
-						</li>
-					</ul>
-				</div>
-			</div>
+				</li>
+				<li>
+					<i class="my_store_ico  ico_today_sell" />
+					<div class="info_list">
+						<em>800</em>
+						<i>今日营业额</i>
+					</div>
+				</li>
+			</ul>
 		</div>
-		<div id="mystore_shop">
-			<img src="../../../../static/images/index_now.png" />
-			<span>我的店铺</span>
+		<div id="mystore_charts">
+			charts
 		</div>
 		<div id="mystore_menu">
 			<ul>
 				<li>
-					<img src="../../../../static/images/index_now.png" />
-					<span>我的充值</span>
-					<i></i>
+					<i class="my_store_menu_ico ico_1"></i>
+					<em>进货</em>
 				</li>
 				<li>
-					<img src="../../../../static/images/index_now.png" />
-					<span>个人订单</span>
-					<i></i>
+					<i class="my_store_menu_ico ico_2"></i>
+					<em>需配送订单</em>
 				</li>
 				<li>
-					<img src="../../../../static/images/index_now.png" />
-					<span>邀请享奖励</span>
-					<i></i>
+					<i class="my_store_menu_ico ico_3"></i>
+					<em>店铺状态</em>
 				</li>
 				<li>
-					<img src="../../../../static/images/index_now.png" />
-					<span>我的收入</span>
-					<i></i>
+					<i class="my_store_menu_ico ico_4"></i>
+					<em>物流进货扫码</em>
 				</li>
 				<li>
-					<img src="../../../../static/images/index_now.png" />
-					<span>联系客服</span>
-					<i></i>
+					<i class="my_store_menu_ico ico_5"></i>
+					<em>自提订单</em>
+				</li>
+				<li>
+					<i class="my_store_menu_ico ico_6"></i>
+					<em>订单汇总</em>
 				</li>
 			</ul>
 		</div>
-		<div id="footNav_height"></div>
-		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
 
 <script>
-	import FooterNav from '@/components/FooterNav';
+	import MpTitle from '@/components/MpTitle';
 
 	export default {
 		components: {
-			'footer-nav': FooterNav
+			"mp-title": MpTitle
 		},
 		data() {
 			return {
-				navName: "my"
+				title: "我的店铺"
 			};
 		},
 		created() {}
@@ -93,189 +88,139 @@
 		height: 100%;
 	}
 	
-	#footNav_height {
-		height: 109rpx;
-	}
-	
 	#mystore {
 		background: #fafafa;
 		position: relative;
 		height: 100%;
 		width: 100%;
+		overflow: hidden;
 	}
 	
-	#mystore_header {
-		position: relative;
-		height: 402rpx;
-		width: 800rpx;
-		/*margin: -1200rpx auto 0;*/
-		margin-left: -25rpx;
-		background: #fece00;
-		border-radius: 0 0 100% 100%;
-		/*overflow: hidden;*/
+	#mystore_buyinfo {
+		margin: 15rpx;
+		clear: both;
+		overflow: hidden;
 	}
 	
-	#mystore_userinfo {
-		width: 680rpx;
-		height: 300rpx;
-		background: #fcfcfc;
-		position: absolute;
-		top: 180rpx;
-		left: 60rpx;
-		border-radius: 20rpx;
-	}
-	
-	#mystore_userinfo_face-lv {
-		width: 180rpx;
-		position: absolute;
-		left: 45rpx;
-		top: -90rpx;
-	}
-	
-	#mystore_userinfo_face {
-		display: block;
-		height: 180rpx;
-		width: 180rpx;
-		border-radius: 100%;
-		background: #FFFFFF;
-	}
-	
-	#mystore_userinfo_lv {
-		text-align-last: center;
-		background: #FECE00;
-		color: #FFFFFF;
-		line-height: 42rpx;
-		font-size: 24rpx;
-		font-weight: 300;
+	#mystore_buyinfo ul li {
+		width: 330rpx;
+		height: 140rpx;
+		margin: 15rpx;
+		float: left;
+		background: #fff;
 		border-radius: 10rpx;
-		margin-top: 10rpx;
+		font-weight: 300;
+		position: relative;
+		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
 	
-	#mystore_userinfo_name-nickname {
-		margin-left: 225rpx;
-		padding-left: 45rpx;
-		padding-right: 45rpx;
-	}
-	
-	#mystore_userinfo_name {
+	.my_store_ico {
 		display: inline-block;
-		background: #FECE00;
-		color: #FFFFFF;
-		padding: 0 10rpx;
-		line-height: 42rpx;
-		font-size: 24rpx;
-		font-weight: 400;
-		border-radius: 5rpx;
-	}
-	
-	#mystore_userinfo_nickname {
-		background: #FCFCFC;
-		color: #000000;
-		padding: 0 10rpx;
-		line-height: 42rpx;
-		font-size: 24rpx;
-		font-weight: 400;
-		border-radius: 5rpx;
-		margin-top: 10rpx;
-	}
-	
-	#mystore_userinfo_otherinfo {
+		width: 60rpx;
+		height: 60rpx;
+		background-size: 90%;
+		background-repeat: no-repeat;
+		background-position: center center;
 		position: absolute;
-		bottom: 0;
-		width: 590rpx;
-		left: 45rpx;
+		top: 40rpx;
+		left: 40rpx;
 	}
 	
-	#mystore_userinfo_otherinfo ul {
-		display: block;
-		display: flex;
-		flex-wrap: wrap;
+	.my_store_ico.ico_week_buy {
+		background-image: url(../../../../static/images/my_store_week_buy.png);
 	}
 	
-	#mystore_userinfo_otherinfo ul li {
-		flex-grow: 3;
-		width: 90rpx;
-		float: left;
+	.my_store_ico.ico_week_sell {
+		background-image: url(../../../../static/images/my_store_week_sell.png);
 	}
 	
-	#mystore_userinfo_otherinfo ul li img {
-		display: block;
-		width: 90rpx;
-		height: 90rpx;
-		margin: 0 auto;
+	.my_store_ico.ico_today_buy {
+		background-image: url(../../../../static/images/my_store_today_buy.png);
 	}
 	
-	#mystore_userinfo_otherinfo ul li i {
-		text-align: center;
-		line-height: 42rpx;
+	.my_store_ico.ico_today_sell {
+		background-image: url(../../../../static/images/my_store_today_total.png);
+	}
+	
+	.info_list {
+		position: absolute;
+		top: 35rpx;
+		left: 120rpx;
+		clear: both;
+	}
+	
+	.info_list em {
+		font-size: 30rpx;
+		font-weight: 400;
+		line-height: 34rpx;
+	}
+	
+	.info_list i {
 		font-size: 24rpx;
-		font-weight: 400;
-		margin-top: 15rpx;
+		line-height: 22rpx;
+		color: #bbbbbb;
+		margin-top: 10rpx;
 	}
 	
-	#mystore_shop {
-		width: 680rpx;
-		height: 130rpx;
-		line-height: 130rpx;
+	#mystore_charts {
+		margin: 0 30rpx;
 		background: #FFFFFF;
-		margin: 115rpx auto 0;
-		overflow: hidden;
-		border-radius: 20rpx;
-		overflow: hidden;
-		text-align: center;
-	}
-	
-	#mystore_shop img {
-		display: inline-block;
-		height: 70rpx;
-		width: 70rpx;
-		margin: 30rpx;
-		float: left;
-	}
-	
-	#mystore_shop span {
-		line-height: 130rpx;
-		float: left;
-		font-size: 34rpx;
-		font-weight: 400;
-		color: #111111;
 	}
 	
 	#mystore_menu {
-		margin-top: 20rpx;
+		margin: 15rpx;
+		/*background: #FFF6BD;*/
+		overflow: hidden;
 	}
 	
 	#mystore_menu ul li {
-		padding: 0 45rpx;
-		border-bottom: 1rpx solid #EEEEEE;
-		height: 88rpx;
-		line-height: 87rpx;
+		margin: 15rpx;
 		background: #FFFFFF;
-	}
-	
-	#mystore_menu ul li img {
-		display: block;
-		height: 48rpx;
-		width: 48rpx;
+		border-radius: 10rpx;
+		width: 210rpx;
+		height: 170rpx;
 		float: left;
-		padding: 20rpx 0;
+		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
 	
-	#mystore_menu ul li span {
-		float: left;
-		margin-left: 20rpx;
-		font-size: 32rpx;
-		font-weight: 400;
-		color: #111111;
+	#mystore_menu ul li em {
+		font-size: 28rpx;
+		font-weight: 300;
+		text-align: center;
+		color: #828282;
 	}
 	
-	#mystore_menu ul li i {
-		width: 40rpx;
-		height: 40rpx;
+	.my_store_menu_ico {
 		display: block;
-		background: url(../../../../static/images/menumore.png) no-repeat center center;
-		background-size: 80%;
-		padding: 22rpx 0;
-		float: right;
+		width: 60rpx;
+		height: 60rpx;
+		background-size: 90%;
+		background-repeat: no-repeat;
+		background-position: center center;
+		margin: 30rpx auto 15rpx;
+	}
+	
+	.ico_1 {
+		background-image: url(../../../../static/images/my_store_m1.png);
+	}
+	
+	.ico_2 {
+		background-image: url(../../../../static/images/my_store_m2.png);
+	}
+	
+	.ico_3 {
+		background-image: url(../../../../static/images/my_store_m3.png);
+	}
+	
+	.ico_4 {
+		background-image: url(../../../../static/images/my_store_m4.png);
+	}
+	
+	.ico_5 {
+		background-image: url(../../../../static/images/my_store_m5.png);
+	}
+	
+	.ico_6 {
+		background-image: url(../../../../static/images/my_store_m6.png);
 	}
 </style>

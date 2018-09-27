@@ -8,7 +8,8 @@ export default class ValidateServiceProvider extends ServiceProvider {
     this.app.register('validater', validate);
   }
   validates() {
-    return {
+   
+   return {
       password(rule, value, callback) {
         if(value === '') {
           callback();

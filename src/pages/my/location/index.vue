@@ -9,7 +9,7 @@
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
-					<picker mode="date" value="" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
+					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
 				<div class="select_li">
 					<span class="select_li_title">时间</span>
@@ -45,7 +45,7 @@
 		//普通方法
 		methods: {
 			async flashLocation() {
-				console.log('ddd', this.appName, this.map);
+				console.log('定位打印', this.appName, this.map);
 				let result = await this.map.getLocation();
 				console.log(result);
 				this.latitude = result.lat;
