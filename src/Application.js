@@ -5,6 +5,7 @@ import App from './App';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
+// const eval = binding.eval;
 export default class Application {
   constructor(component, name = null) {
   	this.name = name;
@@ -20,7 +21,7 @@ export default class Application {
     this.mountComponent = component;
     this.hasMixin = false;
   }
-  mock() {
+  needMock() {
     return this.config.app.mock;
   }
   //插件
@@ -107,6 +108,7 @@ export default class Application {
     extend['appName'] = this.name;
     this.instances= _.extend(self.instances, extend, this.mixinMethods);
     _.extend(this.$vm.prototype, this.instances);
+    _.extend(this, this.instances);
   }
 
   run(before = null, created = null) {
@@ -115,14 +117,16 @@ export default class Application {
     Vue.use(Vuex);
     let self = this;
     self.registerServiceProviders();
+    this.vueMixin();
     if(before && created && _.isFunction(before) && _.isFunction(created)) {
       before(this);
+      console.log('vuex models ' + this.name)
     }else if(!created) {
       created = before;
     }
     this.vueMixin();
- 
-    let store = this.instances['vue-store'];
+
+    let store = this.instances['vue-store'] = this.$models(this.instances['models']);
     this.mountComponent = _.extend({
       store: store,
       render: h => h(App),

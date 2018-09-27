@@ -7,10 +7,10 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"miniprogramRoot": "./dist/",
+	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
 	"appid": "wx67127c10ce9c598c",
-	"projectname": "pinehub",
+	"projectname": "xxx",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
@@ -44,15 +44,64 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 2,
 					"name": "新品预定",
-					"pathName": "pages/newProduct/main",
+					"pathName": "pages/activity/main",
+					"query": ""
+				},
+				{
+					"id": 3,
+					"name": "counter",
+					"pathName": "pages/counter/main",
 					"query": ""
 				},
 				{
 					"id": -1,
 					"name": "定位",
-					"pathName": "pages/store/location/main"
+					"pathName": "pages/my/location/main",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "我的",
+					"pathName": "pages/my/mystore/main",
+					"query": ""
+				},
+				{
+					"id": 6,
+					"name": "我的订单",
+					"pathName": "pages/my/order/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预定商城",
+					"pathName": "pages/reserveShop/main",
+					"query": ""
+				},
+				{
+					"id": 8,
+					"name": "当日下单--确认订单",
+					"pathName": "pages/confirmationOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单-我的订单",
+					"pathName": "pages/order/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新品预定-确定下单",
+					"pathName": "pages/confirmationOrderThree/main",
+					"query": ""
+				},
+				{
+					"id": 11,
+					"name": "预定商城-确定下单",
+					"pathName": "pages/confirmationOrderTwo/main",
+					"query": ""
 				}
 			]
 		}

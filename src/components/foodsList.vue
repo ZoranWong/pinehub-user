@@ -1,100 +1,95 @@
 <template>
-	<div class="foods-wrapper">
-    <ul>
-      <li class="foods-item clearfix bgff">
-        <div class="foods-item-left fl">
-          <img class="merchandises-pic" src="../../static/upload/cheese-cake.png">
-        </div>
-        <div class="foods-item-right fr">
-          <h4 class="merchandises-name" >
-                  芝士蛋糕
-          </h4>
-          <p class="sell-num">已售<span class="text-yellow-cc">1888</span>份</p>
-          <p class="sell-price">20.00元/份</p>
-          <p class="origin-price">36.00元/份</p>
-          <i class="i-icon plus-icon" @click="cartShow"></i>
-        </div>
-      </li>
-      <li class="foods-item clearfix bgff">
-        <div class="foods-item-left fl">
-          <img class="merchandises-pic" src="../../static/upload/cheese-cake.png">
+  <div class="cart-scroll">
+    <scroll-view  class="foods-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower" >
+        <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
+          <div class="foods-item-left fl">
+            <img class="merchandises-pic" :src="item.thumbImage">
           </div>
           <div class="foods-item-right fr">
-          <h4 class="merchandises-name" >
-                  芝士蛋糕
-          </h4>
-          <p class="sell-num">已售<span class="text-yellow-cc">1888</span>份</p>
-          <p class="sell-price">20.00元/份</p>
-          <p class="origin-price">36.00元/份</p>
-          <i class="i-icon plus-icon"></i>
-        </div>
-      </li>
-      <li class="foods-item clearfix bgff">
-        <div class="foods-item-left fl">
-          <img class="merchandises-pic" src="../../static/upload/cheese-cake.png">
+            <h4 class="merchandises-name" >
+                   {{item.name}}
+            </h4>
+            <p class="sell-count">已售
+              <span class="text-yellow-cc">{{item.sellCount}}</span>份
+            </p>
+            <p class="sell-price">{{item.sellPrice}}元/份</p>
+            <p class="origin-price">{{item.originPrice}}元/份</p>
+            <div class="cartcontrol-warpper">
+              <cart-control :list="list" ></cart-control>
+            </div>
           </div>
-          <div class="foods-item-right fr">
-          <h4 class="merchandises-name" >
-                  芝士蛋糕
-          </h4>
-          <p class="sell-num">已售<span class="text-yellow-cc">1888</span>份</p>
-          <p class="sell-price">20.00元/份</p>
-          <p class="origin-price">36.00元/份</p>
-          <i class="i-icon plus-icon"></i>
         </div>
-      </li>
-      <li class="foods-item clearfix bgff">
-        <div class="foods-item-left fl">
-          <img class="merchandises-pic" src="../../static/upload/cheese-cake.png">
-          </div>
-          <div class="foods-item-right fr">
-          <h4 class="merchandises-name" >
-                  芝士蛋糕
-          </h4>
-          <p class="sell-num">已售<span class="text-yellow-cc">1888</span>份</p>
-          <p class="sell-price">20.00元/份</p>
-          <p class="origin-price">36.00元/份</p>
-          <i class="i-icon plus-icon"></i>
-        </div>
-      </li>      
-    </ul>
+    </scroll-view>
+    <cart></cart>
   </div>
 </template>
 
 <script>
+  import CartControl  from '@/components/CartControl'
+  import Cart from '@/components/Cart'
 	export default{
+    props: {
+      width: {
+        default: '100%',
+        type: String
+      },
+      height: {
+        default: '100%',
+        type: String
+      }
+    },
 		data(){
-			return{
-
-			}
+			return {};
 		},
-     methods:{
+    components:{
+      'cart-control':CartControl,
+      'cart':Cart,
+    },
+    computed: {
+      list(){
+        console.log(this.$store.getters['model.merchandises/list'])
+        return this.$store.getters['model.merchandises/list'];
+     }
+    },
+    methods:{
       cartShow:function(){
         this.$emit('show-cart')
-      }
+      },
+      scrolltolower(){
+        console.log("gjrtgh")
+      },
+      scroll(e) {
+        console.log("hhhhh")
+        console.log(e)
+      },
     }
 	}
 </script>
 
 <style scoped>
+.cart-scroll{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  overflow: hidden;
+}
 .foods-wrapper{
   flex:1;
   overflow-y: auto;
-  height: 718rpx;
-
 }
 .foods-wrapper::-webkit-scrollbar {
   width: 1px; 
   background-color: rgba(217,217,217,0.3); 
 }
-.foods-wrapper ul{
-  width:100%;
+.foods-wrapper{
   padding:20rpx 30rpx 20rpx 20rpx;
   box-sizing: border-box;
   overflow-y: auto;
 }
 .foods-item{
-   width:580rpx;
+   width:100%;
    height:326rpx;
    border-radius: 20rpx;
    box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
@@ -128,7 +123,7 @@
   font-size:32rpx;
   font-weight: 400;
 }
-.sell-num{
+.sell-count{
   font-size:22rpx;
 }
 .sell-price{
@@ -148,5 +143,11 @@
   position: absolute;
   bottom: 58rpx;
   right:40rpx;
+}
+.cartcontrol-warpper{
+  position: absolute;
+  bottom:58rpx;
+  right:60rpx;
+  /*border:1rpx solid red;*/
 }
 </style>

@@ -1,25 +1,16 @@
 /*eslint constructor-super: "error"*/
 /*eslint-env es6*/
 import ServiceProvider from './ServiceProvider';
-import Shops from '../mocks/Shops';
-import Projects from '../mocks/Projects';
-import Coupon from '../mocks/Coupon';
-import FullReduce from '../mocks/FullReduce';
-import Provinces from '../mocks/Provinces';
+import Merchandises from '@/mocks/Merchandises';
 /* eslint-disable */
-export default class AppServiceProvider extends ServiceProvider{
+export default class MockServiceProvider extends ServiceProvider{
   constructor(app) {
     super(app);
   }
   register() {
-    if(this.app.mock()) {
-      console.log('mock data register');
+    if(this.app.needMock()) {
       this.app.register('mock', require('mockjs'));
-      this.app.register('shopsMock', Shops);
-      this.app.register('projectsMock', Projects);
-      this.app.register('couponMock', Coupon);
-      this.app.register('fullReduceMock', FullReduce);
-      this.app.register('provincesMock', Provinces);
+      this.app.register('mock.merchandises', Merchandises);
     }
   }
   boot() {

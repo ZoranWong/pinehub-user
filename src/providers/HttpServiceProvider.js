@@ -1,5 +1,5 @@
 import ServiceProvider from './ServiceProvider';
-//import AccountService from '../services/http/AccountService';
+import MerchandisesService from '../services/http/MerchandisesService';
 //import UriService from '../services/http/UriService';
 //import ShopsService from '../services/http/ShopsService';
 //import ProjectsService from '../services/http/ProjectsService';
@@ -23,5 +23,6 @@ export default class HttpServiceProvider extends ServiceProvider {
 //    this.app.register('fullReduce', FullReduceService);
 //    this.app.register('app', AppService);
 //    this.app.register('provinces', ProvincesService);
+	this.app.register('http.merchandises', MerchandisesService);
   }
 }

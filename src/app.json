@@ -1,11 +1,16 @@
 {
 
   "pages": [
-    "pages/store/location/main",
-    "pages/store/mystore/main",
+    "pages/confirmationOrder/main",
+    "pages/confirmationOrderThree/main",
+    "pages/confirmationOrderTwo/main",
     "pages/index/main",
-    "pages/todayOrder/main",            
-    "pages/newProduct/main",
+    "pages/todayOrder/main", 
+    "pages/reserveShop/main",
+    "pages/activity/main",
+    "pages/my/location/main", 
+    "pages/my/mystore/main",
+    "pages/my/order/main",
     "pages/logs/main",
     "pages/counter/main"
   ],

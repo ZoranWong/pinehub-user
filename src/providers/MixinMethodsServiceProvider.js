@@ -1,8 +1,10 @@
 //全局方法
 import ServiceProvider from './ServiceProvider';
+import Vuex from 'vuex';
 export default class MixinMethodsServiceProvider extends ServiceProvider {
   constructor(app) {
     super(app);
+    this.app.use(Vuex);
   }
   register() {
     let methods = this.methods();
@@ -14,6 +16,9 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
     	$uploadFailed() {
 				this.$notify.error({title: '上传失败',message: '图片上传失败'});
 			},
+      $models(models) {
+        return new Vuex.Store(models);
+      },
     	$changePage(val, filters = self.filters, fun) {
 				filters.pageNum = val
 				fun()

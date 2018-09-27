@@ -2,8 +2,8 @@
 	<div class="shopcart">
     <div class="shoppingcart-bottom">
         <span class="black-circle"></span>
-        <i class="i-icon cart"></i>
-        <i class="i-icon num-icon">1</i>
+        <i class="i-icon cart" @clic="cartListShow"></i>
+        <i class="i-icon num-icon">{{count}}</i>
         <div class="clearfix">
           <span class="total-price">¥{{totalPrice}}</span>
           <label class="choose fr" @click="popShow">选好了
@@ -11,7 +11,7 @@
           </label>
         </div>
     </div>   
-    <!-- <div class="selected-merchandises" >
+ <!--    <div class="selected-merchandises" v-if="isShowCartlist" @hdlShowCartList="hdlShowCartList" >
       <div class="selected-title clearfix">
         <div class="flag fl">
           已选产品
@@ -20,17 +20,16 @@
       </div>
       <div class="add-merchandises text-color-11">
         <span class="merchandises-name">芝士蛋糕</span>
-        <span class="sell-price">¥20.00</span>
-        <div class="count">
-          <i class="i-icon reduce"></i> 
-          <span class="num">1</span>
-          <i class="i-icon increase"></i>
-          </div>
+        <span class="sell-price">¥20.00{{sellPrice}}</span>
+        <div class="cartcontrol-warpper">
+            <cart-control :list="list" :border="isBorder" ></cart-control>
+        </div>
       </div>
-    </div>  -->
+    </div> --> 
   </div>
 </template>
 <script>
+  import CartControl  from '@/components/CartControl'
 	export default{
     props:{
       selectFoods:{
@@ -47,32 +46,34 @@
     },
 		data(){
 			return{
-              "foods": [
-                {
-                  "name": "红枣山药粥套餐",
-                  "price": 29,
-                  "oldPrice": 36,
-                  "description": "红枣山药糙米粥,素材包,爽口莴笋丝,四川泡菜或八宝酱菜,配菜可备注",
-                  "sellCount": 17,
-                  "rating": 100,
-                  "info": "",
-                }
-              ],
-            }
+        isShowCartlist:true,
+        // isBorder:'2rp solid  #fece00',     
+      }
 		},
+    components:{
+      'cart-control':CartControl,
+    },
     methods:{
       popShow:function(){
         this.$emit('hdlShowPopup')
+      },
+      cartListShow:function(){
+        this.$('hdlShowCartList');
+        console.log(1)
+      },
+      hdlShowCartList:function(){
+        this.isShowCartlist = true;
+        console.log(2)
       }
     },
     computed:{
-      totalPrice(){
-        let total = 0;
-        this.foods.forEach( (food) => {
-            total += food.price * food.count;
-        });
-        return total;
-      }
+      // totalPrice(){
+      //   let total = 0;
+      //   this.foods.forEach( (food) => {
+      //       total += food.price * food.count;
+      //   });
+      //   return total;
+      // }
     }
 	}
 </script>
@@ -138,6 +139,7 @@
 .shoppingcart-bottom .choose{
   width:200rpx;
   color: #fece00; 
+  background-color: red;
 /*  border:1rpx solid red;*/
 }
 .next-icon{
@@ -199,39 +201,12 @@
   font-size:32rpx;
   margin-left: 300rpx;
 }
-.count{
+.cartcontrol-warpper{
   width:143rpx;
-  height:48rpx; 
-  border:2rpx solid #fece00;
-  border-radius: 24rpx;
-  box-sizing: border-box;
-  display: inline-block;
-  margin: 26rpx 0rpx;
+  height: 50rpx;
   position: absolute;
   bottom:0rpx;
-  right: 20rpx;
-}
-.reduce{
-  width:26rpx;
-  height: 4rpx;
-  background:url(../../static/images/reduce.png) no-repeat;
-  position: absolute;
-  top: 22rpx;
-  left:12rpx;
-}
-.increase{
-  width:48rpx;
-  height: 48rpx;
-  background:url(../../static/images/plus-icon.png) no-repeat;
-  background-size: contain;
-  position: absolute;
-  top: 0rpx;
   right:0rpx;
-}
-.num{
-  font-size:28rpx;
-  position: absolute;
-  top: -28rpx;
-  left:60rpx; 
+  border:1rpx solid red;
 }
 </style>

@@ -4,9 +4,10 @@ export default class Model {
     this.$application = application;
     this.state = this.data();
     this.getters = this.computed();
-    this.actions = this.dispatchs();
-    this.mutations = this.listeners();
+    this.actions = [];
+    this.mutations = [];
     this.transformer = null;
+    this.listeners();
   }
 
   data() {
@@ -19,47 +20,33 @@ export default class Model {
   }
   computed() {
     return {
-
-    };
-  }
-
-  dispatchs() {
-    return {
-      nextPage({commit}) {
-        commit('nextPage');
-      },
-      setList({commit}, payload) {
-        commit('setList', payload);
-      }
+      
     };
   }
 
   listeners() {
-    return {
-      nextPage(state) {
-        state.currentPage ++;
-      },
-      reset(state) {
-        state = {};
-      },
-      setList: (state, payload) => {
-        let list = payload['list'];
-        let page = payload['currentPage'];
-        let totalNum = payload['totalNum'];
-        let totalPage = payload['totalPage'];
-        let limit = payload['pageCount'];
-        state.currentPage = page;
-        let startIndex = (page - 1) * limit + 1;
-        state.list[page - 1] =  this.transform(list, this.transformer, startIndex);
+    this.addEventListener('nextPage' , () => {
+       this.state.currentPage ++;
+     });
+
+    this.addEventListener('reset' , () => {
+       this.state = {};
+     });
+
+    this.addEventListener('setList' , ({list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
+        this.state.currentPage = currentPage;
+        let startIndex = (currentPage - 1) * pageCount + 1;
+        this.state.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
         if(totalNum !== null)
-          state.totalNum = totalNum;
-        if(totalPage !== null)
-          state.totalPage = totalPage;
-          if(limit !== null) {
-            state.pageCount = limit;
+          this.state.totalNum = totalNum;
+        if(totalPage !== null) {
+          this.state.totalPage = totalPage;
+          if(pageCount !== null) {
+            this.state.pageCount = pageCount;
           }
-      }
-    };
+        }
+        
+     });
   }
 
   services(name) {
@@ -74,6 +61,16 @@ export default class Model {
       });
     }else{
       return new transformer(data);
+    }
+  }
+
+  addEventListener(type, callback) {
+    this.actions[type] = ({commit}, payload) => {
+      commit(type, payload);
+    }
+
+    this.mutations[type] = (state, payload) => {
+      callback.call(this, payload);
     }
   }
 }

@@ -1,51 +1,47 @@
 <template>
-    <div>
-		<div class="popup">
-			<div class="popup-box">
-				<i class="location-icon"></i> 
-				<i class="cancel"></i>
-				<div class="popup-content">
-					<div class="popup-title">
-					历史站点选择
-				    </div>
-					<div class="place-item">
-						<i class="i-icon yellow-right-arrow" v-bind="(item,index )in place"></i>
-						{{ place.address}}安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车
-					</div>
-					<div class="place-item">
-						<i class="i-icon yellow-right-arrow" v-bind="(item,index )in place"></i>
-						{{ place.address}}
-						安徽省合肥市瑶海区新蚌埠路交叉口早餐车
-					</div>
-					<div class="btn-big theme-color ">重新选择</div>
-				    <div class="tips text-color-75">
-				    	注：请您务必在上午9:00前领取您的早餐
-				    </div>
+	<div class="popup">
+		<div class="popup-box">
+			<i class="location-icon"></i> 
+			<i class="cancel"  @click="popHide"></i>
+			<div class="popup-content">
+				<div class="popup-title">
+				历史站点选择
+			    </div>
+				<div class="place-item"  v-for="(item,index ) in places" :key="index">
+					<i class="i-icon yellow-right-arrow" ></i>
+					{{item.name}}
 				</div>
-				
-					
-		    </div>
-		</div>
+				<div class="btn-big theme-color ">重新选择</div>
+			    <div class="tips text-color-75">
+			    	注：请您务必在上午9:00前领取您的早餐
+			    </div>
+			</div>		
+	    </div>
 	</div>
 </template>
 
 <script>
   export default {
   	name:'PopupLocation',
-  	data(){
+  	data() {
   		return{
-  			place:[
+  			places:[
   			{
   				id:1,
-  				address:安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车
+  				name: '安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车'
   			},
   			{
 				id:2,
-  				address:安徽省合肥市瑶海区新蚌埠路交叉口早餐车
+  				name: '安徽省合肥市瑶海区新蚌埠路交叉口早餐车'
   			}
   			]
   		}
-  	}
+  	},
+  	methods:{
+			popHide:function(){
+				this.$emit('hdlHidePopup')
+			}
+		}
 
 
    }
@@ -80,7 +76,7 @@
 .location-icon{
 	width:118rpx;
 	height:180rpx;
-	background:url(../../static/images/location-icon.png) no-repeat;
+	background:url(../../../static/images/location-icon.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-84rpx;
@@ -90,7 +86,7 @@
 .cancel{
 	width:78rpx;
 	height:78rpx;
-	background:url(../../static/images/yellow-cancel.png) no-repeat;
+	background:url(../../../static/images/yellow-cancel.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-16rpx;
@@ -120,7 +116,7 @@
 .yellow-right-arrow{
 	width:40rpx;
 	height:40rpx;
-	background:url(../../static/images/yellow-right-arrow.png) no-repeat;
+	background:url(../../../static/images/yellow-right-arrow.png) no-repeat;
 	background-size:contain;	
 	margin-top: 30rpx;
 	margin-right:21rpx;

@@ -12,4 +12,10 @@ export default class Mock {
 
     };
   }
+  mockMethod() {
+    let args =  Array.apply(null, arguments);
+    let method = args.shift();
+    let Random = this.application.instances['mock'].Random;
+    return Random[method].apply(Random, args);
+  }
 }
