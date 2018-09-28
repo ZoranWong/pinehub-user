@@ -1,5 +1,6 @@
 import ServiceProvider from './ServiceProvider';
 import RouterCommand from '../commands/RouterCommand';
+import ScanCommand from '../commands/ScanCommand';
 //import SignInCommand from '../commands/SignInCommand';
 //import ReportCommand from '../commands/ReportCommand';
 //import RedirectCommand from '../commands/RedirectCommand';
@@ -14,7 +15,7 @@ export default class CommandServiceProvider extends ServiceProvider {
     this.commands = [];
   }
   register() {
-    let commands = [RouterCommand];
+    let commands = [RouterCommand, ScanCommand];
     for (let key in commands) {
       this.app.registerCommand(commands[key].commandName(), commands[key]);
     }

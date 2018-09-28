@@ -1,10 +1,10 @@
 {
 	"pages": [
+		"pages/my/main",
 		"pages/my/mystore/status/main",
 		"pages/my/mystore/order/main",
 		"pages/my/order/main",
 		"pages/my/pay/main",
-		"pages/my/main",
 		"pages/my/mystore/main",
 		"pages/my/location/main",
 		"pages/index/main",
