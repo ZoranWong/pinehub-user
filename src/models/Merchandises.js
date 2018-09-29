@@ -9,7 +9,7 @@ export default class Merchandises extends Model{
   computed() {
     return _.extend(super.computed(), {
       list(state){
-        return _.flatten(state.list);
+        return state.currentPage ? _.flatten(state.list) : [];
       }
     });
   }

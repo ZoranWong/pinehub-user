@@ -4,17 +4,20 @@ export default class GetMerchandisesCommand extends Command {
     super(app);
   }
 
-  async handle(activityid, page = 1, search = null, limit = 10) {
-   	console.log(activityid, page);
-	let [ merchandises, totalNum, currentPage, totalPage ] = await this.service('http.merchandises').list(activityid, page, search, limit);
-	console.log(merchandises);
-	this.store().dispatch('model.merchandises/setList', {
-		list: merchandises,
-        totalNum: totalNum,
-        currentPage: currentPage,
-        totalPage: totalPage,
-        pageCount: limit
-	});
+  async handle () {
+    let args = Array.prototype.slice.apply(arguments);
+    let event = args.shift();
+    let serviceMethod = args.shift();
+    let service = this.service('http.merchandises');
+  	let [ merchandises, totalNum, currentPage, totalPage, limit] = await service[serviceMethod].apply(service, args);
+  	console.log(event, merchandises, totalNum, currentPage, totalPage);
+    this.store().dispatch(event, {
+      list: merchandises,
+      totalNum: totalNum,
+      currentPage: currentPage,
+      totalPage: totalPage,
+      pageCount: limit
+  	});
   }
   static commandName() {
     return 'GET_MERCHANDISE_LIST';

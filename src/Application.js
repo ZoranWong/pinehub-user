@@ -2,10 +2,7 @@ import Vue from 'vue';
 import ServiceProviders from './providers';
 import _ from 'underscore';
 import App from './App';
-//import axios from 'axios';
-//import VueAxios from 'vue-axios';
 import Vuex from 'vuex';
-// const eval = binding.eval;
 export default class Application {
   constructor(component, name = null) {
   	this.name = name;

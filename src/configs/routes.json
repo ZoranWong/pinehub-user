@@ -7,5 +7,15 @@
 
 	"location": "/pages/my/location/main",
 	"logs": "/pages/logs/main",
-	"couter": "/pages/counter/main"
+	"couter": "/pages/counter/main",
+
+	"todayOrder" : "/pages/todayOrder/main",
+
+
+	"reserveShop" : "/pages/reserveShop/main",
+
+	"activity" : "/pages/activity/main",
+
+
+	"order" : "/pages/order/main"
 }

@@ -3,8 +3,7 @@ export default class MerchandisesService extends ApiService{
 	constructor(application) {
 		super(application);
 	}
-	async list(activityid, page = 1, search = null, limit = 10) {
-		console.log('hhbb', this.$application.needMock())
+	async list(route,  page = 1, search = null, limit = 10) {
 		let merchandises = null;
 		let totalNum = 0;
 		let currentPage = 0;
@@ -15,7 +14,7 @@ export default class MerchandisesService extends ApiService{
 			console.log(response);
 		}else{
 			//服务器交互代码
-			response = await this.httpGet(`/new/activity/${activityid}/merchandises`, {page: page, limit: limit, searchJson: search});
+			response = await this.httpGet(route, {page: page, limit: limit, searchJson: search});
 		}
 		console.log(response)
 		merchandises = response.data;
@@ -23,8 +22,24 @@ export default class MerchandisesService extends ApiService{
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		return [merchandises, totalNum, currentPage, totalPage];
+		console.log('services',  totalNum, currentPage, totalPage, page);
+		return [merchandises, totalNum, currentPage, totalPage, limit];
 	}
+	async activity(activityId, page = 1, search = null, limit = 10) {
+		let route = `/new/activity/${activityId}/merchandises`;
+		return await this.list(route, page, search, limit);
+	}
+
+	async today(storeId,  categoryId, page = 1, search = null, limit = 10) {
+		let route = `/store/${storeId}/category/${categoryId}/merchandises`;
+		return await this.list(route, page, search, limit);
+	}
+
+	async storeNewMerchandises(storeId, page = 1, search = null, limit = 10) {
+		let route = `/store/${storeId}/new/merchandises`;
+		return await this.list(route, page, search, limit);
+	}
+
 
 	// async uploadMaterial(appId, type, fileField, file, title = null, introduction = null) {
 	// 	let response = null;

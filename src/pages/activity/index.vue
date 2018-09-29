@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <mp-title :title="title"></mp-title>
-    <m-list @show-cart ="hdlShowCart"></m-list>
+    <m-list @show-cart ="hdlShowCart" :next="next" :list="merchandises" :height="screenHeight"></m-list>
     <cart v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>  
 
     <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
@@ -19,6 +19,8 @@
           title:'新品预定',
           isShow:false,
           isShowCart:false,
+          activityId: 0, 
+          screenHeight: ''
       }
     }, 
     components: {
@@ -28,10 +30,14 @@
       'pop-location':PopupLocation
       
    },
-   created(){
-      console.log('created mmm');
-      this.$command('GET_MERCHANDISE_LIST', 1, 1);
-      console.log('created mm');
+   computed: {
+      merchandises(){
+        return this.$store.getters['model.activity.merchandises/list'];
+      },
+      currentPage () {
+       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       return page;
+      },
    },
    methods:{
       hdlShowCart:function(){
@@ -45,7 +51,13 @@
           console.log(2)
         this.isShow = false;
       },
-
+      next() {
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+      }
+   },
+   created () {
+    console.log(wx.getSystemInfoSync().windowWidth);
+    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }
 

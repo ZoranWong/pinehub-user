@@ -1,27 +1,24 @@
 <template>
-  <div class="cart-scroll">
-    <scroll-view  class="foods-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower" >
-        <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
-          <div class="foods-item-left fl">
-            <img class="merchandises-pic" :src="item.thumbImage">
-          </div>
-          <div class="foods-item-right fr">
-            <h4 class="merchandises-name" >
-                   {{item.name}}
-            </h4>
-            <p class="sell-count">已售
-              <span class="text-yellow-cc">{{item.sellCount}}</span>份
-            </p>
-            <p class="sell-price">{{item.sellPrice}}元/份</p>
-            <p class="origin-price">{{item.originPrice}}元/份</p>
-            <div class="cartcontrol-warpper">
-              <cart-control :list="list" ></cart-control>
-            </div>
+  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" @scrolltolower="scrolltolower" >
+      <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
+        <div class="foods-item-left fl">
+          <img class="merchandises-pic" :src="item.thumbImage">
+        </div>
+        <div class="foods-item-right fr">
+          <h4 class="merchandises-name" >
+                 {{item.name}}
+          </h4>
+          <p class="sell-count">已售
+            <span class="text-yellow-cc">{{item.sellCount}}</span>份
+          </p>
+          <p class="sell-price">{{item.sellPrice}}元/份</p>
+          <p class="origin-price">{{item.originPrice}}元/份</p>
+          <div class="cartcontrol-warpper">
+            <cart-control :list="list" ></cart-control>
           </div>
         </div>
-    </scroll-view>
-    <cart></cart>
-  </div>
+      </div>
+  </scroll-view>
 </template>
 
 <script>
@@ -36,33 +33,49 @@
       height: {
         default: '100%',
         type: String
-      }
+      },
+      next: {
+        default: null,
+        type: Function
+      },
+      list: {
+        default: function() {return []},
+        type: Array
+      },
     },
 		data(){
-			return {};
+			return {
+         pageCount: 15
+      };
 		},
     components:{
       'cart-control':CartControl,
       'cart':Cart,
     },
-    computed: {
-      list(){
-        console.log(this.$store.getters['model.merchandises/list'])
-        return this.$store.getters['model.merchandises/list'];
-     }
-    },
+    
+   created(){
+      this.next();
+   },
     methods:{
       cartShow:function(){
         this.$emit('show-cart')
       },
       scrolltolower(){
-        console.log("gjrtgh")
+        console.log('next page');
+        this.next();
       },
       scroll(e) {
         console.log("hhhhh")
         console.log(e)
       },
+    },
+    watch:{
+      width:function(val) {
+       console.log(val)
+
+      }
     }
+
 	}
 </script>
 

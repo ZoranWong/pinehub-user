@@ -2,10 +2,11 @@
 	"description": "项目配置文件。",
 	"setting": {
 		"urlCheck": true,
-		"es6": false,
+		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": true
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
@@ -29,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 8,
 			"list": [
 				{
 					"id": -1,
@@ -38,21 +39,9 @@
 					"query": ""
 				},
 				{
-					"id": -1,
-					"name": "当日下单",
-					"pathName": "pages/todayOrder/main",
-					"query": ""
-				},
-				{
-					"id": 2,
+					"id": 1,
 					"name": "新品预定",
 					"pathName": "pages/activity/main",
-					"query": ""
-				},
-				{
-					"id": 3,
-					"name": "counter",
-					"pathName": "pages/counter/main",
 					"query": ""
 				},
 				{
@@ -62,14 +51,14 @@
 					"query": ""
 				},
 				{
-					"id": 5,
-					"name": "我的",
+					"id": 4,
+					"name": "我的——我的店铺",
 					"pathName": "pages/my/mystore/main",
 					"query": ""
 				},
 				{
-					"id": 6,
-					"name": "我的订单",
+					"id": 5,
+					"name": "我的——个人订单",
 					"pathName": "pages/my/order/main",
 					"query": ""
 				},
@@ -80,27 +69,33 @@
 					"query": ""
 				},
 				{
+					"id": 9,
+					"name": "当日下单",
+					"pathName": "pages/todayOrder/main",
+					"query": ""
+				},
+				{
+					"id": 10,
+					"name": "我的——我的店铺--订单",
+					"pathName": "pages/my/mystore/order/main",
+					"query": ""
+				},
+				{
 					"id": 8,
-					"name": "当日下单--确认订单",
-					"pathName": "pages/confirmationOrder/main",
+					"name": "我的",
+					"pathName": "pages/my/main",
+					"query": ""
+				},
+				{
+					"id": 12,
+					"name": "我的—我的店铺-状态",
+					"pathName": "pages/my/mystore/status/main",
 					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "订单-我的订单",
-					"pathName": "pages/order/main",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "新品预定-确定下单",
-					"pathName": "pages/confirmationOrderThree/main",
-					"query": ""
-				},
-				{
-					"id": 11,
-					"name": "预定商城-确定下单",
-					"pathName": "pages/confirmationOrderTwo/main",
+					"name": "我的—我的店铺-充值",
+					"pathName": "pages/my/pay/main",
 					"query": ""
 				}
 			]

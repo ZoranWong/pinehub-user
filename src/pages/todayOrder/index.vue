@@ -4,14 +4,15 @@
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
     <!-- 配送范围弹窗 -->
-    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
+   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup> -->
     <!-- 定位最近的店面 -->
     <location></location>
     <div class="goods" >
-        <menus></menus>
-        <m-list @show-cart ="hdlShowCart" :height="listHeight"></m-list>
+        <menus @menusChange="menusChange"></menus>
+        <m-list  :height="listHeight" :width="listwidth" model=""></m-list>
+       <!--  <m-list @show-cart ="hdlShowCart" :height="listHeight"></m-list> -->
     </div>
-    <cart  v-if="isShowCart"></cart>
+   <!--  <cart  v-if="isShowCart"></cart> -->
   
   </div>
 </template>
@@ -29,8 +30,9 @@
     data(){
       return{
         isShow:true,
-        isShowCart:false,
+        // isShowCart:true,
         listHeight: '718rpx',
+        listwidth:'530rpx',
         title:"当日下单"
       }
     },
@@ -45,16 +47,15 @@
       
    },
     methods:{
-      hdlHidePopup:function(){
-        this.isShow = false;
+      menusChange : function (index) {
+        console.log(index);
       },
-      hdlShowCart:function(){
-        this.isShowCart =  true;
-      },
-      tabShow:function(){
-        console.log('hhhhh')
-     }
-  }
+      
+  },
+   created(){
+      // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
+      console.log('created mm');
+   },
 
 }
 
@@ -67,5 +68,6 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
+  z-index: 
 }
 </style>
