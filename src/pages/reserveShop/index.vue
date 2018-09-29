@@ -2,14 +2,12 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <!-- 定位最近的店面 -->
     <location></location>
     <div class="goods" >
         <menus></menus>
-        <m-list @show-cart ="hdlShowCart" :height="listHeight"></m-list>
+        <!--  <m-list  :height="listHeight,screenHeight" :width="listwidth" model="" :next="next" :list="merchandises" ></m-list> -->
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
-       <!-- 配送范围弹窗 -->
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
     
   </div>
@@ -29,7 +27,7 @@
       return{
         title:"预定商城",
         listHeight: '718rpx',
-        isShow:true,
+        isShow:false,
         isShowCart:false,
         
        
@@ -47,15 +45,19 @@
    },
     methods:{
       hdlShowCart:function(){
-        this.isShowCart = true;
+        this.isShowCart =  true;
       },
       hdlShowPopup:function(){
         this.isShow = true;
           console.log(1)
       },
-       hdlHidePopup:function(){
+      hdlHidePopup:function(){
+          console.log(2)
         this.isShow = false;
       },
+      next() {
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+      }
   }
 
 }

@@ -1,18 +1,15 @@
 <template>
   <div class="body">
-    <!-- 轮播图 -->
     <mp-title :title="title"></mp-title>
-    <mp-swiper></mp-swiper>
-    <!-- 配送范围弹窗 -->
-   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup> -->
-    <!-- 定位最近的店面 -->
+     <mp-swiper></mp-swiper>
     <location></location>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight" :width="listwidth" model=""></m-list>
-       <!--  <m-list @show-cart ="hdlShowCart" :height="listHeight"></m-list> -->
+        <!-- <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises" ></m-list> -->
+        
     </div>
-   <!--  <cart  v-if="isShowCart"></cart> -->
+   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
+    <cart  v-if="isShowCart"></cart>  -->
   
   </div>
 </template>
@@ -29,11 +26,12 @@
   export default{
     data(){
       return{
-        isShow:true,
-        // isShowCart:true,
+        isShow:false,
+        isShowCart:true,
         listHeight: '718rpx',
         listwidth:'530rpx',
-        title:"当日下单"
+        title:"当日下单",
+        screenHeight: ''
       }
     },
     components: {
@@ -47,14 +45,30 @@
       
    },
     methods:{
-      menusChange : function (index) {
-        console.log(index);
+        hdlShowCart:function(){
+        this.isShowCart =  true;
       },
+      hdlShowPopup:function(){
+        this.isShow = true;
+          console.log(1)
+      },
+       hdlHidePopup:function(){
+          console.log(2)
+        this.isShow = false;
+      },
+      // menusChange : function (index) {
+      //   // console.log(index);
+      // },
+      next() {
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+      }
       
   },
    created(){
       // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
-      console.log('created mm');
+      // console.log('created mm');
+    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+
    },
 
 }

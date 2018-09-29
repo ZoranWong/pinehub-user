@@ -46,11 +46,11 @@
 					<i class="my_store_menu_ico ico_2"></i>
 					<em>需配送订单</em>
 				</li>
-				<li>
+				<li @click="jump('mystorestatus')">
 					<i class="my_store_menu_ico ico_3"></i>
 					<em>店铺状态</em>
 				</li>
-				<li>
+				<li @click="scanCode">
 					<i class="my_store_menu_ico ico_4"></i>
 					<em>物流进货扫码</em>
 				</li>
@@ -79,11 +79,20 @@
 				title: "我的店铺"
 			};
 		},
+		methods: {
+			jump(router) {
+				this.$command('router', router, 'jump');
+			},
+			scanCode() {
+				console.log(121212)
+				this.$command('scan');
+			}
+		},
 		created() {}
 	}
 </script>
 
-<style>
+<style scoped>
 	page {
 		height: 100%;
 	}

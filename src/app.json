@@ -1,5 +1,6 @@
 {
   "pages": [
+    
     "pages/index/main",  
     "pages/my/location/main",
     "pages/my/mystore/main",
@@ -10,7 +11,9 @@
     "pages/my/main",
     "pages/todayOrder/main",
     "pages/reserveShop/main",
-    "pages/activity/main"
+    "pages/activity/main",
+    "pages/order/main"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",

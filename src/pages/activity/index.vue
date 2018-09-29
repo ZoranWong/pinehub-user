@@ -18,7 +18,7 @@
         return{
           title:'新品预定',
           isShow:false,
-          isShowCart:false,
+          isShowCart:true,
           activityId: 0, 
           screenHeight: ''
       }
@@ -56,7 +56,7 @@
       }
    },
    created () {
-    console.log(wx.getSystemInfoSync().windowWidth);
+    
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }

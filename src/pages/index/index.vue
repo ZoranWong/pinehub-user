@@ -12,19 +12,19 @@
 		  	</em>
 		</div>
 		<div id="index_menu">
-			<dl @click="jumpNotTab('todayOrder')">
+			<dl @click="jump('todayOrder')">
 				<dd>
 					<img src="../../../static/images/todaysorder.png" />
 				</dd>
 				<dt>当日下单</dt>
 			</dl>
-			<dl @click="jumpNotTab('reserveShop')">
+			<dl @click="jump('reserveShop')">
 				<dd>
 					<img src="../../../static/images/prearrangedmall.png" />
 				</dd>
 				<dt>预定商城</dt>
 			</dl>
-		    <dl @click="jumpNotTab('activity')">
+		    <dl @click="jump('activity')">
 		        <dd>
 		          	<img src="" />
 		        </dd>
@@ -51,7 +51,7 @@
 		},
 		created() {},
 		methods : {
-			jumpNotTab(router){
+			jump(router){
 				console.log('hello')
 				this.$command('router',router,'jump');
 			}
