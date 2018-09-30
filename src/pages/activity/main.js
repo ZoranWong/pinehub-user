@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import Application from '../../Application';
 import App from './index';
+import Application from '../../Application';
 import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';

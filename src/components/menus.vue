@@ -2,7 +2,7 @@
   <div class="menu-wrapper">
     <div id="tab_select">
       <ul>
-        <li class="menu-item search" :class="{ tab_select_now : cur == 'search' }" @click = "tabSelect('search')">
+        <li class="menu-item search"  @click="jump('search')">
           <i class="i-icon search-icon"></i>
           <span class="search-txt category-name">搜索</span>
         </li>
@@ -47,6 +47,10 @@
       tabSelect (index) {
         this.cur = index;
         this.$emit('menusChange', index);
+      },
+      jump(router){
+        console.log('hello')
+        this.$command('router',router,'jump');
       }
     },
     created () {

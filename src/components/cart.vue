@@ -84,6 +84,7 @@
   position: fixed; 
   bottom:0rpx;
   right: 0rpx;
+  
 }
 /*底部的购物车*/
 .shoppingcart-bottom{

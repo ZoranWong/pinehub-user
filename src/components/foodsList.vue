@@ -61,17 +61,16 @@
         this.$emit('show-cart')
       },
       scrolltolower(){
-        console.log('next page');
+        // console.log('next page');
         this.next();
       },
       scroll(e) {
-        console.log("hhhhh")
         console.log(e)
       },
     },
     watch:{
       width:function(val) {
-       console.log(val)
+       // console.log(val)
 
       }
     }

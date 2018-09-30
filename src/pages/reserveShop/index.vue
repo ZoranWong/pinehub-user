@@ -5,7 +5,7 @@
     <location></location>
     <div class="goods" >
         <menus></menus>
-        <!--  <m-list  :height="listHeight,screenHeight" :width="listwidth" model="" :next="next" :list="merchandises" ></m-list> -->
+         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" ></m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
@@ -16,20 +16,21 @@
 <script>
   import MpTitle from '@/components/MpTitle';
   import PopupDelivery from './PopupDelivery';
-  import Swiper from '@/components/Swiper'
-  import Location from '@/components/Location'
-  import FoodsList from '@/components/FoodsList'
-  import Menus from '@/components/Menus'
+  import Swiper from '@/components/Swiper';
+  import Location from '@/components/Location';
+  import FoodsList from '@/components/FoodsList';
+  import Menus from '@/components/Menus';
   import Cart from '@/components/Cart'
 
   export default{
     data(){
       return{
         title:"预定商城",
-        listHeight: '718rpx',
+        listHeight: '758rpx',
         isShow:false,
-        isShowCart:false,
-        
+        isShowCart:true,
+        activityId: 0, 
+        screenHeight: ''
        
       }
     },
@@ -42,6 +43,15 @@
       'cart': Cart,
       "mp-title": MpTitle,
       
+   },
+   computed: {
+      merchandises(){
+        return this.$store.getters['model.activity.merchandises/list'];
+      },
+      currentPage () {
+       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       return page;
+      },
    },
     methods:{
       hdlShowCart:function(){
@@ -58,9 +68,13 @@
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
       }
-  }
-
+  },
+  created () {
+    
+    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+   }
 }
+
 
 </script>
 

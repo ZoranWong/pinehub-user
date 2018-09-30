@@ -16,6 +16,7 @@
 
 
 	"reserveShop" : "/pages/reserveShop/main",
+	"search" : "/pages/search/main",
 
 	"activity" : "/pages/activity/main",
 

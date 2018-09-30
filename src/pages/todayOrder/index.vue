@@ -4,9 +4,9 @@
      <mp-swiper></mp-swiper>
     <location></location>
     <div class="goods" >
-        <menus @menusChange="menusChange"></menus>
+       <!--  <menus @menusChange="menusChange"></menus> -->
         <!-- <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises" ></m-list> -->
-        
+        <coupon></coupon>
     </div>
    <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
     <cart  v-if="isShowCart"></cart>  -->
@@ -22,6 +22,7 @@
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
   import Cart from '@/components/Cart';
+  import Coupon from '@/components/Coupon';
   
   export default{
     data(){
@@ -41,7 +42,8 @@
       'menus': Menus,
       'm-list': FoodsList,
       'cart': Cart,
-      "mp-title": MpTitle,
+      'mp-title': MpTitle,
+      'coupon':Coupon
       
    },
     methods:{
