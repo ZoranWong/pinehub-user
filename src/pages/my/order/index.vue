@@ -7,7 +7,7 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order></my-order>
+			<my-order :status="statusType"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-	import MyOrder from '@/components/MyOrder';
+	import MyOrder from './MyOrder';
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
 	export default {
@@ -35,9 +35,12 @@
 				tabs: [{
 					name: "全部"
 				}, {
-					name: "未核销"
+					name: "未完成"
+				}, {
+					name: "已完成"
 				}],
-				cur: 0
+				cur: 0,
+				statusType: "all"
 			};
 		},
 		computed: {
@@ -46,11 +49,24 @@
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			}
-
 		},
 		methods: {
 			tabSelect(num) {
 				this.cur = num;
+				switch(num) {
+					case 0:
+						this.statusType = "all";
+						break;
+					case 1:
+						this.statusType = "sunccess";
+						break;
+					case 2:
+						this.statusType = "completed";
+						break;
+					default:
+						this.statusType = "all";
+						break;
+				}
 				console.log(num);
 			}
 		},

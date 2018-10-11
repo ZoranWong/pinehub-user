@@ -25,7 +25,7 @@
 							<em>0</em>
 							<i>卡券</i>
 						</li>
-						<li>
+						<li @click="alertNotice">
 							<em>0</em>
 							<i>积分</i>
 						</li>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="mystore_shop">
+		<div id="mystore_shop" @click="jump('mystore')">
 			<i class="my_store_line left_line"></i>
 			<i class="my_store_line right_line"></i>
 			<i id="mystore_shop_more"></i>
@@ -51,14 +51,15 @@
 					<img src="../../../static/images/my_ico_menu2.png" />
 					<span>邀请享奖励</span>
 					<i></i>
+					<button @click="onShareAppMessage" class="zf">zhuanfa</button>
 					<em>邀请好友</em>
 				</li>
-				<li>
+				<li @click="jump('myfeedback')">
 					<img src="../../../static/images/my_ico_menu3.png" />
 					<span>意见反馈</span>
 					<i></i>
 				</li>
-				<li>
+				<li @click="connectKf">
 					<img src="../../../static/images/my_ico_menu4.png" />
 					<span>联系客服</span>
 					<i></i>
@@ -82,12 +83,40 @@
 		data() {
 			return {
 				title: "个人中心",
-				navName: "my"
+				navName: "my",
+				phone: "15357903187"
 			};
 		},
 		methods: {
 			jump(router) {
 				this.$command('router', router, 'jump');
+			},
+			onShareAppMessage: function(res) {
+				if(true) {
+					// 来自页面内转发按钮
+					console.log(res)
+				}
+				return {
+					title: '自定义转发标题',
+					path: '/page/user?id=123'
+				}
+			},
+			connectKf() {
+				wx.makePhoneCall({
+					phoneNumber: this.phone,
+					success: function() {
+						wx.showToast({
+							title: "拨打成功",
+							icon: "none"
+						})
+					}
+				})
+			},
+			alertNotice() {
+				wx.showToast({
+					title: "积分功能正在完善中",
+					icon: "none"
+				})
 			}
 		},
 		created() {}
@@ -95,17 +124,13 @@
 </script>
 
 <style scoped>
-	page {
-		height: 100%;
-	}
-	
 	#footNav_height {
 		height: 109rpx;
 	}
 	
 	#mystore {
 		background: #fafafa;
-		position: relative;
+		position: absolute;
 		height: 100%;
 		width: 100%;
 	}
@@ -133,10 +158,10 @@
 	
 	#bear {
 		position: absolute;
-		width: 492rpx;
-		height: 280rpx;
-		top: -187rpx;
-		left: 102rpx;
+		width: 452rpx;
+		height: 186rpx;
+		top: -139rpx;
+		left: 109rpx;
 	}
 	
 	#mystore_userinfo_baseinfo {
@@ -337,5 +362,9 @@
 		background-size: 40%;
 		padding: 22rpx 0;
 		float: right;
+	}
+	
+	.zf {
+		display: none;
 	}
 </style>

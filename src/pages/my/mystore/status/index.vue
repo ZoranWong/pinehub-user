@@ -67,6 +67,7 @@
 			tabSelect(num) {
 				this.cur = num;
 				console.log(num);
+				console.log(this);
 			},
 			showToastFunction(merchandise) {
 				this.display = true;
@@ -78,7 +79,8 @@
 				this.display = false;
 			}
 		},
-		created() {}
+		created() {
+		}
 	}
 </script>
 
