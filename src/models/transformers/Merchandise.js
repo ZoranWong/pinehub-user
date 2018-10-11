@@ -7,5 +7,10 @@ export default class Merchandise {
     this.sellPrice = merchandise['sell_price'].toFixed(2);
     this.originPrice = merchandise['origin_price'].toFixed(2);
     this.sellCount = merchandise['sell_count'];
+    this.tags = merchandise['tags'];
+    this.describe = merchandise['describe'];
+    this.newImage = merchandise['new_image'];
+    
   }
+
 }

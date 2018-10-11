@@ -45,13 +45,14 @@
 		//普通方法
 		methods: {
 			async flashLocation() {
-				console.log('定位打印', this.appName, this.map);
+				// console.log('定位打印', this.appName, this.map);
 				let result = await this.map.getLocation();
-				console.log(result);
+				console.log(result,"ghh");
 				this.latitude = result.lat;
 				this.longitude = result.lng;
 				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
 				this.city = city;
+				console.log(this.latitude,this.longitude)
 			},
 			searchLocation() {
 				this.$command(this.command, this.city + this.addressName);

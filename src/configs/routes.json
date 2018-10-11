@@ -1,8 +1,7 @@
 {
 	"index": "/pages/index/main",
-	"myorder": "/pages/my/order/main",
-	"my": "/pages/my/main",
 
+	"my": "/pages/my/main",
 	"myorder": "/pages/my/order/main",
 	"mypay": "/pages/my/pay/main",
 	"mystore": "/pages/my/mystore/main",

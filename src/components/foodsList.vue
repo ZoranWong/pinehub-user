@@ -96,7 +96,7 @@
   background-color: rgba(217,217,217,0.3); 
 }
 .foods-wrapper{
-  padding:20rpx 30rpx 20rpx 20rpx;
+  padding:20rpx;
   box-sizing: border-box;
   overflow-y: auto;
 }

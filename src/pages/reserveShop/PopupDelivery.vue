@@ -10,7 +10,7 @@
 					<i class="i-icon free-icon" ></i>
 					 自提免配送费
 				</div>
-				<div class="place-item" >
+				<div class="place-item" @click="jump('todayOrder')">
 					<i class="i-icon charge-icon" ></i>
 					满30元配送到家
 				</div>
@@ -24,22 +24,25 @@
 </template>
 
 <script>
-  export default {
-  	name:'PopupLocation',
-  	data() {
-  		return{
-  			
-  		}
-  	},
-  	methods:{
+export default {
+	name:'PopupLocation',
+	data() {
+		return{
+			
+		}
+	},
+	methods:{
 		popHide:function(){
 			this.$emit('hdlHidePopup')
-			console.log(2)
-		}
+			console.log(2,'fanfan')
+		},
+		jump(router){
+				console.log('hello')
+				this.$command('router',router,'jump');
+			}
 	}
 
-
-   }
+}
 </script>
 
 <style scoped>

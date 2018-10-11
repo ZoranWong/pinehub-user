@@ -2,7 +2,7 @@
 	<div class="shopcart">
     <div class="shoppingcart-bottom">
         <span class="black-circle"></span>
-        <i class="i-icon cart" @clic="cartListShow"></i>
+        <i class="i-icon cart" @click="cartListShow"></i>
         <i class="i-icon num-icon">{{count}}</i>
         <div class="clearfix">
           <span class="total-price">¥{{totalPrice}}</span>
@@ -140,8 +140,6 @@
 .shoppingcart-bottom .choose{
   width:200rpx;
   color: #fece00; 
-  /*background-color: red;*/
-/*  border:1rpx solid red;*/
 }
 .next-icon{
   width:20rpx;
@@ -171,32 +169,27 @@
   background-color: #f2f2f2;
   padding: 0rpx 40rpx;
   box-sizing: border-box;
- /* border:1rpx solid red;*/
 }
 .flag{
   background:url(../../static/images/flag.png) 0rpx 14rpx no-repeat;
   background-size: 26rpx 30rpx;
-  text-indent: 36rpx;
-  /*border:1rpx solid black;*/
+  text-indent: 36rpx;  
 }
 .empty{
 
   background:url(../../static/images/del-icon.png) 0rpx 14rpx no-repeat;
-  background-size: 26rpx 30rpx;
- /* border:1rpx solid black;*/
+  background-size: 26rpx 30rpx; 
   text-indent: 36rpx;
 }
 
 .add-merchandises{
   height: 98rpx;
   line-height: 98rpx;
-  /*background-color: pink;*/
-   position: relative;
+  position: relative;
 }
 .merchandises-name{
   font-size:28rpx;
-  margin-left: 40rpx;
-  
+  margin-left: 40rpx;  
 }
 .sell-price{
   font-size:32rpx;

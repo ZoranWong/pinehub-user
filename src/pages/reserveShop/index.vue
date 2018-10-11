@@ -9,7 +9,7 @@
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
-    
+  <!--   <order></order> -->
   </div>
 </template>
 
@@ -21,7 +21,7 @@
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
   import Cart from '@/components/Cart'
-
+  import Order from './Order';
   export default{
     data(){
       return{
@@ -42,7 +42,7 @@
       'm-list': FoodsList,
       'cart': Cart,
       "mp-title": MpTitle,
-      
+      'order' : Order
    },
    computed: {
       merchandises(){

@@ -13,7 +13,10 @@ export default class Merchandises extends Mock {
         "origin_price|+3": 28,
         "sell_count|+50": 40,
         "stock_num|1-5": 3,
-        "main_image": 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537991240513&di=1ad4a1488cfc0bbdde6e1e2f3e513581&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F342ac65c10385343e1d98c339913b07eca808889.jpg'  
+        "tags": ["素食", "健康", "营养", "芝士乳酪"],
+        "describe":this.mockMethod('cparagraph', 1, 5),
+        "main_image":'http://pic.58pic.com/58pic/14/68/45/92p58PICUba_1024.jpg',  
+        "new_image":'http://pic32.photophoto.cn/20140721/0042040369293749_b.jpg',
       }],
       "meta": {
         "pagination":{

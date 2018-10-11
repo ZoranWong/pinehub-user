@@ -13,7 +13,8 @@
     "pages/reserveShop/main",
     "pages/activity/main",
     "pages/order/main",
-    "pages/search/main"
+    "pages/search/main",
+    "pages/coupon/main"
     
   ],
   "window": {

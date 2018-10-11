@@ -4,13 +4,12 @@
      <mp-swiper></mp-swiper>
     <location></location>
     <div class="goods" >
-       <!--  <menus @menusChange="menusChange"></menus> -->
-        <!-- <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises" ></m-list> -->
-        <coupon></coupon>
+      <menus @menusChange="menusChange"></menus>
+      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"></m-list>    
     </div>
    <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
     <cart  v-if="isShowCart"></cart>  -->
-  
+  <!--  <order></order> -->
   </div>
 </template>
 
@@ -21,8 +20,8 @@
   import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
-  import Cart from '@/components/Cart';
-  import Coupon from '@/components/Coupon';
+  import Cart from '@/components/Cart'; 
+  import Order from './Order';
   
   export default{
     data(){
@@ -43,24 +42,31 @@
       'm-list': FoodsList,
       'cart': Cart,
       'mp-title': MpTitle,
-      'coupon':Coupon
-      
+      'order' : Order
    },
+    computed: {
+      merchandises(){
+        return this.$store.getters['model.activity.merchandises/list'];
+      },
+      currentPage () {
+       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       return page;
+      },
+    },
     methods:{
         hdlShowCart:function(){
-        this.isShowCart =  true;
+        this.isShowCart = true;
       },
       hdlShowPopup:function(){
-        this.isShow = true;
-          console.log(1)
+        this.isShow = true;          
       },
        hdlHidePopup:function(){
-          console.log(2)
         this.isShow = false;
       },
-      // menusChange : function (index) {
-      //   // console.log(index);
-      // },
+      menusChange : function (index) {
+        console.log(index);
+
+      },
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
       }

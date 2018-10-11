@@ -3,16 +3,13 @@
 		<div class="cart-decrease" v-show="count>0"
         @click="decreaseCart" > 
     </div>
-		<!--  v-show="foods.count>0" -->
-		<div class="cart-count"v-show="count>0">{{count}}</div>
-		<!-- v-show="foods.count>0" -->
+		<div class="cart-count" v-show="count>0"> {{count}} </div>
 		<div class="cart-add" @click="addCart" ></div>
 	</div>
 </template>
 <script>
 	export default {
-		props: {
-       
+		props: {   
 			merchandise: {
         default:function() {
           return {};

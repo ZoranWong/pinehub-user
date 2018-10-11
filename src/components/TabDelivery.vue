@@ -6,7 +6,8 @@
 				<i class="select-icon"></i>
 			</li>
 		</ul>
-		<ul class="Distribution-details  width710" v-if="selected==0">
+		<ul class="Distribution-details  width710" >
+			<!-- v-if="selected==0" -->
 			<li class="li-item bgff">
 				配送地址
 				<p class="details-item">
@@ -58,8 +59,16 @@
 		name:'TabDelivery',
 		data(){
 			return{
-
+				index: 0,
+      			timesArray: ['上午 7：00 - 9:00','中午 11：00 - 13:00','下午 17：00 - 19:00'	]
 			}
+		},
+		methods:{
+    		bindPickerChange (e) {
+    			 // console.log(e)
+    			 this.index =  e.target.value
+
+    		}	
 		}
 
 	}
