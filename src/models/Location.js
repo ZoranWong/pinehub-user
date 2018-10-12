@@ -16,9 +16,9 @@ export default class Shops extends Model{
 
     });
   }
-  dispatchs() {
-    let dispatchs = super.dispatchs();
-    return _.extend(dispatchs, {
+  events() {
+    let events = super.events();
+    return _.extend(events, {
       
     });
   }

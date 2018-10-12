@@ -12,43 +12,51 @@
 		  	</em>
 		</div>
 		<div id="index_menu">
-			<dl>
+			<dl @click="jump('todayOrder')">
 				<dd>
 					<img src="../../../static/images/todaysorder.png" />
 				</dd>
 				<dt>当日下单</dt>
 			</dl>
-			<dl>
+			<dl @click="jump('reserveShop')">
 				<dd>
 					<img src="../../../static/images/prearrangedmall.png" />
 				</dd>
 				<dt>预定商城</dt>
 			</dl>
-      <dl>
-        <dd>
-          <img src="" />
-        </dd>
-        <dt>新品预定</dt>
-      </dl>
+		    <dl @click="jump('activity')">
+		        <dd>
+		          	<img src="" />
+		        </dd>
+		        <dt>新品预定</dt>
+		    </dl>
 		</div>
-		<footer-nav :navName="navName"></footer-nav>
+		<footer-nav :navName="navName"></footer-nav>		
 	</div>
-
 </template>
 
 <script>
 	import FooterNav from '@/components/FooterNav';
+	
 
 	export default {
 		components: {
-			'footer-nav': FooterNav
+			'footer-nav': FooterNav,
+			
 		},
 		data() {
 			return {
 				navName: "index"
 			};
 		},
-		created() {}
+		created() {},
+		methods : {
+			jump(router){
+				console.log('hello')
+				this.$command('router',router,'jump');
+			}
+		}
+		
 	}
 </script>
 

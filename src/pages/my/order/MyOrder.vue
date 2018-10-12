@@ -108,13 +108,16 @@
 </template>
 
 <script>
-	import MyOrderCommand from '../../../commands/MyOrderCommand';
 	export default {
 		name: 'MyOrder',
 		props: {
 			status: {
 				default: 'all',
 				type: String
+			},
+			loadOrders: {
+				default: null,
+				type: Function
 			}
 		},
 		data() {
@@ -124,21 +127,21 @@
 		},
 		//算术方法
 		computed: {
-			command() {
-				return MyOrderCommand.commandName();
-			}
 		},
 		methods: {
-
 		},
+
 		watch: {
 			status(v) {
 				console.log(v)
 			}
 		},
 		created() {
-			this.$command(this.command,"myorder", "status", 1);
-			//			console.log(this.status)
+			this.loadOrders();
+		},
+		mounted() {
+			console.log('mounted my orders');
+			
 		}
 	}
 </script>

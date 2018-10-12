@@ -1,64 +1,73 @@
 <template>
-  <div>
-    <ul class="menu-wrapper">
-      <li class="menu-item search">
-        <i class="i-icon search-icon"></i>
-        <span class="search-txt">搜索</span>
-      </li>
-      <li class="menu-item new-product ">
-        <i class="i-icon new-product-icon"></i>
-        <span class="new-txt text-yellow-cf">新品套餐</span>
-      </li>
-      <li class="menu-item classic-set-meal">
-        <span class="categories">经典套餐</span>
-      </li>
-      <li class="menu-item utrition-collocation">
-        <span class="categories">营养搭配</span>
-      </li>
-      <li class="menu-item snack-dessert">
-        <span class="categories">小食甜品</span>
-      </li>
-      <li class="menu-item drink">
-        <span class="categories">饮品</span>
-      </li>
-    </ul>
+  <div class="menu-wrapper">
+    <div id="tab_select">
+      <ul>
+        <li class="menu-item search"  @click="jump('search')">
+          <i class="i-icon search-icon"></i>
+          <span class="search-txt category-name">搜索</span>
+        </li>
+        <li class="menu-item new-product " :class="{ tab_select_now : cur == 'new' }" @click = "tabSelect('new')">
+          <i class="i-icon new-product-icon"></i>
+          <span class="new-txt category-name">新品套餐</span>
+        </li>
+        <li v-for = "(tab, index) in tabs" :class = "{tab_select_now : cur == index}"  :key = "index" @click = "tabSelect(index)"><span class = "category-name">{{ tab.name }}</span></li>
+      </ul>
+    </div>
   </div>
 </template>
 
 
 <script>
-  export default{
-    data(){
-      return{
-        
+   import FoodsList from '@/components/FoodsList';
+  export default {
+    components : {
+       'm-list': FoodsList,
+    },
+    data () {
+      return {
+        navName: "Menus",
+        tabs: [
+         {
+          name: "经典套餐"
+        },{
+          name:"营养搭配"
+        },{
+          name:"小食甜品"
+        },{
+          name:"饮品"
+        }],
+        cur:0,
       }
+    },
+    computed : {
+      
+
+    },
+    methods : {
+      tabSelect (index) {
+        this.cur = index;
+        this.$emit('menusChange', index);
+      },
+      jump(router){
+        console.log('hello')
+        this.$command('router',router,'jump');
+      }
+    },
+    created () {
     }
   }
 </script>
 
 <style scoped>
 .menu-wrapper{
-  flex:0 0 120rpx;
   width:120rpx;
-  box-sizing: border-box;
-  height: 100%;
+  height:100%;
 }
-.menu-item{
-  display: table;
-  width:120rpx;
-  text-align: center;
-  font-size: 28rpx;
-  font-weight:400;
-  box-sizing: border-box;
-  background-color: #ffffff;
- /* border-bottom: 1px solid red;*/
- box-shadow: 4rpx 0rpx 10rpx rgba(205,205,205,0.3);
+#tab_select {
+  overflow: hidden;
+  width:100%;
+}
 
-}
-/*.menu-item span{
-  display: table-cell;
-  width:66rpx;
-}*/
 .search{
   height:130rpx;
   box-sizing: border-box;
@@ -77,8 +86,6 @@
 .new-product{
   height: 216rpx;
   width: 120rpx;
-  border-left:6rpx solid #fece00;
-  text-indent: 40rpx;
   padding:28rpx 0rpx;
 
 }
@@ -90,6 +97,43 @@
   background-size: contain;
   margin:0rpx 28rpx 20rpx;
 }
+#tab_select ul li {
+  display: table;
+  width:120rpx;
+  height: 108rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight:400;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 4rpx 0rpx 10rpx rgba(205,205,205,0.3);
+
+}
+
+#tab_select ul li .category-name{
+  width:56rpx;
+  display: inline-block;
+  line-height: 40rpx;
+  margin-top:7px;
+}
+  
+#tab_select ul li.tab_select_now {
+  color: #FECE00;
+  border-left:6rpx solid #fece00;
+  background-color: #fafafa;
+}
+#tab_select ul li.tab_select_now span {
+
+   /* border-bottom: 5rpx solid #FECE00;*/
+  }
+  
+  #tab_content {
+    padding-top: 74rpx;
+  }
+  .tab_content_now {
+    display: block;
+  }
+/*
 .classic-set-meal,.utrition-collocation,.snack-dessert{
   height:108rpx;
   padding:12rpx 20rpx;
@@ -103,6 +147,12 @@
 .drink {
    height:108rpx;
    padding-top: 38rpx;
-}
+}*/
 
+
+
+ 
+
+  
+  
 </style>

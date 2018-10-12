@@ -9,7 +9,8 @@
 				<img :src="scanning" />
 				<i>扫码</i>
 			</li>
-			<li @click="jump('myorder')">
+
+			<li @click="jump('order')">
 				<img :src="order" />
 				<i>订单</i>
 			</li>

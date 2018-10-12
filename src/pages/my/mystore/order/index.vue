@@ -36,7 +36,7 @@
 		data() {
 			return {
 				title: "店铺状态",
-				navName: "order",
+				navName: "my",
 				tabs: [{
 					name: "销售统计"
 				}, {
@@ -74,6 +74,7 @@
 	
 	#footNav_height {
 		height: 109rpx;
+		
 	}
 	
 	#myorder {

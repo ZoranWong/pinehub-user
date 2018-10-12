@@ -1,9 +1,7 @@
 {
 	"index": "/pages/index/main",
-	"myorder": "/pages/my/order/main",
 	"my": "/pages/my/main",
-
-
+	"myorder": "/pages/my/order/main",
 	"mypay": "/pages/my/pay/main",
 	"myfeedback": "/pages/my/feedback/main",
 	"mystore": "/pages/my/mystore/main",
@@ -11,5 +9,16 @@
 
 	"location": "/pages/my/location/main",
 	"logs": "/pages/logs/main",
-	"couter": "/pages/counter/main"
+	"couter": "/pages/counter/main",
+
+	"todayOrder" : "/pages/todayOrder/main",
+
+
+	"reserveShop" : "/pages/reserveShop/main",
+	"search" : "/pages/search/main",
+
+	"activity" : "/pages/activity/main",
+
+
+	"order" : "/pages/order/main"
 }

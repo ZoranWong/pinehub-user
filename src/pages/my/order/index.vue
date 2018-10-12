@@ -7,7 +7,7 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order :status="statusType"></my-order>
+			<my-order :loadOrders="loadOrders" :status="statusType"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
@@ -30,7 +30,7 @@
 		data() {
 			return {
 				title: "我的订单",
-				navName: "order",
+				navName: "my",
 				nowCom: "",
 				tabs: [{
 					name: "全部"
@@ -51,6 +51,9 @@
 			}
 		},
 		methods: {
+			loadOrders(status) {
+				this.$command('my-orders', "status", status);
+			},
 			tabSelect(num) {
 				this.cur = num;
 				switch(num) {
@@ -71,7 +74,8 @@
 			}
 		},
 		created() {
-			this.nowCom = "card"
+			this.nowCom = "card";
+			console.log(this.$store);
 		}
 	}
 </script>

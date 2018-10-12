@@ -1,4 +1,5 @@
 import AppServiceProvider from './AppServiceProvider';
+import MockServiceProvider from './MockServiceProvider';
 import HttpServiceProvider from './HttpServiceProvider';
 import CommandServiceProvider from './CommandServiceProvider';
 import ModelsServiceProvider from './ModelsServiceProvider';
@@ -8,6 +9,7 @@ import RouterServiceProvider from './RouterServiceProvider';
 export default {
 	commandServiceProvider: CommandServiceProvider,
 	configServiceProvider: ConfigServiceProvider,
+	mockServiceProvider:MockServiceProvider,
 	appServiceProvider: AppServiceProvider,
 	httpServiceProvider: HttpServiceProvider,
 	modelsServiceProvider: ModelsServiceProvider,

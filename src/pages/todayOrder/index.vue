@@ -1,91 +1,95 @@
 <template>
   <div class="body">
-    <!-- 轮播图 -->
-    <mp-swiper></mp-swiper>
-    <!-- 配送范围弹窗 -->
-   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup> -->
-    <!-- 定位最近的店面 -->
+    <mp-title :title="title"></mp-title>
+     <mp-swiper></mp-swiper>
     <location></location>
     <div class="goods" >
-        <menus></menus>
-        <m-list @show-cart ="hdlShowCart"></m-list>
+      <menus @menusChange="menusChange"></menus>
+      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"></m-list>    
     </div>
-    <cart  v-if="isShowCart"></cart>
-   
+   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
+    <cart  v-if="isShowCart"></cart>  -->
+  <!--  <order></order> -->
   </div>
 </template>
 
 <script>
-  import popup from '@/components/popup'
-  import swiper from '@/components/swiper'
-  import location from '@/components/location'
-  import foodsList from '@/components/foodsList'
-  import menus from '@/components/menus'
-  import cart from '@/components/cart'
+  import MpTitle from '@/components/MpTitle';
+  import Popup from '@/pages/todayOrder/Popup';
+  import Swiper from '@/components/Swiper';
+  import Location from '@/components/Location';
+  import FoodsList from '@/components/FoodsList';
+  import Menus from '@/components/Menus';
+  import Cart from '@/components/Cart'; 
+  import Order from './Order';
+  
   export default{
     data(){
       return{
-        isShow:true,
-        isShowCart:false,
+        isShow:false,
+        isShowCart:true,
+        listHeight: '718rpx',
+        listwidth:'530rpx',
+        title:"当日下单",
+        screenHeight: ''
       }
     },
     components: {
-      popup:popup,
-      'mp-swiper': swiper,
-      location:location,
-      menus: menus,
-      'm-list': foodsList,
-      cart: cart,
-      
+      'popup': Popup,
+      'mp-swiper': Swiper,
+      'location': Location,
+      'menus': Menus,
+      'm-list': FoodsList,
+      'cart': Cart,
+      'mp-title': MpTitle,
+      'order' : Order
    },
-   onLoad:function(options){
-    wx.setNavigationBarTitle({
-      title: '今日下单',
-      success: function(res) {
-        
-      }
-    })
-  },
-  methods:{
-      hdlHidePopup:function(){
+    computed: {
+      merchandises(){
+        return this.$store.getters['model.activity.merchandises/list'];
+      },
+      currentPage () {
+       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       return page;
+      },
+    },
+    methods:{
+        hdlShowCart:function(){
+        this.isShowCart = true;
+      },
+      hdlShowPopup:function(){
+        this.isShow = true;          
+      },
+       hdlHidePopup:function(){
         this.isShow = false;
       },
-      hdlShowCart:function(){
-        this.isShowCart =  true;
-       
+      menusChange : function (index) {
+        console.log(index);
+
+      },
+      next() {
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
       }
-  }
+      
+  },
+   created(){
+      // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
+      // console.log('created mm');
+    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+
+   },
 
 }
 
 </script>
 
 <style scoped>
-/*.pop-mask{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height: 100%;
-  z-index: 40;
-  background-filter:blur(10px);
-  transition: all 0.5s
-}
-.pop-mask .fade-transtion{
-  opacity: 1;
-  background:rgba(7,17,27,0.6);
-}
-.pop-mask .fade-enter,.pop-mask .fade-leave{
-  opacity: 0;
-  background:rgba(7,17,27,0);
-}*/
+
 .goods{
   display: flex;
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
- 
- /* bottom:98rpx;*/
- /* border:1px solid blue;*/
+  z-index: 
 }
 </style>

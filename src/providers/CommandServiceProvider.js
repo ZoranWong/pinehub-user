@@ -7,9 +7,10 @@ export default class CommandServiceProvider extends ServiceProvider {
     this.commands = [];
   }
   register() {
-    let commands = [RouterCommand, ScanCommand];
+    let commands = [RouterCommand];
     for (let key in commands) {
       this.app.registerCommand(commands[key].commandName(), commands[key]);
+
     }
   }
 }

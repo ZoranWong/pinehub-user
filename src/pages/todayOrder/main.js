@@ -1,19 +1,27 @@
 import Vue from 'vue';
-import Application from '../../Application';
 import App from './index';
+import Application from '../../Application';
 import _ from 'underscore';
-
-
-
-const application = new Application(App);
-application.run(
-	// function(app){
-	// 	app.use(PopUp)
-	// 	app.use(Picker)
-	// },
-	function(mountComponent) {
- _.extend(App,mountComponent);
- const app = new Vue(App);
- app.$mount();
- return app;
+import Merchandises from '@/models/Merchandises';
+import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
+const application = new Application(App, 'actity.merchandises');
+application.run(function(app) {
+	if(app.models) {
+		app.models.addModel('model.activity.merchandises', Merchandises);
+	}
+	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
+}, function(mountComponent) {
+	_.extend(App, mountComponent);
+	const app = new Vue(App);
+	app.$mount();
+	return app;
 });
+
+// const index = new Application(App, 'index');
+// index.run(function(mountComponent) {
+// 	_.extend(App,mountComponent);
+// 	let app = new Vue(App);
+// 	app.$mount();
+// 	return app;
+
+// });

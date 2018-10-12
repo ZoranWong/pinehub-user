@@ -1,19 +1,17 @@
 <template>
-	<div >
-		<div class="popup">
-			<div class="popup-box" >
-				<div class="popup-title">
-					当前门店配送范围为高新区宁西路
-				</div>
-				<div class="popup-content">
-					是否确认在此范围内？
-				</div>
-				<div class="clearfix pop-bottom">
-					<div class="btn reselection ">重新选择</div>
-				    <div class="btn confirm" @click="popHide">确认</div>
-				</div>
-		    </div>
-		</div>
+	<div class="popup">
+		<div class="popup-box" >
+			<div class="popup-title">
+				当前门店配送范围为高新区宁西路
+			</div>
+			<div class="popup-content">
+				是否确认在此范围内？
+			</div>
+			<div class="clearfix pop-bottom">
+				<div class="btn reselection ">重新选择</div>
+			    <div class="btn confirm" @click="popHide">确认</div>
+			</div>
+	    </div>
 	</div>
 </template>
 

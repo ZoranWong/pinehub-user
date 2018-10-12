@@ -20,6 +20,11 @@ export default {
 .body{
    background-color: #fafafa;
  }
+.box-shadow{
+  border-radius: 10rpx;
+  box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
+  box-sizing: border-box;
+}
 .clearfix{
   display: table;
   clear: both;
@@ -41,8 +46,11 @@ export default {
   border-radius: 10rpx;
   display: inline-block;
 }
+.width710{
+  width:710rpx;
+}
 /*样色样式*/
-   
+
 .bgff{
   background-color: #ffffff;
 }

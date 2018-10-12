@@ -16,6 +16,6 @@ export default class MyOrderCommand extends Command {
 		});
 	}
 	static commandName() {
-		return 'my-order';
+		return 'my-orders';
 	}
 }
