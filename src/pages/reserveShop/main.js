@@ -16,13 +16,3 @@ application.run(function(app) {
 	app.$mount();
 	return app;
 });
-console.log(application);
-
-// const index = new Application(App, 'index');
-// index.run(function(mountComponent) {
-// 	_.extend(App,mountComponent);
-// 	let app = new Vue(App);
-// 	app.$mount();
-// 	return app;
-
-// });
