@@ -28,6 +28,9 @@
 
 		},
 		methods: {
+			jump(router) {
+				this.$command('router', router, 'jumpNotTab');
+			},
 			nowFont() {
 				let nowFontNum = this.textarea.length;
 				this.nowFontNum = nowFontNum;
@@ -43,15 +46,17 @@
 			submit() {
 				let tips = this.textarea;
 				let mobile = this.input;
+				tips = typeof(tips) === "undefined" ? '' : tips;
+				mobile = typeof(mobile) === "undefined" ? '' : mobile;
 				console.log(tips, mobile);
-
-				if(tips != "undefined") {
+				if(tips.length < 10) {
 					wx.showToast({
 						title: "不得少于10字",
 						icon: "none"
 					})
 					return false;
 				}
+				this.jump('myfeedbacksuccess');
 			}
 		},
 		created() {
@@ -60,14 +65,12 @@
 	}
 </script>
 
-<style>
-	page {
-		height: 100%;
-		background: #fafafa;
-	}
-	
+<style scoped>
 	#myfeedback {
-		position: relative;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background: #fafafa;
 	}
 	
 	#myfeedback_content {

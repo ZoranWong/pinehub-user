@@ -1,12 +1,12 @@
 <template>
 	<div id="myfeedback">
 		<mp-title :title="title"></mp-title>
-		<div id="myfeedback_content">
-			<textarea placeholder-class="placeholder-class" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" @input="nowFont" v-model="textarea" />
-			<em>{{nowFontNum}}/{{totalFont}}</em>
+		<div id="myfeedback_success">
+			<img src="/static/images/my_feedback_success.png" />
+			<em>提交成功</em>
+			<i>感谢您对快乐松的关注与支持，我们会认证处理您的反馈，尽快修复和完善相关功能。</i>
 		</div>
-		<input placeholder-class="placeholder-class" id="myfeedback_mobile" placeholder="输入您的联系方式（选填）" v-model="input" />
-		<div id="btn" @click="submit">立即提交</div>
+		<div id="btn" @click="submit">完成</div>
 	</div>
 </template>
 
@@ -19,39 +19,19 @@
 		data() {
 			return {
 				title: "意见反馈",
-				navName: "feedback",
-				totalFont: 500,
-				nowFontNum: 0
+				navName: "feedback"
 			};
 		},
 		computed: {
 
 		},
 		methods: {
-			nowFont() {
-				let nowFontNum = this.textarea.length;
-				this.nowFontNum = nowFontNum;
-				if(this.nowFontNum >= this.totalFont) {
-					wx.showToast({
-						title: "最多只能输入" + this.totalFont + "字",
-						icon: "none"
-					})
-					return false;
-				}
-				console.log(nowFontNum);
+			jump(router) {
+				this.$command('router', router, 'jumpNotTab');
 			},
-			submit() {
-				let tips = this.textarea;
-				let mobile = this.input;
-				console.log(tips, mobile);
 
-				if(tips != "undefined") {
-					wx.showToast({
-						title: "不得少于10字",
-						icon: "none"
-					})
-					return false;
-				}
+			submit() {
+				this.jump('my');
 			}
 		},
 		created() {
@@ -60,56 +40,41 @@
 	}
 </script>
 
-<style>
-	page {
-		height: 100%;
-		background: #fafafa;
-	}
-	
+<style scoped>
 	#myfeedback {
-		position: relative;
-	}
-	
-	#myfeedback_content {
-		background: #fff;
-		border-radius: 15rpx;
-		margin: 15rpx;
-		width: 720rpx;
-		font-size: 32rpx;
-		font-weight: 300;
-		padding: 15rpx;
-		box-sizing: border-box;
-		color: #111111;
-		line-height: 46rpx;
-		position: relative;
-	}
-	
-	#myfeedback_content em {
+		background: #f1f2f3;
 		position: absolute;
-		right: 15rpx;
-		bottom: 15rpx;
-		background: #f5f5f5;
-		padding: 3rpx 8rpx;
-		border-radius: 20rpx;
-		font-size: 28rpx;
+		height: 100%;
+		width: 100%;
 	}
 	
-	#myfeedback_mobile {
-		background: #fff;
-		border-radius: 15rpx;
-		margin: 15rpx;
-		width: 690rpx;
+	#myfeedback_success {
 		font-size: 32rpx;
 		font-weight: 300;
-		padding: 15rpx;
 		color: #111111;
-		line-height: 78rpx;
+		margin-top: 130rpx;
 	}
 	
-	.placeholder-class {
-		font-size: 32rpx;
-		font-weight: 300;
-		color: #828282;
+	#myfeedback_success img {
+		display: block;
+		width: 148rpx;
+		height: 148rpx;
+		margin: 0 auto;
+		padding: 5rpx;
+	}
+	
+	#myfeedback_success em {
+		text-align: center;
+		font-size: 30rpx;
+		font-weight: 400;
+		margin-top: 30rpx;
+	}
+	
+	#myfeedback_success i {
+		font-size: 24rpx;
+		margin: 20rpx 130rpx 140rpx;
+		text-align: center;
+		line-height: 36rpx;
 	}
 	
 	#btn {

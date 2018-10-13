@@ -30,7 +30,7 @@
 		data() {
 			return {
 				title: "我的订单",
-				navName: "my",
+				navName: "order",
 				nowCom: "",
 				tabs: [{
 					name: "全部"
