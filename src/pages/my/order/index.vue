@@ -75,7 +75,7 @@
 		},
 		created() {
 			this.nowCom = "card";
-			console.log(this.$store);
+			console.log('store.data', this.$store);
 		}
 	}
 </script>

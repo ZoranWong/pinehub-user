@@ -3,6 +3,7 @@ export default class Mock {
     this.application = application;
   }
   async mock() {
+  	console.log('oooooo');
     let data = this.data.apply(this, arguments);
     return this.application.instances['mock'].mock(data);
   }
