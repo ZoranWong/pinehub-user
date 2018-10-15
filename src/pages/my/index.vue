@@ -3,30 +3,30 @@
 		<mp-title :title="title"></mp-title>
 		<div id="mystore_header">
 			<div id="mystore_userinfo">
-				<img id="bear" src="../../../static/images/bear.gif" />
+				<img id="bear" :src="headerAnimate" />
 				<div id="mystore_userinfo_baseinfo">
 					<img src="../../../static/images/my_now.png" />
 					<div id="name_id">
-						<em>一切都会好的</em>
-						<i>ID: 66698932998</i>
+						<em>{{userInfo.nickname}}</em>
+						<i>ID: {{userInfo.id}}</i>
 					</div>
 					<i id="lv">
-						6
+						{{userInfo.vip_level}}
 					</i>
 				</div>
 				<div id="mystore_userinfo_otherinfo">
 					<ul>
 						<li>
-							<em>0</em>
+							<em>{{userInfo.balance}}</em>
 							<i>余额</i>
 						</li>
 						<li class="my_card">
 							<s class="my_card_new"></s>
-							<em>0</em>
+							<em>{{userInfo.ticket_num}}</em>
 							<i>卡券</i>
 						</li>
 						<li @click="alertNotice">
-							<em>0</em>
+							<em>{{userInfo.score}}</em>
 							<i>积分</i>
 						</li>
 					</ul>
@@ -86,6 +86,30 @@
 				navName: "my",
 				phone: "15357903187"
 			};
+		},
+		computed: {
+			headerAnimate() {
+				return this.$imageUrl('bear.gif');
+			},
+			userInfo() {
+				return {
+					"id": 4,
+					"nickname": "maker",
+					"type": "MINI_PROGRAM",
+					"open_id": "wx768678679424999",
+					"avatar": "http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg",
+					"country": "中国",
+					"province": "安徽省",
+					"city": "滁州市",
+					"sex": "MALE",
+					"mobile": "13835246789",
+					"vip_level": 0,
+					"total_score": 0,
+					"balance": 66.59,
+					"ticket_num": 10,
+					"score": 500
+				}
+			}
 		},
 		methods: {
 			jump(router) {
@@ -250,11 +274,11 @@
 	
 	#mystore_userinfo_otherinfo ul li em {
 		display: block;
-		width: 90rpx;
+		width: 136rpx;
 		line-height: 48rpx;
 		margin: 0 auto;
 		text-align: center;
-		font-size: 48rpx;
+		font-size: 42rpx;
 		font-weight: 400;
 		color: #111111;
 	}

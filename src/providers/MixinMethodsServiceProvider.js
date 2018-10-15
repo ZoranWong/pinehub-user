@@ -65,6 +65,9 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         if(this.$el.scrollTop+this.$el.offsetHeight>this.$el.scrollHeight){
           this.$emit('scroll-to-bottom');
         }
+      },
+      $imageUrl(name, path ='mp_images') {
+      	return self.app.config.app.staticHost.trim('/') + '/' + path.trim('/') + '/' + name;
       }
     };
   }
