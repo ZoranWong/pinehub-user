@@ -1,5 +1,5 @@
 import Model from './Model';
-export Orders extends Model {
+export default class Orders extends Model {
 	constructor(app) {
 		super(app);
 	}

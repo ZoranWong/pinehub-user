@@ -1,5 +1,6 @@
 import ServiceProvider from './ServiceProvider';
-import Router from '@/services/router/Router';
+import Router from '@/services/mp/RouterService';
+import MpvueRouterPatch from 'mpvue-router-patch';
 
 import _ from 'underscore';
 export default class RouteServiceProvider extends ServiceProvider {
@@ -7,8 +8,7 @@ export default class RouteServiceProvider extends ServiceProvider {
     super(app);
   }
   register(){
-  	this.app.register('$router', new Router({
-  		routes: []
-  	}));
+  	this.app.use(MpvueRouterPatch);
+  	this.app.register('mp.router', Router);
   }
 }

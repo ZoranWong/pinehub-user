@@ -56,7 +56,7 @@
 				}
 			},
 			jump(router){
-				this.$command('router',router,'jumpNotTab');
+				this.$command('router',router, 'replace');
 			}
 		},
 		created() {

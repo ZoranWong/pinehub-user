@@ -84,7 +84,7 @@
 				} else {
 					this.productInfo.merchandise_id = this.merchandise['id'];
 					this.productInfo.primary_stock_num = this.merchandise['stock_num'];
-					this.productInfo['comment'] = "";
+					this.productInfo['comment'] = null;
 					console.log(this.productInfo);
 				}
 			},

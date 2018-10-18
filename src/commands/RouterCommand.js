@@ -4,9 +4,8 @@ export default class RouterCommand extends Command {
 		super(app);
 	}
 	//
-	handle(url, type) {
-		let site = this.$application.config['routes'][url];
-		this.service('href')[type](site);
+	handle(route, method, options) {
+		this.service('mp.router')[method](route, options);
 	}
 	static commandName() {
 		return 'router';
