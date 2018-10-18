@@ -113,7 +113,8 @@
 		},
 		methods: {
 			jump(router) {
-				this.$command('router', router, 'jump');
+
+				this.$command('router', router, 'push');
 			},
 			onShareAppMessage: function(res) {
 				if(true) {

@@ -19,7 +19,7 @@ export default class ApiService extends Service {
 		});
 		return this.axios
 	}
-	auth(need) {
+	async auth(need) {
 		let headers = null;
 		if(need) {
 			let token = await this.services('token').getToken();
