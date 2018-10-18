@@ -26,25 +26,26 @@ export default class ApiService extends Service {
 			headers = {};
 			headers['Authorization'] = 'bearer ' + token;
 		}
+		return headers;
 	}
 	// eslint-disable-next-line
 	async httpGet(route, params = [], auth = false) {
-		let result = await this.request(this.auth(auth)).get(this.gateway + route + this.services().uri.query(params));
+		let result = await (await this.request(this.auth(auth))).get(this.gateway + route + this.services().uri.query(params));
 		return result;
 	}
 
 	async httpPost(route, params = [], auth = false) {
-		let result = await this.request(this.auth(auth)).post(this.gateway + route, params);
+		let result = await (await this.request(this.auth(auth))).post(this.gateway + route, params);
 		return result;
 	}
 
 	async httpPut(route, id, params = [], auth = false) {
-		let result = await this.request(this.auth(auth)).put(this.gateway + route + id, params);
+		let result = await (await this.request(this.auth(auth))).put(this.gateway + route + id, params);
 		return result;
 	}
 
 	async httpDelete(route, params = [], auth = false) {
-		let result = await this.request(this.auth(auth)).delete(this.gateway + route + id);
+		let result = await (await this.request(this.auth(auth))).delete(this.gateway + route + id);
 		return null;
 	}
 	//组装搜索参数
