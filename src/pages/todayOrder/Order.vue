@@ -36,7 +36,7 @@
 			'mp-title':MpTitle,
 			'consignee':Consignee,
 			'tab-delivery':TabDelivery,
-			'payment':Payment,
+			'payment':Payment
 		},
 		methods:{
 			radioChange (e) {

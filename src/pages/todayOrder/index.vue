@@ -54,7 +54,7 @@
       },
     },
     methods:{
-        hdlShowCart:function(){
+      hdlShowCart:function(){
         this.isShowCart = true;
       },
       hdlShowPopup:function(){
