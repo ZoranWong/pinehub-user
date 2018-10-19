@@ -3,9 +3,10 @@
 		<div>
 			<p class="consignee-name">收货人：张雷</p>
 			<p class="telphone">联系电话：15888878788</p>
-			<i class="edit-icon"></i>
+			<!-- 编辑信息 -->
+			<!-- <i class="edit-icon"></i> -->
 		</div>
-		<div class="tips text-color-75">请选择就餐方式</div>
+		<div class="tips text-color-75" v-if="selectMethod" >请选择就餐方式</div>
 	</div>
 	
 </template>
@@ -14,32 +15,31 @@
 		name:'Consignee',
 		data(){
 			return{
-
+				
 			}
-		}
-
+		},
+		props:["selectMethod"]
+		
 	}
-</script>
+</script> 
 <style>
 .consignee{
-	height: 188rpx;
-	line-height: 40rpx;
-	padding:20rpx;
+	line-height:46rpx;
+	padding:10rpx;
 	margin-bottom: 20rpx;
 	border-radius: 10rpx;
 	box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
 	box-sizing: border-box;
-	/*border:1rpx solid red;*/
 }
 .consignee div:first-child{
-	margin:8rpx 0rpx 28rpx 0rpx ;
-    position: relative;
-
+	margin:10rpx 0rpx;
 }
+
 .consignee .tips{
 	font-size:22rpx;
 	border-top:2rpx dashed #cccccc;
     box-sizing: border-box;
+    margin-top: 28rpx;
 	
 }
 .edit-icon{
@@ -51,5 +51,7 @@
 	top:72rpx;
 	right: 0rpx;
 }	
-
+.noVisible{
+	visibility: hidden;
+}
 </style>

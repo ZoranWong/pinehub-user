@@ -5,11 +5,10 @@
     <location></location>
     <div class="goods" >
         <menus></menus>
-         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" ></m-list>
+        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" :addMerchandiseToCart = "addCart"   ></m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
-  <!--   <order></order> -->
   </div>
 </template>
 
@@ -21,7 +20,6 @@
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
   import Cart from '@/components/Cart'
-  import Order from './Order';
   export default{
     data(){
       return{
@@ -31,7 +29,6 @@
         isShowCart:true,
         activityId: 0, 
         screenHeight: ''
-       
       }
     },
     components: {
@@ -42,9 +39,9 @@
       'm-list': FoodsList,
       'cart': Cart,
       "mp-title": MpTitle,
-      'order' : Order
+      
    },
-   computed: {
+    computed: {
       merchandises(){
         return this.$store.getters['model.activity.merchandises/list'];
       },
@@ -59,19 +56,32 @@
       },
       hdlShowPopup:function(){
         this.isShow = true;
-          console.log(1)
+
       },
       hdlHidePopup:function(){
-          console.log(2)
         this.isShow = false;
       },
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+          
+      },
+      addCart(shopId, count,  merchandiseId){
+        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+        console.log( this.count, "987", this.merchandiseId)
+      },
+      reduceCart(shopId, count, merchandisesId){
+        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       }
-  },
-  created () {
+    },
+    created () {
     
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+   },
+   mounted(){ 
+     
+        // console.log('h123', this.merchandises.list)
+
+      
    }
 }
 

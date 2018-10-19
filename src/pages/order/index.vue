@@ -1,5 +1,5 @@
 <template>
-	<div id="myorder">
+	<div class="body">
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
@@ -69,19 +69,6 @@
 </script>
 
 <style scoped>
-	page {
-		height: 100%;
-		background: #fafafa;
-	}
-	
-	#footNav_height {
-		height: 109rpx;
-	}
-	
-	#myorder {
-		position: relative;
-	}
-	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -91,19 +78,9 @@
 		top: 0;
 		z-index: 999;
 	}
-	
 	#tab_select ul li {
-		height: 74rpx;
-		line-height: 74rpx;
-		float: left;
-		background: #FFFFFF;
-		text-align: center;
 		font-size: 32rpx;
 		font-weight: 300;
-	}
-	
-	#tab_select ul li.tab_select_now {
-		color: #FECE00;
 	}
 	
 	#tab_select ul li.tab_select_now span {
@@ -117,10 +94,9 @@
 		padding-top: 74rpx;
 	}
 	
-	.tab_content_item {
+	
+	#footNav_height {
+		height: 109rpx;
 	}
 	
-	.tab_content_now {
-		display: block;
-	}
 </style>

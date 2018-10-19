@@ -5,11 +5,11 @@
     <location></location>
     <div class="goods" >
       <menus @menusChange="menusChange"></menus>
-      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"></m-list>    
+      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
+      :addMerchandiseToCart = "addCart"  ></m-list>    
     </div>
-   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
-    <cart  v-if="isShowCart"></cart>  -->
-  <!--  <order></order> -->
+    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
+    <cart  v-if="isShowCart"></cart> 
   </div>
 </template>
 
@@ -21,7 +21,6 @@
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
   import Cart from '@/components/Cart'; 
-  import Order from './Order';
   
   export default{
     data(){
@@ -42,7 +41,6 @@
       'm-list': FoodsList,
       'cart': Cart,
       'mp-title': MpTitle,
-      'order' : Order
    },
     computed: {
       merchandises(){
@@ -54,7 +52,7 @@
       },
     },
     methods:{
-        hdlShowCart:function(){
+      hdlShowCart:function(){
         this.isShowCart = true;
       },
       hdlShowPopup:function(){
@@ -65,11 +63,18 @@
       },
       menusChange : function (index) {
         console.log(index);
-
       },
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-      }
+      },
+      addCart(shopId, count,  merchandiseId){
+        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+        console.log( this.count, "987", this.merchandiseId)
+      },
+
+      // reduceCart(shopId, count, merchandisesId){
+      //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      // }
       
   },
    created(){
@@ -80,6 +85,7 @@
    },
 
 }
+
 
 </script>
 

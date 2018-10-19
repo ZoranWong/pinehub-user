@@ -9,20 +9,21 @@ export default class Merchandises extends Model{
   computed() {
     return _.extend(super.computed(), {
       list(state){
+        // return state.currentPage ? _.flatten(state.list[state.categoryId]) : [];
         return state.currentPage ? _.flatten(state.list) : [];
       }
     });
   }
   data() {
     return _.extend(super.data(), {
-
+      categoryId: null
     });
   }
 
   listeners() {
     super.listeners();
-    this.addEventListener('a', function({b, c, d}) {
-
-    });
+    // this.addEventListener('setCategoryId', function({categoryId}) {
+    //   this.state.categoryId = categoryId;
+    // });
   }
 }

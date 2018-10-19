@@ -2,10 +2,10 @@
 	<div class="search-wrapper">
 		<mp-title :title="title"></mp-title>
 		<div class="search-box clearfix">
-			<input class="search-input  fl" type="text" placeholder="豆浆">
+			<input class="search-input  fl" type="text" v-model="search" placeholder="请输入商品名称">
 			<i class="search-icon fr"></i>
 		</div>
-		<m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises" ></m-list>
+		<!-- <m-list  :height="listHeight" :width="listwidth" :next="next" :list="merchandises"   ></m-list> -->
 	</div>
 </template>
 
@@ -14,31 +14,33 @@
 	import MpTitle from '@/components/MpTitle';
 	import FoodsList from '@/components/FoodsList';
 	export default {
+		data() {
+			return {
+				title: "搜索商品",
+				search:"",
+				activityId: 0, 
+          		screenHeight: ''
+				}
+		},
 		components: {
 			'mp-title': MpTitle,
 			'm-list': FoodsList,
 			
 		},
-		data() {
-			return {
-				title: "搜索商品",
-				}
-		},
-		computed: {
-			
-		},
-		methods: {
-			next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-      }
-      
-		},
-		created(){
-      // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
-      // console.log('created mm');
-    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
-
-   },
+		// computed: {
+  //    	 	merchandises(){
+  //       		return this.$store.getters['model.activity.merchandises/list'];
+  //     		}
+  //  		},
+   	// 	methods:{
+    //   		next() {
+    //     		this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+    //   		}
+  		//  },
+	   // created () {
+	    
+	   //  	this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+	   // 	}
 
 		
 	}

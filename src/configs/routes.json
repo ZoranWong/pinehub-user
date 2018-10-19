@@ -10,15 +10,19 @@
 	"location": "/pages/my/location/main",
 	"logs": "/pages/logs/main",
 	"couter": "/pages/counter/main",
-
+	"search" : "/pages/search/main",
+	
 	"todayOrder" : "/pages/todayOrder/main",
-
+    "todaySubmitOrder" :"/pages/todayOrder/submitOrder/main",
 
 	"reserveShop" : "/pages/reserveShop/main",
-	"search" : "/pages/search/main",
+	"shopsubmitorder" :"/pages/reserveShop/submitOrder/main",
+	"orderself" :"/pages/reserveShop/orderSelf/main",
 
 	"activity" : "/pages/activity/main",
+	"activitySubmitOrder" :"/pages/activity/submitOrder/main",
 
+	"order" : "/pages/order/main",
 
-	"order" : "/pages/order/main"
+	"coupon": "/pages/coupon/main"
 }

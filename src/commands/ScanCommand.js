@@ -5,7 +5,6 @@ export default class ScanCommand extends Command {
 	}
 	//
 	handle() {
-		console.log(888);
 		this.service('scan')['scanCode']();
 	}
 	static commandName() {

@@ -58,7 +58,6 @@
 		methods: {
 			tabSelect(num) {
 				this.cur = num;
-				console.log(num);
 			}
 		},
 		created() {

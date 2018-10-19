@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 17,
 			"list": [
 				{
 					"id": -1,
@@ -113,7 +113,32 @@
 				{
 					"id": -1,
 					"name": "卡券",
-					"pathName": "pages/coupon/main"
+					"pathName": "pages/coupon/main",
+					"query": ""
+				},
+				{
+					"id": 14,
+					"name": "预定商城-提交订单-配送",
+					"pathName": "pages/reserveShop/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": 15,
+					"name": "新品-提交订单",
+					"pathName": "pages/activity/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "当日 -- 提交订单",
+					"pathName": "pages/todayOrder/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预定商城-提交订单-自提",
+					"pathName": "pages/reserveShop/orderSelf/main",
+					"query": ""
 				}
 			]
 		}

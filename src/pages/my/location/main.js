@@ -7,7 +7,7 @@ import SearchLocation from '@/commands/SearchLocationCommand';
 const storeLocation = new Application(App, 'store.location');
 storeLocation.run((app) => {
 	app.register('map', MapService);
-	console.log(app.instances['map']);
+	// console.log(app.instances['map']);
 	app.registerCommand('search-location', SearchLocation);
 }, (mountComponent) => {
 	_.extend(App, mountComponent);

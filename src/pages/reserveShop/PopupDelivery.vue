@@ -6,15 +6,15 @@
 			</div>
 			<i class="cancel" @click="popHide"></i>
 			<div class="popup-content">
-				<div class="place-item">
+				<div class="place-item" @click="jump('orderself')">
 					<i class="i-icon free-icon" ></i>
 					 自提免配送费
 				</div>
-				<div class="place-item" @click="jump('todayOrder')">
+				<div class="place-item" @click="jump('shopsubmitorder')">
 					<i class="i-icon charge-icon" ></i>
 					满30元配送到家
 				</div>
-			    <div class="tips text-color-75">
+			    <div class="tips color75">
 			    	注：请您务必在上午9:00前领取您的早餐
 			    </div>
 			</div>
@@ -34,12 +34,10 @@ export default {
 	methods:{
 		popHide:function(){
 			this.$emit('hdlHidePopup')
-			console.log(2,'fanfan')
 		},
 		jump(router){
-				console.log('hello')
 				this.$command('router',router,'jump');
-			}
+		}
 	}
 
 }

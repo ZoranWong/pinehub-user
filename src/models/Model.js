@@ -34,7 +34,7 @@ export default class Model {
      });
 
     this.addEventListener('setList' , ({list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
-        console.log('model', list, totalNum, currentPage, totalPage);
+        // console.log('model', list, totalNum, currentPage, totalPage);
         this.state.currentPage = currentPage;
         let startIndex = (currentPage - 1) * pageCount + 1;
         this.state.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
@@ -67,12 +67,12 @@ export default class Model {
 
   addEventListener(type, callback) {
     this.actions[type] = ({commit}, payload) => {
-      console.log(payload);
+      // console.log(payload);
       commit(type, payload);
     }
 
     this.mutations[type] = (state, payload) => {
-      console.log(payload);
+      // console.log(payload);
       callback.call(this, payload);
     }
   }

@@ -47,7 +47,7 @@
 			async flashLocation() {
 				// console.log('定位打印', this.appName, this.map);
 				let result = await this.map.getLocation();
-				console.log(result,"ghh");
+				// console.log(result);
 				this.latitude = result.lat;
 				this.longitude = result.lng;
 				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);

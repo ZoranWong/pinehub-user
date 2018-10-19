@@ -8,6 +8,7 @@ import MD5Service from '../services/encrypt/MD5Service';
 import JsonService from '../services/encrypt/JsonService';
 import HrefService from '../services/mp/HrefService';
 import ScanCodeService from '../services/mp/ScanCodeService';
+import PopupService from '../services/mp/PopupService';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
 		super(app);
@@ -40,6 +41,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('token', TokenService);
 		this.app.register('href', HrefService);
 		this.app.register('scan', ScanCodeService);
+		this.app.register('popup',PopupService);
 	}
 	boot() {
 
