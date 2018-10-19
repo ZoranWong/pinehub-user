@@ -141,7 +141,7 @@
 			console.log(this.loadOrders(),1234)
 		},
 		mounted() {
-			console.log('mounted my orders');
+
 			
 		}
 	}

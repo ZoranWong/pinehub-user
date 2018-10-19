@@ -2,8 +2,8 @@
 	<div id="myorder">
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
-			<ul>
-				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+			<ul >
+				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
 		<div id="tab_content">
@@ -48,6 +48,11 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			test() {
+				console.log(this.$store.getters['model.my.orders/consoleThis']);
+				console.log('000000000000')
+				return this.$store.getters['model.my.orders/consoleThis']
 			}
 		},
 		methods: {
@@ -57,7 +62,7 @@
 			tabSelect(num) {
 				this.cur = num;
 				switch(num) {
-					case 0:
+					case 0: 
 						this.statusType = "all";
 						break;
 					case 1:
@@ -75,7 +80,6 @@
 		},
 		created() {
 			this.nowCom = "card";
-			console.log('store.data', this.$store);
 		}
 	}
 </script>
