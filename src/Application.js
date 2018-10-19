@@ -79,15 +79,47 @@ export default class Application {
 		this.exceptionHandlers[name] = exception;
 	}
 
+
 	register(name, service = null) {
-		if(!service && _.isFunction(name)) {
-			return this.instances[name] = new name(this);
-		} else if(name && _.isFunction(service)) {
-			return this.instances[name] = new service(this);
-		} else {
-			return this.instances[name] = service;
-		}
-	}
+    let instance = null;
+    if(!service && _.isFunction(name)) {
+       instance = this[name] = this.instances[name]  = new name(this);
+    }else if(name && _.isFunction(service)){
+      instance = this[name] =  this.instances[name] = new service(this);
+    }else{
+      instance = this[name] =  this.instances[name]  = service;
+    }
+
+    let keys =name.split('.');
+    let key = keys.length - 1;
+    let tmp = [];
+    tmp[keys[key]] = instance;
+    while(key > 0){
+      key --;
+      let tmp0 = [];
+      tmp0[keys[key]] = tmp;
+      tmp = tmp0;
+    }
+    function extend(dist, src, deep) {
+      for (var key in src) {
+        if (src.hasOwnProperty(key)) {
+          let value = src[key];
+          let end = !deep;
+          if(end){
+            dist[key] = value;
+            continue;
+          }else if(!dist[key]) {
+            dist[key] = [];
+          }
+          extend(dist[key], value, deep - 1);
+        }
+      }
+    }
+    extend(this.instances, tmp, keys.length - 1);
+    extend(this, tmp, keys.length - 1);
+    return instance;
+  }
+
 	resetForm(form) {
 		form.resetFields();
 	}

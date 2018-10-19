@@ -15,9 +15,9 @@ application.run(function(app) {
 		app.models.addModel('model.activity.merchandises', Merchandises);
 		app.models.addModel('model.shoppingCarts', ShoppingCarts);
 		// app.models.addModel('model.categories', Categories);
-	}	
+	}
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
+  app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
 },function(mountComponent) {
  _.extend(App,mountComponent);
  const app = new Vue(App);
