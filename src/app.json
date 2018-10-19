@@ -1,0 +1,33 @@
+{
+  "pages": [
+    
+    "pages/index/main",  
+    "pages/my/location/main",
+    "pages/my/mystore/main",
+    "pages/my/mystore/order/main",
+    "pages/my/mystore/status/main",
+    "pages/my/order/main",
+    "pages/my/pay/main",
+    "pages/my/share/main",
+    "pages/my/feedback/main",
+    "pages/my/feedback/success/main",
+    "pages/my/main",
+    "pages/todayOrder/main",
+    "pages/todayOrder/submitOrder/main",
+    "pages/reserveShop/main",
+    "pages/reserveShop/submitOrder/main",
+    "pages/reserveShop/orderSelf/main",
+    "pages/activity/main",
+    "pages/activity/submitOrder/main",
+    "pages/order/main",
+    "pages/search/main",
+    "pages/coupon/main"
+    
+  ],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#fece00",
+		"navigationBarTitleText": "",
+		"navigationBarTextStyle": "black"
+	}
+}

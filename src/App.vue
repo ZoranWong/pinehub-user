@@ -12,20 +12,88 @@ export default {
 </script>
 
 <style>
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+/*通用样式*/
+*{
+  margin:0rpx;
+  padding:0rpx;
+}
+.body {
+    background-color: #f2f2f2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.box-shadow{
+  border-radius: 10rpx;
+  box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
   box-sizing: border-box;
 }
-/* this rule will be remove */
-* {
-  transition: width 2s;
-  -moz-transition: width 2s;
-  -webkit-transition: width 2s;
-  -o-transition: width 2s;
+.clearfix{
+  display: table;
+  clear: both;
+  content: "";
 }
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.i-icon{
+  display:block;
+}
+.span-inline{
+  display: inline-block;
+}
+.span-block{
+  display: block;
+}
+.btn{
+  width:180rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  border-radius: 10rpx;
+  display: inline-block;
+}
+.width710{
+  width:710rpx;
+}
+/*样色样式*/
+
+.bgff{
+  background-color: #ffffff;
+}
+.theme-color{
+  background-color: #fece00;
+}
+.color11{
+  color: #111111;
+}
+.color52{
+  color:#525252;
+}
+.color75{
+  color: #757575;
+}
+.color00{
+  color:#ffcc00;
+}
+/*部分tab 样式*/
+#tab_select ul li {
+    height: 70rpx;
+    line-height: 70rpx;
+    float: left;
+    background: #FFFFFF;
+    text-align: center;
+    font-size: 28rpx;
+    font-weight: 400;
+  } 
+#tab_select ul li.tab_select_now {
+    color: #FECE00;
+  } 
+.tab_content_now {
+    display: block;
+  }
 </style>
