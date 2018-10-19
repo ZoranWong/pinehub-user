@@ -107,7 +107,7 @@
 					"total_score": 0,
 					"balance": 66.59,
 					"ticket_num": 10,
-					"score": 500
+					"score": 500 
 				}
 			}
 		},

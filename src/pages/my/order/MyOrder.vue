@@ -137,7 +137,7 @@
 			}
 		},
 		created() {
-			this.loadOrders();
+			this.loadOrders();  
 		},
 		mounted() {
 			console.log('mounted my orders');

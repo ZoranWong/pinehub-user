@@ -23,10 +23,10 @@
     },
 			addCart(event) {
 			  this.count++;
-        // this.$command('ADD_MERCHANDISE_TO_CART', {
-        //    count: this.count,
-        //    merchandise: this.merchandise
-        //  });
+           this.$command('ADD_MERCHANDISE_TO_CART', {
+              count: this.count,
+              merchandise: this.merchandise
+           }); 
 			},
       decreaseCart() {
         this.count--;
