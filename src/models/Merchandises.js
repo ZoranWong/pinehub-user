@@ -21,8 +21,5 @@ export default class Merchandises extends Model{
 
   listeners() {
     super.listeners();
-    this.addEventListener('a', function({b, c, d}) {
-    	this.state;
-    });
   }
 }
