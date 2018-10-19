@@ -9,8 +9,8 @@
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
-	"projectname": "pinehub-user",
+	"appid": "wx67127c10ce9c598c",
+	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"condition": {
 		"search": {
 			"current": -1,
