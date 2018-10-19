@@ -5,11 +5,11 @@
     <location></location>
     <div class="goods" >
       <menus @menusChange="menusChange"></menus>
-      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"></m-list>    
+      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
+      :addMerchandiseToCart = "addCart"  ></m-list>
     </div>
-   <!--  <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
-    <cart  v-if="isShowCart"></cart>  -->
-  <!--  <order></order> -->
+    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
+    <cart  v-if="isShowCart"></cart>
   </div>
 </template>
 
@@ -20,9 +20,8 @@
   import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
-  import Cart from '@/components/Cart'; 
-  import Order from './Order';
-  
+  import Cart from '@/components/Cart';
+
   export default{
     data(){
       return{
@@ -42,7 +41,6 @@
       'm-list': FoodsList,
       'cart': Cart,
       'mp-title': MpTitle,
-      'order' : Order
    },
     computed: {
       merchandises(){
@@ -58,28 +56,37 @@
         this.isShowCart = true;
       },
       hdlShowPopup:function(){
-        this.isShow = true;          
+        this.isShow = true;
       },
        hdlHidePopup:function(){
         this.isShow = false;
       },
       menusChange : function (index) {
         console.log(index);
-
       },
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-      }
-      
+      },
+      addCart(shopId, count,  merchandiseId){
+        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+        console.log( this.count, "987", this.merchandiseId)
+      },
+
+      // reduceCart(shopId, count, merchandisesId){
+      //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      // }
+
   },
    created(){
       // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
       // console.log('created mm');
+      console.log('store', this.$store);
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
 
    },
 
 }
+
 
 </script>
 
@@ -90,6 +97,6 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
-  z-index: 
+  z-index:
 }
 </style>

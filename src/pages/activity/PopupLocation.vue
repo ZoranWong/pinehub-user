@@ -1,18 +1,18 @@
 <template>
 	<div class="popup">
-		<div class="popup-box">
+		<div class="popup-box bgff color11">
 			<i class="location-icon"></i> 
 			<i class="cancel"  @click="popHide"></i>
 			<div class="popup-content">
 				<div class="popup-title">
 				历史站点选择
 			    </div>
-				<div class="place-item"  v-for="(item,index ) in places" :key="index">
+				<div class="place-item"  v-for="(item,index ) in places" :key="index"  @click="jump('shopsubmitorder')">
 					<i class="i-icon yellow-right-arrow" ></i>
 					{{item.name}}
 				</div>
-				<div class="btn-big theme-color ">重新选择</div>
-			    <div class="tips text-color-75">
+				<div class="btn-big theme-color" @click="jump('location')">重新选择</div>
+			    <div class="tips color75">
 			    	注：请您务必在上午9:00前领取您的早餐
 			    </div>
 			</div>		
@@ -40,6 +40,9 @@
   	methods:{
 			popHide:function(){
 				this.$emit('hdlHidePopup')
+			},
+			jump(router){
+				this.$command('router',router,'jump');
 			}
 		}
 
@@ -60,9 +63,7 @@
 .popup-box{
 	width:630rpx;
 	height: 610rpx;
-	background-color: #ffffff;
 	font-size:32rpx;
-	color: #111111;
 	border-radius: 10rpx;
 	padding: 40rpx 0rpx; 
 	box-sizing: border-box;
@@ -95,11 +96,6 @@
 }
 .popup-content{
 	margin:60rpx 50rpx 0rpx 50rpx;
-
-   /* border:1px solid red;*/
-}
-.popup-title{
-	/*margin-bottom: 20rpx;*/
 }
 .place-item{
 	width:530rpx;
@@ -109,7 +105,6 @@
 	padding: 10rpx 12rpx;
 	box-sizing:border-box;
 	font-size:28rpx;
-	/*border:1px solid red;*/
 	margin: 20rpx 0rpx;
 	display: flex;
 }
@@ -132,7 +127,6 @@
 }
 .tips{
 	font-size:20rpx;
-	/*color: #757575;*/
 	text-align: center;
 	margin-top: 20rpx;
 }

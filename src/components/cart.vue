@@ -1,80 +1,77 @@
 <template>
 	<div class="shopcart">
-    <div class="shoppingcart-bottom">
+    <div class="shoppingcart-bottom clearfix">
+      <div class="content" @click="toggleListShow">
         <span class="black-circle"></span>
-        <i class="i-icon cart" @click="cartListShow"></i>
-        <i class="i-icon num-icon">{{count}}</i>
-        <div class="clearfix">
-          <span class="total-price">¥{{totalPrice}}</span>
-          <label class="choose fr" @click="popShow">选好了
-          <i class="i-icon next-icon"></i>
-          </label>
-        </div>
-    </div>   
- <!--    <div class="selected-merchandises" v-if="isShowCartlist" @hdlShowCartList="hdlShowCartList" >
+        <i class="i-icon cart" ></i>
+        <i class="i-icon num-icon  theme-color color11">{{totalCount}}</i>
+        <span class="total-price">¥{{totalAmount}}</span>
+      </div>
+      <label class="choose fr" @click="popShow">
+        选好了
+        <i class="i-icon next-icon"></i>
+      </label>
+    </div>
+    <div class="selected-merchandises  bgff"  v-if="toggleList" >
       <div class="selected-title clearfix">
         <div class="flag fl">
           已选产品
         </div>
-        <label class="empty fr">清空</label>
+        <label class="empty fr" @click="clearAllCart">清空</label>
       </div>
-      <div class="add-merchandises text-color-11">
-        <span class="merchandises-name">芝士蛋糕</span>
-        <span class="sell-price">¥20.00{{sellPrice}}</span>
-        <div class="cartcontrol-warpper">
-            <cart-control :list="list" :border="isBorder" ></cart-control>
+      <div class="add-box">
+        <div class="add-merchandises color11" v-for="(item, itemIndex) in cartList" :key="itemIndex">
+          <span class="merchandises-name">{{item.name}}</span>
+          <span class="sell-price">¥{{item.sellPrice}}</span>
+          <div class="cartcontrol-warpper">
+            <cart-control :list="list"  ></cart-control>
+          </div>
         </div>
       </div>
-    </div> --> 
+       
+    </div> 
+    <div class="mask" v-if="maskBg"></div>  
+   
   </div>
 </template>
 <script>
   import CartControl  from '@/components/CartControl'
 	export default{
-    props:{
-      selectFoods:{
-        type:Array,
-        default(){
-          return[
-            {
-              price:10,
-              count:1
-            }
-          ];
-        }
-      }
-    },
 		data(){
 			return{
-        isShowCartlist:true,
-        // isBorder:'2rp solid  #fece00',     
+        toggleList:false,
+        maskBg:false,      
       }
 		},
     components:{
       'cart-control':CartControl,
     },
+    computed:{
+      cartList(){
+        return this.$store.getters['model.shoppingCarts/list'];
+      },
+      totalAmount(){
+        return this.$store.getters['model.shoppingCarts/totalAmount'];
+      },
+      totalCount(){
+        return this.$store.getters['model.shoppingCarts/totalCount'];
+      }
+    },
     methods:{
       popShow:function(){
         this.$emit('hdlShowPopup')
       },
-      cartListShow:function(){
-        this.$('hdlShowCartList');
-        console.log(1)
+      toggleListShow:function(){
+        this.toggleList =! this.toggleList;
+        this.maskBg = ! this.maskBg;
       },
-      hdlShowCartList:function(){
-        this.isShowCartlist = true;
-        console.log(2)
-      }
+      clearAllCart:function(){
+        console.log("清空")
+        this.data = []
+      },
     },
-    computed:{
-      // totalPrice(){
-      //   let total = 0;
-      //   this.foods.forEach( (food) => {
-      //       total += food.price * food.count;
-      //   });
-      //   return total;
-      // }
-    }
+    
+ 
 	}
 </script>
 <style scoped>
@@ -84,7 +81,6 @@
   position: fixed; 
   bottom:0rpx;
   right: 0rpx;
-  
 }
 /*底部的购物车*/
 .shoppingcart-bottom{
@@ -118,8 +114,6 @@
   height: 36rpx;
   line-height: 36rpx;
   border-radius: 50%;
-  background-color:#fccd00;
-  color:#111111;
   text-align: center;
   font-size:22rpx;
   font-weight: 400;
@@ -127,19 +121,20 @@
   top:-20rpx;
   left:78rpx;
 }
-.shoppingcart-bottom div{
-  height: 98rpx;
-  line-height: 98rpx;
-  width:100%;
+.content{
+  width:70%;
   font-size: 32rpx;
+  margin-top: 20rpx;
 }
 .total-price{
-  margin-left: 110rpx;
+  margin-left: 140rpx;
   color: #ffffff;
 }
-.shoppingcart-bottom .choose{
-  width:200rpx;
-  color: #fece00; 
+.choose{
+  display:inline-block;
+  width: 30%;
+  color: #fece00;
+  margin-top:-40rpx;
 }
 .next-icon{
   width:20rpx;
@@ -152,14 +147,28 @@
 
 }
 /*商品数量*/
+.mask{
+    position: fixed;
+    top:0; 
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    box-sizing: border-box;
+    background-color:rgba(7,17,27,0.6);
+}
+.add-box{
+  margin-top: 60rpx;
+}
 .selected-merchandises{
   width:100%;
   height: 400rpx;
   overflow: hidden;
-  background-color: #ffffff;
   position: absolute;
   bottom:98rpx;
   z-index:20;
+  box-sizing: border-box;
+  overflow-y: auto;
+
 }
 .selected-title{
   width:100%;
@@ -169,6 +178,8 @@
   background-color: #f2f2f2;
   padding: 0rpx 40rpx;
   box-sizing: border-box;
+  position: fixed;
+  z-index: 2;
 }
 .flag{
   background:url(../../static/images/flag.png) 0rpx 14rpx no-repeat;
@@ -176,7 +187,6 @@
   text-indent: 36rpx;  
 }
 .empty{
-
   background:url(../../static/images/del-icon.png) 0rpx 14rpx no-repeat;
   background-size: 26rpx 30rpx; 
   text-indent: 36rpx;
@@ -197,10 +207,8 @@
 }
 .cartcontrol-warpper{
   width:143rpx;
-  height: 50rpx;
   position: absolute;
   bottom:0rpx;
-  right:0rpx;
-  border:1rpx solid red;
+  right:20rpx;
 }
 </style>

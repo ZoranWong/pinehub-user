@@ -1,19 +1,37 @@
 import Model from './Model'
 import _ from 'underscore';
-import MerchandiseTransformer from './transformers/Merchandise';
-export default class Merchandises extends Model{
+import ShoppingCartTransformer from './transformers/ShoppingCart';
+export default class ShoppingCarts extends Model{
   constructor(application) {
     super(application);
-    this.transformer = MerchandiseTransformer;
+    this.transformer = ShoppingCartTransformer;
   }
   computed() {
     return _.extend(super.computed(), {
       totalAmount(state){
         //  计算总价
-        return _.flatten(state.list);
+        let total = 0;
+        state.list.forEach( (item) => {
+            total += item.sellPrice * item.count;
+        });
+        return total;
       },
       list(state){
-        return state.list[0];
+        return _.flatten(state.list);
+      },
+      quality(state) {
+        return (id) => {
+          let cart = _.findWhere(state.list, {merchandiseId: id});
+          console.log(cart)
+          return cart ? cart.count : 0;
+        }
+      },
+      totalCount(state){
+         let total = 0;
+         state.list.forEach( (item) => {
+          total  += item.count;
+         })
+         return total;
       }
     });
   }
@@ -24,8 +42,23 @@ export default class Merchandises extends Model{
   }
   listeners() {
     super.listeners();
-    this.addEventListener('change', function({}) {
-//
+    this.addEventListener('changeCart', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count}) {
+
+      let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
+      console.log(cart)
+      if(!cart) {
+        cart = {
+          id: id,name: name, sellPrice: sellPrice, totalAmount: totalAmount,
+          merchandiseId:merchandiseId, shopId:shopId, count:count
+        };
+        this.state.list.push(cart);
+      }else{
+        if(count === 0) {
+           this.state.list.remove(cart)
+        }else{
+          cart.count = count;
+        }
+      }
     });
   }
 }

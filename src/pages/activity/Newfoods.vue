@@ -7,15 +7,13 @@
         <div class="foods-item-bottom">
           <h4 class="merchandises-name" >
                  {{item.name}}
-
           </h4>
-          <span class="tag"  v-for="(tag, index2) in item.tags" :key="index2">
-            {{tag}}
-           
+          <span class="tag color00"  v-for="(tag, index2) in item.tags" :key="index2">
+            {{tag}}  
           </span>
-          <p class="describe">{{item.describe}}</p>
+          <p class="describe color75">{{item.describe}}</p>
           <div class="content ">
-            <div class="sell-price">{{item.sellPrice}}
+            <div class="sell-price color00">{{item.sellPrice}}
               <span>RMB</span>
             </div>
             <div class="cartcontrol-warpper ">
@@ -95,7 +93,6 @@
   padding:20rpx;
   box-sizing: border-box;
   overflow-y: auto;
-  background-color: #f2f2f2;
 }
 .foods-item{
   width:100%;
@@ -125,9 +122,8 @@
   line-height: 36rpx;
   letter-spacing: 4rpx;
   min-width: 84rpx;
-  color: #ffcc01;
   font-size: 28rpx;
-  border:2rpx solid #ffcc01;
+  border:2rpx solid #ffcc00;
   border-radius: 36rpx;
   text-align: center;
   display: inline-block;
@@ -136,7 +132,6 @@
 }
 .describe{
   font-size:22rpx;
-  color: #757575;
 }
 .content{
   width:100%;
@@ -147,7 +142,6 @@
 .sell-price{
   font-size: 36rpx;
   font-weight: 400;
-  color: #ffcc01;
   position: absolute;
   bottom:40rpx;
   left:0rpx;

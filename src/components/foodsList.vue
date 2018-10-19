@@ -14,7 +14,7 @@
           <p class="sell-price">{{item.sellPrice}}元/份</p>
           <p class="origin-price">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
-            <cart-control :list="list" ></cart-control>
+            <cart-control @addCart = "addCart" :merchandise = "item"></cart-control>
           </div>
         </div>
       </div>
@@ -26,6 +26,10 @@
   import Cart from '@/components/Cart'
 	export default{
     props: {
+      addMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
       width: {
         default: '100%',
         type: String
@@ -67,6 +71,9 @@
       scroll(e) {
         console.log(e)
       },
+      addCart( id, count, shopId) {
+        this.addMerchandiseToCart( shopId, count, id);
+      }
     },
     watch:{
       width:function(val) {

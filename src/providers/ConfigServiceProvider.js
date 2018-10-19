@@ -6,7 +6,7 @@ export default class ConfigServiceProvider extends ServiceProvider {
     super(application);
   }
   register() {
-	this.app.registerConfig('app', appConfig);
-	this.app.registerConfig('routes', routes);
+  	this.app.registerConfig('app', appConfig);
+  	this.app.registerConfig('routes', routes);
   }
 }

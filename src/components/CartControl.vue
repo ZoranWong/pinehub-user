@@ -1,15 +1,15 @@
 -<template>
 	<div class="cartcontrol" :style="{border: border}" >
-		<div class="cart-decrease" v-show="count>0"
-        @click="decreaseCart" > 
+		<div class="cart-decrease" v-show="count>0" @click="decreaseCart" > 
     </div>
 		<div class="cart-count" v-show="count>0"> {{count}} </div>
-		<div class="cart-add" @click="addCart" ></div>
+		<div class="cart-add" @click="addCart" :add="addMerchandises"></div>
 	</div>
 </template>
 <script>
 	export default {
 		props: {   
+      
 			merchandise: {
         default:function() {
           return {};
@@ -17,32 +17,36 @@
 				type:Object
 			}
 		},
+	    computed:{
+	      border() {
+	        return this.count > 0 ? '2rpx solid #ffcc00' : '0';
+	      },
+	      count() {
+	        // console.log("hj888",this.merchandise)
+	        return this.$store.getters['model.shoppingCarts/quality'](this.merchandise.id);
+	      }
+	    },
 		methods: {
-      cartShow:function() {
-      this.$emit('show-cart');
-    },
-			addCart(event) {
-			  this.count++;
-           this.$command('ADD_MERCHANDISE_TO_CART', {
-              count: this.count,
-              merchandise: this.merchandise
-           }); 
-			},
-      decreaseCart() {
-        this.count--;
-      }
+	      cartShow:function() {
+	        this.$emit('show-cart');
+	      },
+				addCart(event) {
+	
+	        this.$emit('addCart',  this.merchandise.id, this.count + 1, 
+	          this.merchandise.shopId );
+	        console.log( this.count, "cartcontrol", this.merchandiseId)
+	      },
+	      decreaseCart() {
+	        if(this.count > 0) {
+	         this.$emit('addCart',  this.merchandise.id, this.count - 1, 
+	          this.merchandise.shopId ); 
+	        }
+	        
+	      }
 		},
-    computed:{
-      border() {
-        return this.count > 0 ? '2rpx solid #fece00' : '0';
-      }
-    },
-		data() {
-			return {
-        count:0,
-
-      };
-		},
+	    mounted: function (){
+	      // console.log(this.pageCount)
+	    }
 	}
 </script>
 <style>
@@ -62,7 +66,6 @@
   position: absolute;
   top: 0rpx;
   left:0rpx;
-  transition: all 0.4s linear;  
 }
 .cart-count{
   font-size:28rpx;

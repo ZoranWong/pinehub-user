@@ -2,7 +2,7 @@
 	<div class="confirmation-order body">
 		<mp-title :title="title"></mp-title>
 		<!-- 收货人组件 -->
-		<consignee></consignee>
+		<consignee select-method="true"></consignee>
 		<!-- 配送和自提的tab切换组件-->
 	    <tab-delivery></tab-delivery>
 	    <!-- 支付内容的显示组件 -->
@@ -21,15 +21,7 @@
 		data(){
 			return{
 				title:'当日下单-确认订单',
-				selected:0,
-       			tabs:[{
-       				id:1,
-       				txt:"送到"
-       			},
-       			{
-       				id:2,
-       				txt:'自提'
-       			}],
+				
 			}
 		},
 		components:{

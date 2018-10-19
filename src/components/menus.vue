@@ -87,7 +87,6 @@
   height: 216rpx;
   width: 120rpx;
   padding:28rpx 0rpx;
-
 }
 .new-product-icon
 {
@@ -105,7 +104,6 @@
   font-size: 28rpx;
   font-weight:400;
   box-sizing: border-box;
-  background-color: #ffffff;
   box-shadow: 4rpx 0rpx 10rpx rgba(205,205,205,0.3);
 
 }
@@ -122,37 +120,10 @@
   border-left:6rpx solid #fece00;
   background-color: #fafafa;
 }
-#tab_select ul li.tab_select_now span {
-
-   /* border-bottom: 5rpx solid #FECE00;*/
-  }
-  
-  #tab_content {
-    padding-top: 74rpx;
-  }
-  .tab_content_now {
-    display: block;
-  }
-/*
-.classic-set-meal,.utrition-collocation,.snack-dessert{
-  height:108rpx;
-  padding:12rpx 20rpx;
-  border-bottom:2rpx solid #e0e0e0;
-  box-sizing: border-box;
-  text-indent: 2rpx;
+#tab_content {
+  padding-top: 74rpx;
 }
-.classic-set-meal{
-   border-top-right-radius:10rpx;
-}
-.drink {
-   height:108rpx;
-   padding-top: 38rpx;
-}*/
-
-
-
- 
-
-  
-  
+.tab_content_now {
+  display: block;
+} 
 </style>
