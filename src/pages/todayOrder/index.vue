@@ -6,10 +6,10 @@
     <div class="goods" >
       <menus @menusChange="menusChange"></menus>
       <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-      :addMerchandiseToCart = "addCart"  ></m-list>    
+      :addMerchandiseToCart = "addCart"  ></m-list>
     </div>
     <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
-    <cart  v-if="isShowCart"></cart> 
+    <cart  v-if="isShowCart"></cart>
   </div>
 </template>
 
@@ -20,8 +20,8 @@
   import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
   import Menus from '@/components/Menus';
-  import Cart from '@/components/Cart'; 
-  
+  import Cart from '@/components/Cart';
+
   export default{
     data(){
       return{
@@ -56,7 +56,7 @@
         this.isShowCart = true;
       },
       hdlShowPopup:function(){
-        this.isShow = true;          
+        this.isShow = true;
       },
        hdlHidePopup:function(){
         this.isShow = false;
@@ -75,11 +75,12 @@
       // reduceCart(shopId, count, merchandisesId){
       //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       // }
-      
+
   },
    created(){
       // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
       // console.log('created mm');
+      console.log('store', this.$store);
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
 
    },
@@ -96,6 +97,6 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
-  z-index: 
+  z-index:
 }
 </style>

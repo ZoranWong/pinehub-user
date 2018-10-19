@@ -22,4 +22,8 @@ export default class AuthService extends Service {
       });
     });
   }
+
+  code2Session() {
+    
+  }
 }

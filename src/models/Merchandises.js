@@ -9,11 +9,8 @@ export default class Merchandises extends Model{
   computed() {
     return _.extend(super.computed(), {
       list(state){
-
-        // return state.currentPage ? _.flatten(state.list[state.categoryId]) : [];
+        console.log('merchandises', this);
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
-        // return state.currentPage ? _.flatten(state.list) : [];
-        
       },
       currentCategoryIndex(state) {
       	return state.currentCategoryIndex;
@@ -22,8 +19,7 @@ export default class Merchandises extends Model{
   }
   data() {
     return _.extend(super.data(), {
-      // categoryId: null
-    	// currentCategoryIndex: null
+    		currentCategoryIndex: null
     });
   }
 
