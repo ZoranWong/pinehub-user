@@ -3,7 +3,7 @@
 		<mp-title :title="title"></mp-title>
 		<div id="mystore_header">
 			<div id="mystore_userinfo">
-				<img id="bear" src="../../../../static/images/bearmoney.gif" />
+				<img id="bear" src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/bearmoney.gif" />
 
 				<div id="mystore_userinfo_otherinfo">
 					<ul>

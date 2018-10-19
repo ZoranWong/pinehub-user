@@ -2,10 +2,10 @@
 	<div id="myfeedback">
 		<mp-title :title="title"></mp-title>
 		<div id="myfeedback_content">
-			<textarea placeholder-class="placeholder-class" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" @input="nowFont" v-model="textarea" />
+			<textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" />
 			<em>{{nowFontNum}}/{{totalFont}}</em>
 		</div>
-		<input placeholder-class="placeholder-class" id="myfeedback_mobile" placeholder="输入您的联系方式（选填）" v-model="input" />
+		<input v-model="contact" placeholder-class="placeholder-class" id="myfeedback_mobile" placeholder="输入您的联系方式（选填）" />
 		<div id="btn" @click="submit">立即提交</div>
 	</div>
 </template>
@@ -20,43 +20,33 @@
 			return {
 				title: "意见反馈",
 				navName: "feedback",
+				feedBackContent: null,
 				totalFont: 500,
-				nowFontNum: 0
+				contact: null
 			};
 		},
 		computed: {
-
+			nowFontNum() {
+				return this.feedBackContent ? this.feedBackContent.length : 0;
+			}
 		},
 		methods: {
 			jump(router) {
 				this.$command('router', router, 'jumpNotTab');
 			},
-			nowFont() {
-				let nowFontNum = this.textarea.length;
-				this.nowFontNum = nowFontNum;
-				if(this.nowFontNum >= this.totalFont) {
-					wx.showToast({
-						title: "最多只能输入" + this.totalFont + "字",
-						icon: "none"
-					})
-					return false;
-				}
-				console.log(nowFontNum);
-			},
 			submit() {
-				let tips = this.textarea;
-				let mobile = this.input;
-				tips = typeof(tips) === "undefined" ? '' : tips;
-				mobile = typeof(mobile) === "undefined" ? '' : mobile;
-				console.log(tips, mobile);
-				if(tips.length < 10) {
+				console.log(this.feedBackContent);
+				if(!this.feedBackContent || this.feedBackContent.length < 10) {
 					wx.showToast({
 						title: "不得少于10字",
 						icon: "none"
 					})
 					return false;
+				} else {
+					this.contact = null;
+					this.feedBackContent = null;
+					this.jump('myfeedbacksuccess');
 				}
-				this.jump('myfeedbacksuccess');
 			}
 		},
 		created() {

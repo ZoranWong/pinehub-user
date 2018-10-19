@@ -1,9 +1,9 @@
 <template>
 	<div id="store">
-		<div id="select_date">
+		<!--<div id="select_date">
 			<picker :range="selectDate" :value="nowSelectDate" id="select_date_ranges" @change="selectDateNow">{{selectDate[nowSelectDate]}}</picker>
 			<i id="select_date_arrow"></i>
-		</div>
+		</div>-->
 		<div id="store_total">
 			<em>库存统计</em>
 			<font>(每日14:00更新数据)</font>
@@ -12,12 +12,13 @@
 		<div id="store_product">
 			<div id="store_product_left">
 				<ul>
-					<li v-for="(tab,index) in storeTabs" :class="{storetab_select_now:storeCur == index}" :key="index" @click="storeTabSelect(index)">{{tab.name}}</li>
+					<li v-for="(category, index) in categories" :class="{storetab_select_now: currentCategoryIndex == index}" :key="index" 
+						@click="changeCategoryIndex(index, category.id)">{{category.name}}</li>
 				</ul>
 			</div>
 			<div id="store_product_right">
 				<div class="store_product_list">
-					<div v-for="item in storeProduct" :key="item.id" class="store_product_list_li">
+					<div v-for="item in storeMerchandises" :key="item.id" class="store_product_list_li">
 						<em>{{item.name}}<i>￥{{item.sell_price}}</i></em>
 						<em>{{item.code}}<i class="num_change" @click="numChange(item)">{{item.stock_num}}个</i></em>
 					</div>
@@ -32,59 +33,53 @@
 		name: 'Store',
 		data() {
 			return {
-				nowSelectDate: 0,
-				selectDate: ["今日", "本周", "本月"],
-				storeTabs: [{
-					name: "早餐"
-				}, {
-					name: "午餐"
-				}, {
-					name: "下午茶"
-				}, {
-					name: "晚餐"
-				}, {
-					name: "其他"
-				}],
-				storeCur: 0,
-				storeProduct: [{
-						"id": 1,
-						"name": "包子",
-						"sell_price": 2,
-						"stock_num": 50,
-						"code": "12138"
-					},
-					{
-						"id": 2,
-						"name": "馒头",
-						"sell_price": 1,
-						"stock_num": 40,
-						"code": "12138"
-					}
-				]
+				//				nowSelectDate: 0,
+				selectDate: ["今日", "本周", "本月"]
+			}
+		},
+		watch: {
+			categories(nv, ov) {
+				if(nv && nv !== ov) {
+					this.changeCategoryIndex(0, nv[0]['id']);
+				}
+			}
+		},
+		computed: {
+			categories() {
+				return this.$store.getters['store.categories/list'];
+			},
+			currentCategoryIndex() {
+				return this.$store.getters['myStore.merchandises/currentCategoryIndex'];
+			},
+			storeMerchandises() {
+				return this.$store.getters['myStore.merchandises/list'];
 			}
 		},
 		methods: {
-			selectDateNow(e) {
-				let num = e.target.value;
-				this.nowSelectDate = num;
-				if(num == 0) {
-					console.log(666);
-				} else if(num == 1) {
-					console.log(888)
-				} else {
-					console.log(999)
-				}
-			},
-			storeTabSelect(num) {
-				this.storeCur = num;
-				console.log(num);
+			//			selectDateNow(e) {
+			//				let num = e.target.value;
+			//				this.nowSelectDate = num;
+			//				if(num == 0) {
+			//					console.log(666);
+			//				} else if(num == 1) {
+			//					console.log(888)
+			//				} else {
+			//					console.log(999)
+			//				}
+			//			},
+			changeCategoryIndex(index, catgoryId) {
+				this.$store.dispatch('myStore.merchandises/setCurrentCategory', {
+					categoryIndex: index
+				});
+				this.$command('GET_STORE_MERCHANDISES', storeId, catgoryId);
 			},
 			numChange(merchandise) {
 				this.$emit("showToast", merchandise);
 			}
 		},
 		created() {
-
+			let storeId = 1;
+			this.$command('GET_STORE_CATEGORIES', storeId);
 		}
 	}
 </script>
@@ -102,6 +97,7 @@
 		border-radius: 10rpx;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 		position: relative;
+		display: none;
 	}
 	
 	#select_date_ranges {
@@ -143,7 +139,8 @@
 	}
 	
 	#store_total i {
-		display: inline-block;
+		/*display: inline-block;*/
+		display: none;
 		float: right;
 		color: #828282;
 	}
