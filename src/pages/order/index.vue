@@ -1,5 +1,5 @@
 <template>
-	<div id="myorder">
+	<div class="body">
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
@@ -8,7 +8,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item" v-if="cur === 0">
-				<order></order>
+				<my-order></my-order>
 			</div>
 			<div class="tab_content_item" v-else-if="cur === 1">
 				2
@@ -24,25 +24,28 @@
 </template>
 
 <script>
-	import Order from './Order';
+	// import MyOrder from '@/components/MyOrder';
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
 			"mp-title": MpTitle,
-			"order": Order,
+			// "my-order": MyOrder,
 			'footer-nav': FooterNav
 		},
 		data() {
 			return {
-				title: "店铺状态",
-				navName: "my",
-				tabs: [{
-					name: "销售统计"
-				}, {
-					name: "进货统计"
-				}, {
-					name: "库存统计"
+				title: "订单",
+				navName: "order",
+				tabs: [
+				{
+					name: "全部"
+				},
+				{
+					name: "未核销"
+				},
+				{
+					name:"已核销"
 				}],
 				cur: 0
 			};
@@ -58,28 +61,14 @@
 		methods: {
 			tabSelect(num) {
 				this.cur = num;
+				console.log(num);
 			}
 		},
-		created() {
-		}
+		
 	}
 </script>
 
 <style scoped>
-	page {
-		height: 100%;
-		background: #fafafa;
-	}
-	
-	#footNav_height {
-		height: 109rpx;
-		
-	}
-	
-	#myorder {
-		position: relative;
-	}
-	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -89,19 +78,9 @@
 		top: 0;
 		z-index: 999;
 	}
-	
 	#tab_select ul li {
-		height: 74rpx;
-		line-height: 74rpx;
-		float: left;
-		background: #FFFFFF;
-		text-align: center;
 		font-size: 32rpx;
 		font-weight: 300;
-	}
-	
-	#tab_select ul li.tab_select_now {
-		color: #FECE00;
 	}
 	
 	#tab_select ul li.tab_select_now span {
@@ -115,10 +94,9 @@
 		padding-top: 74rpx;
 	}
 	
-	.tab_content_item {
+	
+	#footNav_height {
+		height: 109rpx;
 	}
 	
-	.tab_content_now {
-		display: block;
-	}
 </style>

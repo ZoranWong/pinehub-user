@@ -4,7 +4,7 @@ export default class SearchLocationCommand extends Command {
     super(app);
   }
   //
-  async handle(address) {
+  async handle(address){
     let result = await this.service('map').searchAddressToLocation(address);
    // request data from server 
    //end 

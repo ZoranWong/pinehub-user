@@ -15,7 +15,7 @@
             	</div>
 			</div>
 		</div>
-		<div class="li-item bgff coupon">
+		<div class="li-item bgff coupon"  @click="jump('coupon')">
 			优惠券 <span class="coupon-tips">1张可用</span>
 			<label for="" class="fr">
 				有可用<i class="arrow-icon"></i>
@@ -44,6 +44,12 @@
 		components:{
       		'cart-control':CartControl,
     	},
+    	methods:{
+			jump(router){
+				console.log(4)
+				this.$command('router',router,'jump');
+		}
+	}
 
 	}
 </script>

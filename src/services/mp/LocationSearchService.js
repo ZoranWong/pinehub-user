@@ -14,12 +14,12 @@ export default class LocationSearchService extends Service {
 			this.map.geocoder({
 				address: address,
 				success: function(res) {
-					console.log(res);
+					// console.log(res);
 					//	返回对象 {lat, lng}
 					resolve(res.result.location);
 				},
 				fail: function(error) {
-					console.log(error);
+					// console.log(error);
 					reject(error);
 				}
 			});
@@ -34,11 +34,11 @@ export default class LocationSearchService extends Service {
 					longitude: lng
 				},
 				success: function(res) {
-					console.log(res);
+					// console.log(res);
 					resolve(res.result.address_component.city);
 				},
 				fail: function(error) {
-					console.log(error);
+					// console.log(error);
 					reject(error);
 				}
 			});
@@ -47,7 +47,7 @@ export default class LocationSearchService extends Service {
 
 	//渲染地图
 	getLocation() {
-		console.log('开始渲染地图');
+		// console.log('开始渲染地图');
 		return new Promise((resolve, reject) => {
 			wx.getLocation({
 				type: 'wgs84',
@@ -59,7 +59,7 @@ export default class LocationSearchService extends Service {
 					resolve(result);
 				},
 				fail: function(error) {
-					console.log(error);
+					// console.log(error);
 					reject(error);
 				}
 			});

@@ -1,13 +1,13 @@
 <template>
 	<div >
 		<ul class="tab clearfix ">
-			<li  class="bgff" v-for="(tab, index) in tabs" :key="index" >
+			<li  class="bgff" v-for="(tab, index) in tabs" :key="index" :class="{tab_select_now:cur == index}" @click="tabSelect(index)" >
 				<span class="txt">{{tab.txt}}</span>
-				<i class="select-icon"></i>
+				<i class="selected"></i>
 			</li>
 		</ul>
-		<ul class="Distribution-details  width710" >
-			<!-- v-if="selected==0" -->
+		<ul class="Distribution-details  width710" v-if="cur === 0" >
+			
 			<li class="li-item bgff">
 				配送地址
 				<p class="details-item">
@@ -37,7 +37,8 @@
 				</p>
 			</li>
 		</ul>
-		<ul class="Distribution-details bgff" v-if="selected==1">
+		<ul class="Distribution-details bgff" v-else-if="cur === 1">
+			
 			<li class="li-item bgff">
 				自提地址
 				<p class="details-item">
@@ -60,7 +61,16 @@
 		data(){
 			return{
 				index: 0,
-      			timesArray: ['上午 7：00 - 9:00','中午 11：00 - 13:00','下午 17：00 - 19:00'	]
+      			timesArray: ['上午 7：00 - 9:00','中午 11：00 - 13:00','下午 17：00 - 19:00'	],
+       			tabs:[{
+       				id:1,
+       				txt:"送到"
+       			},
+       			{
+       				id:2,
+       				txt:'自提'
+       			}],
+       			cur: 0
 			}
 		},
 		methods:{
@@ -68,7 +78,11 @@
     			 // console.log(e)
     			 this.index =  e.target.value
 
-    		}	
+    		},
+    		tabSelect(num) {
+				this.cur = num;
+				console.log(num);
+			}	
 		}
 
 	}
@@ -89,16 +103,20 @@
 .txt{
 	margin-right:52rpx;
 }
-.tab .select-icon{
+
+.selected{
 	width:48rpx;
 	height: 48rpx;
 	background: url(../../static/images/unselected.png) no-repeat;
 	background-size:contain;
 	display: inline-block;
-
 	position: absolute;
 	top:16rpx;
 	left:53rpx;
+}
+.tab_select_now .selected{
+	background: url(../../static/images/selected.png) no-repeat;
+	background-size:contain;
 }
 /*配送细节*/
 .Distribution-details{

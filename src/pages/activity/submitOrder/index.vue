@@ -5,20 +5,6 @@
 		<consignee></consignee>
 		<ul class="Distribution-details" >
 			<li class="li-item bgff">
-				配送地址 
-				<p class="details-item">
-				 <input type="text" class="big-input">
-				</p>
-			</li>
-			<li class="li-item bgff">
-				配送联系电话 
-				<p class="details-item tel-num">
-				16868686868	
-				</p>
-			</li>
-		</ul>
-		<ul class="Distribution-details" >
-			<li class="li-item bgff">
 				自提地址 
 				<p class="details-item">
 				 	<input type="text" placeholder="默认地址" readonly="readonly" disabled="">
@@ -37,24 +23,29 @@
 				</p>
 			</li>
 		</ul>
+
 	    <!-- 支付内容的显示组件 -->
 		<payment></payment>
+        
+	
 	</div>
 </template>
 <script>
-	import MpTitle from '@/components/MpTitle'
-	import Consignee from '@/components/Consignee'
-	import Payment from '@/components/Payment'
+	import MpTitle from '@/components/MpTitle';
+	import Consignee from '@/components/Consignee';
+	import TabDelivery from '@/components/TabDelivery';
+	import Payment from '@/components/Payment';
 	export default{
-		name:"confirmationOrderTwo",
+		name:"confirmationOrder",
 		data(){
 			return{
-				title:'预定商城-确认订单',
+				title:'新品活动-确认订单',
 			}
 		},
 		components:{
 			'mp-title':MpTitle,
 			'consignee':Consignee,
+			'tab-delivery':TabDelivery,
 			'payment':Payment,
 		},
 		methods:{

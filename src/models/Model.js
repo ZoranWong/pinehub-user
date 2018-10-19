@@ -29,36 +29,36 @@ export default class Model {
 			this.state.currentPage++;
 		});
 
-		this.addEventListener('reset', () => {
-			this.state = {};
-		});
-
-		this.addEventListener('setList', ({
-			list,
-			currentPage,
-			totalPage,
-			totalNum,
-			pageCount
-		} /*paylaod*/ ) => {
-			this.state.currentPage = currentPage;
-			let startIndex = (currentPage - 1) * pageCount + 1;
-			this.state.list[currentPage - 1] = this.transform(list, this.transformer, startIndex);
-			if(totalNum !== null)
-				this.state.totalNum = totalNum;
-			if(totalPage !== null) {
-				this.state.totalPage = totalPage;
-				if(pageCount !== null) {
-					this.state.pageCount = pageCount;
-				}
-			}
-		});
-	}
-
+	    this.addEventListener('setList' , ({list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
+	        // console.log('model', list, totalNum, currentPage, totalPage);
+	        this.state.currentPage = currentPage;
+	        let startIndex = (currentPage - 1) * pageCount + 1;
+	        this.state.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
+	        if(totalNum !== null)
+	          this.state.totalNum = totalNum;
+	        if(totalPage !== null) {
+	          this.state.totalPage = totalPage;
+	          if(pageCount !== null) {
+	            this.state.pageCount = pageCount;
+	          }
+	        }    
+	    });
+  	}
 	services(name) {
 		return this.$application.instances[name];
 	}
+  	addEventListener(type, callback) {
+	    this.actions[type] = ({commit}, payload) => {
+	      // console.log(payload);
+	      commit(type, payload);
+		},
 
-	transform(data, transformer, startIndex = 1) {
+   		this.mutations[type] = (state, payload) => {
+	      // console.log(payload);
+	      callback.call(this, payload);
+    	}
+  	}
+  	transform(data, transformer, startIndex = 1) {
 		if(_.isArray(data)) {
 			return _.map(data, function(value, index) {
 				value.index = startIndex + index;
@@ -69,17 +69,5 @@ export default class Model {
 		}
 	}
 
-	addEventListener(type, callback) {
-		this.actions[type] = ({
-			commit
-		}, payload) => {
-			console.log(payload);
-			commit(type, payload);
-		}
-
-		this.mutations[type] = (state, payload) => {
-			console.log(payload);
-			callback.call(this, payload);
-		}
-	}
 }
+	

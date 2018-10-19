@@ -10,7 +10,7 @@ export default class Merchandise {
     this.tags = merchandise['tags'];
     this.describe = merchandise['describe'];
     this.newImage = merchandise['new_image'];
-    
+    this.shopId  = merchandise['shop_id'];
   }
 
 }

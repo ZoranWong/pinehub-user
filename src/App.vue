@@ -17,9 +17,14 @@ export default {
   margin:0rpx;
   padding:0rpx;
 }
-.body{
-   background-color: #fafafa;
- }
+.body {
+    background-color: #f2f2f2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
 .box-shadow{
   border-radius: 10rpx;
   box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
@@ -39,6 +44,12 @@ export default {
 .i-icon{
   display:block;
 }
+.span-inline{
+  display: inline-block;
+}
+.span-block{
+  display: block;
+}
 .btn{
   width:180rpx;
   height: 50rpx;
@@ -54,25 +65,35 @@ export default {
 .bgff{
   background-color: #ffffff;
 }
-.bgfa{
-  background-color: #fafafa;
-}
 .theme-color{
   background-color: #fece00;
 }
-.text-color-11{
+.color11{
   color: #111111;
 }
-.text-color-52{
+.color52{
   color:#525252;
 }
-.text-color-75{
+.color75{
   color: #757575;
 }
-.text-yellow-cf{
-  color:#ffcf00;
-}
-.text-yellow-cc{
+.color00{
   color:#ffcc00;
 }
+/*部分tab 样式*/
+#tab_select ul li {
+    height: 70rpx;
+    line-height: 70rpx;
+    float: left;
+    background: #FFFFFF;
+    text-align: center;
+    font-size: 28rpx;
+    font-weight: 400;
+  } 
+#tab_select ul li.tab_select_now {
+    color: #FECE00;
+  } 
+.tab_content_now {
+    display: block;
+  }
 </style>

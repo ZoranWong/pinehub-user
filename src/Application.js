@@ -35,6 +35,10 @@ export default class Application {
 	registerCommand(name, command) {
 		return(this.commands[name] = new command(this));
 	}
+
+	registerModel(name, model) {
+		return this.models.addModel(name, model);
+	}
 	command(...params) {
 		let command = params.shift();
 		this.commands[command].handle.apply(this.commands[command], params);
