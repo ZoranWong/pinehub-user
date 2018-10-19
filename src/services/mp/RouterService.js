@@ -8,7 +8,7 @@ export default class RouterService extends Service {
 	
 	push(route, options = {}) {
 		let page = this.routes[route];
-		options[path] = page;
+		options['path'] = page;
 		this.$router.push(options);
 	}
 	
