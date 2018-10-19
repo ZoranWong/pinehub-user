@@ -52,7 +52,7 @@
 		created() {},
 		methods : {
 			jump(router){
-				this.$command('router', router, 'push');
+				this.$command('router',router,'push');
 			}
 		}
 		
