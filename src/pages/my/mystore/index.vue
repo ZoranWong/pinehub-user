@@ -6,28 +6,28 @@
 				<li>
 					<i class="my_store_ico ico_week_buy" />
 					<div class="info_list">
-						<em>800</em>
+						<em>{{storeInfo.week_buy_num}}</em>
 						<i>本周用户购买数</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico ico_week_sell" />
 					<div class="info_list">
-						<em>800</em>
+						<em>{{storeInfo.week_sell_amount}}</em>
 						<i>本周销售额</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico ico_today_buy" />
 					<div class="info_list">
-						<em>800</em>
+						<em>{{storeInfo.today_buy_num}}</em>
 						<i>今日购买数</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico  ico_today_sell" />
 					<div class="info_list">
-						<em>800</em>
+						<em>{{storeInfo.today_sell_amount}}</em>
 						<i>今日营业额</i>
 					</div>
 				</li>
@@ -79,6 +79,34 @@
 				title: "我的店铺"
 			};
 		},
+		computed: {
+			storeInfo() {
+				return {
+					"today_buy_num": 2,
+					"week_buy_num": 2,
+					"today_sell_amount": 24,
+					"week_sell_amount": 24,
+					"buy_mum": [
+						0,
+						1,
+						0,
+						0,
+						1,
+						0,
+						0
+					],
+					"sell_amount": [
+						0,
+						12,
+						0,
+						0,
+						12,
+						0,
+						0
+					]
+				}
+			}
+		},
 		methods: {
 			jump(router) {
 				this.$command('router', router, 'jump');
@@ -93,13 +121,9 @@
 </script>
 
 <style scoped>
-	page {
-		height: 100%;
-	}
-	
 	#mystore {
 		background: #fafafa;
-		position: relative;
+		position: absolute;
 		height: 100%;
 		width: 100%;
 		overflow: hidden;

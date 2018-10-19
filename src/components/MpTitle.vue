@@ -8,13 +8,18 @@
 		props: ['title'],
 		data() {
 			return {
-				title:""
+				title: ""
 			};
 		},
 		methods: {
 
 		},
 		created() {
+			wx.setNavigationBarTitle({
+				title: this.title
+			})
+		},
+		beforeUpdate() {
 			wx.setNavigationBarTitle({
 				title: this.title
 			})

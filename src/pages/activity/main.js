@@ -10,7 +10,6 @@ import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
 
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
-	// console.log('before app build ', app);
 	if(app.models) {
 		app.models.addModel('model.activity.merchandises', Merchandises);
 		app.models.addModel('model.shoppingCarts', ShoppingCarts);
@@ -23,4 +22,6 @@ application.run(function(app) {
  app.$mount();
  return app;
 });
+
+
 

@@ -1,10 +1,12 @@
 /*eslint constructor-super: "error"*/
 /*eslint-env es6*/
 import ServiceProvider from './ServiceProvider';
+import MyOrder from '@/mocks/MyOrder';
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
 import Categories from '@/mocks/Categories';
 /* eslint-disable */
+
 export default class MockServiceProvider extends ServiceProvider{
   constructor(app) {
     super(app);
@@ -18,6 +20,5 @@ export default class MockServiceProvider extends ServiceProvider{
     }
   }
   boot() {
-
-  }
+	}
 }

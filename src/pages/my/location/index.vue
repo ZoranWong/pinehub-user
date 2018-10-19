@@ -55,6 +55,7 @@
 				console.log(this.latitude,this.longitude)
 			},
 			searchLocation() {
+				console.log(this);
 				this.$command(this.command, this.city + this.addressName);
 			},
 			nowLocation() {
@@ -66,6 +67,7 @@
 			}
 		},
 		created() {
+			console.log('location created', this);
 			this.flashLocation();
 		},
 		onLoad:function(options){

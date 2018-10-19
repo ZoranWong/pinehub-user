@@ -5,7 +5,8 @@
     <location></location>
     <div class="goods" >
         <menus></menus>
-        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" :addMerchandiseToCart = "addCart"   ></m-list>
+        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
+        :addMerchandiseToCart = "addCart"   ></m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>

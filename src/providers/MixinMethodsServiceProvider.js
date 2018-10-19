@@ -2,16 +2,17 @@
 import ServiceProvider from './ServiceProvider';
 import Vuex from 'vuex';
 export default class MixinMethodsServiceProvider extends ServiceProvider {
+  static applications = [];	
   constructor(app) {
     super(app);
+    MixinMethodsServiceProvider.applications[app['hashKey']] = app;
     this.app.use(Vuex);
   }
   register() {
-    let methods = this.methods();
+    let methods = (function(self){ return self.methods(self)})(this);
     this.app.mixin(methods);
   }
-  methods () {
-    let self = this;
+  methods (self) {
     return {
     	$uploadFailed() {
 				this.$notify.error({title: '上传失败',message: '图片上传失败'});
@@ -27,6 +28,7 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         self.app.resetForm(self.$refs[name]);
       },
       $command(...params) {
+      	console.log('command', self.app);
         self.app.command.apply(self.app, params);
       },
       $error(exception, params = null) {
@@ -63,6 +65,9 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         if(this.$el.scrollTop+this.$el.offsetHeight>this.$el.scrollHeight){
           this.$emit('scroll-to-bottom');
         }
+      },
+      $imageUrl(name, path ='mp_images') {
+      	return self.app.config.app.staticHost.trim('/') + '/' + path.trim('/') + '/' + name;
       }
     };
   }

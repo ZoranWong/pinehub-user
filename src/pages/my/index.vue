@@ -3,37 +3,37 @@
 		<mp-title :title="title"></mp-title>
 		<div id="mystore_header">
 			<div id="mystore_userinfo">
-				<img id="bear" src="../../../static/images/bear.gif" />
+				<img id="bear" :src="headerAnimate" />
 				<div id="mystore_userinfo_baseinfo">
 					<img src="../../../static/images/my_now.png" />
 					<div id="name_id">
-						<em>一切都会好的</em>
-						<i>ID: 66698932998</i>
+						<em>{{userInfo.nickname}}</em>
+						<i>ID: {{userInfo.id}}</i>
 					</div>
 					<i id="lv">
-						6
+						{{userInfo.vip_level}}
 					</i>
 				</div>
 				<div id="mystore_userinfo_otherinfo">
 					<ul>
 						<li>
-							<em>0</em>
+							<em>{{userInfo.balance}}</em>
 							<i>余额</i>
 						</li>
 						<li class="my_card">
 							<s class="my_card_new"></s>
-							<em>0</em>
+							<em>{{userInfo.ticket_num}}</em>
 							<i>卡券</i>
 						</li>
-						<li>
-							<em>0</em>
+						<li @click="alertNotice">
+							<em>{{userInfo.score}}</em>
 							<i>积分</i>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div id="mystore_shop">
+		<div id="mystore_shop" @click="jump('mystore')">
 			<i class="my_store_line left_line"></i>
 			<i class="my_store_line right_line"></i>
 			<i id="mystore_shop_more"></i>
@@ -41,7 +41,7 @@
 		</div>
 		<div id="mystore_menu">
 			<ul>
-				<li @click="jump('myorder')">
+				<li @click="jump('order')">
 					<img src="../../../static/images/my_ico_menu1.png" />
 					<span>个人订单</span>
 					<i></i>
@@ -51,14 +51,15 @@
 					<img src="../../../static/images/my_ico_menu2.png" />
 					<span>邀请享奖励</span>
 					<i></i>
+					<button @click="onShareAppMessage" class="zf">zhuanfa</button>
 					<em>邀请好友</em>
 				</li>
-				<li>
+				<li @click="jump('myfeedback')">
 					<img src="../../../static/images/my_ico_menu3.png" />
 					<span>意见反馈</span>
 					<i></i>
 				</li>
-				<li>
+				<li @click="connectKf">
 					<img src="../../../static/images/my_ico_menu4.png" />
 					<span>联系客服</span>
 					<i></i>
@@ -82,12 +83,65 @@
 		data() {
 			return {
 				title: "个人中心",
-				navName: "my"
+				navName: "my",
+				phone: "15357903187"
 			};
+		},
+		computed: {
+			headerAnimate() {
+				return this.$imageUrl('bear.gif');
+			},
+			userInfo() {
+				return {
+					"id": 4,
+					"nickname": "maker",
+					"type": "MINI_PROGRAM",
+					"open_id": "wx768678679424999",
+					"avatar": "http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg",
+					"country": "中国",
+					"province": "安徽省",
+					"city": "滁州市",
+					"sex": "MALE",
+					"mobile": "13835246789",
+					"vip_level": 0,
+					"total_score": 0,
+					"balance": 66.59,
+					"ticket_num": 10,
+					"score": 500
+				}
+			}
 		},
 		methods: {
 			jump(router) {
-				this.$command('router', router, 'jump');
+
+				this.$command('router', router, 'push');
+			},
+			onShareAppMessage: function(res) {
+				if(true) {
+					// 来自页面内转发按钮
+					console.log(res)
+				}
+				return {
+					title: '自定义转发标题',
+					path: '/page/user?id=123'
+				}
+			},
+			connectKf() {
+				wx.makePhoneCall({
+					phoneNumber: this.phone,
+					success: function() {
+						wx.showToast({
+							title: "拨打成功",
+							icon: "none"
+						})
+					}
+				})
+			},
+			alertNotice() {
+				wx.showToast({
+					title: "积分功能正在完善中",
+					icon: "none"
+				})
 			}
 		},
 		created() {}
@@ -95,17 +149,13 @@
 </script>
 
 <style scoped>
-	page {
-		height: 100%;
-	}
-	
 	#footNav_height {
 		height: 109rpx;
 	}
 	
 	#mystore {
 		background: #fafafa;
-		position: relative;
+		position: absolute;
 		height: 100%;
 		width: 100%;
 	}
@@ -133,10 +183,10 @@
 	
 	#bear {
 		position: absolute;
-		width: 492rpx;
-		height: 280rpx;
-		top: -187rpx;
-		left: 102rpx;
+		width: 452rpx;
+		height: 186rpx;
+		top: -139rpx;
+		left: 109rpx;
 	}
 	
 	#mystore_userinfo_baseinfo {
@@ -225,11 +275,11 @@
 	
 	#mystore_userinfo_otherinfo ul li em {
 		display: block;
-		width: 90rpx;
+		width: 136rpx;
 		line-height: 48rpx;
 		margin: 0 auto;
 		text-align: center;
-		font-size: 48rpx;
+		font-size: 42rpx;
 		font-weight: 400;
 		color: #111111;
 	}
@@ -337,5 +387,9 @@
 		background-size: 40%;
 		padding: 22rpx 0;
 		float: right;
+	}
+	
+	.zf {
+		display: none;
 	}
 </style>

@@ -8,6 +8,9 @@
     "pages/my/mystore/status/main",
     "pages/my/order/main",
     "pages/my/pay/main",
+    "pages/my/share/main",
+    "pages/my/feedback/main",
+    "pages/my/feedback/success/main",
     "pages/my/main",
     "pages/todayOrder/main",
     "pages/todayOrder/submitOrder/main",
@@ -21,10 +24,10 @@
     "pages/coupon/main"
     
   ],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fece00",
-    "navigationBarTitleText": "",
-    "navigationBarTextStyle": "black"
-  }
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#fece00",
+		"navigationBarTitleText": "",
+		"navigationBarTextStyle": "black"
+	}
 }

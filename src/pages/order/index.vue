@@ -24,13 +24,13 @@
 </template>
 
 <script>
-	import MyOrder from '@/components/MyOrder';
+	// import MyOrder from '@/components/MyOrder';
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
 			"mp-title": MpTitle,
-			"my-order": MyOrder,
+			// "my-order": MyOrder,
 			'footer-nav': FooterNav
 		},
 		data() {

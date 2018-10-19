@@ -7,7 +7,15 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
+					<dt>
+						<em>芝士蛋糕</em>
+						<span>单价 ￥20.00 数量 1 份</span>
+						<span>总价 ￥20.00</span>
+					</dt>
+				</dl>
+				<dl>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>
@@ -39,7 +47,7 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>
@@ -71,7 +79,7 @@
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="../../static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>芝士蛋糕</em>
 						<span>单价 ￥20.00 数量 1 份</span>
@@ -102,16 +110,38 @@
 <script>
 	export default {
 		name: 'MyOrder',
+		props: {
+			status: {
+				default: 'all',
+				type: String
+			},
+			loadOrders: {
+				default: null,
+				type: Function
+			}
+		},
 		data() {
 			return {
-
+				orderList: {}
 			};
 		},
+		//算术方法
+		computed: {
+		},
 		methods: {
+		},
 
+		watch: {
+			status(v) {
+				console.log(v)
+			}
 		},
 		created() {
-
+			this.loadOrders();
+		},
+		mounted() {
+			console.log('mounted my orders');
+			
 		}
 	}
 </script>
@@ -182,7 +212,14 @@
 		margin-top: 20rpx;
 	}
 	
-	.order_info_glist dl {}
+	.order_info_glist dl {
+		overflow: hidden;
+		margin-bottom: 20rpx;
+	}
+	
+	.order_info_glist dl:last-child {
+		margin-bottom: 0;
+	}
 	
 	.order_info_glist dl dd {
 		display: inline-block;
