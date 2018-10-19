@@ -1,14 +1,12 @@
 <template>
   <div>
-    <p class="card">
-      {{text}}
-    </p>
+   666
   </div>
 </template>
 
 <script>
 export default {
-  props: ['text']
+
 }
 </script>
 
