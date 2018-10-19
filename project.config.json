@@ -10,8 +10,9 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "wx1a192be758a381fa",
-	"projectname": "%E9%9D%92%E6%9D%BE%E5%B0%8F%E7%A8%8B%E5%BA%8F",
+	"appid": "wx67127c10ce9c598c",
+	"projectname": "%E9%9D%92%E6%9D%BE",
+	"libVersion": "2.3.0",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -30,7 +31,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,

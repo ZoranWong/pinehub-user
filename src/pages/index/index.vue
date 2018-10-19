@@ -53,7 +53,7 @@
 		methods : {
 			jump(router){
 				console.log('hello')
-				this.$command('router',router,'jump');
+				this.$command('router',router,'push');
 			}
 		}
 		

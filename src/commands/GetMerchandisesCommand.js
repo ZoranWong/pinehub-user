@@ -16,7 +16,7 @@ export default class GetMerchandisesCommand extends Command {
       totalNum: totalNum,
       currentPage: currentPage,
       totalPage: totalPage,
-//    pageCount: limit
+      pageCount: limit
   	});
   }
   static commandName() {

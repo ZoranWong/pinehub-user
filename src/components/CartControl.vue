@@ -1,4 +1,4 @@
-<template>
+-<template>
 	<div class="cartcontrol" :style="{border: border}" >
 		<div class="cart-decrease" v-show="count>0"
         @click="decreaseCart" > 

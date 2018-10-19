@@ -9,7 +9,22 @@ export default class MyOrder extends Mock {
     return {
       "data|12":[{
         "id|+1": 1,
-        "code": "SN"
+        "code": "123321138",
+        "type":"@integer(0, 4)",
+        "merchandies_num":6,
+        "payment_amount":12,
+        "total_amount":12,
+        "status":300,
+        "reveiver_address":"合肥市蜀山区",
+        "created_at":"2018-10-11 15:43:02",
+        "order_item_merchandises":[
+		        {
+			        "name":"包子",
+	            "sell_price":2,
+	            "quality":6,
+	            "total_amount":12
+		        } 
+        ]
       }],
       "meta": {
         "pagination":{
