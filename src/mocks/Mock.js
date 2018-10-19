@@ -21,4 +21,4 @@ export default class Mock {
     let Random = this.application.instances['mock'].Random;
     return Random[method].apply(Random, args);
   }
-}
+} 

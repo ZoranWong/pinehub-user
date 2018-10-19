@@ -4,11 +4,11 @@ export default class MyOrderCommand extends Command {
 		super(app);
 	}
 	//
-	async handle(event, page, search = null, limit = 15) {
-		console.log('aaa', event);
-		console.log(this.service("myorder"));
-		let [list, totalNum, currentPage, totalPage] = await this.service("myorder").list(page, search, limit);
-		console.log(12321)
+	async handle(status = 'all', page = 1, limit = 15) {
+		console.log('t-1', this.service('http.myorders'));
+	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.myorders').list(status, page, limit)
+		console.log('t-2');
+		
 		this.store().dispatch({
 			type: event,
 			list: list,

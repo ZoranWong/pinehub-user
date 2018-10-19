@@ -10,11 +10,12 @@ export default class MyOrderService extends Service {
 		let totalPage = 0;
 		let currentPage = 0;
 		let response = null;
-		console.log('456', this.services('mock.myOrdersMock'));
+		console.log('456', this.services('mock.myOrders'));
 		console.log('444', this.$application.needMock())
 		if(this.$application.needMock()) {
-			console.log('888', this.services('mock.myOrdersMock'));
-			response = await this.services('mock.myOrdersMock').mock(page, limit);
+//			console.log('888', this.services('mock.myOrdersMock'));
+			response = await this.services('mock.myOrders').mock(page, limit);
+			console.log(response);
 		} else {
 			//服务器交互代码
 			response = await this.httpGet(`${status}/orders`, {
@@ -29,6 +30,14 @@ export default class MyOrderService extends Service {
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
 		return [orders, totalNum, currentPage, totalPage];
+	}
+	
+	async x() {
+		
+	}
+	
+	async y() {
+		
 	}
 
 }

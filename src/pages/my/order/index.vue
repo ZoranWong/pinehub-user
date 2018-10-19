@@ -43,17 +43,21 @@
 				statusType: "all"
 			};
 		},
+		watch:{
+			test(nv,ov){
+				console.log('nvno',nv,ov);
+				if(nv && nv !== ov) {
+					
+				}
+			}
+		},
 		computed: {
 			tabNumWidth() {
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
-			},
-			test() {
-				console.log(this.$store.getters['model.my.orders/consoleThis']);
-				console.log('000000000000')
-				return this.$store.getters['model.my.orders/consoleThis']
 			}
+			
 		},
 		methods: {
 			loadOrders(status) {
@@ -80,6 +84,11 @@
 		},
 		created() {
 			this.nowCom = "card";
+			this.$command('my-orders');
+			this.test;
+			this.loadOrders("all"); 
+			console.log(this.loadOrders(),1234);
+			console.log('abc123',this.$store.getters['model.my.orders/list']);
 		}
 	}
 </script>

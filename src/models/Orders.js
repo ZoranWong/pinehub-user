@@ -1,15 +1,15 @@
 import Model from './Model';
 import _ from 'underscore';
-import MerchandiseTransformer from './transformers/Merchandise';
+import OrdersTransformer from './transformers/Orders';
 export default class Orders extends Model {
 	constructor(app) {
 		super(app);
-		this.transformer = MerchandiseTransformer;
+		this.transformer = OrdersTransformer;
 	}
 	computed() {
 	    return _.extend(super.computed(), {
 	      list(state){
-	        console.log('myorders', this,999999999); 
+			return state;
 	        //return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
 	      },
 	      currentCategoryIndex(state) {
