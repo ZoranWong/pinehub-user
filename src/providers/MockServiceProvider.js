@@ -5,6 +5,7 @@ import MyOrder from '@/mocks/MyOrder';
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
 import Categories from '@/mocks/Categories';
+import NearestStore from '@/mocks/NearestStore';             
 /* eslint-disable */
 
 export default class MockServiceProvider extends ServiceProvider{
@@ -17,6 +18,7 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.merchandises', Merchandises);
       this.app.register('mock.addmerchandises',AddMerchandises);
       this.app.register('mock.categories', Categories);
+      this.app.register('mock.neareststore',NearestStore);
     }
   }
   boot() {
