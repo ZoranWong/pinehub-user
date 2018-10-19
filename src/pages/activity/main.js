@@ -7,6 +7,7 @@ import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
 	if(app.models) {
+		//app.registerModel('model.activity.merchandises', Merchandises);
 		app.models.addModel('model.activity.merchandises', Merchandises);
 	}
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
