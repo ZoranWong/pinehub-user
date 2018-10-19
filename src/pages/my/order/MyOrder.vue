@@ -127,11 +127,7 @@
 		},
 		//算术方法
 		computed: {
-			test() {
-				console.log(this.$store.getters['model.my.orders/consoleThis']);
-				console.log('000000000000')
-				return this.$store.getters['model.my.orders/consoleThis'];
-			}
+
 		},
 		methods: {
 		},
@@ -143,10 +139,9 @@
 		},
 		created() {
 			this.$command('my-orders');
-			this.test;
 			this.loadOrders("all"); 
-			console.log(this.loadOrders(),1234);
-			console.log('abc123',this.$store.getters['model.my.orders/list']);
+			//console.log(this.loadOrders(),1234);
+			//console.log('abc123ghhgfhgfhgfhgfh',this.$store.getters['model.my.orders/list']);
 		},
 		mounted() {
 

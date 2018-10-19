@@ -1,17 +1,25 @@
 <template>
 	<div id="myorder">
 		<mp-title :title="title"></mp-title>
+		
 		<div id="tab_select">
-			<ul >
+			<ul>
 				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
+		
+		<ul>
+			<li v-for="item in myOrdersList">
+				{{item.code}} + {{item.type}} + {{item.created_at}}
+			</li>
+		</ul>
 		<div id="tab_content">
 			<my-order :loadOrders="loadOrders" :status="statusType"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
 		</div>
+		<span>{{x}}</span>
 		<div id="footNav_height"></div>
 		<footer-nav :navName="navName"></footer-nav>
 	</div>
@@ -43,11 +51,11 @@
 				statusType: "all"
 			};
 		},
-		watch:{
-			test(nv,ov){
-				console.log('nvno',nv,ov);
+		watch: {
+			test(nv, ov) {
+				console.log('nvno', nv, ov);
 				if(nv && nv !== ov) {
-					
+
 				}
 			}
 		},
@@ -56,8 +64,13 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			myOrdersList() {
+				return this.$store.getters['model.my.orders/list'];
+			},
+			x(){
+				return this.$store.getters['model.my.orders/x'];
 			}
-			
 		},
 		methods: {
 			loadOrders(status) {
@@ -66,7 +79,7 @@
 			tabSelect(num) {
 				this.cur = num;
 				switch(num) {
-					case 0: 
+					case 0:
 						this.statusType = "all";
 						break;
 					case 1:
@@ -82,13 +95,14 @@
 				console.log(num);
 			}
 		},
+		mounted() {
+			this.$command('my-orders');
+//			this.$store.dispatch('model.my.orders/getorder', {a: 0,b: 1, c: 9});
+			console.log('anycall',this.$store.getters['model.my.orders/allOrder']);
+		},
 		created() {
 			this.nowCom = "card";
-			this.$command('my-orders');
-			this.test;
-			this.loadOrders("all"); 
-			console.log(this.loadOrders(),1234);
-			console.log('abc123',this.$store.getters['model.my.orders/list']);
+			this.loadOrders("all");
 		}
 	}
 </script>
