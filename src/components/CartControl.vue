@@ -1,4 +1,4 @@
-<template>
+-<template>
 	<div class="cartcontrol" :style="{border: border}" >
 		<div class="cart-decrease" v-show="count>0" @click="decreaseCart" > 
     </div>
@@ -17,43 +17,36 @@
 				type:Object
 			}
 		},
-    data() {
-      return {
-      }
-    },
-    computed:{
-      border() {
-        return this.count > 0 ? '2rpx solid #ffcc00' : '0';
-      },
-      count() {
-        // console.log("hj888",this.merchandise)
-        return this.$store.getters['model.shoppingCarts/quality'](this.merchandise.id);
-      }
-    },
+	    computed:{
+	      border() {
+	        return this.count > 0 ? '2rpx solid #ffcc00' : '0';
+	      },
+	      count() {
+	        // console.log("hj888",this.merchandise)
+	        return this.$store.getters['model.shoppingCarts/quality'](this.merchandise.id);
+	      }
+	    },
 		methods: {
-      cartShow:function() {
-        this.$emit('show-cart');
-      },
-			addCart(event) {
-
-        this.$emit('addCart',  this.merchandise.id, this.count + 1, 
-          this.merchandise.shopId );
-        console.log( this.count, "cartcontrol", this.merchandiseId)
-      },
-      decreaseCart() {
-        if(this.count > 0) {
-         this.$emit('addCart',  this.merchandise.id, this.count - 1, 
-          this.merchandise.shopId ); 
-        }
-        
-      }
+	      cartShow:function() {
+	        this.$emit('show-cart');
+	      },
+				addCart(event) {
+	
+	        this.$emit('addCart',  this.merchandise.id, this.count + 1, 
+	          this.merchandise.shopId );
+	        console.log( this.count, "cartcontrol", this.merchandiseId)
+	      },
+	      decreaseCart() {
+	        if(this.count > 0) {
+	         this.$emit('addCart',  this.merchandise.id, this.count - 1, 
+	          this.merchandise.shopId ); 
+	        }
+	        
+	      }
 		},
-    mounted: function (){
-      
-      // console.log(this.pageCount)
-    }
-  
-
+	    mounted: function (){
+	      // console.log(this.pageCount)
+	    }
 	}
 </script>
 <style>

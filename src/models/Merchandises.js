@@ -9,7 +9,7 @@ export default class Merchandises extends Model{
   computed() {
     return _.extend(super.computed(), {
       list(state){
-        console.log( this.state, '001');
+        console.log('merchandises', this.state,'001');
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
       },
       currentCategoryIndex(state) {

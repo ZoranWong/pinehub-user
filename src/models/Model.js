@@ -26,7 +26,7 @@ export default class Model {
 		let methods = {};
 		_.each(getters, (method, name) => {
 			methods[name] = (state) => {
-				method.call(this, state);
+				return method.call(this, state);
 			};
 		});
 		return methods;
@@ -61,14 +61,14 @@ export default class Model {
 	        }
 	    });
   	}
-
-		//获取已经注册的服务实例
-		services(name) {
+	
+	//获取已经注册的服务实例
+	services(name) {
 			return this.$application.instances[name];
 		}
-
-		// 回调函数可以直接使用this指向注册model实例，回调函数接受两个参数一个payload结构体，一个model层的state
-		//对应vuex中的actions与mutations
+	
+	// 回调函数可以直接使用this指向注册model实例，回调函数接受两个参数一个payload结构体，一个model层的state
+	//对应vuex中的actions与mutations
   	addEventListener(type, callback) {
 	    this.actions[type] = ({commit}, payload) => {
 		      commit(type, payload);
