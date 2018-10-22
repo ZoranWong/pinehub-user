@@ -51,7 +51,6 @@
 					<img src="../../../static/images/my_ico_menu2.png" />
 					<span>邀请享奖励</span>
 					<i></i>
-					<button @click="onShareAppMessage" class="zf">zhuanfa</button>
 					<em>邀请好友</em>
 				</li>
 				<li @click="jump('myfeedback')">
@@ -94,7 +93,7 @@
 			userInfo() {
 				return this.$store.getters['model.my.info/userInfo'];
 			},
-			hasStore(){
+			hasStore() {
 				return true;
 				// return this.$store.getters['model.my.info/hasStore'];
 			}
@@ -103,16 +102,6 @@
 			jump(router) {
 
 				this.$command('router', router, 'push');
-			},
-			onShareAppMessage: function(res) {
-				if (true) {
-					// 来自页面内转发按钮
-					console.log(res)
-				}
-				return {
-					title: '自定义转发标题',
-					path: '/page/user?id=123'
-				}
 			},
 			connectKf() {
 				wx.makePhoneCall({
@@ -380,9 +369,5 @@
 		background-size: 40%;
 		padding: 22rpx 0;
 		float: right;
-	}
-
-	.zf {
-		display: none;
 	}
 </style>
