@@ -9,11 +9,10 @@
 <script>
 	export default {
 		props: {   
-      
-			merchandise: {
-        default:function() {
-          return {};
-        },
+      		merchandise: {
+        		default:function() {
+          			return {};
+        		},
 				type:Object
 			}
 		},
@@ -30,11 +29,11 @@
 	      cartShow:function() {
 	        this.$emit('show-cart');
 	      },
-				addCart(event) {
+			addCart(event) {
 	
 	        this.$emit('addCart',  this.merchandise.id, this.count + 1, 
 	          this.merchandise.shopId );
-	        console.log( this.count, "cartcontrol", this.merchandiseId)
+	        //console.log( this.count, "cartcontrol", this.merchandiseId)
 	      },
 	      decreaseCart() {
 	        if(this.count > 0) {

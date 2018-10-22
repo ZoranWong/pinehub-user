@@ -22,7 +22,7 @@ export default class ShoppingCarts extends Model{
       quality(state) {
         return (id) => {
           let cart = _.findWhere(state.list, {merchandiseId: id});
-          console.log(cart)
+          //console.log(cart)
           return cart ? cart.count : 0;
         }
       },
@@ -43,13 +43,17 @@ export default class ShoppingCarts extends Model{
   listeners() {
     super.listeners();
     this.addEventListener('changeCart', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count}) {
-
       let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
-      console.log(cart)
+      //console.log(cart)
       if(!cart) {
         cart = {
-          id: id,name: name, sellPrice: sellPrice, totalAmount: totalAmount,
-          merchandiseId:merchandiseId, shopId:shopId, count:count
+          id: id,
+          name: name, 
+          sellPrice: sellPrice, 
+          totalAmount: totalAmount,
+          merchandiseId: merchandiseId,
+          shopId: shopId, 
+          count: count
         };
         this.state.list.push(cart);
       }else{
@@ -59,6 +63,10 @@ export default class ShoppingCarts extends Model{
           cart.count = count;
         }
       }
+    });
+
+    this.addEventListener('reset', function({shopId}) {
+      this.state.list = [];
     });
   }
 }

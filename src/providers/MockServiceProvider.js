@@ -7,6 +7,7 @@ import MyOrder from '@/mocks/MyOrder';
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
 import Categories from '@/mocks/Categories';
+import EmptyMerchandises from '@/mocks/EmptyMerchandises';
 /* eslint-disable */
 
 export default class MockServiceProvider extends ServiceProvider{
@@ -22,8 +23,10 @@ export default class MockServiceProvider extends ServiceProvider{
 			this.app.register('mock.myInfo', MyInfo);
 			this.app.register('mock.myFeedback', MyFeedback);
       this.app.register('mock.myOrders', MyOrder);
+      this.app.register('mock.emptyMerchandises', EmptyMerchandises);
     }
   }
   boot() {
 	}
 }
+

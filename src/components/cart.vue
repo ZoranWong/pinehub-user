@@ -17,14 +17,14 @@
         <div class="flag fl">
           已选产品
         </div>
-        <label class="empty fr" @click="clearAllCart">清空</label>
+        <label class="empty fr" @click="emptyCart"  >清空</label>
       </div>
       <div class="add-box">
         <div class="add-merchandises color11" v-for="(item, itemIndex) in cartList" :key="itemIndex">
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-            <cart-control :list="list"  ></cart-control>
+            <cart-control :list="list"  @addCart = "addCart"  :merchandise = "item" ></cart-control>
           </div>
         </div>
       </div>
@@ -43,6 +43,16 @@
         maskBg:false,      
       }
 		},
+    props: {
+      emptyMerchandiseCart:{
+        default: null,
+        type: Function
+      },
+      addMerchandiseToCart:{
+        default: null,
+        type: Function
+      }, 
+    },
     components:{
       'cart-control':CartControl,
     },
@@ -65,10 +75,16 @@
         this.toggleList =! this.toggleList;
         this.maskBg = ! this.maskBg;
       },
-      clearAllCart:function(){
-        console.log("清空")
-        this.data = []
+      emptyCart(storeId) {
+        this.emptyMerchandiseCart(storeId);
       },
+      addCart(){
+        console.log(1233)
+      }
+      // addCart( id, count, shopId) {
+      //   this.addMerchandiseToCart( shopId, count, id);
+      // }
+
     },
     
  

@@ -14,7 +14,7 @@ export default class CategoriesService extends Service {
 		
 		if(this.$application.needMock()) {			
 			response = await this.services('mock.categories').mock(page, limit);
-			console.log('456yyyyyyyyyyyyy', response.data);
+			//console.log('456yyyyyyyyyyyyy', response.data);
 		} else {
 			//服务器交互代码
 			response = await this.httpGet(`/categories`, {
