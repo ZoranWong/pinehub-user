@@ -8,8 +8,8 @@ export default class Orders extends Model {
 	}
 	computed() {
 		return _.extend(super.computed(), {
-			list(state) {
-				return state.allOrders;
+			lists(state) {
+				return state.order;
 				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
 			},
 			totalNum(state){
@@ -31,9 +31,11 @@ export default class Orders extends Model {
 			x: null
 		};
 	}
+	//监听数据
 	listeners() {
 		this.addEventListener('allOrders', function({list, totalNum,currentPage,totalPage,pageCount}, state) {
-			state.allOrders = list;
+			state.order = list;
+			state.totalNum = totalNum;
 			console.log('my orders total num', totalNum);
 		});
 	}

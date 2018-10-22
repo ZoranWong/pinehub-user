@@ -9,10 +9,11 @@
 		</div>
 		
 		<ul>
-			<li v-for="item in myOrdersList">
+			<li v-for="(item,index) in myOrdersList" :key="index">
 				{{item.code}} + {{item.type}} + {{item.created_at}}
 			</li>
 		</ul>
+		{{totalNum}}
 		<div id="tab_content">
 			<my-order :loadOrders="loadOrders" :status="statusType"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
@@ -66,7 +67,10 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			myOrdersList() {
-				return this.$store.getters['model.my.orders/list'];
+				return this.$store.getters['model.my.orders/lists'];
+			},
+			totalNum(){
+				return this.$store.getters['model.my.orders/totalNum'];
 			},
 			x(){
 				return this.$store.getters['model.my.orders/x'];
@@ -96,9 +100,9 @@
 			}
 		},
 		mounted() {
-			this.$command('my-orders');
+			// this.$command('my-orders');
 //			this.$store.dispatch('model.my.orders/getorder', {a: 0,b: 1, c: 9});
-			console.log('anycall',this.$store.getters['model.my.orders/allOrder']);
+			// console.log('anycall',this.$store.getters['model.my.orders/allOrder']);
 		},
 		created() {
 			this.nowCom = "card";
