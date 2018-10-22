@@ -1,5 +1,5 @@
 <template>
-	<div v-show="display" id="toast_area">
+	<div v-if = "display" id="toast_area">
 		<div id="toast">
 			<i id="toast_clost" @click="toastClose"></i>
 			<div id="toast_title">

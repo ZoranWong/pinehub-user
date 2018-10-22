@@ -1,6 +1,6 @@
 <template>
 	<div id="status">
-		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel"></mp-toast>
+		<!--<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel"></mp-toast>-->
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
@@ -8,13 +8,13 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
+			<div class="tab_content_item store-orders" v-if="cur === 0">
 				<store @showToast="showToastFunction"></store>
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 1">
+			<div class="tab_content_item purchase-orders" v-if="cur === 1">
 				<purchase></purchase>
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 2">
+			<div class="tab_content_item sales-orders" v-if="cur === 2">
 				<sales></sales>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 			"mp-title": MpTitle,
 			"sales": Sales,
 			"purchase": Purchase,
-			"store": StoreToast,
+  		    "store": StoreToast,
 			"mp-toast": Toast,
 			'footer-nav': FooterNav
 		},
@@ -66,13 +66,13 @@
 		methods: {
 			tabSelect(num) {
 				this.cur = num;
-				console.log(num);
+				console.log(num); 
 				console.log(this);
 			},
 			showToastFunction(merchandise) {
 				this.display = true;
-				this.merchandise = merchandise;
-				console.log(merchandise);
+//				this.merchandise = merchandise;
+//				console.log(merchandise);
 			},
 			closeStockPanel() {
 				console.log(123)

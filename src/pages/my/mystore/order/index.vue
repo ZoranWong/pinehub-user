@@ -7,7 +7,7 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
+			<!--<!--<div class="tab_content_item" v-if="cur === 0">
 				<order></order>
 			</div>
 			<div class="tab_content_item" v-else-if="cur === 1">
@@ -16,7 +16,7 @@
 			</div>
 			<div class="tab_content_item" v-else-if="cur === 2">
 				3
-			</div>
+			</div>-->-->
 		</div>
 		<div id="footNav_height"></div>
 		<footer-nav :navName="navName"></footer-nav>

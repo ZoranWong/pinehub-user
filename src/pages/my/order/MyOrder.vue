@@ -78,8 +78,6 @@
 			
 		},
 		mounted() {
-
-			console.log("hfjdshfj",this.myorderList);
 			
 		}
 	}
