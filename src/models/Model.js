@@ -47,7 +47,6 @@ export default class Model {
 		});
 
 	    this.addEventListener('setList' , ({list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
-	        // console.log('model', list, totalNum, currentPage, totalPage);
 	        this.state.currentPage = currentPage;
 	        let startIndex = (currentPage - 1) * pageCount + 1;
 	        this.state.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);

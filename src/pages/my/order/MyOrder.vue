@@ -72,11 +72,8 @@
 			}
 		},
 		created() {
-			//this.$command('my-orders');
 			var status=this.status
 			this.loadOrders(status); 
-			//console.log(this.loadOrders(),1234);
-			//console.log('abc123ghhgfhgfhgfhgfh',this.$store.getters['model.my.orders/list']);
 			
 			
 		},
