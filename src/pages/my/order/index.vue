@@ -9,7 +9,7 @@
 		</div>
 		
 		<ul>
-			<li v-for="item in myOrdersList">
+			<li v-for="item in myOrdersList" :key ="item">
 				{{item.code}} + {{item.type}} + {{item.created_at}}
 			</li>
 		</ul>

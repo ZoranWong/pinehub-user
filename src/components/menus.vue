@@ -31,6 +31,7 @@
     },
     computed : {
       categories() {
+        console.log('menus data', this.$store.getters['model.categories/categories']);
         return this.$store.getters['model.categories/categories'];
       }
     },
@@ -53,6 +54,8 @@
 .menu-wrapper{
   width:120rpx;
   height:100%;
+  overflow-y: auto;
+
 }
 #tab_select {
   overflow: hidden;

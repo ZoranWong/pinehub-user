@@ -25,7 +25,7 @@
     data(){
       return{
         title:"预定商城",
-        listHeight: '758rpx',
+        // listHeight: '758rpx',
         isShow:false,
         isShowCart:true,
         activityId: 0, 
