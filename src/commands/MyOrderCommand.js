@@ -4,19 +4,22 @@ export default class MyOrderCommand extends Command {
 		super(app);
 	}
 	//
-	async handle(event, page, search = null, limit = 15) {
-		console.log('aaa', event);
-		console.log(this.service("myorder"));
-		let [list, totalNum, currentPage, totalPage] = await this.service("myorder").list(page, search, limit);
-		console.log(12321)
+	async handle(status = 'all', page = 1, limit = 15) {
+		console.log('c-start');
+//		let event = args.shift();
+	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.myorders').list(status, page, limit);
+	    console.log('com-good',[ list, totalNum, currentPage, totalPage]);
+		console.log('c-end');
+		console.log('nbnbb',this.store());
 		this.store().dispatch({
-			type: event,
+			type: 'model.my.orders/allOrders',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
 			totalPage: totalPage,
 			pageCount: limit
 		});
+		console.log('2222222222222222@@@@@@@@@',this.store());
 	}
 	static commandName() {
 		return 'my-orders';

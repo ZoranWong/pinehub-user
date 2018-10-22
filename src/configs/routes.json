@@ -24,8 +24,6 @@
 	"activity" : "/pages/activity/main",
 	"activitySubmitOrder" :"/pages/activity/submitOrder/main",
 
-	"order" : "/pages/order/main",
-
 	"coupon": "/pages/coupon/main"
 }
 

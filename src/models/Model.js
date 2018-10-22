@@ -26,7 +26,7 @@ export default class Model {
 		let methods = {};
 		_.each(getters, (method, name) => {
 			methods[name] = (state) => {
-				method.call(this, state);
+				return method.call(this, state);
 			};
 		});
 		return methods;

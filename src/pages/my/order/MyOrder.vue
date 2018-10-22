@@ -127,6 +127,7 @@
 		},
 		//算术方法
 		computed: {
+
 		},
 		methods: {
 		},
@@ -137,11 +138,13 @@
 			}
 		},
 		created() {
+			this.$command('my-orders');
 			this.loadOrders("all"); 
-			console.log(this.loadOrders(),1234)
+			//console.log(this.loadOrders(),1234);
+			//console.log('abc123ghhgfhgfhgfhgfh',this.$store.getters['model.my.orders/list']);
 		},
 		mounted() {
-			console.log('mounted my orders');
+
 			
 		}
 	}

@@ -56,6 +56,7 @@
 				}
 			},
 			jump(router){
+				console.log(router)
 				this.$command('router',router, 'replace');
 			}
 		},
