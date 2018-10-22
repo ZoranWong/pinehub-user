@@ -10,7 +10,7 @@
           <i class="i-icon new-product-icon"></i>
           <span class="new-txt category-name">新品套餐</span>
         </li>
-        <li v-for = "(tab, index) in tabs" :class = "{tab_select_now : cur == index}"  :key = "index" @click = "tabSelect(index)"><span class = "category-name">{{ tab.name }}</span></li>
+        <li v-for = "(tab, index) in categories" :class = "{tab_select_now : cur == index}"  :key = "index" @click = "tabSelect(tab.id, index)"><span class = "category-name">{{ tab.name }}</span></li>
       </ul>
     </div>
   </div>
@@ -26,25 +26,16 @@
     data () {
       return {
         navName: "Menus",
-        tabs: [
-         {
-          name: "经典套餐"
-        },{
-          name:"营养搭配"
-        },{
-          name:"小食甜品"
-        },{
-          name:"饮品"
-        }],
         cur:0,
       }
     },
     computed : {
-      
-
+      categories() {
+        return this.$store.getters['model.categories/categories'];
+      }
     },
     methods : {
-      tabSelect (index) {
+      tabSelect (id, index) {
         this.cur = index;
         this.$emit('menusChange', index);
       },

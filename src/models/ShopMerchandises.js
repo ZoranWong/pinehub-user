@@ -1,15 +1,15 @@
 import Model from './Model'
 import _ from 'underscore';
-import MerchandiseTransformer from './transformers/Merchandise';
-export default class Merchandises extends Model{
+import ShopMerchandisesTransformer from './transformers/ShopMerchandises';
+export default class ShopMerchandises extends Model{
   constructor(application) {
     super(application);
-    this.transformer = MerchandiseTransformer;
+    this.transformer = ShopMerchandisesTransformer;
   }
   computed() {
     return _.extend(super.computed(), {
       list(state){
-        //console.log('merchandises', this,);
+        console.log('shopMerchandises', this,999999999);
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
       },
       currentCategoryIndex(state) {
