@@ -10,7 +10,6 @@ export default class ShoppingCarts extends Model{
     return _.extend(super.computed(), {
       totalAmount(state){
         //  计算总价
-        console.log('listStyle',state.list)
         let total = 0;
         state.list.forEach( (item) => {
             total += item.sellPrice * item.count;
@@ -44,12 +43,12 @@ export default class ShoppingCarts extends Model{
   listeners() {
     super.listeners();
     this.addEventListener('changeCart', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count}) {
-      
+
       let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
       console.log(cart)
       if(!cart) {
         cart = {
-          id: id,name: name, sellPrice: sellPrice, totalAmount: totalAmount, 
+          id: id,name: name, sellPrice: sellPrice, totalAmount: totalAmount,
           merchandiseId:merchandiseId, shopId:shopId, count:count
         };
         this.state.list.push(cart);

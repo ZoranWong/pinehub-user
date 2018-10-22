@@ -6,15 +6,22 @@ export default class NearestStore extends Model {
 		super(application);
 	}
 	computed() {
-		return {
-
-		};
-	}
+		return _.extend(super.computed(), {
+       	location(state){
+        	console.log( this.state, '001没有数据');
+        	return state.name;
+      	}
+      // currentCategoryIndex(state) {
+      // 	return state.currentCategoryIndex;
+      // }
+     });
+   	}
 	data() {
-		let data = super.data();
-		return _.extend(data, {
-
-		});
+		return {
+			id: null,
+			name:null,
+			address:null
+		};
 	}
 	events() {
 		let events = super.events();

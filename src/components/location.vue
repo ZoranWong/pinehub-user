@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div class="nearest-store bgff">
-        <div class="store-title text-color-11">{{store.name}}</div>
+		<div class="nearest-store bgff" >
+        <div class="store-title text-color-11"><!-- {{name}} --></div>
         <div class="store-address text-color-75" >
-            {{store.address}}
+            {{name}}
         </div>
         <i class="i-icon arrow-right-icon"></i>
       </div>
@@ -13,12 +13,17 @@
 	export default{
 		data(){
 			return{
-				store:{
-          name:'合肥快乐松宁西路门店',
-          address:'安徽省合肥市高新区宁西路与玉兰大道交叉口',
-        }
 			}
-		}
+		},
+    computed:{
+      position(){
+        console.log('position')
+        return this.$store.getters['model.nearestStore']
+      }
+    },
+    mounted(){
+     
+    }
 	}
 	
 </script>

@@ -9,6 +9,6 @@ export default class HttpServiceProvider extends ServiceProvider {
   }
   register() {
   	this.app.register('$http', Fly);
-	this.app.register('http.merchandises', MerchandisesService);
+	  this.app.register('http.merchandises', MerchandisesService);
   }
 }

@@ -9,11 +9,8 @@ export default class Merchandises extends Model{
   computed() {
     return _.extend(super.computed(), {
       list(state){
-
-        // return state.currentPage ? _.flatten(state.list[state.categoryId]) : [];
+        console.log( this.state, '001');
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
-        // return state.currentPage ? _.flatten(state.list) : [];
-        
       },
       currentCategoryIndex(state) {
       	return state.currentCategoryIndex;
@@ -22,8 +19,7 @@ export default class Merchandises extends Model{
   }
   data() {
     return _.extend(super.data(), {
-      // categoryId: null
-    	// currentCategoryIndex: null
+    		currentCategoryIndex: null
     });
   }
 
@@ -32,7 +28,7 @@ export default class Merchandises extends Model{
     this.addEventListener('setCurrentCategory', function({categoryIndex}) {
     		this.state.currentCategoryIndex = categoryIndex;
     });
-
+    console.log(this.state ,'002')
 		this.addEventListener('setList', ({
 			list,
 			currentPage,
@@ -44,6 +40,7 @@ export default class Merchandises extends Model{
 			let startIndex = (currentPage - 1) * pageCount + 1;
       if(!this.state.list[this.state.currentCategoryIndex]) {
         this.state.list[this.state.currentCategoryIndex]  = [];
+         console.log(this.state,'004')
       }
 			this.state.list[this.state.currentCategoryIndex][currentPage - 1] = this.transform(list, this.transformer, startIndex);
 			if(totalNum !== null)
@@ -54,6 +51,7 @@ export default class Merchandises extends Model{
 					this.state.pageCount = pageCount;
 				}
 			}
+      console.log(this.state,'003')
 		});
   }
 }

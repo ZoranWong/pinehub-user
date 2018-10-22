@@ -18,7 +18,7 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.merchandises', Merchandises);
       this.app.register('mock.addmerchandises',AddMerchandises);
       this.app.register('mock.categories', Categories);
-      this.app.register('mock.neareststore',NearestStore);
+      this.app.register('mock.neareststore', NearestStore);
     }
   }
   boot() {

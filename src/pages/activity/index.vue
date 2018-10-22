@@ -19,16 +19,16 @@
           title:'新品预定',
           isShow:false,
           isShowCart:false,
-          activityId: 0, 
+          activityId: 0,
           screenHeight: ''
       }
-    }, 
+    },
     components: {
       'mp-title':MpTitle,
       'new-list':NewFoods,
       'cart': Cart,
       'pop-location':PopupLocation
-      
+
    },
    computed: {
       merchandises(){
@@ -60,7 +60,7 @@
       // },
    },
    created () {
-    
+
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }
@@ -69,4 +69,4 @@
 
 <style scoped>
 
-</style> 
+</style>
