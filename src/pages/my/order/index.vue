@@ -7,20 +7,14 @@
 				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
-<<<<<<< HEAD
-=======
-		
 		<ul>
-<<<<<<< HEAD
 			<li v-for="(item,index) in myOrdersList" :key="index">
-=======
-			<li v-for="item in myOrdersList" :key ="item">
->>>>>>> b286e2e13d4c87382220854110b2820e1e71d12d
+
 				{{item.code}} + {{item.type}} + {{item.created_at}}
 			</li>
 		</ul>
 		{{totalNum}}
->>>>>>> 3c129d9c44863acfc0d8384c492cece0f187494b
+
 		<div id="tab_content">
 			<my-order :loadOrders="loadOrders" :status="statusType" :myorderList="myOrdersList"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
@@ -100,13 +94,8 @@
 			}
 		},
 		mounted() {
-<<<<<<< HEAD
 			this.$command('my-orders');
-=======
-			// this.$command('my-orders');
-//			this.$store.dispatch('model.my.orders/getorder', {a: 0,b: 1, c: 9});
-			// console.log('anycall',this.$store.getters['model.my.orders/allOrder']);
->>>>>>> 3c129d9c44863acfc0d8384c492cece0f187494b
+
 		},
 		created() {
 			this.nowCom = "card";

@@ -5,7 +5,7 @@ import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import ShoppingCarts from '@/models/ShoppingCarts';
 import Categories from '@/models/Categories';
-import EmptyMerchandises from '@/models/EmptyMerchandises';
+
 
 
 import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
@@ -24,7 +24,7 @@ application.run(function(app) {
 		app.models.addModel('model.activity.merchandises', Merchandises);
 		app.models.addModel('model.shoppingCarts', ShoppingCarts);
 		app.models.addModel('model.categories', Categories);
-		app.models.addModel('model.emptyMerchandises',EmptyMerchandises);
+		
 
 	}	
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);

@@ -6,7 +6,7 @@
 				<span class="order_info_status">{{orderList.status}}</span>
 			</div>
 			<div class="order_info_glist">
-				<dl v-for="(items,ind) in orderList.orderItems">
+				<dl v-for="(items,ind) in orderList.orderItems" :key ="ind">
 					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
 						<em>{{items.name}}</em>
