@@ -19,7 +19,7 @@ export default class MyOrderCommand extends Command {
 			totalPage: totalPage,
 			pageCount: limit
 		});
-		console.log('2222222222222222@@@@@@@@@',this.store());
+		//console.log('2222222222222222@@@@@@@@@',this.store());
 	}
 	static commandName() {
 		return 'my-orders';
