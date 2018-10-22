@@ -9,11 +9,7 @@
 		</div>
 		
 		<ul>
-<<<<<<< HEAD
 			<li v-for="(item,index) in myOrdersList" :key="index">
-=======
-			<li v-for="item in myOrdersList" :key ="item">
->>>>>>> b286e2e13d4c87382220854110b2820e1e71d12d
 				{{item.code}} + {{item.type}} + {{item.created_at}}
 			</li>
 		</ul>

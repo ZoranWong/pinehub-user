@@ -1,6 +1,8 @@
 /*eslint constructor-super: "error"*/
 /*eslint-env es6*/
 import ServiceProvider from './ServiceProvider';
+import MyInfo from '@/mocks/MyInfo';
+import MyFeedback from '@/mocks/MyFeedback';
 import MyOrder from '@/mocks/MyOrder';
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
@@ -17,6 +19,8 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.merchandises', Merchandises);
       this.app.register('mock.addmerchandises',AddMerchandises);
       this.app.register('mock.categories', Categories);
+			this.app.register('mock.myInfo', MyInfo);
+			this.app.register('mock.myFeedback', MyFeedback);
       this.app.register('mock.myOrders', MyOrder);
     }
   }

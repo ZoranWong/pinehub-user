@@ -2,7 +2,7 @@
 	<div id="myfeedback">
 		<mp-title :title="title"></mp-title>
 		<div id="myfeedback_content">
-			<textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" />
+			<textarea placeholder-class="placeholder-class" v-model="feedbackContent" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" />
 			<em>{{nowFontNum}}/{{totalFont}}</em>
 		</div>
 		<input v-model="contact" placeholder-class="placeholder-class" id="myfeedback_mobile" placeholder="输入您的联系方式（选填）" />
@@ -20,32 +20,27 @@
 			return {
 				title: "意见反馈",
 				navName: "feedback",
-				feedBackContent: null,
+				feedbackContent: null,
 				totalFont: 500,
 				contact: null
 			};
 		},
 		computed: {
 			nowFontNum() {
-				return this.feedBackContent ? this.feedBackContent.length : 0;
+				return this.feedbackContent ? this.feedbackContent.length : 0;
 			}
 		},
 		methods: {
-			jump(router) {
-				this.$command('router', router, 'jumpNotTab');
-			},
 			submit() {
-				console.log(this.feedBackContent);
-				if(!this.feedBackContent || this.feedBackContent.length < 10) {
+				if(!this.feedbackContent || this.feedbackContent.length < 10) {
 					wx.showToast({
 						title: "不得少于10字",
 						icon: "none"
 					})
-					return false;
 				} else {
+					this.$command('MYFEEDBACK',this.contact,this.feedbackContent);
 					this.contact = null;
-					this.feedBackContent = null;
-					this.jump('myfeedbacksuccess');
+					this.feedbackContent = null;
 				}
 			}
 		},
