@@ -1,109 +1,38 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info">
+		<div class="order_info" v-for="(orderList,index) in myorderList">
 			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
+				<i>订单编号</i><em>{{orderList.code}}</em>
+				<span class="order_info_status">{{orderList.status}}</span>
 			</div>
 			<div class="order_info_glist">
-				<dl>
+				<dl v-for="(items,ind) in orderList.orderItems">
 					<dd><img src="/static/upload/cheese-cake.png" /></dd>
 					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
-				</dl>
-				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
-					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
+						<em>{{items.name}}</em>
+						<span>单价 ￥{{items.sellPrice}} 数量 {{items.merchandiesNum}} 份</span>
+						<span>总价 ￥{{items.totalAmount}}</span>
+					</dt> 
 				</dl>
 			</div>
 			<div class="order_info_ads">
 				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
+				<em>{{orderList.reveiverAddress}}</em>
 			</div>
 			<div class="order_info_glist_total">
 				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
+					{{orderList.createdAt}}
 				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
+				<em>共{{orderList.quality}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
 			</div>
-			<div class="order_info_btn">
+			<div class="order_info_btn" v-if="orderList.status=='待支付'">
 				<i>立即支付</i>
 				<i class="delete">取消订单</i>
 			</div>
 			<i class="order_info_circle"></i>
 			<i class="order_info_circle right_circle"></i>
 		</div>
-		<div class="order_info">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
-					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
-				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
-			</div>
-			<div class="order_info_btn">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
-			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
-		</div>
-		<div class="order_info">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
-					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
-				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
-			</div>
-			<div class="order_info_btn">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
-			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
-		</div>
+		
 	</div>
 </template>
 
@@ -116,13 +45,18 @@
 				type: String
 			},
 			loadOrders: {
-				default: null,
+				default:"",
 				type: Function
+			},
+			myorderList:{
+				default:"",
+				type:Function 
 			}
 		},
 		data() {
 			return {
-				orderList: {}
+				orderList: {},
+				myorderList:{} 
 			};
 		},
 		//算术方法
@@ -138,13 +72,17 @@
 			}
 		},
 		created() {
-			this.$command('my-orders');
-			this.loadOrders("all"); 
+			//this.$command('my-orders');
+			var status=this.status
+			this.loadOrders(status); 
 			//console.log(this.loadOrders(),1234);
 			//console.log('abc123ghhgfhgfhgfhgfh',this.$store.getters['model.my.orders/list']);
+			
+			
 		},
 		mounted() {
 
+			console.log("hfjdshfj",this.myorderList);
 			
 		}
 	}
