@@ -27,7 +27,7 @@ export default class ReduceMerchandises extends Mock {
   fail() {
      return {
        "data": {
-          "message": "此商品没有库存了"
+          "delete_count": true
        }
     };
   }

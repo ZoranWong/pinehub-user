@@ -4,7 +4,8 @@ export default class NearestStore {
     this.name = NearestStore['name'];
     this.lng = NearestStore['lng'];
     this.lat = NearestStore['lat'];
-    this.address = NearestStore['moblie'];
+    this.address = NearestStore['address'];
+    this.mobile = NearestStore['mobile'];
   }
 
 }

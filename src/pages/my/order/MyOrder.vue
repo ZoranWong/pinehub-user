@@ -134,19 +134,13 @@
 
 		watch: {
 			status(v) {
-				console.log(v)
+				// console.log(v)
 			}
 		},
 		created() {
 			this.$command('my-orders');
-			this.loadOrders("all"); 
-			//console.log(this.loadOrders(),1234);
-			//console.log('abc123ghhgfhgfhgfhgfh',this.$store.getters['model.my.orders/list']);
+			this.loadOrders("all");
 		},
-		mounted() {
-
-			
-		}
 	}
 </script>
 

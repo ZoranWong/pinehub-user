@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<div class="nearest-store bgff" >
-        <div class="store-title text-color-11"><!-- {{name}} --></div>
+        <div class="store-title text-color-11">{{position.name}}</div>
         <div class="store-address text-color-75" >
-            {{name}}
+            {{position.address}}
         </div>
         <i class="i-icon arrow-right-icon"></i>
       </div>
@@ -11,18 +11,23 @@
 </template>
 <script>
 	export default{
+    props:{
+        position: {
+          default: null,
+          type: Object
+      }
+    },
 		data(){
 			return{
 			}
 		},
     computed:{
-      position(){
-        console.log('position')
-        return this.$store.getters['model.nearestStore']
+       position(){
+        console.log(this.location,"ppppp")
+        return this.$store.getters['model.nearestStore/location'];
       }
     },
     mounted(){
-     
     }
 	}
 	

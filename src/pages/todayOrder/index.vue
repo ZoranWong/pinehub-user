@@ -52,9 +52,7 @@
        return page;
       },
 
-      position(){
-        return this.$store.getters['model.nearestStore/location'];
-      }
+     
     },
     methods:{
       hdlShowCart:function(){
@@ -76,10 +74,7 @@
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
         console.log( this.count, "987", this.merchandiseId)
       },
-      // position(){
-      //   this.$command('GET_NEAREST_STORE');
-      //   console.log(lng, lat,"iii")
-      // }
+    
       // reduceCart(shopId, count, merchandisesId){
       //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       // }
@@ -94,7 +89,7 @@
    },
    mounted(){
     this.$command('GET_NEAREST_STORE');
-    console.log(this.position,'988enbce')
+    
    }
 }
 

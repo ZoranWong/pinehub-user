@@ -2,7 +2,7 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <location></location>
+    <location :position="position"></location>
     <div class="goods" >
         <menus></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
@@ -25,7 +25,6 @@
     data(){
       return{
         title:"预定商城",
-        listHeight: '758rpx',
         isShow:false,
         isShowCart:true,
         activityId: 0, 
@@ -49,7 +48,7 @@
       currentPage () {
        let page = this.$store.state['model.activity.merchandises'].currentPage;
        return page;
-      },
+      }
    },
     methods:{
       hdlShowCart:function(){
@@ -63,26 +62,27 @@
         this.isShow = false;
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-          
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-        console.log( this.count, "987", this.merchandiseId)
+  
       },
-      reduceCart(shopId, count, merchandisesId){
-        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-      }
+      // reduceCart(shopId, count, merchandisesId){
+      //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      //   console.log( this.count, "减少", this.merchandiseId)
+      // }
     },
     created () {
-    
-    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.$command('GET_NEAREST_STORE');
+        
    },
-   mounted(){ 
-     
-        // console.log('h123', this.merchandises.list)
+   mounted(){
 
+      // this.$command('GET_NEAREST_STORE')
       
+     
    }
 }
 
@@ -94,7 +94,9 @@
 .goods{
   display: flex;
   width:100%;
+  height: 100%;
   overflow: hidden;
   box-sizing: border-box;
+  background-color: #f2f2f2;
 }
 </style>

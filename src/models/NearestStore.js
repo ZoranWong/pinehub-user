@@ -8,32 +8,30 @@ export default class NearestStore extends Model {
 	computed() {
 		return _.extend(super.computed(), {
        	location(state){
-        	console.log( this.state, '001没有数据');
-        	return state.name;
+        	return state.location;
       	}
-      // currentCategoryIndex(state) {
-      // 	return state.currentCategoryIndex;
-      // }
      });
    	}
 	data() {
 		return {
-			id: null,
-			name:null,
-			address:null
+			location : {
+				id: null,
+				name:null,
+				address:null
+			}
+			
 		};
-	}
-	events() {
-		let events = super.events();
-		return _.extend(events, {
-
-		});
 	}
 
 	listeners() {
-		let listeners = super.listeners();
-		return _.extend(listeners, {
-
+		super.listeners();
+		this.addEventListener('location',function ({id,  name, address}, state ){
+			this.state.location.name = name;
+			this.state.location.id = id;
+			this.state.location.address = address;
+			
 		});
+		
+	  
 	}
 }

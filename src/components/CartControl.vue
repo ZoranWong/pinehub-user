@@ -1,6 +1,6 @@
 -<template>
 	<div class="cartcontrol" :style="{border: border}" >
-		<div class="cart-decrease" v-show="count>0" @click="decreaseCart" > 
+		<div class="cart-decrease" v-show="count>0" @click="reduceCart" > 
     </div>
 		<div class="cart-count" v-show="count>0"> {{count}} </div>
 		<div class="cart-add" @click="addCart" :add="addMerchandises"></div>
@@ -27,19 +27,19 @@
 	      }
 	    },
 		methods: {
-	      cartShow:function() {
-	        this.$emit('show-cart');
+	      	cartShow:function() {
+	        	this.$emit('show-cart');
 	      },
-				addCart(event) {
-	
-	        this.$emit('addCart',  this.merchandise.id, this.count + 1, 
-	          this.merchandise.shopId );
-	        console.log( this.count, "cartcontrol", this.merchandiseId)
-	      },
-	      decreaseCart() {
-	        if(this.count > 0) {
-	         this.$emit('addCart',  this.merchandise.id, this.count - 1, 
-	          this.merchandise.shopId ); 
+		 	addCart(event) {
+	        	this.$emit('addCart',  this.merchandise.id, this.count + 1, 
+	          	this.merchandise.shopId );
+	        	console.log( this.count, "addcart", this.merchandiseId)
+	      	},
+	      	reduceCart() {
+	        	if(this.count > 0) {
+	         	this.$emit('reduceCart',  this.merchandise.id, this.count - 1, 
+	          	this.merchandise.shopId ); 
+	          	console.log(this.count, "reduceCart", this.merchandiseId)
 	        }
 	        
 	      }

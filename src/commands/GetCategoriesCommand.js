@@ -4,12 +4,20 @@ export default class GetCategoriesCommand extends Command {
     super(app);
   }
 
-  async handle(merchandiseId, count, shopId = null) {
-     // 与服务器打交道，获取数据，返回数据
-    
+  async handle (page = 1) {
 
+    let service = this.service('http.categories');
+    let [categories, totalPage, limit, totalCount] = await service.categories(page);
+    this.store().dispatch('model.categories/setList', {
+      list: categories,
+      currentPage: page,
+      totalPage: totalPage,
+      totalNum: totalCount,
+      pageCount: limit,
+              
+    });
   }
   static commandName() {
-    return 'GAT_CATEFORIES_TO_MEUN';
+    return 'GET_CATEGORIES_TO_MEUN';
   }
 }

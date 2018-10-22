@@ -34,7 +34,6 @@ export default class Orders extends Model {
 	listeners() {
 		this.addEventListener('allOrders', function({list, totalNum,currentPage,totalPage,pageCount}, state) {
 			state.allOrders = list;
-			console.log('my orders total num', totalNum);
 		});
 	}
 }

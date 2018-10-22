@@ -11,12 +11,6 @@ export default class PopupService extends Service {
 			icon:icon,
 			duration:duration,
 			mask:mask,
-			// success:function(resolve){
- 		// 		console.log(resolve,"库存充足")
-			// },
-			// fail:function(){
-   //             console.log("库存不足")
-			// }
 		});		
        });
 	}
