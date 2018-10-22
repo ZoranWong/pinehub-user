@@ -14,8 +14,8 @@ export default class MyOrderService extends Service {
 //		console.log('444', this.$application.needMock())
 		if(this.$application.needMock()) {
 //			console.log('888', this.services('mock.myOrdersMock'));
-			response = await this.services('mock.myOrders').mock(page, limit);
-//			console.log(response);
+			response = await this.services('mock.myOrders').mock(status, page, limit);
+			console.log(response,"9999999999999999999999999999999999999");
 		} else {
 			//服务器交互代码
 			response = await this.httpGet(`${status}/orders`, {
