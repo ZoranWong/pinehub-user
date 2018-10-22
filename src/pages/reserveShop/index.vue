@@ -25,7 +25,7 @@
     data(){
       return{
         title:"预定商城",
-        listHeight: '758rpx',
+        // listHeight: '758rpx',
         isShow:false,
         isShowCart:true,
         activityId: 0, 
@@ -49,7 +49,7 @@
       currentPage () {
        let page = this.$store.state['model.activity.merchandises'].currentPage;
        return page;
-      },
+      }
    },
     methods:{
       hdlShowCart:function(){
@@ -63,8 +63,8 @@
         this.isShow = false;
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-          
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);  
+        //console.log(this.activityId,"hhhhhhhhhhhhh")                
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -76,13 +76,13 @@
     },
     created () {
     
-    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
-   mounted(){ 
-     
-        // console.log('h123', this.merchandises.list)
-
-      
+   mounted(){      
+      this.$command('GET_CATEGORIES_TO_MEUN');
+      console.log("mooommmmmmmm")
+      console.log('menus data', this.$store.getters);
+         
    }
 }
 
