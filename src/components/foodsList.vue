@@ -68,12 +68,12 @@
         // console.log('next page');
         this.next();
       },
-      addCart(event) {
+      // addCart(event) {
   
-          this.$emit('addCart',  this.merchandise.id, this.count + 1, 
-            this.merchandise.shopId );
-          //console.log( this.count, "cartcontrol", this.merchandiseId)
-        },
+      //     this.$emit('addCart',  this.merchandise.id, this.count + 1, 
+      //       this.merchandise.shopId );
+      //     //console.log( this.count, "cartcontrol", this.merchandiseId)
+      //   },
       scroll(e) {
         console.log(e)
       },
