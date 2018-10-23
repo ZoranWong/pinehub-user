@@ -9,7 +9,6 @@ export default class Categories extends Model{
   computed() {
     return _.extend(super.computed(), {
       categories(state){
-        //console.log("vhhhh",this.state.list, _.flatten(this.state.list));
         return this.state.currentPage ? _.flatten(state.list) : [];
       }
     });

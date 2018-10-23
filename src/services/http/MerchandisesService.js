@@ -40,22 +40,34 @@ export default class MerchandisesService extends ApiService{
 		return await this.list(route, page, search, limit);
 	}
 
-
+	//添加购物车
 	async addMerchandises(merchandiseId, storeId, quality) {
 		let response = null;
-		// let qua  = response.data.quality;
-		
 		if(this.$application.needMock()) {
-			response =  await this.services('mock.addmerchandises').mock(merchandiseId, storeId, quality);
-			console.log(response, '1899' ,response.data.name);
-
+			response =  await this.services('mock.addMerchandises').mock(merchandiseId, storeId, quality);
+			// console.log(response, '添加购物车' ,response.data.name);
 		}else{
 			//服务器交互代码
 			response = await this.httpPost( `/add/merchandises`, 
 				{merchandise_id: merchandiseId, store_id:storeId, quality:quality});
-			console.log( response, "coffee")
+			console.log( response, "服务器交互添加购物车")
 		}
-			console.log(response.data['quality'])
+		return   [response.data['id'],  response.data['name'],
+		       		response.data['quality'], response.data['sell_price'], response.data['message'],
+		       		response.data['amount']]; 
+	}
+	//减少购物车
+	async reduceMerchandises(merchandiseId, storeId, quality) {
+		let response = null;
+		if(this.$application.needMock()) {
+			response =  await this.services('mock.reduceMerchandises').mock(merchandiseId, storeId, quality);
+			console.log(response, '减少购物车' ,response.data.name);
+		}else{
+			//服务器交互代码
+			response = await this.httpPost( `/reduce/merchandises`, 
+				{merchandise_id: merchandiseId, store_id:storeId, quality:quality});
+			console.log( response, "服务器交互减少购物车")
+		}
 		return   [response.data['id'],  response.data['name'],
 		       		response.data['quality'], response.data['sell_price'], response.data['message'],
 		       		response.data['amount']]; 
@@ -77,9 +89,7 @@ export default class MerchandisesService extends ApiService{
 		}
 		return response.data['delete_count'];
 	}	 
-    
-
-
+    //搜索
     async search(name, page = 2){
     	let response = null;
     	if(this.$application.needMock()){
@@ -91,22 +101,4 @@ export default class MerchandisesService extends ApiService{
 				`, {name:name, page: page })
     	}
     }
-	// async uploadMaterial(appId, type, fileField, file, title = null, introduction = null) {
-	// 	let response = null;
-	// 	let request = new FormData();
-	// 	request.append('app_id', appId);
-	// 	request.append(fileField, file);
-	// 	request.append('file_field', fileField);
-	// 	if(title)
-	// 		request.append('title', title);
-	// 	if(introduction)
-	// 		request.append('introduction', introduction);
-	// 	if(this.$application.needMock()) {
-	// 		response =  await this.services('mock.material.upload').mock(request);
-	// 	}else{
-	// 		//服务器交互代码
-	// 		response = await this.httpPost(`${type}/material`, request);
-	// 	}
-	// 	return response.data;
-	// }
 }	

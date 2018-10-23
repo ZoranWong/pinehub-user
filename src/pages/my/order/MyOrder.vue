@@ -68,20 +68,17 @@
 
 		watch: {
 			status(v) {
-				console.log(v)
+				// console.log(v)
 			}
 		},
 		created() {
-			var status=this.status
-			this.loadOrders(status); 
-			
-			
-		},
-		mounted() {
+			this.$command('my-orders');
+			this.loadOrders("all");
 
-			console.log("hfjdshfj",this.myorderList);
-			
+			var status=this.status
+			this.loadOrders(status); 			
 		}
+
 	}
 </script>
 

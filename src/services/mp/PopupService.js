@@ -11,7 +11,7 @@ export default class PopupService extends Service {
 			icon:icon,
 			duration:duration,
 			mask:mask
-		});		
+		    });		
        });
 	}
 }

@@ -5,7 +5,6 @@ export default class MyOrder extends Mock {
 		this.total = 12;
 	}
 	data(status, page = 1, search = null, limit = 20) {
-		console.log('123321123321')
 		return {
 			"data|12": [{
 				"id|+1": 1,
