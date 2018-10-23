@@ -6,6 +6,7 @@
 	"myfeedback": "/pages/my/feedback/main",
 	"myfeedbacksuccess": "/pages/my/feedback/success/main",
 	"mystore": "/pages/my/mystore/main",
+	"mystoreorder": "/pages/my/mystore/order/main",
 	"mystorestatus": "/pages/my/mystore/status/main",
 	"location": "/pages/my/location/main",
 	"share": "/pages/my/share/main",
