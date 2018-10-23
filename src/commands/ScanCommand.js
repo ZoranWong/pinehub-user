@@ -5,7 +5,11 @@ export default class ScanCommand extends Command {
 	}
 	//
 	handle() {
-		this.service('scan')['scanCode']();
+		let res = this.service('scan')['scanCode']();
+		wx.showToast({
+			title: res.result,
+			icon: "none"
+		})
 	}
 	static commandName() {
 		return 'scan';
