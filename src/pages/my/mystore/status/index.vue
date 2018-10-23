@@ -1,21 +1,25 @@
 <template>
 	<div id="status">
-		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel"></mp-toast>
+		<!--<mp-toast ></mp-toast>-->
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
-				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+				<li v-for="(tab, index) in tabs" :class="{tab_select_now:cur == index}"
+					:style="{width:tabNumWidth}"
+					:key="index" @click="tabSelect(index)">
+					<span>{{tab.name}}</span>
+				</li>
 			</ul>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
-				<!-- <store @showToast="showToastFunction"></store> -->
+			<div class="tab_content_item store-orders" v-if="cur === 0">
+				<!--<store @showToast="showToastFunction"></store>--> 
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 1">
-				<purchase></purchase>
+			<div class="tab_content_item purchase-orders" v-if="cur === 1">
+				<!--<purchase></purchase>-->
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 2">
-				<sales></sales>
+			<div class="tab_content_item sales-orders" v-if="cur === 2">
+				<!--<sales></sales>-->
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -35,7 +39,7 @@
 			"mp-title": MpTitle,
 			"sales": Sales,
 			"purchase": Purchase,
-			"store": StoreToast,
+		    "store": StoreToast,
 			"mp-toast": Toast,
 			'footer-nav': FooterNav
 		},
@@ -44,15 +48,15 @@
 				title: "店铺状态",
 				navName: "my",
 				tabs: [{
-					name: "销售统计"
+					name: "库存统计" 
 				}, {
 					name: "进货统计"
 				}, {
-					name: "库存统计"
+					name: "销售统计"
 				}],
 				cur: 0,
 				merchandise: {},
-				display: false
+				display: false 
 			};
 		},
 		computed: {
@@ -66,13 +70,11 @@
 		methods: {
 			tabSelect(num) {
 				this.cur = num;
-				console.log(num);
+				console.log(num); 
 				console.log(this);
 			},
 			showToastFunction(merchandise) {
 				this.display = true;
-				this.merchandise = merchandise;
-				console.log(merchandise);
 			},
 			closeStockPanel() {
 				console.log(123)
@@ -80,6 +82,7 @@
 			}
 		},
 		created() {
+			console.log('dd');
 		}
 	}
 </script>

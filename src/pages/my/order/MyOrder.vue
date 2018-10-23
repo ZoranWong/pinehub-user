@@ -1,16 +1,16 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info" v-for="(orderList,index) in myorderList">
+		<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
 			<div class="order_info_sn">
 				<i>订单编号</i><em>{{orderList.code}}</em>
 				<span class="order_info_status">{{orderList.status}}</span>
 			</div>
 			<div class="order_info_glist">
 				<dl v-for="(items,ind) in orderList.orderItems" :key ="ind">
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
+					<dd><img :src="items.mainImage"/></dd>
 					<dt>
 						<em>{{items.name}}</em>
-						<span>单价 ￥{{items.sellPrice}} 数量 {{items.merchandiesNum}} 份</span>
+						<span>单价 ￥{{items.sellPrice}} 数量 {{items.quality}} 份</span>
 						<span>总价 ￥{{items.totalAmount}}</span>
 					</dt> 
 				</dl>
@@ -72,11 +72,13 @@
 			}
 		},
 		created() {
+			var status=this.status
+			this.loadOrders(status); 	
+		},
+		mounted() {
+			console.log(this.myorderList,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 			this.$command('my-orders');
 			this.loadOrders("all");
-
-			var status=this.status
-			this.loadOrders(status); 			
 		}
 
 	}

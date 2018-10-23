@@ -79,7 +79,7 @@
 		},
 		created() {
 			let storeId = 1;
-			this.$command('GET_STORE_CATEGORIES', storeId);
+//			this.$command('GET_STORE_CATEGORIES', storeId);
 		}
 	}
 </script>
