@@ -52,10 +52,10 @@
 				this.longitude = result.lng;
 				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
 				this.city = city;
-				console.log(this.latitude,this.longitude)
+				// console.log(this.latitude,this.longitude)
 			},
 			searchLocation() {
-				console.log(this);
+				// console.log(this);
 				this.$command(this.command, this.city + this.addressName);
 			},
 			nowLocation() {
@@ -67,7 +67,7 @@
 			}
 		},
 		created() {
-			console.log('location created', this);
+			// console.log('location created', this);
 			this.flashLocation();
 		},
 		onLoad:function(options){

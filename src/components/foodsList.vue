@@ -14,7 +14,7 @@
           <p class="sell-price">{{item.sellPrice}}元/份</p>
           <p class="origin-price">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
-            <cart-control @addCart = "addCart" :merchandise = "item"></cart-control>
+            <cart-control @addCart = "addCart"  @reduceCart= "reduceCart " :merchandise = "item"></cart-control>
           </div>
         </div>
       </div>
@@ -77,9 +77,14 @@
       scroll(e) {
         console.log(e)
       },
-      // addCart( id, count, shopId) {
-      //   this.addMerchandiseToCart( shopId, count, id);
-      // }
+
+      addCart( id, count, shopId) {
+        this.addMerchandiseToCart( shopId, count, id);
+      },
+      reduceCart(id, count, shopId){
+        console.log("111kkkjjjhhhh")
+        this.addMerchandiseToCart( shopId, count, id);
+      }
     },
     watch:{
       width:function(val) {

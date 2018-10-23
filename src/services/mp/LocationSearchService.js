@@ -47,7 +47,6 @@ export default class LocationSearchService extends Service {
 
 	//渲染地图
 	getLocation() {
-		// console.log('开始渲染地图');
 		return new Promise((resolve, reject) => {
 			wx.getLocation({
 				type: 'wgs84',
@@ -59,7 +58,7 @@ export default class LocationSearchService extends Service {
 					resolve(result);
 				},
 				fail: function(error) {
-					// console.log(error);
+					console.log(error);
 					reject(error);
 				}
 			});
