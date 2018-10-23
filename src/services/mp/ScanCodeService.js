@@ -8,7 +8,8 @@ export default class scanCodeService extends Service {
 		return await wx.scanCode({
 			onlyFromCamera: true,
 			success: (res) => {
-				console.log(res)
+				console.log(res);
+				return res;
 			}
 		})
 	}

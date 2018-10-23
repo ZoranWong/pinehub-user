@@ -9,7 +9,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item" v-if="cur === 0">
-				<store @showToast="showToastFunction"></store>
+				<!-- <store @showToast="showToastFunction"></store> -->
 			</div>
 			<div class="tab_content_item" v-else-if="cur === 1">
 				<purchase></purchase>
