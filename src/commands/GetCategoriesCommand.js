@@ -8,7 +8,6 @@ export default class GetCategoriesCommand extends Command {
 
     let service = this.service('http.categories');
     let [categories, totalPage, limit, totalCount] = await service.categories(page);
-    //console.log('get categories list ', categories);
     this.store().dispatch('model.categories/setList', {
       list: categories,
       currentPage: page,

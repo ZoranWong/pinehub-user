@@ -1,5 +1,5 @@
 import Mock from './Mock';
-export default class DistributeOrder extends Mock {
+export default class DistributionOrder extends Mock {
   constructor(application) {
     super(application);
   }

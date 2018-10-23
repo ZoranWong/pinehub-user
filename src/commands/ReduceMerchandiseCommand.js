@@ -1,15 +1,14 @@
 import Command from './Command';
-export default class AddMerchandiseCommand extends Command {
+export default class ReduceMerchandiseCommand extends Command {
   constructor(app) {
     super(app);
   }
 
-  async handle(merchandiseId, count, shopId = null) {
-     // 与服务器打交道，获取数据，返回数据
+  async handle(merchandiseId, count, storeId = null) {
     let service = this.service('http.merchandises');
-    let [ id, name, quality,sellPrice, message, totalAmount]= await service.addMerchandises( 
-          merchandiseId, shopId, count );
-    console.log(id,  name, quality, message, totalAmount, merchandiseId, shopId);
+    let [ id, name, quality,sellPrice, delete_count, totalAmount]= await service.addMerchandises( 
+          merchandiseId, storeId, count );
+    console.log(id,  name, quality, delete_count, totalAmount, merchandiseId, storeId);
     if(typeof id !== 'undefined') {
       this.store().dispatch('model.shoppingCarts/changeCart', {
         id: id,
@@ -22,11 +21,11 @@ export default class AddMerchandiseCommand extends Command {
       })
     }else{
       console.log(id)
-      this.service('popup').toast(message, 'none')
+      this.service('popup').toast(delete_count, 'none')
     }
 
   }
   static commandName() {
-    return 'ADD_MERCHANDISE_TO_CART';
+    return 'REDUCE_MERCHANDISE_TO_CART';
   }
 }

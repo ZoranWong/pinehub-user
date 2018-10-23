@@ -2,7 +2,7 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <location></location>
+    <location :position="position"></location>
     <div class="goods" >
         <menus></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
@@ -25,7 +25,6 @@
     data(){
       return{
         title:"预定商城",
-        // listHeight: '758rpx',
         isShow:false,
         isShowCart:true,
         activityId: 0, 
@@ -67,25 +66,27 @@
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-        console.log( this.count, "987", this.merchandiseId)
+  
       },
       reduceCart(shopId, count, merchandisesId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+        //   console.log( this.count, "减少", this.merchandiseId)
       },    
       emptyCart(storeId){
         this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
       }
-
     },
     created () {
-    
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.$command('GET_NEAREST_STORE');
+        
    },
+
    mounted(){      
       this.$command('EMPTY_MERCHANDISES_TO_CART');
       console.log("clear", this.$store.getters['model.emptyMerchandises'])
       //console.log('menus data', this.$store.getters);
-         
+
    }
 }
 
@@ -97,6 +98,7 @@
 .goods{
   display: flex;
   width:100%;
+  height: 100%;
   overflow: hidden;
   box-sizing: border-box;
   height: 100%;

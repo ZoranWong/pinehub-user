@@ -9,6 +9,7 @@ import JsonService from '../services/encrypt/JsonService';
 import HrefService from '../services/mp/HrefService';
 import ScanCodeService from '../services/mp/ScanCodeService';
 import PopupService from '../services/mp/PopupService';
+import LocationSearchService from '../services/mp/LocationSearchService';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
 		super(app);
@@ -42,6 +43,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('href', HrefService);
 		this.app.register('scan', ScanCodeService);
 		this.app.register('popup',PopupService);
+		this.app.register('location',LocationSearchService);
 	}
 	boot() {
 

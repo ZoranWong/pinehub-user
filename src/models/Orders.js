@@ -30,6 +30,7 @@ export default class Orders extends Model {
 	//监听数据
 	listeners() {
 		this.addEventListener('allOrders', function({list, totalNum,currentPage,totalPage,pageCount}, state) {
+			state.allOrders = list;
 			let startIndex = (currentPage - 1) * pageCount + 1;
 			console.log(currentPage, pageCount, this.transformer);
 			state.allOrders = this.transform(list, this.transformer, startIndex);

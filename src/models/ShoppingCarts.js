@@ -65,6 +65,7 @@ export default class ShoppingCarts extends Model{
       }
     });
 
+    //减少购物车
     this.addEventListener('reset', function({shopId}) {
       this.state.list = [];
     });

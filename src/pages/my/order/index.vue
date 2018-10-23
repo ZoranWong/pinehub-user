@@ -46,7 +46,8 @@
 		},
 		watch: {
 			test(nv, ov) {
-				console.log('nvno', nv, ov);
+				if(nv && nv !== ov) {
+				}
 			}
 		},
 		computed: {

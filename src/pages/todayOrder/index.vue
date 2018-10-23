@@ -2,7 +2,8 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
      <mp-swiper></mp-swiper>
-    <location></location>
+    <location ></location>
+  <!--   <div style="" @click="location">哈哈哈</div> -->
     <div class="goods" >
       <menus @menusChange="menusChange"></menus>
       <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
@@ -50,6 +51,8 @@
        let page = this.$store.state['model.activity.merchandises'].currentPage;
        return page;
       },
+
+     
     },
     methods:{
       hdlShowCart:function(){
@@ -71,7 +74,7 @@
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
         console.log( this.count, "987", this.merchandiseId)
       },
-
+    
       // reduceCart(shopId, count, merchandisesId){
       //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       // }
@@ -84,7 +87,10 @@
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
 
    },
-
+   mounted(){
+    this.$command('GET_NEAREST_STORE');
+    
+   }
 }
 
 
@@ -97,6 +103,5 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
-  z-index:
 }
 </style>
