@@ -7,19 +7,19 @@
 				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
-		
 		<ul>
-			<li v-for="item in myOrdersList" :key="item">
+			<li v-for="(item,index) in myOrdersList" :key="index">
 				{{item.code}} + {{item.type}} + {{item.created_at}}
 			</li>
 		</ul>
+		{{totalNum}}
+
 		<div id="tab_content">
-			<my-order :loadOrders="loadOrders" :status="statusType"></my-order>
+			<my-order :loadOrders="loadOrders" :status="statusType" :myorderList="myOrdersList"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
 		</div>
-		<span>{{x}}</span>
 		<div id="footNav_height"></div>
 		<footer-nav :navName="navName"></footer-nav>
 	</div>
@@ -54,7 +54,6 @@
 		watch: {
 			test(nv, ov) {
 				if(nv && nv !== ov) {
-
 				}
 			}
 		},
@@ -65,10 +64,10 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			myOrdersList() {
-				return this.$store.getters['model.my.orders/list'];
+				return this.$store.getters['model.my.orders/lists'];
 			},
-			x(){
-				return this.$store.getters['model.my.orders/x'];
+			totalNum(){
+				return this.$store.getters['model.my.orders/totalNum'];
 			}
 		},
 		methods: {
@@ -96,8 +95,7 @@
 		},
 		mounted() {
 			this.$command('my-orders');
-//			this.$store.dispatch('model.my.orders/getorder', {a: 0,b: 1, c: 9});
-			console.log('anycall',this.$store.getters['model.my.orders/allOrder']);
+
 		},
 		created() {
 			this.nowCom = "card";

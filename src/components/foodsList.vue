@@ -68,9 +68,16 @@
         // console.log('next page');
         this.next();
       },
+      addCart(event) {
+  
+          this.$emit('addCart',  this.merchandise.id, this.count + 1, 
+            this.merchandise.shopId );
+          //console.log( this.count, "cartcontrol", this.merchandiseId)
+        },
       scroll(e) {
         console.log(e)
       },
+
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
@@ -101,6 +108,7 @@
 .foods-wrapper{
   flex:1;
   overflow-y: auto;
+  height: 100%;
 }
 .foods-wrapper::-webkit-scrollbar {
   width: 1px; 

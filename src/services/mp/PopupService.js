@@ -10,8 +10,8 @@ export default class PopupService extends Service {
 			title:title,
 			icon:icon,
 			duration:duration,
-			mask:mask,
-		});		
+			mask:mask
+		    });		
        });
 	}
 }

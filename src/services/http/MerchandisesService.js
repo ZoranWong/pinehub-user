@@ -39,6 +39,7 @@ export default class MerchandisesService extends ApiService{
 		let route = `/store/${storeId}/new/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
+
 	//添加购物车
 	async addMerchandises(merchandiseId, storeId, quality) {
 		let response = null;
@@ -71,7 +72,24 @@ export default class MerchandisesService extends ApiService{
 		       		response.data['quality'], response.data['sell_price'], response.data['message'],
 		       		response.data['amount']]; 
 	}  
-    
+
+	//清空购物车
+	async emptyMerchandises(storeId){
+		console.log("storeId清空购物车")
+		let response = null;
+		
+		if(this.$application.needMock()) {			
+			response = await this.services('mock.emptyMerchandises').mock(storeId);
+			console.log('empty response', response.data);
+		} else {
+			//服务器交互代码
+			response = await this.httpGet(`/empty/merchandise/${storeId}`, {
+				store_id: storeId
+			});
+		}
+		return response.data['delete_count'];
+	}	 
+    //搜索
     async search(name, page = 2){
     	let response = null;
     	if(this.$application.needMock()){

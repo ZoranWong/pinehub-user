@@ -9,11 +9,10 @@
 <script>
 	export default {
 		props: {   
-      
-			merchandise: {
-        default:function() {
-          return {};
-        },
+      		merchandise: {
+        		default:function() {
+          			return {};
+        		},
 				type:Object
 			}
 		},
@@ -22,7 +21,6 @@
 	        return this.count > 0 ? '2rpx solid #ffcc00' : '0';
 	      },
 	      count() {
-	        // console.log("hj888",this.merchandise)
 	        return this.$store.getters['model.shoppingCarts/quality'](this.merchandise.id);
 	      }
 	    },
@@ -33,13 +31,13 @@
 		 	addCart(event) {
 	        	this.$emit('addCart',  this.merchandise.id, this.count + 1, 
 	          	this.merchandise.shopId );
-	        	console.log( this.count, "addcart", this.merchandiseId)
+	        	// console.log( this.count, "addcart", this.merchandiseId)
 	      	},
 	      	reduceCart() {
 	        	if(this.count > 0) {
 	         	this.$emit('reduceCart',  this.merchandise.id, this.count - 1, 
 	          	this.merchandise.shopId ); 
-	          	console.log(this.count, "reduceCart", this.merchandiseId)
+	          	// console.log(this.count, "reduceCart", this.merchandiseId)
 	        }
 	        
 	      }

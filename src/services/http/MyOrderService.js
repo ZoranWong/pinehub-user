@@ -12,7 +12,7 @@ export default class MyOrderService extends Service {
 		let response = null;
 
 		if(this.$application.needMock()) {
-			response = await this.services('mock.myOrders').mock(page, limit);
+			response = await this.services('mock.myOrders').mock(status, page, limit);	
 		} else {
 			//服务器交互代码
 			response = await this.httpGet(`${status}/orders`, {

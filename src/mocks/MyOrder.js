@@ -4,7 +4,7 @@ export default class MyOrder extends Mock {
 		super(application);
 		this.total = 12;
 	}
-	data(page = 1, search = null, limit = 20) {
+	data(status, page = 1, search = null, limit = 20) {
 		return {
 			"data|12": [{
 				"id|+1": 1,

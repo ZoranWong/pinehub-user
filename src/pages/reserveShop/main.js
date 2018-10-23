@@ -12,9 +12,11 @@ import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
 import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
 import GetCategoriesCommand from '@/commands/GetCategoriesCommand';
 import GetNearestStoreCommand from '@/commands/GetNearestStoreCommand';
+import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
 
 import CategoriesService from '@/services/http/CategoriesService';
 import NearestStoreService from '@/services/http/NearestStoreService';
+
 
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
@@ -24,12 +26,14 @@ application.run(function(app) {
 		app.models.addModel('model.shoppingCarts', ShoppingCarts);
 		app.models.addModel('model.categories', Categories);
 		app.models.addModel('model.nearestStore',NearestStore)
+
 	}	
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
     app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
     app.registerCommand(ReduceMerchandiseCommand.commandName(),ReduceMerchandiseCommand);
     app.registerCommand(GetCategoriesCommand.commandName(),GetCategoriesCommand);
     app.registerCommand(GetNearestStoreCommand.commandName(),GetNearestStoreCommand);
+    app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand);
 
     app.register('http.categories',CategoriesService);
     app.register('http.nearestStore', NearestStoreService);

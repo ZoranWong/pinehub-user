@@ -8,6 +8,13 @@
 	"mystore": "/pages/my/mystore/main",
 	"mystorestatus": "/pages/my/mystore/status/main",
 	"location": "/pages/my/location/main",
+	"share": "/pages/my/share/main",
+	
+	
+	
+	
+	
+	
 	"logs": "/pages/logs/main",
 	"couter": "/pages/counter/main",
 
