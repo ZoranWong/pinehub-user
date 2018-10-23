@@ -4,14 +4,14 @@ export default class scanCodeService extends Service {
 		super($application);
 	}
 	//扫码
-	async scanCode() {
-		return await wx.scanCode({
-			onlyFromCamera: true,
-			success: (res) => {
-				console.log(res);
-				return res;
-			}
-		})
+	scanCode() {
+		return new Promise((resvole, reject) => {
+			return wx.scanCode({
+				success: (res) => {
+					return resvole(res);
+				}
+			});
+		});
 	}
 
 }
