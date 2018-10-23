@@ -6,9 +6,9 @@
     <div class="goods" >
         <menus></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
-        :addMerchandiseToCart = "addCart"   ></m-list>
+        :addMerchandiseToCart = "addCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
 </template>
@@ -63,8 +63,7 @@
         this.isShow = false;
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);  
-        //console.log(this.activityId,"hhhhhhhhhhhhh")                
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -72,16 +71,20 @@
       },
       reduceCart(shopId, count, merchandisesId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      },    
+      emptyCart(storeId){
+        this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
       }
+
     },
     created () {
     
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
    mounted(){      
-      this.$command('GET_CATEGORIES_TO_MEUN');
-      console.log("mooommmmmmmm")
-      console.log('menus data', this.$store.getters);
+      this.$command('EMPTY_MERCHANDISES_TO_CART');
+      console.log("clear", this.$store.getters['model.emptyMerchandises'])
+      //console.log('menus data', this.$store.getters);
          
    }
 }
@@ -96,5 +99,7 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
+  height: 100%;
+  background: #f2f2f2;
 }
 </style>

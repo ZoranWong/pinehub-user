@@ -41,7 +41,8 @@ export default class Orders {
     		name: this.orderItems[i]['name'],
     		sellPrice: this.orderItems[i]['sell_price'].toFixed(2),
     		quality: this.orderItems[i]['quality'],
-    		totalAmount: this.orderItems[i]['total_amount'].toFixed(2)
+    		totalAmount: this.orderItems[i]['total_amount'].toFixed(2),
+    		mainImage:this.orderItems[i]['main_image']
     	}
     }
     

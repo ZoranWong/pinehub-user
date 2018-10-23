@@ -31,7 +31,7 @@
     },
     computed : {
       categories() {
-        console.log('menus data', this.$store.getters['model.categories/categories']);
+        //console.log('menus data', this.$store.getters['model.categories/categories']);
         return this.$store.getters['model.categories/categories'];
       }
     },
@@ -41,7 +41,7 @@
         this.$emit('menusChange', index);
       },
       jump(router){
-        console.log('hello')
+        //console.log('hello')
         this.$command('router',router,'jump');
       }
     },

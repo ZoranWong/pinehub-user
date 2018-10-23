@@ -27,7 +27,7 @@
 		},
 		methods: {
 			jump(router) {
-				this.$command('router', router, 'jumpNotTab');
+				this.$command('router', router, 'push');
 			},
 
 			submit() {
@@ -47,14 +47,14 @@
 		height: 100%;
 		width: 100%;
 	}
-	
+
 	#myfeedback_success {
 		font-size: 32rpx;
 		font-weight: 300;
 		color: #111111;
 		margin-top: 130rpx;
 	}
-	
+
 	#myfeedback_success img {
 		display: block;
 		width: 148rpx;
@@ -62,21 +62,21 @@
 		margin: 0 auto;
 		padding: 5rpx;
 	}
-	
+
 	#myfeedback_success em {
 		text-align: center;
 		font-size: 30rpx;
 		font-weight: 400;
 		margin-top: 30rpx;
 	}
-	
+
 	#myfeedback_success i {
 		font-size: 24rpx;
 		margin: 20rpx 130rpx 140rpx;
 		text-align: center;
 		line-height: 36rpx;
 	}
-	
+
 	#btn {
 		background: #FECE00;
 		font-size: 34rpx;

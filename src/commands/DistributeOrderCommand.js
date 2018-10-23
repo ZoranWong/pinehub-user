@@ -1,27 +1,25 @@
 import Command from './Command';
-export default class MyOrderCommand extends Command {
+export default class DistributeOrderCommand extends Command {
 	constructor(app) {
 		super(app);
 	}
 	//
-	async handle(status = 'all', page = 1, limit = 15) {
+	async handle(stratTime, endTime, page = 1) {
 		console.log('c-start');
 //		let event = args.shift();
-	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.myorders').list(status, page, limit);
+	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.distributeOrder').list(stratTime, endTime, page);
 	    console.log('com-good',[ list, totalNum, currentPage, totalPage]);
 		console.log('c-end');
-		console.log('nbnbb',this.store());
 		this.store().dispatch({
-			type: 'model.my.orders/allOrders',
+			type: 'model.distribute.orders/disOrders',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
 			totalPage: totalPage,
 			pageCount: limit
 		});
-		//console.log('2222222222222222@@@@@@@@@',this.store());
 	}
 	static commandName() {
-		return 'my-orders';
+		return 'distribute-orders';
 	}
 }

@@ -40,6 +40,7 @@ export default class MerchandisesService extends ApiService{
 		return await this.list(route, page, search, limit);
 	}
 
+
 	async addMerchandises(merchandiseId, storeId, quality) {
 		let response = null;
 		// let qua  = response.data.quality;
@@ -58,8 +59,27 @@ export default class MerchandisesService extends ApiService{
 		return   [response.data['id'],  response.data['name'],
 		       		response.data['quality'], response.data['sell_price'], response.data['message'],
 		       		response.data['amount']]; 
-	}   
+	}  
+
+	//清空购物车
+	async emptyMerchandises(storeId){
+		console.log("storeId清空购物车")
+		let response = null;
+		
+		if(this.$application.needMock()) {			
+			response = await this.services('mock.emptyMerchandises').mock(storeId);
+			console.log('empty response', response.data);
+		} else {
+			//服务器交互代码
+			response = await this.httpGet(`/empty/merchandise/${storeId}`, {
+				store_id: storeId
+			});
+		}
+		return response.data['delete_count'];
+	}	 
     
+
+
     async search(name, page = 2){
     	let response = null;
     	if(this.$application.needMock()){
