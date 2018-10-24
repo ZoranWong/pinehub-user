@@ -4,7 +4,7 @@ export default class DistributeOrderService extends Service {
 		super($application);
 	}
 	//获取订单列表
-	async list(startTime, endTime, page = 1) {
+	async list(startTime, endTime, page) {
 		let distributeorders = null;
 		let totalNum = 0;
 		let totalPage = 0;
@@ -25,7 +25,7 @@ export default class DistributeOrderService extends Service {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log('ne-----',[distributeorders, totalNum, currentPage, totalPage]);
+		console.log('nefffffffff-----',[distributeorders, totalNum, currentPage, totalPage]);
 		return [distributeorders, totalNum, currentPage, totalPage];
 	}
 	

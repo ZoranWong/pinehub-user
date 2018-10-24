@@ -1,24 +1,24 @@
 import Model from './Model';
-import CategoryTransformer from '@/models/transformers/Category';
+import StoreCategoryTransformer from '@/models/transformers/StoreCategory';
 import _ from 'underscore';
-export default class Categories extends Model{
+export default class StoreCategories extends Model{
   constructor(application) {
     super(application);
-    this.transformer = CategoryTransformer;
+    this.transformer = StoreCategoryTransformer;
   }
-  // 预定商城里商品分类
+  // 当日下单的商品分类
   computed() {
     return _.extend(super.computed(), {
-      categories(state){
+      storeCategories(state){
         return this.state.currentPage ? _.flatten(state.list) : [];
       },
-      categoryId(state) {
+      storeCategoryId(state) {
         let list = this.state.currentPage ? _.flatten(state.list) : [];
-        console.log(list, "工会荣获",this.state.currentPage)
+        console.log(list, "墨刀",this.state.currentPage)
         return (i) =>{
           for(var i = 0; i < list.length; i++){
             let category = list[i];
-            console.log(category.id,"蝴蝶飞飞")
+            console.log(category.id,"给你听歌")
             return category ? category.id : null;
           }  
         }

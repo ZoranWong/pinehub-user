@@ -1,15 +1,15 @@
 import Model from './Model';
 import _ from 'underscore';
-import SelfextraTransformer from './transformers/SelfextraOrders';
-export default class SelfextraOrders extends Model {
+import gathOrderTransformer from './transformers/GatherOrd';
+export default class GatherOrder extends Model {
 	constructor(app) {
 		super(app);
-		this.transformer = SelfextraTransformer;
+		this.transformer = gathOrderTransformer;
 	}
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.extraOrders;
+				return state.gathOrders;
 				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
 			},
 			totalNum(state){
@@ -22,18 +22,19 @@ export default class SelfextraOrders extends Model {
 	}
 	data() {
 		return {
-			extraOrders: [],
+			gathOrders: [],
 			uncompletedOrders: [],
 			completedOrders: []
 		};
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('extraOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
+		this.addEventListener('gathOrders', function({list, totalNum, currentPage, totalPage,pageCount}) {
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log(currentPage, pageCount, this.transformer);
-			state.extraOrders = this.transform(list, this.transformer, startIndex);
-			state.totalNum = totalNum;
+			console.log('addListener');
+			this.state.gathOrders = this.transform(list, this.transformer, startIndex);
+			this.state.totalNum = totalNum;
+			console.log('statestatestatestatestate',this);
 		});
 	}
 }

@@ -24,7 +24,7 @@
 			</li>
 		</ul>
 	    <!-- 支付内容的显示组件 -->
-		<payment></payment>
+		<payment :next="next" :list="merchandises" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart"></payment>
 	</div>
 </template>
 <script>
@@ -44,6 +44,11 @@
 			'consignee':Consignee,
 			'payment':Payment,
 		},
+		computed:{
+			merchandises(){
+        		return this.$store.getters['model.activity.merchandises/list'];
+      		},
+		},
 		methods:{
 			radioChange (e) {
       			console.log('radio发生change事件，携带value值为：', e.target.value)
@@ -52,7 +57,18 @@
     			 // console.log(e)
     			 this.index =  e.target.value
 
-    		}	
+    		},
+    		next() {
+		        this.$command('GET_MERCHANDISE_LIST');               
+		     },
+    		addCart(shopId, count,  merchandiseId){
+		        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+		  
+		    },
+		    reduceCart(shopId, count, merchandiseId){
+		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+		    },   
+    		 	
 		}
 	}
 </script>

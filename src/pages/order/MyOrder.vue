@@ -25,8 +25,8 @@
 				</div>
 				<em>共{{orderList.quality}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
 			</div>
-			<div class="order_info_btn" v-if="orderList.status=='待支付'">
-				<i>立即支付</i>
+			<div class="order_info_btn" v-if="orderList.status=='待核销'">
+				<i>立即核销</i>
 				<i class="delete">取消订单</i>
 			</div>
 			<i class="order_info_circle"></i>
@@ -88,7 +88,9 @@
 </script>
 
 <style scoped>
-	#tab_content_main {}
+	#tab_content_main {
+		padding-top: 74rpx;
+	}
 	
 	.order_info {
 		background: #FFFFFF;

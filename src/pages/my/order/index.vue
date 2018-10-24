@@ -91,7 +91,7 @@
 		},
 		created() {
 			this.nowCom = "card";
-			//console.log(this.$store.getters['model.my.orders/lists'],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+			//console.log(this.myOrdersList[0],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
 		}
 
 	}

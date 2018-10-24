@@ -1,7 +1,7 @@
 import Model from './Model';
 import _ from 'underscore';
-import DisordersTransformer from './transformers/DistributeOrders';
-export default class DistributeOrders extends Model {
+import DisordersTransformer from './transformers/DistributeOrder';
+export default class DistributeOrder extends Model {
 	constructor(app) {
 		super(app);
 		this.transformer = DisordersTransformer;
@@ -29,7 +29,7 @@ export default class DistributeOrders extends Model {
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('disOrders', function({list, totalNum, currentPage, totalPage}, state) {
+		this.addEventListener('disOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
 			let startIndex = (currentPage - 1) * pageCount + 1;
 			console.log(currentPage, pageCount, this.transformer);
 			state.disOrders = this.transform(list, this.transformer, startIndex);

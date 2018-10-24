@@ -2,8 +2,9 @@ import Mock from './Mock';
 export default class SelfextraOrder extends Mock {
   constructor(application) {
     super(application);
+    this.total = 12;
   }
-  data(stratTime, endTime, page = 1) {
+  data(stratTime, endTime, page = 1, limit=15) {
    	return {
       "data|10":  [
             {

@@ -1,6 +1,6 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info">
+		<div class="order_info" v-for="(gathitem,index) in gathOrders" :key="index">
 			<div class="order_info_header">
 				<ul>
 					<li>状态</li>
@@ -13,10 +13,10 @@
 			<div class="order_info_nowstatus">
 				<ul>
 					<li>配送中</li>
-					<li>58</li>
-					<li>A988ew88932</li>
-					<li>20</li>
-					<li>20</li>
+					<li>{{gathitem.sellPoint}}</li>
+					<li>{{gathitem.code}}</li>
+					<li>{{gathitem.totalAmount}}</li>
+					<li>{{gathitem.paymentAmount}}</li>
 				</ul>
 			</div>
 			<div class="order_info_glist">
@@ -32,32 +32,30 @@
 						</div>
 						<div class="order_info_glist_list">
 							<ul>
-								<li><em>木须肉</em><em>1</em><em>￥20</em></li>
-								<li><em>青姜肉丝</em><em>15</em><em>￥25</em></li>
-								<li><em>烤全羊</em><em>22</em><em>￥1555</em></li>
+								<li v-for="(item,idx) in gathitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
 							</ul>
 						</div>
 					</dt>
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
+				<em>{{gathitem.receiverAddress}}</em>
 			</div>
 			<div class="order_info_glist_total">
 				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
+					{{datetime}}
 				</div>
-				总计<i>￥6.00</i>
+				总计<i>￥{{gathitem.totalAmount}}</i>
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">
 					<ul>
 						<li>卡券使用:无</li>
-						<li>优惠活动:新店开业7折活动</li>
+						<li>优惠活动:{{gathitem.reduceCost}}</li>
 					</ul>
 				</div>
 				<div class="order_info_footer_right">
-					实付:<em>￥20.00</em>
+					实付:<em>￥{{gathitem.paymentAmount}}</em>
 				</div>
 			</div>
 			<i class="order_info_circle"></i>
@@ -74,11 +72,35 @@
 
 			};
 		},
+		props:{
+			loadOrders: {
+				default:"",
+				type: Function
+			},
+			List:{
+				default:"",
+				type:Function 
+			},
+			gathOrders:{
+				default:"",
+				type:Function
+			},
+			datetime:"",
+			startTime:"",
+			endTime:"",
+			status:"",
+			types:""
+		},
 		methods: {
 
 		},
 		created() {
-
+			console.log(this.startTime,this.endTime,this.status)
+           this.loadOrders(this.startTime,this.endTime,this.types,this.status)
+		},
+		updated(){
+//			console.log(this.gathOrders[0])
+//          console.log(this.startTime,this.endTime,this.status)
 		}
 	}
 </script>

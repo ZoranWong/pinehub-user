@@ -22,18 +22,32 @@ export default class MerchandisesService extends ApiService{
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log('services',  totalNum, currentPage, totalPage, page);
+		console.log('services服务',  totalNum, currentPage, totalPage, page);
 		return [merchandises, totalNum, currentPage, totalPage, limit];
 	}
+
+
+	//获取新品预定所有商品信息
+
 	async activity(activityId, page = 1, search = null, limit = 10) {
 		let route = `/new/activity/${activityId}/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
 
-	async today(storeId,  categoryId, page = 1, search = null, limit = 10) {
+
+
+
+    //获取今日店铺分类下的商品信息
+	async today(storeId, categoryId, page = 1, search = null, limit = 10) {
+		// let route = '/store/' + storeId + '/category/' + categoryId + '/merchandises';
 		let route = `/store/${storeId}/category/${categoryId}/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
+    //获取预定商城的指定分类下的所有商品信息
+    async bookingMerchandises(categoryId, page = 1, search = null, limit = 10 ){
+    	let route = `/category/${categoryId}/merchandises`;
+    	return await this.list(route, page, search, limit);
+    }
 
 	async storeNewMerchandises(storeId, page = 1, search = null, limit = 10) {
 		let route = `/store/${storeId}/new/merchandises`;
@@ -41,7 +55,7 @@ export default class MerchandisesService extends ApiService{
 	}
 
 	//添加购物车
-	async addMerchandises(merchandiseId, storeId, quality) {
+	async addMerchandises(merchandiseId, storeId = null, quality,  activityMerchandisesId = null) {
 		let response = null;
 		if(this.$application.needMock()) {
 			response =  await this.services('mock.addMerchandises').mock(merchandiseId, storeId, quality);
@@ -49,7 +63,8 @@ export default class MerchandisesService extends ApiService{
 		}else{
 			//服务器交互代码
 			response = await this.httpPost( `/add/merchandises`, 
-				{merchandise_id: merchandiseId, store_id:storeId, quality:quality});
+				{merchandise_id: merchandiseId, store_id:storeId, quality:quality,
+				 activity_merchandises_id: activityMerchandisesId });
 			console.log( response, "服务器交互添加购物车")
 		}
 		return   [response.data['id'],  response.data['name'],
@@ -57,30 +72,30 @@ export default class MerchandisesService extends ApiService{
 		       		response.data['amount']]; 
 	}
 	//减少购物车
-	async reduceMerchandises(merchandiseId, storeId, quality) {
+	async reduceMerchandises(merchandiseId, storeId = null, quality,  activityMerchandisesId = null) {
 		let response = null;
 		if(this.$application.needMock()) {
 			response =  await this.services('mock.reduceMerchandises').mock(merchandiseId, storeId, quality);
-			console.log(response, '减少购物车' ,response.data.name);
+			//console.log(response, '减少购物车' ,response.data.name);
 		}else{
 			//服务器交互代码
 			response = await this.httpPost( `/reduce/merchandises`, 
-				{merchandise_id: merchandiseId, store_id:storeId, quality:quality});
+				{merchandise_id: merchandiseId, store_id:storeId, quality:quality,
+				 activity_merchandises_id: activityMerchandisesId });
 			console.log( response, "服务器交互减少购物车")
 		}
 		return   [response.data['id'],  response.data['name'],
-		       		response.data['quality'], response.data['sell_price'], response.data['message'],
-		       		response.data['amount']]; 
+       		response.data['quality'], response.data['sell_price'], response.data['message'],
+       		response.data['amount']]; 
 	}  
 
 	//清空购物车
 	async emptyMerchandises(storeId){
-		console.log("storeId清空购物车")
 		let response = null;
 		
 		if(this.$application.needMock()) {			
 			response = await this.services('mock.emptyMerchandises').mock(storeId);
-			console.log('empty response', response.data);
+			//console.log('empty response', response.data);
 		} else {
 			//服务器交互代码
 			response = await this.httpGet(`/empty/merchandise/${storeId}`, {
@@ -89,16 +104,22 @@ export default class MerchandisesService extends ApiService{
 		}
 		return response.data['delete_count'];
 	}	 
+
     //搜索
-    async search(name, page = 2){
-    	let response = null;
+    async search(name, page){
+    	console.log('搜索--servicejs')
+    	let search = null;
+		let totalNum = 0;
+		let currentPage = 0;
+		let totalPage = 0;
+		let response = null;
     	if(this.$application.needMock()){
-    		response  = await this.services('mock.search').mock(name, page);
-    		console.log(response,'search')
+    		response  = await this.services('mock.searchMerchandises').mock(name, page);
     	}else{
     		//服务器交互代码
-    		response = await this.httpGet(`/reserve/search/merchandises 
-				`, {name:name, page: page })
+    		response = await this.httpGet(`/reserve/search/merchandises `, {name:name, page: page })
     	}
+
+    	return [response.data, response.meta['total_pages'], limit, response.meta['total']]
     }
 }	

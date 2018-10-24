@@ -9,6 +9,9 @@
 				</div>
 				<div class="myorder_select_info">
 					<em>类型</em>
+					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="goodstype">	
+					      {{arr[index]}}
+				    </picker>
 				</div>
 			</div>
 			<div id="tab_select">
@@ -20,7 +23,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order></order>
+				<order :types="type" :gathOrders="gathorders" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
 	</div>
@@ -46,8 +49,14 @@
 					name: "已完成"
 				}],
 				cur: 0,
-				startTime: (new Date()).format('yyyy-MM-dd'),
-				selectDate: (new Date()).format('yyyy 年 MM 月 dd 日')
+//				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
+				selectDate: (new Date()).format('yyyy-MM-dd'),
+				status:"生产中",
+				startTime:"",
+				endTime:"",
+				arr:["预定商品","自提商品"],
+				index:0,
+				type:""
 			};
 		},
 		computed: {
@@ -55,19 +64,46 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			gathorders(){
+				return this.$store.getters['model.gather.orders/lists']
 			}
 
 		},
 		methods: {
+			loadOrders(startime,endtime,type,status) {
+				this.$command('gather-orders', startime, endtime, type, status);
+			},
 			tabSelect(num) {
 				this.cur = num;
+				this.status=this.tabs[num].name
+				console.log(this.status)
 			},
 			getSelectDate(e) {
-				//				console.log(e.target.value);
-				this.selectDate = (new Date(e.target.value)).format('yyyy 年 MM 月 dd 日');
+				//				console.log(new Date(e.target.value));
+				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
+				this.startTime=this.selectDate+" "+"00:00:00"
+			    this.endTime=this.selectDate+" "+"23:59:59"
+			    
+			},
+			bindPickerChange(e){
+				console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				this.index= e.mp.detail.value
+				this.type=this.index+1
 			}
 		},
-		created() {}
+		created:function() {
+		    this.$command('gather-orders');
+		    this.startTime=this.selectDate+" "+"00:00:00"
+			this.endTime=this.selectDate+" "+"23:59:59"
+		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
+		},
+		mounted:function(){
+						
+		},
+		updated:function(){
+		
+		}
 	}
 </script>
 
@@ -151,5 +187,9 @@
 
 	.tab_content_now {
 		display: block;
+	}
+	.goodstype{
+		font-size:32rpx;
+		padding-left:102rpx
 	}
 </style>

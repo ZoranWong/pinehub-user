@@ -2,13 +2,13 @@
 	<div class="popup">
 		<div class="popup-box" >
 			<div class="popup-title">
-				当前门店配送范围为高新区宁西路
+				当前门店配送范围为{{position.address}}
 			</div>
 			<div class="popup-content">
 				是否确认在此范围内？
 			</div>
 			<div class="clearfix pop-bottom">
-				<div class="btn reselection ">重新选择</div>
+				<div class="btn reselection" @click="jump('location')">重新选择</div>
 			    <div class="btn confirm" @click="popHide">确认</div>
 			</div>
 	    </div>
@@ -17,14 +17,23 @@
 
 <script>
 	export default{
-		data(){
-			return{
-
-			}
-		},
+		props:{
+       	 	position: {
+          		default: null,
+          		type: Object
+      		}
+    	},
+		computed:{
+       		position(){
+        	return this.$store.getters['model.nearestStore/location'];
+      		}
+    	},
 		methods:{
 			popHide:function(){
 				this.$emit('hdlHidePopup')
+			},
+			jump(router){
+				this.$command('router',router,'push');
 			}
 		}
 	}
@@ -56,8 +65,11 @@
     margin-left: -315rpx;
     margin-top:-150rpx;
 }
-.pop-bottom{	
-	margin:94rpx 78rpx 0rpx;
+.popup-title{
+	margin:0rpx 20rpx;
+}
+.pop-bottom{
+	margin:40rpx 78rpx 0rpx;
 }
 .reselection{
 	float: left;
