@@ -84,11 +84,7 @@
         this.loadMerchandises(this.currentPage  + 1);
       },
       next() {
-<<<<<<< HEAD
       this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
-=======
-         this.loadMerchandises(this.currentPage  + 1);   
->>>>>>> d09c2916588fc0d279aca70095d4432d50cbad7c
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
