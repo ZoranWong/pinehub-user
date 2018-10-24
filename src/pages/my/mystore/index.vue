@@ -107,8 +107,7 @@
 				this.$command('router', router, 'push');
 			},
 			scanCode() {
-				console.log(121212)
-				this.$command('scan');
+				this.$command('scanCommand','myfeedbacksuccess');
 			},
 			getOptions(i, refresh = false) {
 				let option = {
