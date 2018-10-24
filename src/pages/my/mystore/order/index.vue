@@ -94,12 +94,12 @@
 		},
 		created:function() {
 		    this.$command('gather-orders');
-		    
+		    this.startTime=this.selectDate+" "+"00:00:00"
+			this.endTime=this.selectDate+" "+"23:59:59"
+		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
 		},
 		mounted:function(){
-			this.startTime=this.selectDate+" "+"00:00:00"
-			this.endTime=this.selectDate+" "+"23:59:59"
-		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")			
+						
 		},
 		updated:function(){
 		
