@@ -2,7 +2,7 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <new-list @show-cart ="hdlShowCart" :next="next" :list="merchandises" :height="screenHeight"
-     :addMerchandiseToCart = "addCart"></new-list>
+     :addMerchandiseToCart = "addCart" ></new-list>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :change="change"></cart>
     <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
   </div>
@@ -45,19 +45,19 @@
       },
       hdlShowPopup:function(){
         this.isShow = true;
-          console.log(1)
       },
        hdlHidePopup:function(){
-          console.log(2)
         this.isShow = false;
       },
       next() {
         this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
       },
-      // addCart(shopId, count,  merchandiseId){
-      //   this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-      //   console.log( this.count, "987", this.merchandiseId)
-      // },
+      addCart(shopId, count,  merchandiseId){
+        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+      },
+      reduceCart(shopId, count,  merchandiseId){
+        this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+      },
    },
    created () {
 

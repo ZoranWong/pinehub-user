@@ -1,6 +1,7 @@
 import Model from './Model'
 import _ from 'underscore';
 import ShopMerchandisesTransformer from './transformers/ShopMerchandises';
+
 export default class ShopMerchandises extends Model{
   constructor(application) {
     super(application);

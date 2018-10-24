@@ -6,9 +6,10 @@
     <div class="goods" >
         <menus></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
-        :addMerchandiseToCart = "addCart" ></m-list>
+        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart"></cart>
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart" 
+    :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
 </template>
@@ -68,9 +69,8 @@
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
   
       },
-      reduceCart(shopId, count, merchandisesId){
+      reduceCart(shopId, count, merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-        //   console.log( this.count, "减少", this.merchandiseId)
       },    
       emptyCart(storeId){
         this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
@@ -84,9 +84,9 @@
 
    mounted(){      
       this.$command('EMPTY_MERCHANDISES_TO_CART');
-      console.log("clear", this.$store.getters['model.emptyMerchandises'])
-      //console.log('menus data', this.$store.getters);
+      this.$command('GET_CATEGORIES_TO_MEUN');
 
+      //this.$command('减少购物车数据','REDUCE_MERCHANDISE_TO_CART');
    }
 }
 

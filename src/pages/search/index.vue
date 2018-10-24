@@ -41,6 +41,10 @@
 	    
 	   //  	this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
 	   // 	}
+	   mounted(){
+	   	console.log('搜索商品--index.vue')
+	   	this.$command('SEARCH_MERCHANDISES')
+	   }
 
 		
 	}
