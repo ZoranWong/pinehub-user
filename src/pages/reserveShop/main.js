@@ -32,11 +32,11 @@ application.run(function(app) {
     app.register('http.categories',CategoriesService);
    
 
-},function(mountComponent) {
- _.extend(App,mountComponent);
- const app = new Vue(App);
- app.$mount();
- return app;
+},function(component) {
+	_.extend(App, component);
+	let app = new Vue(App);
+	app.$mount();
+ 	return app;
 });
 
 

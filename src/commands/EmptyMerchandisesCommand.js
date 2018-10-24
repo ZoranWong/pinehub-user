@@ -5,7 +5,6 @@ export default class EmptyMerchandisesCommand extends Command {
   }
 
   async handle(storeId) {
-    console.log(66333)
      // 与服务器打交道，获取数据，返回数据
     let count = await  this.service('http.merchandises').emptyMerchandises(storeId);
     if(count > 0) {

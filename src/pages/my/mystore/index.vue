@@ -58,7 +58,7 @@
 					<i class="my_store_menu_ico ico_5"></i>
 					<em>自提订单</em>
 				</li>
-				<li>
+				<li @click="jump('mystoreorder')">
 					<i class="my_store_menu_ico ico_6"></i>
 					<em>订单汇总</em>
 				</li>
@@ -107,8 +107,7 @@
 				this.$command('router', router, 'push');
 			},
 			scanCode() {
-				console.log(121212)
-				this.$command('scan');
+				this.$command('scanCommand','myfeedbacksuccess');
 			},
 			getOptions(i, refresh = false) {
 				let option = {

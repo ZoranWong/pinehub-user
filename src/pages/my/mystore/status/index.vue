@@ -1,20 +1,24 @@
 <template>
 	<div id="status">
-		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel"></mp-toast>
+		<!--<mp-toast ></mp-toast>-->
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
-				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+				<li v-for="(tab, index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index"
+				 @click="tabSelect(index)">
+					<span>{{tab.name}}</span>
+				</li>
 			</ul>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
-				<!-- <store @showToast="showToastFunction"></store> -->
+			<div class="tab_content_item store-orders" v-if="cur === 0">
+				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
+				<!--<store @showToast="showToastFunction"></store>-->
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 1">
-				<purchase></purchase>
+			<div class="tab_content_item purchase-orders" v-if="cur === 1">
+				<!-- <purchase></purchase> -->
 			</div>
-			<div class="tab_content_item" v-else-if="cur === 2">
+			<div class="tab_content_item sales-orders" v-if="cur === 2">
 				<sales></sales>
 			</div>
 		</div>
@@ -30,6 +34,7 @@
 	import StoreToast from './StoreToast';
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
+	import MyStoreStatusPurchaseCommand from '@/commands/MyStoreStatusPurchaseCommand';
 	export default {
 		components: {
 			"mp-title": MpTitle,
@@ -44,11 +49,11 @@
 				title: "店铺状态",
 				navName: "my",
 				tabs: [{
-					name: "销售统计"
+					name: "库存统计"
 				}, {
 					name: "进货统计"
 				}, {
-					name: "库存统计"
+					name: "销售统计"
 				}],
 				cur: 0,
 				merchandise: {},
@@ -60,6 +65,12 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			purchaseTotal() {
+				return this.$store.getters['model.my.store.status.purchase/purchaseTotal'];
+			},
+			purchaseList() {
+				return this.$store.getters['model.my.store.status.purchase/purchaseList'];
 			}
 
 		},
@@ -71,15 +82,18 @@
 			},
 			showToastFunction(merchandise) {
 				this.display = true;
-				this.merchandise = merchandise;
-				console.log(merchandise);
 			},
 			closeStockPanel() {
 				console.log(123)
 				this.display = false;
+			},
+			onloadPurchase(status) {
+				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
 			}
 		},
 		created() {
+			console.log('dd');
+			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week')
 		}
 	}
 </script>
@@ -89,17 +103,17 @@
 		height: 100%;
 		background: #fafafa;
 	}
-	
+
 	#footNav_height {
 		height: 109rpx;
 	}
-	
+
 	#status {
 		position: relative;
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -109,7 +123,7 @@
 		top: 0;
 		z-index: 999;
 	}
-	
+
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -119,24 +133,24 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-	
+
 	#tab_content {
 		padding-top: 74rpx;
 	}
-	
+
 	.tab_content_item {}
-	
+
 	.tab_content_now {
 		display: block;
 	}

@@ -5,7 +5,7 @@
 			<i id="select_date_arrow"></i>
 		</div>
 		<div id="sales_charts">
-			<wx-charts :options='wxOptions'></wx-charts>
+			<!--<wx-charts :options='wxOptions'></wx-charts>-->
 		</div>
 		<div id="sales_total">
 			<div class="sales_total_style sales_total_all">销售总额<em>8000.00</em></div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-	import WxCharts from '@/components/WxCharts';
+//	import WxCharts from '@/components/WxCharts';
 	const data = [
 		[680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619],
 		[934, 934, 934, 934, 934, 932, 901],
@@ -49,7 +49,7 @@
 
 	export default {
 		components: {
-			'wx-charts': WxCharts
+//			'wx-charts': WxCharts
 		},
 		name: 'Sales',
 		data() {

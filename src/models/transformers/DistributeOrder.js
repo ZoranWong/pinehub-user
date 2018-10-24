@@ -1,13 +1,9 @@
-export default class Orders {
-  constructor(orders) {
-  	console.log('order transformer');
-    this.code = orders['code'];
-    this.id = orders['id'];
-    this.type = orders['type'];
-    this.merchandiesNum = orders['merchandies_num'];
-    this.paymentAmount = orders['payment_amount'];
-    this.totalAmount = orders['total_amount'].toFixed(2);
-    switch(parseInt(orders['status'])) {
+export default class DistributeOrder {
+  constructor(distributeOrders) {
+  	//console.log('order transformer');
+    this.code = distributeOrders['code'];
+    this.id = distributeOrders['id'];
+    switch(parseInt(distributeOrders['status'])) {
 				case 0:
 					this.status = "已取消";
 					break;
@@ -33,16 +29,18 @@ export default class Orders {
 					this.status = "";
 					break;
 		}
-    this.reveiverAddress = orders['reveiver_address'];
-    this.createdAt = orders['created_at'];
-    this.orderItems =orders['order_item_merchandises'];
+    this.receiverAddress = distributeOrders['receiver_address'];
+    this.paymentAmount = distributeOrders['payment_amount'];
+    this.totalAmount = distributeOrders['total_amount'].toFixed(2);
+    this.reveiverMobile = distributeOrders['reveiver_mobile'];
+    this.createdAt = distributeOrders['created_at'];
+    this.orderItems =distributeOrders['order_item_merchandises'];
     for(var i in this.orderItems){
     	this.orderItems[i] = {
     		name: this.orderItems[i]['name'],
     		sellPrice: this.orderItems[i]['sell_price'].toFixed(2),
     		quality: this.orderItems[i]['quality'],
-    		totalAmount: this.orderItems[i]['total_amount'].toFixed(2),
-    		mainImage:this.orderItems[i]['main_image']
+    		totalAmount: this.orderItems[i]['total_amount'].toFixed(2)
     	}
     }
     

@@ -24,14 +24,13 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" ></cart-control>
-          </div>
+            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" >    
+            </cart-control>
+          </div>  
         </div>
-      </div>
-       
+      </div>    
     </div> 
     <div class="mask" v-if="maskBg"></div>  
-   
   </div>
 </template>
 <script>
@@ -55,7 +54,7 @@
       reduceMerchandiseToCart:{
         default: null,
         type: Function
-      },  
+      }
     },
     components:{
       'cart-control':CartControl,
@@ -83,11 +82,9 @@
         this.emptyMerchandiseCart(storeId);
       },
       addCart( id, count, shopId) {
-        console.log("加")
         this.addMerchandiseToCart( shopId, count, id);
       },
       reduceCart( id, count, shopId) {
-        console.log("减")
         this.addMerchandiseToCart( shopId, count, id);
       }
 

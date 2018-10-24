@@ -6,20 +6,20 @@
 		</div>
 		<div id="purchase_total">
 			<em>总计进货货额</em>
-			<i>￥{{totalPrice}}</i>
+			<i>￥{{purchaseTotal}}</i>
 		</div>
 		<div id="purchase_order">
-			<div v-for="item in orderList" :key="index+1" class="purchase_order">
+			<div v-for="item in purchaseList" :key="index+1" class="purchase_order">
 				<div class="purchase_order_sn">
-					<i>订单编号</i><em>{{item.orderNum}}</em>
-					<span class="purchase_order_status">{{item.distributionStatus}}</span>
+					<i>订单编号</i><em>{{item.code}}</em>
+					<span class="purchase_order_status">{{item.status}}</span>
 				</div>
 				<div class="purchase_order_over">
-					<i>{{item.orderStatus}}</i>
-					<em>￥{{item.price}}</em>
+					<i>{{item.type}}</i>
+					<em>￥{{item.payment_amount}}</em>
 				</div>
 				<div class="purchase_order_date">
-					<em>{{item.date}}</em>
+					<em>{{item.paid_at}}</em>
 					<i></i>
 				</div>
 				<i class="purchase_info_circle"></i>
@@ -35,37 +35,21 @@
 		data() {
 			return {
 				nowSelectDate: 0,
-				selectDate: ["今日", "本周", "本月"],
-				totalPrice: "1800.00",
-				orderList: [{
-						"orderNum": "A12567876543212345",
-						"distributionStatus": "待发货",
-						"orderStatus": "进货订单",
-						"price": "500.00",
-						"date": "2018/10/01 18:00"
-					},
-					{
-						"orderNum": "A12567876523143214",
-						"distributionStatus": "已完成",
-						"orderStatus": "退货订单",
-						"price": "1000.00",
-						"date": "2018/10/01 18:00"
-					},
-					{
-						"orderNum": "A12567876543213242",
-						"distributionStatus": "待发货",
-						"orderStatus": "退货订单",
-						"price": "300.00",
-						"date": "2018/10/01 18:00"
-					},
-					{
-						"orderNum": "A12567876543212399",
-						"distributionStatus": "待发货",
-						"orderStatus": "进货订单",
-						"price": "1000.00",
-						"date": "2018/10/01 18:00"
-					},
-				]
+				selectDate: ["今日", "本周", "本月"]
+			}
+		},
+		props: {
+			purchaseTotal: {
+				default:"",
+				type: Function
+			},
+			purchaseList:{
+				default:"",
+				type:Function 
+			},
+			onloadPurchase:{
+				default:"",
+				type:Function 
 			}
 		},
 		methods: {
@@ -73,10 +57,13 @@
 				let num = e.target.value;
 				this.nowSelectDate = num;
 				if(num == 0) {
+					this.onloadPurchase('hour');
 					console.log(666);
 				} else if(num == 1) {
+					this.onloadPurchase('week');
 					console.log(888)
 				} else {
+					this.onloadPurchase('month');
 					console.log(999)
 				}
 			}

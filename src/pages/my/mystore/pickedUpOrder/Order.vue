@@ -1,22 +1,25 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info" v-for="(gathitem,index) in gathOrders" :key="index">
+		<div class="order_info" v-for="(extraitem,index) in selfExtra" :key="index">
+			<div class="order_info_select">
+				<i class="selected_order"></i>
+			</div>
 			<div class="order_info_header">
 				<ul>
 					<li>状态</li>
-					<li>销售指数</li>
+					<li>截止</li>
+					<li>用户名</li>
 					<li>订单编号</li>
-					<li>订单金额</li>
-					<li>实付金额</li>
+					<li>联系电话</li>
 				</ul>
 			</div>
 			<div class="order_info_nowstatus">
 				<ul>
-					<li>配送中</li>
-					<li>{{gathitem.sellPoint}}</li>
-					<li>{{gathitem.code}}</li>
-					<li>{{gathitem.totalAmount}}</li>
-					<li>{{gathitem.paymentAmount}}</li>
+					<li>{{extraitem.status}}</li>
+					<li>{{extraitem.createdAt}}</li>
+					<li>{{extraitem.receiverName}}</li>
+					<li>{{extraitem.code}}</li>
+					<li>{{extraitem.receiverMobile}}</li>
 				</ul>
 			</div>
 			<div class="order_info_glist">
@@ -32,30 +35,21 @@
 						</div>
 						<div class="order_info_glist_list">
 							<ul>
-								<li v-for="(item,idx) in gathitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+								<li v-for="(item,idx) in extraitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
 							</ul>
 						</div>
 					</dt>
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<em>{{gathitem.receiverAddress}}</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					{{datetime}}
-				</div>
-				总计<i>￥{{gathitem.totalAmount}}</i>
+				<!--<em>备注:用户要求携带餐具和纸巾</em>-->
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">
-					<ul>
-						<li>卡券使用:无</li>
-						<li>优惠活动:{{gathitem.reduceCost}}</li>
-					</ul>
+					{{datetime}}
 				</div>
 				<div class="order_info_footer_right">
-					实付:<em>￥{{gathitem.paymentAmount}}</em>
+					实付:<em>￥{{extraitem.totalAmount}}</em>
 				</div>
 			</div>
 			<i class="order_info_circle"></i>
@@ -77,30 +71,20 @@
 				default:"",
 				type: Function
 			},
-			List:{
-				default:"",
-				type:Function 
-			},
-			gathOrders:{
+			selfExtra:{
 				default:"",
 				type:Function
 			},
 			datetime:"",
 			startTime:"",
-			endTime:"",
-			status:"",
-			types:""
+			endTime:""
 		},
 		methods: {
 
 		},
 		created() {
-			console.log(this.startTime,this.endTime,this.status)
-           this.loadOrders(this.startTime,this.endTime,this.types,this.status)
-		},
-		updated(){
-//			console.log(this.gathOrders[0])
-//          console.log(this.startTime,this.endTime,this.status)
+         console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")
+           this.loadOrders(this.startTime,this.endTime)
 		}
 	}
 </script>
@@ -117,6 +101,30 @@
 		overflow: hidden;
 		position: relative;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
+	}
+
+	.order_info_select {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 999;
+		display: none;
+	}
+
+	.order_info_select i {
+		width: 58rpx;
+		height: 58rpx;
+		background: url(../../../../../static/images/my_select_none.png) no-repeat center center;
+		background-size: 100%;
+		position: absolute;
+		bottom: 20rpx;
+		left: 20rpx;
+	}
+
+	.order_info_select i.selected_order {
+		background: url(../../../../../static/images/my_select_ok.png) no-repeat center center;
+		background-size: 100%;
 	}
 
 	.order_info_header {
@@ -141,6 +149,22 @@
 		width: 16%;
 	}
 
+	.order_info_header ul li:nth-child(2) {
+		width: 20%;
+	}
+
+	.order_info_header ul li:nth-child(3) {
+		width: 14%;
+	}
+
+	.order_info_header ul li:nth-child(4) {
+		width: 25%;
+	}
+
+	.order_info_header ul li:nth-child(5) {
+		width: 25%;
+	}
+
 	.order_info_nowstatus {
 		font-size: 28rpx;
 		font-weight: normal;
@@ -155,29 +179,28 @@
 
 	.order_info_nowstatus ul li:nth-child(1) {
 		/* background: #525252; */
-		width: 18%;
-		text-indent: 10rpx;
+		width: 16%;
+		text-indent: 6rpx;
 	}
 
 	.order_info_nowstatus ul li:nth-child(2) {
 		/* background: #005252; */
-		width: 16%;
+		width: 20%;
 	}
 
 	.order_info_nowstatus ul li:nth-child(3) {
 		/* background: #520052; */
-		width: 28%;
+		width: 14%;
 	}
 
 	.order_info_nowstatus ul li:nth-child(4) {
 		/* background: #005252; */
-		width: 16%;
-		margin-right: 15rpx;
+		width: 25%;
 	}
 
 	.order_info_nowstatus ul li:nth-child(5) {
 		/* background: #520052; */
-		width: 18%;
+		width: 25%;
 	}
 
 	.order_info_status {
@@ -260,24 +283,6 @@
 		text-align: left;
 	}
 
-	.order_info_glist_total {
-		text-align: right;
-		font-size: 32rpx;
-		line-height: 46rpx;
-		margin: 0 20rpx;
-
-	}
-
-	.order_info_glist_total i {
-		display: inline-block;
-		color: #FECE00;
-		padding-right: 10rpx;
-	}
-
-	.order_info_glist_date {
-		display: inline-block;
-		float: left;
-	}
 
 	.order_info_footer {
 		margin: 20rpx 20rpx 10rpx;
@@ -289,10 +294,6 @@
 
 	.order_info_footer_left {
 		float: left;
-	}
-
-	.order_info_footer_left ul li {
-		line-height: 44rpx;
 		font-size: 30rpx;
 	}
 
