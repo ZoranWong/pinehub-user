@@ -6,7 +6,7 @@
 			</div>
 			<i class="cancel" @click="popHide"></i>
 			<div class="popup-content">
-				<div class="place-item" @click="jump('orderself')">
+				<div class="place-item" @click="jump('location')">
 					<i class="i-icon free-icon" ></i>
 					 自提免配送费
 				</div>
@@ -36,7 +36,7 @@ export default {
 			this.$emit('hdlHidePopup')
 		},
 		jump(router){
-				this.$command('router',router,'jump');
+			this.$command('router',router,'push');
 		}
 	}
 

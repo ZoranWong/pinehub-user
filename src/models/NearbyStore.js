@@ -4,7 +4,7 @@ import NearbyStoreTransformer from './transformers/NearbyStore';
 export default class NearbyStore extends Model {
 	constructor(application) {
 		super(application);
-	}
+	}  // 预定商城里获取附近的几个店铺
 	computed() {
 		return {
 

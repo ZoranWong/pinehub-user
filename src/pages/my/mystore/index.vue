@@ -34,7 +34,7 @@
 			</ul>
 		</div>
 		<div id="mystore_charts">
-			<wx-charts :options='wxOptions'></wx-charts>
+			<!-- <wx-charts :options='wxOptions'></wx-charts> -->
 		</div>
 		<div id="mystore_menu">
 			<ul>

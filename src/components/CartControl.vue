@@ -1,6 +1,8 @@
 -<template>
 	<div class="cartcontrol" :style="{border: border}" >
-		<div class="cart-decrease" v-show="count>0" @click="reduceCart" > 
+
+		<div class="cart-decrease" v-show="count>0" @click="reduceCart" :reduce ="reduceMerchandises" > 
+
     </div>
 		<div class="cart-count" v-show="count>0"> {{count}} </div>
 		<div class="cart-add" @click="addCart" :add="addMerchandises"></div>
@@ -9,11 +11,13 @@
 <script>
 	export default {
 		props: {   
-      		merchandise: {
-        		default:function() {
-          			return {};
-        		},
-				type:Object
+      		merchandiseId: {
+        		default: null,
+				type: Number
+			},
+			shopId: {
+				default: null,
+				type: Number
 			}
 		},
 	    computed:{
@@ -21,26 +25,22 @@
 	        return this.count > 0 ? '2rpx solid #ffcc00' : '0';
 	      },
 	      count() {
-	        return this.$store.getters['model.shoppingCarts/quality'](this.merchandise.id);
+	        return this.$store.getters['model.shoppingCarts/quality'](this.merchandiseId);
 	      }
 	    },
 		methods: {
 	      	cartShow:function() {
 	        	this.$emit('show-cart');
-	      },
+	      	},
 		 	addCart(event) {
-	        	this.$emit('addCart',  this.merchandise.id, this.count + 1, 
-	          	this.merchandise.shopId );
-	        	// console.log( this.count, "addcart", this.merchandiseId)
+	        	this.$emit('addCart',  this.merchandiseId, this.count + 1, this.shopId );
 	      	},
 	      	reduceCart() {
+	      		console.log('dddddddd');
 	        	if(this.count > 0) {
-	         	this.$emit('reduceCart',  this.merchandise.id, this.count - 1, 
-	          	this.merchandise.shopId ); 
-	          	// console.log(this.count, "reduceCart", this.merchandiseId)
-	        }
-	        
-	      }
+	         	this.$emit('reduceCart', this.merchandiseId, this.count - 1, this.shopId ); 
+	        	}	        
+	      	}
 		},
 	    mounted: function (){
 	      // console.log(this.pageCount)

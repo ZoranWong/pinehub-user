@@ -1,8 +1,8 @@
 <template>
 	<div class="consignee bgff width710">
 		<div>
-			<p class="consignee-name">收货人：张雷</p>
-			<p class="telphone">联系电话：15888878788</p>
+			<p class="consignee-name">收货人：{{userInfo.nickname}}</p>
+			<p class="telphone">联系电话：{{userInfo.mobile}}</p>
 			<!-- 编辑信息 -->
 			<!-- <i class="edit-icon"></i> -->
 		</div>
@@ -18,7 +18,12 @@
 				
 			}
 		},
-		props:["selectMethod"]
+		props:["selectMethod"],
+		computed:{
+			userInfo() {
+				return this.$store.getters['model.my.info/userInfo'];
+			},
+		}
 		
 	}
 </script> 

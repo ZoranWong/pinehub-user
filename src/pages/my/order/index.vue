@@ -91,7 +91,7 @@
 		},
 		created() {
 			this.nowCom = "card";
-			console.log(this.myOrdersList[0],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+			//console.log(this.myOrdersList[0],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
 		}
 
 	}

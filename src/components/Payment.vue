@@ -11,7 +11,7 @@
 					<span class="sell-price">¥20.00</span>
 				</p>
 				<div class="cartcontrol-warpper">
-              		<cart-control :list="list" ></cart-control>
+					<cart-control @addCart = "addCart"  @reduceCart= "reduceCart" ></cart-control>
             	</div>
 			</div>
 		</div>
@@ -44,12 +44,39 @@
 		components:{
       		'cart-control':CartControl,
     	},
+    	props:{
+			addMerchandiseToCart:{
+		        default: null,
+		        type: Function
+		    },
+		    reduceMerchandiseToCart:{
+		        default: null,
+		        type: Function
+		    },
+		    list: {
+		        default: function() {return []},
+		        type: Array
+		    },
+		    next: {
+		        default: null,
+		        type: Function
+		    },
+    	},
     	methods:{
 			jump(router){
 				console.log(4)
 				this.$command('router',router,'jump');
-		}
-	}
+			},
+			addCart( id, count, shopId) {
+		        this.addMerchandiseToCart(shopId, count, id);
+		    },
+		    reduceCart(id, count, shopId){        
+		        this.reduceMerchandiseToCart(shopId, count, id);
+		    }
+		},
+		created(){
+	      	this.next();
+	   	},
 
 	}
 </script>

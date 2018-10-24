@@ -41,7 +41,7 @@
 		</div>
 		<div id="mystore_menu">
 			<ul>
-				<li @click="jump('order')">
+				<li @click="jump('myorder')">
 					<img src="../../../static/images/my_ico_menu1.png" />
 					<span>个人订单</span>
 					<i></i>
