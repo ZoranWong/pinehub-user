@@ -1,50 +1,62 @@
 <template>
 	<div id="myorder">
 		<mp-title :title="title"></mp-title>
-		<div id="tab_select">
-			<ul>
-				<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
-			</ul>
+		<div id="window_fixed">
+			<div id="myorder_select">
+				<div class="myorder_select_info">
+					<em>日期</em>
+					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
+				</div>
+				<div class="myorder_select_info">
+					<em>类型</em>
+					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="goodstype">	
+					      {{arr[index]}}
+				    </picker>
+				</div>
+			</div>
+			<div id="tab_select">
+				<ul>
+					<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index"
+					 @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+				</ul>
+			</div>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
-				<order></order>
-			</div>
-			<div class="tab_content_item" v-else-if="cur === 1">
-				2
-				Sales statistics
-			</div>
-			<div class="tab_content_item" v-else-if="cur === 2">
-				3
+			<div class="tab_content_item">
+				<order :types="type" :gathOrders="gathorders" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
-		<div id="footNav_height"></div>
-		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
 
 <script>
 	import Order from './Order';
 	import MpTitle from '@/components/MpTitle';
-	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
 			"mp-title": MpTitle,
-			"order": Order,
-			'footer-nav': FooterNav
+			"order": Order
 		},
 		data() {
 			return {
-				title: "店铺状态",
+				title: "订单汇总",
 				navName: "my",
 				tabs: [{
-					name: "销售统计"
+					name: "生产中"
 				}, {
-					name: "进货统计"
+					name: "配送中"
 				}, {
-					name: "库存统计"
+					name: "已完成"
 				}],
-				cur: 0
+				cur: 0,
+//				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
+				selectDate: (new Date()).format('yyyy-MM-dd'),
+				status:"生产中",
+				startTime:"",
+				endTime:"",
+				arr:["预定商品","自提商品"],
+				index:0,
+				type:""
 			};
 		},
 		computed: {
@@ -52,44 +64,100 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			gathorders(){
+				return this.$store.getters['model.gather.orders/lists']
 			}
 
 		},
 		methods: {
+			loadOrders(startime,endtime,type,status) {
+				this.$command('gather-orders', startime, endtime, type, status);
+			},
 			tabSelect(num) {
 				this.cur = num;
+				this.status=this.tabs[num].name
+				console.log(this.status)
+			},
+			getSelectDate(e) {
+				//				console.log(new Date(e.target.value));
+				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
+				this.startTime=this.selectDate+" "+"00:00:00"
+			    this.endTime=this.selectDate+" "+"23:59:59"
+			    
+			},
+			bindPickerChange(e){
+				console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				this.index= e.mp.detail.value
+				this.type=this.index+1
 			}
 		},
-		created() {
+		created:function() {
+		    this.$command('gather-orders');
+		    
+		},
+		mounted:function(){
+			this.startTime=this.selectDate+" "+"00:00:00"
+			this.endTime=this.selectDate+" "+"23:59:59"
+		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")			
+		},
+		updated:function(){
+		
 		}
 	}
 </script>
 
 <style scoped>
-	page {
+	#myorder {
+		position: absolute;
+		width: 100%;
 		height: 100%;
 		background: #fafafa;
 	}
-	
-	#footNav_height {
-		height: 109rpx;
-		
-	}
-	
-	#myorder {
-		position: relative;
-	}
-	
-	#tab_select {
-		overflow: hidden;
-		width: 750rpx;
-		height: 74rpx;
+
+	#window_fixed {
 		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: 999;
+		overflow: hidden;
+		width: 750rpx;
+		height: 216rpx;
+		background: #FFFFFF;
 	}
-	
+
+	#myorder_select {
+		margin: 20rpx 20rpx 0;
+	}
+
+	.myorder_select_info {
+		overflow: hidden;
+		margin-bottom: 10rpx;
+	}
+
+	.myorder_select_info em {
+		display: inline-block;
+		float: left;
+		font-size: 32rpx;
+		font-weight: normal;
+	}
+
+	.input {
+		float: left;
+		padding: 0 15rpx;
+		margin: 0 20rpx;
+		border: 1rpx solid #f0f0f0;
+		border-radius: 10rpx;
+		font-size: 28rpx;
+	}
+
+	#tab_select {
+		overflow: hidden;
+		width: 750rpx;
+		height: 74rpx;
+
+	}
+
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -99,26 +167,29 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-	
+
 	#tab_content {
-		padding-top: 74rpx;
+		padding-top: 220rpx;
 	}
-	
-	.tab_content_item {
-	}
-	
+
+	.tab_content_item {}
+
 	.tab_content_now {
 		display: block;
+	}
+	.goodstype{
+		font-size:32rpx;
+		padding-left:102rpx
 	}
 </style>

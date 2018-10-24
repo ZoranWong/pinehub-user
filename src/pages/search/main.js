@@ -5,6 +5,7 @@ import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import ShopMerchandises from '@/models/ShopMerchandises';
 import SearchMerchandisesCommand from '@/commands/SearchMerchandisesCommand';
+import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
 
 
 const application = new Application(App, 'actity.merchandises');

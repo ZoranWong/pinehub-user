@@ -47,7 +47,7 @@ export default class ShopMerchandises extends Model{
 				this.state.totalNum = totalNum;
 			if(totalPage !== null) {
 				this.state.totalPage = totalPage;
-				if(pageCount !== null) {
+			if(pageCount !== null) {
 					this.state.pageCount = pageCount;
 				}
 			}

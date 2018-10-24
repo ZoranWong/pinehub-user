@@ -32,18 +32,18 @@
   //       		return this.$store.getters['model.activity.merchandises/list'];
   //     		}
   //  		},
-   	// 	methods:{
-    //   		next() {
-    //     		this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-    //   		}
-  		//  },
-	   // created () {
+  //  		methods:{
+  //     		next() {
+  //       		this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+  //     		}
+  // 		 },
+	 //   created () {
 	    
-	   //  	this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
-	   // 	}
+	 //    	this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+	 //   	},
 	   mounted(){
 	   	console.log('搜索商品--index.vue')
-	   	this.$command('SEARCH_MERCHANDISES')
+	   	//this.$command('SEARCH_MERCHANDISES')
 	   }
 
 		

@@ -9,7 +9,7 @@ export default class Orders extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.order;
+				return state.allOrders;
 				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
 			},
 			totalNum(state){
@@ -17,9 +17,6 @@ export default class Orders extends Model {
 			},
 			currentCategoryIndex(state) {
 				//return state.currentCategoryIndex;
-			},
-			x() {
-				return this.state.x;
 			}
 		});
 	}
@@ -27,8 +24,7 @@ export default class Orders extends Model {
 		return {
 			allOrders: [],
 			uncompletedOrders: [],
-			completedOrders: [],
-			x: null
+			completedOrders: []
 		};
 	}
 	//监听数据

@@ -1,35 +1,6 @@
 <template>
-	<div v-show="display" id="toast_area">
-		<div id="toast">
-			<i id="toast_clost" @click="toastClose"></i>
-			<div id="toast_title">
-				修改库存
-			</div>
-			<div id="toast_content">
-				<div id="toast_content_info">
-					<div id="input_change">
-						<div class="input_num">
-							{{merchandise['stock_num']}}
-						</div>
-						<input class="input_num input_num_right" type="number" v-model="productInfo.modify_stock_num" />
-					</div>
-					<div id="input_change_info">
-						修改原因
-					</div>
-					<div id="input_change_list">
-						<ul>
-							<li v-for="(item,index) in selectCause" :key="item.id" :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">{{item.name}}</li>
-						</ul>
-					</div>
-					<div id="input_change_btn" @click="returnBtn">
-						确认修改
-					</div>
-					<div id="input_change_tips">
-						注：因后期核实需要请您如实填写
-					</div>
-				</div>
-			</div>
-		</div>
+	<div >
+		<div id = "toast_area"></div>
 	</div>
 </template>
 
@@ -50,18 +21,18 @@
 		},
 		data() {
 			return {
-				selectCause: [{
-					"id": 0,
-					"name": "商品损坏"
-				}, {
-					"id": 1,
-					"name": "商品丢失"
-				}, {
-					"id": 2,
-					"name": "商品过期"
-				}],
-				radioCur: 0,
-				productInfo: {}
+//				selectCause: [{
+//					"id": 0,
+//					"name": "商品损坏"
+//				}, {
+//					"id": 1,
+//					"name": "商品丢失"
+//				}, {
+//					"id": 2,
+//					"name": "商品过期"
+//				}],
+//				radioCur: 0,
+//				productInfo: {}
 			}
 		},
 		watch: {
@@ -70,30 +41,30 @@
 			//			}
 		},
 		methods: {
-			radioSelect(num, id) {
-				this.radioCur = num;
-				this.productInfo.reason = id;
-			},
-			returnBtn() {
-				let productNum = parseInt(this.productInfo.modify_stock_num);
-				if(isNaN(productNum) || productNum < 0) {
-					wx.showToast({
-						title: "正确填写库存",
-						icon: "none"
-					})
-				} else {
-					this.productInfo.merchandise_id = this.merchandise['id'];
-					this.productInfo.primary_stock_num = this.merchandise['stock_num'];
-					this.productInfo['comment'] = null;
-					console.log(this.productInfo);
-				}
-			},
-			toastClose() {
-				this.$emit("close");
-			}
+//			radioSelect(num, id) {
+//				this.radioCur = num;
+//				this.productInfo.reason = id;
+//			},
+//			returnBtn() {
+//				let productNum = parseInt(this.productInfo.modify_stock_num);
+//				if(isNaN(productNum) || productNum < 0) {
+//					wx.showToast({
+//						title: "正确填写库存",
+//						icon: "none"
+//					})
+//				} else {
+//					this.productInfo.merchandise_id = this.merchandise['id'];
+//					this.productInfo.primary_stock_num = this.merchandise['stock_num'];
+//					this.productInfo['comment'] = null;
+//					console.log(this.productInfo);
+//				}
+//			},
+//			toastClose() {
+//				this.$emit("close");
+//			}
 		},
 		created() {
-			this.productInfo.reason = this.selectCause[0].id;
+//			this.productInfo.reason = this.selectCause[0].id;
 		},
 		beforeUpdate() {
 			//数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。
@@ -208,5 +179,11 @@
 		color: #828282;
 		text-align: center;
 		line-height: 68rpx;
+	}
+	.show {
+		display: block;
+	}
+	.hide{
+		display: none;
 	}
 </style>

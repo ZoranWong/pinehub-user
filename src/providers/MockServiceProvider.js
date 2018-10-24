@@ -4,14 +4,20 @@ import ServiceProvider from './ServiceProvider';
 import MyInfo from '@/mocks/MyInfo';
 import MyFeedback from '@/mocks/MyFeedback';
 import MyStoreInfo from '@/mocks/MyStoreInfo';
+import MyStoreScanInfo from '@/mocks/MyStoreScanInfo';
+import MyStoreStatusPurchase from '@/mocks/MyStoreStatusPurchase';
 import MyOrder from '@/mocks/MyOrder';
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
 import ReduceMerchandises from '@/mocks/ReduceMerchandises';
 import Categories from '@/mocks/Categories';
+import DistributionOrder from '@/mocks/DistributionOrder';
+import SelfextraOrder from '@/mocks/SelfextraOrder';
 import NearestStore from '@/mocks/NearestStore';             
 import EmptyMerchandises from '@/mocks/EmptyMerchandises';
 import SearchMerchandises from '@/mocks/SearchMerchandises';
+
+import GatherOrder from '@/mocks/GatherOrder';
 
 /* eslint-disable */
 
@@ -35,12 +41,14 @@ export default class MockServiceProvider extends ServiceProvider{
 			this.app.register('mock.myInfo', MyInfo);
 			this.app.register('mock.myFeedback', MyFeedback);
 			this.app.register('mock.myStoreInfo', MyStoreInfo);
+			this.app.register('mock.myStoreScanInfo', MyStoreScanInfo);
+			this.app.register('mock.myStoreStatusPurchase', MyStoreStatusPurchase);
       this.app.register('mock.myOrders', MyOrder);
-      
-
+      this.app.register('mock.distributeOrder',DistributionOrder);
+      this.app.register('mock.selfextraOrder',SelfextraOrder);
+      this.app.register('mock.gatherOrder',GatherOrder);
     }
   }
   boot() {
 	}
 }
-

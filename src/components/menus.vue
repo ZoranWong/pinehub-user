@@ -40,7 +40,7 @@
         this.$emit('menusChange', index);
       },
       jump(router){
-        this.$command('router',router,'jump');
+        this.$command('router',router,'push');
       }
     },
     created () {
