@@ -24,15 +24,15 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-            <cart-control   @addCart = "addCart"  :merchandiseId = " item['merchandiseId']" :shopId="item.shopId" 
-             @reduceCart ="reduceCart" ></cart-control>
-          </div>
+
+            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" >    
+            </cart-control>
+          </div>  
+
         </div>
-      </div>
-       
+      </div>    
     </div> 
     <div class="mask" v-if="maskBg"></div>  
-   
   </div>
 </template>
 <script>
@@ -56,8 +56,15 @@
       emptyMerchandiseCart:{
         default: null,
         type: Function
+      },
+      addMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
+      reduceMerchandiseToCart:{
+        default: null,
+        type: Function
       }
-
     },
     components:{
       'cart-control':CartControl,
@@ -89,6 +96,7 @@
       },
       reduceCart( id, count, shopId){
        this.reduceMerchandiseToCart( shopId, count, id);
+
       }
       
     },
@@ -225,7 +233,10 @@
 }
 .sell-price{
   font-size:32rpx;
-  margin-left: 160rpx;
+  position:absolute;
+  bottom:0rpx;
+  right:300rpx;
+
 }
 .cartcontrol-warpper{
   width:143rpx;

@@ -1,6 +1,6 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info">
+		<div class="order_info" v-for="(extraitem,index) in selfExtra" :key="index">
 			<div class="order_info_select">
 				<i class="selected_order"></i>
 			</div>
@@ -15,11 +15,11 @@
 			</div>
 			<div class="order_info_nowstatus">
 				<ul>
-					<li>待取货</li>
-					<li>8/18/10:00</li>
-					<li>张三</li>
-					<li>A99939284T9</li>
-					<li>18888888888</li>
+					<li>{{extraitem.status}}</li>
+					<li>{{extraitem.createdAt}}</li>
+					<li>{{extraitem.receiverName}}</li>
+					<li>{{extraitem.code}}</li>
+					<li>{{extraitem.receiverMobile}}</li>
 				</ul>
 			</div>
 			<div class="order_info_glist">
@@ -35,23 +35,21 @@
 						</div>
 						<div class="order_info_glist_list">
 							<ul>
-								<li><em>木须肉</em><em>1</em><em>￥20</em></li>
-								<li><em>青姜肉丝</em><em>15</em><em>￥25</em></li>
-								<li><em>烤全羊</em><em>22</em><em>￥1555</em></li>
+								<li v-for="(item,idx) in extraitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
 							</ul>
 						</div>
 					</dt>
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<em>备注:用户要求携带餐具和纸巾</em>
+				<!--<em>备注:用户要求携带餐具和纸巾</em>-->
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">
-					2018-08-18 18:00
+					{{datetime}}
 				</div>
 				<div class="order_info_footer_right">
-					实付:<em>￥20.00</em>
+					实付:<em>￥{{extraitem.totalAmount}}</em>
 				</div>
 			</div>
 			<i class="order_info_circle"></i>
@@ -68,11 +66,25 @@
 
 			};
 		},
+		props:{
+			loadOrders: {
+				default:"",
+				type: Function
+			},
+			selfExtra:{
+				default:"",
+				type:Function
+			},
+			datetime:"",
+			startTime:"",
+			endTime:""
+		},
 		methods: {
 
 		},
 		created() {
-
+         console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")
+           this.loadOrders(this.startTime,this.endTime)
 		}
 	}
 </script>

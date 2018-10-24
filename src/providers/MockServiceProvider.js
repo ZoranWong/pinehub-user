@@ -7,17 +7,25 @@ import MyStoreInfo from '@/mocks/MyStoreInfo';
 import MyStoreScanInfo from '@/mocks/MyStoreScanInfo';
 import MyStoreStatusPurchase from '@/mocks/MyStoreStatusPurchase';
 import MyOrder from '@/mocks/MyOrder';
-import Merchandises from '@/mocks/Merchandises';
-import AddMerchandises from '@/mocks/AddMerchandises';
-import ReduceMerchandises from '@/mocks/ReduceMerchandises';
-import Categories from '@/mocks/Categories';
 import DistributionOrder from '@/mocks/DistributionOrder';
 import SelfextraOrder from '@/mocks/SelfextraOrder';
-import NearestStore from '@/mocks/NearestStore';             
+import GatherOrder from '@/mocks/GatherOrder';
+
+     
+
+
+
+import Merchandises from '@/mocks/Merchandises';
+import AddMerchandises from '@/mocks/AddMerchandises';
+import ReduceMerchandises from '@/mocks/ReduceMerchandises'; 
 import EmptyMerchandises from '@/mocks/EmptyMerchandises';
+import Categories from '@/mocks/Categories'; 
+import StoreCategories from '@/mocks/StoreCategories';
+import NearestStore from '@/mocks/NearestStore';        
 import SearchMerchandises from '@/mocks/SearchMerchandises';
 
-import GatherOrder from '@/mocks/GatherOrder';
+
+
 
 /* eslint-disable */
 
@@ -36,6 +44,9 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.emptyMerchandises', EmptyMerchandises);
       this.app.register('mock.searchMerchandises', SearchMerchandises);
 
+
+
+      this.app.register('mock.storeCategories',StoreCategories);
 
 
 			this.app.register('mock.myInfo', MyInfo);

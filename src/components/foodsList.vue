@@ -9,10 +9,10 @@
                  {{item.name}}
           </h4>
           <p class="sell-count">已售
-            <span class="text-yellow-cc">{{item.sellCount}}</span>份
+            <span class="color00">{{item.sellCount}}</span>份
           </p>
           <p class="sell-price">{{item.sellPrice}}元/份</p>
-          <p class="origin-price">{{item.originPrice}}元/份</p>
+          <p class="origin-price color75">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
             <cart-control @addCart = "addCart"  @reduceCart= "reduceCart" :merchandiseId = "item.id" :shopId="item.shopId"></cart-control>
           </div>
@@ -72,12 +72,6 @@
         // console.log('next page');
         this.next();
       },
-      // addCart(event) {
-  
-      //     this.$emit('addCart',  this.merchandise.id, this.count + 1, 
-      //       this.merchandise.shopId );
-      //     //console.log( this.count, "cartcontrol", this.merchandiseId)
-      //   },
       scroll(e) {
         console.log(e)
       },

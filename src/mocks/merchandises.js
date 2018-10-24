@@ -15,8 +15,7 @@ export default class Merchandises extends Mock {
         "stock_num|1-5": 3,
         "tags": ["素食", "健康", "营养", "芝士乳酪"],
         "describe":this.mockMethod('cparagraph', 1, 5),
-        "main_image":'http://pic.58pic.com/58pic/14/68/45/92p58PICUba_1024.jpg',  
-        "new_image":'http://pic32.photophoto.cn/20140721/0042040369293749_b.jpg',
+        "main_image":'http://pic32.photophoto.cn/20140721/0042040369293749_b.jpg',  
       }],
       "meta": {
         "pagination":{

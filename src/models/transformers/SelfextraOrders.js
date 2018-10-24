@@ -3,7 +3,32 @@ export default class SelfextraOrders {
   	console.log('order transformer');
     this.code = selfextraOrders['code'];
     this.id = selfextraOrders['id'];
-    this.status = selfextraOrders['status'];
+    switch(parseInt(selfextraOrders['status'])) {
+				case 0:
+					this.status = "已取消";
+					break;
+				case 100:
+					this.status = "待支付";
+					break;
+				case 200:
+					this.status = "支付中";
+					break;
+				case 300:
+					this.status = "已支付";
+					break;
+				case 400:
+					this.status = "已发货";
+					break;
+				case 500:
+					this.status = "已完成";
+					break;
+				case 600:
+					this.status = "支付失败";
+					break;
+				default:
+					this.status = "";
+					break;
+		}
     this.receiverName = selfextraOrders['receiver_name'];
     this.receiverAddress = selfextraOrders['receiver_address'];
     this.receiverMobile = selfextraOrders['receiver_mobile'];

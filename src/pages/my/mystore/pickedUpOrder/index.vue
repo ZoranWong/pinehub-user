@@ -14,7 +14,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order></order>
+				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
 		<div id="controlbar">
@@ -38,18 +38,27 @@
 			return {
 				title: "自提订单",
 				navName: "my",
-				startTime: (new Date()).format('yyyy-MM-dd'),
-				selectDate: (new Date()).format('yyyy 年 MM 月 dd 日'),
+				//startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
+				selectDate: (new Date()).format('yyyy-MM-dd'),
+				startTime:"",
+				endTime:"",
 				selectOrderToPrint: false
 			};
 		},
 		computed: {
-
+            selfextra(){
+				return this.$store.getters['model.extra.orders/lists']
+			}
 		},
 		methods: {
+			loadOrders(startime,endtime) {
+				this.$command('selfextra-orders', startime, endtime);
+			},
 			getSelectDate(e) {
 				//				console.log(e.target.value);
-				this.selectDate = (new Date(e.target.value)).format('yyyy 年 MM 月 dd 日');
+				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
+				this.startTime=this.selectDate+" "+"00:00:00"
+			    this.endTime=this.selectDate+" "+"23:59:59"
 			},
 			printOrders() {
 				wx.showToast({
@@ -75,7 +84,15 @@
 				this.selectOrderToPrint = false;
 			}
 		},
-		created() {}
+		created() {
+			this.$command('selfextra-orders');
+			this.startTime=this.selectDate+" "+"00:00:00"
+			this.endTime=this.selectDate+" "+"23:59:59"
+//			console.log(this.selfextra[0],this.startTime,"-------------------------------")
+		},
+		mounted(){
+			
+		}
 	}
 </script>
 

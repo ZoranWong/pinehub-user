@@ -29,7 +29,7 @@ export default class SelfextraOrders extends Model {
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('extraOrders', function({list, totalNum, currentPage, totalPage}, state) {
+		this.addEventListener('extraOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
 			let startIndex = (currentPage - 1) * pageCount + 1;
 			console.log(currentPage, pageCount, this.transformer);
 			state.extraOrders = this.transform(list, this.transformer, startIndex);

@@ -5,10 +5,10 @@ export default class ReduceMerchandiseCommand extends Command {
   }
 
   async handle(merchandiseId, count, shopId = null) {
-    let service = this.service('http.merchandises');
-    let [ id, name, quality,sellPrice, delete_count, totalAmount]= await service.reduceMerchandises( merchandiseId, shopId, count );
+    console.log("reducecommand-id")
+    let [ id, name, quality,sellPrice, delete_count, totalAmount]= await this.service('http.merchandises').reduceMerchandises( merchandiseId, shopId, count );
     // console.log(id,  name, quality, delete_count, totalAmount, merchandiseId, storeId);
-    //console.log("reducecommand-id",count)
+    console.log("reducecommand-id",count)
 
     if(typeof id !== 'undefined') {
       this.store().dispatch('model.shoppingCarts/reduce', {

@@ -1,6 +1,8 @@
 -<template>
 	<div class="cartcontrol" :style="{border: border}" >
+
 		<div class="cart-decrease" v-show="count>0" @click="reduceCart" :reduce ="reduceMerchandises" > 
+
     </div>
 		<div class="cart-count" v-show="count>0"> {{count}} </div>
 		<div class="cart-add" @click="addCart" :add="addMerchandises"></div>
@@ -34,6 +36,7 @@
 	        	this.$emit('addCart',  this.merchandiseId, this.count + 1, this.shopId );
 	      	},
 	      	reduceCart() {
+	      		console.log('dddddddd');
 	        	if(this.count > 0) {
 	         	this.$emit('reduceCart', this.merchandiseId, this.count - 1, this.shopId ); 
 	        	}	        
