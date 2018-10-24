@@ -76,9 +76,12 @@
 			this.loadOrders(status); 	
 		},
 		mounted() {
-			console.log(this.myorderList,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-			this.$command('my-orders');
+			
+			//this.$command('my-orders');
 			this.loadOrders("all");
+		},
+		updated(){
+//			console.log(this.myorderList[0],"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		}
 
 	}

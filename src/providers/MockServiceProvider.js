@@ -13,6 +13,7 @@ import DistributionOrder from '@/mocks/DistributionOrder';
 import SelfextraOrder from '@/mocks/SelfextraOrder';
 import NearestStore from '@/mocks/NearestStore';             
 import EmptyMerchandises from '@/mocks/EmptyMerchandises';
+import GatherOrder from '@/mocks/GatherOrder';
 /* eslint-disable */
 
 export default class MockServiceProvider extends ServiceProvider{
@@ -34,6 +35,7 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.emptyMerchandises', EmptyMerchandises);
       this.app.register('mock.distributeOrder',DistributionOrder);
       this.app.register('mock.selfextraOrder',SelfextraOrder);
+      this.app.register('mock.gatherOrder',GatherOrder);
     }
   }
   boot() {

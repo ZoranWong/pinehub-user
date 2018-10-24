@@ -1,15 +1,15 @@
 import Model from './Model';
 import _ from 'underscore';
-import DisordersTransformer from './transformers/DistributeOrder';
-export default class DistributeOrder extends Model {
+import gathOrderTransformer from './transformers/GatherOrd';
+export default class GatherOrder extends Model {
 	constructor(app) {
 		super(app);
-		this.transformer = DisordersTransformer;
+		this.transformer = gathOrderTransformer;
 	}
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.disOrders;
+				return state.gathOrders;
 				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
 			},
 			totalNum(state){
@@ -22,18 +22,19 @@ export default class DistributeOrder extends Model {
 	}
 	data() {
 		return {
-			disOrders: [],
+			gathOrders: [],
 			uncompletedOrders: [],
 			completedOrders: []
 		};
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('disOrders', function({list, totalNum, currentPage, totalPage}, state) {
+		this.addEventListener('gathOrders', function({list, totalNum, currentPage, totalPage,pageCount}) {
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log(currentPage, pageCount, this.transformer);
-			state.disOrders = this.transform(list, this.transformer, startIndex);
-			state.totalNum = totalNum;
+			console.log('addListener');
+			this.state.gathOrders = this.transform(list, this.transformer, startIndex);
+			this.state.totalNum = totalNum;
+			console.log('statestatestatestatestate',this);
 		});
 	}
 }

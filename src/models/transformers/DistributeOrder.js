@@ -1,4 +1,4 @@
-export default class DistributeOrders {
+export default class DistributeOrder {
   constructor(distributeOrders) {
   	//console.log('order transformer');
     this.code = distributeOrders['code'];
