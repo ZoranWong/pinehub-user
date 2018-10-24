@@ -2,7 +2,7 @@
   <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" @scrolltolower="scrolltolower" >
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-top ">
-          <img class="merchandises-pic" :src="item.newImage" :style="{ width: widthPic, height: heightPic }">
+          <img class="merchandises-pic" :src="item.thumbImage" :style="{ width: widthPic, height: heightPic }">
         </div>
         <div class="foods-item-bottom">
           <h4 class="merchandises-name" >

@@ -9,10 +9,10 @@
                  {{item.name}}
           </h4>
           <p class="sell-count">已售
-            <span class="text-yellow-cc">{{item.sellCount}}</span>份
+            <span class="color00">{{item.sellCount}}</span>份
           </p>
           <p class="sell-price">{{item.sellPrice}}元/份</p>
-          <p class="origin-price">{{item.originPrice}}元/份</p>
+          <p class="origin-price color75">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
             <cart-control @addCart = "addCart"  @reduceCart= "reduceCart " :merchandise = "item"></cart-control>
           </div>
@@ -27,6 +27,10 @@
 	export default{
     props: {
       addMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
+      reduceMerchandiseToCart:{
         default: null,
         type: Function
       },
@@ -81,10 +85,13 @@
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
-      reduceCart(id, count, shopId){
-        console.log("111kkkjjjhhhh")
+      reduceCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
-      }
+      },
+      // reduceCart(id, count, shopId){
+      //   console.log("111kkkjjjhhhh")
+      //   this.reduceMerchandiseToCart( shopId, count, id);
+      // }
     },
     watch:{
       width:function(val) {

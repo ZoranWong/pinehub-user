@@ -2,9 +2,8 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <location :position="position"></location>
     <div class="goods" >
-        <menus></menus>
+        <menus @menusChange="menusChange"></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
         :addMerchandiseToCart = "addCart" ></m-list>
     </div>
@@ -17,9 +16,8 @@
   import MpTitle from '@/components/MpTitle';
   import PopupDelivery from './PopupDelivery';
   import Swiper from '@/components/Swiper';
-  import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
-  import Menus from '@/components/Menus';
+  import Menus from './Menus';
   import Cart from '@/components/Cart'
   export default{
     data(){
@@ -28,13 +26,13 @@
         isShow:false,
         isShowCart:true,
         activityId: 0, 
-        screenHeight: ''
+        screenHeight: '',
+        categoryIndex:null,
       }
     },
     components: {
       'pop-delivery': PopupDelivery,
       'mp-swiper': Swiper,
-      'location': Location,
       'menus': Menus,
       'm-list': FoodsList,
       'cart': Cart,
@@ -43,16 +41,27 @@
    },
     computed: {
       merchandises(){
-        return this.$store.getters['model.activity.merchandises/list'];
+        return this.$store.getters['model.reserveShop.merchandises/list'];
       },
       currentPage () {
-       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
+       console.log(page, "当前页数")
        return page;
+      },
+      categoryId() {
+        console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex),"分类index")
+        return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
       }
+   },
+   watch: {
+    categoryId() {
+      this.loadMerchandises(1);
+      console.log(this.loadMerchandises(1),"ghgggghhht4ethgtg")
+    }
    },
     methods:{
       hdlShowCart:function(){
-        this.isShowCart =  true;
+        this.isShowCart =  false;
       },
       hdlShowPopup:function(){
         this.isShow = true;
@@ -61,8 +70,20 @@
       hdlHidePopup:function(){
         this.isShow = false;
       },
+      loadMerchandises(page) {
+        this.$command('GET_MERCHANDISE_LIST',
+         'model.reserveShop.merchandises/setList', 
+         'bookingMerchandises',
+          this.categoryId, 
+          page); 
+          console.log('加载',  this.categoryId, page)  
+      },
+       menusChange : function (index) {
+        this.index = index;
+        this.loadMerchandises(this.currentPage  + 1);
+      },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
+         this.loadMerchandises(this.currentPage  + 1);   
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -70,7 +91,6 @@
       },
       reduceCart(shopId, count, merchandisesId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-        //   console.log( this.count, "减少", this.merchandiseId)
       },    
       emptyCart(storeId){
         this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
@@ -78,14 +98,10 @@
     },
     created () {
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
-      this.$command('GET_NEAREST_STORE');
-        
    },
 
-   mounted(){      
-      this.$command('EMPTY_MERCHANDISES_TO_CART');
-      console.log("clear", this.$store.getters['model.emptyMerchandises'])
-      //console.log('menus data', this.$store.getters);
+   mounted(){        
+      this.$command('GET_CATEGORIES_TO_MEUN');
 
    }
 }

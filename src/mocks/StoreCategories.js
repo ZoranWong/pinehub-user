@@ -1,5 +1,5 @@
 import Mock from './Mock';
-export default class Categories extends Mock {
+export default class StoreCategories extends Mock { //当日下单里面的商品分类 
   constructor(application) {
     super(application);
   }
@@ -7,7 +7,7 @@ export default class Categories extends Mock {
     return {
       "data|10":[{
         "id|+1": 1,
-        "name": this.mockMethod('cword',2, 4),
+        "name": this.mockMethod('cword', 2, 4),
       }],
       "meta": {
         "pagination":{

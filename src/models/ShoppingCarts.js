@@ -5,7 +5,7 @@ export default class ShoppingCarts extends Model{
   constructor(application) {
     super(application);
     this.transformer = ShoppingCartTransformer;
-  }
+  }  // 购物车内的相关数据计算 
   computed() {
     return _.extend(super.computed(), {
       totalAmount(state){

@@ -5,11 +5,11 @@ export default class Merchandises extends Model{
   constructor(application) {
     super(application);
     this.transformer = MerchandiseTransformer;
-  }
+  }  //foodlist的model层
   computed() {
     return _.extend(super.computed(), {
       list(state){
-        console.log( state.list[state.currentCategoryIndex],'merchandises-models-001');
+        // console.log( state.list[state.currentCategoryIndex],'merchandises-models-001');
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
       },
       currentCategoryIndex(state) {

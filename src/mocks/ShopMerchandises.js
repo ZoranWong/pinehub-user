@@ -14,7 +14,6 @@ export default class ShopMerchandises extends Mock {
         "origin_price|+3": 28,
         "sell_count|+50": 40,
         "stock_num|1-5": 3,
-        "tags": ["素食", "健康", "营养", "芝士乳酪"],
         "describe":this.mockMethod('cparagraph', 1, 5),
         "main_image":'http://pic.58pic.com/58pic/14/68/45/92p58PICUba_1024.jpg'
       }],

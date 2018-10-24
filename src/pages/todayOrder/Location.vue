@@ -17,13 +17,8 @@
           type: Object
       }
     },
-		data(){
-			return{
-			}
-		},
     computed:{
        position(){
-        console.log(this.location,"ppppp")
         return this.$store.getters['model.nearestStore/location'];
       }
     },
@@ -52,7 +47,7 @@
 .arrow-right-icon{
   width:18rpx;
   height: 32rpx;
-  background-image: url(../../static/images/arrow-right-icon.png);
+  background-image: url(../../../static/images/arrow-right-icon.png);
   background-size: contain;
   position: absolute;
   top:28rpx;
