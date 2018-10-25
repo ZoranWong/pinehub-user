@@ -11,11 +11,11 @@
 			<li class="li-item bgff">
 				配送地址
 				<p class="details-item">
-				新城国际
-				<input type="text"  class="mini-input">
+				<input type="text" class="big-input">
+				<!-- <input type="text"  class="mini-input">
 				座
 				<input type="text"  class="mini-input">
-				室
+				室 -->
 				</p>
 			</li>
 			<li class="li-item bgff">
@@ -42,7 +42,7 @@
 			<li class="li-item bgff">
 				自提地址
 				<p class="details-item">
-				默认地址
+				 {{position.address}}
 				</p>
 			</li>
 			<!-- <li class="li-item bgff">
@@ -61,7 +61,7 @@
 		data(){
 			return{
 				index: 0,
-      			timesArray: ['上午 7：00 - 9:00','中午 11：00 - 13:00','下午 17：00 - 19:00'	],
+      			timesArray: ['7:00-9:00','11:00-13:00','17:00-19:00'],
        			tabs:[{
        				id:1,
        				txt:"送到"
@@ -73,6 +73,17 @@
        			cur: 0
 			}
 		},
+	   props:{
+        	position: {
+				default: null,
+          		type: Object
+      		}
+    	},
+	    computed:{
+	       	position(){
+	        	return this.$store.getters['model.nearestStore/location'];
+	      }
+    	},
 		methods:{
     		bindPickerChange (e) {
     			 // console.log(e)
@@ -83,7 +94,8 @@
 				this.cur = num;
 				console.log(num);
 			}	
-		}
+		},
+		
 
 	}
 </script>
@@ -130,17 +142,16 @@
 	border-radius: 10rpx;
 	margin-bottom:4rpx ;
 	padding-left: 20rpx;
-/*	border:1rpx solid red;*/
 	box-sizing: border-box;
 }
 .li-item .details-item{
 	display: inline-block;
 	height: 80rpx;
 	margin-left: 100rpx;
-	/*border:1rpx solid red*/
 }
 .li-item p input{
   	display: inline-block;
+  	vertical-align: middle;
 }
 .mini-input{
 	width:100rpx;

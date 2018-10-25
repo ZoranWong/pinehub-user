@@ -64,7 +64,6 @@
       }
    },
    created () {
-    console.log("11111111111111",this.$store.getters['model.activity.merchandises/list'])
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }

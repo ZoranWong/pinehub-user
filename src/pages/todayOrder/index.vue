@@ -52,11 +52,9 @@
       },
       currentPage () {
        let page = this.$store.state['model.today.merchandises'].currentPage;
-       console.log(page, "当前页数")
        return page;
       },
       storeCategoryId(){
-        //console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
       }
      
@@ -88,7 +86,7 @@
         this.categoryId,
         this.merchandiseId,
         page);
-        console.log('加载',  this.categoryId)  
+        // console.log('加载',  this.categoryId)  
       },
       menusChange : function (index) {
         this.index = index;

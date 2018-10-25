@@ -88,8 +88,6 @@
 	display: inline-block;
 	height: 80rpx;
 	margin-left: 100rpx;
-	vertical-align: middle;
-	
 }
 .Distribution-details{
 	margin-bottom: 20rpx;
@@ -101,12 +99,7 @@
   	display: inline-block;
   	vertical-align:middle;
 }
-.big-input{
-	width: 460rpx;
-	height: 40rpx; 
-  	border-radius: 10rpx;
-  	border:2rpx solid #cccccc;
-}
+
 .li-item .tel-num{
 	margin-left: 44rpx;
 }

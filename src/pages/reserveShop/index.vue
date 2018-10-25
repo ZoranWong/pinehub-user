@@ -45,11 +45,9 @@
       },
       currentPage () {
        let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
-       //console.log(page, "当前页数")
        return page;
       },
       categoryId() {
-        console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex), this.categoryIndex, "分类index")
         return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
       },
       categoryIndex() {
@@ -57,6 +55,7 @@
       }
    },
    watch: {
+
      categoryId(n, o) {
         if(n && !o ) {
           this.loadMerchandises(1);
@@ -80,7 +79,7 @@
          'bookingMerchandises',
           this.categoryId, 
           page); 
-          console.log('加载',  this.categoryId, page)  
+          // console.log('加载',  this.categoryId, page)  
       },
        menusChange : function (index) {
         this.$command('CLEAR_MERCHANDISE', 'model.reserveShop.merchandises');
@@ -95,7 +94,6 @@
   
       },
       reduceCart(shopId, count, merchandiseId){
-        console.log('ooooooooo');
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },    
       emptyCart(storeId){

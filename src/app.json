@@ -1,8 +1,7 @@
 {
   "pages": [
-    
-    "pages/index/main",  
-    "pages/my/location/main",
+    "pages/index/main",
+    "pages/nearbyStores/main",
     "pages/my/mystore/main",
     "pages/my/mystore/order/main",
     "pages/my/mystore/status/main",
@@ -24,7 +23,6 @@
     "pages/order/main",
     "pages/search/main",
     "pages/coupon/main"
-    
   ],
 	"window": {
 		"backgroundTextStyle": "light",

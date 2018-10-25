@@ -5,9 +5,6 @@
 			<input class="search-input  fl" type="text" v-model="search" placeholder="请输入商品名称">
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
-		<div>
-			{{result}}
-		</div>
 		<div class="goods">
 			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises"
         		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" >

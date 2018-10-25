@@ -10,7 +10,7 @@ import HrefService from '../services/mp/HrefService';
 import ScanCodeService from '../services/mp/ScanCodeService';
 import MyStoreScanCodeService from '../services/http/MyStoreScanCodeService';
 import PopupService from '../services/mp/PopupService';
-import LocationSearchService from '../services/mp/LocationSearchService';
+import TencentMapService from '../services/mp/TencentMapService';
 import StorageService from '../services/mp/StorageService';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
@@ -46,7 +46,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('scan', ScanCodeService);
 		this.app.register('scanCodeService', MyStoreScanCodeService);
 		this.app.register('popup',PopupService);
-		this.app.register('location',LocationSearchService);
+		this.app.register('map', TencentMapService);
 		this.app.register('mp.storage', StorageService);
 	}
 	boot() {

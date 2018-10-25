@@ -13,8 +13,7 @@ export default class Categories extends Model{
         return this.state.currentPage ? _.flatten(state.list) : [];
       },
       categoryId(state) {
-        let list = this.state.currentPage ? _.flatten(state.list) : [];
-        console.log(list, "工会荣获",this.state.currentPage)
+        let list = this.state.currentPage ? _.flatten(state.list) : [];   
         return (i) =>{
           let category = list[i];
          return category ? category.id : null;
