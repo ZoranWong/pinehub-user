@@ -9,7 +9,7 @@
       </div>
       <label class="choose fr" @click="popShow">
         选好了
-        <i class="i-icon next-icon"></i>
+        <i class="i-icon next-icon" @click="orderShow"></i>
       </label>
     </div>
     <div class="selected-merchandises  bgff"  v-if="toggleList" >
@@ -24,9 +24,9 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-
-            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" >    
-            </cart-control>
+              <cart-control @addCart = "addCart" :merchandiseId = " item['merchandiseId']" :shopId="item.shopId"  
+   @reduceCart ="reduceCart" ></cart-control> 
+           
           </div>  
 
         </div>
@@ -57,14 +57,7 @@
         default: null,
         type: Function
       },
-      addMerchandiseToCart:{
-        default: null,
-        type: Function
-      },
-      reduceMerchandiseToCart:{
-        default: null,
-        type: Function
-      }
+ 
     },
     components:{
       'cart-control':CartControl,
@@ -73,6 +66,7 @@
       cartList(){
         return this.$store.getters['model.shoppingCarts/list'];
       },
+      
       totalAmount(){
         return this.$store.getters['model.shoppingCarts/totalAmount'];
       },
@@ -83,6 +77,10 @@
     methods:{
       popShow:function(){
         this.$emit('hdlShowPopup')
+      },
+      orderShow(){
+        console.log(1111)
+        this.$emit('hdlShowOrder')
       },
       toggleListShow:function(){
         this.toggleList =! this.toggleList;
@@ -98,6 +96,7 @@
        this.reduceMerchandiseToCart( shopId, count, id);
 
       }
+
       
     },
     

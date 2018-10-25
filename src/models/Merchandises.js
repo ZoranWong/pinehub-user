@@ -28,7 +28,7 @@ export default class Merchandises extends Model{
     this.addEventListener('setCurrentCategory', function({categoryIndex}) {
     		this.state.currentCategoryIndex = categoryIndex;
     });
-    console.log(this.state ,'merchandises-models-002')
+    //console.log(this.state ,'merchandises-models-002')
 		this.addEventListener('setList', ({
 			list,
 			currentPage,
@@ -40,7 +40,7 @@ export default class Merchandises extends Model{
 			let startIndex = (currentPage - 1) * pageCount + 1;
       if(!this.state.list[this.state.currentCategoryIndex]) {
         this.state.list[this.state.currentCategoryIndex]  = [];
-         console.log(this.state,'merchandises-models-003')
+         //console.log(this.state,'merchandises-models-003')
       }
 			this.state.list[this.state.currentCategoryIndex][currentPage - 1] = this.transform(list, this.transformer, startIndex);
 			if(totalNum !== null)
@@ -51,7 +51,7 @@ export default class Merchandises extends Model{
 					this.state.pageCount = pageCount;
 				}
 			}
-      console.log(this.state,'merchandises-models-004')
+      //console.log(this.state,'merchandises-models-004')
 		});
   }
 }

@@ -25,7 +25,7 @@ export default class DistributeOrderService extends Service {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log('nefffffffff-----',[distributeorders, totalNum, currentPage, totalPage]);
+		//console.log('nefffffffff-----',[distributeorders, totalNum, currentPage, totalPage]);
 		return [distributeorders, totalNum, currentPage, totalPage];
 	}
 	

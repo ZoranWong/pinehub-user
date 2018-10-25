@@ -27,6 +27,11 @@
 			'm-list': FoodsList,
 			
 		},
+		computed: {
+     	 	merchandises(){
+        		return this.$store.getters['model.activity.merchandises/list'];
+      		}
+   		},
 		// computed: {
   //    	 	merchandises(){
   //       		return this.$store.getters['model.activity.merchandises/list'];
@@ -43,7 +48,7 @@
 	 //   	},
 	   mounted(){
 	   	console.log('搜索商品--index.vue')
-	   	//this.$command('SEARCH_MERCHANDISES')
+	   	this.$command('SEARCH_MERCHANDISES')
 	   }
 
 		

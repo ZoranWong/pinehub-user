@@ -48,6 +48,7 @@ export default class ApiService extends Service {
 		let result = await (await this.request(this.auth(auth))).delete(this.gateway + route + id);
 		return null;
 	}
+	
 	//组装搜索参数
 	searchBuilder(searchFields) {
 		let search = {};

@@ -6,7 +6,7 @@
 		<!-- 配送和自提的tab切换组件-->
 	    <tab-delivery></tab-delivery>
 	    <!-- 支付内容的显示组件 -->
-		<payment></payment>
+		<payment :next="next"  :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></payment>
         
 	
 	</div>
@@ -38,7 +38,23 @@
     			 // console.log(e)
     			 this.index =  e.target.value
 
-    		}	
+    		},
+    		next() {
+		        this.$command('GET_MERCHANDISE_LIST');               
+		     },
+    		addCart(shopId, count,  merchandiseId){
+		        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+
+		    },
+		    reduceCart(shopId, count, merchandiseId){
+		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+		    },   		
+		},
+		mounted(){
+			this.$command('MYINFO');
+			console.log('mounted order component');
+			this.$command('FILL_CART_FROM_CACHE');
+      		              
 		}
 	}
 </script>

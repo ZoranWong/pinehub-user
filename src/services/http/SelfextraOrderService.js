@@ -19,13 +19,13 @@ export default class SelfextraOrderService extends Service {
 				page:page
 			});
 		}
-		console.log('getRes',response);
+		//console.log('getRes',response);
 		Selforders = response.data;
 		let pagination = response.meta.pagination;
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log('ne-----',[Selforders, totalNum, currentPage, totalPage]);
+		//console.log('ne-----',[Selforders, totalNum, currentPage, totalPage]);
 		return [Selforders, totalNum, currentPage, totalPage];
 	}
 	
