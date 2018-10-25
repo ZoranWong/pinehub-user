@@ -5,7 +5,7 @@
 			<i id="location_search_button" @click="searchLocation">查询</i>
 		</div>
 		<div id="location_map">
-			<map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers" :include-points="markers" show-location></map>
+			<map id="map" scale="14" :latitude = "latitude" :longitude = "longitude" :markers = "markers"  show-location></map>
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+	import SearchLocationCommand from '@/commands/SearchLocationCommand';
+	import _ from 'underscore';
 	export default {
 		//数据
 		data() {
@@ -35,11 +37,13 @@
 				self: {}
 			}
 		},
+		watch: {
+		},
 		//算术方法
 		computed: {
 			markers() {
-				console.log('index----------nearby',this.$store);
-				return this.$store.getters['model.myNearbyStores/list'];
+				let markers = this.$store.getters['model.nearbyStores/markers'];
+				return markers.length > 0 ? markers : null;
 			}
 		},
 		//普通方法
@@ -57,7 +61,7 @@
 			},
 			searchLocation() {
 				// console.log(this);
-				this.$command('SEARCH_LOCATION', this.city + this.addressName);
+				this.$command(SearchLocationCommand.commandName(), this.city + this.addressName);
 			},
 			nowLocation() {
 				this.map.moveToLocation();
@@ -188,7 +192,7 @@
 	}
 
 	#nowposition {
-		background: url(../../../../static/images/nowposition.png) no-repeat center center;
+		background: url(../../../static/images/nowposition.png) no-repeat center center;
 		background-color: #FFFFFF;
 		border-radius: 50%;
 		width: 50rpx;

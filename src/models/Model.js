@@ -33,7 +33,7 @@ export default class Model {
 	}
 
 	list() {
-		return _.flatten(this.state.list);
+		return this.state.currentPage ? _.flatten(this.state.list) : [];
 	}
 
 	//返回计算属性，计算属性定义为函数形式，每一个计算属性函数接受一个model层的state，
@@ -65,7 +65,7 @@ export default class Model {
 		totalPage,
 		list
 	}, state) {
-		
+
 		this.state.currentPage = currentPage;
 		let startIndex = (currentPage - 1) * pageCount + 1;
 		this.state.list[currentPage - 1] = this.transform(list, this.transformer, startIndex);

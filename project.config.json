@@ -6,12 +6,14 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"nodeModules": true
+		"nodeModules": true,
+		"uglifyFileName": true
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
 	"appid": "wx67127c10ce9c598c",
 	"projectname": "%E9%9D%92%E6%9D%BE%E6%96%B0%E9%9B%B6%E5%94%AEpinehub",
+	"libVersion": "2.3.0",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -30,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
@@ -45,9 +47,9 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 2,
 					"name": "定位",
-					"pathName": "pages/my/location/main",
+					"pathName": "pages/nearbyStores/main",
 					"query": ""
 				},
 				{

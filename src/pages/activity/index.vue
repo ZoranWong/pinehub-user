@@ -64,7 +64,6 @@
       }
    },
    created () {
-
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }

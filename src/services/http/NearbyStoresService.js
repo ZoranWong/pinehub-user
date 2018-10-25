@@ -1,10 +1,10 @@
 import Service from '../Service';
-export default class MyNearbyStoresService extends Service {
+export default class NearbyStoresService extends Service {
 	constructor($application) {
 		super($application);
 	}
 	//获取订单列表
-	async mapList(lng, lat, page = 1, limit = 100) {
+	async list(lng, lat, page = 1, limit = 100) {
 		console.log('进去list里了-------------');
 		let listData = null;
 		let totalNum = null;
@@ -13,7 +13,7 @@ export default class MyNearbyStoresService extends Service {
 		let pageCount = null;
 		let response = null;
 		if (this.$application.needMock()) {
-			response = await this.services('mock.location').mock(lng, lat, page, limit);
+			response = await this.services('mock.nearbyStores').mock(lng, lat, page, limit);
 		} else {
 			//服务器交互代码
 			response = await this.httpGet('nearby/stores', {
