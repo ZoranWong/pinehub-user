@@ -7,7 +7,6 @@
 		<div id="store_total">
 			<em>库存统计</em>
 			<font>(每日14:00更新数据)</font>
-			<i>2018/08/08 14:00</i>
 		</div>
 		<div id="store_product">
 			<div id="store_product_left">
