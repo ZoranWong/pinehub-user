@@ -7,7 +7,7 @@ export default class MyStoreStatusSalesCommand extends Command {
 	async handle(selectTime) {
 		let [salesInfo, sellTop, merchandiseTop, statics] = await this.service('http.myStoreStatusSales').salesInfo(
 			selectTime);
-		console.log('sales---------------A', [salesInfo, sellTop, merchandiseTop, statics]);
+		//console.log('sales---------------A', [salesInfo, sellTop, merchandiseTop, statics]);
 		this.store().dispatch({
 			type: 'model.my.store.status.sales/salesInfo',
 			salesInfo: salesInfo,

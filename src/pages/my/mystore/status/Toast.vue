@@ -11,7 +11,7 @@
 						<div class="input_num">
 							{{merchandise['stockNum']}}
 						</div>
-						<input class="input_num input_num_right" type="number" v-model="productInfo.num" />
+						<input class="input_num input_num_right" type="number" v-model="productInfo.newStockNum" />
 					</div>
 					<div id="input_change_info">
 						修改原因
@@ -21,7 +21,7 @@
 							<li v-for="(item,index) in selectCause" :key="item.id" :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">{{item.name}}</li>
 						</ul>
 					</div>
-					<div id="input_change_btn" @click="returnBtn">
+					<div id="input_change_btn" @click="returnBtn(merchandise['id'], merchandise['stockNum'], productInfo['newStockNum'], productInfo['reason'], comment)">
 						确认修改
 					</div>
 					<div id="input_change_tips">
@@ -38,7 +38,7 @@
 		name: 'Toast',
 		props: {
 			'merchandise': {
-				default:{},
+				default: {},
 				type: Object
 			},
 			'display': {
@@ -67,16 +67,34 @@
 			radioSelect(num, id) {
 				this.radioCur = num;
 				this.productInfo['changeAnswerId'] = id;
+				this.productInfo['reason'] = this.selectCause[num]['name'];
 				//				console.log(num + 'aaa' + id);
 			},
-			returnBtn() {
-				let productNum = parseInt(this.productInfo.num);
-				if (isNaN(productNum) || productNum < 0) {
+			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
+				console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
+				modifyStockNum = parseInt(modifyStockNum);
+				console.log('modifyStockNum', modifyStockNum);
+				if (isNaN(modifyStockNum) || modifyStockNum < 0) {
 					wx.showToast({
 						title: "正确填写库存",
 						icon: "none"
 					})
-				} else {}
+				} else if (modifyStockNum == this.merchandise['stockNum']) {
+					wx.showToast({
+						title: "库存没有任何改变",
+						icon: "none"
+					})
+				} else {
+					wx.showLoading({
+						title: '正在提交...',
+					})
+					this.$emit("modifyStock", id, primaryStockNum, modifyStockNum, reason, comment);
+					console.log('aaa', this.productInfo);
+					this.productInfo = {};
+					this.radioCur = 0;
+					console.log('bbb', this.productInfo);
+					this.$emit("close");
+				}
 			},
 			toastClose() {
 				this.$emit("close");
@@ -93,7 +111,7 @@
 
 <style scoped>
 	#toast_area {
-		position: absolute;
+		position: fixed;
 		height: 100%;
 		width: 100%;
 		background: rgba(0, 0, 0, .3);

@@ -21,6 +21,9 @@ import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryM
 import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
 import MyStoreCategoryMerchandises from "@/models/MyStoreCategoryMerchandises";
 
+import MyStoreModifyStockService from '@/services/http/MyStoreModifyStockService';
+import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';
+
 
 const myMystoreStatus = new Application(App, 'my.mystore.status');
 myMystoreStatus.run((app) => {
@@ -42,6 +45,9 @@ myMystoreStatus.run((app) => {
 	app.models.addModel('model.my.store.category.merchandises', MyStoreCategoryMerchandises);
 	app.register('http.myStoreCategoryMerchandises', MyStoreCategoryMerchandisesService);
 	app.registerCommand(MyStoreChangeCategoryCommand.commandName(), MyStoreChangeCategoryCommand);
+	
+	app.register('http.myStoreModifyStock', MyStoreModifyStockService);
+	app.registerCommand(MyStoreModifyStockCommand.commandName(), MyStoreModifyStockCommand);
 }, (component) => {
 	_.extend(App, component);
 	let app = new Vue(App);

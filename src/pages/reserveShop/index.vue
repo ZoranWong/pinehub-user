@@ -28,7 +28,6 @@
         isShowCart:true,
         activityId: 0, 
         screenHeight: '',
-        categoryIndex:null,
       }
     },
     components: {
@@ -50,12 +49,18 @@
       },
       categoryId() {
         return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
+      },
+      categoryIndex() {
+        return this.$store.getters['model.reserveShop.merchandises/currentCategoryIndex'];
       }
    },
    watch: {
-    categoryId() {
-      this.loadMerchandises(1);
-    }
+
+     categoryId(n, o) {
+        if(n && !o ) {
+          this.loadMerchandises(1);
+        }
+      },
    },
     methods:{
       hdlShowCart:function(){
@@ -77,11 +82,12 @@
           // console.log('加载',  this.categoryId, page)  
       },
        menusChange : function (index) {
-        this.index = index;
-        this.loadMerchandises(this.currentPage  + 1);
+        this.$command('CLEAR_MERCHANDISE', 'model.reserveShop.merchandises');
+        this.$store.dispatch('model.reserveShop.merchandises/setCurrentCategory', {categoryIndex: index});
+        this.loadMerchandises(1);
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
+        this.loadMerchandises(this.currentPage + 1);               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);

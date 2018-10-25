@@ -5,7 +5,7 @@
 
     </div>
 		<div class="cart-count" v-show="count>0"> {{count}} </div>
-		<div class="cart-add" @click="addCart" :add="addMerchandises"></div>
+		<div class="cart-add"  @click="addCart" :add="addMerchandises"></div>
 	</div>
 </template>
 <script>
@@ -29,14 +29,10 @@
 	      }
 	    },
 		methods: {
-	      	cartShow:function() {
-	        	this.$emit('show-cart');
-	      	},
 		 	addCart(event) {
 	        	this.$emit('addCart',  this.merchandiseId, this.count + 1, this.shopId );
 	      	},
 	      	reduceCart() {
-	      		console.log('dddddddd');
 	        	if(this.count > 0) {
 	         	this.$emit('reduceCart', this.merchandiseId, this.count - 1, this.shopId ); 
 	        	}	        

@@ -10,7 +10,7 @@ export default class GetMerchandisesCommand extends Command {
     let serviceMethod = args.shift();
     let service = this.service('http.merchandises');
   	let [ merchandises, totalNum, currentPage, totalPage, limit] = await service[serviceMethod].apply(service, args);
-  	// console.log(event, merchandises, totalNum, currentPage, totalPage,'jjjj',serviceMethod);
+  	console.log(event, merchandises, totalNum, currentPage, totalPage,'jjjj',serviceMethod);
     this.store().dispatch(event, {
       list: merchandises,
       totalNum: totalNum,

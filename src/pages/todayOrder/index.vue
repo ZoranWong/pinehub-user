@@ -55,7 +55,6 @@
        return page;
       },
       storeCategoryId(){
-        // console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
       }
      
