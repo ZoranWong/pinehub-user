@@ -9,32 +9,39 @@ export default class DistributeOrder extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.disOrders;
-				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
+//				return state.extraOrders;
+				return state.disOrders.currentPage ? _.flatten(state.disOrders.list) : [];
 			},
 			totalNum(state){
 				return state.totalNum;
 			},
-			currentCategoryIndex(state) {
-				//return state.currentCategoryIndex;
+			disOrders(state) {
+				return state.disOrders;
 			}
 		});
 	}
 	data() {
 		return {
-			disOrders: [],
-			uncompletedOrders: [],
-			completedOrders: []
+			disOrders:super.data(),
+			uncompletedOrders:super.data(),
+			completedOrders:super.data()
 		};
 	}
 	//监听数据
 	listeners() {
 		this.addEventListener('disOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
-			console.log('0000011111');
+			let orders = state.disOrders;
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log(currentPage, pageCount, this.transformer, 'dfasdfasdfsdafasdf');
-			state.disOrders = this.transform(list, this.transformer, startIndex);
-			state.totalNum = totalNum;
+			orders.currentPage = currentPage;
+	        orders.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
+	        if(totalNum !== null)
+	          orders.totalNum = totalNum;
+	        if(totalPage !== null) {
+	          orders.totalPage = totalPage;
+	          if(pageCount !== null) {
+	            orders.pageCount = pageCount;
+	          }
+	        }
 		});
 	}
 }

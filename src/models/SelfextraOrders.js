@@ -9,31 +9,39 @@ export default class SelfextraOrders extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.extraOrders;
-				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
+//				return state.extraOrders;
+				return state.extraOrders.currentPage ? _.flatten(state.extraOrders.list) : [];
 			},
 			totalNum(state){
 				return state.totalNum;
 			},
-			currentCategoryIndex(state) {
-				//return state.currentCategoryIndex;
+			extraOrders(state) {
+				return state.extraOrders;
 			}
 		});
 	}
 	data() {
 		return {
-			extraOrders: [],
-			uncompletedOrders: [],
-			completedOrders: []
+			extraOrders: super.data(),
+			uncompletedOrders: super.data(),
+			completedOrders: super.data()
 		};
 	}
 	//监听数据
 	listeners() {
 		this.addEventListener('extraOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
+			let orders = state.extraOrders;
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log(currentPage, pageCount, this.transformer);
-			state.extraOrders = this.transform(list, this.transformer, startIndex);
-			state.totalNum = totalNum;
+			orders.currentPage = currentPage;
+	        orders.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
+	        if(totalNum !== null)
+	          orders.totalNum = totalNum;
+	        if(totalPage !== null) {
+	          orders.totalPage = totalPage;
+	          if(pageCount !== null) {
+	            orders.pageCount = pageCount;
+	          }
+	        }
 		});
 	}
 }

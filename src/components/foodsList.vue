@@ -71,6 +71,7 @@
       scrolltolower(){
         // console.log('next page');
         this.next();
+//      console.log("111111111111111111111111111111111")
       },
       scroll(e) {
         console.log(e)

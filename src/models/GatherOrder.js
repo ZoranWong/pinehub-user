@@ -9,32 +9,40 @@ export default class GatherOrder extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			lists(state) {
-				return state.gathOrders;
-				//return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
+//				return state.extraOrders;
+				return state.orders.currentPage ? _.flatten(state.orders.list) : [];
 			},
 			totalNum(state){
 				return state.totalNum;
 			},
-			currentCategoryIndex(state) {
-				//return state.currentCategoryIndex;
+			gathOrders(state) {
+				return state.orders;
 			}
 		});
 	}
 	data() {
 		return {
-			gathOrders: [],
-			uncompletedOrders: [],
-			completedOrders: []
+			orders:super.data(),
+			uncompletedOrders:super.data(),
+			completedOrders:super.data()
 		};
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('gathOrders', function({list, totalNum, currentPage, totalPage,pageCount}) {
+		this.addEventListener('gathOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
+			console.log('gathOrders', currentPage);
+			let orders = state.orders;
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log('addListener');
-			this.state.gathOrders = this.transform(list, this.transformer, startIndex);
-			this.state.totalNum = totalNum;
-			console.log('statestatestatestatestate',this);
+			orders.currentPage = currentPage;
+	        orders.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
+	        if(totalNum !== null)
+	          orders.totalNum = totalNum;
+	        if(totalPage !== null) {
+	          orders.totalPage = totalPage;
+	          if(pageCount !== null) {
+	            orders.pageCount = pageCount;
+	          }
+	        }
 		});
 	}
 }

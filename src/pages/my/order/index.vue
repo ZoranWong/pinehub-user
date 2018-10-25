@@ -8,7 +8,7 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order :loadOrders="loadOrders" :status="statusType" :myorderList="myOrdersList"></my-order>
+			<my-order :loadOrders="loadOrders" :status="statusType" :myorderList="myOrdersList" :next="next"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
@@ -59,13 +59,21 @@
 			myOrdersList() {
 				return this.$store.getters['model.my.orders/lists'];
 			},
+//			myOrdersList2() {
+//				return this.$store.getters['model.my.orders/lists'];
+//			},
 			totalNum() {
 				return this.$store.getters['model.my.orders/totalNum'];
-			}
+			},
+			currentPage () {
+		       let page = this.$store.getters['model.my.orders/allOrders'].currentPage;
+		       console.log(page, "当前页数")
+		       return page;
+		    }
 		},
 		methods: {
 			loadOrders(status) {
-				this.$command('my-orders', "status", status);
+				this.$command('my-orders', status);
 			},
 			tabSelect(num) {
 				this.cur = num;
@@ -84,14 +92,19 @@
 						break;
 				}
 //				console.log(num);
-			} 
+            this.loadOrders(this.statusType);
+//        this.myOrdersList=this.myOrdersList2
+			},
+			next() {
+		        this.$command('my-orders', this.statusType, this.currentPage + 1, this.pageCount);               
+		    } 
 		},
 		mounted() {
-//			this.$command('my-orders');
+			this.$command('my-orders');
 		},
 		created() {
 			this.nowCom = "card";
-			//console.log(this.myOrdersList[0],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+			console.log(this.myOrdersList,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
 		}
 
 	}

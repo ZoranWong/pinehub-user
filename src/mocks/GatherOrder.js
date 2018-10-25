@@ -4,7 +4,7 @@ export default class GatherOrder extends Mock {
 		super(application);
 		this.total = 12;
 	}
-	data(paid_start_time, paid_end_time, status, page = 1, search = null, limit=15) {
+	data(paid_start_time, paid_end_time, type, status, page = 1, search = null, limit=15) {
 		return {
 			"data|12": [{
 				"id|+1": 1,
