@@ -20,12 +20,12 @@
 				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
-		<!--<div id="controlbar">
+		<div id="controlbar">
 			<em v-if="!selectOrderToPrint" id="controlbar_select" @click="openPrintOrders">选择</em>
 			<em v-if="selectOrderToPrint" id="controlbar_cancel" @click="closePrintOrders">取消</em>
 			<div v-if="selectOrderToPrint" id="select_all_order" @click="printOrders">全选</div>
 			<i id="print_order" @click="printOrders"></i>
-		</div>-->
+		</div>
 	</div>
 </template>
 
