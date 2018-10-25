@@ -1,13 +1,21 @@
 {
 	"index": "/pages/index/main",
 	"my": "/pages/my/main",
-	"order": "/pages/my/order/main",
+	"myorder": "/pages/my/order/main",
 	"mypay": "/pages/my/pay/main",
 	"myfeedback": "/pages/my/feedback/main",
 	"myfeedbacksuccess": "/pages/my/feedback/success/main",
 	"mystore": "/pages/my/mystore/main",
+	"mystoreorder": "/pages/my/mystore/order/main",
 	"mystorestatus": "/pages/my/mystore/status/main",
 	"location": "/pages/my/location/main",
+	"share": "/pages/my/share/main",
+	
+	
+	
+	
+	"order": "/pages/order/main",
+	
 	"logs": "/pages/logs/main",
 	"couter": "/pages/counter/main",
 
@@ -20,6 +28,7 @@
 	"reserveShop" : "/pages/reserveShop/main",
 	"shopsubmitorder" :"/pages/reserveShop/submitOrder/main",
 	"orderself" :"/pages/reserveShop/orderSelf/main",
+
 
 	"activity" : "/pages/activity/main",
 	"activitySubmitOrder" :"/pages/activity/submitOrder/main",

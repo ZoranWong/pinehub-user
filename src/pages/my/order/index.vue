@@ -1,13 +1,14 @@
 <template>
 	<div id="myorder">
 		<mp-title :title="title"></mp-title>
+
 		<div id="tab_select">
-			<ul >
+			<ul>
 				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
 		<div id="tab_content">
-			<my-order :loadOrders="loadOrders" :status="statusType"></my-order>
+			<my-order :loadOrders="loadOrders" :status="statusType" :myorderList="myOrdersList"></my-order>
 			<!--<div v-for="(tab,index) in tabs" :class="{tab_content_now:cur == index}" :key="index" class="tab_content_item">
 				<my-order></my-order>
 			</div>-->
@@ -43,11 +44,9 @@
 				statusType: "all"
 			};
 		},
-		watch:{
-			test(nv,ov){
-				console.log('nvno',nv,ov);
+		watch: {
+			test(nv, ov) {
 				if(nv && nv !== ov) {
-					
 				}
 			}
 		},
@@ -56,8 +55,13 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
+			},
+			myOrdersList() {
+				return this.$store.getters['model.my.orders/lists'];
+			},
+			totalNum() {
+				return this.$store.getters['model.my.orders/totalNum'];
 			}
-			
 		},
 		methods: {
 			loadOrders(status) {
@@ -66,7 +70,7 @@
 			tabSelect(num) {
 				this.cur = num;
 				switch(num) {
-					case 0: 
+					case 0:
 						this.statusType = "all";
 						break;
 					case 1:
@@ -80,16 +84,16 @@
 						break;
 				}
 				console.log(num);
-			}
+			} 
+		},
+		mounted() {
+//			this.$command('my-orders');
 		},
 		created() {
 			this.nowCom = "card";
-			this.$command('my-orders');
-			this.test;
-			this.loadOrders("all"); 
-			console.log(this.loadOrders(),1234);
-			console.log('abc123',this.$store.getters['model.my.orders/list']);
+			//console.log(this.myOrdersList[0],"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
 		}
+
 	}
 </script>
 

@@ -17,21 +17,22 @@
         <div class="flag fl">
           已选产品
         </div>
-        <label class="empty fr" @click="clearAllCart">清空</label>
+        <label class="empty fr" @click="emptyCart" >清空</label>
       </div>
       <div class="add-box">
         <div class="add-merchandises color11" v-for="(item, itemIndex) in cartList" :key="itemIndex">
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-            <cart-control :list="list"  ></cart-control>
-          </div>
+
+            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" >    
+            </cart-control>
+          </div>  
+
         </div>
-      </div>
-       
+      </div>    
     </div> 
     <div class="mask" v-if="maskBg"></div>  
-   
   </div>
 </template>
 <script>
@@ -43,6 +44,28 @@
         maskBg:false,      
       }
 		},
+    props: {
+      addMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
+      reduceMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
+      emptyMerchandiseCart:{
+        default: null,
+        type: Function
+      },
+      addMerchandiseToCart:{
+        default: null,
+        type: Function
+      },
+      reduceMerchandiseToCart:{
+        default: null,
+        type: Function
+      }
+    },
     components:{
       'cart-control':CartControl,
     },
@@ -65,10 +88,17 @@
         this.toggleList =! this.toggleList;
         this.maskBg = ! this.maskBg;
       },
-      clearAllCart:function(){
-        console.log("清空")
-        this.data = []
+      emptyCart(storeId) {
+        this.emptyMerchandiseCart(storeId);
       },
+      addCart( id, count, shopId) {
+        this.addMerchandiseToCart( shopId, count, id);
+      },
+      reduceCart( id, count, shopId){
+       this.reduceMerchandiseToCart( shopId, count, id);
+
+      }
+      
     },
     
  
@@ -203,7 +233,10 @@
 }
 .sell-price{
   font-size:32rpx;
-  margin-left: 300rpx;
+  position:absolute;
+  bottom:0rpx;
+  right:300rpx;
+
 }
 .cartcontrol-warpper{
   width:143rpx;

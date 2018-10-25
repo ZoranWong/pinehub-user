@@ -6,6 +6,8 @@
     "pages/my/mystore/main",
     "pages/my/mystore/order/main",
     "pages/my/mystore/status/main",
+		"pages/my/mystore/pickedUpOrder/main",
+		"pages/my/mystore/distributeOrder/main",
     "pages/my/order/main",
     "pages/my/pay/main",
     "pages/my/share/main",

@@ -2,13 +2,13 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <location></location>
     <div class="goods" >
-        <menus></menus>
+        <menus @menusChange="menusChange"></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
-        :addMerchandiseToCart = "addCart"   ></m-list>
+        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"></cart>
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart" 
+    :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
 </template>
@@ -17,25 +17,23 @@
   import MpTitle from '@/components/MpTitle';
   import PopupDelivery from './PopupDelivery';
   import Swiper from '@/components/Swiper';
-  import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
-  import Menus from '@/components/Menus';
+  import Menus from './Menus';
   import Cart from '@/components/Cart'
   export default{
     data(){
       return{
         title:"预定商城",
-        listHeight: '758rpx',
         isShow:false,
         isShowCart:true,
         activityId: 0, 
-        screenHeight: ''
+        screenHeight: '',
+        categoryIndex:null,
       }
     },
     components: {
       'pop-delivery': PopupDelivery,
       'mp-swiper': Swiper,
-      'location': Location,
       'menus': Menus,
       'm-list': FoodsList,
       'cart': Cart,
@@ -44,16 +42,27 @@
    },
     computed: {
       merchandises(){
-        return this.$store.getters['model.activity.merchandises/list'];
+        return this.$store.getters['model.reserveShop.merchandises/list'];
       },
       currentPage () {
-       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
+       console.log(page, "当前页数")
        return page;
       },
+      categoryId() {
+        console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex),"分类index")
+        return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
+      }
+   },
+   watch: {
+    categoryId() {
+      this.loadMerchandises(1);
+      console.log(this.loadMerchandises(1),"ghgggghhht4ethgtg")
+    }
    },
     methods:{
       hdlShowCart:function(){
-        this.isShowCart =  true;
+        this.isShowCart =  false;
       },
       hdlShowPopup:function(){
         this.isShow = true;
@@ -62,27 +71,40 @@
       hdlHidePopup:function(){
         this.isShow = false;
       },
+      loadMerchandises(page) {
+        this.$command('GET_MERCHANDISE_LIST',
+         'model.reserveShop.merchandises/setList', 
+         'bookingMerchandises',
+          this.categoryId, 
+          page); 
+          console.log('加载',  this.categoryId, page)  
+      },
+       menusChange : function (index) {
+        this.index = index;
+        this.loadMerchandises(this.currentPage  + 1);
+      },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-          
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-        console.log( this.count, "987", this.merchandiseId)
+  
       },
-      reduceCart(shopId, count, merchandisesId){
+      reduceCart(shopId, count, merchandiseId){
+        console.log('ooooooooo');
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      },    
+      emptyCart(storeId){
+        this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
       }
     },
     created () {
-    
-    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
-   mounted(){ 
-     
-        // console.log('h123', this.merchandises.list)
 
-      
+
+   mounted(){        
+      this.$command('GET_CATEGORIES_TO_MEUN');
    }
 }
 
@@ -94,7 +116,10 @@
 .goods{
   display: flex;
   width:100%;
+  height: 100%;
   overflow: hidden;
   box-sizing: border-box;
+  height: 100%;
+  background: #f2f2f2;
 }
 </style>

@@ -4,8 +4,7 @@ export default class MyOrder extends Mock {
 		super(application);
 		this.total = 12;
 	}
-	data(page = 1, search = null, limit = 20) {
-		console.log('123321123321')
+	data(status, page = 1, search = null, limit = 20) {
 		return {
 			"data|12": [{
 				"id|+1": 1,
@@ -21,7 +20,8 @@ export default class MyOrder extends Mock {
 					"name": "包子",
 					"sell_price": 2,
 					"quality": 6,
-					"total_amount": 12
+					"total_amount": 12,
+					'main_image':"http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg"
 				}]
 			}],
 			"meta": {

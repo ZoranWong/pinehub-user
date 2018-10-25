@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div class="nearest-store bgff">
-        <div class="store-title text-color-11">{{store.name}}</div>
+		<div class="nearest-store bgff" >
+        <div class="store-title text-color-11">{{position.name}}</div>
         <div class="store-address text-color-75" >
-            {{store.address}}
+            {{position.address}}
         </div>
         <i class="i-icon arrow-right-icon"></i>
       </div>
@@ -11,14 +11,19 @@
 </template>
 <script>
 	export default{
-		data(){
-			return{
-				store:{
-          name:'合肥快乐松宁西路门店',
-          address:'安徽省合肥市高新区宁西路与玉兰大道交叉口',
-        }
-			}
-		}
+    props:{
+        position: {
+          default: null,
+          type: Object
+      }
+    },
+    computed:{
+       position(){
+        return this.$store.getters['model.nearestStore/location'];
+      }
+    },
+    mounted(){
+    }
 	}
 	
 </script>
@@ -42,7 +47,7 @@
 .arrow-right-icon{
   width:18rpx;
   height: 32rpx;
-  background-image: url(../../static/images/arrow-right-icon.png);
+  background-image: url(../../../static/images/arrow-right-icon.png);
   background-size: contain;
   position: absolute;
   top:28rpx;

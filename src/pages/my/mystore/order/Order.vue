@@ -1,97 +1,62 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
+		<div class="order_info" v-for="(gathitem,index) in gathOrders" :key="index">
+			<div class="order_info_header">
+				<ul>
+					<li>状态</li>
+					<li>销售指数</li>
+					<li>订单编号</li>
+					<li>订单金额</li>
+					<li>实付金额</li>
+				</ul>
+			</div>
+			<div class="order_info_nowstatus">
+				<ul>
+					<li>配送中</li>
+					<li>{{gathitem.sellPoint}}</li>
+					<li>{{gathitem.code}}</li>
+					<li>{{gathitem.totalAmount}}</li>
+					<li>{{gathitem.paymentAmount}}</li>
+				</ul>
 			</div>
 			<div class="order_info_glist">
 				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
+					<dd><img src="/static/images/ewm.png" /></dd>
 					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
+						<div class="order_info_glist_title">
+							<ul>
+								<li>产品名称</li>
+								<li>数量</li>
+								<li>单价</li>
+							</ul>
+						</div>
+						<div class="order_info_glist_list">
+							<ul>
+								<li v-for="(item,idx) in gathitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+							</ul>
+						</div>
 					</dt>
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
+				<em>{{gathitem.receiverAddress}}</em>
 			</div>
 			<div class="order_info_glist_total">
 				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
+					{{datetime}}
 				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
+				总计<i>￥{{gathitem.totalAmount}}</i>
 			</div>
-			<div class="order_info_btn">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
-			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
-		</div>
-		<div class="order_info">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
-					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
+			<div class="order_info_footer">
+				<div class="order_info_footer_left">
+					<ul>
+						<li>卡券使用:无</li>
+						<li>优惠活动:{{gathitem.reduceCost}}</li>
+					</ul>
 				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
-			</div>
-			<div class="order_info_btn">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
-			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
-		</div>
-		<div class="order_info">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>SN2018091900580910</em>
-				<span class="order_info_status">生产中</span>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/upload/cheese-cake.png" /></dd>
-					<dt>
-						<em>芝士蛋糕</em>
-						<span>单价 ￥20.00 数量 1 份</span>
-						<span>总价 ￥20.00</span>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>半岛路与长江西路交口锦江之星酒店2楼2121室</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					2018-10-01 18:00:00
+				<div class="order_info_footer_right">
+					实付:<em>￥{{gathitem.paymentAmount}}</em>
 				</div>
-				<em>共1件商品</em>实付<i>￥6.00</i>
-			</div>
-			<div class="order_info_btn">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
 			</div>
 			<i class="order_info_circle"></i>
 			<i class="order_info_circle right_circle"></i>
@@ -107,176 +72,251 @@
 
 			};
 		},
+		props:{
+			loadOrders: {
+				default:"",
+				type: Function
+			},
+			List:{
+				default:"",
+				type:Function 
+			},
+			gathOrders:{
+				default:"",
+				type:Function
+			},
+			datetime:"",
+			startTime:"",
+			endTime:"",
+			status:"",
+			types:""
+		},
 		methods: {
 
 		},
 		created() {
-
+			console.log(this.startTime,this.endTime,this.status)
+           this.loadOrders(this.startTime,this.endTime,this.types,this.status)
+		},
+		updated(){
+//			console.log(this.gathOrders[0])
+//          console.log(this.startTime,this.endTime,this.status)
 		}
 	}
 </script>
 
 <style scoped>
 	#tab_content_main {}
-	
+
 	.order_info {
 		background: #FFFFFF;
 		border-radius: 10rpx;
 		font-size: 34rpx;
 		font-weight: 300;
-		padding: 20rpx;
 		margin: 20rpx;
 		overflow: hidden;
 		position: relative;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-	
-	.order_info_sn {
+
+	.order_info_header {
 		font-size: 32rpx;
 		line-height: 68rpx;
 		border-bottom: 1rpx solid #f3f3f3;
 		overflow: hidden;
 		font-weight: 400;
 		margin-bottom: 20rpx;
-		/*background: green;*/
+		background: #FECE00;
 	}
-	
-	.order_info_sn i {
+
+	.order_info_header ul li {
 		display: inline-block;
 		color: #111111;
-		font-size: 34rpx;
-		padding-right: 20rpx;
+		text-align: center;
+		float: left;
+		width: 21%;
 	}
-	
-	.order_info_sn em {
-		display: inline-block;
+
+	.order_info_header ul li:nth-child(1) {
+		width: 16%;
 	}
-	
+
+	.order_info_nowstatus {
+		font-size: 28rpx;
+		font-weight: normal;
+		overflow: hidden;
+	}
+
+	.order_info_nowstatus ul li {
+		float: left;
+		width: 20%;
+		text-align: center;
+	}
+
+	.order_info_nowstatus ul li:nth-child(1) {
+		/* background: #525252; */
+		width: 18%;
+		text-indent: 10rpx;
+	}
+
+	.order_info_nowstatus ul li:nth-child(2) {
+		/* background: #005252; */
+		width: 16%;
+	}
+
+	.order_info_nowstatus ul li:nth-child(3) {
+		/* background: #520052; */
+		width: 28%;
+	}
+
+	.order_info_nowstatus ul li:nth-child(4) {
+		/* background: #005252; */
+		width: 16%;
+		margin-right: 15rpx;
+	}
+
+	.order_info_nowstatus ul li:nth-child(5) {
+		/* background: #520052; */
+		width: 18%;
+	}
+
 	.order_info_status {
 		font-weight: 300;
 		color: #FECE00;
 		float: right;
 	}
-	
+
 	.order_info_ads {
 		font-size: 28rpx;
-		line-height: 40rpx;
-		font-weight: 400;
-		margin-bottom: 10rpx;
+		line-height: normal;
+		font-weight: normal;
 	}
-	
-	.order_info_ads i {
-		display: inline-block;
-		font-size: 30rpx;
-		padding-right: 20rpx;
-	}
-	
+
 	.order_info_ads em {
 		display: inline-block;
-		margin-top: 20rpx;
+		margin: 0 20rpx 10rpx;
 	}
-	
+
 	.order_info_glist {
 		overflow: hidden;
 		clear: both;
-		margin-top: 20rpx;
+		margin: 20rpx;
 	}
-	
+
 	.order_info_glist dl {}
-	
+
 	.order_info_glist dl dd {
 		display: inline-block;
-		width: 140rpx;
-		height: 140rpx;
-		margin-right: 20rpx;
+		width: 160rpx;
+		height: 160rpx;
 		float: left;
 	}
-	
+
 	.order_info_glist dl dd img {
 		display: block;
-		width: 140rpx;
-		height: 140rpx;
+		width: 160rpx;
+		height: 160rpx;
 		background: #FAFAFA;
 	}
-	
+
 	.order_info_glist dl dt {
 		display: inline-block;
-		width: 516rpx;
-		height: 120rpx;
+		width: 490rpx;
+		float: right;
+		font-size: 30rpx;
+	}
+
+	.order_info_glist_title {
+		line-height: normal;
+		overflow: hidden;
+	}
+
+	.order_info_glist_title ul li {
+		width: 33.33%;
 		float: left;
+		text-align: center;
 	}
-	
-	.order_info_glist dl dt em {
-		font-size: 36rpx;
-		font-weight: 300;
-		line-height: 70rpx;
-		color: #525252;
+
+	.order_info_glist_title ul li:nth-child(1) {
+		text-align: left;
 	}
-	
-	.order_info_glist dl dt span {
-		display: block;
+
+	.order_info_glist_list {
+		overflow: hidden;
 		font-size: 28rpx;
-		font-weight: 300;
-		color: #828282;
-		line-height: 35rpx;
 	}
-	
+
+	.order_info_glist_list ul li {
+		line-height: normal;
+	}
+
+	.order_info_glist_list ul li em {
+		width: 33.33%;
+		float: left;
+		text-align: center;
+	}
+
+	.order_info_glist_list ul li em:nth-child(1) {
+		text-align: left;
+	}
+
 	.order_info_glist_total {
 		text-align: right;
-		font-size: 28rpx;
+		font-size: 32rpx;
 		line-height: 46rpx;
+		margin: 0 20rpx;
+
 	}
-	
+
 	.order_info_glist_total i {
 		display: inline-block;
 		color: #FECE00;
 		padding-right: 10rpx;
 	}
-	
-	.order_info_glist_total em {
-		display: inline-block;
-		padding-right: 10rpx;
-	}
-	
+
 	.order_info_glist_date {
 		display: inline-block;
 		float: left;
 	}
-	
-	.order_info_btn {
-		margin-top: 20rpx;
+
+	.order_info_footer {
+		margin: 20rpx 20rpx 10rpx;
 		padding-top: 20rpx;
 		border-top: 1rpx dashed #f3f3f3;
+		height: 88rpx;
+		line-height: 88rpx;
 	}
-	
-	.order_info_btn i {
-		font-size: 28rpx;
+
+	.order_info_footer_left {
+		float: left;
+	}
+
+	.order_info_footer_left ul li {
+		line-height: 44rpx;
+		font-size: 30rpx;
+	}
+
+	.order_info_footer_right {
 		float: right;
-		background: #FECE00;
-		border: 1rpx solid #FECE00;
-		color: #111111;
-		padding: 8rpx 15rpx;
-		margin-left: 20rpx;
-		border-radius: 10rpx;
 	}
-	
-	.order_info_btn i.delete {
-		background: #FFFFFF;
-		border: 1rpx solid #CCCCCC;
-		color: #525252;
+
+	.order_info_footer_right em {
+		display: inline-block;
+		color: #FECE00;
 	}
-	
+
+
 	.order_info_circle {
 		position: absolute;
 		background: #FAFAFA;
 		width: 50rpx;
 		height: 50rpx;
 		border-radius: 50%;
-		bottom: 72rpx;
+		bottom: 94rpx;
 		right: -25rpx;
 		z-index: 1;
 	}
-	
+
 	.order_info_circle.right_circle {
 		left: -25rpx;
 	}

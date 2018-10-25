@@ -7,8 +7,8 @@ export default class AddMerchandiseCommand extends Command {
   async handle(merchandiseId, count, shopId = null) {
      // 与服务器打交道，获取数据，返回数据
     let service = this.service('http.merchandises');
-    let [ id, name, quality,sellPrice, message, totalAmount]= await service.addMerchandises( merchandiseId, shopId, count );
-    console.log(id,  name, quality, message, totalAmount, merchandiseId, shopId);
+    let [ id, name, quality,sellPrice, message, totalAmount]= await service.addMerchandises(merchandiseId, shopId, count );
+    //console.log(id,  name, quality, message, totalAmount, merchandiseId, shopId);
     if(typeof id !== 'undefined') {
       this.store().dispatch('model.shoppingCarts/changeCart', {
         id: id,
@@ -20,7 +20,7 @@ export default class AddMerchandiseCommand extends Command {
         shopId:shopId
       })
     }else{
-      console.log(id)
+      //console.log(id)
       this.service('popup').toast(message, 'none')
     }
 

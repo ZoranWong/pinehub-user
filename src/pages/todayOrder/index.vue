@@ -1,36 +1,39 @@
+
 <template>
   <div class="body">
     <mp-title :title="title"></mp-title>
      <mp-swiper></mp-swiper>
-    <location></location>
+    <location :position="position" ></location>
     <div class="goods" >
-      <menus @menusChange="menusChange"></menus>
-      <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-      :addMerchandiseToCart = "addCart"  ></m-list>
+        <menus @menusChange="menusChange"></menus>
+        <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
+        :addMerchandiseToCart = "addCart"  ></m-list>
     </div>
-    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup"></popup>
-    <cart  v-if="isShowCart"></cart>
+    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" ></cart>
+    <popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
+    
   </div>
 </template>
 
 <script>
   import MpTitle from '@/components/MpTitle';
-  import Popup from '@/pages/todayOrder/Popup';
   import Swiper from '@/components/Swiper';
-  import Location from '@/components/Location';
   import FoodsList from '@/components/FoodsList';
-  import Menus from '@/components/Menus';
   import Cart from '@/components/Cart';
+  import Location from './Location';
+  import Menus from './Menus';
+  import Popup from './Popup';
+
 
   export default{
     data(){
       return{
         isShow:false,
         isShowCart:true,
-        listHeight: '718rpx',
         listwidth:'530rpx',
         title:"当日下单",
-        screenHeight: ''
+        screenHeight: '',
+        categoryIndex:null,
       }
     },
     components: {
@@ -44,12 +47,24 @@
    },
     computed: {
       merchandises(){
-        return this.$store.getters['model.activity.merchandises/list'];
+        return this.$store.getters['model.today.merchandises/list'];
       },
       currentPage () {
-       let page = this.$store.state['model.activity.merchandises'].currentPage;
+       let page = this.$store.state['model.today.merchandises'].currentPage;
+       console.log(page, "当前页数")
        return page;
       },
+      storeCategoryId(){
+        console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
+        return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
+      }
+     
+    },
+    watch:{
+     storeCategoryId(){
+      this.loadMerchandises(1);
+      console.log(this.loadMerchandises(1),"loadMerchandises")
+     }
     },
     methods:{
       hdlShowCart:function(){
@@ -61,30 +76,41 @@
        hdlHidePopup:function(){
         this.isShow = false;
       },
+      loadMerchandises(page){
+        this.$command('GET_MERCHANDISE_LIST',
+        'model.today.merchandises/setList',
+        'today', 
+        this.storeId, 
+        this.categoryId,
+        page);
+        console.log('加载',  this.categoryId)  
+      },
       menusChange : function (index) {
-        console.log(index);
+        this.index = index;
+        this.loadMerchandises(this.currentPage  + 1);
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+        this.loadMerchandises(this.currentPage  + 1);   
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-        console.log( this.count, "987", this.merchandiseId)
+      }, 
+      reduceCart(shopId, count, merchandisesId){
+        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },
-
-      // reduceCart(shopId, count, merchandisesId){
-      //   this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-      // }
-
+      emptyCart(storeId){
+        this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+      }
   },
    created(){
-      // this.$command('GET_MERCHANDISE_LIST','today', 1, 1);
-      // console.log('created mm');
-      console.log('store', this.$store);
-    this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+      this.$command('GET_NEAREST_STORE');
 
    },
-
+   mounted(){
+      this.$command('GET_STORE_CATEGORIES_TO_MEUN');
+    
+   }
 }
 
 
@@ -97,6 +123,7 @@
   width:100%;
   overflow: hidden;
   box-sizing: border-box;
-  z-index:
+  height: 100%;
+  background: #f2f2f2;
 }
 </style>

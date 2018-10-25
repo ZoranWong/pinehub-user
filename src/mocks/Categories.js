@@ -3,11 +3,11 @@ export default class Categories extends Mock {
   constructor(application) {
     super(application);
   }
-  data(page = 1, search = null, limit = 15) {
+  data(page = 1,limit = 15) {
     return {
       "data|10":[{
         "id|+1": 1,
-        "name": this.mockMethod('name'),
+        "name": this.mockMethod('cword',2, 4),
       }],
       "meta": {
         "pagination":{
@@ -20,5 +20,18 @@ export default class Categories extends Mock {
          }
       }
     };
+  }
+
+  name() {
+    return [
+      '分类1', 
+      '分类2',
+      '分类3',
+      '分类4',
+      '分类5', 
+      '分类6',
+      '分类7',
+      '分类8',
+    ];
   }
 }

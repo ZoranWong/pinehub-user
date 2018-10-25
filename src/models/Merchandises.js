@@ -5,11 +5,11 @@ export default class Merchandises extends Model{
   constructor(application) {
     super(application);
     this.transformer = MerchandiseTransformer;
-  }
+  }  //foodlist的model层
   computed() {
     return _.extend(super.computed(), {
       list(state){
-        console.log('merchandises', this,999999999);
+        // console.log( state.list[state.currentCategoryIndex],'merchandises-models-001');
         return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
       },
       currentCategoryIndex(state) {
@@ -28,7 +28,7 @@ export default class Merchandises extends Model{
     this.addEventListener('setCurrentCategory', function({categoryIndex}) {
     		this.state.currentCategoryIndex = categoryIndex;
     });
-
+    console.log(this.state ,'merchandises-models-002')
 		this.addEventListener('setList', ({
 			list,
 			currentPage,
@@ -40,6 +40,7 @@ export default class Merchandises extends Model{
 			let startIndex = (currentPage - 1) * pageCount + 1;
       if(!this.state.list[this.state.currentCategoryIndex]) {
         this.state.list[this.state.currentCategoryIndex]  = [];
+         console.log(this.state,'merchandises-models-003')
       }
 			this.state.list[this.state.currentCategoryIndex][currentPage - 1] = this.transform(list, this.transformer, startIndex);
 			if(totalNum !== null)
@@ -50,6 +51,7 @@ export default class Merchandises extends Model{
 					this.state.pageCount = pageCount;
 				}
 			}
+      console.log(this.state,'merchandises-models-004')
 		});
   }
 }
