@@ -17,7 +17,7 @@
               <span>RMB</span>
             </div>
             <div class="cartcontrol-warpper ">
-              <cart-control :list="list" ></cart-control>
+              <cart-control   @addCart = "addCart"   @reduceCart ="reduceCart"  :merchandiseId = "item.id" :shopId="item.shopId"  ></cart-control>
             </div>
           </div> 
         </div>
@@ -44,6 +44,14 @@
       list: {
         default: function() {return []},
         type: Array
+      },
+      addMerchandiseToCart:{
+          default: null,
+          type: Function
+      },
+      reduceMerchandiseToCart:{
+          default: null,
+          type: Function
       },
       widthPic:{
         default:'100%',
@@ -79,6 +87,12 @@
       scroll(e) {
         console.log(e)
       },
+      addCart( id, count, shopId) {
+          this.addMerchandiseToCart(shopId, count, id);
+      },
+      reduceCart(id, count, shopId){        
+          this.reduceMerchandiseToCart(shopId, count, id);
+      }
     },
     watch:{
       width:function(val) {

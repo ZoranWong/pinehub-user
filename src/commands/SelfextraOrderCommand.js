@@ -5,11 +5,9 @@ export default class SelfextraOrderCommand extends Command {
 	}
 	//
 	async handle(stratTime, endTime, page = 1, limit=15) {
-		console.log('c-start++++++++++++++');
 //		let event = args.shift();
 	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.selfextraOrder').list(stratTime, endTime, page);
-	    console.log('com-good',[ list, totalNum, currentPage, totalPage]);
-		console.log('c-end++++++++++++++');
+	    //console.log('com-good',[ list, totalNum, currentPage, totalPage]);
 		this.store().dispatch({
 			type: 'model.extra.orders/extraOrders',
 			list: list,

@@ -29,10 +29,12 @@ export default class DistributeOrder {
 					this.status = "";
 					break;
 		}
+    this.buildNum=distributeOrders['build_num'];
+    this.roomNum=distributeOrders['room_num'];
     this.receiverAddress = distributeOrders['receiver_address'];
     this.paymentAmount = distributeOrders['payment_amount'];
     this.totalAmount = distributeOrders['total_amount'].toFixed(2);
-    this.reveiverMobile = distributeOrders['reveiver_mobile'];
+    this.reveiverMobile = distributeOrders['receiver_mobile'];
     this.createdAt = distributeOrders['created_at'];
     this.orderItems =distributeOrders['order_item_merchandises'];
     for(var i in this.orderItems){

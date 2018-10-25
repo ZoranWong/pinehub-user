@@ -31,10 +31,10 @@ export default class GatherOrder extends Model {
 	listeners() {
 		this.addEventListener('gathOrders', function({list, totalNum, currentPage, totalPage,pageCount}) {
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log('addListener');
+			//console.log('addListener');
 			this.state.gathOrders = this.transform(list, this.transformer, startIndex);
 			this.state.totalNum = totalNum;
-			console.log('statestatestatestatestate',this);
+			//console.log('statestatestatestatestate',this);
 		});
 	}
 }

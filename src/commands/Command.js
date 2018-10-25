@@ -9,6 +9,7 @@ export default class Command {
   static commandName() {
     return '';
   }
+  
   service(name) {
     return this.$application.instances[name];
   }

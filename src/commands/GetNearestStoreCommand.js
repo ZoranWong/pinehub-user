@@ -15,7 +15,6 @@ export default class GetNearestStoreCommand extends Command {
         id:id,
         name:name,
         address:address,
-       
     });
     
 

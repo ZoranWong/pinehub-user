@@ -10,15 +10,15 @@
 				 <input type="text" class="big-input">
 				</p>
 			</li>
-			<li class="li-item bgff">
+			<!-- <li class="li-item bgff">
 				配送联系电话 
 				<p class="details-item tel-num">
 				16868686868	
 				</p>
-			</li>
+			</li> -->
 		</ul>
 	    <!-- 支付内容的显示组件 -->
-		<payment :next="next" :list="merchandises"  :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart"  ></payment>
+		<payment :next="next"  :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart"  ></payment>
 	</div>
 </template>
 <script>
@@ -42,6 +42,7 @@
 			merchandises(){
         		return this.$store.getters['model.activity.merchandises/list'];
       		},
+
 		},
 		methods:{
 			radioChange (e) {
@@ -55,7 +56,7 @@
 		     },
     		addCart(shopId, count,  merchandiseId){
 		        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-		  
+
 		    },
 		    reduceCart(shopId, count, merchandiseId){
 		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
@@ -63,6 +64,8 @@
 		},
 		mounted(){
 			this.$command('MYINFO');
+			console.log('mounted order component');
+			this.$command('FILL_CART_FROM_CACHE');
       		              
 		}
 	}
@@ -85,8 +88,6 @@
 	display: inline-block;
 	height: 80rpx;
 	margin-left: 100rpx;
-	vertical-align: middle;
-	
 }
 .Distribution-details{
 	margin-bottom: 20rpx;
@@ -98,12 +99,7 @@
   	display: inline-block;
   	vertical-align:middle;
 }
-.big-input{
-	width: 460rpx;
-	height: 40rpx; 
-  	border-radius: 10rpx;
-  	border:2rpx solid #cccccc;
-}
+
 .li-item .tel-num{
 	margin-left: 44rpx;
 }

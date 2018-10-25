@@ -5,7 +5,6 @@ export default class TicketsService extends Service {
 	}
     //获取优惠券列表
 	async list(status = "all", page, limit = 15){
-		console.log("农夫弄")
 		let totalNum = 0;
 		let totalPage = 0;
 		let currentPage = 0;
@@ -25,7 +24,6 @@ export default class TicketsService extends Service {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log("上看看吧", tickets)
 		return [tickets, totalNum, currentPage, totalPage];
 		
 	}	

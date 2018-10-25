@@ -60,6 +60,13 @@ export default {
 .width710{
   width:710rpx;
 }
+.big-input{
+  width: 460rpx;
+  height: 40rpx; 
+  border-radius: 10rpx;
+  border:2rpx solid #cccccc;
+
+}
 /*样色样式*/
 
 .bgff{

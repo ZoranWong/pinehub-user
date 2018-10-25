@@ -118,7 +118,6 @@
 			} 
 		},
 		created() {
-			console.log(this.ticketsList,"发你你你")
 			this.$command('GET_TICKETS');
 		}
 	}

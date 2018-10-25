@@ -12,14 +12,14 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item store-orders" v-if="cur === 0">
-				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
+				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :onloadSales="onloadSales"></sales>
 				<!--<store @showToast="showToastFunction"></store>-->
 			</div>
 			<div class="tab_content_item purchase-orders" v-if="cur === 1">
 				<!-- <purchase></purchase> -->
 			</div>
 			<div class="tab_content_item sales-orders" v-if="cur === 2">
-				<sales></sales>
+				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -35,6 +35,7 @@
 	import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
 	import MyStoreStatusPurchaseCommand from '@/commands/MyStoreStatusPurchaseCommand';
+	import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
 	export default {
 		components: {
 			"mp-title": MpTitle,
@@ -71,8 +72,19 @@
 			},
 			purchaseList() {
 				return this.$store.getters['model.my.store.status.purchase/purchaseList'];
+			},
+			salesInfo() {
+				return this.$store.getters['model.my.store.status.sales/salesInfo'];
+			},
+			sellTop() {
+				return this.$store.getters['model.my.store.status.sales/sellTop'];
+			},
+			merchandiseTop() {
+				return this.$store.getters['model.my.store.status.sales/merchandiseTop'];
+			},
+			statics() {
+				return this.$store.getters['model.my.store.status.sales/statics'];
 			}
-
 		},
 		methods: {
 			tabSelect(num) {
@@ -89,11 +101,15 @@
 			},
 			onloadPurchase(status) {
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
+			},
+			onloadSales(status) {
+				this.$command(MyStoreStatusSalesCommand.commandName(), status);
 			}
 		},
 		created() {
 			console.log('dd');
-			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week')
+			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
+			this.$command(MyStoreStatusSalesCommand.commandName(), 'week')
 		}
 	}
 </script>

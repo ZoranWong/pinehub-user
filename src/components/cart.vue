@@ -24,7 +24,8 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-          <cart-control  @addCart = "addCart"  :merchandiseId = " item['merchandiseId']" :shopId="item.shopId" @reduceCart ="reduceCart" ></cart-control>
+            <cart-control  @addCart = "addCart"  :merchandiseId = " item['merchandiseId']" :shopId="item.shopId" @reduceCart ="reduceCart" >
+            </cart-control>
           </div>  
 
         </div>
@@ -55,14 +56,7 @@
         default: null,
         type: Function
       },
-      addMerchandiseToCart:{
-        default: null,
-        type: Function
-      },
-      reduceMerchandiseToCart:{
-        default: null,
-        type: Function
-      }
+ 
     },
     components:{
       'cart-control':CartControl,
@@ -71,6 +65,7 @@
       cartList(){
         return this.$store.getters['model.shoppingCarts/list'];
       },
+      
       totalAmount(){
         return this.$store.getters['model.shoppingCarts/totalAmount'];
       },
@@ -99,6 +94,7 @@
        this.reduceMerchandiseToCart( shopId, count, id);
 
       }
+
       
     },
     

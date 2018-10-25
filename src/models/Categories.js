@@ -14,6 +14,7 @@ export default class Categories extends Model{
       },
       categoryId(state) {
         let list = this.state.currentPage ? _.flatten(state.list) : [];
+
         return (i) =>{
           for(var i = 0; i < list.length; i++){
             let category = list[i];

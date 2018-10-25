@@ -22,6 +22,15 @@ export default class NearestStore extends Model {
 			
 		};
 	}
+	async cache(){
+    //console.log(this.state);
+		return await this.services('mp.storage').set('location', this.state);
+	}
+  
+ 	async getCache() {
+    	return await this.services('mp.storage').get('location');
+    //return {};
+  	}
 
 	listeners() {
 		super.listeners();
@@ -31,7 +40,18 @@ export default class NearestStore extends Model {
 			this.state.location.address = address;
 			
 		});
-		
-	  
+		this.cache();
+	    // console.log(this.cache(),"你当时")
+
+
+	    //获取当日下单的配送的地址
+	   //  this.addEventListener('getAddress', async  function({shopId}) {    
+    //   console.log('get from cache'); 
+    //   let data = await this.getCache();
+    //   console.log('cache data ', data); 
+    //   data = data ? data : {};
+    //   _.extend(this.state, data);
+    //   this.state.shopId = shopId;
+    // })
 	}
 }

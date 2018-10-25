@@ -3,18 +3,22 @@
 		<div class="li-item bgff">
 			微信支付<i class="select-icon"></i>
 		</div>
-		<div class="product bgff clearfix">
-			<img src="../../static/upload/cheese-cake.png">
-			<div class="product-details">芝士蛋糕 
+		
+
+		<div class="product bgff clearfix" v-for="(item, itemIndex) in cartList" :key="itemIndex">
+			<img :src ="item.thumbImage">
+			<div class="product-details">{{item.name}}
 				<p class="clearfix">
-					<span class="amount">x 1</span>
-					<span class="sell-price">¥20.00</span>
+					<span class="amount">x {{item.count}}</span>
+					<span class="sell-price">¥{{item.sellPrice}}</span>
 				</p>
 				<div class="cartcontrol-warpper">
-					<cart-control @addCart = "addCart"  @reduceCart= "reduceCart" ></cart-control>
+					<cart-control @addCart = "addCart"   @reduceCart ="reduceCart" :merchandiseId = " item['merchandiseId']" :shopId="item.shopId"></cart-control>
             	</div>
 			</div>
 		</div>
+
+
 		<div class="li-item bgff coupon"  @click="jump('coupon')">
 			优惠券 <span class="coupon-tips">1张可用</span>
 			<label for="" class="fr">
@@ -22,14 +26,14 @@
 			</label>
 		</div>
 		<div class="count-box">
-			<p>合计<span class="fr">¥20.00</span></p>
+			<p>合计<span class="fr">¥{{totalAmount}}</span></p>
 			<div class="tips">
 				<i class="warn-icon"></i>
 				食品现制现售，不适合退货服务
 			</div>
 		</div>
 		<div class="pay-bottom">
-			实付<span class="total-price">¥20.00</span>
+			实付<span class="total-price">¥{{totalAmount}}</span>
           	<label class="choose fr" >去支付
           		<i class="i-icon next-icon"></i>
           	</label>
@@ -62,10 +66,23 @@
 		        type: Function
 		    },
     	},
+    	computed:{
+    		
+    		cartList(){
+    			console.log("获取购物车数据",this.$store.getters)
+        		return this.$store.getters['model.shoppingCarts/list'];
+      		},
+     
+		    totalAmount(){
+		        return this.$store.getters['model.shoppingCarts/totalAmount'];
+		    },
+		    totalCount(){
+		        return this.$store.getters['model.shoppingCarts/totalCount'];
+		    }
+    	},
     	methods:{
 			jump(router){
-				console.log(4)
-				this.$command('router',router,'jump');
+				this.$command('router',router,'push');
 			},
 			addCart( id, count, shopId) {
 		        this.addMerchandiseToCart(shopId, count, id);
