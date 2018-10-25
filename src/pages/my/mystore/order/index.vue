@@ -42,11 +42,14 @@
 				title: "订单汇总",
 				navName: "my",
 				tabs: [{
-					name: "生产中"
+					name: "全部",
+					statname:"all"
 				}, {
-					name: "配送中"
+					name: "配送中",
+					statname:"send"
 				}, {
-					name: "已完成"
+					name: "已完成",
+					statname:"completed"
 				}],
 				cur: 0,
 //				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
@@ -76,7 +79,7 @@
 			},
 			tabSelect(num) {
 				this.cur = num;
-				this.status=this.tabs[num].name
+				this.status=this.tabs[num].statname
 				console.log(this.status)
 			},
 			getSelectDate(e) {

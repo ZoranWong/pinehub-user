@@ -101,8 +101,6 @@
     created () {
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
-
-
    mounted(){        
       this.$command('GET_CATEGORIES_TO_MEUN');
    }
