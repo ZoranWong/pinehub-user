@@ -11,6 +11,7 @@ import ScanCodeService from '../services/mp/ScanCodeService';
 import MyStoreScanCodeService from '../services/http/MyStoreScanCodeService';
 import PopupService from '../services/mp/PopupService';
 import LocationSearchService from '../services/mp/LocationSearchService';
+import StorageService from '../services/mp/StorageService';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
 		super(app);
@@ -46,6 +47,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('scanCodeService', MyStoreScanCodeService);
 		this.app.register('popup',PopupService);
 		this.app.register('location',LocationSearchService);
+		this.app.register('mp.storage', StorageService);
 	}
 	boot() {
 

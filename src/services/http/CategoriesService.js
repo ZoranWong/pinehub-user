@@ -5,7 +5,6 @@ export default class CategoriesService extends Service {
 	}
 
 	async categories(page, limit = 15){
-		console.log("hsaidsihd00000")
 		let categories = null;
 		let totalNum = 0;
 		let currentPage = 0;

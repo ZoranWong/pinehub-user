@@ -8,8 +8,9 @@ export default class StorageService extends Service {
     return new Promise((resole)  => {
       wx.setStorage({
       key: key, 
-      value: value, 
+      data: value, 
       success:function(res){
+        console.log('set cache data', wx.getStorageSync(key));
         resole(res);
       }});
     });
@@ -19,7 +20,7 @@ export default class StorageService extends Service {
       wx.getStorage({
       key: key, 
       success:function(res){
-        resole(res);
+        resole(res.data);
       }});
     });
   }

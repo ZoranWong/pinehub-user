@@ -9,7 +9,6 @@ export default class Merchandise {
     this.sellCount = merchandise['sell_count'];
     this.tags = merchandise['tags'];
     this.describe = merchandise['describe'];
-    this.newImage = merchandise['new_image'];
     this.shopId  = merchandise['shop_id'];
   }
 

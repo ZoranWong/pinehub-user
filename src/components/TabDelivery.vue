@@ -30,12 +30,12 @@
     				</picker>
 				</p>
 			</li>
-			<li class="li-item bgff">
+			<!-- <li class="li-item bgff">
 				配送联系电话 
 				<p class="details-item tel-num">
 				16868686868	
 				</p>
-			</li>
+			</li> -->
 		</ul>
 		<ul class="Distribution-details bgff" v-else-if="cur === 1">
 			
@@ -45,12 +45,12 @@
 				默认地址
 				</p>
 			</li>
-			<li class="li-item bgff">
+			<!-- <li class="li-item bgff">
 				配送联系电话 
 				<p class="details-item tel-num">
 				16868686868	
 				</p>
-			</li>
+			</li> -->
 		</ul>
 
 	</div>	

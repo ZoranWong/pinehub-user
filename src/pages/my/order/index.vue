@@ -83,7 +83,7 @@
 						this.statusType = "all";
 						break;
 				}
-				console.log(num);
+//				console.log(num);
 			} 
 		},
 		mounted() {

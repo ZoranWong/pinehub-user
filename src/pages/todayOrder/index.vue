@@ -7,9 +7,10 @@
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
         <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart"  ></m-list>
+        :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" ></cart>
+    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
+        :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
     <popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
     
   </div>
@@ -28,7 +29,7 @@
   export default{
     data(){
       return{
-        isShow:false,
+        isShow:true,
         isShowCart:true,
         listwidth:'530rpx',
         title:"当日下单",
@@ -67,6 +68,9 @@
      }
     },
     methods:{
+      jump(router){
+        this.$command('router',router,'push');
+      },
       hdlShowCart:function(){
         this.isShowCart = true;
       },
@@ -82,6 +86,7 @@
         'today', 
         this.storeId, 
         this.categoryId,
+        this.merchandiseId,
         page);
         console.log('加载',  this.categoryId)  
       },
@@ -95,7 +100,7 @@
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
       }, 
-      reduceCart(shopId, count, merchandisesId){
+      reduceCart(shopId, count, merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },
       emptyCart(storeId){

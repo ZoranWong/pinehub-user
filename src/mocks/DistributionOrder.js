@@ -15,6 +15,8 @@ export default class DistributionOrder extends Mock {
 				"total_amount": 12,
 				"payment_amount": 12,
 				"created_at": "2018-10-11 15:43:02",
+				"build_num":"1#",
+				"room_num":"912",
 				"order_item_merchandises": [{
 					"name": "包子",
 					"sell_price|1-10": 2,

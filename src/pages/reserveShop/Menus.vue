@@ -16,7 +16,7 @@
 
 
 <script>
-   import FoodsList from '@/components/FoodsList';
+  import FoodsList from '@/components/FoodsList';
   export default {
     components : {
        'm-list': FoodsList,

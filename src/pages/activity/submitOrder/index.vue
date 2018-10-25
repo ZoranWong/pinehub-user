@@ -16,12 +16,12 @@
 			 		<input type="text" placeholder="默认站点营业时间" readonly="readonly" disabled="" >
 				</p>
 			</li>
-			<li class="li-item bgff">
+			<!-- <li class="li-item bgff">
 				站点联系电话 
 				<p class="details-item tel-num">
 				16868686868	
 				</p>
-			</li>
+			</li> -->
 		</ul>
 
 	    <!-- 支付内容的显示组件 -->
@@ -73,6 +73,10 @@
 		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
 		    },  
     		
+		},
+		mounted(){
+			this.$command('MYINFO');
+			this.$command('FILL_CART_FROM_CACHE');
 		}
 	}
 </script>

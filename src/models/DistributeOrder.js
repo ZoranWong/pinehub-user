@@ -30,8 +30,9 @@ export default class DistributeOrder extends Model {
 	//监听数据
 	listeners() {
 		this.addEventListener('disOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
+			console.log('0000011111');
 			let startIndex = (currentPage - 1) * pageCount + 1;
-			console.log(currentPage, pageCount, this.transformer);
+			console.log(currentPage, pageCount, this.transformer, 'dfasdfasdfsdafasdf');
 			state.disOrders = this.transform(list, this.transformer, startIndex);
 			state.totalNum = totalNum;
 		});

@@ -7,7 +7,7 @@
 				<div class="popup-title">
 				历史站点选择
 			    </div>
-				<div class="place-item"  v-for="(item,index ) in places" :key="index"  @click="jump('shopsubmitorder')">
+				<div class="place-item"  v-for="(item,index ) in places" :key="index"  @click="jump('activitySubmitOrder')">
 					<i class="i-icon yellow-right-arrow" ></i>
 					{{item.name}}
 				</div>
@@ -42,7 +42,7 @@
 				this.$emit('hdlHidePopup')
 			},
 			jump(router){
-				this.$command('router',router,'jump');
+				this.$command('router',router,'push');
 			}
 		}
 

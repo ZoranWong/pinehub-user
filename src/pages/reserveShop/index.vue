@@ -7,7 +7,7 @@
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
         :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart" 
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"  
     :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
@@ -46,18 +46,18 @@
       },
       currentPage () {
        let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
-       console.log(page, "当前页数")
+       //console.log(page, "当前页数")
        return page;
       },
       categoryId() {
-        console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex),"分类index")
+        //console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex),"分类index")
         return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
       }
    },
    watch: {
     categoryId() {
       this.loadMerchandises(1);
-      console.log(this.loadMerchandises(1),"ghgggghhht4ethgtg")
+      //console.log(this.loadMerchandises(1),"ghgggghhht4ethgtg")
     }
    },
     methods:{
@@ -84,7 +84,7 @@
         this.loadMerchandises(this.currentPage  + 1);
       },
       next() {
-      this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
+        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -101,8 +101,6 @@
     created () {
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
-
-
    mounted(){        
       this.$command('GET_CATEGORIES_TO_MEUN');
    }
