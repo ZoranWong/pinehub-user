@@ -82,6 +82,16 @@
 		methods: {
 
 		},
+		watch:{
+			startTime(v){
+//				console.log(v,"aaaaaaaaaa")
+				this.startTime=v
+			},
+			endTime(n){
+				this.endTime=n
+//				console.log(n,"aaaaaaaaaa")
+			}
+		},
 		created() {
          console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")
            this.loadOrders(this.startTime,this.endTime)

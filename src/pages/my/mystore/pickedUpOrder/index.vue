@@ -95,6 +95,8 @@
 				this.index= e.mp.detail.value
 				this.begHour=this.arr[this.index].split("-")[0];
 			    this.endHour=this.arr[this.index].split("-")[1];
+			    this.startTime=this.selectDate+" "+this.begHour+":00"
+			    this.endTime=this.selectDate+" "+this.endHour+":00"
 			}
 		},
 		created() {
