@@ -5,7 +5,8 @@
 			<i id="location_search_button" @click="searchLocation">查询</i>
 		</div>
 		<div id="location_map">
-			<map id="map" scale="14" :latitude = "latitude" :longitude = "longitude" :markers = "markers"  show-location></map>
+			<map id="map" scale="14" :latitude = "latitude" :longitude = "longitude" :markers = "markers"
+			@markertap = "bindmarkertap" show-location></map>
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
@@ -69,6 +70,9 @@
 			getSelectDate(e) {
 				//				console.log(e.target.value);
 				this.selectDate = (new Date(e.target.value)).format('yyyy 年 MM 月 dd 日');
+			},
+			bindmarkertap(event) {
+				console.log('bindmarkertap', event);
 			}
 		},
 		created() {
