@@ -10,6 +10,7 @@ import MyStoreStatusPurchase from '@/mocks/MyStoreStatusPurchase';
 import MyStoreStatusSales from '@/mocks/MyStoreStatusSales';
 import MyStoreCategories from '@/mocks/MyStoreCategories';
 import MyStoreCategoryMerchandises from '@/mocks/MyStoreCategoryMerchandises';
+import MyStoreModifyStock from '@/mocks/MyStoreModifyStock';
 import MyOrder from '@/mocks/MyOrder';
 import DistributionOrder from '@/mocks/DistributionOrder';
 import SelfextraOrder from '@/mocks/SelfextraOrder';
@@ -47,6 +48,7 @@ export default class MockServiceProvider extends ServiceProvider {
 			this.app.register('mock.myStoreStatusSales', MyStoreStatusSales);
 			this.app.register('mock.myStoreCategories', MyStoreCategories);
 			this.app.register('mock.myStoreCategoryMerchandises', MyStoreCategoryMerchandises);
+			this.app.register('mock.myStoreModifyStock', MyStoreModifyStock);
 			this.app.register('mock.myOrders', MyOrder);
 			this.app.register('mock.distributeOrder', DistributionOrder);
 			this.app.register('mock.selfextraOrder', SelfextraOrder);

@@ -1,6 +1,6 @@
 <template>
 	<div id="status">
-		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel"></mp-toast>
+		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel" @modifyStock="modifyStock"></mp-toast>
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
@@ -37,6 +37,7 @@
 	import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
 	import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
 	import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
+	import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';
 	export default {
 		components: {
 			"mp-title": MpTitle,
@@ -99,6 +100,10 @@
 			},
 			closeStockPanel() {
 				this.display = false;
+			},
+			modifyStock(id, primaryStockNum, modifyStockNum, reason, comment) {
+				console.log('modifyStock--------@@@OK');
+				this.$command(MyStoreModifyStockCommand.commandName(), id, primaryStockNum, modifyStockNum, reason, comment);
 			},
 			onloadPurchase(status) {
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
