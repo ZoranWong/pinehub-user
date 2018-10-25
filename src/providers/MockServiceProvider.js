@@ -11,9 +11,6 @@ import DistributionOrder from '@/mocks/DistributionOrder';
 import SelfextraOrder from '@/mocks/SelfextraOrder';
 import GatherOrder from '@/mocks/GatherOrder';
 
-     
-
-
 
 import Merchandises from '@/mocks/Merchandises';
 import AddMerchandises from '@/mocks/AddMerchandises';
@@ -23,12 +20,8 @@ import Categories from '@/mocks/Categories';
 import StoreCategories from '@/mocks/StoreCategories';
 import NearestStore from '@/mocks/NearestStore';        
 import SearchMerchandises from '@/mocks/SearchMerchandises';
-
-
-
-
+import Tickets from "@/mocks/Tickets";
 /* eslint-disable */
-
 export default class MockServiceProvider extends ServiceProvider{
   constructor(app) {
     super(app);
@@ -43,10 +36,8 @@ export default class MockServiceProvider extends ServiceProvider{
       this.app.register('mock.neareststore', NearestStore);
       this.app.register('mock.emptyMerchandises', EmptyMerchandises);
       this.app.register('mock.searchMerchandises', SearchMerchandises);
-
-
-
       this.app.register('mock.storeCategories',StoreCategories);
+      this.app.register('mock.tickets',Tickets)
 
 
 			this.app.register('mock.myInfo', MyInfo);

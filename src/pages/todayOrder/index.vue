@@ -9,7 +9,8 @@
         <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
         :addMerchandiseToCart = "addCart"  ></m-list>
     </div>
-    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" ></cart>
+    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart"  @hdlShowOrder="jump('todaySubmitOrder')"
+    :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart"></cart>
     <popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
     
   </div>
@@ -28,7 +29,7 @@
   export default{
     data(){
       return{
-        isShow:false,
+        isShow:true,
         isShowCart:true,
         listwidth:'530rpx',
         title:"当日下单",
@@ -51,11 +52,10 @@
       },
       currentPage () {
        let page = this.$store.state['model.today.merchandises'].currentPage;
-       console.log(page, "当前页数")
        return page;
       },
       storeCategoryId(){
-        console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
+        // console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
       }
      
@@ -67,6 +67,9 @@
      }
     },
     methods:{
+      jump(router){
+        this.$command('router',router,'push');
+      },
       hdlShowCart:function(){
         this.isShowCart = true;
       },
@@ -83,7 +86,7 @@
         this.storeId, 
         this.categoryId,
         page);
-        console.log('加载',  this.categoryId)  
+        // console.log('加载',  this.categoryId)  
       },
       menusChange : function (index) {
         this.index = index;

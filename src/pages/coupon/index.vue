@@ -9,58 +9,58 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<div class="tab_content_item" v-if="cur === 0">
-			    <div class="coupon-wrapper clearfix bgff">
+			<ul class="tab_content_item" v-if="cur === 0" >
+				<li v-for="(ticket, ticketIndex) in ticketsList" :key="ticketIndex" 
+					:loadTickets="loadTickets" :status="statusType"  class="coupon-wrapper clearfix bgff">
 			    	<div class="coupon-left fl ">
 			    		<div class="voucher-part1 bgff ">
 			    			<span class="voucher-logon-name">
 			    				LASCON
 			    			</span>
-			    			<span class="voucher-value">¥30</span>
+			    			<span class="voucher-value">¥{{ticket.leastCost}}</span>
 			    		</div>
 			    		<div class="voucher-part2">
-			    			<div class="voucher-name bgff">优惠券</div>
-							
+			    			<div class="voucher-name bgff">{{ticket.type}}</div>
 			    		</div>
 			    	</div>
 			    	<div class="coupon-right fr">
-			    		<p class="voucher-title">满899减30元</p>
+			    		<p class="voucher-title">{{ticket.title}}</p>
 			    		<p class="time-limit">
 			    			<span>有效期：</span>
-			    			2018.10.01-2018.10.10
+			    			<span>{{ticket.beginTimestamp}}</span>
+			    			<span>-{{ticket.endTimestamp}}</span>
 			    		</p>
 						<div class="btn-big fr theme-color">立即使用</div>
-			    	</div>
-			    </div>		     
-			</div>
-			<div class="tab_content_item" v-else-if="cur === 1">
-				<div class="coupon-wrapper clearfix bgff">
+			    	</div>		     
+				</li>
+			</ul>
+			<ul class="tab_content_item" v-else-if="cur === 1" >
+				<li v-for="(ticket, ticketIndex) in ticketsList" :key="ticketIndex"
+					:loadTickets="loadTickets" :status="statusType"  class="coupon-wrapper clearfix bgff">
 			    	<div class="coupon-left fl">
 			    		<div class="voucher-part1 bgff">
 			    			<span class="voucher-logon-name">
 			    				LASCON
 			    			</span>
-			    			<span class="voucher-value">¥30</span>
+			    			<span class="voucher-value">¥{{ticket.leastCost}}</span>
 			    		</div>
 			    		<div class="voucher-part2">
-			    			<div class="voucher-name bgff">优惠券</div>
+			    			<div class="voucher-name bgff">{{ticket.type}}</div>
 							
 			    		</div>
 			    	</div>
 			    	<div class="coupon-right fr">
-			    		<p class="voucher-title">满899减30元</p>
+			    		<p class="voucher-title">{{ticket.title}}</p>
 			    		<p class="time-limit">
 			    			<span>有效期：</span>
-			    			2018.10.01-2018.10.10
+			    			<span>{{ticket.beginTimestamp}}</span>
+			    			<span>-{{ticket.endTimestamp}}</span>
 			    		</p>
 						<div class="overdue fr"></div>
 			    	</div>
-			    </div>		     
-			</div>
-			</div>
-			
-		</div>
-		
+			    </li>	     
+			</ul>
+		</div>	
 	</div>
 </template>
 
@@ -78,7 +78,8 @@
    				{
    					name:'已过期'
    				}],
-   				cur: 0
+   				cur: 0,
+   				statusType: "available"
    			}
 		},
 		components : {
@@ -90,16 +91,35 @@
 				let num = this.tabs.length
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
-			}
+			},
+			ticketsList(){
+        		return this.$store.getters['model.tickets/list'];
+      		}
 
 		},
 		methods: {
+			loadTickets(status) {
+				 this.$command('GET_TICKETS', status);
+			},
 			tabSelect(num) {
 				this.cur = num;
+				switch(num) {
+					case 0:
+						this.statusType = "available";
+						break;
+					case 1:
+						this.statusType = "overdue";
+						break;
+					default:
+						this.statusType = "available";
+						break;
+				}
 				console.log(num);
-			}
+			} 
 		},
 		created() {
+			console.log(this.ticketsList,"发你你你")
+			this.$command('GET_TICKETS');
 		}
 	}
 </script>
@@ -233,6 +253,7 @@
 	}
 
 	.coupon-right{
+		width:330rpx;
 		box-sizing: border-box;
 	}
 	.coupon-right .voucher-title{

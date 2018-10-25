@@ -9,7 +9,7 @@
       </div>
       <label class="choose fr" @click="popShow">
         选好了
-        <i class="i-icon next-icon"></i>
+        <i class="i-icon next-icon" @click="orderShow"></i>
       </label>
     </div>
     <div class="selected-merchandises  bgff"  v-if="toggleList" >
@@ -24,9 +24,7 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-
-            <cart-control @reduceCart="reduceCart" @addCart = "addCart"  :merchandise = "item" >    
-            </cart-control>
+          <cart-control  @addCart = "addCart"  :merchandiseId = " item['merchandiseId']" :shopId="item.shopId" @reduceCart ="reduceCart" ></cart-control>
           </div>  
 
         </div>
@@ -83,6 +81,9 @@
     methods:{
       popShow:function(){
         this.$emit('hdlShowPopup')
+      },
+      orderShow(){
+        this.$emit('hdlShowOrder')
       },
       toggleListShow:function(){
         this.toggleList =! this.toggleList;
