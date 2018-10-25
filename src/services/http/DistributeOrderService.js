@@ -19,7 +19,7 @@ export default class DistributeOrderService extends Service {
 				page:page
 			});
 		}
-		console.log('getRes',response);
+		console.log('getRes 3413412341',response);
 		distributeorders = response.data;
 		let pagination = response.meta.pagination;
 		totalNum = pagination.total;

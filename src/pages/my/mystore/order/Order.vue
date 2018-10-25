@@ -94,13 +94,30 @@
 		methods: {
 
 		},
+		watch:{
+			startTime(v){
+				this.statTime=v
+			},
+			endTime(n){
+				this.endTime=n
+			},
+			status(x){
+				this.status=x
+			},
+			types(t){
+				this.types=t
+//				console.log(t,"ffffff")
+			}
+		},
 		created() {
 			console.log(this.startTime,this.endTime,this.status)
-           this.loadOrders(this.startTime,this.endTime,this.types,this.status)
+            this.loadOrders(this.startTime,this.endTime,this.types,this.status)
 		},
 		updated(){
 //			console.log(this.gathOrders[0])
 //          console.log(this.startTime,this.endTime,this.status)
+//          this.loadOrders(this.startTime,this.endTime,this.types,this.status)
+//          console.log(this.startTime,this.endTime,this.status,this.types) 
 		}
 	}
 </script>

@@ -42,7 +42,7 @@
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<!--<em>备注:用户要求携带餐具和纸巾</em>-->
+				<em>地点:{{extraitem.receiverAddress}}</em>
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">
@@ -81,6 +81,16 @@
 		},
 		methods: {
 
+		},
+		watch:{
+			startTime(v){
+//				console.log(v,"aaaaaaaaaa")
+				this.startTime=v
+			},
+			endTime(n){
+				this.endTime=n
+//				console.log(n,"aaaaaaaaaa")
+			}
 		},
 		created() {
          console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")

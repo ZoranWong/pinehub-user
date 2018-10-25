@@ -42,21 +42,24 @@
 				title: "订单汇总",
 				navName: "my",
 				tabs: [{
-					name: "生产中"
+					name: "全部",
+					statname:"all"
 				}, {
-					name: "配送中"
+					name: "配送中",
+					statname:"send"
 				}, {
-					name: "已完成"
+					name: "已完成",
+					statname:"completed"
 				}],
 				cur: 0,
 //				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
-				status:"生产中",
+				status:"all",
 				startTime:"",
 				endTime:"",
 				arr:["预定商品","自提商品"],
 				index:0,
-				type:""
+				type:"reserve"
 			};
 		},
 		computed: {
@@ -76,8 +79,8 @@
 			},
 			tabSelect(num) {
 				this.cur = num;
-				this.status=this.tabs[num].name
-				console.log(this.status)
+				this.status=this.tabs[num].statname
+//				console.log(this.status)
 			},
 			getSelectDate(e) {
 				//				console.log(new Date(e.target.value));
@@ -89,7 +92,12 @@
 			bindPickerChange(e){
 				console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 				this.index= e.mp.detail.value
-				this.type=this.index+1
+				if(this.index==0){
+				    this.type="reserve"	
+				}else if(this.index==1){
+					this.type="self_lift"
+				}
+				
 			}
 		},
 		created:function() {

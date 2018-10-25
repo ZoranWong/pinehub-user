@@ -9,6 +9,10 @@ import MyStoreStatusPurchaseService from '@/services/http/MyStoreStatusPurchaseS
 import MyStoreStatusPurchaseCommand from '@/commands/MyStoreStatusPurchaseCommand';
 import MyStoreStatusPurchase from "@/models/MyStoreStatusPurchase";
 
+import MyStoreStatusSalesService from '@/services/http/MyStoreStatusSalesService';
+import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
+import MyStoreStatusSales from "@/models/MyStoreStatusSales";
+
 
 const myMystoreStatus = new Application(App, 'my.mystore.status');
 myMystoreStatus.run((app) => {
@@ -18,6 +22,10 @@ myMystoreStatus.run((app) => {
 	app.models.addModel('model.my.store.status.purchase', MyStoreStatusPurchase);
 	app.register('http.myStoreStatusPurchase', MyStoreStatusPurchaseService);
 	app.registerCommand(MyStoreStatusPurchaseCommand.commandName(), MyStoreStatusPurchaseCommand);
+	
+	app.models.addModel('model.my.store.status.sales', MyStoreStatusSales);
+	app.register('http.myStoreStatusSales', MyStoreStatusSalesService);
+	app.registerCommand(MyStoreStatusSalesCommand.commandName(), MyStoreStatusSalesCommand);
 }, (component) => {
 	_.extend(App, component);
 	let app = new Vue(App);

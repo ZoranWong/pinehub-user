@@ -68,12 +68,12 @@
 
 		watch: {
 			status(v) {
-				// console.log(v)
+				 console.log(v)
+				 this.status=v
 			}
 		},
 		created() {
-			var status=this.status
-			this.loadOrders(status); 	
+			this.loadOrders(this.status); 	
 		},
 		mounted() {
 			
