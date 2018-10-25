@@ -13,6 +13,7 @@ import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
 import GetCategoriesCommand from '@/commands/GetCategoriesCommand';
 
 import CategoriesService from '@/services/http/CategoriesService';
+import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
 
 const application = new Application(App, 'shop.merchandises');
 application.run(function(app) {
@@ -28,6 +29,7 @@ application.run(function(app) {
     app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand);
 
     app.registerCommand(GetCategoriesCommand.commandName(),GetCategoriesCommand);
+    app.registerCommand(ClearMerchandiseCommand.commandName(),ClearMerchandiseCommand);
     
     app.register('http.categories',CategoriesService);
    

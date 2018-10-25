@@ -14,13 +14,10 @@ export default class Categories extends Model{
       },
       categoryId(state) {
         let list = this.state.currentPage ? _.flatten(state.list) : [];
-        //console.log(list, "工会荣获",this.state.currentPage)
+        console.log(list, "工会荣获",this.state.currentPage)
         return (i) =>{
-          for(var i = 0; i < list.length; i++){
-            let category = list[i];
-            //console.log(category.id,"蝴蝶飞飞")
-            return category ? category.id : null;
-          }  
+          let category = list[i];
+         return category ? category.id : null;
         }
       }
     });

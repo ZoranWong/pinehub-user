@@ -5,10 +5,11 @@ export default class Merchandises extends Mock {
     this.total = 12;
   }
   data(page = 1, search = null, limit = 20) {
+    console.log(search)
     return {
       "data|12":[{
         "id|+1": 1,
-        "name": this.mockMethod('name'),
+        "name": this.mockMethod('name') + search,
         "sell_price|+2": 20,
         "origin_price|+3": 28,
         "sell_count|+50": 40,

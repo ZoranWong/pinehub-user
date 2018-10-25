@@ -1,7 +1,7 @@
 <template>
-	<div class="shopcart">
+	<div class="shopcart" v-show="totalCount>0" :style="{visiable:visiable}">
     <div class="shoppingcart-bottom clearfix">
-      <div class="content" @click="toggleListShow">
+      <div class="content" @click="toggleListShow" >
         <span class="black-circle"></span>
         <i class="i-icon cart" ></i>
         <i class="i-icon num-icon  theme-color color11">{{totalCount}}</i>
@@ -63,6 +63,9 @@
       'cart-control':CartControl,
     },
     computed:{
+      visiable(){
+        return this.totalCount > 0 ? 'block' : 'none';
+      },
       cartList(){
         return this.$store.getters['model.shoppingCarts/list'];
       },

@@ -45,6 +45,15 @@ export default class Model {
 		this.addEventListener('nextPage', () => {
 			this.state.currentPage++;
 		});
+
+		this.addEventListener('reset', () => {
+			console.log('reset');
+			let data =this.data();
+			for(let i in this.state) {
+				this.$application.$vm.set(this.state, i, data[i]);
+			}
+		});
+
 	    this.addEventListener('setList' , (
 	    	{list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
 	        this.state.currentPage = currentPage;

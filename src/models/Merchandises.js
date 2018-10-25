@@ -10,7 +10,7 @@ export default class Merchandises extends Model{
     return _.extend(super.computed(), {
       list(state){
         // console.log( state.list[state.currentCategoryIndex],'merchandises-models-001');
-        return state.currentPage ? _.flatten(state.list[state.currentCategoryIndex]) : [];
+        return state.currentPage ? _.flatten(state.list) : [];
       },
       currentCategoryIndex(state) {
       	return state.currentCategoryIndex;
@@ -19,7 +19,7 @@ export default class Merchandises extends Model{
   }
   data() {
     return _.extend(super.data(), {
-    		currentCategoryIndex: null
+    		currentCategoryIndex: 0
     });
   }
 
@@ -36,13 +36,11 @@ export default class Merchandises extends Model{
 			totalNum,
 			pageCount
 		} /*paylaod*/ ) => {
+      let merchandises = this.state.list;
 			this.state.currentPage = currentPage;
 			let startIndex = (currentPage - 1) * pageCount + 1;
-      if(!this.state.list[this.state.currentCategoryIndex]) {
-        this.state.list[this.state.currentCategoryIndex]  = [];
-         //console.log(this.state,'merchandises-models-003')
-      }
-			this.state.list[this.state.currentCategoryIndex][currentPage - 1] = this.transform(list, this.transformer, startIndex);
+
+			merchandises = this.transform(list, this.transformer, startIndex);
 			if(totalNum !== null)
 				this.state.totalNum = totalNum;
 			if(totalPage !== null) {
@@ -51,7 +49,8 @@ export default class Merchandises extends Model{
 					this.state.pageCount = pageCount;
 				}
 			}
-      //console.log(this.state,'merchandises-models-004')
+      this.$application.$vm.set(this.state.list, currentPage - 1, merchandises);
+      console.log(this.state,'merchandises-models-004')
 		});
   }
 }
