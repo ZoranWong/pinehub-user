@@ -6,7 +6,6 @@ import Merchandises from '@/models/Merchandises';
 import NearestStore from '@/models/NearestStore';
 import StoreCategories from '@/models/StoreCategories';
 
-
 import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
 import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
 import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';

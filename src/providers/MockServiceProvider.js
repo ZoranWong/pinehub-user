@@ -1,7 +1,7 @@
 /*eslint constructor-super: "error"*/
 /*eslint-env es6*/
 import ServiceProvider from './ServiceProvider';
-import Location from '@/mocks/Location';
+import NearbyStores from '@/mocks/NearbyStores';
 import MyInfo from '@/mocks/MyInfo';
 import MyFeedback from '@/mocks/MyFeedback';
 import MyStoreInfo from '@/mocks/MyStoreInfo';
@@ -23,15 +23,17 @@ import Categories from '@/mocks/Categories';
 import StoreCategories from '@/mocks/StoreCategories';
 import NearestStore from '@/mocks/NearestStore';
 import SearchMerchandises from '@/mocks/SearchMerchandises';
+import Tickets from "@/mocks/Tickets";
+
 /* eslint-disable */
 export default class MockServiceProvider extends ServiceProvider {
 	constructor(app) {
 		super(app);
 	}
 	register() {
-		if (this.app.needMock()) {Location
+		if (this.app.needMock()) {
 			this.app.register('mock', require('mockjs'));
-			this.app.register('mock.location', Location);
+			this.app.register('mock.nearbyStores', NearbyStores);
 			this.app.register('mock.merchandises', Merchandises);
 			this.app.register('mock.addMerchandises', AddMerchandises);
 			this.app.register('mock.reduceMerchandises', ReduceMerchandises);
@@ -40,6 +42,8 @@ export default class MockServiceProvider extends ServiceProvider {
 			this.app.register('mock.emptyMerchandises', EmptyMerchandises);
 			this.app.register('mock.searchMerchandises', SearchMerchandises);
 			this.app.register('mock.storeCategories', StoreCategories);
+			this.app.register('mock.tickets',Tickets);
+
 			this.app.register('mock.myInfo', MyInfo);
 			this.app.register('mock.myFeedback', MyFeedback);
 			this.app.register('mock.myStoreInfo', MyStoreInfo);

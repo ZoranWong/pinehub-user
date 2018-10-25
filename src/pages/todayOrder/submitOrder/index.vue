@@ -4,7 +4,7 @@
 		<!-- 收货人组件 -->
 		<consignee select-method="true"></consignee>
 		<!-- 配送和自提的tab切换组件-->
-	    <tab-delivery></tab-delivery>
+	    <tab-delivery :position="position"></tab-delivery>
 	    <!-- 支付内容的显示组件 -->
 		<payment :next="next"  :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></payment>
         
@@ -50,11 +50,13 @@
 		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
 		    },   		
 		},
+		created(){
+	      	this.$command('GET_NEAREST_STORE');
+		},
 		mounted(){
 			this.$command('MYINFO');
 			console.log('mounted order component');
 			this.$command('FILL_CART_FROM_CACHE');
-      		              
 		}
 	}
 </script>

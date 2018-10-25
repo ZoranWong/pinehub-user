@@ -8,33 +8,18 @@
 	"mystore": "/pages/my/mystore/main",
 	"mystoreorder": "/pages/my/mystore/order/main",
 	"mystorestatus": "/pages/my/mystore/status/main",
-	"location": "/pages/my/location/main",
+	"location": "/pages/nearbyStores/main",
 	"share": "/pages/my/share/main",
-	
-	
-	
-	
 	"order": "/pages/order/main",
-	
 	"logs": "/pages/logs/main",
 	"couter": "/pages/counter/main",
-
-	
 	"search" : "/pages/search/main",
-	
 	"todayOrder" : "/pages/todayOrder/main",
-    "todaySubmitOrder" :"/pages/todayOrder/submitOrder/main",
-
+  "todaySubmitOrder" :"/pages/todayOrder/submitOrder/main",
 	"reserveShop" : "/pages/reserveShop/main",
 	"shopsubmitorder" :"/pages/reserveShop/submitOrder/main",
 	"orderself" :"/pages/reserveShop/orderSelf/main",
-
-
 	"activity" : "/pages/activity/main",
 	"activitySubmitOrder" :"/pages/activity/submitOrder/main",
-
 	"coupon": "/pages/coupon/main"
 }
-
-
-
