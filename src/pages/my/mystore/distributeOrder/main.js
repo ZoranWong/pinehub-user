@@ -2,14 +2,14 @@ import Vue from 'vue';
 import App from './index';
 import Application from '../../../../Application';
 import _ from 'underscore';
-import SelfextraOrderService from '../../../../services/http/SelfextraOrderService';
-import SelfextraOrderCommand from '@/commands/SelfextraOrderCommand';
-import SelfextraOrders from "@/models/SelfextraOrders";
-const extraOrder = new Application(App, 'extra.orders');
-extraOrder.run((app) => {
-	app.models.addModel('model.extra.orders', SelfextraOrders);
-	app.register('http.selfextraOrder', SelfextraOrderService);
-	app.registerCommand(SelfextraOrderCommand.commandName(), SelfextraOrderCommand);
+import DistributeOrderService from '../../../../services/http/DistributeOrderService';
+import DistributeOrderCommand from '@/commands/DistributeOrderCommand';
+import DistributeOrder from "@/models/DistributeOrder";
+const disOrder = new Application(App, 'distribute.orders');
+disOrder.run((app) => {
+	app.models.addModel('model.distribute.orders', DistributeOrder);
+	app.register('http.distributeOrder', DistributeOrderService);
+	app.registerCommand(DistributeOrderCommand.commandName(), DistributeOrderCommand);
 }, (mountComponent) => {
 	_.extend(App, mountComponent);
 	let app = new Vue(App);

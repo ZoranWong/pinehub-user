@@ -42,7 +42,7 @@
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<!--<em>备注:用户要求携带餐具和纸巾</em>-->
+				<em>地点:{{extraitem.receiverAddress}}</em>
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">

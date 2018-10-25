@@ -1,25 +1,25 @@
 <template>
 	<div id="tab_content_main">
-		<div class="order_info" v-for="(extraitem,index) in selfExtra" :key="index">
+		<div class="order_info" v-for="(distributeitem,index) in disOrder" :key="index">
 			<div class="order_info_select">
 				<i class="selected_order"></i>
 			</div>
 			<div class="order_info_header">
 				<ul>
 					<li>状态</li>
-					<li>截止</li>
-					<li>用户名</li>
+					<li>楼号</li>
+					<li>房号</li>
 					<li>订单编号</li>
 					<li>联系电话</li>
 				</ul>
 			</div>
 			<div class="order_info_nowstatus">
 				<ul>
-					<li>{{extraitem.status}}</li>
-					<li>{{extraitem.createdAt}}</li>
-					<li>{{extraitem.receiverName}}</li>
-					<li>{{extraitem.code}}</li>
-					<li>{{extraitem.receiverMobile}}</li>
+					<li>{{distributeitem.status}}</li>
+					<li>{{distributeitem.buildNum}}</li>
+					<li>{{distributeitem.roomNum}}</li>
+					<li>{{distributeitem.code}}</li>
+					<li>{{distributeitem.reveiverMobile}}</li>
 				</ul>
 			</div>
 			<div class="order_info_glist">
@@ -35,21 +35,21 @@
 						</div>
 						<div class="order_info_glist_list">
 							<ul>
-								<li v-for="(item,idx) in extraitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+								<li v-for="(item,idx) in distributeitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
 							</ul>
 						</div>
 					</dt>
 				</dl>
 			</div>
 			<div class="order_info_ads">
-				<!--<em>备注:用户要求携带餐具和纸巾</em>-->
+				<em>地点:{{distributeitem.receiverAddress}}</em>
 			</div>
 			<div class="order_info_footer">
 				<div class="order_info_footer_left">
 					{{datetime}}
 				</div>
 				<div class="order_info_footer_right">
-					实付:<em>￥{{extraitem.totalAmount}}</em>
+					实付:<em>￥{{distributeitem.totalAmount}}</em>
 				</div>
 			</div>
 			<i class="order_info_circle"></i>
@@ -71,7 +71,7 @@
 				default:"",
 				type: Function
 			},
-			selfExtra:{
+			disOrder:{
 				default:"",
 				type:Function
 			},

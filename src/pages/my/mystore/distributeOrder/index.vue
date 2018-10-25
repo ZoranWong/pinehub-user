@@ -7,14 +7,18 @@
 					<em>日期</em>
 					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
-				<!--<div class="myorder_select_info">
+				<div class="myorder_select_info">
 					<em>配送批次</em>
-				</div>-->
+					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="input">	
+					      {{arr[index]}}
+				    </picker>
+				</div>
+				
 			</div>
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
+				<order :disOrder="disOrders" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
 		<div id="controlbar">
@@ -36,29 +40,33 @@
 		},
 		data() {
 			return {
-				title: "自提订单",
+				title: "配送订单",
 				navName: "my",
 				//startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
 				startTime:"",
 				endTime:"",
-				selectOrderToPrint: false
+				selectOrderToPrint: false,
+				arr:["07:00-09:00","14:00-16:00","19:00-21:00"],
+				index:0,
+				begHour:"",
+				endHour:""
 			};
 		},
 		computed: {
-            selfextra(){
-				return this.$store.getters['model.extra.orders/lists']
+            disOrders(){
+				return this.$store.getters['model.distribute.orders/lists']
 			}
 		},
 		methods: {
 			loadOrders(startime,endtime) {
-				this.$command('selfextra-orders', startime, endtime);
+				this.$command('distribute-orders', startime, endtime);
 			},
 			getSelectDate(e) {
 				//				console.log(e.target.value);
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
-				this.startTime=this.selectDate+" "+"00:00:00"
-			    this.endTime=this.selectDate+" "+"23:59:59"
+				this.startTime=this.selectDate+" "+this.begHour+":00"
+			    this.endTime=this.selectDate+" "+this.endHour+":00"
 			},
 			printOrders() {
 				wx.showToast({
@@ -82,16 +90,24 @@
 					duration: 4000
 				})
 				this.selectOrderToPrint = false;
+			},
+			bindPickerChange(e){
+				//console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				this.index= e.mp.detail.value
+				this.begHour=this.arr[this.index].split("-")[0];
+			    this.endHour=this.arr[this.index].split("-")[1];
 			}
 		},
 		created() {
-			this.$command('selfextra-orders');
-			this.startTime=this.selectDate+" "+"00:00:00"
-			this.endTime=this.selectDate+" "+"23:59:59"
-//			console.log(this.selfextra[0],this.startTime,"-------------------------------")
+			this.begHour=this.arr[this.index].split("-")[0];
+			this.endHour=this.arr[this.index].split("-")[1];
+			this.$command('distribute-orders');
+			this.startTime=this.selectDate+" "+this.begHour+":00"
+			this.endTime=this.selectDate+" "+this.endHour+":00"
+			
 		},
 		mounted(){
-			
+			console.log( this.disOrders,this.startTime,"-111------------------------------")
 		}
 	}
 </script>
@@ -227,5 +243,11 @@
 		top: 12rpx;
 		right: 31rpx;
 
+	}
+	.goodstype{
+		font-size:32rpx;
+		padding-left:112rpx;
+		border: 1rpx solid #f0f0f0;
+		display:inline-block;
 	}
 </style>

@@ -9,6 +9,9 @@
 				</div>
 				<div class="myorder_select_info">
 					<em>配送批次</em>
+					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="input">	
+					      {{arr[index]}}
+				    </picker>
 				</div>
 			</div>
 		</div>
@@ -42,7 +45,11 @@
 				selectDate: (new Date()).format('yyyy-MM-dd'),
 				startTime:"",
 				endTime:"",
-				selectOrderToPrint: false
+				selectOrderToPrint: false,
+				arr:["07:00-09:00","14:00-16:00","19:00-21:00"],
+				index:0,
+				begHour:"",
+				endHour:""
 			};
 		},
 		computed: {
@@ -57,8 +64,8 @@
 			getSelectDate(e) {
 				//				console.log(e.target.value);
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
-				this.startTime=this.selectDate+" "+"00:00:00"
-			    this.endTime=this.selectDate+" "+"23:59:59"
+				this.startTime=this.selectDate+" "+this.begHour+":00"
+			    this.endTime=this.selectDate+" "+this.endHour+":00"
 			},
 			printOrders() {
 				wx.showToast({
@@ -82,12 +89,21 @@
 					duration: 4000
 				})
 				this.selectOrderToPrint = false;
+			},
+			bindPickerChange(e){
+				//console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				this.index= e.mp.detail.value
+				this.begHour=this.arr[this.index].split("-")[0];
+			    this.endHour=this.arr[this.index].split("-")[1];
 			}
 		},
 		created() {
+			this.begHour=this.arr[this.index].split("-")[0];
+			this.endHour=this.arr[this.index].split("-")[1];
+			//console.log(this.begHour,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 			this.$command('selfextra-orders');
-			this.startTime=this.selectDate+" "+"00:00:00"
-			this.endTime=this.selectDate+" "+"23:59:59"
+			this.startTime=this.selectDate+" "+this.begHour+":00"
+			this.endTime=this.selectDate+" "+this.endHour+":00"
 //			console.log(this.selfextra[0],this.startTime,"-------------------------------")
 		},
 		mounted(){
@@ -228,4 +244,10 @@
 		right: 31rpx;
 
 	}
+	/*.goodstype{
+		font-size:32rpx;
+		padding-left:112rpx;
+		border: 1rpx solid #f0f0f0;
+		display:inline-block;
+	}*/
 </style>
