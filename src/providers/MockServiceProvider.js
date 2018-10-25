@@ -22,6 +22,8 @@ import Categories from '@/mocks/Categories';
 import StoreCategories from '@/mocks/StoreCategories';
 import NearestStore from '@/mocks/NearestStore';
 import SearchMerchandises from '@/mocks/SearchMerchandises';
+import Tickets from "@/mocks/Tickets";
+
 /* eslint-disable */
 export default class MockServiceProvider extends ServiceProvider {
 	constructor(app) {
@@ -39,6 +41,8 @@ export default class MockServiceProvider extends ServiceProvider {
 			this.app.register('mock.emptyMerchandises', EmptyMerchandises);
 			this.app.register('mock.searchMerchandises', SearchMerchandises);
 			this.app.register('mock.storeCategories', StoreCategories);
+			this.app.register('mock.tickets',Tickets);
+
 			this.app.register('mock.myInfo', MyInfo);
 			this.app.register('mock.myFeedback', MyFeedback);
 			this.app.register('mock.myStoreInfo', MyStoreInfo);

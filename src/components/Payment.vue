@@ -7,7 +7,6 @@
 
 		<div class="product bgff clearfix" v-for="(item, itemIndex) in cartList" :key="itemIndex">
 			<img :src ="item.thumbImage">
-			<!-- <img src="../../static/upload/cheese-cake.png"> -->
 			<div class="product-details">{{item.name}}
 				<p class="clearfix">
 					<span class="amount">x {{item.count}}</span>
@@ -73,9 +72,7 @@
     			console.log("获取购物车数据",this.$store.getters)
         		return this.$store.getters['model.shoppingCarts/list'];
       		},
-      	// 	shopList(){
-		     //    return this.$store.getters['model.ShoppingCartMerchandise/list'];
-		     // },
+     
 		    totalAmount(){
 		        return this.$store.getters['model.shoppingCarts/totalAmount'];
 		    },
@@ -85,8 +82,7 @@
     	},
     	methods:{
 			jump(router){
-				console.log(4)
-				this.$command('router',router,'jump');
+				this.$command('router',router,'push');
 			},
 			addCart( id, count, shopId) {
 		        this.addMerchandiseToCart(shopId, count, id);

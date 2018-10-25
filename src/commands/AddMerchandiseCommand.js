@@ -8,6 +8,7 @@ export default class AddMerchandiseCommand extends Command {
      // 与服务器打交道，获取数据，返回数据
     let service = this.service('http.merchandises');
     let [ id, name, quality,sellPrice, message, totalAmount, thumbImage]= await service.addMerchandises(merchandiseId, shopId, count );
+
     //console.log(id,  name, quality, message, totalAmount, merchandiseId, shopId);
     if(typeof id !== 'undefined') {
       this.store().dispatch('model.shoppingCarts/changeCart', {

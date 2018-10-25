@@ -24,9 +24,8 @@
           <span class="merchandises-name">{{item.name}}</span>
           <span class="sell-price">¥{{item.sellPrice}}</span>
           <div class="cartcontrol-warpper">
-              <cart-control @addCart = "addCart" :merchandiseId = " item['merchandiseId']" :shopId="item.shopId"  
-   @reduceCart ="reduceCart" ></cart-control> 
-           
+            <cart-control  @addCart = "addCart"  :merchandiseId = " item['merchandiseId']" :shopId="item.shopId" @reduceCart ="reduceCart" >
+            </cart-control>
           </div>  
 
         </div>
@@ -79,7 +78,6 @@
         this.$emit('hdlShowPopup')
       },
       orderShow(){
-        console.log(1111)
         this.$emit('hdlShowOrder')
       },
       toggleListShow:function(){

@@ -11,7 +11,6 @@
 		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
-
 <script>
 	import MyOrder from './MyOrder';
 	import MpTitle from '@/components/MpTitle';
