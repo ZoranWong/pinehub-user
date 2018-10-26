@@ -105,6 +105,9 @@
           this.top = 0;
         }
       }
+    },
+    mounted(){
+    	console.log(this.categoryId,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
     }
 
 	}

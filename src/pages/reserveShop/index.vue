@@ -59,6 +59,7 @@
         if(n && !o ) {
           this.loadMerchandises(1);
         }
+        console.log(this.categoryId,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
       }
    },
     methods:{
@@ -106,6 +107,7 @@
    },
    mounted(){
       this.$command('GET_CATEGORIES_TO_MEUN');
+      console.log(this.categoryId,"kkkkkkkkkkkkkkkkkkkkkkkkkkllllllllllllllllll")
    }
 }
 
