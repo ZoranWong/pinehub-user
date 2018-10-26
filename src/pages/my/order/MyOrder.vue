@@ -1,5 +1,6 @@
 <template>
-	<scroll-view  class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="flag" :scroll-top="topNum" @scrolltolower="scrolltolower" >
+	<div>
+	    <scroll-view  class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="true" :scroll-into-view ="categoryId" @scrolltolower="scrolltolower" >
 		<div id="tab_content_main">
 			<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
 				<div class="order_info_sn">
@@ -34,7 +35,9 @@
 				<i class="order_info_circle right_circle"></i>
 			</div>	
 		</div>
-	</scroll-view>
+	</scroll-view>	
+	</div>
+	
 </template>
 
 <script>
@@ -61,9 +64,10 @@
 		data() {
 			return {
 				orderList: {},
-				myorderList:{},
-				topNum:0,
-				flag:true
+//				myorderList:{},
+				topNum:102,
+				flag:true,
+				categoryId:""
 			};
 		},
 		//算术方法
@@ -83,12 +87,15 @@
 		},
 
 		watch: {
-			status(v) {
+			status(n,v) {
 				 this.flag=true
 				 console.log(v)
-				 this.status=v
-				 this.topNum=0
+				 this.status=n
+				 this.categoryId=this.status
 				 
+				 if(n && !v ) {
+          this.loadOrders(this.status);
+        }
 //				 this.myorderList="";
 //				 this.myorderList=this.$store.getters['model.my.orders/lists'];
 			}
@@ -98,11 +105,8 @@
 			this.loadOrders(this.status); 	
 		},
 		mounted() {
-			//this.$command('my-orders');
-			//this.loadOrders("all");
 		},
 		updated(){
-//			console.log(this.myorderList[0],"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		}
 
 	}

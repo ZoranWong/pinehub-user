@@ -1,16 +1,12 @@
 <template>
-  <scroll-view  class="foods-wrapper"
-    :style="{ width: width, height: height }"
-    :scroll-y="true"
-    @scrolltolower="scrolltolower"
-    :scroll-into-view = "categoryId">
+  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" @scrolltolower="scrolltolower" >
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-left fl">
           <img class="merchandises-pic" :src="item.thumbImage">
         </div>
         <div class="foods-item-right fr">
           <h4 class="merchandises-name" >
-              {{item.name}}
+                 {{item.name}}
           </h4>
           <p class="sell-count">已售
             <span class="color00">{{item.sellCount}}</span>份
@@ -18,12 +14,7 @@
           <p class="sell-price">{{item.sellPrice}}元/份</p>
           <p class="origin-price color75">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
-            <cart-control
-              @addCart = "addCart"
-              @reduceCart= "reduceCart"
-              :merchandiseId = "item.id"
-              :shopId="item.shopId">
-            </cart-control>
+            <cart-control @addCart = "addCart"  @reduceCart= "reduceCart" :merchandiseId = "item.id" :shopId="item.shopId"></cart-control>
           </div>
         </div>
       </div>
@@ -59,41 +50,46 @@
         default: function() {return []},
         type: Array
       },
-      categoryId: {
-        default: null,
-        type: String|Number
-      }
     },
 		data(){
 			return {
-         pageCount: 15,
-         timeout: null
+         pageCount: 15
       };
 		},
     components:{
       'cart-control':CartControl,
       'cart':Cart,
     },
+    
+   created(){
+      this.next();
+   },
     methods:{
-      scrolltolower(e){
-        let $this = this;
-        if(this.timeout) {
-          clearTimeout(this.timeout);
-        }
-        ((e) => {
-          $this.timeout = setTimeout(function () {
-            $this.next();
-          }, 250);
-        })(e);
+      cartShow:function(){
+        this.$emit('show-cart')
+      },
+      scrolltolower(){
+        // console.log('next page');
+        this.next();
+      },
+      scroll(e) {
+        console.log(e)
       },
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
-      reduceCart(id, count, shopId){
+      reduceCart(id, count, shopId){        
         this.reduceMerchandiseToCart( shopId, count, id);
       }
+    },
+    watch:{
+      width:function(val) {
+       // console.log(val)
+
+      }
     }
-  }
+
+	}
 </script>
 
 <style scoped>
@@ -109,15 +105,16 @@
   flex:1;
   overflow-y: auto;
   height: 100%;
-  padding:20rpx 0;
+}
+.foods-wrapper::-webkit-scrollbar {
+  width: 1px; 
+  background-color: rgba(217,217,217,0.3); 
+}
+.foods-wrapper{
+  padding:20rpx;
   box-sizing: border-box;
   overflow-y: auto;
 }
-.foods-wrapper::-webkit-scrollbar {
-  width: 1px;
-  background-color: rgba(217,217,217,0.3);
-}
-
 .foods-item{
    width:100%;
    height:326rpx;
@@ -147,7 +144,7 @@
  width: 46%;
  height: 100%;
  line-height: 40rpx;
-
+ 
 }
 .foods-item-right h4{
   font-size:32rpx;

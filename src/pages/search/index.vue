@@ -22,59 +22,59 @@
 	import MpTitle from '@/components/MpTitle';
 	import MerchandiseList from '@/components/MerchandiseList'
 	export default {
-		data() {
-			return {
-				title: "搜索商品",
-				search:"",
-				activityId: 0,
-    		screenHeight: '',
-    		result:null,
-				scrollTop: 0
-			};
-		},
-		components: {
-			'mp-title': MpTitle,
-			'm-list': MerchandiseList,
-		},
-		computed: {
-	      merchandises(){
-	        return this.$store.getters['model.search.merchandises/list'];
-	      },
-	      currentPage () {
-	       	return this.$store.state['model.search.merchandises'].currentPage;
-	      }
-
-    },
-    watch:{
-    },
-    methods:{
-			loadMerchandises(page, search){
-				this.$command('GET_MERCHANDISE_LIST',
-				'model.search.merchandises/setList',
-				'today',
-				this.categoryId,
-				page,
-				search);
-				console.log('加载', search)
+			data() {
+				return {
+					title: "搜索商品",
+					search:"",
+					activityId: 0,
+	    			screenHeight: '',
+					scrollTop: 0
+				};
 			},
-			next() {
-				this.loadMerchandises(this.currentPage  + 1, this.search);
+			components: {
+				'mp-title': MpTitle,
+				'm-list': MerchandiseList,
 			},
-			addCart(shopId, count,  merchandiseId){
-				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-			},
-			reduceCart(shopId, count, merchandiseId){
-				this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-			},
-			emptyCart(storeId){
-				this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
-			},
-			searchMerchandise(search){
-				this.scrollTop = 0;
-				this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
-				this.loadMerchandises(1, this.search);
-			}
-  	}
+			computed: {
+		      merchandises(){
+		        return this.$store.getters['model.search.merchandises/list'];
+		      },
+		      currentPage () {
+		       	return this.$store.state['model.search.merchandises'].currentPage;
+		      }
+	    },
+   		mounted(){
+	   			console.log('搜索商品--index.vue')
+	   			this.$command('SEARCH_MERCHANDISES')
+	   	},
+    	methods:{
+				loadMerchandises(page, search){
+					this.$command('GET_MERCHANDISE_LIST',
+					'model.search.merchandises/setList',
+					'today',
+					this.categoryId,
+					page,
+					search);
+					console.log('加载', search)
+				},
+				next() {
+					this.loadMerchandises(this.currentPage  + 1, this.search);
+				},
+				addCart(shopId, count,  merchandiseId){
+					this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+				},
+				reduceCart(shopId, count, merchandiseId){
+					this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+				},
+				emptyCart(storeId){
+					this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+				},
+				searchMerchandise(search){
+					this.scrollTop = 0;
+					this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
+					this.loadMerchandises(1, this.search);
+				}
+  		}
 	}
 </script>
 

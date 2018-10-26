@@ -81,7 +81,6 @@
 			this.loadOrders("all");
 		},
 		updated(){
-//			console.log(this.myorderList[0],"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		}
 
 	}

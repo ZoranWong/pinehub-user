@@ -1,5 +1,6 @@
 <template>
 	<div id="location">
+		<mp-title :title="title"></mp-title>
 		<div id="location_search">
 			<input id="location_search_input" v-model.trim="addressName" placeholder="搜索附近的早餐网点" />
 			<i id="location_search_button" @click="searchLocation">查询</i>
@@ -24,11 +25,16 @@
 
 <script>
 	import SearchLocationCommand from '@/commands/SearchLocationCommand';
+	import MpTitle from '@/components/MpTitle';
 	import _ from 'underscore';
 	export default {
+		components: {
+			"mp-title": MpTitle
+		},
 		//数据
 		data() {
 			return {
+				title: "选择自提点",
 				latitude: 0,
 				longitude: 0,
 				addressName: null,
@@ -38,8 +44,7 @@
 				self: {}
 			}
 		},
-		watch: {
-		},
+		watch: {},
 		//算术方法
 		computed: {
 			markers() {

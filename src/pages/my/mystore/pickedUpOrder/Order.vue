@@ -95,6 +95,7 @@
 			startTime(v){
 //				console.log(v,"aaaaaaaaaa")
 				this.startTime=v
+				this.loadOrders(this.startTime,this.endTime)
 			},
 			endTime(n){
 				this.endTime=n
@@ -103,7 +104,7 @@
 		},
 		created() {
          console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")
-           this.loadOrders(this.startTime,this.endTime)
+           
 		}
 	}
 </script>

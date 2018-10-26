@@ -10,13 +10,11 @@ import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
 import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
 import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
 import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
-
-
 import GetStoreCategoriesCommand from '@/commands/GetStoreCategoriesCommand';
 
 import StoreCategoriesService from '@/services/http/StoreCategoriesService';
 
-const application = new Application(App, 'today.merchandises');
+const application = new Application(App, 'search');
 application.run(function(app) {
 	if(app.models) {
 		app.registerModel('model.search.merchandises', Merchandises);
