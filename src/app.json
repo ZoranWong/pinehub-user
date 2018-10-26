@@ -1,18 +1,7 @@
 {
   "pages": [
-    "pages/index/main",  
-    "pages/my/location/main",
-    "pages/my/mystore/main",
-    "pages/my/mystore/order/main",
-    "pages/my/mystore/status/main",
-		"pages/my/mystore/pickedUpOrder/main",
-		"pages/my/mystore/distributeOrder/main",
-    "pages/my/order/main",
-    "pages/my/pay/main",
-    "pages/my/share/main",
-    "pages/my/feedback/main",
-    "pages/my/feedback/success/main",
-    "pages/my/main",
+    "pages/index/main",
+    "pages/nearbyStores/main",
     "pages/todayOrder/main",
     "pages/todayOrder/submitOrder/main",
     "pages/reserveShop/main",
@@ -23,7 +12,24 @@
     "pages/order/main",
     "pages/search/main",
     "pages/coupon/main"
-    
+  ],
+  "subPackages": [
+    {
+      "root": "pages/my",
+      "pages": [
+        "mystore/main",
+        "mystore/order/main",
+        "mystore/status/main",
+        "mystore/pickedUpOrder/main",
+        "mystore/distributeOrder/main",
+        "order/main",
+        "pay/main",
+        "share/main",
+        "feedback/main",
+        "feedback/success/main",
+        "main"
+      ]
+    }
   ],
 	"window": {
 		"backgroundTextStyle": "light",

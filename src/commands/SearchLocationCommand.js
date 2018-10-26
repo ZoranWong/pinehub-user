@@ -6,9 +6,8 @@ export default class SearchLocationCommand extends Command {
 	//
 	async handle(address) {
 		let result = await this.service('map').searchAddressToLocation(address);
-		console.log('!@#$%^&*(*&^%$#@!~)',result);
 	}
 	static commandName() {
-		return 'search-location';
+		return 'SEARCH_LOCATION';
 	}
 }

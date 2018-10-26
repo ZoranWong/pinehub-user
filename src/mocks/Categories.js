@@ -4,6 +4,7 @@ export default class Categories extends Mock {
     super(application);
   }
   data(page = 1,limit = 15) {
+    let $this = this;
     return {
       "data|10":[{
         "id|+1": 1,
@@ -24,11 +25,11 @@ export default class Categories extends Mock {
 
   name() {
     return [
-      '分类1', 
+      '分类1',
       '分类2',
       '分类3',
       '分类4',
-      '分类5', 
+      '分类5',
       '分类6',
       '分类7',
       '分类8',

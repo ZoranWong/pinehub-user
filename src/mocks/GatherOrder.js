@@ -4,11 +4,11 @@ export default class GatherOrder extends Mock {
 		super(application);
 		this.total = 12;
 	}
-	data(paid_start_time, paid_end_time, status, page = 1, search = null, limit=15) {
+	data(paidStartTime, paidEndTime, type, status, page = 1, search = null, limit=15) {
 		return {
 			"data|12": [{
 				"id|+1": 1,
-				"code": "123321138",
+				"code|+10":  parseInt(Math.random() *100000),
 				"merchandies_num": 6,
 				"payment_amount": 12,
 				"total_amount": 12,

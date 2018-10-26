@@ -1,12 +1,12 @@
 import Service from '../Service';
 import Qmap from '../../../static/jssdk/qqmap-wx-jssdk';
-export default class LocationSearchService extends Service {
+export default class TencentMapService extends Service {
 	constructor($application) {
 		super($application);
 		this.map = new Qmap({
 			key: $application.config['app']['mapKey'] // 必填
 		});
-		
+		console.log(this.map);
 	}
 	//地址转换坐标
 	searchAddressToLocation(address) {

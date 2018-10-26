@@ -104,7 +104,6 @@ export default class ShoppingCarts extends Model{
 
     this.addEventListener('reduce', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count,thumbImage}) {
       let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
-      //console.log("reduce",count)
 
 
       if(count > 0){
