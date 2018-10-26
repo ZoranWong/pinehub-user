@@ -1,6 +1,5 @@
 <template>
-  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true"
-  @scrolltolower="scrolltolower" @scroll = "scroll" :scroll-into-view = "categoryId">
+  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" @scrolltolower="scrolltolower" >
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-left fl">
           <img class="merchandises-pic" :src="item.thumbImage">
@@ -27,10 +26,6 @@
   import Cart from '@/components/Cart'
 	export default{
     props: {
-      scrollTop: {
-        default: 0,
-        type: Number
-      },
       addMerchandiseToCart:{
         default: null,
         type: Function
@@ -55,59 +50,43 @@
         default: function() {return []},
         type: Array
       },
-      categoryId: {
-        default: null,
-        type: String|Number
-      }
     },
 		data(){
 			return {
-         pageCount: 15,
-         top: 0,
-         startScrollTime: 0,
-         endScrollTime: 0,
-         timeout: null
+         pageCount: 15
       };
 		},
     components:{
       'cart-control':CartControl,
       'cart':Cart,
     },
-
+    
    created(){
-      // this.next();
+      this.next();
    },
     methods:{
-      scrolltolower(e){
-        let $this = this;
-        if(this.timeout) {
-          clearTimeout(this.timeout);
-        }
-        ((e) => {
-          $this.timeout = setTimeout(function () {
-            $this.next();
-          }, 250);
-        })(e);
+      cartShow:function(){
+        this.$emit('show-cart')
+      },
+      scrolltolower(){
+        // console.log('next page');
+        this.next();
       },
       scroll(e) {
+        console.log(e)
       },
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
-      reduceCart(id, count, shopId){
+      reduceCart(id, count, shopId){        
         this.reduceMerchandiseToCart( shopId, count, id);
       }
     },
     watch:{
-      scrollTop(n, o) {
+      width:function(val) {
        // console.log(val)
-        if(n === 0 && o > 0) {
-          this.top = 0;
-        }
+
       }
-    },
-    mounted(){
-    	console.log(this.categoryId,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
     }
 
 	}
@@ -126,15 +105,16 @@
   flex:1;
   overflow-y: auto;
   height: 100%;
-  padding:20rpx 0;
+}
+.foods-wrapper::-webkit-scrollbar {
+  width: 1px; 
+  background-color: rgba(217,217,217,0.3); 
+}
+.foods-wrapper{
+  padding:20rpx;
   box-sizing: border-box;
   overflow-y: auto;
 }
-.foods-wrapper::-webkit-scrollbar {
-  width: 1px;
-  background-color: rgba(217,217,217,0.3);
-}
-
 .foods-item{
    width:100%;
    height:326rpx;
@@ -164,7 +144,7 @@
  width: 46%;
  height: 100%;
  line-height: 40rpx;
-
+ 
 }
 .foods-item-right h4{
   font-size:32rpx;

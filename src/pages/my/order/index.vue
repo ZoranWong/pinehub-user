@@ -92,8 +92,8 @@
 						this.statusType = "all";
 						break;
 				}
-				this.$command('BACK_TO_VIEW_TOP');
-        this.loadOrders(this.statusType);
+//				this.$command('BACK_TO_VIEW_TOP');
+                this.loadOrders(this.statusType);
 //        this.myOrdersList=this.myOrdersList2
 			},
 			next() {

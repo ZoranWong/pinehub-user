@@ -29,14 +29,10 @@ export default class MerchandisesService extends ApiService{
 
 
 	//获取新品预定所有商品信息
-
 	async activity(activityId, page = 1, search = null, limit = 10) {
 		let route = `/new/activity/${activityId}/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
-
-
-
 
     //获取今日店铺分类下的商品信息
 	async today(storeId, categoryId, page = 1, search = null, limit = 10) {

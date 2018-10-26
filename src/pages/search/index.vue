@@ -10,7 +10,6 @@
         		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" categoryId="search" >
        		</m-list>
 		</div>
-
 	</div>
 </template>
 
@@ -24,8 +23,7 @@
 				title: "搜索商品",
 				search:"",
 				activityId: 0,
-    		screenHeight: '',
-    		result:null,
+    			screenHeight: '',
 				scrollTop: 0
 			};
 		},
@@ -34,19 +32,15 @@
 			'm-list': MerchandiseList,
 		},
 		computed: {
-	      merchandises(){
-	        return this.$store.getters['model.search.merchandises/list'];
-	      },
-	      currentPage () {
-	       let page = this.$store.state['model.search.merchandises'].currentPage;
-	       console.log(page, "当前页数")
-	       return page;
-	      }
-
-    },
-    watch:{
-    },
-    methods:{
+     	 	merchandises(){
+        		return this.$store.getters['model.search.merchandises/list'];
+      		}
+   		},
+   		mounted(){
+	   			console.log('搜索商品--index.vue')
+	   			this.$command('SEARCH_MERCHANDISES')
+	   	},
+    	methods:{
 			loadMerchandises(page, search){
 				this.$command('GET_MERCHANDISE_LIST',
 				'model.search.merchandises/setList',
@@ -73,7 +67,7 @@
 				this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
 				this.loadMerchandises(1, this.search);
 			}
-  	}
+  		}
 	}
 </script>
 
