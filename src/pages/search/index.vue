@@ -6,7 +6,8 @@
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
 		<div class="merchandises">
-			<m-list  :height="listHeight"
+			<m-list
+				:height="listHeight"
 				:width="listwidth"
 				:list="merchandises"
 				:addMerchandiseToCart = "addCart"
@@ -27,7 +28,7 @@
 					title: "搜索商品",
 					search:"",
 					activityId: 0,
-	    			screenHeight: '',
+	    		screenHeight: '',
 					scrollTop: 0
 				};
 			},

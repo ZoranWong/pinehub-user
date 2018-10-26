@@ -6,12 +6,15 @@
     <location :position="position" ></location>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight"
+        <m-list
+         :height="listHeight"
          :width="listwidth"
-         :next="next" :list="merchandises"
+         :next="next"
+         :list="merchandises"
          :categoryId = "categoryId"
          :addMerchandiseToCart = "addCart"
-         :reduceMerchandiseToCart = "reduceCart" ></m-list>
+         :reduceMerchandiseToCart = "reduceCart" >
+       </m-list>
     </div>
     <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
         :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
@@ -28,8 +31,6 @@
   import Location from './Location';
   import Menus from './Menus';
   import Popup from './Popup';
-
-
   export default{
     data(){
       return{
@@ -119,11 +120,8 @@
    },
    mounted(){
       this.$command('GET_STORE_CATEGORIES_TO_MEUN');
-
    }
 }
-
-
 </script>
 
 <style scoped>

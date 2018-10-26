@@ -4,8 +4,16 @@
     <mp-swiper></mp-swiper>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :categoryId="categoryId"></m-list>
+        <m-list
+          :height="listHeight"
+          :width="listwidth"
+          model=""
+          :next="next"
+          :list="merchandises"
+          :addMerchandiseToCart = "addCart"
+          :reduceMerchandiseToCart = "reduceCart"
+          :categoryId="categoryId">
+        </m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"
     :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
@@ -82,8 +90,6 @@
           page);
       },
        menusChange : function (index) {
-        //this.$command('BACK_TO_VIEW_TOP');
-        this.scrollTop = 0;
         this.$command('CLEAR_MERCHANDISE', 'model.reserveShop.merchandises');
         this.$store.dispatch('model.reserveShop.merchandises/setCurrentCategory', {categoryIndex: index});
         this.loadMerchandises(1);
@@ -107,11 +113,8 @@
    },
    mounted(){
       this.$command('GET_CATEGORIES_TO_MEUN');
-      console.log(this.categoryId,"kkkkkkkkkkkkkkkkkkkkkkkkkkllllllllllllllllll")
    }
 }
-
-
 </script>
 
 <style scoped>
