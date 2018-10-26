@@ -10,7 +10,7 @@
 				:list="merchandises"
 				:addMerchandiseToCart = "addCart"
 				:reduceMerchandiseToCart = "reduceCart"
-				categoryId = "10001" >
+				categoryId = "search" >
       </m-list>
 		</div>
 	</div>

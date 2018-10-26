@@ -10,7 +10,7 @@
           :list="merchandises"
           :addMerchandiseToCart = "addCart"
           :reduceMerchandiseToCart = "reduceCart"
-          :categoryId="categoryId">
+          :categoryId="'store_merchandises_' + categoryId">
         </m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"

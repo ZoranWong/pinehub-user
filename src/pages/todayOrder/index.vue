@@ -10,7 +10,7 @@
          :width="listwidth"
          :next="next"
          :list="merchandises"
-         :categoryId = "categoryId"
+         :categoryId = "'today_order_merchandises_' + categoryId"
          :addMerchandiseToCart = "addCart"
          :reduceMerchandiseToCart = "reduceCart" >
        </m-list>
