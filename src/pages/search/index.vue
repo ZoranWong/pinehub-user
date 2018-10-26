@@ -8,9 +8,11 @@
 		<div class="merchandises">
 			<m-list
 				:list="merchandises"
+				:height = "screenHeight"
 				:addMerchandiseToCart = "addCart"
 				:reduceMerchandiseToCart = "reduceCart"
-				categoryId = "search" >
+				categoryId = "search"
+				:next = "next">
       </m-list>
 		</div>
 	</div>
@@ -26,7 +28,8 @@
 					title: "搜索商品",
 					search: null,
 					activityId: null,
-					storeId: null
+					storeId: null,
+					screenHeight: null
 				};
 			},
 			components: {
@@ -41,7 +44,8 @@
 		       	return this.$store.state['model.search.merchandises'].currentPage;
 		      }
 	    },
-   		mounted(){
+   		mounted() {
+					this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
 	   			this.searchMerchandise(this.search);
 	   	},
     	methods:{

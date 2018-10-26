@@ -6,8 +6,8 @@
         <menus @menusChange="menusChange"></menus>
         <m-list
           :width="listwidth"
-          :next="next"
-          :list="merchandises"
+          :next = "next"
+          :list = "merchandises"
           :addMerchandiseToCart = "addCart"
           :reduceMerchandiseToCart = "reduceCart"
           :categoryId="'store_merchandises_' + categoryId">
@@ -79,7 +79,6 @@
         this.isShow = false;
       },
       loadMerchandises(page) {
-        console.log('scrollTop number', this.scrollTop);
         this.$command('GET_MERCHANDISE_LIST',
          'model.reserveShop.merchandises/setList',
          'bookingMerchandises',

@@ -76,6 +76,7 @@
     },
     methods:{
       scrolltolower(e){
+        console.log('scrolltolower');
         let $this = this;
         if(this.timeout) {
           clearTimeout(this.timeout);
