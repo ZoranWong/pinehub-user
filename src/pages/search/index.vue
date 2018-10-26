@@ -7,12 +7,10 @@
 		</div>
 		<div class="merchandises">
 			<m-list
-				:height="listHeight"
-				:width="listwidth"
 				:list="merchandises"
 				:addMerchandiseToCart = "addCart"
 				:reduceMerchandiseToCart = "reduceCart"
-				categoryId = "search" >
+				categoryId = "10001" >
       </m-list>
 		</div>
 	</div>
@@ -26,10 +24,8 @@
 			data() {
 				return {
 					title: "搜索商品",
-					search:"",
-					activityId: 0,
-	    		screenHeight: '',
-					scrollTop: 0
+					search: null,
+					activityId: 0
 				};
 			},
 			components: {
@@ -45,8 +41,7 @@
 		      }
 	    },
    		mounted(){
-	   			console.log('搜索商品--index.vue')
-	   			this.$command('SEARCH_MERCHANDISES')
+	   			this.searchMerchandise(this.search);
 	   	},
     	methods:{
 				loadMerchandises(page, search){
@@ -56,7 +51,6 @@
 					this.categoryId,
 					page,
 					search);
-					console.log('加载', search)
 				},
 				next() {
 					this.loadMerchandises(this.currentPage  + 1, this.search);
@@ -71,7 +65,6 @@
 					this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
 				},
 				searchMerchandise(search){
-					this.scrollTop = 0;
 					this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
 					this.loadMerchandises(1, this.search);
 				}

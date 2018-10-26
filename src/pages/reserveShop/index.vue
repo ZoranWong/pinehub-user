@@ -5,9 +5,7 @@
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
         <m-list
-          :height="listHeight"
           :width="listwidth"
-          model=""
           :next="next"
           :list="merchandises"
           :addMerchandiseToCart = "addCart"
@@ -35,7 +33,7 @@
         isShow:false,
         isShowCart:true,
         activityId: 0,
-        screenHeight: ''
+        listwidth: '530rpx',
       }
     },
     components: {
@@ -67,7 +65,6 @@
         if(n && !o ) {
           this.loadMerchandises(1);
         }
-        console.log(this.categoryId,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
       }
    },
     methods:{
@@ -109,7 +106,6 @@
       }
     },
     created () {
-      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
    mounted(){
       this.$command('GET_CATEGORIES_TO_MEUN');

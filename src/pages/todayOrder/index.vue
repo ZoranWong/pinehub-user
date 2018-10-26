@@ -7,7 +7,6 @@
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
         <m-list
-         :height="listHeight"
          :width="listwidth"
          :next="next"
          :list="merchandises"
@@ -37,8 +36,7 @@
         isShow: true,
         isShowCart: true,
         listwidth: '530rpx',
-        title: "当日下单",
-        screenHeight: ''
+        title: "当日下单"
       };
     },
     components: {
@@ -114,9 +112,7 @@
       }
   },
    created(){
-      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
       this.$command('GET_NEAREST_STORE');
-
    },
    mounted(){
       this.$command('GET_STORE_CATEGORIES_TO_MEUN');
