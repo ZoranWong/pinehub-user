@@ -6,16 +6,16 @@
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
 		<div class="goods">
-			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises"
+			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises" :scrollTop = "scrollTop"
         		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" >
        		</m-list>
 		</div>
-		
+
 	</div>
 </template>
 
 <script>
-	
+
 	import MpTitle from '@/components/MpTitle';
 	import FoodsList from '@/components/FoodsList'
 	export default {
@@ -23,10 +23,11 @@
 			return {
 				title: "搜索商品",
 				search:"",
-				activityId: 0, 
-          		screenHeight: '',
-          		result:null
-				}
+				activityId: 0,
+    		screenHeight: '',
+    		result:null,
+				scrollTop: 0
+			};
 		},
 		components: {
 			'mp-title': MpTitle,
@@ -41,39 +42,39 @@
 	       console.log(page, "当前页数")
 	       return page;
 	      }
-     
+
     },
     watch:{
     },
     methods:{
-		loadMerchandises(page, search){
-			this.$command('GET_MERCHANDISE_LIST',
-			'model.search.merchandises/setList',
-			'today', 
-			this.categoryId,
-			this.merchandiseId,
-			page, search);
-			console.log('加载', search)  
-		},
-		next() {
-			this.loadMerchandises(this.currentPage  + 1, this.search);   
-		},
-		addCart(shopId, count,  merchandiseId){
-			this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-		}, 
-		reduceCart(shopId, count, merchandiseId){
-			this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-		},
-		emptyCart(storeId){
-			this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
-		},
-		searchMerchandise(search){
-			this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
-			this.loadMerchandises(1, this.search);
-		}
+			loadMerchandises(page, search){
+				this.$command('GET_MERCHANDISE_LIST',
+				'model.search.merchandises/setList',
+				'today',
+				this.categoryId,
+				this.merchandiseId,
+				page, search);
+				console.log('加载', search)
+			},
+			next(scrollTop) {
+				this.scrollTop = scrollTop;
+				this.loadMerchandises(this.currentPage  + 1, this.search);
+			},
+			addCart(shopId, count,  merchandiseId){
+				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+			},
+			reduceCart(shopId, count, merchandiseId){
+				this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+			},
+			emptyCart(storeId){
+				this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+			},
+			searchMerchandise(search){
+				this.scrollTop = 0;
+				this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
+				this.loadMerchandises(1, this.search);
+			}
   	}
- 
-		
 	}
 </script>
 
@@ -94,7 +95,7 @@
 		top:20rpx;
 		left:20rpx;
 		z-index: 33;
-		
+
 	}
 	.search-input{
 		width:560rpx;

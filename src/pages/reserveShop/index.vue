@@ -4,10 +4,10 @@
     <mp-swiper></mp-swiper>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
-        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" ></m-list>
+        <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises"
+        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :scrollTop = "scrollTop" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"  
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"
     :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
@@ -26,8 +26,9 @@
         title:"预定商城",
         isShow:false,
         isShowCart:true,
-        activityId: 0, 
+        activityId: 0,
         screenHeight: '',
+        scrollTop: 0
       }
     },
     components: {
@@ -37,7 +38,7 @@
       'm-list': FoodsList,
       'cart': Cart,
       "mp-title": MpTitle,
-      
+
    },
     computed: {
       merchandises(){
@@ -55,12 +56,11 @@
       }
    },
    watch: {
-
      categoryId(n, o) {
         if(n && !o ) {
           this.loadMerchandises(1);
         }
-      },
+      }
    },
     methods:{
       hdlShowCart:function(){
@@ -74,28 +74,31 @@
         this.isShow = false;
       },
       loadMerchandises(page) {
+        console.log('scrollTop number', this.scrollTop);
         this.$command('GET_MERCHANDISE_LIST',
-         'model.reserveShop.merchandises/setList', 
+         'model.reserveShop.merchandises/setList',
          'bookingMerchandises',
-          this.categoryId, 
-          page); 
-          // console.log('加载',  this.categoryId, page)  
+          this.categoryId,
+          page);
       },
        menusChange : function (index) {
+        //this.$command('BACK_TO_VIEW_TOP');
+        this.scrollTop = 0;
         this.$command('CLEAR_MERCHANDISE', 'model.reserveShop.merchandises');
         this.$store.dispatch('model.reserveShop.merchandises/setCurrentCategory', {categoryIndex: index});
         this.loadMerchandises(1);
       },
-      next() {
-        this.loadMerchandises(this.currentPage + 1);               
+      next(scrollTop) {
+        this.scrollTop = scrollTop;
+        this.loadMerchandises(this.currentPage + 1);
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-  
+
       },
       reduceCart(shopId, count, merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-      },    
+      },
       emptyCart(storeId){
         this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
       }
@@ -103,7 +106,7 @@
     created () {
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    },
-   mounted(){        
+   mounted(){
       this.$command('GET_CATEGORIES_TO_MEUN');
    }
 }

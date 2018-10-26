@@ -1,5 +1,6 @@
 <template>
-  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" @scrolltolower="scrolltolower" >
+  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" :scroll-top = "top"
+  @scrolltolower="scrolltolower" @scroll = "scroll">
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-left fl">
           <img class="merchandises-pic" :src="item.thumbImage">
@@ -26,6 +27,10 @@
   import Cart from '@/components/Cart'
 	export default{
     props: {
+      scrollTop: {
+        default: 0,
+        type: Number
+      },
       addMerchandiseToCart:{
         default: null,
         type: Function
@@ -53,36 +58,42 @@
     },
 		data(){
 			return {
-         pageCount: 15
+         pageCount: 15,
+         top: 0
       };
 		},
     components:{
       'cart-control':CartControl,
       'cart':Cart,
     },
-    
+
    created(){
       // this.next();
    },
     methods:{
-      scrolltolower(){
-        // console.log('next page');
-        this.next();
+      scrolltolower(e){
+        if(this.top > 0) {
+          this.next(this.top);
+        }
       },
       scroll(e) {
-        console.log(e)
+        if(e.mp.detail.scrollTop > 0) {
+          this.top = e.mp.detail.scrollTop;
+        }
       },
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
-      reduceCart(id, count, shopId){        
+      reduceCart(id, count, shopId){
         this.reduceMerchandiseToCart( shopId, count, id);
       }
     },
     watch:{
-      width:function(val) {
+      scrollTop(n, o) {
        // console.log(val)
-
+        if(n === 0 && o > 0) {
+          this.top = 0;
+        }
       }
     }
 
@@ -107,8 +118,8 @@
   overflow-y: auto;
 }
 .foods-wrapper::-webkit-scrollbar {
-  width: 1px; 
-  background-color: rgba(217,217,217,0.3); 
+  width: 1px;
+  background-color: rgba(217,217,217,0.3);
 }
 
 .foods-item{
@@ -140,7 +151,7 @@
  width: 46%;
  height: 100%;
  line-height: 40rpx;
- 
+
 }
 .foods-item-right h4{
   font-size:32rpx;
