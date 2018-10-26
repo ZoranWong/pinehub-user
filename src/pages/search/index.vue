@@ -17,7 +17,7 @@
 <script>
 
 	import MpTitle from '@/components/MpTitle';
-	import FoodsList from '@/components/FoodsList'
+	import FoodList from '@/components/FoodList'
 	export default {
 		data() {
 			return {
@@ -31,7 +31,7 @@
 		},
 		components: {
 			'mp-title': MpTitle,
-			'm-list': FoodsList,
+			'm-list': FoodList,
 		},
 		computed: {
 	      merchandises(){
@@ -52,8 +52,8 @@
 				'model.search.merchandises/setList',
 				'today',
 				this.categoryId,
-				this.merchandiseId,
-				page, search);
+				page,
+				search);
 				console.log('加载', search)
 			},
 			next() {

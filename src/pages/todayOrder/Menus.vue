@@ -16,10 +16,10 @@
 
 
 <script>
-   import FoodsList from '@/components/FoodsList';
+  import FoodList from '@/components/FoodList';
   export default {
     components : {
-       'm-list': FoodsList,
+       'm-list': FoodList,
     },
     data () {
       return {
@@ -34,7 +34,7 @@
     },
     methods : {
       tabSelect (id, index ) {
-        this.cur = index;      
+        this.cur = index;
         this.$emit('menusChange', index);
       },
       jump(router){
@@ -82,7 +82,7 @@
   font-weight:400;
   box-sizing: border-box;
   box-shadow: 4rpx 0rpx 10rpx rgba(205,205,205,0.3);
- 
+
 }
 
 #tab_select ul li .category-name{
@@ -91,7 +91,7 @@
   line-height: 40rpx;
   margin-top:7px;
 }
-  
+
 #tab_select ul li.tab_select_now {
   color: #FECE00;
   border-left:6rpx solid #fece00;
@@ -104,5 +104,5 @@
 }
 .tab_content_now {
   display: block;
-} 
+}
 </style>
