@@ -7,7 +7,7 @@ import MyInfoCommand from '@/commands/MyInfoCommand';
 import MyInfo from "@/models/MyInfo";
 const my = new Application(App, 'my');
 my.run((app) => {
-	app.models.addModel('model.my.info', MyInfo);
+	app.registerModel('model.my.info', MyInfo);
 	app.register('http.myInfo', MyInfoService);
 	app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
 }, (mountComponent) => {

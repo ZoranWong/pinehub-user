@@ -12,15 +12,11 @@ import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
 import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
-	if(app.models) {
-		app.registerModel('model.activity.merchandises', Merchandises);
-		// app.registerModel('model.categories', Categories);
-	}
+  app.registerModel('model.activity.merchandises', Merchandises);
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
 	app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
 	app.registerCommand(ReduceMerchandiseCommand.commandName(),ReduceMerchandiseCommand);
 	app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand);
-
 },function(mountComponent) {
 	 _.extend(App,mountComponent);
 	 const app = new Vue(App);

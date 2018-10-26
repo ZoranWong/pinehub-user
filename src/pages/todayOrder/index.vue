@@ -23,7 +23,7 @@
 <script>
   import MpTitle from '@/components/MpTitle';
   import Swiper from '@/components/Swiper';
-  import FoodsList from '@/components/FoodsList';
+  import MerchandiseList from '@/components/MerchandiseList';
   import Cart from '@/components/Cart';
   import Location from './Location';
   import Menus from './Menus';
@@ -45,7 +45,7 @@
       'mp-swiper': Swiper,
       'location': Location,
       'menus': Menus,
-      'm-list': FoodsList,
+      'm-list': MerchandiseList,
       'cart': Cart,
       'mp-title': MpTitle,
    },
@@ -90,7 +90,6 @@
           'today',
           this.storeId,
           this.categoryId,
-          this.merchandiseId,
           page);
       },
       menusChange : function (index) {
@@ -100,6 +99,7 @@
         this.loadMerchandises(1);
       },
       next() {
+        console.log('current page', this.currentPage);
         this.loadMerchandises(this.currentPage  + 1);
       },
       addCart(shopId, count,  merchandiseId){

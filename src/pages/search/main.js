@@ -20,19 +20,19 @@ const application = new Application(App, 'today.merchandises');
 application.run(function(app) {
 	if(app.models) {
 		app.registerModel('model.search.merchandises', Merchandises);
-		app.models.addModel('model.storeCategories',StoreCategories);
+		app.registerModel('model.storeCategories',StoreCategories);
 	}
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
     app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
     app.registerCommand(ReduceMerchandiseCommand.commandName(),ReduceMerchandiseCommand);
     app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand);
     app.registerCommand(ClearMerchandiseCommand.commandName(),ClearMerchandiseCommand);
-    
+
     app.registerCommand(GetStoreCategoriesCommand.commandName(),GetStoreCategoriesCommand);
-  
+
     app.register('http.storeCategories',StoreCategoriesService);
 
-  
+
 },function(mountComponent) {
  _.extend(App,mountComponent);
  const app = new Vue(App);

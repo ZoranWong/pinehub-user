@@ -19,10 +19,10 @@ const application = new Application(App, 'shop.merchandises');
 application.run(function(app) {
 
 	if(app.models) {
-		app.models.addModel('model.reserveShop.merchandises', Merchandises);
-		app.models.addModel('model.categories', Categories);
-		
-	}	
+		app.registerModel('model.reserveShop.merchandises', Merchandises);
+		app.registerModel('model.categories', Categories);
+
+	}
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
     app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
     app.registerCommand(ReduceMerchandiseCommand.commandName(),ReduceMerchandiseCommand);
@@ -30,9 +30,9 @@ application.run(function(app) {
 
     app.registerCommand(GetCategoriesCommand.commandName(),GetCategoriesCommand);
     app.registerCommand(ClearMerchandiseCommand.commandName(),ClearMerchandiseCommand);
-    
+
     app.register('http.categories',CategoriesService);
-   
+
 
 },function(component) {
 	_.extend(App, component);
@@ -40,5 +40,3 @@ application.run(function(app) {
 	app.$mount();
  	return app;
 });
-
-
