@@ -5,12 +5,15 @@
 			<input class="search-input  fl" type="text" v-model="search" placeholder="请输入商品名称">
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
-		<div class="goods">
-			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises"
-        		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" categoryId="search" >
-       		</m-list>
+		<div class="merchandises">
+			<m-list  :height="listHeight"
+				:width="listwidth"
+				:list="merchandises"
+				:addMerchandiseToCart = "addCart"
+				:reduceMerchandiseToCart = "reduceCart"
+				categoryId = "search" >
+      </m-list>
 		</div>
-
 	</div>
 </template>
 
@@ -38,9 +41,7 @@
 	        return this.$store.getters['model.search.merchandises/list'];
 	      },
 	      currentPage () {
-	       let page = this.$store.state['model.search.merchandises'].currentPage;
-	       console.log(page, "当前页数")
-	       return page;
+	       	return this.$store.state['model.search.merchandises'].currentPage;
 	      }
 
     },
@@ -111,7 +112,7 @@
 		margin: 14rpx 40rpx 14rpx 0rpx;
 
 	}
-	.goods{
+	.merchandises{
 
 		margin-top: 70rpx;
 	}
