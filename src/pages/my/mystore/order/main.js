@@ -7,7 +7,7 @@ import GatherOrderCommand from '@/commands/GatherOrderCommand';
 import GatherOrder from "@/models/GatherOrder";
 const gathOrder = new Application(App, 'gather.orders');
 gathOrder.run((app) => {
-	app.models.addModel('model.gather.orders', GatherOrder);
+	app.registerModel('model.gather.orders', GatherOrder);
 	app.register('http.gatherOrder', GatherOrderService);
 	app.registerCommand(GatherOrderCommand.commandName(), GatherOrderCommand);
 }, (mountComponent) => {

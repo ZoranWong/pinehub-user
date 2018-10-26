@@ -4,11 +4,11 @@ export default class MyOrder extends Mock {
 		super(application);
 		this.total = 12;
 	}
-	data(status, page = 1, search = null, limit = 20) {
+	data(status, page = 1, limit = 15) {
 		return {
 			"data|12": [{
 				"id|+1": 1,
-				"code": "123321138",
+				"code|+1": parseInt(Math.random() *100000),
 				"type": this.mockMethod('integer', 0, 4),
 				"merchandies_num": 6,
 				"payment_amount": 12,

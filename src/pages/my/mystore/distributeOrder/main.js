@@ -7,7 +7,7 @@ import DistributeOrderCommand from '@/commands/DistributeOrderCommand';
 import DistributeOrder from "@/models/DistributeOrder";
 const disOrder = new Application(App, 'distribute.orders');
 disOrder.run((app) => {
-	app.models.addModel('model.distribute.orders', DistributeOrder);
+	app.registerModel('model.distribute.orders', DistributeOrder);
 	app.register('http.distributeOrder', DistributeOrderService);
 	app.registerCommand(DistributeOrderCommand.commandName(), DistributeOrderCommand);
 }, (mountComponent) => {

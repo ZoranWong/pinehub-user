@@ -9,12 +9,13 @@ export default class SelfextraOrderCommand extends Command {
 	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.selfextraOrder').list(stratTime, endTime, page);
 	    //console.log('com-good',[ list, totalNum, currentPage, totalPage]);
 		this.store().dispatch({
-			type: 'model.extra.orders/extraOrders',
+			type: 'model.extra.orders/setOrders',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
 			totalPage: totalPage,
-			pageCount: limit
+			pageCount: limit,
+			status: 'all'
 		});
 	}
 	static commandName() {

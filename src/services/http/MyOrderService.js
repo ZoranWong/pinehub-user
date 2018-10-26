@@ -4,13 +4,13 @@ export default class MyOrderService extends Service {
 		super($application);
 	}
 	//获取订单列表
-	async list(status = "all", page = 1, limit = 15) {
+	async list(status, page = 1, limit = 15) {
+		console.log("--------------------------------")
 		let orders = null;
 		let totalNum = 0;
 		let totalPage = 0;
 		let currentPage = 0;
 		let response = null;
-
 		if(this.$application.needMock()) {
 			response = await this.services('mock.myOrders').mock(status, page, limit);	
 		} else {
@@ -25,7 +25,9 @@ export default class MyOrderService extends Service {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
+		console.log(pagination,"yemiammmmmmmm")
 		return [orders, totalNum, currentPage, totalPage];
+		
 	}
 	
 	async x() {

@@ -72,15 +72,14 @@
 						this.statusType = "all";
 						break;
 				}
-				console.log(num);
-			} 
+				this.$command('BACK_TO_VIEW_TOP'); 
+			}
 		},
 		mounted() {
 //			this.$command('my-orders');
 		},
 		created() {
 			this.nowCom = "card";
-			
 		}
 	}
 </script>
@@ -99,19 +98,19 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-	
-	
-	
-	
+
+
+
+
 	#footNav_height {
 		height: 109rpx;
 	}
-	
+
 </style>

@@ -1,39 +1,40 @@
 <template>
-	<div id="tab_content_main">
-		<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
-			<div class="order_info_sn">
-				<i>订单编号</i><em>{{orderList.code}}</em>
-				<span class="order_info_status">{{orderList.status}}</span>
-			</div>
-			<div class="order_info_glist">
-				<dl v-for="(items,ind) in orderList.orderItems" :key ="ind">
-					<dd><img :src="items.mainImage"/></dd>
-					<dt>
-						<em>{{items.name}}</em>
-						<span>单价 ￥{{items.sellPrice}} 数量 {{items.quality}} 份</span>
-						<span>总价 ￥{{items.totalAmount}}</span>
-					</dt> 
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<i>自提地址</i>
-				<em>{{orderList.reveiverAddress}}</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					{{orderList.createdAt}}
+	<scroll-view  class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="flag" :scroll-top="topNum" @scrolltolower="scrolltolower" >
+		<div id="tab_content_main">
+			<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
+				<div class="order_info_sn">
+					<i>订单编号</i><em>{{orderList.code}}</em>
+					<span class="order_info_status">{{orderList.status}}</span>
 				</div>
-				<em>共{{orderList.quality}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
-			</div>
-			<div class="order_info_btn" v-if="orderList.status=='待支付'">
-				<i>立即支付</i>
-				<i class="delete">取消订单</i>
-			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
+				<div class="order_info_glist">
+					<dl v-for="(items,ind) in orderList.orderItems" :key ="ind">
+						<dd><img :src="items.mainImage"/></dd>
+						<dt>
+							<em>{{items.name}}</em>
+							<span>单价 ￥{{items.sellPrice}} 数量 {{items.quality}} 份</span>
+							<span>总价 ￥{{items.totalAmount}}</span>
+						</dt> 
+					</dl>
+				</div>
+				<div class="order_info_ads">
+					<i>自提地址</i>
+					<em>{{orderList.reveiverAddress}}</em>
+				</div>
+				<div class="order_info_glist_total">
+					<div class="order_info_glist_date">
+						{{orderList.createdAt}}
+					</div>
+					<em>共{{orderList.quality}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
+				</div>
+				<div class="order_info_btn" v-if="orderList.status=='待支付'">
+					<i>立即支付</i>
+					<i class="delete">取消订单</i>
+				</div>
+				<i class="order_info_circle"></i>
+				<i class="order_info_circle right_circle"></i>
+			</div>	
 		</div>
-		
-	</div>
+	</scroll-view>
 </template>
 
 <script>
@@ -48,6 +49,10 @@
 				default:"",
 				type: Function
 			},
+			next:{
+				default: null,
+				type: Function
+			},
 			myorderList:{
 				default:"",
 				type:Function 
@@ -56,7 +61,9 @@
 		data() {
 			return {
 				orderList: {},
-				myorderList:{} 
+				myorderList:{},
+				topNum:0,
+				flag:true
 			};
 		},
 		//算术方法
@@ -64,21 +71,35 @@
 
 		},
 		methods: {
+			scrolltolower(){
+		        console.log('next page',"111111111111111111111111111111111");
+		        this.next();
+		   },
+		   	scroll(e){
+		   		console.log(e,"tttttttttttttttttttt")
+//		   		this.topNum=e.mp.detail.scrollTop
+//              this.flag=false
+		   	}
 		},
 
 		watch: {
 			status(v) {
+				 this.flag=true
 				 console.log(v)
 				 this.status=v
+				 this.topNum=0
+				 
+//				 this.myorderList="";
+//				 this.myorderList=this.$store.getters['model.my.orders/lists'];
 			}
 		},
 		created() {
+			var a=this.status
 			this.loadOrders(this.status); 	
 		},
 		mounted() {
-			
 			//this.$command('my-orders');
-			this.loadOrders("all");
+			//this.loadOrders("all");
 		},
 		updated(){
 //			console.log(this.myorderList[0],"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")

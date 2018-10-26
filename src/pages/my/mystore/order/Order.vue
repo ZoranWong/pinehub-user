@@ -1,67 +1,69 @@
 <template>
-	<div id="tab_content_main">
-		<div class="order_info" v-for="(gathitem,index) in gathOrders" :key="index">
-			<div class="order_info_header">
-				<ul>
-					<li>状态</li>
-					<li>销售指数</li>
-					<li>订单编号</li>
-					<li>订单金额</li>
-					<li>实付金额</li>
-				</ul>
-			</div>
-			<div class="order_info_nowstatus">
-				<ul>
-					<li>配送中</li>
-					<li>{{gathitem.sellPoint}}</li>
-					<li>{{gathitem.code}}</li>
-					<li>{{gathitem.totalAmount}}</li>
-					<li>{{gathitem.paymentAmount}}</li>
-				</ul>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/images/ewm.png" /></dd>
-					<dt>
-						<div class="order_info_glist_title">
-							<ul>
-								<li>产品名称</li>
-								<li>数量</li>
-								<li>单价</li>
-							</ul>
-						</div>
-						<div class="order_info_glist_list">
-							<ul>
-								<li v-for="(item,idx) in gathitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
-							</ul>
-						</div>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<em>{{gathitem.receiverAddress}}</em>
-			</div>
-			<div class="order_info_glist_total">
-				<div class="order_info_glist_date">
-					{{datetime}}
-				</div>
-				总计<i>￥{{gathitem.totalAmount}}</i>
-			</div>
-			<div class="order_info_footer">
-				<div class="order_info_footer_left">
+	<scroll-view  class="foods-wrapper" style="height:500px;" :scroll-y="true" @scrolltolower="scrolltolower" >
+		<div id="tab_content_main">
+			<div class="order_info" v-for="(gathitem,index) in gathOrders" :key="index">
+				<div class="order_info_header">
 					<ul>
-						<li>卡券使用:无</li>
-						<li>优惠活动:{{gathitem.reduceCost}}</li>
+						<li>状态</li>
+						<li>销售指数</li>
+						<li>订单编号</li>
+						<li>订单金额</li>
+						<li>实付金额</li>
 					</ul>
 				</div>
-				<div class="order_info_footer_right">
-					实付:<em>￥{{gathitem.paymentAmount}}</em>
+				<div class="order_info_nowstatus">
+					<ul>
+						<li>配送中</li>
+						<li>{{gathitem.sellPoint}}</li>
+						<li>{{gathitem.code}}</li>
+						<li>{{gathitem.totalAmount}}</li>
+						<li>{{gathitem.paymentAmount}}</li>
+					</ul>
 				</div>
+				<div class="order_info_glist">
+					<dl>
+						<dd><img src="/static/images/ewm.png" /></dd>
+						<dt>
+							<div class="order_info_glist_title">
+								<ul>
+									<li>产品名称</li>
+									<li>数量</li>
+									<li>单价</li>
+								</ul>
+							</div>
+							<div class="order_info_glist_list">
+								<ul>
+									<li v-for="(item,idx) in gathitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+								</ul>
+							</div>
+						</dt>
+					</dl>
+				</div>
+				<div class="order_info_ads">
+					<em>{{gathitem.receiverAddress}}</em>
+				</div>
+				<div class="order_info_glist_total">
+					<div class="order_info_glist_date">
+						{{datetime}}
+					</div>
+					总计<i>￥{{gathitem.totalAmount}}</i>
+				</div>
+				<div class="order_info_footer">
+					<div class="order_info_footer_left">
+						<ul>
+							<li>卡券使用:无</li>
+							<li>优惠活动:{{gathitem.reduceCost}}</li>
+						</ul>
+					</div>
+					<div class="order_info_footer_right">
+						实付:<em>￥{{gathitem.paymentAmount}}</em>
+					</div>
+				</div>
+				<i class="order_info_circle"></i>
+				<i class="order_info_circle right_circle"></i>
 			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
 		</div>
-	</div>
+	</scroll-view>
 </template>
 
 <script>
@@ -85,6 +87,10 @@
 				default:"",
 				type:Function
 			},
+			next:{
+				default: null,
+				type: Function
+			},
 			datetime:"",
 			startTime:"",
 			endTime:"",
@@ -92,7 +98,10 @@
 			types:""
 		},
 		methods: {
-
+            scrolltolower(){
+		         console.log('next page',"11111111111111122222222222222222");
+		        this.next();
+		    }
 		},
 		watch:{
 			startTime(v){
@@ -106,12 +115,12 @@
 			},
 			types(t){
 				this.types=t
-//				console.log(t,"ffffff")
+				console.log(t,"ffffff")
 			}
 		},
 		created() {
 			console.log(this.startTime,this.endTime,this.status)
-            this.loadOrders(this.startTime,this.endTime,this.types,this.status)
+//        this.loadOrders(this.startTime,this.endTime,this.types,this.status)
 		},
 		updated(){
 //			console.log(this.gathOrders[0])

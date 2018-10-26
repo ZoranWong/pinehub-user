@@ -6,20 +6,24 @@
     <location :position="position" ></location>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></m-list>
+        <m-list  :height="listHeight"
+         :width="listwidth"
+         :next="next" :list="merchandises"
+         :categoryId = "categoryId"
+         :addMerchandiseToCart = "addCart"
+         :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
     <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
         :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
     <popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
-    
+
   </div>
 </template>
 
 <script>
   import MpTitle from '@/components/MpTitle';
   import Swiper from '@/components/Swiper';
-  import FoodsList from '@/components/FoodsList';
+  import MerchandiseList from '@/components/MerchandiseList';
   import Cart from '@/components/Cart';
   import Location from './Location';
   import Menus from './Menus';
@@ -29,20 +33,19 @@
   export default{
     data(){
       return{
-        isShow:true,
-        isShowCart:true,
-        listwidth:'530rpx',
-        title:"当日下单",
-        screenHeight: '',
-        categoryIndex:null,
-      }
+        isShow: true,
+        isShowCart: true,
+        listwidth: '530rpx',
+        title: "当日下单",
+        screenHeight: ''
+      };
     },
     components: {
       'popup': Popup,
       'mp-swiper': Swiper,
       'location': Location,
       'menus': Menus,
-      'm-list': FoodsList,
+      'm-list': MerchandiseList,
       'cart': Cart,
       'mp-title': MpTitle,
    },
@@ -54,17 +57,19 @@
        let page = this.$store.state['model.today.merchandises'].currentPage;
        return page;
       },
-      storeCategoryId(){
-        // console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
+      categoryId(){
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
+      },
+      categoryIndex() {
+        return this.$store.getters['model.reserveShop.merchandises/currentCategoryIndex'];
       }
-     
     },
     watch:{
-     storeCategoryId(){
-      this.loadMerchandises(1);
-      console.log(this.loadMerchandises(1),"loadMerchandises")
-     }
+      categoryId(n, o) {
+         if(n && !o ) {
+           this.loadMerchandises(1);
+         }
+       },
     },
     methods:{
       jump(router){
@@ -81,24 +86,25 @@
       },
       loadMerchandises(page){
         this.$command('GET_MERCHANDISE_LIST',
-        'model.today.merchandises/setList',
-        'today', 
-        this.storeId, 
-        this.categoryId,
-        this.merchandiseId,
-        page);
-        // console.log('加载',  this.categoryId)  
+          'model.today.merchandises/setList',
+          'today',
+          this.storeId,
+          this.categoryId,
+          page);
       },
       menusChange : function (index) {
-        this.index = index;
-        this.loadMerchandises(this.currentPage  + 1);
+        this.scrollTop = 0;
+        this.$command('CLEAR_MERCHANDISE', 'model.today.merchandises');
+        this.$store.dispatch('model.today.merchandises/setCurrentCategory', {categoryIndex: index});
+        this.loadMerchandises(1);
       },
       next() {
-        this.loadMerchandises(this.currentPage  + 1);   
+        console.log('current page', this.currentPage);
+        this.loadMerchandises(this.currentPage  + 1);
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-      }, 
+      },
       reduceCart(shopId, count, merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },
@@ -113,7 +119,7 @@
    },
    mounted(){
       this.$command('GET_STORE_CATEGORIES_TO_MEUN');
-    
+
    }
 }
 

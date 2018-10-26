@@ -1,61 +1,63 @@
 <template>
-	<div id="tab_content_main">
-		<div class="order_info" v-for="(distributeitem,index) in disOrder" :key="index">
-			<div class="order_info_select">
-				<i class="selected_order"></i>
-			</div>
-			<div class="order_info_header">
-				<ul>
-					<li>状态</li>
-					<li>楼号</li>
-					<li>房号</li>
-					<li>订单编号</li>
-					<li>联系电话</li>
-				</ul>
-			</div>
-			<div class="order_info_nowstatus">
-				<ul>
-					<li>{{distributeitem.status}}</li>
-					<li>{{distributeitem.buildNum}}</li>
-					<li>{{distributeitem.roomNum}}</li>
-					<li>{{distributeitem.code}}</li>
-					<li>{{distributeitem.reveiverMobile}}</li>
-				</ul>
-			</div>
-			<div class="order_info_glist">
-				<dl>
-					<dd><img src="/static/images/ewm.png" /></dd>
-					<dt>
-						<div class="order_info_glist_title">
-							<ul>
-								<li>产品名称</li>
-								<li>数量</li>
-								<li>单价</li>
-							</ul>
-						</div>
-						<div class="order_info_glist_list">
-							<ul>
-								<li v-for="(item,idx) in distributeitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
-							</ul>
-						</div>
-					</dt>
-				</dl>
-			</div>
-			<div class="order_info_ads">
-				<em>地点:{{distributeitem.receiverAddress}}</em>
-			</div>
-			<div class="order_info_footer">
-				<div class="order_info_footer_left">
-					{{datetime}}
+	<scroll-view  class="foods-wrapper" style="height:700px;" :scroll-y="true" @scrolltolower="scrolltolower" >
+		<div id="tab_content_main">
+			<div class="order_info" v-for="(distributeitem,index) in disOrder" :key="index">
+				<div class="order_info_select">
+					<i class="selected_order"></i>
 				</div>
-				<div class="order_info_footer_right">
-					实付:<em>￥{{distributeitem.totalAmount}}</em>
+				<div class="order_info_header">
+					<ul>
+						<li>状态</li>
+						<li>楼号</li>
+						<li>房号</li>
+						<li>订单编号</li>
+						<li>联系电话</li>
+					</ul>
 				</div>
+				<div class="order_info_nowstatus">
+					<ul>
+						<li>{{distributeitem.status}}</li>
+						<li>{{distributeitem.buildNum}}</li>
+						<li>{{distributeitem.roomNum}}</li>
+						<li>{{distributeitem.code}}</li>
+						<li>{{distributeitem.reveiverMobile}}</li>
+					</ul>
+				</div>
+				<div class="order_info_glist">
+					<dl>
+						<dd><img src="/static/images/ewm.png" /></dd>
+						<dt>
+							<div class="order_info_glist_title">
+								<ul>
+									<li>产品名称</li>
+									<li>数量</li>
+									<li>单价</li>
+								</ul>
+							</div>
+							<div class="order_info_glist_list">
+								<ul>
+									<li v-for="(item,idx) in distributeitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+								</ul>
+							</div>
+						</dt>
+					</dl>
+				</div>
+				<div class="order_info_ads">
+					<em>地点:{{distributeitem.receiverAddress}}</em>
+				</div>
+				<div class="order_info_footer">
+					<div class="order_info_footer_left">
+						{{datetime}}
+					</div>
+					<div class="order_info_footer_right">
+						实付:<em>￥{{distributeitem.totalAmount}}</em>
+					</div>
+				</div>
+				<i class="order_info_circle"></i>
+				<i class="order_info_circle right_circle"></i>
 			</div>
-			<i class="order_info_circle"></i>
-			<i class="order_info_circle right_circle"></i>
 		</div>
-	</div>
+	</scroll-view>
 </template>
 
 <script>
@@ -71,6 +73,10 @@
 				default:"",
 				type: Function
 			},
+			next:{
+				default: null,
+				type: Function
+			},
 			disOrder:{
 				default:"",
 				type:Function
@@ -80,7 +86,10 @@
 			endTime:""
 		},
 		methods: {
-
+            scrolltolower(){
+		         console.log('next page',"111111111111111111111111111111111");
+		        this.next();
+		    }
 		},
 		watch:{
 			startTime(v){
