@@ -5,7 +5,9 @@
 			<input class="search-input  fl" type="text" v-model="search" placeholder="请输入商品名称">
 			<i class="search-icon fr"></i>
 		</div>
-		<!-- <m-list  :height="listHeight" :width="listwidth" :next="next" :list="merchandises"   ></m-list> -->
+		 <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
+        :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></m-list>
+    </div>
 	</div>
 </template>
 
@@ -29,23 +31,15 @@
 		},
 		computed: {
      	 	merchandises(){
-        		return this.$store.getters['model.activity.merchandises/list'];
+        		return this.$store.getters['model.search.merchandises/list'];
       		}
    		},
-		// computed: {
-  //    	 	merchandises(){
-  //       		return this.$store.getters['model.activity.merchandises/list'];
-  //     		}
-  //  		},
-  //  		methods:{
-  //     		next() {
-  //       		this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
-  //     		}
-  // 		 },
-	 //   created () {
-	    
-	 //    	this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
-	 //   	},
+   		methods:{
+   		 	next() {
+        		this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+   			}
+
+      },
 	   mounted(){
 	   	console.log('搜索商品--index.vue')
 	   	this.$command('SEARCH_MERCHANDISES')

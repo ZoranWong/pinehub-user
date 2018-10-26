@@ -81,7 +81,7 @@
         this.loadMerchandises(this.currentPage  + 1);
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);               
+        this.$command('GET_MERCHANDISE_LIST');               
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);

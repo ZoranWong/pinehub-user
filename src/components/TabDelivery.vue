@@ -22,7 +22,6 @@
 				配送时间
 				<p class="details-item">
 				 	<picker @change="bindPickerChange" :value="index" :range="timesArray">
-     		 			 当天 
      		 			<span class="picker">
         				    {{timesArray[index]}}
         				    <i class="inverted-triangle"></i>
@@ -61,7 +60,7 @@
 		data(){
 			return{
 				index: 0,
-      			timesArray: ['7:00-9:00','11:00-13:00','17:00-19:00'],
+      			timesArray: ['7:00 - 9:00','11:00 - 13:00','17:00 - 19:00'],
        			tabs:[{
        				id:1,
        				txt:"送到"
