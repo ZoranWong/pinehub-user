@@ -5,10 +5,10 @@ export default class ReduceMerchandiseCommand extends Command {
   }
 
   async handle(merchandiseId, count, shopId = null) {
-    console.log("reducecommand-id")
-    let [ id, name, quality,sellPrice, delete_count, totalAmount]= await this.service('http.merchandises').reduceMerchandises( merchandiseId, shopId, count );
+    //console.log("reducecommand-id")
+    let [ id, name, quality,sellPrice, delete_count, totalAmount,  thumbImage ]= await this.service('http.merchandises').reduceMerchandises( merchandiseId, shopId, count );
     // console.log(id,  name, quality, delete_count, totalAmount, merchandiseId, storeId);
-    console.log("reducecommand-id",count)
+    //console.log("reducecommand-id",count)
 
     if(typeof id !== 'undefined') {
       this.store().dispatch('model.shoppingCarts/reduce', {
@@ -18,7 +18,8 @@ export default class ReduceMerchandiseCommand extends Command {
         name: name,
         sellPrice: sellPrice,
         totalAmount: totalAmount,
-        shopId:shopId
+        shopId:shopId,
+        thumbImage:thumbImage
       })
     }else{
       //this.service('popup').toast(delete_count, 'none')

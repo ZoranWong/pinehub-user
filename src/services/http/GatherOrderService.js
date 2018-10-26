@@ -5,7 +5,6 @@ export default class GatherOrderService extends Service {
 	}
 	//获取订单列表
 	async list(startTime, endTime, type, status, page) {
-		console.log('service--------------', startTime, endTime, type, status, page);
 		let distributeorders = null;
 		let totalNum = 0;
 		let totalPage = 0;
@@ -13,9 +12,9 @@ export default class GatherOrderService extends Service {
 		let gathorders = null;
 		let response = null;
 		if(this.$application.needMock()) {
-			console.log('service-mock----------');
+			//console.log('service-mock----------');
 			response = await this.services('mock.gatherOrder').mock(startTime, endTime, type, status, page);
-			console.log('response--------',response);
+			//console.log('response--------',response);
 		} else {
 			response = await this.httpGet(`/store/orders/summary`, {
 				paid_start_time: startTime,

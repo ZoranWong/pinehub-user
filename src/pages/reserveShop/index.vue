@@ -7,7 +7,7 @@
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises" 
         :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart = "emptyCart" 
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"  
     :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
     <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
   </div>
@@ -46,18 +46,15 @@
       },
       currentPage () {
        let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
-       console.log(page, "当前页数")
        return page;
       },
       categoryId() {
-        console.log(this.$store.getters['model.categories/categoryId'](this.categoryIndex),"分类index")
         return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
       }
    },
    watch: {
     categoryId() {
       this.loadMerchandises(1);
-      console.log(this.loadMerchandises(1),"ghgggghhht4ethgtg")
     }
    },
     methods:{
@@ -77,7 +74,7 @@
          'bookingMerchandises',
           this.categoryId, 
           page); 
-          console.log('加载',  this.categoryId, page)  
+          // console.log('加载',  this.categoryId, page)  
       },
        menusChange : function (index) {
         this.index = index;
@@ -91,7 +88,6 @@
   
       },
       reduceCart(shopId, count, merchandiseId){
-        console.log('ooooooooo');
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },    
       emptyCart(storeId){

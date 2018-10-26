@@ -1,6 +1,6 @@
 <template>
 	<div id="status">
-		<!--<mp-toast ></mp-toast>-->
+		<mp-toast :merchandise="merchandise" :display="display" @close="closeStockPanel" @modifyStock="modifyStock"></mp-toast>
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
@@ -12,14 +12,13 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item store-orders" v-if="cur === 0">
-				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :onloadSales="onloadSales"></sales>
-				<!--<store @showToast="showToastFunction"></store>-->
+				<store @showToast="showToastFunction" :onloadCategory="onloadCategory" :changeCategory="changeCategory"></store>
 			</div>
 			<div class="tab_content_item purchase-orders" v-if="cur === 1">
-				<!-- <purchase></purchase> -->
+				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
 			</div>
 			<div class="tab_content_item sales-orders" v-if="cur === 2">
-				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
+				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :onloadSales="onloadSales"></sales>
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -36,6 +35,9 @@
 	import FooterNav from '@/components/FooterNav';
 	import MyStoreStatusPurchaseCommand from '@/commands/MyStoreStatusPurchaseCommand';
 	import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
+	import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
+	import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
+	import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';
 	export default {
 		components: {
 			"mp-title": MpTitle,
@@ -94,22 +96,34 @@
 			},
 			showToastFunction(merchandise) {
 				this.display = true;
+				this.merchandise = merchandise;
 			},
 			closeStockPanel() {
-				console.log(123)
 				this.display = false;
+			},
+			modifyStock(id, primaryStockNum, modifyStockNum, reason, comment) {
+				console.log('modifyStock--------@@@OK');
+				this.$command(MyStoreModifyStockCommand.commandName(), id, primaryStockNum, modifyStockNum, reason, comment);
 			},
 			onloadPurchase(status) {
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
 			},
 			onloadSales(status) {
 				this.$command(MyStoreStatusSalesCommand.commandName(), status);
+			},
+			onloadSales(storeId) {
+				this.$command(MyStoreCategoriesCommand.commandName(), storeId);
+			},
+			changeCategory(index, categoryId) {
+				this.$command(MyStoreChangeCategoryCommand.commandName(), index, categoryId);
+				console.log('KKKKK-------', index, categoryId);
 			}
 		},
 		created() {
-			console.log('dd');
 			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
-			this.$command(MyStoreStatusSalesCommand.commandName(), 'week')
+			this.$command(MyStoreStatusSalesCommand.commandName(), 'week');
+			this.$command(MyStoreCategoriesCommand.commandName(), '1');
+			this.$command(MyStoreChangeCategoryCommand.commandName(), '1', '1');
 		}
 	}
 </script>

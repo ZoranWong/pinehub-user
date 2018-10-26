@@ -19,7 +19,8 @@ export default class ReduceMerchandises extends Mock {
           "name": this.mockMethod('name'),
           "quality": 4,
           "sell_price": 4,
-          "amount": 16
+          "amount": 16,
+           "main_image":'http://pic32.photophoto.cn/20140721/0042040369293749_b.jpg'
        }
     };
   }

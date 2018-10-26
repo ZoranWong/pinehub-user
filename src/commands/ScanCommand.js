@@ -9,10 +9,10 @@ export default class ScanCommand extends Command {
 		let codeNum = null;
 		let scanType = null;
 		scanResult = await this.service('scan')['scanCode']();
-		console.log('ok');
+		//console.log('ok');
 		codeNum = scanResult.result;
 		scanType = scanResult.scanType;
-		console.log(codeNum, scanType);
+		//console.log(codeNum, scanType);
 		let [code, status] = await this.service('scanCodeService')['scanCode'](codeNum);
 		// order_code 是订单编码   status 订单状态：1-待发货 2-配送中 3-已完成 4-申请中 5-退货中 6-已拒绝
 		// 		switch (status) {

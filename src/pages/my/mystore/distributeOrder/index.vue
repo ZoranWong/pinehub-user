@@ -58,7 +58,7 @@
 				return this.$store.getters['model.distribute.orders/lists']
 			},
 			currentPage () {
-		       let page = this.$store.getters['model.distribute.orders/disOrders'].currentPage;
+		       let page = this.$store.getters['model.distribute.orders/currentPage'];
 		       console.log(page, "当前页数")
 		       return page;
 		    }

@@ -2,8 +2,9 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <new-list @show-cart ="hdlShowCart" :next="next" :list="merchandises" :height="screenHeight"
-     :addMerchandiseToCart = "addCart" ></new-list>
-    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :change="change"></cart>
+     :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart"></new-list>
+   <!--  <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :change="change" ></cart> -->
+    <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"  :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"  :emptyMerchandiseCart = "emptyCart"></cart>
     <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
   </div>
 </template>
@@ -18,7 +19,7 @@
         return{
           title:'新品预定',
           isShow:false,
-          isShowCart:false,
+          isShowCart:true,
           activityId: 0,
           screenHeight: ''
       }
@@ -58,9 +59,11 @@
       reduceCart(shopId, count,  merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
       },
+      emptyCart(storeId){
+        this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+      }
    },
    created () {
-
     this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
    }
 }

@@ -3,20 +3,19 @@ export default class DistributeOrderCommand extends Command {
 	constructor(app) {
 		super(app);
 	}
-	//
-	async handle(stratTime, endTime, page = 1,limit= 15) {
-		console.log('c-start11111111');
-//		let event = args.shift();
-	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.distributeOrder').list(stratTime, endTime, page);
-	    console.log('com-good',[ list, totalNum, currentPage, totalPage]);
-		console.log('c-end111111111122');
+	async handle(stratTime, endTime, page = 1, limit = 15) {
+		//		let event = args.shift();
+		let [list, totalNum, currentPage, totalPage] = await this.service('http.distributeOrder').list(stratTime, endTime,
+			page);
+		console.log('com-good', [list, totalNum, currentPage, totalPage]);
 		this.store().dispatch({
-			type: 'model.distribute.orders/disOrders',
+			type: 'model.distribute.orders/setOrders',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
 			totalPage: totalPage,
-			pageCount: limit
+			pageCount: limit,
+			status: 'all'
 		});
 	}
 	static commandName() {

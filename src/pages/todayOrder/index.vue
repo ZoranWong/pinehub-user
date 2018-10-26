@@ -7,9 +7,10 @@
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
         <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart"  ></m-list>
+        :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
-    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" ></cart>
+    <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
+        :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
     <popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
     
   </div>
@@ -28,7 +29,7 @@
   export default{
     data(){
       return{
-        isShow:false,
+        isShow:true,
         isShowCart:true,
         listwidth:'530rpx',
         title:"当日下单",
@@ -51,11 +52,10 @@
       },
       currentPage () {
        let page = this.$store.state['model.today.merchandises'].currentPage;
-       console.log(page, "当前页数")
        return page;
       },
       storeCategoryId(){
-        console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
+        // console.log(this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex),"分类index更丰富呢")
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
       }
      
@@ -67,6 +67,9 @@
      }
     },
     methods:{
+      jump(router){
+        this.$command('router',router,'push');
+      },
       hdlShowCart:function(){
         this.isShowCart = true;
       },
@@ -82,8 +85,9 @@
         'today', 
         this.storeId, 
         this.categoryId,
+        this.merchandiseId,
         page);
-        console.log('加载',  this.categoryId)  
+        // console.log('加载',  this.categoryId)  
       },
       menusChange : function (index) {
         this.index = index;
@@ -95,7 +99,7 @@
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
       }, 
-      reduceCart(shopId, count, merchandisesId){
+      reduceCart(shopId, count, merchandiseId){
         this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
       },
       emptyCart(storeId){

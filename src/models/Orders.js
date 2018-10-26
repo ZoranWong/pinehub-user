@@ -10,29 +10,39 @@ export default class Orders extends Model {
 		return _.extend(super.computed(), {
 			lists(state) {
 //				return state.allOrders;
-				return state.allOrders.currentPage ? _.flatten(state.allOrders.list) : [];
+				return state.orders[state.status] && state.orders[state.status].currentPage ? _.flatten(state.orders[state.status].list) : [];
 			},
 			totalNum(state){
-				return state.totalNum;
+				return state.orders[state.status] ? state.orders[state.status].totalNum : 0;
 			},
-			allOrders(state) {
-				return state.allOrders;
+			orders(state) {
+				return state.orders[state.status];
+			},
+			currentPage(state) {
+				return state.orders[state.status] ? state.orders[state.status].currentPage : 1 ;
 			}
 		});
 	}
 	data() {
 		return {
-			allOrders: super.data(),
-			uncompletedOrders: super.data(),
-			completedOrders: super.data()
+			status: 'all',
+			orders: {
+				
+			}
 		};
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('allOrders', function({list, totalNum, currentPage, totalPage, pageCount}, state) {
-			let orders = state.allOrders;
+		this.addEventListener('setOrders', function({list, totalNum, currentPage, totalPage, pageCount, status}, state) {
+			let orders = state.orders[status] ? state.orders[status] : {
+				list: [],
+				pageCount: 0,
+				currentPage: 0,
+				totalNum: 0,
+			};
 			let startIndex = (currentPage - 1) * pageCount + 1;
 			orders.currentPage = currentPage;
+			
 	        orders.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
 	        if(totalNum !== null)
 	          orders.totalNum = totalNum;
@@ -42,6 +52,11 @@ export default class Orders extends Model {
 	            orders.pageCount = pageCount;
 	          }
 	        }
+//	        let statusOrders = {};
+//	        statusOrders[status] = orders;
+	        this.$application.$vm.set(state.orders, status, orders);
+	        state.status = status;
+	        console.log(state.orders, state.status);
 		});
 	}
 }

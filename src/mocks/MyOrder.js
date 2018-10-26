@@ -8,7 +8,7 @@ export default class MyOrder extends Mock {
 		return {
 			"data|12": [{
 				"id|+1": 1,
-				"code|+1": 123321138,
+				"code|+1": parseInt(Math.random() *100000),
 				"type": this.mockMethod('integer', 0, 4),
 				"merchandies_num": 6,
 				"payment_amount": 12,

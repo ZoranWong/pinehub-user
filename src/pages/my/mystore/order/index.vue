@@ -54,7 +54,7 @@
 				cur: 0,
 //				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
-				status:"",
+				status: "all",
 				startTime:"",
 				endTime:"",
 				arr:["预定商品","自提商品"],
@@ -72,7 +72,7 @@
 				return this.$store.getters['model.gather.orders/lists']
 			},
 			currentPage () {
-		       let page = this.$store.getters['model.gather.orders/gathOrders'].currentPage;
+		       let page = this.$store.getters['model.gather.orders/currentPage'];
 		       console.log(page, "当前页数aaaaaapppppp")
 		       return page;
 		    }
@@ -86,6 +86,7 @@
 				this.cur = num;
 				this.status=this.tabs[num].statname
 //				console.log(this.status)
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status); 
 			},
 			getSelectDate(e) {
 				//				console.log(new Date(e.target.value));
@@ -110,7 +111,7 @@
 		    }
 		},
 		created:function() {
-		    this.$command('gather-orders');
+		    this.loadOrders(this.startTime, this.endTime, this.type, this.status);
 		    this.startTime=this.selectDate+" "+"00:00:00"
 			this.endTime=this.selectDate+" "+"23:59:59"
 			this.status="all"

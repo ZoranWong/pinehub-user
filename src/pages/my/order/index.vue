@@ -57,6 +57,7 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			myOrdersList() {
+				console.log('============orders getter============', this.$store.getters['model.my.orders/lists']);
 				return this.$store.getters['model.my.orders/lists'];
 			},
 //			myOrdersList2() {
@@ -66,7 +67,7 @@
 				return this.$store.getters['model.my.orders/totalNum'];
 			},
 			currentPage () {
-		       let page = this.$store.getters['model.my.orders/allOrders'].currentPage;
+		       let page = this.$store.getters['model.my.orders/currentPage'];
 		       console.log(page, "当前页数")
 		       return page;
 		    }

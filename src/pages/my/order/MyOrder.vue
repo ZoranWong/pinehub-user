@@ -1,5 +1,5 @@
 <template>
-	<scroll-view  class="foods-wrapper" style="height:700px;" :scroll-y="true" @scrolltolower="scrolltolower" >
+	<scroll-view  class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="flag" :scroll-top="topNum" @scrolltolower="scrolltolower" >
 		<div id="tab_content_main">
 			<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
 				<div class="order_info_sn">
@@ -61,7 +61,9 @@
 		data() {
 			return {
 				orderList: {},
-				myorderList:{} 
+				myorderList:{},
+				topNum:0,
+				flag:true
 			};
 		},
 		//算术方法
@@ -70,17 +72,25 @@
 		},
 		methods: {
 			scrolltolower(){
-		         console.log('next page',"111111111111111111111111111111111");
+		        console.log('next page',"111111111111111111111111111111111");
 		        this.next();
-		    }
+		   },
+		   	scroll(e){
+		   		console.log(e,"tttttttttttttttttttt")
+//		   		this.topNum=e.mp.detail.scrollTop
+//              this.flag=false
+		   	}
 		},
 
 		watch: {
 			status(v) {
+				 this.flag=true
 				 console.log(v)
 				 this.status=v
-				 this.myorderList="";
-				 this.myorderList=this.$store.getters['model.my.orders/lists'];
+				 this.topNum=0
+				 
+//				 this.myorderList="";
+//				 this.myorderList=this.$store.getters['model.my.orders/lists'];
 			}
 		},
 		created() {
