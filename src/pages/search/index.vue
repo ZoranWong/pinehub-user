@@ -25,7 +25,8 @@
 				return {
 					title: "搜索商品",
 					search: null,
-					activityId: 0
+					activityId: null,
+					storeId: null
 				};
 			},
 			components: {
@@ -48,6 +49,7 @@
 					this.$command('GET_MERCHANDISE_LIST',
 					'model.search.merchandises/setList',
 					'today',
+					this.storeId,
 					this.categoryId,
 					page,
 					search);
