@@ -13,13 +13,10 @@ export default class Categories extends Model{
         return this.state.currentPage ? _.flatten(state.list) : [];
       },
       categoryId(state) {
-        let list = this.state.currentPage ? _.flatten(state.list) : [];
-
+        let list = this.state.currentPage ? _.flatten(state.list) : [];   
         return (i) =>{
-          for(var i = 0; i < list.length; i++){
-            let category = list[i];
-            return category ? category.id : null;
-          }  
+          let category = list[i];
+         return category ? category.id : null;
         }
       }
     });

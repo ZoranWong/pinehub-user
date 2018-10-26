@@ -62,12 +62,9 @@
     },
     
    created(){
-      this.next();
+      // this.next();
    },
     methods:{
-      cartShow:function(){
-        this.$emit('show-cart')
-      },
       scrolltolower(){
         // console.log('next page');
         this.next();
@@ -106,16 +103,15 @@
   flex:1;
   overflow-y: auto;
   height: 100%;
+  padding:20rpx 0;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 .foods-wrapper::-webkit-scrollbar {
   width: 1px; 
   background-color: rgba(217,217,217,0.3); 
 }
-.foods-wrapper{
-  padding:20rpx;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
+
 .foods-item{
    width:100%;
    height:326rpx;
