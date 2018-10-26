@@ -44,7 +44,7 @@ module.exports = {
     alias: {
       'vue': 'mpvue',
       '@': resolve('src'),
-     
+
     },
     symlinks: false,
     aliasFields: ['mpvue', 'weapp', 'browser'],
@@ -117,7 +117,11 @@ module.exports = {
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(__dirname, '../dist/static'),
-        ignore: ['.*']
+        ignore: ['.*'],
+        transform(context, path)  {
+          var reg = /(.*)+\.(jpg|bmp|gif|png)$/i;
+          return context;
+        }
       }
     ])
   ]
