@@ -9,7 +9,7 @@ export default class SelfextraOrder extends Mock {
       "data|10":  [
             {
                 "id|+1": 1,
-                "code": "123321138",
+                "code|+1":parseInt(Math.random()*1000000),
                 "status": 300,
                 "receiver_name": "张三",
                 "receiver_address": "合肥市蜀山区",
