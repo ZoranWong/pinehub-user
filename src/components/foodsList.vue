@@ -1,6 +1,6 @@
 <template>
-  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true" :scroll-top = "top"
-  @scrolltolower="scrolltolower" @scroll = "scroll">
+  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true"
+  @scrolltolower="scrolltolower" @scroll = "scroll" :scroll-into-view = "categoryId">
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-left fl">
           <img class="merchandises-pic" :src="item.thumbImage">
@@ -55,11 +55,18 @@
         default: function() {return []},
         type: Array
       },
+      categoryId: {
+        default: null,
+        type: String|Number
+      }
     },
 		data(){
 			return {
          pageCount: 15,
-         top: 0
+         top: 0,
+         startScrollTime: 0,
+         endScrollTime: 0,
+         timeout: null
       };
 		},
     components:{
@@ -72,14 +79,17 @@
    },
     methods:{
       scrolltolower(e){
-        if(this.top > 0) {
-          this.next(this.top);
+        let $this = this;
+        if(this.timeout) {
+          clearTimeout(this.timeout);
         }
+        ((e) => {
+          $this.timeout = setTimeout(function () {
+            $this.next();
+          }, 250);
+        })(e);
       },
       scroll(e) {
-        if(e.mp.detail.scrollTop > 0) {
-          this.top = e.mp.detail.scrollTop;
-        }
       },
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);

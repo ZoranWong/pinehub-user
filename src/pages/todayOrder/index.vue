@@ -6,8 +6,12 @@
     <location :position="position" ></location>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight" :width="listwidth"  :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" :scrollTop = "scrollTop" ></m-list>
+        <m-list  :height="listHeight"
+         :width="listwidth"
+         :next="next" :list="merchandises"
+         :categoryId = "categoryId"
+         :addMerchandiseToCart = "addCart"
+         :reduceMerchandiseToCart = "reduceCart" ></m-list>
     </div>
     <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
         :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
@@ -33,8 +37,7 @@
         isShowCart: true,
         listwidth: '530rpx',
         title: "当日下单",
-        screenHeight: '',
-        scrollTop: 0
+        screenHeight: ''
       };
     },
     components: {
@@ -96,8 +99,7 @@
         this.$store.dispatch('model.today.merchandises/setCurrentCategory', {categoryIndex: index});
         this.loadMerchandises(1);
       },
-      next(scrollTop) {
-        this.scrollTop = scrollTop;
+      next() {
         this.loadMerchandises(this.currentPage  + 1);
       },
       addCart(shopId, count,  merchandiseId){

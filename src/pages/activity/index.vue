@@ -2,7 +2,7 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <new-list @show-cart ="hdlShowCart" :next="next" :list="merchandises" :height="screenHeight"
-     :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart"></new-list>
+     :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" categoryId = "activity"></new-list>
    <!--  <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :change="change" ></cart> -->
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"  :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"  :emptyMerchandiseCart = "emptyCart"></cart>
     <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
@@ -38,9 +38,19 @@
       currentPage () {
        let page = this.$store.state['model.activity.merchandises'].currentPage;
        return page;
-      },
+      }
+   },
+   watch:{
    },
    methods:{
+     loadMerchandises(page){
+       this.$command('GET_MERCHANDISE_LIST',
+         'model.activity.merchandises/setList',
+         'activity',
+         this.activityId,
+         page,
+         this.pageCount);
+     },
       hdlShowCart:function(){
         this.isShowCart =  true;
       },
@@ -51,7 +61,7 @@
         this.isShow = false;
       },
       next() {
-        this.$command('GET_MERCHANDISE_LIST', 'model.activity.merchandises/setList', 'activity', this.activityId, this.currentPage + 1, this.pageCount);
+        this.loadMerchandises(this.currentPage + 1);
       },
       addCart(shopId, count,  merchandiseId){
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);

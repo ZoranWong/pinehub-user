@@ -6,8 +6,8 @@
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
 		<div class="goods">
-			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises" :scrollTop = "scrollTop"
-        		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" >
+			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises"
+        		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" categoryId="search" >
        		</m-list>
 		</div>
 
@@ -56,8 +56,7 @@
 				page, search);
 				console.log('加载', search)
 			},
-			next(scrollTop) {
-				this.scrollTop = scrollTop;
+			next() {
 				this.loadMerchandises(this.currentPage  + 1, this.search);
 			},
 			addCart(shopId, count,  merchandiseId){

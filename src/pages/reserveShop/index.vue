@@ -5,7 +5,7 @@
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
         <m-list  :height="listHeight" :width="listwidth" model="" :next="next" :list="merchandises"
-        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :scrollTop = "scrollTop" ></m-list>
+        :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :categoryId="categoryId"></m-list>
     </div>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"   :emptyMerchandiseCart = "emptyCart"
     :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"></cart>
@@ -27,8 +27,7 @@
         isShow:false,
         isShowCart:true,
         activityId: 0,
-        screenHeight: '',
-        scrollTop: 0
+        screenHeight: ''
       }
     },
     components: {
@@ -88,8 +87,7 @@
         this.$store.dispatch('model.reserveShop.merchandises/setCurrentCategory', {categoryIndex: index});
         this.loadMerchandises(1);
       },
-      next(scrollTop) {
-        this.scrollTop = scrollTop;
+      next() {
         this.loadMerchandises(this.currentPage + 1);
       },
       addCart(shopId, count,  merchandiseId){
