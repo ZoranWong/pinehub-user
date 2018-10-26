@@ -10,12 +10,11 @@ import NearbyStores from "@/models/NearbyStores";
 const storeLocation = new Application(App, 'nearby.stores');
 storeLocation.run((app) => {
 	// console.log(app.instances['map']);
-	app.registerCommand('search-location', SearchLocation);
+	app.registerModel('model.nearbyStores', NearbyStores);
 
-	app.models.addModel('model.nearbyStores', NearbyStores);
-	console.log('app models', app.models);
 	app.register('http.nearbyStores', NearbyStoresService);
 	app.registerCommand(GetNearbyStoresCommand.commandName(), GetNearbyStoresCommand);
+	app.registerCommand(SearchLocation.commandName(), SearchLocation);
 }, (mountComponent) => {
 	_.extend(App, mountComponent);
 	let app = new Vue(App);

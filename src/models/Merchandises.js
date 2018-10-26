@@ -5,7 +5,7 @@ export default class Merchandises extends Model{
   constructor(application) {
     super(application);
     this.transformer = MerchandiseTransformer;
-  }  //foodlist的model层
+  }  //MerchandiseList的model层
   computed() {
     return _.extend(super.computed(), {
       list(state){

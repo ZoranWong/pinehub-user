@@ -17,7 +17,7 @@
 <script>
 
 	import MpTitle from '@/components/MpTitle';
-	import FoodList from '@/components/FoodList'
+	import MerchandiseList from '@/components/MerchandiseList'
 	export default {
 		data() {
 			return {
@@ -31,7 +31,7 @@
 		},
 		components: {
 			'mp-title': MpTitle,
-			'm-list': FoodList,
+			'm-list': MerchandiseList,
 		},
 		computed: {
 	      merchandises(){

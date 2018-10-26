@@ -17,7 +17,7 @@
   import MpTitle from '@/components/MpTitle';
   import PopupDelivery from './PopupDelivery';
   import Swiper from '@/components/Swiper';
-  import FoodList from '@/components/FoodList';
+  import MerchandiseList from '@/components/MerchandiseList';
   import Menus from './Menus';
   import Cart from '@/components/Cart'
   export default{
@@ -34,7 +34,7 @@
       'pop-delivery': PopupDelivery,
       'mp-swiper': Swiper,
       'menus': Menus,
-      'm-list': FoodList,
+      'm-list': MerchandiseList,
       'cart': Cart,
       "mp-title": MpTitle,
 

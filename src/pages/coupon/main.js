@@ -8,7 +8,7 @@ import GetTicketsCommand from '@/commands/GetTicketsCommand';
 
 const tickets = new Application(App, 'Tickets');
 tickets.run(function(app) {
-	app.models.addModel('model.tickets', Tickets);
+	app.registerModel('model.tickets', Tickets);
 	app.registerCommand(GetTicketsCommand.commandName(), GetTicketsCommand);
     app.register('http.tickets',TicketsService);
 },function(mountComponent) {
@@ -17,5 +17,3 @@ tickets.run(function(app) {
 	app.$mount();
  	return app;
 });
-
-	

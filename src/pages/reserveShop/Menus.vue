@@ -16,10 +16,10 @@
 
 
 <script>
-  import FoodList from '@/components/FoodList';
+  import MerchandiseList from '@/components/MerchandiseList';
   export default {
     components : {
-       'm-list': FoodList,
+       'm-list': MerchandiseList,
     },
     data () {
       return {

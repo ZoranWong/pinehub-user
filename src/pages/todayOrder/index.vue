@@ -23,7 +23,7 @@
 <script>
   import MpTitle from '@/components/MpTitle';
   import Swiper from '@/components/Swiper';
-  import FoodList from '@/components/FoodList';
+  import MerchandiseList from '@/components/MerchandiseList';
   import Cart from '@/components/Cart';
   import Location from './Location';
   import Menus from './Menus';
@@ -45,7 +45,7 @@
       'mp-swiper': Swiper,
       'location': Location,
       'menus': Menus,
-      'm-list': FoodList,
+      'm-list': MerchandiseList,
       'cart': Cart,
       'mp-title': MpTitle,
    },
