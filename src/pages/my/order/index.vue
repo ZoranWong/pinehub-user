@@ -92,18 +92,13 @@
 						this.statusType = "all";
 						break;
 				}
-<<<<<<< HEAD
-				this.$command('BACK_TO_VIEW_TOP'); 
-			}
-=======
-//				console.log(num);
-            this.loadOrders(this.statusType);
+				this.$command('BACK_TO_VIEW_TOP');
+        this.loadOrders(this.statusType);
 //        this.myOrdersList=this.myOrdersList2
 			},
 			next() {
-		        this.$command('my-orders', this.statusType, this.currentPage + 1, this.pageCount);               
-		    } 
->>>>>>> 46c391ebd7c33817aeb620ceac4e3de37b13bdda
+	      this.$command('my-orders', this.statusType, this.currentPage + 1, this.pageCount);               
+		  }
 		},
 		mounted() {
 			this.$command('my-orders');
