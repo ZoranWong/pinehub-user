@@ -23,7 +23,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order :types="type" :gathOrders="gathorders" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
+				<order :next="next" :types="types" :gathOrders="gathorders" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
 	</div>
@@ -54,7 +54,7 @@
 				cur: 0,
 //				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
-				status:"all",
+				status: "all",
 				startTime:"",
 				endTime:"",
 				arr:["预定商品","自提商品"],
@@ -70,24 +70,30 @@
 			},
 			gathorders(){
 				return this.$store.getters['model.gather.orders/lists']
-			}
+			},
+			currentPage () {
+		       let page = this.$store.getters['model.gather.orders/currentPage'];
+		       console.log(page, "当前页数aaaaaapppppp")
+		       return page;
+		    }
 
 		},
 		methods: {
-			loadOrders(startime,endtime,type,status) {
-				this.$command('gather-orders', startime, endtime, type, status);
+			loadOrders(startime,endtime,type,status, page = 1, limit = 15) {
+				this.$command('gather-orders', startime, endtime, type, status, page, limit);
 			},
 			tabSelect(num) {
 				this.cur = num;
 				this.status=this.tabs[num].statname
 //				console.log(this.status)
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status); 
 			},
 			getSelectDate(e) {
 				//				console.log(new Date(e.target.value));
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
 				this.startTime=this.selectDate+" "+"00:00:00"
 			    this.endTime=this.selectDate+" "+"23:59:59"
-			    
+			    this.loadOrders(this.startTime, this.endTime, this.type, this.status)
 			},
 			bindPickerChange(e){
 				console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -98,19 +104,21 @@
 					this.type="self_lift"
 				}
 				
-			}
+			},
+			next() {
+				console.log('nnnnnnnnnxxxxxx', this.currentPage);
+		        this.loadOrders(this.startTime, this.endTime, this.type, this.status, this.currentPage + 1, this.pageCount);               
+		    }
 		},
 		created:function() {
-		    this.$command('gather-orders');
+		    this.loadOrders(this.startTime, this.endTime, this.type, this.status);
 		    this.startTime=this.selectDate+" "+"00:00:00"
 			this.endTime=this.selectDate+" "+"23:59:59"
+			this.status="all"
 		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
 		},
 		mounted:function(){
 						
-		},
-		updated:function(){
-		
 		}
 	}
 </script>

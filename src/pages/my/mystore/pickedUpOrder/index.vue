@@ -17,7 +17,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
+				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime" :next="next"></order>
 			</div>
 		</div>
 		<div id="controlbar">
@@ -55,7 +55,12 @@
 		computed: {
             selfextra(){
 				return this.$store.getters['model.extra.orders/lists']
-			}
+			},
+			currentPage () {
+		       let page = this.$store.getters['model.extra.orders/currentPage'];
+		       console.log(page, "当前页数")
+		       return page;
+		    }
 		},
 		methods: {
 			loadOrders(startime,endtime) {
@@ -97,7 +102,10 @@
 			    this.endHour=this.arr[this.index].split("-")[1];
 			    this.startTime=this.selectDate+" "+this.begHour+":00"
 			    this.endTime=this.selectDate+" "+this.endHour+":00"
-			}
+			},
+			next() {
+		        this.$command('selfextra-orders', this.startTime, this.endTime, this.currentPage + 1, this.pageCount);               
+		      }
 		},
 		created() {
 			this.begHour=this.arr[this.index].split("-")[0];

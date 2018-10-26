@@ -10,12 +10,13 @@ export default class DistributeOrderCommand extends Command {
 	    //console.log('com-good',[ list, totalNum, currentPage, totalPage]);
 
 		this.store().dispatch({
-			type: 'model.distribute.orders/disOrders',
+			type: 'model.distribute.orders/setOrders',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
 			totalPage: totalPage,
-			pageCount: limit
+			pageCount: limit,
+			status: 'all'
 		});
 	}
 	static commandName() {

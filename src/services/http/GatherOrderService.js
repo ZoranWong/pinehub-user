@@ -5,7 +5,6 @@ export default class GatherOrderService extends Service {
 	}
 	//获取订单列表
 	async list(startTime, endTime, type, status, page) {
-		//console.log('service--------------');
 		let distributeorders = null;
 		let totalNum = 0;
 		let totalPage = 0;
@@ -31,7 +30,7 @@ export default class GatherOrderService extends Service {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-//		console.log('nefffffffff-----',[distributeorders, totalNum, currentPage, totalPage]);
+		console.log('=========nefffffffff-----',[currentPage, pagination]);
 //console.log('se--------------',[gathorders, totalNum, currentPage, totalPage]);
 		return [gathorders, totalNum, currentPage, totalPage];
 	}

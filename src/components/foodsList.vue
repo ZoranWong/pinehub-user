@@ -71,10 +71,17 @@
       // this.next();
    },
     methods:{
+<<<<<<< HEAD
       scrolltolower(e){
         if(this.top > 0) {
           this.next(this.top);
         }
+=======
+      scrolltolower(){
+        // console.log('next page');
+        this.next();
+//      console.log("111111111111111111111111111111111")
+>>>>>>> 46c391ebd7c33817aeb620ceac4e3de37b13bdda
       },
       scroll(e) {
         if(e.mp.detail.scrollTop > 0) {
