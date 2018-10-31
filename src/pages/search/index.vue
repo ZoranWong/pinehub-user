@@ -5,10 +5,15 @@
 			<input class="search-input  fl" type="text" v-model="search" placeholder="请输入商品名称">
 			<i class="search-icon fr" @click = "searchMerchandise"></i>
 		</div>
-		<div class="goods">
-			<m-list  :height="listHeight" :width="listwidth"   :list="merchandises"
-        		:addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" categoryId="search" >
-       		</m-list>
+		<div class="merchandises">
+			<m-list
+				:list="merchandises"
+				:height = "screenHeight"
+				:addMerchandiseToCart = "addCart"
+				:reduceMerchandiseToCart = "reduceCart"
+				categoryId = "search"
+				:next = "next">
+      </m-list>
 		</div>
 	</div>
 </template>
@@ -18,55 +23,57 @@
 	import MpTitle from '@/components/MpTitle';
 	import MerchandiseList from '@/components/MerchandiseList'
 	export default {
-		data() {
-			return {
-				title: "搜索商品",
-				search:"",
-				activityId: 0,
-    			screenHeight: '',
-				scrollTop: 0
-			};
-		},
-		components: {
-			'mp-title': MpTitle,
-			'm-list': MerchandiseList,
-		},
-		computed: {
-     	 	merchandises(){
-        		return this.$store.getters['model.search.merchandises/list'];
-      		}
-   		},
-   		mounted(){
-	   			console.log('搜索商品--index.vue')
-	   			this.$command('SEARCH_MERCHANDISES')
+			data() {
+				return {
+					title: "搜索商品",
+					search: null,
+					activityId: null,
+					storeId: null,
+					screenHeight: null
+				};
+			},
+			components: {
+				'mp-title': MpTitle,
+				'm-list': MerchandiseList,
+			},
+			computed: {
+		      merchandises(){
+		        return this.$store.getters['model.search.merchandises/list'];
+		      },
+		      currentPage () {
+		       	return this.$store.state['model.search.merchandises'].currentPage;
+		      }
+	    },
+   		mounted() {
+					this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
+	   			this.searchMerchandise(this.search);
 	   	},
     	methods:{
-			loadMerchandises(page, search){
-				this.$command('GET_MERCHANDISE_LIST',
-				'model.search.merchandises/setList',
-				'today',
-				this.categoryId,
-				page,
-				search);
-				console.log('加载', search)
-			},
-			next() {
-				this.loadMerchandises(this.currentPage  + 1, this.search);
-			},
-			addCart(shopId, count,  merchandiseId){
-				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-			},
-			reduceCart(shopId, count, merchandiseId){
-				this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-			},
-			emptyCart(storeId){
-				this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
-			},
-			searchMerchandise(search){
-				this.scrollTop = 0;
-				this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
-				this.loadMerchandises(1, this.search);
-			}
+				loadMerchandises(page, search){
+					this.$command('GET_MERCHANDISE_LIST',
+					'model.search.merchandises/setList',
+					'today',
+					this.storeId,
+					this.categoryId,
+					page,
+					search);
+				},
+				next() {
+					this.loadMerchandises(this.currentPage  + 1, this.search);
+				},
+				addCart(shopId, count,  merchandiseId){
+					this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+				},
+				reduceCart(shopId, count, merchandiseId){
+					this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+				},
+				emptyCart(storeId){
+					this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+				},
+				searchMerchandise(search){
+					this.$command('CLEAR_MERCHANDISE', 'model.search.merchandises');
+					this.loadMerchandises(1, this.search);
+				}
   		}
 	}
 </script>
@@ -105,7 +112,7 @@
 		margin: 14rpx 40rpx 14rpx 0rpx;
 
 	}
-	.goods{
+	.merchandises{
 
 		margin-top: 70rpx;
 	}

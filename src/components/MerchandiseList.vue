@@ -1,13 +1,16 @@
 <template>
-  <scroll-view  class="foods-wrapper" :style="{ width: width, height: height }" :scroll-y="true"
-  @scrolltolower="scrolltolower" @scroll = "scroll" :scroll-into-view = "categoryId">
+  <scroll-view  class="foods-wrapper"
+    :style="{ width: width, height: height }"
+    :scroll-y="true"
+    @scrolltolower="scrolltolower"
+    :scroll-into-view = "categoryId">
       <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
         <div class="foods-item-left fl">
           <img class="merchandises-pic" :src="item.thumbImage">
         </div>
         <div class="foods-item-right fr">
           <h4 class="merchandises-name" >
-                 {{item.name}}
+              {{item.name}}
           </h4>
           <p class="sell-count">已售
             <span class="color00">{{item.sellCount}}</span>份
@@ -15,7 +18,12 @@
           <p class="sell-price">{{item.sellPrice}}元/份</p>
           <p class="origin-price color75">{{item.originPrice}}元/份</p>
           <div class="cartcontrol-warpper">
-            <cart-control @addCart = "addCart"  @reduceCart= "reduceCart" :merchandiseId = "item.id" :shopId="item.shopId"></cart-control>
+            <cart-control
+              @addCart = "addCart"
+              @reduceCart= "reduceCart"
+              :merchandiseId = "item.id"
+              :shopId="item.shopId">
+            </cart-control>
           </div>
         </div>
       </div>
@@ -27,10 +35,6 @@
   import Cart from '@/components/Cart'
 	export default{
     props: {
-      scrollTop: {
-        default: 0,
-        type: Number
-      },
       addMerchandiseToCart:{
         default: null,
         type: Function
@@ -63,9 +67,6 @@
 		data(){
 			return {
          pageCount: 15,
-         top: 0,
-         startScrollTime: 0,
-         endScrollTime: 0,
          timeout: null
       };
 		},
@@ -73,12 +74,9 @@
       'cart-control':CartControl,
       'cart':Cart,
     },
-
-   created(){
-      // this.next();
-   },
     methods:{
       scrolltolower(e){
+        console.log('scrolltolower');
         let $this = this;
         if(this.timeout) {
           clearTimeout(this.timeout);
@@ -89,28 +87,14 @@
           }, 250);
         })(e);
       },
-      scroll(e) {
-      },
       addCart( id, count, shopId) {
         this.addMerchandiseToCart( shopId, count, id);
       },
       reduceCart(id, count, shopId){
         this.reduceMerchandiseToCart( shopId, count, id);
       }
-    },
-    watch:{
-      scrollTop(n, o) {
-       // console.log(val)
-        if(n === 0 && o > 0) {
-          this.top = 0;
-        }
-      }
-    },
-    mounted(){
-    	console.log(this.categoryId,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
     }
-
-	}
+  }
 </script>
 
 <style scoped>

@@ -1,9 +1,14 @@
 <template>
   <div class="body">
     <mp-title :title="title"></mp-title>
-    <new-list @show-cart ="hdlShowCart" :next="next" :list="merchandises" :height="screenHeight"
-     :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" categoryId = "activity"></new-list>
-   <!--  <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :change="change" ></cart> -->
+    <new-list
+     @show-cart ="hdlShowCart"
+     :next="next"
+     :height = "screenHeight"
+     :list="merchandises"
+     :addMerchandiseToCart = "addCart"
+     :reduceMerchandiseToCart = "reduceCart"
+     categoryId = "activity"></new-list>
     <cart  v-if="isShowCart" @hdlShowPopup="hdlShowPopup"  :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart"  :emptyMerchandiseCart = "emptyCart"></cart>
     <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
   </div>
@@ -21,7 +26,7 @@
           isShow:false,
           isShowCart:true,
           activityId: 0,
-          screenHeight: ''
+          screenHeight: null
       }
     },
     components: {

@@ -6,12 +6,14 @@
     <location :position="position" ></location>
     <div class="goods" >
         <menus @menusChange="menusChange"></menus>
-        <m-list  :height="listHeight"
+        <m-list
          :width="listwidth"
-         :next="next" :list="merchandises"
-         :categoryId = "categoryId"
+         :next="next"
+         :list="merchandises"
+         :categoryId = "'today_order_merchandises_' + categoryId"
          :addMerchandiseToCart = "addCart"
-         :reduceMerchandiseToCart = "reduceCart" ></m-list>
+         :reduceMerchandiseToCart = "reduceCart" >
+       </m-list>
     </div>
     <cart  v-if="isShowCart" :emptyMerchandiseCart = "emptyCart" @hdlShowOrder="jump('todaySubmitOrder')"
         :addMerchandiseToCart = "addCart"   :reduceMerchandiseToCart = "reduceCart" ></cart>
@@ -28,16 +30,13 @@
   import Location from './Location';
   import Menus from './Menus';
   import Popup from './Popup';
-
-
   export default{
     data(){
       return{
         isShow: true,
         isShowCart: true,
         listwidth: '530rpx',
-        title: "当日下单",
-        screenHeight: ''
+        title: "当日下单"
       };
     },
     components: {
@@ -113,17 +112,12 @@
       }
   },
    created(){
-      this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth  * wx.getSystemInfoSync().windowHeight) + 'rpx';
       this.$command('GET_NEAREST_STORE');
-
    },
    mounted(){
       this.$command('GET_STORE_CATEGORIES_TO_MEUN');
-
    }
 }
-
-
 </script>
 
 <style scoped>
