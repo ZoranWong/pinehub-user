@@ -117,7 +117,7 @@
 		top: 22rpx;
 		height: 20rpx;
 		width: 20rpx;
-		background: url(../../../../../static/images/select_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
 
@@ -198,7 +198,7 @@
 	}
 
 	.store_product_list_li em i.num_change {
-		background: url(../../../../../static/images/my_product_num_change.png) no-repeat 10rpx center;
+		background: url(../../../../../static/images/icon/my_product_num_change.png) no-repeat 10rpx center;
 		background-size: 26rpx;
 	}
 

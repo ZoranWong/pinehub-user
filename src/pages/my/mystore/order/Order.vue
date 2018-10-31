@@ -22,7 +22,7 @@
 				</div>
 				<div class="order_info_glist">
 					<dl>
-						<dd><img src="/static/images/ewm.png" /></dd>
+						<dd><img src="/static/images/icon/ewm.png" /></dd>
 						<dt>
 							<div class="order_info_glist_title">
 								<ul>

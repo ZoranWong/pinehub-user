@@ -117,7 +117,7 @@
 .select-icon{
 	width:48rpx;
 	height: 48rpx;
-	background: url(../../static/images/selected.png) no-repeat;
+	background: url(../../static/images/icon/selected.png) no-repeat;
 	background-size: contain;
 	position: absolute;
 	top:16rpx;
@@ -185,7 +185,7 @@
 .arrow-icon{
 	width:28rpx;
 	height: 26rpx;
-	background:url(../../static/images/gary-next.png)no-repeat;
+	background:url(../../static/images/icon/gary-next.png)no-repeat;
 	background-size: contain;
 	position: absolute;
 	top:29rpx;
@@ -212,7 +212,7 @@
 .warn-icon{
 	width:26rpx;
 	height:26rpx;
-	background: url(../../static/images/warn-icon.png) no-repeat bottom;
+	background: url(../../static/images/icon/warn-icon.png) no-repeat bottom;
 	background-size:contain;
 	display: inline-block;
     margin: 10rpx 10rpx -4rpx 0rpx;
@@ -241,7 +241,7 @@
 .next-icon{
 	width:18rpx;
 	height: 32rpx;
-	background: url(../../static/images/next-icon.png) no-repeat;
+	background: url(../../static/images/icon/next-icon.png) no-repeat;
 	background-size: contain;
 	position: absolute;
 	top:33rpx;

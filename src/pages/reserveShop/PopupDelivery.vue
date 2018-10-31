@@ -71,7 +71,7 @@ export default {
 .cancel{
 	width:78rpx;
 	height:78rpx;
-	background:url(../../../static/images/white-cancel.png) no-repeat;
+	background:url(../../../static/images/icon/white-cancel.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-16rpx;
@@ -101,7 +101,7 @@ export default {
 .free-icon{
 	width:68rpx;
 	height:48rpx;
-	background:url(../../../static/images/free-icon.png) no-repeat;
+	background:url(../../../static/images/icon/free-icon.png) no-repeat;
 	background-size:contain;	
 	margin:26rpx 40rpx 26rpx 80rpx;
 	
@@ -110,7 +110,7 @@ export default {
 .charge-icon{
 	width:68rpx;
 	height:48rpx;
-	background:url(../../../static/images/charge-icon.png) no-repeat;
+	background:url(../../../static/images/icon/charge-icon.png) no-repeat;
 	background-size:contain;	
 	margin:26rpx 40rpx 26rpx 80rpx;
 }

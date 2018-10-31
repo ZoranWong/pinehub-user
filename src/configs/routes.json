@@ -10,7 +10,6 @@
 	"mystorestatus": "/pages/my/mystore/status/main",
 	"location": "/pages/nearbyStores/main",
 	"share": "/pages/my/share/main",
-	"order": "/pages/order/main",
 	"logs": "/pages/logs/main",
 	"couter": "/pages/counter/main",
 	"search" : "/pages/search/main",

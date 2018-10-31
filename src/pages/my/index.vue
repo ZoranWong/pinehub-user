@@ -5,7 +5,7 @@
 			<div id="mystore_userinfo">
 				<img id="bear" :src="headerAnimate" />
 				<div id="mystore_userinfo_baseinfo">
-					<img src="../../../static/images/my_now.png" />
+					<img src="../../../static/images/icon/my_now.png" />
 					<div id="name_id">
 						<em>{{userInfo.nickname}}</em>
 						<i>ID: {{userInfo.id}}</i>
@@ -16,11 +16,11 @@
 				</div>
 				<div id="mystore_userinfo_otherinfo">
 					<ul>
-						<li>
+						<li @click="alertNotice">
 							<em>{{userInfo.balance}}</em>
 							<i>余额</i>
 						</li>
-						<li class="my_card">
+						<li @click="jump('coupon')" class="my_card">
 							<s class="my_card_new"></s>
 							<em>{{userInfo.ticket_num}}</em>
 							<i>卡券</i>
@@ -42,24 +42,24 @@
 		<div id="mystore_menu">
 			<ul>
 				<li @click="jump('myorder')">
-					<img src="../../../static/images/my_ico_menu1.png" />
+					<img src="../../../static/images/icon/my_ico_menu1.png" />
 					<span>个人订单</span>
 					<i></i>
 					<em>查看所有订单</em>
 				</li>
 				<li @click="jump('share')">
-					<img src="../../../static/images/my_ico_menu2.png" />
+					<img src="../../../static/images/icon/my_ico_menu2.png" />
 					<span>邀请享奖励</span>
 					<i></i>
 					<em>邀请好友</em>
 				</li>
 				<li @click="jump('myfeedback')">
-					<img src="../../../static/images/my_ico_menu3.png" />
+					<img src="../../../static/images/icon/my_ico_menu3.png" />
 					<span>意见反馈</span>
 					<i></i>
 				</li>
 				<li @click="connectKf">
-					<img src="../../../static/images/my_ico_menu4.png" />
+					<img src="../../../static/images/icon/my_ico_menu4.png" />
 					<span>联系客服</span>
 					<i></i>
 				</li>
@@ -116,7 +116,7 @@
 			},
 			alertNotice() {
 				wx.showToast({
-					title: "积分功能正在完善中",
+					title: "敬请期待",
 					icon: "none"
 				})
 			}
@@ -295,7 +295,7 @@
 		width: 70rpx;
 		margin: 30rpx;
 		float: left;
-		background: url(../../../static/images/my_ico_more.png) no-repeat center center;
+		background: url(../../../static/images/icon/my_ico_more.png) no-repeat center center;
 		background-size: 70%;
 	}
 
@@ -309,7 +309,7 @@
 	.my_store_line {
 		height: 86rpx;
 		width: 28rpx;
-		background: url(../../../static/images/my_ico_line.png) no-repeat center center;
+		background: url(../../../static/images/icon/my_ico_line.png) no-repeat center center;
 		background-size: 100%;
 		position: absolute;
 		top: -50rpx;
@@ -365,7 +365,7 @@
 		width: 40rpx;
 		height: 40rpx;
 		display: block;
-		background: url(../../../static/images/my_ico_menu_more.png) no-repeat center center;
+		background: url(../../../static/images/icon/my_ico_menu_more.png) no-repeat center center;
 		background-size: 40%;
 		padding: 22rpx 0;
 		float: right;

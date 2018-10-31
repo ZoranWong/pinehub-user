@@ -118,7 +118,7 @@
 .selected{
 	width:48rpx;
 	height: 48rpx;
-	background: url(../../static/images/unselected.png) no-repeat;
+	background: url(../../static/images/icon/unselected.png) no-repeat;
 	background-size:contain;
 	display: inline-block;
 	position: absolute;
@@ -126,7 +126,7 @@
 	left:53rpx;
 }
 .tab_select_now .selected{
-	background: url(../../static/images/selected.png) no-repeat;
+	background: url(../../static/images/icon/selected.png) no-repeat;
 	background-size:contain;
 }
 /*配送细节*/

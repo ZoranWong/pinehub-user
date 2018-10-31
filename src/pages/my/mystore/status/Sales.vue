@@ -78,28 +78,47 @@
 			onloadSales: {
 				default: "",
 				type: Function
+			},
+			onloadSalesEChart: {
+				default: "",
+				type: Function
+			},
+			mySalesEChart: {
+				default: "",
+				type: Function
 			}
 		},
 		data() {
 			return {
-				wxOptions: this.getOptions(0),
 				nowSelectDate: 0,
 				selectDate: ["今日", "本周", "本月"]
 			};
+		},
+		computed: {
+			wxOptions() {
+				console.log('computed wx echart options', this.$store.getters['model.my.sales.echart/chartData']);
+				return 	this.$store.getters['model.my.sales.echart/chartData'];
+			}
 		},
 		mounted() {},
 		methods: {
 			selectDateNow(e) {
 				let num = e.target.value;
 				this.nowSelectDate = num;
-				this.wxOptions = this.getOptions(num, true);
+				// this.wxOptions = this.getOptions(num, true);
+				console.log('com------', this.$parent);
+				// this.wxOptions = this.$parent.mp.eCharts.createChart('week', data[1], true);
 				if (num == 0) {
+					this.onloadSalesEChart('day');
 					this.onloadSales('hour');
 				} else if (num == 1) {
+					this.onloadSalesEChart('week');
 					this.onloadSales('week');
 				} else {
+					this.onloadSalesEChart('month');
 					this.onloadSales('month');
 				}
+				console.log('change wxechart ', this.$store.getters['model.my.sales.echart/chartData']);
 			},
 			getOptions: function(i, refresh = false) {
 				let option = {
@@ -180,7 +199,7 @@
 		top: 22rpx;
 		height: 20rpx;
 		width: 20rpx;
-		background: url(../../../../../static/images/select_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
 

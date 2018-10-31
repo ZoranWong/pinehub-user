@@ -77,7 +77,7 @@
 .location-icon{
 	width:118rpx;
 	height:180rpx;
-	background:url(../../../static/images/location-icon.png) no-repeat;
+	background:url(../../../static/images/icon/location-icon.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-84rpx;
@@ -87,7 +87,7 @@
 .cancel{
 	width:78rpx;
 	height:78rpx;
-	background:url(../../../static/images/yellow-cancel.png) no-repeat;
+	background:url(../../../static/images/icon/yellow-cancel.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-16rpx;
@@ -111,7 +111,7 @@
 .yellow-right-arrow{
 	width:40rpx;
 	height:40rpx;
-	background:url(../../../static/images/yellow-right-arrow.png) no-repeat;
+	background:url(../../../static/images/icon/yellow-right-arrow.png) no-repeat;
 	background-size:contain;	
 	margin-top: 30rpx;
 	margin-right:21rpx;

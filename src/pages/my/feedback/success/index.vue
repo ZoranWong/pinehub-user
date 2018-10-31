@@ -2,7 +2,7 @@
 	<div id="myfeedback">
 		<mp-title :title="title"></mp-title>
 		<div id="myfeedback_success">
-			<img src="/static/images/my_feedback_success.png" />
+			<img src="/static/images/icon/my_feedback_success.png" />
 			<em>提交成功</em>
 			<i>感谢您对快乐松的关注与支持，我们会认证处理您的反馈，尽快修复和完善相关功能。</i>
 		</div>

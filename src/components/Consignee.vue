@@ -50,7 +50,7 @@
 .edit-icon{
 	width:23rpx;
 	height:30rpx;
-	background:url(../../static/images/edit-icon.png) no-repeat;
+	background:url(../../static/images/icon/edit-icon.png) no-repeat;
 	background-size: contain;
 	position: absolute;
 	top:72rpx;

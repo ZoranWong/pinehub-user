@@ -10,7 +10,7 @@
 				<i>扫码</i>
 			</li>
 
-			<li @click="jump('order')">
+			<li @click="jump('myorder')">
 				<img :src="order" />
 				<i>订单</i>
 			</li>
@@ -29,29 +29,29 @@
 		data() {
 			return {
 				navName: "",
-				index: "/static/images/index.png",
-				scanning: "/static/images/scanning.png",
-				order: "/static/images/order.png",
-				my: "/static/images/my.png"
+				index: "/static/images/icon/index.png",
+				scanning: "/static/images/icon/scanning.png",
+				order: "/static/images/icon/order.png",
+				my: "/static/images/icon/my.png"
 			};
 		},
 		methods: {
 			nowNav(name) {
 				switch(name) {
 					case "index":
-						this.index = "/static/images/index_now.png";
+						this.index = "/static/images/icon/index_now.png";
 						break;
 					case "scanning":
-						this.scanning = "/static/images/scanning_now.png";
+						this.scanning = "/static/images/icon/scanning_now.png";
 						break;
 					case "order":
-						this.order = "/static/images/order_now.png";
+						this.order = "/static/images/icon/order_now.png";
 						break;
 					case "my":
-						this.my = "/static/images/my_now.png";
+						this.my = "/static/images/icon/my_now.png";
 						break;
 					default:
-						this.index = "/static/images/index_now.png";
+						this.index = "/static/images/icon/index_now.png";
 						break;
 				}
 			},

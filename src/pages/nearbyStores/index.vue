@@ -201,7 +201,7 @@
 	}
 
 	#nowposition {
-		background: url(../../../static/images/nowposition.png) no-repeat center center;
+		background: url(../../../static/images/icon/nowposition.png) no-repeat center center;
 		background-color: #FFFFFF;
 		border-radius: 50%;
 		width: 50rpx;

@@ -55,7 +55,7 @@
 .cart-decrease{
   width:48rpx;
   height:48rpx;
-  background:url(../../static/images/reduce-icon.png) no-repeat center;
+  background:url(../../static/images/icon/reduce-icon.png) no-repeat center;
   background-size: contain;
   position: absolute;
   top: 0rpx;
@@ -69,7 +69,7 @@
 .cart-add{
   width:48rpx;
   height:48rpx;
-  background:url(../../static/images/plus-icon.png) no-repeat;
+  background:url(../../static/images/icon/plus-icon.png) no-repeat;
   background-size: contain;
   position: absolute;
   bottom: -1rpx;

@@ -69,7 +69,7 @@
   display: inline-block;
   width:40rpx;
   height: 40rpx;
-  background: url("../../../static/images/search-icon.png") no-repeat;
+  background: url("../../../static/images/icon/search-icon.png") no-repeat;
   background-size: contain;
   margin:0rpx 40rpx 10rpx;
 }
@@ -95,7 +95,7 @@
 #tab_select ul li.tab_select_now {
   color: #FECE00;
   border-left:6rpx solid #fece00;
-  background:#fafafa url("../../../static/images/new-product-icon.png") no-repeat center 20% ;
+  background:#fafafa url("../../../static/images/icon/new-product-icon.png") no-repeat center 20% ;
   background-size: 58rpx 66rpx;
   padding-top: 100rpx;
 }

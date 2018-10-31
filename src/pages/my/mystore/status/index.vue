@@ -12,13 +12,14 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item store-orders" v-if="cur === 0">
-				<store @showToast="showToastFunction" :onloadCategory="onloadCategory" :changeCategory="changeCategory"></store>
+				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart"
+				 :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
 			</div>
 			<div class="tab_content_item purchase-orders" v-if="cur === 1">
 				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
 			</div>
 			<div class="tab_content_item sales-orders" v-if="cur === 2">
-				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :onloadSales="onloadSales"></sales>
+				<store @showToast="showToastFunction" :onloadCategory="onloadCategory" :changeCategory="changeCategory"></store>
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -38,6 +39,7 @@
 	import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
 	import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
 	import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';
+	import MySalesEChartCommand from '@/commands/MySalesEChartCommand';
 	export default {
 		components: {
 			"mp-title": MpTitle,
@@ -60,7 +62,8 @@
 				}],
 				cur: 0,
 				merchandise: {},
-				display: false
+				display: false,
+				mySalesEChart: {}
 			};
 		},
 		computed: {
@@ -111,8 +114,12 @@
 			onloadSales(status) {
 				this.$command(MyStoreStatusSalesCommand.commandName(), status);
 			},
-			onloadSales(storeId) {
+			onloadCategory(storeId) {
 				this.$command(MyStoreCategoriesCommand.commandName(), storeId);
+			},
+			onloadSalesEChart(status) {
+				console.log('开始调用echartscommand');
+				this.$command(MySalesEChartCommand.commandName(), status);
 			},
 			changeCategory(index, categoryId) {
 				this.$command(MyStoreChangeCategoryCommand.commandName(), index, categoryId);

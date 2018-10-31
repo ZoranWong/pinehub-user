@@ -207,19 +207,19 @@
 	}
 
 	.my_store_ico.ico_week_buy {
-		background-image: url(../../../../static/images/my_store_week_buy.png);
+		background-image: url(../../../../static/images/icon/my_store_week_buy.png);
 	}
 
 	.my_store_ico.ico_week_sell {
-		background-image: url(../../../../static/images/my_store_week_sell.png);
+		background-image: url(../../../../static/images/icon/my_store_week_sell.png);
 	}
 
 	.my_store_ico.ico_today_buy {
-		background-image: url(../../../../static/images/my_store_today_buy.png);
+		background-image: url(../../../../static/images/icon/my_store_today_buy.png);
 	}
 
 	.my_store_ico.ico_today_sell {
-		background-image: url(../../../../static/images/my_store_today_total.png);
+		background-image: url(../../../../static/images/icon/my_store_today_total.png);
 	}
 
 	.info_list {
@@ -281,26 +281,26 @@
 	}
 
 	.ico_1 {
-		background-image: url(../../../../static/images/my_store_m1.png);
+		background-image: url(../../../../static/images/icon/my_store_m1.png);
 	}
 
 	.ico_2 {
-		background-image: url(../../../../static/images/my_store_m2.png);
+		background-image: url(../../../../static/images/icon/my_store_m2.png);
 	}
 
 	.ico_3 {
-		background-image: url(../../../../static/images/my_store_m3.png);
+		background-image: url(../../../../static/images/icon/my_store_m3.png);
 	}
 
 	.ico_4 {
-		background-image: url(../../../../static/images/my_store_m4.png);
+		background-image: url(../../../../static/images/icon/my_store_m4.png);
 	}
 
 	.ico_5 {
-		background-image: url(../../../../static/images/my_store_m5.png);
+		background-image: url(../../../../static/images/icon/my_store_m5.png);
 	}
 
 	.ico_6 {
-		background-image: url(../../../../static/images/my_store_m6.png);
+		background-image: url(../../../../static/images/icon/my_store_m6.png);
 	}
 </style>

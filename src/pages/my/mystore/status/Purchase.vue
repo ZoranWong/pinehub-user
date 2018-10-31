@@ -96,7 +96,7 @@
 		top: 22rpx;
 		height: 20rpx;
 		width: 20rpx;
-		background: url(../../../../../static/images/select_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
 	
@@ -191,7 +191,7 @@
 	.purchase_order_date i {
 		height: 32rpx;
 		width: 32rpx;
-		background: url(../../../../../static/images/myordermore.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/myordermore.png) no-repeat center center;
 		background-size: 80%;
 		display: inline-block;
 		float: right;

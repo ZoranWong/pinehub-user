@@ -100,7 +100,7 @@
 	.search-icon{
 		width:41rpx;
 		height: 42rpx;
-		background:url(../../../static/images/search.png) no-repeat;
+		background:url(../../../static/images/icon/search.png) no-repeat;
 		background-size: contain;
 		margin: 14rpx 40rpx 14rpx 0rpx;
 

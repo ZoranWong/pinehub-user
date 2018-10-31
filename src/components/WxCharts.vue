@@ -3,7 +3,7 @@
 		<div id="mychart-info">
 			销售曲线图表
 			<em>(每晚21:00更新当日数据)</em>
-			<i>2018/08/08 21:00</i>
+			<!-- <i>2018/08/08 21:00</i> -->
 		</div>
 		<div id="mychart-num">数额</div>
 		<div class="mycharts">

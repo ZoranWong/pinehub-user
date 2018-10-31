@@ -206,7 +206,7 @@
 
 	#controlbar {
 		/* background: #000000; */
-		background: url(../../../../../static/images/my_control_bar.png) no-repeat bottom center;
+		background: url(../../../../../static/images/icon/my_control_bar.png) no-repeat bottom center;
 		background-size: 750rpx;
 		height: 120rpx;
 		width: 750rpx;
@@ -245,7 +245,7 @@
 	}
 
 	#print_order {
-		background: url(../../../../../static/images/my_print.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_print.png) no-repeat center center;
 		background-size: 100%;
 		width: 70rpx;
 		height: 70rpx;

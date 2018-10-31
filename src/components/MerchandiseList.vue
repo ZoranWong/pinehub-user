@@ -185,7 +185,7 @@
 .plus-icon{
   width:48rpx;
   height: 48rpx;
-  background:url(../../static/images/plus-icon.png) no-repeat;
+  background:url(../../static/images/icon/plus-icon.png) no-repeat;
   background-size: contain;
   position: absolute;
   bottom: 58rpx;

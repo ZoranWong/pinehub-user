@@ -9,7 +9,6 @@
     "pages/reserveShop/orderSelf/main",
     "pages/activity/main",
     "pages/activity/submitOrder/main",
-    "pages/order/main",
     "pages/search/main",
     "pages/coupon/main"
   ],
@@ -33,7 +32,7 @@
   ],
 	"window": {
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fece00",
+		"navigationBarBackgroundColor": "#ffd000",
 		"navigationBarTitleText": "",
 		"navigationBarTextStyle": "black"
 	}

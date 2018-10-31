@@ -25,7 +25,7 @@
 				</div>
 				<div class="order_info_glist">
 					<dl>
-						<dd><img src="/static/images/ewm.png" /></dd>
+						<dd><img src="/static/images/icon/ewm.png" /></dd>
 						<dt>
 							<div class="order_info_glist_title">
 								<ul>
@@ -135,7 +135,7 @@
 	.order_info_select i {
 		width: 58rpx;
 		height: 58rpx;
-		background: url(../../../../../static/images/my_select_none.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_select_none.png) no-repeat center center;
 		background-size: 100%;
 		position: absolute;
 		bottom: 20rpx;
@@ -143,7 +143,7 @@
 	}
 
 	.order_info_select i.selected_order {
-		background: url(../../../../../static/images/my_select_ok.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat center center;
 		background-size: 100%;
 	}
 

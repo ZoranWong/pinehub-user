@@ -59,7 +59,8 @@
 					"name": "商品过期"
 				}],
 				radioCur: 0,
-				productInfo: {}
+				productInfo: {},
+				comment: null
 			}
 		},
 		watch: {},
@@ -71,7 +72,6 @@
 				//				console.log(num + 'aaa' + id);
 			},
 			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
-				console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
 				modifyStockNum = parseInt(modifyStockNum);
 				console.log('modifyStockNum', modifyStockNum);
 				if (isNaN(modifyStockNum) || modifyStockNum < 0) {
@@ -88,11 +88,11 @@
 					wx.showLoading({
 						title: '正在提交...',
 					})
+					console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
 					this.$emit("modifyStock", id, primaryStockNum, modifyStockNum, reason, comment);
-					console.log('aaa', this.productInfo);
 					this.productInfo = {};
+					this.productInfo['reason'] = this.selectCause[0]['name'];
 					this.radioCur = 0;
-					console.log('bbb', this.productInfo);
 					this.$emit("close");
 				}
 			},
@@ -101,6 +101,7 @@
 			}
 		},
 		created() {
+			this.productInfo['reason'] = this.selectCause[0]['name'];
 			this.productInfo['changeAnswerId'] = this.radioCur;
 		},
 		beforeUpdate() {
@@ -131,7 +132,7 @@
 		position: absolute;
 		height: 78rpx;
 		width: 78rpx;
-		background: url(../../../../../static/images/my_toast_close.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_toast_close.png) no-repeat center center;
 		background-size: 100%;
 		right: -14rpx;
 		top: -20rpx;
@@ -155,7 +156,7 @@
 	#input_change {
 		overflow: hidden;
 		margin-bottom: 20rpx;
-		background: url(../../../../../static/images/my_toast_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_toast_arrow.png) no-repeat center center;
 		background-size: 52rpx;
 	}
 
@@ -190,13 +191,13 @@
 		font-size: 32rpx;
 		font-weight: 400;
 		color: #111111;
-		background: url(../../../../../static/images/my_select_none.png) no-repeat;
+		background: url(../../../../../static/images/icon/my_select_none.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
 
 	#input_change_list ul li.input_now_select {
-		background: url(../../../../../static/images/my_select_ok.png) no-repeat;
+		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}

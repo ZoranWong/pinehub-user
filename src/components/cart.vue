@@ -133,7 +133,7 @@
 .cart{
   width:70rpx;
   height: 70rpx;
-  background:url(../../static/images/cart.png) no-repeat;
+  background:url(../../static/images/icon/cart.png) no-repeat;
   background-size: contain;
   position: absolute;
   top:-10rpx;
@@ -169,7 +169,7 @@
 .next-icon{
   width:20rpx;
   height:35.6rpx;
-  background: url(../../static/images/next-icon.png) no-repeat;
+  background: url(../../static/images/icon/next-icon.png) no-repeat;
   background-size: contain;
   position: absolute;
   bottom:30rpx;
@@ -212,12 +212,12 @@
   z-index: 2;
 }
 .flag{
-  background:url(../../static/images/flag.png) 0rpx 14rpx no-repeat;
+  background:url(../../static/images/icon/flag.png) 0rpx 14rpx no-repeat;
   background-size: 26rpx 30rpx;
   text-indent: 36rpx;  
 }
 .empty{
-  background:url(../../static/images/del-icon.png) 0rpx 14rpx no-repeat;
+  background:url(../../static/images/icon/del-icon.png) 0rpx 14rpx no-repeat;
   background-size: 26rpx 30rpx; 
   text-indent: 36rpx;
 }
