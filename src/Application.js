@@ -108,7 +108,6 @@ export default class Application {
       self.hasMixin = true;
       _.extend(this.$vm.prototype, extend, self.mixinMethods);
     }
-
   }
 
   run() {
