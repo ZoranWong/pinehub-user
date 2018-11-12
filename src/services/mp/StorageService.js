@@ -4,18 +4,43 @@ export default class StorageService extends Service {
     super($application);
   }
 
-  async set(key, value) {
-    return await wx.setStorage(key, value);
+  set(key, value) {
+    return new Promise((resole)  => {
+      wx.setStorage({
+      key: key, 
+      data: value, 
+      success:function(res){
+        console.log('set cache data', wx.getStorageSync(key));
+        resole(res);
+      }});
+    });
   }
-  async get(key) {
-    return await wx.getStorage(key);
+  get(key) {
+    return new Promise((resole)  => {
+      wx.getStorage({
+      key: key, 
+      success:function(res){
+        resole(res.data);
+      }});
+    });
   }
 
-  async remove(key) {
-    return await wx.removeStorage(key);
+  remove(key) {
+    return new Promise((resole)  => {
+        wx.removeStorage({
+        key: key, 
+        success:function(res){
+          resole(res);
+        }});
+      });
   }
 
-  async clear() {
-    return await wx.clearStorage();
+  clear() {
+    return new Promise((resole)  => {
+      wx.clearStorage({
+      success:function(res){
+        resole(res);
+      }});
+    });
   }
 }

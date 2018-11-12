@@ -1,14 +1,39 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/logs/main",
-    "pages/counter/main",
-    "pages/test/main"
+    "pages/nearbyStores/main",
+    "pages/todayOrder/main",
+    "pages/todayOrder/submitOrder/main",
+    "pages/reserveShop/main",
+    "pages/reserveShop/submitOrder/main",
+    "pages/reserveShop/orderSelf/main",
+    "pages/activity/main",
+    "pages/activity/submitOrder/main",
+    "pages/search/main",
+    "pages/coupon/main"
   ],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
-  }
+  "subPackages": [
+    {
+      "root": "pages/my",
+      "pages": [
+        "mystore/main",
+        "mystore/order/main",
+        "mystore/status/main",
+        "mystore/pickedUpOrder/main",
+        "mystore/distributeOrder/main",
+        "order/main",
+        "pay/main",
+        "share/main",
+        "feedback/main",
+        "feedback/success/main",
+        "main"
+      ]
+    }
+  ],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#ffd000",
+		"navigationBarTitleText": "",
+		"navigationBarTextStyle": "black"
+	}
 }

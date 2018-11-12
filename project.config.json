@@ -2,15 +2,18 @@
 	"description": "项目配置文件。",
 	"setting": {
 		"urlCheck": true,
-		"es6": false,
+		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": true,
+		"uglifyFileName": true
 	},
-	"miniprogramRoot": "./dist/",
+	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
 	"appid": "wx67127c10ce9c598c",
-	"projectname": "pinehub",
+	"projectname": "%E9%9D%92%E6%9D%BE%E6%96%B0%E9%9B%B6%E5%94%AEpinehub",
+	"libVersion": "2.3.0",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -20,13 +23,126 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"currentL": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
-			"list": []
+			"current": 2,
+			"list": [
+				{
+					"id": -1,
+					"name": "首页",
+					"pathName": "pages/index/main",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "新品预定",
+					"pathName": "pages/activity/main",
+					"query": ""
+				},
+				{
+					"id": 2,
+					"name": "定位",
+					"pathName": "pages/nearbyStores/main",
+					"query": ""
+				},
+				{
+					"id": 4,
+					"name": "我的——我的店铺",
+					"pathName": "pages/my/mystore/main",
+					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "我的——个人订单",
+					"pathName": "pages/my/order/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预定商城",
+					"pathName": "pages/reserveShop/main",
+					"query": ""
+				},
+				{
+					"id": 6,
+					"name": "当日下单",
+					"pathName": "pages/todayOrder/main",
+					"query": ""
+				},
+				{
+					"id": 10,
+					"name": "我的——我的店铺--订单",
+					"pathName": "pages/my/mystore/order/main",
+					"query": ""
+				},
+				{
+					"id": 8,
+					"name": "我的",
+					"pathName": "pages/my/main",
+					"query": ""
+				},
+				{
+					"id": 12,
+					"name": "我的—我的店铺-状态",
+					"pathName": "pages/my/mystore/status/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "我的—我的店铺-充值",
+					"pathName": "pages/my/pay/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单",
+					"pathName": "pages/order/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "搜索",
+					"pathName": "pages/search/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "卡券",
+					"pathName": "pages/coupon/main",
+					"query": ""
+				},
+				{
+					"id": 14,
+					"name": "预定商城-提交订单-配送",
+					"pathName": "pages/reserveShop/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": 15,
+					"name": "新品-提交订单",
+					"pathName": "pages/activity/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "当日 -- 提交订单",
+					"pathName": "pages/todayOrder/submitOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "预定商城-提交订单-自提",
+					"pathName": "pages/reserveShop/orderSelf/main",
+					"query": ""
+				}
+			]
 		}
 	}
 }

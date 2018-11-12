@@ -1,10 +1,9 @@
-import App from './App';
-//import Vue from 'vue';
+import Vue from 'vue';
 import Application from './Application';
 //Vue.config.productionTip = false;
 App.mpType = 'app';
-console.log('created 1');
-const application = new Application(App);
-application.run();
-//const app = new Vue(App);
-//app.mount(App);
+var application = new Application(App, 'undefined');
+application.run(function(){
+		
+});
+
