@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 import App from './index';
 import Application from '../../../Application';
@@ -20,35 +19,30 @@ import StorageService from '@/services/mp/StorageService';
 import MyInfoService from '@/services/http/MyInfoService';
 import NearestStoreService from '@/services/http/NearestStoreService';
 
-
-
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
 
 	if(app.models) {
 		app.models.addModel('model.activity.merchandises', Merchandises);
 		app.models.addModel('model.my.info', MyInfo);
-		app.models.addModel('model.nearestStore',NearestStore);
-	}	
+		app.models.addModel('model.nearestStore', NearestStore);
+	}
 
 	app.register('http.myInfo', MyInfoService);
+	app.register('http.nearestStore', NearestStoreService);
 
 	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
- 	app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand); 
+	app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
+	app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
+	app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
+	app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
+	app.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
+	app.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
 
- 	app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
-    app.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
-    app.registerCommand(GetNearestStoreCommand.commandName(),GetNearestStoreCommand);
-
-    app.register('http.nearestStore', NearestStoreService);
-
-},function(component) {
+}, function(component) {
 	_.extend(App, component);
 	let app = new Vue(App);
+	console.log('======++++======', app);
 	app.$mount();
- 	return app;
+	return app;
 });
-
-

@@ -12,6 +12,7 @@ export default class MyStoreCategoryMerchandises extends Model {
 				return this.list();
 			},
 			currentCategoryIndex(state) {
+				console.log('state----index',state);
 				return state.currentCategoryIndex;
 			}
 		});
@@ -23,10 +24,12 @@ export default class MyStoreCategoryMerchandises extends Model {
 	}
 	//监听数据
 	listeners() {
+		console.log('ABCDEFG');
 		super.listeners();
 	}
 	setList(payload, state) {
 		super.setList(payload, state);
+		console.log('ABCDEFG',payload);
 		this.state.currentCategoryIndex = payload.currentCategoryIndex;
 	}
 }

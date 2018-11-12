@@ -109,13 +109,17 @@
       },
       emptyCart(storeId){
         this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+      },
+      async getData() {
+      	 	  await this.$command('GET_NEAREST_STORE');
+      	 	  await this.$command('GET_STORE_CATEGORIES_TO_MEUN');
       }
   },
    created(){
-      this.$command('GET_NEAREST_STORE');
+     
    },
    mounted(){
-      this.$command('GET_STORE_CATEGORIES_TO_MEUN');
+   	this.getData();
    }
 }
 </script>

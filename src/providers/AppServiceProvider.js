@@ -1,7 +1,9 @@
 /*eslint constructor-super: "error"*/
 /*eslint-env es6*/
 import ServiceProvider from './ServiceProvider';
-import TokenService from '../services/TokenService';
+import MpAuthService from '../services/mp/AuthService';
+import HttpAuthService from '../services/http/AuthService';
+import ShoppingCartService from '../services/http/ShoppingCartService';
 import SessionService from '../services/cache/SessionService';
 import Base64Service from '../services/encrypt/Base64Service';
 import MD5Service from '../services/encrypt/MD5Service';
@@ -35,17 +37,31 @@ export default class AppServiceProvider extends ServiceProvider {
 			}
 			return format;
 		}
+
+		String.prototype.trim = function(char, type) {
+			if(char) {
+				if(type == 'left') {
+					return this.replace(new RegExp('^\\' + char + '+', 'g'), '');
+				} else if(type == 'right') {
+					return this.replace(new RegExp('\\' + char + '+$', 'g'), '');
+				}
+				return this.replace(new RegExp('^\\' + char + '+|\\' + char + '+$', 'g'), '');
+			}
+			return this.replace(/^\s+|\s+$/g, '');
+		};
 	}
 	register() {
 		this.app.register('base64', Base64Service);
 		this.app.register('md5', MD5Service);
 		this.app.register('json', JsonService);
+		this.app.register('mp.auth', MpAuthService);
+		this.app.register('http.auth', HttpAuthService);
+		this.app.register('http.shoppingCart', ShoppingCartService);
 		this.app.register('session', SessionService);
-		this.app.register('token', TokenService);
 		this.app.register('href', HrefService);
 		this.app.register('scan', ScanCodeService);
 		this.app.register('scanCodeService', MyStoreScanCodeService);
-		this.app.register('popup',PopupService);
+		this.app.register('popup', PopupService);
 		this.app.register('map', TencentMapService);
 		this.app.register('mp.storage', StorageService);
 	}

@@ -6,7 +6,7 @@ export default class TencentMapService extends Service {
 		this.map = new Qmap({
 			key: $application.config['app']['mapKey'] // 必填
 		});
-		console.log(this.map);
+		console.log(`调用腾讯地图接口`);
 	}
 	//地址转换坐标
 	searchAddressToLocation(address) {

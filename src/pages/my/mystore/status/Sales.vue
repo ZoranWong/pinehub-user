@@ -8,12 +8,12 @@
 			<wx-charts :options='wxOptions'></wx-charts>
 		</div>
 		<div id="sales_total">
-			<div class="sales_total_style sales_total_all">销售总额<em>8000.00</em></div>
-			<div class="sales_total_style sales_total_booking">预订产品<em>6000.00</em></div>
-			<div class="sales_total_style sales_total_site">站点产品<em>2000.00</em></div>
-			<div class="sales_total_style sales_total_index">销售指数<em>500</em></div>
-			<div class="sales_total_style sales_total_singlenum">销售单品数量<em>900</em></div>
-			<div class="sales_total_style sales_total_num">销售笔数<em>600</em></div>
+			<div class="sales_total_style sales_total_all">销售总额<em>{{salesInfo.order_amount}}</em></div>
+			<div class="sales_total_style sales_total_booking">预订产品<em>{{salesInfo.reservation_order_amount}}</em></div>
+			<div class="sales_total_style sales_total_site">站点产品<em>{{salesInfo.store_order_amount}}</em></div>
+			<div class="sales_total_style sales_total_index">销售指数<em>{{salesInfo.merchandise_num}}</em></div>
+			<div class="sales_total_style sales_total_singlenum">销售单品数量<em>{{salesInfo.sell_point}}</em></div>
+			<div class="sales_total_style sales_total_num">销售笔数<em>{{salesInfo.order_num}}</em></div>
 		</div>
 		<div class="sales_rank">
 			<div class="sales_rank_title">销售额排行/客户</div>
@@ -97,7 +97,7 @@
 		computed: {
 			wxOptions() {
 				console.log('computed wx echart options', this.$store.getters['model.my.sales.echart/chartData']);
-				return 	this.$store.getters['model.my.sales.echart/chartData'];
+				return this.$store.getters['model.my.sales.echart/chartData'];
 			}
 		},
 		mounted() {},
@@ -108,14 +108,14 @@
 				// this.wxOptions = this.getOptions(num, true);
 				console.log('com------', this.$parent);
 				// this.wxOptions = this.$parent.mp.eCharts.createChart('week', data[1], true);
-				if (num == 0) {
-					this.onloadSalesEChart('day');
+				if(num == 0) {
+//					this.onloadSalesEChart('hour');
 					this.onloadSales('hour');
-				} else if (num == 1) {
-					this.onloadSalesEChart('week');
+				} else if(num == 1) {
+//					this.onloadSalesEChart('week');
 					this.onloadSales('week');
 				} else {
-					this.onloadSalesEChart('month');
+//					this.onloadSalesEChart('month');
 					this.onloadSales('month');
 				}
 				console.log('change wxechart ', this.$store.getters['model.my.sales.echart/chartData']);
@@ -172,7 +172,8 @@
 			}
 		},
 		created() {
-
+//			this.onloadSalesEChart('hour');
+			this.onloadSales('hour');
 		}
 	}
 </script>
@@ -187,12 +188,12 @@
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 		position: relative;
 	}
-
+	
 	#select_date_ranges {
 		font-size: 28rpx;
 		font-weight: 300;
 	}
-
+	
 	#select_date_arrow {
 		position: absolute;
 		right: 20rpx;
@@ -202,7 +203,7 @@
 		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
-
+	
 	#sales_charts {
 		background: #FFFFFF;
 		padding: 20rpx;
@@ -210,7 +211,7 @@
 		border-radius: 10rpx;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	#sales_total {
 		background: #FFFFFF;
 		padding: 10rpx 20rpx 0;
@@ -218,57 +219,57 @@
 		border-radius: 10rpx;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	.sales_total_style {
 		color: #111111;
 		font-weight: 300;
 	}
-
+	
 	.sales_total_style em {
 		display: inline-block;
 		float: right;
 		color: #828282;
 	}
-
+	
 	.sales_total_all {
 		font-size: 28rpx;
 		margin-bottom: 20rpx;
 	}
-
+	
 	.sales_total_booking {
 		font-size: 22rpx;
 		margin-bottom: 10rpx;
 	}
-
+	
 	.sales_total_site {
 		font-size: 22rpx;
 		border-bottom: 1rpx solid #F0F0F0;
 		padding-bottom: 10rpx;
 	}
-
+	
 	.sales_total_index {
 		font-size: 28rpx;
 		border-bottom: 1rpx solid #F0F0F0;
 		line-height: 66rpx;
 	}
-
+	
 	.sales_total_singlenum {
 		font-size: 28rpx;
 		border-bottom: 1rpx solid #F0F0F0;
 		line-height: 66rpx;
 	}
-
+	
 	.sales_total_num {
 		font-size: 28rpx;
 		line-height: 66rpx;
 	}
-
+	
 	.sales_rank {
 		margin: 20rpx;
 		border-radius: 10rpx;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	.sales_rank_title {
 		background: #FECE00;
 		color: #111111;
@@ -278,7 +279,7 @@
 		text-indent: 20rpx;
 		border-radius: 10rpx 10rpx 0 0;
 	}
-
+	
 	.sales_rank_ul {
 		background: #FFFFFF;
 		padding: 10rpx 20rpx 10rpx 20rpx;
@@ -286,21 +287,21 @@
 		font-weight: 300;
 		border-radius: 0 0 10rpx 10rpx;
 	}
-
+	
 	.sales_rank_ul ul li {
 		line-height: 62rpx;
 		border-bottom: 1rpx solid #F0F0F0;
 	}
-
+	
 	.sales_rank_ul ul li:last-child {
 		border-bottom: none;
 	}
-
+	
 	.sales_rank_ul ul li i {
 		display: inline-block;
 		padding-right: 10rpx;
 	}
-
+	
 	.sales_rank_ul ul li em {
 		display: inline-block;
 		float: right;

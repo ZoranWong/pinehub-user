@@ -80,7 +80,7 @@
 				console.log('bindmarkertap', event);
 			}
 		},
-		created() {
+		mounted() {
 			// console.log('location created', this);
 			this.flashLocation();
 		}
