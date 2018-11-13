@@ -117,7 +117,7 @@
 				console.log(num);
 			} 
 		},
-		created() {
+		mounted() {
 			this.$command('GET_TICKETS');
 		}
 	}

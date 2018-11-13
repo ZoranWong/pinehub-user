@@ -20,7 +20,7 @@
 		name:"confirmationOrder",
 		data(){
 			return{
-				title:'当日下单-确认订单',
+				title:'确认订单「当日」',
 				
 			}
 		},
@@ -48,15 +48,18 @@
 		    },
 		    reduceCart(shopId, count, merchandiseId){
 		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-		    },   		
+		    },
+		    async getData() {
+				await this.$command('GET_NEAREST_STORE');
+				await this.$command('MYINFO');
+				console.log('mounted order component');
+				await this.$command('FILL_CART_FROM_CACHE');
+		    }
 		},
 		created(){
-	      	this.$command('GET_NEAREST_STORE');
 		},
 		mounted(){
-			this.$command('MYINFO');
-			console.log('mounted order component');
-			this.$command('FILL_CART_FROM_CACHE');
+			this.getData();
 		}
 	}
 </script>

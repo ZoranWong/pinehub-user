@@ -7,9 +7,21 @@ export default class MyStoreCategorys extends Mock {
 	data(storeId, page = 1, limit = 20) {
 		console.log('myStoreCategorys-mock')
 		return {
-			"data|5": [{
-				"id|+1": 1,
+			"data": [{
+				"id": 1,
 				"name": "早餐"
+			},{
+				"id": 2,
+				"name": "中餐"
+			},{
+				"id": 3,
+				"name": "晚餐"
+			},{
+				"id": 4,
+				"name": "熟食"
+			},{
+				"id": 5,
+				"name": "面点"
 			}],
 			"meta": {
 				"pagination": {

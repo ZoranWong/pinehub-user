@@ -1,25 +1,31 @@
-import Vue from 'vue';
-import App from './index';
-import Application from '../../Application';
-import _ from 'underscore';
-import Merchandises from '@/models/Merchandises';
-import ShoppingCarts from '@/models/ShoppingCarts';
-// import Categories from '@/models/Categories';
+import Vue from 'vue'
+import App from './index'
+import Application from '../../Application'
+import _ from 'underscore'
+// 产品模型和产品服务
+import Merchandises from '@/models/Merchandises'
+import MerchandisesService from '@/services/http/MerchandisesService'
+// 购物车相关
 
-import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
-import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
-import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
-import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
-const application = new Application(App, 'actity.merchandises');
-application.run(function(app) {
-  app.registerModel('model.activity.merchandises', Merchandises);
-	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-	app.registerCommand(AddMerchandiseCommand.commandName(),AddMerchandiseCommand);
-	app.registerCommand(ReduceMerchandiseCommand.commandName(),ReduceMerchandiseCommand);
-	app.registerCommand(EmptyMerchandisesCommand.commandName(),EmptyMerchandisesCommand);
-},function(mountComponent) {
-	 _.extend(App,mountComponent);
-	 const app = new Vue(App);
-	 app.$mount();
-	 return app;
-});
+import ActivityLoadingMerchandisesCommand from '@/commands/ActivityLoadingMerchandisesCommand'
+import ActivityShoppingCartAddMerchandiseCommand from '@/commands/ActivityShoppingCartAddMerchandiseCommand'
+import ActivityShoppingCartReduceMerchandiseCommand from '@/commands/ActivityShoppingCartReduceMerchandiseCommand'
+import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand'
+
+const application = new Application(App, 'actity.merchandises')
+application.run(function (app) {
+  // 产品模型和产品服务
+  app.models.addModel('model.activity.merchandises', Merchandises)
+  app.register('http.merchandises', MerchandisesService)
+
+  // 注册购物车命令
+  app.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand)
+  app.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand)
+  app.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand)
+  app.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand)
+}, function (mountComponent) {
+  _.extend(App, mountComponent)
+  const app = new Vue(App)
+  app.$mount()
+  return app
+})

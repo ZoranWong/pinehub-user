@@ -107,7 +107,7 @@
 				this.$command('router', router, 'push');
 			},
 			scanCode() {
-				this.$command('scanCommand','myfeedbacksuccess');
+				this.$command('scanCommand', 'myfeedbacksuccess');
 			},
 			getOptions(i, refresh = false) {
 				let option = {
@@ -175,13 +175,13 @@
 		width: 100%;
 		overflow-y: auto;
 	}
-
+	
 	#mystore_buyinfo {
 		margin: 15rpx;
 		clear: both;
 		overflow: hidden;
 	}
-
+	
 	#mystore_buyinfo ul li {
 		width: 330rpx;
 		height: 140rpx;
@@ -193,7 +193,7 @@
 		position: relative;
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	.my_store_ico {
 		display: inline-block;
 		width: 60rpx;
@@ -205,54 +205,54 @@
 		top: 40rpx;
 		left: 40rpx;
 	}
-
+	
 	.my_store_ico.ico_week_buy {
 		background-image: url(../../../../static/images/icon/my_store_week_buy.png);
 	}
-
+	
 	.my_store_ico.ico_week_sell {
 		background-image: url(../../../../static/images/icon/my_store_week_sell.png);
 	}
-
+	
 	.my_store_ico.ico_today_buy {
 		background-image: url(../../../../static/images/icon/my_store_today_buy.png);
 	}
-
+	
 	.my_store_ico.ico_today_sell {
 		background-image: url(../../../../static/images/icon/my_store_today_total.png);
 	}
-
+	
 	.info_list {
 		position: absolute;
 		top: 35rpx;
 		left: 120rpx;
 		clear: both;
 	}
-
+	
 	.info_list em {
 		font-size: 30rpx;
 		font-weight: 400;
 		line-height: 34rpx;
 	}
-
+	
 	.info_list i {
 		font-size: 24rpx;
 		line-height: 22rpx;
 		color: #bbbbbb;
 		margin-top: 10rpx;
 	}
-
+	
 	#mystore_charts {
 		margin: 0 30rpx;
 		background: #FFFFFF;
 	}
-
+	
 	#mystore_menu {
 		margin: 15rpx;
 		/*background: #FFF6BD;*/
 		overflow: hidden;
 	}
-
+	
 	#mystore_menu ul li {
 		margin: 15rpx;
 		background: #FFFFFF;
@@ -262,14 +262,14 @@
 		float: left;
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	#mystore_menu ul li em {
 		font-size: 28rpx;
 		font-weight: 300;
 		text-align: center;
 		color: #828282;
 	}
-
+	
 	.my_store_menu_ico {
 		display: block;
 		width: 60rpx;
@@ -279,27 +279,27 @@
 		background-position: center center;
 		margin: 30rpx auto 15rpx;
 	}
-
+	
 	.ico_1 {
 		background-image: url(../../../../static/images/icon/my_store_m1.png);
 	}
-
+	
 	.ico_2 {
 		background-image: url(../../../../static/images/icon/my_store_m2.png);
 	}
-
+	
 	.ico_3 {
 		background-image: url(../../../../static/images/icon/my_store_m3.png);
 	}
-
+	
 	.ico_4 {
 		background-image: url(../../../../static/images/icon/my_store_m4.png);
 	}
-
+	
 	.ico_5 {
 		background-image: url(../../../../static/images/icon/my_store_m5.png);
 	}
-
+	
 	.ico_6 {
 		background-image: url(../../../../static/images/icon/my_store_m6.png);
 	}

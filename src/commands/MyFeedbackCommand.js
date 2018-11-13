@@ -4,8 +4,22 @@ export default class MyFeedbackCommand extends Command {
 		super(app);
 	}
 
-	async handle(contact, feedbackContent) {
-	    let [res] = await this.service('http.myFeedback').submitFeedback(contact, feedbackContent);
+	async handle(mobile, feedback) {
+		console.log('FEEDBACK', mobile, feedback);
+		if(mobile && !(/^1[34578]\d{9}$/.test(mobile))) {
+			wx.showToast({
+				title: "手机号填写不正确",
+				icon: "none"
+			})
+			return false;
+		} else if(!feedback || feedback.length < 10) {
+			wx.showToast({
+				title: "意见不得少于10字",
+				icon: "none"
+			})
+			return false;
+		}
+		let response = await this.service('http.myFeedback').submitFeedback(mobile, feedback);
 	}
 	static commandName() {
 		return 'MYFEEDBACK';

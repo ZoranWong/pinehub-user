@@ -5,13 +5,14 @@ export default class MyStoreInfoCommand extends Command {
 	}
 
 	async handle(id) {
-		let [storeInfo, sellAmountCharts, buyNumCharts] = await this.service('http.myStoreInfo').storeInfo(id);
-		this.store().dispatch({
-			type: 'model.my.store/storeInfo',
+		let shopId = await this.service('mp.storage').get('shopId');
+		let [storeInfo, sellAmountCharts, buyNumCharts] = await this.service('http.myStoreInfo').storeInfo(shopId);
+		let eventData = {
 			storeInfo: storeInfo,
 			sellAmountCharts: sellAmountCharts,
 			buyNumCharts: buyNumCharts
-		});
+		};
+		this.store().dispatch('model.my.store/storeInfo', eventData);
 	}
 	static commandName() {
 		return 'MYSTOREINFO';

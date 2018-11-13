@@ -20,6 +20,14 @@ export default class Orders extends Model {
 			},
 			currentPage(state) {
 				return state.orders[state.status] ? state.orders[state.status].currentPage : 1 ;
+			},
+			totalPage(state) {
+				return state.orders[state.status] ? state.orders[state.status].totalPage : 1 ;
+			},
+			isLoadedAll(state) {
+				return state.orders[state.status] ? 
+				(state.orders[state.status].currentPage > 0 && state.orders[state.status].currentPage >= state.orders[state.status].totalPage) : 
+				false;
 			}
 		});
 	}
@@ -42,7 +50,6 @@ export default class Orders extends Model {
 			};
 			let startIndex = (currentPage - 1) * pageCount + 1;
 			orders.currentPage = currentPage;
-			
 	        orders.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
 	        if(totalNum !== null)
 	          orders.totalNum = totalNum;
@@ -52,11 +59,13 @@ export default class Orders extends Model {
 	            orders.pageCount = pageCount;
 	          }
 	        }
-//	        let statusOrders = {};
-//	        statusOrders[status] = orders;
 	        this.$application.$vm.set(state.orders, status, orders);
 	        state.status = status;
 	        console.log(state.orders, state.status);
+		});
+		
+		this.addEventListener('updateStatus', function({id, status}) {
+			
 		});
 	}
 }

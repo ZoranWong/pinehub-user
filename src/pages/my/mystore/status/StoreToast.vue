@@ -11,8 +11,7 @@
 		<div id="store_product">
 			<div id="store_product_left">
 				<ul>
-					<li v-for="(category, index) in categories" :class="{storetab_select_now: currentCategoryIndex == index}" @click="changeCategory(index,category.id)"
-					 :key="index">{{category.name}}{{category.id}}</li>
+					<li v-for="(category, index) in categories" :class="{storetab_select_now: currentCategoryIndex == index}" @click="changeCategory(index, category['id'])" :key="index">{{category.name}}</li>
 				</ul>
 			</div>
 			{{nowBtnIndex}}
@@ -49,14 +48,21 @@
 		},
 		watch: {
 			nowBtnIndex(nv, ov) {
-				if (nv && nv !== ov) {
-					console.log('UUUUUU',nv,ov);
+				if(nv && nv !== ov) {
+					console.log('UUUUUU', nv, ov);
+					// this.changeCategoryIndex(0, nv[0]['id']);
+				}
+			},
+			merchandisesList(nv, ov) {
+				if(nv && nv !== ov) {
+					console.log('change', nv, ov);
 					// this.changeCategoryIndex(0, nv[0]['id']);
 				}
 			}
 		},
 		computed: {
 			categories() {
+				console.log('A');
 				return this.$store.getters['model.my.store.categories/list'];
 			},
 			currentCategoryIndex() {
@@ -80,7 +86,7 @@
 			//				}
 			//			},
 			numChange(merchandise) {
-				console.log('APAPAPAPAPAP',merchandise);
+				//向父组件提交数据
 				this.$emit("showToast", merchandise);
 			}
 		},
@@ -94,7 +100,7 @@
 	#store {
 		position: relative;
 	}
-
+	
 	#select_date {
 		margin: 20rpx;
 		padding: 6rpx 20rpx;
@@ -105,12 +111,12 @@
 		position: relative;
 		display: none;
 	}
-
+	
 	#select_date_ranges {
 		font-size: 28rpx;
 		font-weight: 300;
 	}
-
+	
 	#select_date_arrow {
 		position: absolute;
 		right: 20rpx;
@@ -120,7 +126,7 @@
 		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
-
+	
 	#store_total {
 		margin: 20rpx;
 		padding: 6rpx 20rpx;
@@ -131,32 +137,32 @@
 		font-size: 28rpx;
 		font-weight: 300;
 	}
-
+	
 	#store_total em {
 		display: inline-block;
 		font-weight: 400;
 		padding-right: 10rpx;
 	}
-
+	
 	#store_total font {
 		display: inline-block;
 		color: #999999;
 		font-size: 26rpx;
 	}
-
+	
 	#store_total i {
 		/*display: inline-block;*/
 		display: none;
 		float: right;
 		color: #828282;
 	}
-
+	
 	#store_product {
 		margin: 20rpx;
 		font-size: 28rpx;
 		font-weight: 300;
 	}
-
+	
 	#store_product_left {
 		width: 130rpx;
 		float: left;
@@ -165,19 +171,19 @@
 		overflow: hidden;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	#store_product_left ul li {
 		line-height: 118rpx;
 		text-align: center;
 		border-bottom: 1rpx solid #FCFCFC;
 		font-weight: 400;
 	}
-
+	
 	#store_product_right {
 		float: right;
 		width: 570rpx;
 	}
-
+	
 	.store_product_list_li {
 		background: #FFFFFF;
 		padding: 10rpx 20rpx;
@@ -185,23 +191,23 @@
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .3);
 		margin-bottom: 10rpx;
 	}
-
+	
 	.store_product_list_li em {
 		line-height: 54rpx;
 		font-weight: 400;
 		color: #111111;
 	}
-
+	
 	.store_product_list_li em i {
 		float: right;
 		padding-left: 50rpx;
 	}
-
+	
 	.store_product_list_li em i.num_change {
 		background: url(../../../../../static/images/icon/my_product_num_change.png) no-repeat 10rpx center;
 		background-size: 26rpx;
 	}
-
+	
 	.storetab_select_now {
 		color: #FECE00;
 		border-left: 10rpx solid #FECE00;

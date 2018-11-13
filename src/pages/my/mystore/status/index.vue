@@ -4,16 +4,14 @@
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
-				<li v-for="(tab, index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index"
-				 @click="tabSelect(index)">
+				<li v-for="(tab, index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)">
 					<span>{{tab.name}}</span>
 				</li>
 			</ul>
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item store-orders" v-if="cur === 0">
-				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart"
-				 :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
+				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart" :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
 			</div>
 			<div class="tab_content_item purchase-orders" v-if="cur === 1">
 				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
@@ -54,11 +52,11 @@
 				title: "店铺状态",
 				navName: "my",
 				tabs: [{
-					name: "库存统计"
+					name: "销售统计"
 				}, {
 					name: "进货统计"
 				}, {
-					name: "销售统计"
+					name: "库存统计"
 				}],
 				cur: 0,
 				merchandise: {},
@@ -79,9 +77,11 @@
 				return this.$store.getters['model.my.store.status.purchase/purchaseList'];
 			},
 			salesInfo() {
+				console.log('SALEINFO------------SALEINFO', this.$store.getters['model.my.store.status.sales/salesInfo']);
 				return this.$store.getters['model.my.store.status.sales/salesInfo'];
 			},
 			sellTop() {
+				console.log('SALETOP------------PPPPPPPPPPPPP', this.$store.getters['model.my.store.status.sales/sellTop']);
 				return this.$store.getters['model.my.store.status.sales/sellTop'];
 			},
 			merchandiseTop() {
@@ -122,13 +122,14 @@
 				this.$command(MySalesEChartCommand.commandName(), status);
 			},
 			changeCategory(index, categoryId) {
+				console.log('KKKKK++++++', index, categoryId);
 				this.$command(MyStoreChangeCategoryCommand.commandName(), index, categoryId);
 				console.log('KKKKK-------', index, categoryId);
 			}
 		},
 		created() {
 			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
-			this.$command(MyStoreStatusSalesCommand.commandName(), 'week');
+			//			this.$command(MyStoreStatusSalesCommand.commandName(), 'hour');
 			this.$command(MyStoreCategoriesCommand.commandName(), '1');
 			this.$command(MyStoreChangeCategoryCommand.commandName(), '1', '1');
 		}
@@ -140,17 +141,17 @@
 		height: 100%;
 		background: #fafafa;
 	}
-
+	
 	#footNav_height {
 		height: 109rpx;
 	}
-
+	
 	#status {
 		position: relative;
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -160,7 +161,7 @@
 		top: 0;
 		z-index: 999;
 	}
-
+	
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -170,24 +171,24 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-
+	
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-
+	
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-
+	
 	#tab_content {
 		padding-top: 74rpx;
 	}
-
+	
 	.tab_content_item {}
-
+	
 	.tab_content_now {
 		display: block;
 	}

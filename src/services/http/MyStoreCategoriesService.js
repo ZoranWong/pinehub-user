@@ -1,5 +1,5 @@
-import Service from '../Service';
-export default class MyStoreCategoriesService extends Service {
+import ApiService from './ApiService';
+export default class MyStoreCategoriesService extends ApiService {
 	constructor($application) {
 		super($application);
 	}
@@ -11,7 +11,7 @@ export default class MyStoreCategoriesService extends Service {
 		let currentPage = null;
 		let response = null;
 		console.log('MyStoreCategoriesService--------MyStoreCategoriesService');
-		if (this.$application.needMock()) {
+		if(this.$application.needMock()) {
 			console.log('AAAAAAAAAAAA');
 			response = await this.services('mock.myStoreCategories').mock(storeId, page, limit);
 		} else {
@@ -23,7 +23,7 @@ export default class MyStoreCategoriesService extends Service {
 		}
 		categories = response.data;
 		let pagination = response.meta.pagination;
-		console.log('pagination------pagination',pagination);
+		console.log('pagination------pagination', pagination);
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];

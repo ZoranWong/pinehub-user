@@ -1,33 +1,31 @@
 import Command from './Command';
 export default class AddMerchandiseCommand extends Command {
-  constructor(app) {
-    super(app);
-  }
-
-  async handle(merchandiseId, count, shopId = null) {
-     // 与服务器打交道，获取数据，返回数据
-    let service = this.service('http.merchandises');
-    let [ id, name, quality,sellPrice, message, totalAmount, thumbImage]= await service.addMerchandises(merchandiseId, shopId, count );
-
-    //console.log(id,  name, quality, message, totalAmount, merchandiseId, shopId);
-    if(typeof id !== 'undefined') {
-      this.store().dispatch('model.shoppingCarts/changeCart', {
-        id: id,
-        merchandiseId: merchandiseId,
-        count:count,
-        name: name,
-        sellPrice: sellPrice,
-        totalAmount: totalAmount,
-        shopId:shopId,
-        thumbImage:thumbImage
-      })
-    }else{
-      //console.log(id)
-      this.service('popup').toast(message, 'none')
-    }
-
-  }
-  static commandName() {
-    return 'ADD_MERCHANDISE_TO_CART';
-  }
+	constructor(app) {
+		super(app);
+	}
+	//merchandiseId, quality = 1, type, id
+	async handle(merchandiseId, quality = 1, type, id) {
+		if(type == 'activity') {
+			id = await this.service('mp.storage').get('activityId');
+		}
+		let response = await this.service('http.merchandises').addMerchandises(merchandiseId, 1, type, id);
+		//产品id
+		let nowMerchandiseId = response.merchandise_id;
+		//产品数量
+		let nowMerchandiseQuality = response.quality;
+		//无库存返回message
+		let message = response.message;
+		if(nowMerchandiseId) {
+			this.store().dispatch('model.shoppingCarts/changeCart', {
+				merchandiseId: nowMerchandiseId,
+				count: nowMerchandiseQuality
+			})
+		} else if(message) {
+			//console.log(id)
+			this.service('popup').toast(message, 'none')
+		}
+	}
+	static commandName() {
+		return 'ADD_MERCHANDISE_TO_CART';
+	}
 }
