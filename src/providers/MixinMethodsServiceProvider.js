@@ -23,13 +23,6 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         $setCurrentPage () {
           self.app.vueApp = this;
         },
-        $changePage (val, filters = self.filters, fun) {
-          filters.pageNum = val
-          fun()
-        },
-        $resetForm (name) {
-          self.app.resetForm(self.$refs[name]);
-        },
         $command (...params) {
           console.log('******************** vue parent ***************', this.$parent);
           let parent = this.parent;
@@ -43,38 +36,6 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         },
         $error (exception, params = null) {
           self.app.$error(exception, params);
-        },
-        $adapt () {
-          let container = document.querySelectorAll('.form-container');
-          if (container.length) {
-            for (let i = 0; i < container.length; i++) {
-              container[i].style.maxHeight = self.box.offsetHeight - 200 + 'px';
-              container[i].scrollTop = 0;
-            }
-          }
-        },
-        $dialogClose () {
-          if (!self.box) return;
-          self.box.style.overflowY = 'auto';
-          self.$emit('dialogClose');
-        },
-        $dialogOpen () {
-          if (!self.box) {
-            return;
-          }
-          self.box.style.overflowY = 'hidden';
-          self.$emit('dialogOpen');
-        },
-        $scroll () {
-          self.box = document.querySelector('.content-scroll');
-          if (self.box) {
-            self.scrollTop = self.box.scrollTop + 20 + 'px';
-          }
-        },
-        $scrollToBottom () {
-          if (this.$el.scrollTop + this.$el.offsetHeight > this.$el.scrollHeight) {
-            this.$emit('scroll-to-bottom');
-          }
         },
         $imageUrl (name, path = 'mp_images') {
           return self.app.config.app.staticHost.trim('/') + '/' + path.trim('/') + '/' + name;
