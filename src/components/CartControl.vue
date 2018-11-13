@@ -27,9 +27,9 @@
 			},
 			count() {
 				if(this.model) {
-					console.log('------count -------',this.merchandiseId, this.$store.getters[`${this.model}/quality`](this.merchandiseId));
+					console.log('------count -------', this.merchandiseId, this.$store.getters[`${this.model}/quality`](this.merchandiseId));
+					return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId) : 0;
 				}
-				return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId) : 0;
 			}
 		},
 		methods: {
