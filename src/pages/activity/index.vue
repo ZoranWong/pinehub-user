@@ -35,7 +35,8 @@
         return this.$store.getters['model.activity.merchandises/list']
       },
       currentPage () {
-        let page = this.$store.state['model.activity.merchandises'].currentPage
+        console.log('======= store getters ========', this.$store.getters);
+        let page = this.$store.getters['model.activity.merchandises/currentPage'];
         return page
       }
     },

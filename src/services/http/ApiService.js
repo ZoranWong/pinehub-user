@@ -22,13 +22,11 @@ export default class ApiService extends Service {
 		axios.interceptors.request.use((request) => {
 			request.baseURL = this.gateway;
 			_.extend(request.headers, headers);
-			console.log(request);
 			return request;
 		});
 		return axios
 	}
 	async auth(need) {
-		console.log('AUTH-NEED');
 		let headers = {};
 		if(need) {
 			let token = await this.services('mp.auth').getToken();
@@ -38,7 +36,6 @@ export default class ApiService extends Service {
 	}
 	// eslint-disable-next-line
 	async httpGet(route, params = [], auth = true) {
-		console.log('HTTP-GET');
 		wx.showLoading({
 			title: '加载中',
 		})
@@ -48,10 +45,8 @@ export default class ApiService extends Service {
 			if(result) {
 				wx.hideLoading();
 			}
-			console.log('HTTP-GET RESULT', result);
 			return result.data;
 		} catch(e) {
-			console.log('TryCatch-Get', e);
 			throw e;
 			return false;
 		}
@@ -69,7 +64,6 @@ export default class ApiService extends Service {
 			}
 			return result.data;
 		} catch(e) {
-			console.log('TryCatch-Post', e);
 			throw e;
 			return false;
 		}
@@ -83,7 +77,6 @@ export default class ApiService extends Service {
 			let result = await request.put(route, params);
 			return result;
 		} catch(e) {
-			console.log('TryCatch-Put', e);
 			throw e;
 			return false;
 		}
