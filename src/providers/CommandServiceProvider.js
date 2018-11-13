@@ -8,26 +8,24 @@ import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 import ScanCommand from '@/commands/ScanCommand';
 import BackToScrollViewTopCommand from '@/commands/BackToScrollViewTopCommand';
 
-//购物车相关结束
-// import MyOrderCommand from '../commands/MyOrderCommand';
 export default class CommandServiceProvider extends ServiceProvider {
-	constructor(app) {
-		super(app);
-		this.commands = [];
-	}
-	register() {
-		let commands = [
-			RouterCommand,
-			GetTokenCommand,
-			GetAcountCommand,
-			SetUserInfoCommand,
-			SetMobileCommand,
-			ShoppingCartCommand,
-			ScanCommand,
-			BackToScrollViewTopCommand
-		];
-		for(let key in commands) {
-			this.app.registerCommand(commands[key].commandName(), commands[key]);
-		}
-	}
+    constructor (app) {
+        super(app);
+        this.commands = [];
+    }
+    register () {
+        let commands = [
+          RouterCommand,
+          GetTokenCommand,
+          GetAcountCommand,
+          SetUserInfoCommand,
+          SetMobileCommand,
+          ShoppingCartCommand,
+          ScanCommand,
+          BackToScrollViewTopCommand
+        ];
+        for (let key in commands) {
+          this.app.registerCommand(commands[key].commandName(), commands[key]);
+        }
+    }
 }
