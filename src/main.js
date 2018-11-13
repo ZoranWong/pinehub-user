@@ -1,11 +1,13 @@
-import Vue from 'vue';
 import Application from './Application';
-Vue.config.productionTip = false;
-App.mpType = 'app';
-const application = new Application(App, 'main');
+const application = new Application(null, 'main');
 if (typeof wx !== 'undefined') {
   wx['$app'] = application;
 }
 application.run(function () {
-
+  console.log('%c ============================================== \n' +
+              ' ||                                          || \n' +
+              ' ||          MP VUE APPLICATION RUN          || \n' +
+              ' ||                                          || \n' +
+              ' ============================================== ',
+    'background:#aaa;color:#bada55');
 });

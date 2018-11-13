@@ -5,7 +5,7 @@ import _ from 'underscore'
 import App from './App'
 import md5 from 'md5'
 export default class Application {
-    static pageContainer = {};
+    static pageContainer = [];
     static globalProviderRegistered = false;
     static instanceContainer = {};
     static modelContainer = {};
@@ -35,6 +35,10 @@ export default class Application {
         });
     }
 
+    setComponent (component) {
+        this.mountComponent = component;
+        return this;
+    }
     needMock () {
         return Application.configContainer.app.mock;
     }
@@ -53,7 +57,6 @@ export default class Application {
 
     registerModel (name, model) {
         Application.modelContainer[name] = new model(this);
-        //return this.models.addModel(name, model);
     }
     command (...params) {
         let command = params.shift();
@@ -137,7 +140,6 @@ export default class Application {
         }
 
         this.extend(Application.instanceContainer, tmp, keys.length - 1);
-        // this.extend(this, tmp, keys.length - 1);
         return instance;
     }
 
@@ -169,8 +171,7 @@ export default class Application {
 
     run (before = null, created = null) {
         this.$vm = Vue;
-        let self = this;
-        self.registerServiceProviders();
+        this.registerServiceProviders();
         this.vueMixin();
         if (before && created && _.isFunction(before) && _.isFunction(created)) {
             before(this);
@@ -182,36 +183,16 @@ export default class Application {
         let store = this.instances['vue-store'] = this.$models(this.models);
         this.mountComponent = _.extend({
             store: store,
-            render: h => h(App),
-            beforeCreate: function () {
-                self.vueApp = this
-                self.instances['vue-store'] = this.$store
-                _.each(self.exceptionHandlers, function (exception, key) {
-                    self.$on(key, function (message) {
-                        let handler = new exception(self, self.vueApp.$message);
-                        handler.handle(message);
-                        console.log('error');
-                    });
-                });
-            },
-            created: () => {
-                self.beforeBoot();
-            },
-            beforeMount: () => {
-                self.boot();
-            },
-            mounted: () => {
-                self.afterBoot();
-                console.log('application boot time', self.applicationBootEndTime - self.applicationBootStartTime, 'ms');
-            }
+            render: h => h(App)
         }, this.mountComponent);
 
-        self.vueApp = _.isFunction(created) ? created(this.mountComponent, this.$vm) : console.log(created);
+        this.vueApp = _.isFunction(created) ? created(this.mountComponent, this.$vm) : console.log(created);
 
-        if (self.vueApp) {
-            _.extend(self.vueApp, self.instances);
+        if (this.vueApp) {
+            _.extend(this.vueApp, this.instances);
         }
-        return self.vueApp;
+        Application.pageContainer.push(this.vueApp);
+        return this.vueApp;
     }
 
     mount () {

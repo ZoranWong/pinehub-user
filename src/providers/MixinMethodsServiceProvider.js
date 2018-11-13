@@ -1,4 +1,4 @@
-//全局方法
+// 全局方法
 import ServiceProvider from './ServiceProvider';
 import Vuex from 'vuex';
 export default class MixinMethodsServiceProvider extends ServiceProvider {
@@ -19,6 +19,9 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
         },
         $models (models) {
           return new Vuex.Store(models);
+        },
+        $setCurrentPage () {
+          self.app.vueApp = this;
         },
         $changePage (val, filters = self.filters, fun) {
           filters.pageNum = val

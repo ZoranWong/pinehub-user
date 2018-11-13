@@ -1,63 +1,62 @@
 import Vue from 'vue';
 import App from './index';
-import Application from '@/Application';
 import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import Categories from '@/models/Categories';
 
 import MyStoreStatusPurchaseService from '@/services/http/MyStoreStatusPurchaseService';
 import MyStoreStatusPurchaseCommand from '@/commands/MyStoreStatusPurchaseCommand';
-import MyStoreStatusPurchase from "@/models/MyStoreStatusPurchase";
+import MyStoreStatusPurchase from '@/models/MyStoreStatusPurchase';
 
 import MyStoreStatusSalesService from '@/services/http/MyStoreStatusSalesService';
 import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
-import MyStoreStatusSales from "@/models/MyStoreStatusSales";
+import MyStoreStatusSales from '@/models/MyStoreStatusSales';
 
 import MyStoreCategoriesService from '@/services/http/MyStoreCategoriesService';
 import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
-import MyStoreCategories from "@/models/Categories";
+import MyStoreCategories from '@/models/Categories';
 
 import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryMerchandisesService';
 import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
-import MyStoreCategoryMerchandises from "@/models/MyStoreCategoryMerchandises";
+import MyStoreCategoryMerchandises from '@/models/MyStoreCategoryMerchandises';
 
 import MyStoreModifyStockService from '@/services/http/MyStoreModifyStockService';
 import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';
 
 import EChartsService from '@/services/mp/EChartsService';
 import MySalesEChartCommand from '@/commands/MySalesEChartCommand';
-import MySalesEChart from "@/models/MySalesEChart";
+import MySalesEChart from '@/models/MySalesEChart';
 
-const myMystoreStatus = new Application(App, 'my.mystore.status');
-myMystoreStatus.run((app) => {
-	app.registerModel('myStore.merchandises', Merchandises);
-	app.registerModel('store.categories', Categories);
+const application = wx.$app;
+application.setComponent(App).run((app) => {
+    app.registerModel('myStore.merchandises', Merchandises);
+    app.registerModel('store.categories', Categories);
 
-	app.models.addModel('model.my.store.status.purchase', MyStoreStatusPurchase);
-	app.register('http.myStoreStatusPurchase', MyStoreStatusPurchaseService);
-	app.registerCommand(MyStoreStatusPurchaseCommand.commandName(), MyStoreStatusPurchaseCommand);
+    app.models.addModel('model.my.store.status.purchase', MyStoreStatusPurchase);
+    app.register('http.myStoreStatusPurchase', MyStoreStatusPurchaseService);
+    app.registerCommand(MyStoreStatusPurchaseCommand.commandName(), MyStoreStatusPurchaseCommand);
 
-	app.models.addModel('model.my.store.status.sales', MyStoreStatusSales);
-	app.register('http.myStoreStatusSales', MyStoreStatusSalesService);
-	app.registerCommand(MyStoreStatusSalesCommand.commandName(), MyStoreStatusSalesCommand);
+    app.models.addModel('model.my.store.status.sales', MyStoreStatusSales);
+    app.register('http.myStoreStatusSales', MyStoreStatusSalesService);
+    app.registerCommand(MyStoreStatusSalesCommand.commandName(), MyStoreStatusSalesCommand);
 
-	app.models.addModel('model.my.store.categories', MyStoreCategories);
-	app.register('http.myStoreCategories', MyStoreCategoriesService);
-	app.registerCommand(MyStoreCategoriesCommand.commandName(), MyStoreCategoriesCommand);
+    app.models.addModel('model.my.store.categories', MyStoreCategories);
+    app.register('http.myStoreCategories', MyStoreCategoriesService);
+    app.registerCommand(MyStoreCategoriesCommand.commandName(), MyStoreCategoriesCommand);
 
-	app.models.addModel('model.my.store.category.merchandises', MyStoreCategoryMerchandises);
-	app.register('http.myStoreCategoryMerchandises', MyStoreCategoryMerchandisesService);
-	app.registerCommand(MyStoreChangeCategoryCommand.commandName(), MyStoreChangeCategoryCommand);
+    app.models.addModel('model.my.store.category.merchandises', MyStoreCategoryMerchandises);
+    app.register('http.myStoreCategoryMerchandises', MyStoreCategoryMerchandisesService);
+    app.registerCommand(MyStoreChangeCategoryCommand.commandName(), MyStoreChangeCategoryCommand);
 
-	app.register('http.myStoreModifyStock', MyStoreModifyStockService);
-	app.registerCommand(MyStoreModifyStockCommand.commandName(), MyStoreModifyStockCommand);
+    app.register('http.myStoreModifyStock', MyStoreModifyStockService);
+    app.registerCommand(MyStoreModifyStockCommand.commandName(), MyStoreModifyStockCommand);
 
-	app.models.addModel('model.my.sales.echart', MySalesEChart);
-	app.register('mp.eCharts', EChartsService);
-	app.registerCommand(MySalesEChartCommand.commandName(), MySalesEChartCommand);
+    app.models.addModel('model.my.sales.echart', MySalesEChart);
+    app.register('mp.eCharts', EChartsService);
+    app.registerCommand(MySalesEChartCommand.commandName(), MySalesEChartCommand);
 }, (component) => {
-	_.extend(App, component);
-	let app = new Vue(App);
-	app.$mount();
-	return app;
+    _.extend(App, component);
+    let app = new Vue(App);
+    app.$mount();
+    return app;
 });
