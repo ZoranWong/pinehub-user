@@ -2,7 +2,7 @@
 	<div class="body">
 		<mp-title :title="title"></mp-title>
 		<new-list :model="model" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></new-list>
-		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :emptyMerchandiseCart="clearShoppingCart"></cart>
+		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
 		<div id="shopping_cart_height"></div>
 	</div>
@@ -72,7 +72,8 @@
 				this.$command('ACTIVITY_SHOPPINGCART_REDUCE_MERCHANDISE', merchandiseId, count);
 			},
 			clearShoppingCart() {
-				this.$command('ACTIVITY_SHOPPINGCART_CLEAR');
+				console.log('清空购物车');
+				this.$command('ACTIVITY_SHOPPINGCART_CLEAR_MERCHANDISES');
 			}
 		},
 		mounted() {

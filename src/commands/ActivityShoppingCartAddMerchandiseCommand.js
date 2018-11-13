@@ -11,7 +11,9 @@ export default class ActivityShoppingCartAddMerchandiseCommand extends Command {
 				acitityId,
 				merchandiseId,
 				quality);
-			this.changeCartMerchandise(merchandise);
+			if(merchandise) {
+				this.changeCartMerchandise(merchandise);
+			}
 		} catch(e) {
 			console.log('抛出异常=====', e);
 		}

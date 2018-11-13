@@ -70,7 +70,8 @@
 				return this.$store.getters['model.my.store.category.merchandises/currentCategoryIndex'];
 			},
 			storeMerchandises() {
-				return this.$store.getters['model.my.store.category.merchandises/merchandisesList'];
+				console.log('你牛叉', this.$store.getters)
+				return this.$store.getters['model.my.store.category.merchandises/list'];
 			}
 		},
 		methods: {
@@ -90,9 +91,10 @@
 				this.$emit("showToast", merchandise);
 			}
 		},
-		created() {
-			console.log('1111111222222211111');
-		}
+		mounted() {
+			this.onloadCategory();
+		},
+		created() {}
 	}
 </script>
 

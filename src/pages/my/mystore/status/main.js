@@ -15,7 +15,7 @@ import MyStoreStatusSales from "@/models/MyStoreStatusSales";
 
 import MyStoreCategoriesService from '@/services/http/MyStoreCategoriesService';
 import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
-import MyStoreCategories from "@/models/List";
+import MyStoreCategories from "@/models/Categories";
 
 import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryMerchandisesService';
 import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';

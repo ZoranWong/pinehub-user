@@ -8,12 +8,12 @@ export default class MyStoreCategoryMerchandises extends Model {
 	}
 	computed() {
 		return _.extend(super.computed(), {
-			merchandisesList(state) {
+			list(state) {
 				return this.list();
 			},
 			currentCategoryIndex(state) {
-				console.log('state----index',state);
-				return state.currentCategoryIndex;
+				console.log('++++++++++++state----index+++++++++', state.currentCategoryIndex);
+				return state.currentCategoryIndex === null ? 0 : state.currentCategoryIndex;
 			}
 		});
 	}
@@ -29,7 +29,7 @@ export default class MyStoreCategoryMerchandises extends Model {
 	}
 	setList(payload, state) {
 		super.setList(payload, state);
-		console.log('ABCDEFG',payload);
+		console.log('ABCDEFG', payload);
 		this.state.currentCategoryIndex = payload.currentCategoryIndex;
 	}
 }

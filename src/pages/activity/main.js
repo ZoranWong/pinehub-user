@@ -11,6 +11,7 @@ import ActivityLoadingMerchandisesCommand from '@/commands/ActivityLoadingMercha
 import ActivityShoppingCartAddMerchandiseCommand from '@/commands/ActivityShoppingCartAddMerchandiseCommand';
 import ActivityShoppingCartReduceMerchandiseCommand from '@/commands/ActivityShoppingCartReduceMerchandiseCommand';
 import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
+import ActivityShoppingCartClearMerchandisesCommand from '@/commands/ActivityShoppingCartClearMerchandisesCommand';
 
 const application = new Application(App, 'actity.merchandises');
 application.run(function(app) {
@@ -23,6 +24,7 @@ application.run(function(app) {
 	app.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand);
 	app.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand);
 	app.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand);
+	app.registerCommand(ActivityShoppingCartClearMerchandisesCommand.commandName(), ActivityShoppingCartClearMerchandisesCommand);
 }, function(mountComponent) {
 	_.extend(App, mountComponent);
 	const app = new Vue(App);

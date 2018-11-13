@@ -31,7 +31,7 @@
 		</div>
 		<div class="pay-bottom">
 			实付<span class="total-price">¥{{totalAmount}}</span>
-			<label class="choose fr">去支付
+			<label class="choose fr" @click="pay">去支付
           		<i class="i-icon next-icon"></i>
           	</label>
 		</div>
@@ -88,6 +88,9 @@
 			},
 			reduceCart(id, count, shopId) {
 				this.reduceMerchandiseToCart(shopId, count, id);
+			},
+			pay(){
+				
 			}
 		},
 		created() {

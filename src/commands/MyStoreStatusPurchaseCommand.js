@@ -5,8 +5,9 @@ export default class MyStoreStatusPurchaseCommand extends Command {
 	}
 
 	async handle(selectTime) {
+		console.log('PER');
 	    let [purchaseList,purchaseTotal] = await this.service('http.myStoreStatusPurchase').purchaseInfo(selectTime);
-		//console.log('pur------pur',[purchaseList,purchaseTotal]);
+		console.log('pur------pur',[purchaseList,purchaseTotal]);
 		this.store().dispatch({
 			type: 'model.my.store.status.purchase/purchaseInfo',
 			purchaseList: purchaseList,

@@ -85,7 +85,8 @@ export default class Model {
 	}, state) {
 		this.state.currentPage = currentPage;
 		let startIndex = (currentPage - 1) * pageCount + 1;
-		this.state.list[currentPage - 1] = this.transform(list, this.transformer, startIndex);
+		this.$application.$vm.set(this.state.list, currentPage - 1, this.transform(list, this.transformer, startIndex));
+		//this.state.list[currentPage - 1] = this.transform(list, this.transformer, startIndex);
 		if(totalNum !== null)
 			this.state.totalNum = totalNum;
 		if(totalPage !== null) {

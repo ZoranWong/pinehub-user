@@ -30,7 +30,7 @@ export default class MerchandisesService extends ApiService {
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		// console.log('services服务bnnnn', merchandises);
+		console.log('aaaaaaa--------bbbbbb', merchandises, totalNum, currentPage, totalPage, limit);
 		return [merchandises, totalNum, currentPage, totalPage, limit];
 	}
 
@@ -60,7 +60,5 @@ export default class MerchandisesService extends ApiService {
 		let route = `/store/${storeId}/new/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
-
-
 
 }

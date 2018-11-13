@@ -7,6 +7,7 @@ export default class MyStoreCategories extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			list(state) {
+				console.log('获取店铺=======产品分类=======内容', state);
 				return state.list;
 			},
 			totalNum(state) {
@@ -17,12 +18,18 @@ export default class MyStoreCategories extends Model {
 			},
 			totalPage(state) {
 				return state.totalPage;
+			},
+			firstCategoryId(state){
+				return this.list(state)[0]['id'];
 			}
 		});
 	}
 	data() {
 		return {
-			setList: []
+			list: [],
+			totalNum: [],
+			currentPage: [],
+			totalPage: []
 		};
 	}
 	//监听数据
