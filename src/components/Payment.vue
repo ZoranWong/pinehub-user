@@ -75,7 +75,9 @@
 				this.$command('router', router, 'push');
 			},
 			addCart(merchandiseId) {
-				this.addMerchandiseToCart(merchandiseId);
+				//				this.addMerchandiseToCart(merchandiseId);
+				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1
+				this.$command('ACTIVITY_SHOPPINGCART_ADD_MERCHANDISE', merchandiseId, count)
 			},
 			reduceCart(merchandiseId) {
 				this.reduceMerchandiseToCart(merchandiseId);
