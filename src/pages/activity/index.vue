@@ -29,7 +29,6 @@
       'new-list': NewFoods,
       'cart': Cart,
       'pop-location': PopupLocation
-
     },
     computed: {
       merchandises () {
@@ -43,6 +42,7 @@
     watch: {},
     methods: {
       loadMerchandises (page = 1) {
+        console.log('==============加载活动商品=================')
         this.$command('ACTIVITY_LOADING_MERCHANDISES', page)
       },
       hdlShowCart () {
@@ -59,7 +59,7 @@
         this.loadMerchandises(this.currentPage + 1)
       },
       loadCartMerchandises (page = 1) {
-        console.log('加载活动购物车')
+        console.log('==============加载活动购物车=================')
         this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', page)
       },
       addCart (merchandiseId) {
@@ -75,11 +75,12 @@
       }
     },
     mounted () {
+      console.log('===========活动页面挂载成功=============')
       this.loadMerchandises()
-      // this.loadCartMerchandises();
+      this.loadCartMerchandises();
     },
     created () {
-      console.log('ddddd--------ddddd')
+      console.log('===========活动页面创建成功=============')
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth * wx.getSystemInfoSync().windowHeight) + 'rpx'
       console.log('屏幕高度', this.screenHeight)
     }

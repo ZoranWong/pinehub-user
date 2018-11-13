@@ -11,13 +11,13 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item store-orders" v-if="cur === 0">
-				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart" :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
+				<store @showToast="showToastFunction" :onloadCategory="onloadCategory" :changeCategory="changeCategory"></store>
 			</div>
 			<div class="tab_content_item purchase-orders" v-if="cur === 1">
-				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
+				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart" :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
 			</div>
 			<div class="tab_content_item sales-orders" v-if="cur === 2">
-				<store @showToast="showToastFunction" :onloadCategory="onloadCategory" :changeCategory="changeCategory"></store>
+				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -52,9 +52,9 @@
 				title: "店铺状态",
 				navName: "my",
 				tabs: [{
-					name: "销售统计"
-				}, {
 					name: "进货统计"
+				}, {
+					name: "销售统计"
 				}, {
 					name: "库存统计"
 				}],
@@ -70,6 +70,9 @@
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
+			categoryIndex() {
+				return this.$store.getters['model.my.store.category.merchandises/currentCategoryIndex'];
+			},
 			purchaseTotal() {
 				return this.$store.getters['model.my.store.status.purchase/purchaseTotal'];
 			},
@@ -77,11 +80,9 @@
 				return this.$store.getters['model.my.store.status.purchase/purchaseList'];
 			},
 			salesInfo() {
-				console.log('SALEINFO------------SALEINFO', this.$store.getters['model.my.store.status.sales/salesInfo']);
 				return this.$store.getters['model.my.store.status.sales/salesInfo'];
 			},
 			sellTop() {
-				console.log('SALETOP------------PPPPPPPPPPPPP', this.$store.getters['model.my.store.status.sales/sellTop']);
 				return this.$store.getters['model.my.store.status.sales/sellTop'];
 			},
 			merchandiseTop() {
@@ -89,6 +90,14 @@
 			},
 			statics() {
 				return this.$store.getters['model.my.store.status.sales/statics'];
+			},
+			categoryId() {
+				return this.$store.getters['model.my.store.categories/categoryId'](this.categoryIndex);
+			}
+		},
+		watch: {
+			categoryId() {
+				this.$command(MyStoreChangeCategoryCommand.commandName(), this.categoryIndex, this.categoryId);
 			}
 		},
 		methods: {
@@ -112,10 +121,12 @@
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
 			},
 			onloadSales(status) {
+				console.log('onloadSales方法');
 				this.$command(MyStoreStatusSalesCommand.commandName(), status);
 			},
-			onloadCategory(storeId) {
-				this.$command(MyStoreCategoriesCommand.commandName(), storeId);
+			onloadCategory() {
+				//获取店铺产品分类
+				this.$command(MyStoreCategoriesCommand.commandName());
 			},
 			onloadSalesEChart(status) {
 				console.log('开始调用echartscommand');
@@ -125,13 +136,16 @@
 				console.log('KKKKK++++++', index, categoryId);
 				this.$command(MyStoreChangeCategoryCommand.commandName(), index, categoryId);
 				console.log('KKKKK-------', index, categoryId);
+			},
+			async loadMerchandises() {
+				//this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
+				//this.$command(MyStoreStatusSalesCommand.commandName(), 'hour');
+				await this.$command(MyStoreCategoriesCommand.commandName());
+				console.log('++++++++++++++++++++++++++++++');
 			}
 		},
-		created() {
-			this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
-			//			this.$command(MyStoreStatusSalesCommand.commandName(), 'hour');
-			this.$command(MyStoreCategoriesCommand.commandName(), '1');
-			this.$command(MyStoreChangeCategoryCommand.commandName(), '1', '1');
+		mounted() {
+			this.loadMerchandises();
 		}
 	}
 </script>

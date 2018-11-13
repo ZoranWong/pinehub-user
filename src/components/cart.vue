@@ -1,10 +1,10 @@
 <template>
-	<div class="shopcart" v-show="totalNum>0" :style="{visiable:visiable}">
+	<div class="shopcart" v-show="totalCount>0" :style="{visiable:visiable}">
 		<div class="shoppingcart-bottom clearfix">
 			<div class="content" @click="toggleListShow">
 				<span class="black-circle"></span>
 				<i class="i-icon cart"></i>
-				<i class="i-icon num-icon  theme-color color11">{{totalNum}}</i>
+				<i class="i-icon num-icon  theme-color color11">{{totalCount}}</i>
 				<span class="total-price">¥{{totalAmount}}</span>
 			</div>
 			<label class="choose fr" @click="popShow">
@@ -50,7 +50,7 @@
 				default: null,
 				type: Function
 			},
-			emptyMerchandiseCart: {
+			clearShoppingCart: {
 				default: null,
 				type: Function
 			},
@@ -72,9 +72,9 @@
 			totalAmount() {
 				return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
 			},
-			totalNum() {
-				console.log('购物车总数',this.model, this.$store.getters);
-				return this.model ? this.$store.getters[`${this.model}/totalNum`] : 0;
+			totalCount() {
+				console.log('购物车总数', this.model, this.$store.getters);
+				return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
 			}
 		},
 		methods: {
@@ -89,7 +89,7 @@
 				this.maskBg = !this.maskBg;
 			},
 			emptyCart() {
-				this.emptyMerchandiseCart();
+				this.clearShoppingCart();
 			},
 			addCart(id) {
 				this.addMerchandiseToCart(id);

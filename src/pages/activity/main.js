@@ -17,7 +17,6 @@ application.run(function (app) {
   // 产品模型和产品服务
   app.models.addModel('model.activity.merchandises', Merchandises)
   app.register('http.merchandises', MerchandisesService)
-
   // 注册购物车命令
   app.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand)
   app.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand)
@@ -28,4 +27,4 @@ application.run(function (app) {
   const app = new Vue(App)
   app.$mount()
   return app
-})
+});

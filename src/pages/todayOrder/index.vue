@@ -31,12 +31,12 @@
   import Menus from './Menus';
   import Popup from './Popup';
   export default{
-    data(){
-      return{
+    data () {
+      return {
         isShow: true,
         isShowCart: true,
         listwidth: '530rpx',
-        title: "当日下单"
+        title: '当日下单'
       };
     },
     components: {
@@ -46,44 +46,45 @@
       'menus': Menus,
       'm-list': MerchandiseList,
       'cart': Cart,
-      'mp-title': MpTitle,
+      'mp-title': MpTitle
    },
     computed: {
-      merchandises(){
+      merchandises () {
         return this.$store.getters['model.today.merchandises/list'];
       },
       currentPage () {
        let page = this.$store.state['model.today.merchandises'].currentPage;
        return page;
       },
-      categoryId(){
+      categoryId () {
+        console.log(this.$store.getters);
         return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
       },
-      categoryIndex() {
+      categoryIndex () {
         return this.$store.getters['model.reserveShop.merchandises/currentCategoryIndex'];
       }
     },
-    watch:{
-      categoryId(n, o) {
-         if(n && !o ) {
+    watch: {
+      categoryId (n, o) {
+         if (n && !o) {
            this.loadMerchandises(1);
          }
-       },
+       }
     },
-    methods:{
-      jump(router){
-        this.$command('router',router,'push');
+    methods: {
+      jump (router) {
+        this.$command('router', router, 'push');
       },
-      hdlShowCart:function(){
+      hdlShowCart: function () {
         this.isShowCart = true;
       },
-      hdlShowPopup:function(){
+      hdlShowPopup: function () {
         this.isShow = true;
       },
-       hdlHidePopup:function(){
+       hdlHidePopup: function () {
         this.isShow = false;
       },
-      loadMerchandises(page){
+      loadMerchandises (page) {
         this.$command('GET_MERCHANDISE_LIST',
           'model.today.merchandises/setList',
           'today',
@@ -91,34 +92,34 @@
           this.categoryId,
           page);
       },
-      menusChange : function (index) {
+      menusChange: function (index) {
         this.scrollTop = 0;
         this.$command('CLEAR_MERCHANDISE', 'model.today.merchandises');
         this.$store.dispatch('model.today.merchandises/setCurrentCategory', {categoryIndex: index});
         this.loadMerchandises(1);
       },
-      next() {
+      next () {
         console.log('current page', this.currentPage);
-        this.loadMerchandises(this.currentPage  + 1);
+        this.loadMerchandises(this.currentPage + 1);
       },
-      addCart(shopId, count,  merchandiseId){
+      addCart (shopId, count, merchandiseId) {
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
       },
-      reduceCart(shopId, count, merchandiseId){
-        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
+      reduceCart (shopId, count, merchandiseId) {
+        this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
       },
-      emptyCart(storeId){
-        this.$command('EMPTY_MERCHANDISES_TO_CART',storeId);
+      emptyCart (storeId) {
+        this.$command('EMPTY_MERCHANDISES_TO_CART', storeId);
       },
-      async getData() {
+      async getData () {
       	 	  await this.$command('GET_NEAREST_STORE');
       	 	  await this.$command('GET_STORE_CATEGORIES_TO_MEUN');
       }
   },
-   created(){
-     
+   created () {
+
    },
-   mounted(){
+   mounted () {
    	this.getData();
    }
 }

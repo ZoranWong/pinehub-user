@@ -4,6 +4,7 @@ export default class MySalesEchartCommand extends Command {
 		super(app);
 	}
 	async handle(xDate) {
+		console.log('进入echarts命令');
 		let yData = null;
 		let [salesInfo, sellTop, merchandiseTop, statics] = await this.service('http.myStoreStatusSales').salesInfo(
 			xDate);

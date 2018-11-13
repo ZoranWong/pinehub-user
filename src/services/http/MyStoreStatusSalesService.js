@@ -14,7 +14,9 @@ export default class MyStoreStatusSalesService extends ApiService {
 				"date": selectTime
 			});
 		}
+		console.log('sell_top       数据',response)
 		let [salesInfo, sellTop, merchandiseTop, statics] = [response, response.sell_top, response.merchandise_top, response.statics];
+		console.log('获取店铺信息------------真他吗烦人', salesInfo, sellTop, merchandiseTop, statics);
 		return [salesInfo, sellTop, merchandiseTop, statics];
 	}
 }

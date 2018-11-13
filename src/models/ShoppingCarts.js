@@ -36,17 +36,14 @@ export default class ShoppingCarts extends Model {
 			},
 			totalCount(state) {
 				let total = 0;
-				console.log('产品列表2', state.list);
+				console.log('产品列表>>>>>>>>>>>>>>', state.list, this.list());
 				this.list().forEach((item) => {
 					total += item.count;
 				})
+				console.log('购物车总数量>>>>>>>>>>>>>>>>>>>>>', total);
 				return total;
 			}
 		});
-	}
-
-	list() {
-		return this.state.list;
 	}
 
 	data() {
@@ -62,7 +59,7 @@ export default class ShoppingCarts extends Model {
 
 	async rebuildData() {
 		let data = await this.getCache();
-		console.log(22222222222222, data);
+		//		console.log(22222222222222, data);
 		_.extend(this.state, data);
 	}
 	async cache() {
@@ -74,7 +71,6 @@ export default class ShoppingCarts extends Model {
 		return await this.services('mp.storage').get('shoppingCarts');
 		//return {};
 	}
-
 	listeners() {
 		super.listeners();
 		//设置列表
@@ -84,26 +80,54 @@ export default class ShoppingCarts extends Model {
 			this.cache();
 		});
 		this.addEventListener('changeCart', function(cart) {
+			let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
+			if(this.state.currentPage === 0) {
+				this.state.currentPage = 1;
+			}
 			console.log('监听-changeCart', this.state);
-			let tcart = _.findWhere(this.state.list, {
+			let tcart = _.findWhere(this.state.list[idx], {
 				merchandiseId: cart.merchandiseId
 			});
+
 			if(!tcart) {
-				this.state.list.push(cart);
+				console.log('-----------------!tcart', this.state.list)
+				if(!this.state.list[idx]) {
+					this.$application.$vm.set(this.state.list, idx, []);
+				}
+				this.state.list[idx].push(cart);
 			} else {
+				let index = this.state.list[idx].indexOf(tcart);
 				if(cart.count === 0) {
-					let index = this.state.list.indexOf(tcart);
-					this.state.list.splice(index);
+
+					this.state.list[idx].splice(index, 1);
 				} else {
 					tcart.count = cart.count;
+					this.$application.$vm.set(this.state.list[idx], index, tcart);
+					//tcart.count = cart.count;
 				}
+				console.log('-----------------tcart', this.state.list)
 			}
 			this.cache();
 		});
 
 		//清空购物车
-		this.addEventListener('reset', function() {
-			this.state.list = []
+		this.addEventListener('reset', function({
+			activity = false,
+			shop = false
+		}) {
+			this.state.list = [];
+			if(activity) {
+				this.state.activityId = null;
+			}
+
+			if(shop) {
+				this.state.shopId = null;
+			}
+
+			this.state.pageCount = 0;
+			this.state.currentPage = 0;
+			this.state.totalNum = 0;
+			this.state.totalPage = 0;
 			this.cache()
 		});
 	}

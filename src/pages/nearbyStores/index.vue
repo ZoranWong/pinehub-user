@@ -6,8 +6,9 @@
 			<i id="location_search_button" @click="searchLocation">查询</i>
 		</div>
 		<div id="location_map">
-			<map id="map" scale="14" :latitude = "latitude" :longitude = "longitude" :markers = "markers"
-			@markertap = "bindmarkertap" show-location></map>
+			<map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers" @markertap="bindmarkertap" show-location>
+				<cover-view>123456</cover-view>
+			</map>
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
@@ -60,10 +61,11 @@
 				this.latitude = result.lat;
 				this.longitude = result.lng;
 				console.log('坐标---------------', this.latitude, this.longitude);
-				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
-				this.city = city;
+				let setPosition = this['mp.storage'].set('myLocaltion', [this.latitude, this.longitude]);
+				//				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
+				//				this.city = city;
 				// console.log(this.latitude,this.longitude)
-				this.$command('GET_NEARBY_STORES', this.latitude, this.longitude);
+				this.$command('GET_NEARBY_STORES', this.longitude, this.latitude);
 			},
 			searchLocation() {
 				// console.log(this);
@@ -91,13 +93,13 @@
 	page {
 		height: 100%;
 	}
-
+	
 	#location {
 		position: relative;
 		height: 100%;
 		width: 100%;
 	}
-
+	
 	#location_search {
 		padding: 30rpx;
 		background: #FECE00;
@@ -107,7 +109,7 @@
 		box-sizing: border-box;
 		display: none;
 	}
-
+	
 	#location_search_input {
 		background: #ffffff;
 		font-size: 28rpx;
@@ -117,7 +119,7 @@
 		height: 70rpx;
 		padding-left: 1em;
 	}
-
+	
 	#location_search_button {
 		position: absolute;
 		top: 30rpx;
@@ -131,7 +133,7 @@
 		font-weight: 200;
 		border-radius: 0 70rpx 70rpx 0;
 	}
-
+	
 	#location_map {
 		position: absolute;
 		top: 0;
@@ -139,12 +141,12 @@
 		width: 100%;
 		height: 100%;
 	}
-
+	
 	#map {
 		height: 100%;
 		width: 100%;
 	}
-
+	
 	#location_select_address {
 		position: absolute;
 		width: 550rpx;
@@ -159,7 +161,7 @@
 		overflow: hidden;
 		display: none;
 	}
-
+	
 	.select_li {
 		display: block;
 		clear: both;
@@ -167,7 +169,7 @@
 		line-height: 40rpx;
 		font-size: 28rpx;
 	}
-
+	
 	.select_li_title {
 		background: #FECE00;
 		color: #FFFFFF;
@@ -179,7 +181,7 @@
 		padding: 0 10rpx;
 		border-radius: 10rpx;
 	}
-
+	
 	.select_li_smalltitle {
 		background: #FAFAFA;
 		color: #000000;
@@ -191,7 +193,7 @@
 		padding: 0 10rpx;
 		border-radius: 10rpx;
 	}
-
+	
 	.input {
 		float: left;
 		padding: 0 15rpx;
@@ -199,7 +201,7 @@
 		border: 1rpx solid #f0f0f0;
 		border-radius: 10rpx;
 	}
-
+	
 	#nowposition {
 		background: url(../../../static/images/icon/nowposition.png) no-repeat center center;
 		background-color: #FFFFFF;
