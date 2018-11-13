@@ -16,16 +16,16 @@
 					<input type="text" placeholder="默认站点营业时间" readonly="readonly" disabled="">
 				</p>
 			</li>
-			<!-- <li class="li-item bgff">
-				站点联系电话 
+			<li class="li-item bgff">
+				站点联系电话
 				<p class="details-item tel-num">
-				16868686868	
+					16868686868
 				</p>
-			</li> -->
+			</li>
 		</ul>
 
 		<!-- 支付内容的显示组件 -->
-		<payment :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
+		<payment :model="model" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
 
 	</div>
 </template>
@@ -38,7 +38,8 @@
 		name: "confirmationOrder",
 		data() {
 			return {
-				title: '新品活动-确认订单',
+				title: '确认订单「新品活动」',
+				model: 'model.activity.shoppingCarts'
 			}
 		},
 		components: {
@@ -47,11 +48,7 @@
 			'tab-delivery': TabDelivery,
 			'payment': Payment,
 		},
-		computed: {
-			merchandises() {
-				return this.$store.getters['model.activity.merchandises/list'];
-			},
-		},
+		computed: {},
 		methods: {
 			radioChange(e) {
 				console.log('radio发生change事件，携带value值为：', e.target.value)
@@ -61,21 +58,38 @@
 				this.index = e.target.value
 
 			},
-			next() {
-				this.$command('GET_MERCHANDISE_LIST');
+			loadCartMerchandises(page = 1) {
+				this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
-			addCart(shopId, count, merchandiseId) {
-				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-
+			loadMyInfo() {
+				this.$command('MYINFO');
 			},
-			reduceCart(shopId, count, merchandiseId) {
-				this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+			addCart(merchandiseId) {
+				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1;
+				this.$command('ACTIVITY_SHOPPINGCART_ADD_MERCHANDISE', merchandiseId, count);
 			},
+			reduceCart(merchandiseId) {
+				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
+				this.$command('ACTIVITY_SHOPPINGCART_REDUCE_MERCHANDISE', merchandiseId, count);
+			}
 
 		},
 		mounted() {
-			this.$command('MYINFO');
-			this.$command('FILL_CART_FROM_CACHE');
+			this.loadCartMerchandises(1);
+			this.loadMyInfo();
+			//			this.$command('FILL_CART_FROM_CACHE');
+			//			wx.chooseAddress({
+			//				success(res) {
+			//					console.log(res.userName)
+			//					console.log(res.postalCode)
+			//					console.log(res.provinceName)
+			//					console.log(res.cityName)
+			//					console.log(res.countyName)
+			//					console.log(res.detailInfo)
+			//					console.log(res.nationalCode)
+			//					console.log(res.telNumber)
+			//				}
+			//			})
 		}
 	}
 </script>

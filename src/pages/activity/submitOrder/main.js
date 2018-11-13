@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 import App from './index';
 import _ from 'underscore';
@@ -14,6 +13,9 @@ import MyInfoCommand from '@/commands/MyInfoCommand';
 import FillCartMerchandisesCommand from '@/commands/FillCartMerchandisesCommand';
 
 import MyInfoService from '@/services/http/MyInfoService';
+import ActivityShoppingCartAddMerchandiseCommand from '@/commands/ActivityShoppingCartAddMerchandiseCommand';
+import ActivityShoppingCartReduceMerchandiseCommand from '@/commands/ActivityShoppingCartReduceMerchandiseCommand';
+import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
 
 const application = wx.$app;
 application.setComponent(App).run(function (app) {
@@ -28,13 +30,17 @@ application.setComponent(App).run(function (app) {
     app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
     app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
     app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
-    app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
     app.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
+    /**
+    * 徐钰添加的开始
+    * */
+    app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
+    app.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand);
+    app.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand);
+    app.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand);
 }, function (component) {
     _.extend(App, component);
     let app = new Vue(App);
     app.$mount();
     return app;
 });
-
-

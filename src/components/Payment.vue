@@ -12,7 +12,7 @@
 					<span class="sell-price">¥{{item.sellPrice}}</span>
 				</p>
 				<div class="cartcontrol-warpper">
-					<cart-control @addCart="addCart" @reduceCart="reduceCart" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId"></cart-control>
+					<cart-control :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId"></cart-control>
 				</div>
 			</div>
 		</div>
@@ -41,7 +41,6 @@
 	import CartControl from '@/components/CartControl'
 	export default {
 		name: 'Payment',
-
 		components: {
 			'cart-control': CartControl,
 		},
@@ -54,48 +53,38 @@
 				default: null,
 				type: Function
 			},
-			list: {
-				default: function() {
-					return []
-				},
-				type: Array
-			},
-			next: {
+			model: {
 				default: null,
-				type: Function
-			},
+				type: String
+			}
 		},
 		computed: {
-
 			cartList() {
-				console.log("获取购物车数据", this.$store.getters)
-				return this.$store.getters['model.shoppingCarts/list'];
+				return this.model ? this.$store.getters[`${this.model}/list`] : [];
 			},
-
 			totalAmount() {
-				return this.$store.getters['model.shoppingCarts/totalAmount'];
+				return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
 			},
 			totalCount() {
-				return this.$store.getters['model.shoppingCarts/totalCount'];
+				console.log('购物车总数', this.model, this.$store.getters);
+				return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
 			}
 		},
 		methods: {
 			jump(router) {
 				this.$command('router', router, 'push');
 			},
-			addCart(id, count, shopId) {
-				this.addMerchandiseToCart(shopId, count, id);
+			addCart(merchandiseId) {
+				this.addMerchandiseToCart(merchandiseId);
 			},
-			reduceCart(id, count, shopId) {
-				this.reduceMerchandiseToCart(shopId, count, id);
+			reduceCart(merchandiseId) {
+				this.reduceMerchandiseToCart(merchandiseId);
 			},
-			pay(){
-				
+			pay() {
+
 			}
 		},
-		created() {
-			this.next();
-		},
+		created() {},
 
 	}
 </script>
