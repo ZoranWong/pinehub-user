@@ -32,13 +32,17 @@ export default class GetAcountCommand extends Command {
 		let mobile = loginInfo.data.mobile;
 		let userScore = loginInfo.data.can_use_score;
 		let refreshTtl = loginInfo.data.refresh_ttl;
+		let ttl = loginInfo.data.ttl;
 		if(loginInfo.data.shop_id) {
 			let shopId = loginInfo.data.shop_id;
 			let setShopId = await this.service('mp.storage').set('shopId', shopId);
 		}
-		let setDataToken = await this.service('mp.storage').set('token', token);
+		let setDataToken = await this.service('mp.storage').set('token', {
+			'value': token,
+			'ttl': ttl.date,
+			'refreshTtl': refreshTtl.date
+		});
 		let setDataOpenId = await this.service('mp.storage').set('openId', openId);
-		let setrefreshTtl = await this.service('mp.storage').set('refreshTtl', refreshTtl);
 		if(token == undefined) {
 			console.log('用户未注册，无法获取token');
 		} else {

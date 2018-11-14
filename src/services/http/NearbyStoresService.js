@@ -16,7 +16,7 @@ export default class NearbyStoresService extends ApiService {
 			response = await this.services('mock.nearbyStores').mock(lng, lat, page, limit);
 		} else {
 			//服务器交互代码
-			response = await this.httpGet('nearby/stores', {
+			response = await this.httpGet('/nearby/stores', {
 				lng: lng,
 				lat: lat,
 				limit: limit,

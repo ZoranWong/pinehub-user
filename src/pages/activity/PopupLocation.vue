@@ -21,28 +21,36 @@
 
 <script>
 	export default {
-      name: 'PopupLocation',
-      data () {
-        return {
-          places: [{
-              id: 1,
-              name: '安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车'
-            },
-            {
-              id: 2,
-              name: '安徽省合肥市瑶海区新蚌埠路交叉口早餐车'
-            }
-          ]
-        }
-      },
-      methods: {
-        popHide: function () {
-          this.$emit('hdlHidePopup')
-        },
-        jump (router) {
-          this.$command('router', router, 'push');
-        }
-      }
+		name: 'PopupLocation',
+		data() {
+			return {
+				places: [{
+						id: 1,
+						name: '安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车'
+					},
+					{
+						id: 2,
+						name: '安徽省合肥市瑶海区新蚌埠路交叉口早餐车'
+					}
+				]
+			}
+		},
+		computed: {
+			places() {
+				return this.$store.getters['model.account/isAuth'];
+			}
+		},
+		methods: {
+			popHide: function() {
+				this.$emit('hdlHidePopup')
+			},
+			jump(router) {
+				this.$command('router', router, 'push');
+			}
+		},
+		mounted() {
+			this.$command('LOAD_ACTIVITY_USUALLY_ADDRESS');
+		}
 
 	}
 </script>
@@ -57,7 +65,7 @@
 		box-sizing: border-box;
 		background-color: rgba(7, 17, 27, 0.6);
 	}
-
+	
 	.popup-box {
 		width: 630rpx;
 		height: 610rpx;
@@ -72,7 +80,7 @@
 		margin-left: -315rpx;
 		margin-top: -305rpx;
 	}
-
+	
 	.location-icon {
 		width: 118rpx;
 		height: 180rpx;
@@ -82,7 +90,7 @@
 		top: -84rpx;
 		left: 256rpx;
 	}
-
+	
 	.cancel {
 		width: 78rpx;
 		height: 78rpx;
@@ -92,11 +100,11 @@
 		top: -16rpx;
 		right: -16rpx;
 	}
-
+	
 	.popup-content {
 		margin: 60rpx 50rpx 0rpx 50rpx;
 	}
-
+	
 	.place-item {
 		width: 530rpx;
 		height: 100rpx;
@@ -108,7 +116,7 @@
 		margin: 20rpx 0rpx;
 		display: flex;
 	}
-
+	
 	.yellow-right-arrow {
 		width: 40rpx;
 		height: 40rpx;
@@ -117,7 +125,7 @@
 		margin-top: 30rpx;
 		margin-right: 21rpx;
 	}
-
+	
 	.btn-big {
 		width: 530rpx;
 		height: 80rpx;
@@ -126,7 +134,7 @@
 		border-radius: 10rpx;
 		margin-top: 40rpx;
 	}
-
+	
 	.tips {
 		font-size: 20rpx;
 		text-align: center;

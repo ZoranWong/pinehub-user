@@ -23,8 +23,12 @@ export default class SetUserInfoCommand extends Command {
 		console.log('userInfouserInfouserInfouserInfo', refreshUserinfo);
 		let userScore = refreshUserinfo.data.can_use_score;
 		let refreshTtl = result.data.refresh_ttl;
-		let setDataToken = await this.service('mp.storage').set('token', token);
-		let setrefreshTtl = await this.service('mp.storage').set('refreshTtl', refreshTtl);
+		let ttl = loginInfo.data.ttl;
+		let setDataToken = await this.service('mp.storage').set('token', {
+			'value': token,
+			'ttl': ttl.date,
+			'refreshTtl': refreshTtl.date
+		});
 		console.log('OPENID-OPENID', openId, result);
 		if(result) {
 			let eventData = {

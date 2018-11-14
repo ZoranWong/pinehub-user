@@ -7,8 +7,7 @@ export default class MyInfoCommand extends Command {
 	async handle() {
 		console.log('个人中心数据获取');
 		let hasStore = false;
-		let token = await this.service('mp.storage').get('token');
-		let response = await this.service('http.auth').getUserInfo(token);
+		let response = await this.service('http.auth').getUserInfo();
 		console.log('HASSTORE', response);
 		let userInfo = response.data;
 		if(userInfo.shop_id) {

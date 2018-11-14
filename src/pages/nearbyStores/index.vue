@@ -25,7 +25,6 @@
 </template>
 
 <script>
-	import SearchLocationCommand from '@/commands/SearchLocationCommand';
 	import MpTitle from '@/components/MpTitle';
 	import _ from 'underscore';
 	export default {
@@ -67,22 +66,22 @@
 				// console.log(this.latitude,this.longitude)
 				this.$command('GET_NEARBY_STORES', this.longitude, this.latitude);
 			},
-			searchLocation() {
-				// console.log(this);
-				this.$command(SearchLocationCommand.commandName(), this.city + this.addressName);
-			},
 			nowLocation() {
 				this.map.moveToLocation();
 			},
-			getSelectDate(e) {
-				//				console.log(e.target.value);
-				this.selectDate = (new Date(e.target.value)).format('yyyy 年 MM 月 dd 日');
-			},
 			bindmarkertap(event) {
-				console.log('bindmarkertap', event);
+				let storeId = event.mp.markerId;
+				console.log('bindmarkertap', storeId, event);
+				this.$store.dispatch('model.nearbyStores/selectMarker', {
+					id: storeId
+				});
+				if(storeId) {
+					console.log('存在店铺', storeId);
+				}
 			}
 		},
 		mounted() {
+			console.log('<<>>><<<>><<<>>')
 			// console.log('location created', this);
 			this.flashLocation();
 		}

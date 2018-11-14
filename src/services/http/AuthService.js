@@ -47,15 +47,13 @@ export default class AuthService extends ApiService {
 		return response;
 	}
 	//获取用户信息
-	async getUserInfo(token) {
+	async getUserInfo() {
 		console.log('获取用户信息');
 		let response = null;
 		if(this.$application.needMock()) {
 			response = await this.services('mock.myInfo').mock();
 		} else {
-			response = await this.httpGet(`/user/info`, {
-				//				token: token
-			});
+			response = await this.httpGet(`/user/info`, {});
 		}
 		console.log('用户信息', response);
 		return response;

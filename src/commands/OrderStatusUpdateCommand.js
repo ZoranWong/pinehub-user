@@ -33,6 +33,10 @@ export default class OrderStatusUpdateCommand extends Command {
 			})
 		}
 	}
+	//订单支付
+	async payOrder() {
+
+	}
 	//重新支付订单
 	async rePayOrder(id) {
 		console.log('ID支付成功', id);
@@ -57,7 +61,6 @@ export default class OrderStatusUpdateCommand extends Command {
 		let response = null;
 		let self = this;
 		if(type == 'rePay') {
-			//			let refreshUserinfo = await this.service('http.auth').getUserInfo(token);
 			this.rePayOrder(id);
 		} else if(type == 'cancel') {
 			wx.showModal({
