@@ -24,7 +24,7 @@ export default class AuthService extends Service {
 		let token = await this.services('mp.storage').get('token');
 		let ttlTime = new Date(token.ttl).getTime();
 		let nowTime = new Date().getTime();
-		if(ttlTime <= nowTime) {
+		if(!token || ttlTime <= nowTime) {
 			//获取appId
 			let appId = this.$application.config['app']['appId'];
 			//获取appSecret
