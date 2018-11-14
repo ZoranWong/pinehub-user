@@ -32,9 +32,11 @@ export default class Account extends Model {
     }
     // 监听数据
     listeners () {
-        this.addEventListener('setAccount', function(userInfo) {
+        this.addEventListener('setAccount', function (userInfo) {
             _.extend(this.state, userInfo);
-            this.services('mp.storage').set('token', userInfo.token);
+            if (typeof userInfo.token !== 'undefined') {
+              this.services('mp.storage').set('token', userInfo.token);
+            }
             this.services('mp.storage').set('userInfo', userInfo);
         });
     }
