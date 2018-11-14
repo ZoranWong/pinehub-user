@@ -69,7 +69,6 @@ export default class ApiService extends Service {
 		}
 	}
 
-
 	async httpPut(route, params = [], id = null, auth = true) {
 		try {
 			let request = this.request(await this.auth(auth));

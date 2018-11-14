@@ -9,8 +9,8 @@ export default class SetMobileCommand extends Command {
 		console.log('SETMOBILE', getValue);
 		let iv = getValue.iv;
 		let encryptedData = getValue.encryptedData;
+		let token = await this.service('mp.storage').get('token')['token'];
 		let accessToken = await this.service('mp.storage').get('accessToken');
-		let token = await this.service('mp.storage').get('token');
 		let result = await this.service('http.auth').setMobile(encryptedData, iv, token, accessToken);
 		console.log('OPENID-setMobile', result);
 		let mobile = result.data.mobile;

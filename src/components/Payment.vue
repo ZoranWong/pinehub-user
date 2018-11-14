@@ -59,6 +59,9 @@
 			}
 		},
 		computed: {
+			count(merchandiseId) {
+				return this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId)
+			},
 			cartList() {
 				return this.model ? this.$store.getters[`${this.model}/list`] : [];
 			},
@@ -75,9 +78,7 @@
 				this.$command('router', router, 'push');
 			},
 			addCart(merchandiseId) {
-				//				this.addMerchandiseToCart(merchandiseId);
-				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1
-				this.$command('ACTIVITY_SHOPPINGCART_ADD_MERCHANDISE', merchandiseId, count)
+				this.addMerchandiseToCart(merchandiseId);
 			},
 			reduceCart(merchandiseId) {
 				this.reduceMerchandiseToCart(merchandiseId);
