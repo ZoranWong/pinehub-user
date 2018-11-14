@@ -48,6 +48,7 @@
         deep: true,
         handler (point) {
           if (point) {
+            console.log('=========== center point ===========', point);
             this.latitude = point.lat;
             this.longitude = point.lng;
           }
@@ -68,10 +69,10 @@
     methods: {
       async flashLocation () {
         let result = await this.map.getLocation();
-        this.latitude = result.lat;
-        this.longitude = result.lng;
+        // this.latitude = result.lat;
+        // this.longitude = result.lng;
         this.$store.dispatch('model.nearbyStores/setLocation', {latitude: result.lat, longitude: result.lng})
-        this.$command('GET_NEARBY_STORES', this.longitude, this.latitude);
+        this.$command('GET_NEARBY_STORES', result.lng, result.lat);
       },
       nowLocation () {
         this.map.moveToLocation();

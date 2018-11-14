@@ -79,6 +79,9 @@ export default class NearbyStores extends Model {
       },
       centerPoint () {
           let list = this.list();
+          if (list.length === 0) {
+            return null;
+          }
           let lat = 0;
           let lng = 0;
           let count = 0;
@@ -92,7 +95,7 @@ export default class NearbyStores extends Model {
               lng += this.state.location.longitude;
               count++;
           }
-
+          console.log('lat = ', lat, 'lng = ', lng, 'count = ', count);
           return {
             lat: lat / count,
             lng: lng / count
