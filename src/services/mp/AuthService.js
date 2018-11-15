@@ -4,7 +4,7 @@ export default class AuthService extends Service {
 	constructor(application) {
 		super(application);
 	}
-	//获取小程序code
+	// 获取小程序code
 	code() {
 		return new Promise((resolve, reject) => {
 			wx.login({
@@ -19,26 +19,26 @@ export default class AuthService extends Service {
 			});
 		});
 	}
-	//获取token
+	// 获取token
 	async getToken() {
 		let token = await this.services('mp.storage').get('token');
 		let ttlTime = new Date(token.ttl).getTime();
 		let nowTime = new Date().getTime();
 		if(!token || ttlTime <= nowTime) {
-			//获取appId
+			// 获取appId
 			let appId = this.$application.config['app']['appId'];
-			//获取appSecret
+			// 获取appSecret
 			let appSecret = this.$application.config['app']['appSecret'];
-			//获取accessToken
+			// 获取accessToken
 			let getAccessToken = await this.services('http.auth').accessToken(appId, appSecret);
 			let accessToken = getAccessToken.data.access_token;
-			//存储accessToken
-			let setDataAccessToken = await this.services('mp.storage').set('accessToken', accessToken);
-			//获取code
+			// 存储accessToken
+			await this.services('mp.storage').set('accessToken', accessToken);
+			// 获取code
 			let code = await this.services('mp.auth').code();
-			//存储code
-			let setCode = await this.services('mp.storage').set('code', code);
-			//请求登录接口
+			// 存储code
+			await this.services('mp.storage').set('code', code);
+			// 请求登录接口
 			let loginInfo = await this.services('http.auth').login(code, accessToken);
 			let token = loginInfo.data.token;
 			let openId = loginInfo.data.open_id;
@@ -48,21 +48,23 @@ export default class AuthService extends Service {
 			let ttl = loginInfo.data.ttl;
 			if(loginInfo.data.shop_id) {
 				let shopId = loginInfo.data.shop_id;
-				let setShopId = await this.services('mp.storage').set('shopId', shopId);
+				await this.services('mp.storage').set('shopId', shopId);
 			}
-			let setDataToken = await this.services('mp.storage').set('token', {
+			token = {
 				'value': token,
 				'ttl': ttl.date,
 				'refreshTtl': refreshTtl.date
-			});
-			let setDataOpenId = await this.services('mp.storage').set('openId', openId);
-			if(token == undefined) {
+			};
+			await this.services('mp.storage').set('token', token);
+			await this.services('mp.storage').set('openId', openId);
+			if(token === undefined) {
 				console.log('用户未注册，无法获取token');
 			} else {
 				let eventData = {
 					openId: openId,
 					mobile: mobile,
-					userScore: userScore
+					userScore: userScore,
+					token: token
 				};
 				this.store().dispatch('model.account/setAccount', eventData);
 			}
@@ -71,7 +73,6 @@ export default class AuthService extends Service {
 			return token['value'];
 		}
 	}
-
 	checkSession() {
 		return new Promise((resolve, reject) => {
 			wx.checkSession({

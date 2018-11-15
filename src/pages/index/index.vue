@@ -8,25 +8,25 @@
 		</div>
 		<div v-if="!isAuth" id="index_mobile" class="bgff">
 			<button id="index_getmobile" open-type="getUserInfo" @getuserinfo="getUserInfo">
-				获取用户信息
-			</button>
+        获取用户信息
+      </button>
 			<em id="index_tips">
-				我们需要获取您的小程序用户信息来创建用户信息
-			</em>
+        我们需要获取您的小程序用户信息来创建用户信息
+      </em>
 		</div>
 		<div v-else-if="!isMember" id="index_mobile" class="bgff">
 			<button id="index_getmobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-				手机号授权
-			</button>
+        手机号授权
+      </button>
 			<em id="index_tips">
-				我们需要您的手机号来创建账号，累计积分
-			</em>
+        我们需要您的手机号来创建账号，累计积分
+      </em>
 		</div>
 		<div v-else id="index_mobile" class="bgff">
 			<div id="index_getscore">{{userScore}}<i>积分</i></div>
 			<em id="index_tips">
-				积分功能即将上线，敬请期待！
-			</em>
+        积分功能即将上线，敬请期待！
+      </em>
 		</div>
 		<div id="index_menu">
 			<dl @click="jump('todayOrder')">
@@ -59,7 +59,7 @@
 		},
 		data() {
 			return {
-				navName: "index"
+				navName: 'index'
 			};
 		},
 		computed: {
@@ -76,12 +76,17 @@
 			},
 			userScore() {
 				return this.$store.getters['model.account/userScore'];
+			},
+			isLogin() {
+				let token = this.$store.getters['model.account/token'];
+				return token !== null && (new Date(token['ttl'])).getTime() > Date.now();
+			},
+			hasLoadedActivity() {
+				return this.$store.getters['model.activity/id'] !== null;
 			}
 		},
 		created() {
-			console.log('徐钰');
-			this.$command('GET_ACCOUNT');
-			this.$command('GET_ACTIVITY_INFO');
+			this.loadData();
 		},
 		methods: {
 			jump(router) {
@@ -92,6 +97,15 @@
 			},
 			getUserInfo(e) {
 				this.$command('SET_USERINFO', e);
+				this.$command('MYINFO');
+			},
+			async loadData() {
+				if(!this.isLogin) {
+					await this.$command('SIGN_IN');
+				}
+				if(!this.hasLoadedActivity) {
+					await this.$command('GET_ACTIVITY_INFO');
+				}
 			}
 		}
 

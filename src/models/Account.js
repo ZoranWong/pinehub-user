@@ -21,22 +21,23 @@ export default class Account extends Model {
 		});
 	}
 	data() {
-//		let userInfo = this.services();
 		return {
 			openId: null,
 			unionId: null,
-			avator: null,
+			avatar: null,
 			mobile: null,
 			userScore: null,
 			token: null
 		};
 	}
-	//监听数据
+	// 监听数据
 	listeners() {
 		this.addEventListener('setAccount', function(userInfo) {
 			_.extend(this.state, userInfo);
-//			this.services('mp.storage').set('token', userInfo.token);
-//			this.services('mp.storage').set('userInfo', userInfo);
+			//          if (typeof userInfo.token !== 'undefined') {
+			//            this.services('mp.storage').set('token', userInfo.token);
+			//          }
+			//          this.services('mp.storage').set('userInfo', userInfo);
 		});
 	}
 }

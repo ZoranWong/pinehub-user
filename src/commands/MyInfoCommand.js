@@ -5,14 +5,12 @@ export default class MyInfoCommand extends Command {
 	}
 
 	async handle() {
-		console.log('个人中心数据获取');
 		let hasStore = false;
 		let response = await this.service('http.auth').getUserInfo();
-		console.log('HASSTORE', response);
 		let userInfo = response.data;
 		if(userInfo.shop_id) {
 			hasStore = true;
-			let setShopId = await this.service('mp.storage').set('shopId', userInfo.shop_id);
+			await this.service('mp.storage').set('shopId', userInfo.shop_id);
 		} else {
 			hasStore = false;
 		}
@@ -21,7 +19,6 @@ export default class MyInfoCommand extends Command {
 			userInfo: userInfo,
 			hasStore: hasStore
 		});
-
 	}
 	static commandName() {
 		return 'MYINFO';

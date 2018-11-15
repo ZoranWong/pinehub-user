@@ -3,6 +3,7 @@ export default class OrdersService extends ApiService {
 	constructor($application) {
 		super($application);
 	}
+
 	//获取订单列表
 	async list(status, page = 1, limit = 15) {
 		let orders = null;
@@ -28,6 +29,13 @@ export default class OrdersService extends ApiService {
 		return [orders, totalNum, currentPage, totalPage];
 
 	}
+
+	//创建订单
+	async createOrder(params) {
+		let response = await this.httpPost(`/create/order`, params);
+		return response.data;
+	}
+
 	//重新创建订单
 	async reCreateOrder(id) {
 		let response = null;

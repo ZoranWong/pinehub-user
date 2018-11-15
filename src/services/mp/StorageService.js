@@ -5,6 +5,7 @@ export default class StorageService extends Service {
 	}
 
 	set(key, value) {
+		console.log(key + '<<<<<STORAGE>>>>>写入');
 		return new Promise((resolve) => {
 			wx.setStorage({
 				key: key,
@@ -17,6 +18,7 @@ export default class StorageService extends Service {
 		});
 	}
 	get(key) {
+		console.log(key + '<<<<<STORAGE>>>>>读取');
 		return new Promise((resolve, reject) => {
 			wx.getStorage({
 				key: key,

@@ -17,25 +17,25 @@ import NearestStoreService from '@/services/http/NearestStoreService';
 import StoreCategoriesService from '@/services/http/StoreCategoriesService';
 
 const application = wx.$app;
-application.setComponent(App).run(function (app) {
-    if (app.models) {
-      app.registerModel('model.today.merchandises', Merchandises);
-      app.registerModel('model.nearestStore', NearestStore);
-      app.registerModel('model.storeCategories', StoreCategories);
-    }
-    app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
-    app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
+application.setComponent(App).run(function(app) {
+	if(app.models) {
+		app.registerModel('model.today.merchandises', Merchandises);
+		app.registerModel('model.nearestStore', NearestStore);
+		app.registerModel('model.storeCategories', StoreCategories);
+	}
+	app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
+	app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
+	app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
+	app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
 
-    app.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
-    app.registerCommand(GetStoreCategoriesCommand.commandName(), GetStoreCategoriesCommand);
-    app.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
-    app.register('http.nearestStore', NearestStoreService);
-    app.register('http.storeCategories', StoreCategoriesService);
-    }, function (mountComponent) {
-     _.extend(App, mountComponent);
-     const app = new Vue(App);
-     app.$mount();
-     return app;
+	app.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
+	app.registerCommand(GetStoreCategoriesCommand.commandName(), GetStoreCategoriesCommand);
+	app.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
+	app.register('http.nearestStore', NearestStoreService);
+	app.register('http.storeCategories', StoreCategoriesService);
+}, function(mountComponent) {
+	_.extend(App, mountComponent);
+	const app = new Vue(App);
+	app.$mount();
+	return app;
 });

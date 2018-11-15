@@ -22,7 +22,7 @@ export default class MyInfo extends Model {
 			hasStore: true
 		};
 	}
-	//监听数据
+	// 监听数据
 	listeners() {
 		this.addEventListener('userInfo', function({
 			userInfo,

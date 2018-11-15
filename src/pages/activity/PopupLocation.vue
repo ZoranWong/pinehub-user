@@ -45,7 +45,11 @@
 				this.$emit('hdlHidePopup')
 			},
 			jump(router) {
-				this.$command('router', router, 'push');
+				this.$command('router', router, 'push', {
+					query: {
+						submitRoute: 'activitySubmitOrder'
+					}
+				});
 			}
 		},
 		mounted() {

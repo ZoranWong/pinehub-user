@@ -24,7 +24,7 @@ export default class MixinMethodsServiceProvider extends ServiceProvider {
           self.app.vueApp = this;
         },
         $command (...params) {
-          console.log('******************** vue parent ***************', this.$parent);
+//        console.log('******************** vue parent ***************', this.$parent);
           let parent = this.parent;
           let child = this;
           while (typeof parent !== 'undefined') {

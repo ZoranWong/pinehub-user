@@ -7,8 +7,8 @@
 		</div>
 		<div id="location_map">
 			<map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers" @markertap="bindmarkertap" show-location>
-				<cover-view>123456</cover-view>
-			</map>
+        <cover-view>123456</cover-view>
+      </map>
 			<div id="location_select_address">
 				<div class="select_li">
 					<span class="select_li_title">日期</span>
@@ -26,15 +26,14 @@
 
 <script>
 	import MpTitle from '@/components/MpTitle';
-	import _ from 'underscore';
 	export default {
 		components: {
-			"mp-title": MpTitle
+			'mp-title': MpTitle
 		},
-		//数据
+		// 数据
 		data() {
 			return {
-				title: "选择自提点",
+				title: '选择自提点',
 				latitude: 0,
 				longitude: 0,
 				addressName: null,
@@ -44,45 +43,70 @@
 				self: {}
 			}
 		},
-		watch: {},
-		//算术方法
+		watch: {
+			center: {
+				deep: true,
+				handler(point) {
+					if(point) {
+						this.latitude = point.lat;
+						this.longitude = point.lng;
+					}
+				}
+			}
+		},
+		// 算术方法
 		computed: {
 			markers() {
 				let markers = this.$store.getters['model.nearbyStores/markers'];
 				return markers.length > 0 ? markers : null;
+			},
+			center() {
+				return this.$store.getters['model.nearbyStores/centerPoint'];
 			}
 		},
-		//普通方法
+		// 普通方法
 		methods: {
 			async flashLocation() {
 				let result = await this.map.getLocation();
-				console.log('获取定位', result);
 				this.latitude = result.lat;
 				this.longitude = result.lng;
-				console.log('坐标---------------', this.latitude, this.longitude);
-				let setPosition = this['mp.storage'].set('myLocaltion', [this.latitude, this.longitude]);
-				//				let city = await this.map.searchLocationToCity(this.latitude, this.longitude);
-				//				this.city = city;
-				// console.log(this.latitude,this.longitude)
+				this.$store.dispatch('model.nearbyStores/setLocation', {
+					latitude: result.lat,
+					longitude: result.lng
+				})
 				this.$command('GET_NEARBY_STORES', this.longitude, this.latitude);
 			},
 			nowLocation() {
 				this.map.moveToLocation();
 			},
-			bindmarkertap(event) {
-				let storeId = event.mp.markerId;
-				console.log('bindmarkertap', storeId, event);
-				this.$store.dispatch('model.nearbyStores/selectMarker', {
-					id: storeId
-				});
-				if(storeId) {
-					console.log('存在店铺', storeId);
+			async bindmarkertap(event) {
+				let storeId = await event.mp.markerId;
+				if(storeId !== 0) {
+					this.$store.dispatch('model.nearbyStores/selectMarker', {
+						id: storeId
+					});
 				}
+				let storeInfo = await this.$store.getters['model.nearbyStores/selectStore']
+				console.log('>>>>>>>>>>>>AAA', storeInfo);
+				let submitRoute = await this.$route.query['submitRoute'];
+				console.log('ROUTER》》》》》》》》》', this.$router);
+				let self = this;
+				wx.showModal({
+					title: '温馨提示',
+					content: '是否确认选择本店为您提供服务？',
+					success(res) {
+						if(res.confirm) {
+							self.$command('router', submitRoute, 'push', {
+								query: {
+									store_id: storeInfo.id
+								}
+							});
+						} else if(res.cancel) {}
+					}
+				})
 			}
 		},
 		mounted() {
-			console.log('<<>>><<<>><<<>>')
-			// console.log('location created', this);
 			this.flashLocation();
 		}
 	}

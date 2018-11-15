@@ -7,25 +7,25 @@
 			<li class="li-item bgff">
 				自提地址
 				<p class="details-item">
-					<input type="text" placeholder="默认地址" readonly="readonly" disabled="">
+					{{storeInfo ? storeInfo.address : ''}}
 				</p>
 			</li>
 			<li class="li-item bgff">
 				自提时间
 				<p class="details-item">
-					<input type="text" placeholder="默认站点营业时间" readonly="readonly" disabled="">
+					<!--{{storeInfo.openDaily}}-->
 				</p>
 			</li>
 			<li class="li-item bgff">
 				站点联系电话
 				<p class="details-item tel-num">
-					16868686868
+					{{storeInfo ? storeInfo.mobile : ''}}
 				</p>
 			</li>
 		</ul>
 
 		<!-- 支付内容的显示组件 -->
-		<payment :model="model" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
+		<payment :model="model" :sendOrder="sendOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
 
 	</div>
 </template>
@@ -48,7 +48,14 @@
 			'tab-delivery': TabDelivery,
 			'payment': Payment,
 		},
-		computed: {},
+		computed: {
+			storeInfo() {
+				return this.$store.getters['model.nearbyStores/store'](parseInt(this.$route.query['store_id']));
+			},
+			hasShoppingCarts() {
+				return this.$store.getters['model.activity.shoppingCarts/list'].length > 0;
+			}
+		},
 		methods: {
 			radioChange(e) {
 				console.log('radio发生change事件，携带value值为：', e.target.value)
@@ -71,25 +78,18 @@
 			reduceCart(merchandiseId) {
 				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
 				this.$command('ACTIVITY_SHOPPINGCART_REDUCE_MERCHANDISE', merchandiseId, count);
+			},
+			sendOrder() {
+				this.$command('CREATE_ORDER', 'activity');
 			}
-
 		},
 		mounted() {
-			this.loadCartMerchandises(1);
-			this.loadMyInfo();
-			//			this.$command('FILL_CART_FROM_CACHE');
-			//			wx.chooseAddress({
-			//				success(res) {
-			//					console.log(res.userName)
-			//					console.log(res.postalCode)
-			//					console.log(res.provinceName)
-			//					console.log(res.cityName)
-			//					console.log(res.countyName)
-			//					console.log(res.detailInfo)
-			//					console.log(res.nationalCode)
-			//					console.log(res.telNumber)
-			//				}
-			//			})
+			console.log('shopping carts has been loaded', this.hasShoppingCarts);
+			if(!this.hasShoppingCarts) {
+				this.loadCartMerchandises(1);
+			}
+
+			console.log('store_id = ', this.$route.query['store_id'], 'store = ', this.storeInfo);
 		}
 	}
 </script>

@@ -187,7 +187,7 @@ export default class Application {
         }, this.mountComponent);
 
         this.vueApp = _.isFunction(created) ? created(this.mountComponent, this.$vm) : console.log(created);
-
+        // this.vueApp = new Vue(this.mountComponent);
         if (this.vueApp) {
             _.extend(this.vueApp, this.instances);
         }
