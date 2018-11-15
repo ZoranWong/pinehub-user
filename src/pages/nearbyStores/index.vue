@@ -79,12 +79,16 @@
       },
       bindmarkertap (event) {
         let storeId = event.mp.markerId;
+        console.log(this.$router, this.$route);
         if (storeId !== 0) {
           this.$store.dispatch('model.nearbyStores/selectMarker', {
             id: storeId
           });
         }
       }
+    },
+    afterEnter (to, from) {
+      console.log('enter route', to, from);
     },
     mounted () {
       this.flashLocation();
