@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import Categories from '@/models/Categories';
 
@@ -14,7 +12,6 @@ import MyStoreStatusSales from '@/models/MyStoreStatusSales';
 
 import MyStoreCategoriesService from '@/services/http/MyStoreCategoriesService';
 import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
-import MyStoreCategories from '@/models/Categories';
 
 import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryMerchandisesService';
 import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
@@ -27,36 +24,37 @@ import EChartsService from '@/services/mp/EChartsService';
 import MySalesEChartCommand from '@/commands/MySalesEChartCommand';
 import MySalesEChart from '@/models/MySalesEChart';
 
+import Vue from 'vue';
+
 const application = wx.$app;
-application.setComponent(App).run((app) => {
-    app.registerModel('myStore.merchandises', Merchandises);
-    app.registerModel('store.categories', Categories);
+application.setComponent(App).run(function () {
+    this.registerModel('myStore.merchandises', Merchandises);
+    this.registerModel('store.categories', Categories);
 
-    app.models.addModel('model.my.store.status.purchase', MyStoreStatusPurchase);
-    app.register('http.myStoreStatusPurchase', MyStoreStatusPurchaseService);
-    app.registerCommand(MyStoreStatusPurchaseCommand.commandName(), MyStoreStatusPurchaseCommand);
+    this.models.addModel('model.my.store.status.purchase', MyStoreStatusPurchase);
+    this.register('http.myStoreStatusPurchase', MyStoreStatusPurchaseService);
+    this.registerCommand(MyStoreStatusPurchaseCommand.commandName(), MyStoreStatusPurchaseCommand);
 
-    app.models.addModel('model.my.store.status.sales', MyStoreStatusSales);
-    app.register('http.myStoreStatusSales', MyStoreStatusSalesService);
-    app.registerCommand(MyStoreStatusSalesCommand.commandName(), MyStoreStatusSalesCommand);
+    this.models.addModel('model.my.store.status.sales', MyStoreStatusSales);
+    this.register('http.myStoreStatusSales', MyStoreStatusSalesService);
+    this.registerCommand(MyStoreStatusSalesCommand.commandName(), MyStoreStatusSalesCommand);
 
-    app.models.addModel('model.my.store.categories', MyStoreCategories);
-    app.register('http.myStoreCategories', MyStoreCategoriesService);
-    app.registerCommand(MyStoreCategoriesCommand.commandName(), MyStoreCategoriesCommand);
+    this.models.addModel('model.my.store.categories', Categories);
+    this.register('http.myStoreCategories', MyStoreCategoriesService);
+    this.registerCommand(MyStoreCategoriesCommand.commandName(), MyStoreCategoriesCommand);
 
-    app.models.addModel('model.my.store.category.merchandises', MyStoreCategoryMerchandises);
-    app.register('http.myStoreCategoryMerchandises', MyStoreCategoryMerchandisesService);
-    app.registerCommand(MyStoreChangeCategoryCommand.commandName(), MyStoreChangeCategoryCommand);
+    this.models.addModel('model.my.store.category.merchandises', MyStoreCategoryMerchandises);
+    this.register('http.myStoreCategoryMerchandises', MyStoreCategoryMerchandisesService);
+    this.registerCommand(MyStoreChangeCategoryCommand.commandName(), MyStoreChangeCategoryCommand);
 
-    app.register('http.myStoreModifyStock', MyStoreModifyStockService);
-    app.registerCommand(MyStoreModifyStockCommand.commandName(), MyStoreModifyStockCommand);
+    this.register('http.myStoreModifyStock', MyStoreModifyStockService);
+    this.registerCommand(MyStoreModifyStockCommand.commandName(), MyStoreModifyStockCommand);
 
-    app.models.addModel('model.my.sales.echart', MySalesEChart);
-    app.register('mp.eCharts', EChartsService);
-    app.registerCommand(MySalesEChartCommand.commandName(), MySalesEChartCommand);
-}, (component) => {
-    _.extend(App, component);
-    let app = new Vue(App);
-    app.$mount();
-    return app;
+    this.models.addModel('model.my.sales.echart', MySalesEChart);
+    this.register('mp.eCharts', EChartsService);
+    this.registerCommand(MySalesEChartCommand.commandName(), MySalesEChartCommand);
+    this.route = 'myStoreStatus';
+}, function () {
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });

@@ -1,6 +1,5 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
+import Vue from 'vue';
 // 产品模型和产品服务
 import Merchandises from '@/models/Merchandises';
 import MerchandisesService from '@/services/http/MerchandisesService';
@@ -9,25 +8,24 @@ import ActivityLoadingMerchandisesCommand from '@/commands/ActivityLoadingMercha
 import ActivityShoppingCartAddMerchandiseCommand from '@/commands/ActivityShoppingCartAddMerchandiseCommand';
 import ActivityShoppingCartReduceMerchandiseCommand from '@/commands/ActivityShoppingCartReduceMerchandiseCommand';
 import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
-//获取常用地址
+// 获取常用地址
 import ActivityUsuallyAddressService from '@/services/http/ActivityUsuallyAddressService';
 import LoadActivityUsuallyAddressCommand from '@/commands/LoadActivityUsuallyAddressCommand';
 const application = wx.$app;
-application.setComponent(App).run(function(app) {
-	// 产品模型和产品服务
-	app.models.addModel('model.activity.merchandises', Merchandises)
-	app.register('http.merchandises', MerchandisesService)
-	// 注册购物车命令
-	app.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand)
-	app.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand)
-	app.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand)
-	app.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand)
-	//获取常用地址
-	app.register('http.activityUsuallyAddress', ActivityUsuallyAddressService);
-	app.registerCommand(LoadActivityUsuallyAddressCommand.commandName(), LoadActivityUsuallyAddressCommand);
-}, function(mountComponent) {
-	_.extend(App, mountComponent)
-	const app = new Vue(App)
-	app.$mount()
-	return app
+application.setComponent(App).run(function () {
+    // 产品模型和产品服务
+    this.models.addModel('model.activity.merchandises', Merchandises)
+    this.register('http.merchandises', MerchandisesService)
+    // 注册购物车命令
+    this.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand)
+    this.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand)
+    this.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand)
+    this.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand)
+    // 获取常用地址
+    this.register('http.activityUsuallyAddress', ActivityUsuallyAddressService);
+    this.registerCommand(LoadActivityUsuallyAddressCommand.commandName(), LoadActivityUsuallyAddressCommand);
+    this.route = 'activity';
+}, function () {
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });

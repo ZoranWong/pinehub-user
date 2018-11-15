@@ -1,17 +1,15 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import DistributeOrderService from '../../../../services/http/DistributeOrderService';
 import DistributeOrderCommand from '@/commands/DistributeOrderCommand';
 import DistributeOrder from '@/models/DistributeOrder';
+import Vue from 'vue';
 const application = wx.$app;
-application.setComponent(App).run((app) => {
-    app.registerModel('model.distribute.orders', DistributeOrder);
-    app.register('http.distributeOrder', DistributeOrderService);
-    app.registerCommand(DistributeOrderCommand.commandName(), DistributeOrderCommand);
-}, (mountComponent) => {
-    _.extend(App, mountComponent);
-    let app = new Vue(App);
-    app.$mount();
-    return app;
+application.setComponent(App).run(() => {
+    this.registerModel('model.distribute.orders', DistributeOrder);
+    this.register('http.distributeOrder', DistributeOrderService);
+    this.registerCommand(DistributeOrderCommand.commandName(), DistributeOrderCommand);
+    this.route = 'myStoreDistributeOrder'
+}, function () {
+  this.currentPage = new Vue(this.mountComponent);
+  this.currentPage.$mount();
 });

@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import Categories from '@/models/Categories';
 
@@ -13,25 +11,25 @@ import GetCategoriesCommand from '@/commands/GetCategoriesCommand';
 
 import CategoriesService from '@/services/http/CategoriesService';
 import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
+import Vue from 'vue';
 
 const application = wx.$app;
-application.setComponent(App).run(function (app) {
-    if (app.models) {
-      app.registerModel('model.reserveShop.merchandises', Merchandises);
-      app.registerModel('model.categories', Categories);
+application.setComponent(App).run(function () {
+    if (this.models) {
+      this.registerModel('model.reserveShop.merchandises', Merchandises);
+      this.registerModel('model.categories', Categories);
     }
-    app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
-    app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
+    this.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
+    this.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
+    this.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
+    this.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
 
-    app.registerCommand(GetCategoriesCommand.commandName(), GetCategoriesCommand);
-    app.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
+    this.registerCommand(GetCategoriesCommand.commandName(), GetCategoriesCommand);
+    this.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
 
-    app.register('http.categories', CategoriesService);
-    }, function (component) {
-    _.extend(App, component);
-    let app = new Vue(App);
-    app.$mount();
-    return app;
+    this.register('http.categories', CategoriesService);
+    this.route = 'reserveShop';
+}, function () {
+  this.currentPage = new Vue(this.mountComponent);
+  this.currentPage.$mount();
 });
