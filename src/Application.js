@@ -196,9 +196,6 @@ export default class Application {
             }, this.mountComponent);
             _.isFunction(created) ? created.call(this, this) : console.log(created);
             let wxRoute = this.config['routes'][this.route];
-            // global.__wxRoute = wxRoute;
-            // global.__wxRouteBegin = true
-            // global.__wxAppCurrentFile__ = `${wxRoute}.js`
             this.currentPage['wxRoute'] = wxRoute;
             _.extend(this.currentPage, this.instances);
             _.each(this.instances, (instance) => {

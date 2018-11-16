@@ -3,10 +3,10 @@ import App from './index';
 import Merchandises from '@/models/Merchandises';
 import MerchandisesService from '@/services/http/MerchandisesService';
 // 购物车相关
-import ReservationLoadingMerchandisesCommand from '@/commands/ReservationLoadingMerchandisesCommand';
-import ReservationShoppingCartClearMerchandisesCommand from '@/commands/ReservationShoppingCartClearMerchandisesCommand';
-import ReservationShoppingCartChangeMerchandiseCommand from '@/commands/ReservationShoppingCartChangeMerchandiseCommand';
-import ReservationShoppingCartLoadMerchandisesCommand from '@/commands/ReservationShoppingCartLoadMerchandisesCommand';
+import ReservationLoadingMerchandisesCommand from '@/commands/LoadBookingMallMerchandisesCommand';
+import ReservationShoppingCartClearMerchandisesCommand from '@/commands/BookingMallShoppingCartClearMerchandisesCommand';
+import ReservationShoppingCartChangeMerchandiseCommand from '@/commands/BookingMallShoppingCartChangeMerchandiseCommand';
+import ReservationShoppingCartLoadMerchandisesCommand from '@/commands/BookingMallShoppingCartLoadMerchandisesCommand';
 //分类模型
 import Categories from '@/models/Categories';
 
@@ -21,7 +21,7 @@ const application = wx.$app;
 application.setComponent(App).run(function() {
 
 	// 产品模型和产品服务
-	this.models.addModel('model.reservation.merchandises', Merchandises);
+	this.models.addModel('model.bookingMall.merchandises', Merchandises);
 	//分类模型
 	this.models.addModel('model.categories', Categories);
 

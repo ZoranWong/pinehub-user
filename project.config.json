@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 18,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -73,7 +73,7 @@
 				{
 					"id": 6,
 					"name": "当日下单",
-					"pathName": "pages/todayOrder/main",
+					"pathName": "pages/store/main",
 					"query": ""
 				},
 				{

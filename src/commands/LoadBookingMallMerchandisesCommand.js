@@ -1,5 +1,5 @@
 import Command from './Command';
-export default class GetMerchandisesCommand extends Command {
+export default class LoadBookingMallMerchandisesCommand extends Command {
   constructor (app) {
     super(app);
   }
@@ -9,7 +9,7 @@ export default class GetMerchandisesCommand extends Command {
       let args = Array.prototype.slice.apply(arguments);
       let event = args.shift();
       let serviceMethod = args.shift();
-      console.log('预定商品列表', serviceMethod);
+      console.log('预定商品列表service', serviceMethod);
       let service = this.service('http.merchandises');
       let [merchandises, totalNum, currentPage, totalPage, limit] = await service[serviceMethod].apply(service, args);
       console.log(event, merchandises, totalNum, currentPage, totalPage, 'jjjj', serviceMethod);
@@ -26,6 +26,6 @@ export default class GetMerchandisesCommand extends Command {
     }
   }
   static commandName () {
-    return 'GET_MERCHANDISE_LIST';
+    return 'LOAD_BOOKING_MALL_MERCHANDISES';
   }
 }

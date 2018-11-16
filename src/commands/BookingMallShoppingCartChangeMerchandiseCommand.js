@@ -1,30 +1,25 @@
 import Command from './ShoppingCartCommand';
-export default class StoreShoppingCartChangeMerchandiseCommand extends Command {
+export default class BookingMallShoppingCartChangeMerchandiseCommand extends Command {
   constructor (app) {
     super(app);
-    this.model = 'model.store.shoppingCarts';
+    this.model = 'model.bookingMall.shoppingCarts';
   }
-  async handle (storeId, merchandiseId, id = null, quality = 1) {
+  async handle (merchandiseId, id = null, quality = 1) {
     try {
-      console.log('store shopping cart change', storeId, merchandiseId, id, quality);
       let merchandise = null;
       if (id && quality === 0) {
         merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
-        if (merchandise) {
-          this.deleteShoppingCart(id);
-        }
+        this.deleteShoppingCart(id);
         return;
       } else if (id === null) {
-        merchandise = await this.service('http.shoppingCart').storeShoppingCartAddMerchandise(
-          storeId,
+        merchandise = await this.service('http.shoppingCart').bookingShoppingCartAddMerchandise(
           merchandiseId,
           quality);
         if (merchandise) {
           this.addMerchandiseToShoppingCart(merchandise);
         }
       } else if (id && quality > 0) {
-        merchandise = await this.service('http.shoppingCart').storeShoppingCartChangeMerchandise(
-          storeId,
+        merchandise = await this.service('http.shoppingCart').bookingShoppingCartChangeMerchandise(
           id,
           merchandiseId,
           quality);
@@ -38,6 +33,6 @@ export default class StoreShoppingCartChangeMerchandiseCommand extends Command {
   }
 
   static commandName () {
-    return 'STORE_SHOPPINGCART_CHANGE_MERCHANDISE';
+    return 'BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE';
   }
 }
