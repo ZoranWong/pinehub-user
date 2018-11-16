@@ -15,6 +15,8 @@ import ScanCommand from '@/commands/ScanCommand';
 import BackToScrollViewTopCommand from '@/commands/BackToScrollViewTopCommand';
 //创建订单命令
 import CreateOrderCommand from '@/commands/CreateOrderCommand';
+//清空产品命令（切换分类）
+import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
 
 export default class CommandServiceProvider extends ServiceProvider {
 	constructor(app) {
@@ -30,7 +32,8 @@ export default class CommandServiceProvider extends ServiceProvider {
 			ShoppingCartCommand,
 			ScanCommand,
 			BackToScrollViewTopCommand,
-			CreateOrderCommand
+			CreateOrderCommand,
+			ClearMerchandiseCommand
 		];
 		for(let key in commands) {
 			this.app.registerCommand(commands[key].commandName(), commands[key]);

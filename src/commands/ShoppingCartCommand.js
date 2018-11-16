@@ -118,8 +118,8 @@ export default class ShoppingCartCommand extends Command {
 		//		}
 	}
 
-	changeCartMerchandise(merchandise) {
-		this.store().dispatch(this.model + '/changeCart', {
+	changeShoppingCartMerchandise(merchandise) {
+		this.store().dispatch(this.model + '/changeShoppingCartMerchandise', {
 			'id': merchandise['id'],
 			'merchandiseId': merchandise['merchandise_id'],
 			'count': merchandise['quality'],
@@ -128,6 +128,25 @@ export default class ShoppingCartCommand extends Command {
 			'totalAmount': merchandise['amount'],
 			'thumbImage': merchandise['main_image'],
 			'activityId': merchandise['activity_id']
+		});
+	}
+	
+	addMerchandiseToShoppingCart(merchandise) {
+		this.store().dispatch(this.model + '/addMerchandiseToShoppingCart', {
+			'id': merchandise['id'],
+			'merchandiseId': merchandise['merchandise_id'],
+			'count': merchandise['quality'],
+			'name': merchandise['name'],
+			'sellPrice': merchandise['sell_price'],
+			'totalAmount': merchandise['amount'],
+			'thumbImage': merchandise['main_image'],
+			'activityId': merchandise['activity_id']
+		});
+	}
+	
+	deleteShoppingCart(id) {
+		this.store().dispatch(this.model + '/deleteMerchandiseFromShoppingCart', {
+			'id': id
 		})
 	}
 

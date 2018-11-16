@@ -7,7 +7,7 @@ export default class ActivityLoadingMerchandisesCommand extends Command {
     async handle (page) {
         let id = await this.service('mp.storage').get('activityId');
         try {
-          let [merchandises, totalNum, currentPage, totalPage, limit] = await this.service('http.merchandises').activity(id, page);
+          let [merchandises, totalNum, currentPage, totalPage, limit] = await this.service('http.merchandises').activityMerchandises(id, page);
           console.log('新品列表', merchandises, totalNum, currentPage, totalPage, limit);
           this.$store.dispatch('model.activity.merchandises/setList', {
             list: merchandises,

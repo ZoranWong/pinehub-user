@@ -30,8 +30,7 @@ export default class AuthService extends Service {
 			// 获取appSecret
 			let appSecret = this.$application.config['app']['appSecret'];
 			// 获取accessToken
-			let getAccessToken = await this.services('http.auth').accessToken(appId, appSecret);
-			let accessToken = getAccessToken.data.access_token;
+			let accessToken = await this.services('http.auth').accessToken(appId, appSecret);
 			// 存储accessToken
 			await this.services('mp.storage').set('accessToken', accessToken);
 			// 获取code
@@ -40,14 +39,14 @@ export default class AuthService extends Service {
 			await this.services('mp.storage').set('code', code);
 			// 请求登录接口
 			let loginInfo = await this.services('http.auth').login(code, accessToken);
-			let token = loginInfo.data.token;
-			let openId = loginInfo.data.open_id;
-			let mobile = loginInfo.data.mobile;
-			let userScore = loginInfo.data.can_use_score;
-			let refreshTtl = loginInfo.data.refresh_ttl;
+			let token = loginInfo.token;
+			let openId = loginInfo.open_id;
+			let mobile = loginInfo.mobile;
+			let userScore = loginInfo.can_use_score;
+			let refreshTtl = loginInfo.refresh_ttl;
 			let ttl = loginInfo.data.ttl;
-			if(loginInfo.data.shop_id) {
-				let shopId = loginInfo.data.shop_id;
+			if(loginInfo.shop_id) {
+				let shopId = loginInfo.shop_id;
 				await this.services('mp.storage').set('shopId', shopId);
 			}
 			token = {

@@ -1,21 +1,18 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import SearchLocation from '@/commands/SearchLocationCommand';
 
 import NearbyStoresService from '@/services/http/NearbyStoresService';
 import GetNearbyStoresCommand from '@/commands/GetNearbyStoresCommand';
+import Vue from 'vue';
 
 const application = wx.$app;
-application.setComponent(App).run((app) => {
-    // console.log(app.instances['map']);
+application.setComponent(App).run(function() {
 
-    app.register('http.nearbyStores', NearbyStoresService);
-    app.registerCommand(GetNearbyStoresCommand.commandName(), GetNearbyStoresCommand);
-    app.registerCommand(SearchLocation.commandName(), SearchLocation);
-}, (mountComponent) => {
-    _.extend(App, mountComponent);
-    let app = new Vue(App);
-    app.$mount();
-    return app;
+	this.register('http.nearbyStores', NearbyStoresService);
+	this.registerCommand(GetNearbyStoresCommand.commandName(), GetNearbyStoresCommand);
+	this.registerCommand(SearchLocation.commandName(), SearchLocation);
+	this.route = 'nearbyStores';
+}, function() {
+	this.currentPage = new Vue(this.mountComponent);
+	this.currentPage.$mount();
 });

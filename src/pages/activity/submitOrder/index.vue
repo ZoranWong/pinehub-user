@@ -71,13 +71,13 @@
 			loadMyInfo() {
 				this.$command('MYINFO');
 			},
-			addCart(merchandiseId) {
+			addCart(merchandiseId, id) {
 				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1;
-				this.$command('ACTIVITY_SHOPPINGCART_ADD_MERCHANDISE', merchandiseId, count);
+				this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
 			},
-			reduceCart(merchandiseId) {
+			reduceCart(merchandiseId, id) {
 				let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
-				this.$command('ACTIVITY_SHOPPINGCART_REDUCE_MERCHANDISE', merchandiseId, count);
+				this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
 			},
 			sendOrder() {
 				this.$command('CREATE_ORDER', 'activity');

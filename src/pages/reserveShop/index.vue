@@ -4,10 +4,10 @@
 		<mp-swiper></mp-swiper>
 		<div class="goods">
 			<menus @menusChange="menusChange"></menus>
-			<m-list :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
+			<m-list :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
 			</m-list>
 		</div>
-		<cart v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :emptyMerchandiseCart="emptyCart" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></cart>
+		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
 		<pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
 	</div>
 </template>
@@ -25,8 +25,7 @@
 				title: "预定商城",
 				isShow: false,
 				isShowCart: true,
-				activityId: 0,
-				listwidth: '530rpx',
+				model: 'model.reservation.shoppingCarts'
 			}
 		},
 		components: {
@@ -40,23 +39,25 @@
 		},
 		computed: {
 			merchandises() {
-				return this.$store.getters['model.reserveShop.merchandises/list'];
+				return this.$store.getters['model.reservation.merchandises/list'];
 			},
 			currentPage() {
-				let page = this.$store.state['model.reserveShop.merchandises'].currentPage;
+				console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', this.$store.state)
+				let page = this.$store.getters['model.reservation.merchandises/currentPage'];
 				return page;
 			},
 			categoryId() {
+				console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$categoryId', this.$store.state)
 				return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
 			},
 			categoryIndex() {
-				return this.$store.getters['model.reserveShop.merchandises/currentCategoryIndex'];
+				return this.$store.getters['model.reservation.merchandises/currentCategoryIndex'];
 			}
 		},
 		watch: {
 			categoryId(n, o) {
 				if(n && !o) {
-					this.loadMerchandises(1);
+					this.loadMerchandises();
 				}
 			}
 		},
@@ -71,36 +72,72 @@
 			hdlHidePopup: function() {
 				this.isShow = false;
 			},
-			loadMerchandises(page) {
-				this.$command('GET_MERCHANDISE_LIST',
-					'model.reserveShop.merchandises/setList',
-					'bookingMerchandises',
-					this.categoryId,
-					page);
+			async loadMerchandises(page = 1) {
+				console.log('++++RESERVATION_LOADING_MERCHANDISES++++++');
+				try {
+					await this.$command('RESERVATION_LOADING_MERCHANDISES',
+						'model.reservation.merchandises/setList',
+						'bookingMerchandises',
+						this.categoryId,
+						page);
+				} catch(e) {
+					console.log(e);
+				}
+
 			},
 			menusChange: function(index) {
-				this.$command('CLEAR_MERCHANDISE', 'model.reserveShop.merchandises');
-				this.$store.dispatch('model.reserveShop.merchandises/setCurrentCategory', {
-					categoryIndex: index
-				});
-				this.loadMerchandises(1);
+				console.log('产品切换', index);
+				try {
+					this.$command('CLEAR_MERCHANDISE', 'model.reservation.merchandises');
+					this.$store.dispatch('model.reservation.merchandises/setCurrentCategory', {
+						categoryIndex: index
+					});
+					this.loadMerchandises(index);
+				} catch(e) {
+					console.log(e);
+					return false;
+				}
+			},
+			async loadCartMerchandises(page = 1) {
+				console.log('>>>>>>>>>>>>>>>>>>>加载购物车<<<<<<<<<<<<<<<<<<')
+				try {
+					await this.$command('RESERVATION_SHOPPINGCART_LOAD_MERCHANDISES', page)
+				} catch(e) {
+					console.log('抛出异常', e);
+					return false;
+				}
+
 			},
 			next() {
 				this.loadMerchandises(this.currentPage + 1);
 			},
-			addCart(shopId, count, merchandiseId) {
-				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-
+			loadCartMerchandises(page = 1) {
+				this.$command('RESERVATION_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
-			reduceCart(shopId, count, merchandiseId) {
-				this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+			addCart(merchandiseId, id = null) {
+				let count = this.$store.getters['model.reservation.shoppingCarts/quality'](merchandiseId) + 1;
+				this.$command('RESERVATION_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
 			},
-			emptyCart(storeId) {
-				this.$command('EMPTY_MERCHANDISES_TO_CART', storeId);
+			reduceCart(merchandiseId, id = null) {
+				let count = this.$store.getters['model.reservation.shoppingCarts/quality'](merchandiseId) - 1;
+				this.$command('RESERVATION_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+			},
+			clearShoppingCart() {
+				console.log('清空购物车')
+				try {
+					this.$command('RESERVATION_SHOPPINGCART_CLEAR_MERCHANDISES');
+				} catch(e) {
+					console.log(e);
+				}
+			},
+			async initData() {
+				await this.$command('GET_CATEGORIES_TO_MEUN');
+				this.loadMerchandises();
 			}
 		},
 		mounted() {
-			this.$command('GET_CATEGORIES_TO_MEUN');
+			this.initData();
+			this.loadCartMerchandises();
 		}
 	}
 </script>

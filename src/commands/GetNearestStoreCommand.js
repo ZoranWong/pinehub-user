@@ -5,24 +5,22 @@ export default class GetNearestStoreCommand extends Command {
 	}
 
 	async handle() {
-		console.log('执行查询最近的店铺command');
-		let position = await this.service('location').getLocation();
+		let [id, name, address] = [];
 		try {
-			let [id, name, address] = await service.store(position.lng, position.lat);
-			let service = this.service('http.nearestStore');
+			let result = await this.service('map').getLocation();
+			[id, name, address] = await this.service('http.nearestStore').nearestStore(result.lng, result.lat);
+			console.log('最近店铺信息', [id, name, address]);
+			this.$store.dispatch('model.nearestStore/location', {
+				id: id,
+				name: name,
+				address: address,
+			});
 		} catch(e) {
+			console.log('居然来到了异常')
 			console.log('抛出异常', e);
 			throw(e);
 			return false;
 		}
-
-		// console.log(  position,'经纬度',position.lng, position.lat, address);
-		this.store().dispatch('model.nearestStore/location', {
-			id: id,
-			name: name,
-			address: address,
-
-		});
 
 	}
 	static commandName() {

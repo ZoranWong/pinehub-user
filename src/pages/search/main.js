@@ -1,9 +1,7 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import StoreCategories from '@/models/StoreCategories';
-
+import Vue from 'vue';
 import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
 import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
 import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
@@ -15,23 +13,21 @@ import StoreCategoriesService from '@/services/http/StoreCategoriesService';
 
 const application = wx.$app;
 application.setComponent(App).run(function (app) {
-    if (app.models) {
-      app.registerModel('model.search.merchandises', Merchandises);
-      app.registerModel('model.storeCategories', StoreCategories);
+    if (this.models) {
+      this.registerModel('model.search.merchandises', Merchandises);
+      this.registerModel('model.storeCategories', StoreCategories);
     }
-    app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
-    app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
-    app.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
+    this.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
+    this.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
+    this.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
+    this.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
+    this.registerCommand(ClearMerchandiseCommand.commandName(), ClearMerchandiseCommand);
 
-    app.registerCommand(GetStoreCategoriesCommand.commandName(), GetStoreCategoriesCommand);
+    this.registerCommand(GetStoreCategoriesCommand.commandName(), GetStoreCategoriesCommand);
 
-    app.register('http.storeCategories',StoreCategoriesService);
-    },
-  function (mountComponent) {
-     _.extend(App, mountComponent);
-     const app = new Vue(App);
-     app.$mount();
-     return app;
+    this.register('http.storeCategories', StoreCategoriesService);
+    this.route = 'search';
+}, function () {
+  this.currentPage = new Vue(this.mountComponent);
+  this.currentPage.$mount();
 });

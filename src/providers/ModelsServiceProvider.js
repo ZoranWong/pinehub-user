@@ -15,6 +15,7 @@ export default class ModelServiceProvider extends ServiceProvider {
 		this.app.models.addModel('model.account', Account);
 		this.app.models.addModel('model.my.info', MyInfo);
 		this.app.models.addModel('model.activity.shoppingCarts', ShoppingCarts);
+		this.app.models.addModel('model.reservation.shoppingCarts', ShoppingCarts);
 		this.app.models.addModel('model.store.shoppingCarts', ShoppingCarts);
 		this.app.models.addModel('model.online.shoppingCarts', ShoppingCarts);
 		this.app.models.addModel('model.nearbyStores', NearbyStores);

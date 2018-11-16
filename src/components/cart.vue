@@ -17,14 +17,14 @@
 				<div class="flag fl">
 					已选产品
 				</div>
-				<label class="empty fr" @click="emptyCart">清空</label>
+				<label class="empty fr" @click="clearShoppingCartMerchandises">清空</label>
 			</div>
 			<div class="add-box">
 				<div class="add-merchandises color11" v-for="(item, itemIndex) in cartList" :key="itemIndex">
 					<span class="merchandises-name">{{item.name}}</span>
 					<span class="sell-price">¥{{item.sellPrice}}</span>
 					<div class="cartcontrol-warpper">
-						<cart-control @addCart="addCart" :model="model" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId" @reduceCart="reduceCart"></cart-control>
+						<cart-control :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId"></cart-control>
 					</div>
 				</div>
 			</div>
@@ -88,14 +88,14 @@
 				this.toggleList = !this.toggleList;
 				this.maskBg = !this.maskBg;
 			},
-			emptyCart() {
+			clearShoppingCartMerchandises() {
 				this.clearShoppingCart();
 			},
-			addCart(id) {
-				this.addMerchandiseToCart(id);
+			addCart(merchandiseId, id = null) {
+				this.addMerchandiseToCart(merchandiseId, id);
 			},
-			reduceCart(id) {
-				this.reduceMerchandiseToCart(id);
+			reduceCart(merchandiseId, id ) {
+				this.reduceMerchandiseToCart(merchandiseId, id);
 			}
 
 		},

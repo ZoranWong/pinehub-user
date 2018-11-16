@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="hasStore" id="mystore_shop" @click="jump('mystore')">
+		<div v-if="hasStore" id="mystore_shop" @click="jump('myStore')">
 			<i class="my_store_line left_line"></i>
 			<i class="my_store_line right_line"></i>
 			<i id="mystore_shop_more"></i>
@@ -41,7 +41,7 @@
 		</div>
 		<div id="mystore_menu">
 			<ul>
-				<li @click="jump('myorder')">
+				<li @click="jump('myOrder')">
 					<img src="../../../static/images/icon/my_ico_menu1.png" />
 					<span>个人订单</span>
 					<i></i>
@@ -53,7 +53,7 @@
 					<i></i>
 					<em>邀请好友</em>
 				</li>
-				<li @click="jump('myfeedback')">
+				<li @click="jump('myFeedback')">
 					<img src="../../../static/images/icon/my_ico_menu3.png" />
 					<span>意见反馈</span>
 					<i></i>

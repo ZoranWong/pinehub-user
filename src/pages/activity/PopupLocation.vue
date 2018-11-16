@@ -10,7 +10,7 @@
 				<div class="place-item" v-for="(item,index ) in places" :key="index" @click="jump('activitySubmitOrder')">
 					<i class="i-icon yellow-right-arrow"></i> {{item.name}}
 				</div>
-				<div class="btn-big theme-color" @click="jump('location')">重新选择</div>
+				<div class="btn-big theme-color" @click="jump('nearbyStores')">重新选择</div>
 				<div class="tips color75">
 					注：请您务必在上午9:00前领取您的早餐
 				</div>

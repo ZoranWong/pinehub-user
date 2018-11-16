@@ -46,7 +46,7 @@
 					<i class="my_store_menu_ico ico_2"></i>
 					<em>需配送订单</em>
 				</li>
-				<li @click="jump('mystorestatus')">
+				<li @click="jump('myStoreStatus')">
 					<i class="my_store_menu_ico ico_3"></i>
 					<em>店铺状态</em>
 				</li>
@@ -58,7 +58,7 @@
 					<i class="my_store_menu_ico ico_5"></i>
 					<em>自提订单</em>
 				</li>
-				<li @click="jump('mystoreorder')">
+				<li @click="jump('myStoreOrder')">
 					<i class="my_store_menu_ico ico_6"></i>
 					<em>订单汇总</em>
 				</li>

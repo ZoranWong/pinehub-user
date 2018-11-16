@@ -82,10 +82,11 @@
 				return token !== null && (new Date(token['ttl'])).getTime() > Date.now();
 			},
 			hasLoadedActivity() {
+				console.log('MODEL__________>>>>>>>>', this.$store.getters)
 				return this.$store.getters['model.activity/id'] !== null;
 			}
 		},
-		created() {
+		mounted() {
 			this.loadData();
 		},
 		methods: {
@@ -100,9 +101,11 @@
 				this.$command('MYINFO');
 			},
 			async loadData() {
+				console.log('has login', [this.isLogin]);
 				if(!this.isLogin) {
 					await this.$command('SIGN_IN');
 				}
+				console.log('activity has loaded', [this.hasLoadedActivity]);
 				if(!this.hasLoadedActivity) {
 					await this.$command('GET_ACTIVITY_INFO');
 				}

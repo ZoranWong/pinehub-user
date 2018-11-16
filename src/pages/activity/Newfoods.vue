@@ -87,12 +87,12 @@
 			scroll(e) {
 				console.log(e)
 			},
-			addCart(id) {
-				this.addMerchandiseToCart(id);
+			addCart(merchandiseId, id) {
+				this.addMerchandiseToCart(merchandiseId, id);
 			},
-			reduceCart(id) {
+			reduceCart(merchandiseId,id) {
 				//				this.reduceMerchandiseToCart(shopId, count, id);
-				this.reduceMerchandiseToCart(id);
+				this.reduceMerchandiseToCart(merchandiseId, id);
 			}
 		},
 		watch: {

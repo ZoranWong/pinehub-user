@@ -1,6 +1,4 @@
-import Vue from 'vue';
 import App from './index';
-import _ from 'underscore';
 import Merchandises from '@/models/Merchandises';
 import MyInfo from '@/models/MyInfo';
 import NearestStore from '@/models/NearestStore';
@@ -17,28 +15,28 @@ import GetNearestStoreCommand from '@/commands/GetNearestStoreCommand';
 import MyInfoService from '@/services/http/MyInfoService';
 import NearestStoreService from '@/services/http/NearestStoreService';
 
+import Vue from 'vue';
+
 const application = wx.$app;
 application.setComponent(App).run(function (app) {
-    if (app.models) {
-      app.models.addModel('model.activity.merchandises', Merchandises);
-      app.models.addModel('model.my.info', MyInfo);
-      app.models.addModel('model.nearestStore', NearestStore);
+    if (this.models) {
+      this.models.addModel('model.activity.merchandises', Merchandises);
+      this.models.addModel('model.my.info', MyInfo);
+      this.models.addModel('model.nearestStore', NearestStore);
     }
 
-    app.register('http.myInfo', MyInfoService);
-    app.register('http.nearestStore', NearestStoreService);
+    this.register('http.myInfo', MyInfoService);
+    this.register('http.nearestStore', NearestStoreService);
 
-    app.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    app.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    app.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
-    app.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
-    app.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
-    app.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
-    app.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
-    }, function (component) {
-      _.extend(App, component);
-      let app = new Vue(App);
-      console.log('======++++======', app);
-      app.$mount();
-      return app;
+    this.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
+    this.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
+    this.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
+    this.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
+    this.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
+    this.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
+    this.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
+    this.route = 'todaySubmitOrder';
+}, function () {
+  this.currentPage = new Vue(this.mountComponent);
+  this.currentPage.$mount();
 });

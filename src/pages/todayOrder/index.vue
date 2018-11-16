@@ -8,9 +8,8 @@
 			<m-list :width="listwidth" :next="next" :list="merchandises" :categoryId="'today_order_merchandises_' + categoryId" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart">
 			</m-list>
 		</div>
-		<cart v-if="isShowCart" :emptyMerchandiseCart="emptyCart" @hdlShowOrder="jump('todaySubmitOrder')" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></cart>
+		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
 		<popup v-if="isShow" @hdlHidePopup="hdlHidePopup" :position="position"></popup>
-
 	</div>
 </template>
 
@@ -28,7 +27,8 @@
 				isShow: true,
 				isShowCart: true,
 				listwidth: '530rpx',
-				title: '当日下单'
+				title: '当日下单',
+				model: 'model.store.shoppingCarts'
 			};
 		},
 		components: {
@@ -42,24 +42,23 @@
 		},
 		computed: {
 			merchandises() {
-				return this.$store.getters['model.today.merchandises/list'];
+				return this.$store.getters['model.store.merchandises/list'];
 			},
 			currentPage() {
-				let page = this.$store.state['model.today.merchandises'].currentPage;
-				return page;
+				return this.$store.getters['model.store.merchandises/currentPage'];
 			},
 			categoryId() {
-				console.log(this.$store.getters);
-				return this.$store.getters['model.storeCategories/storeCategoryId'](this.categoryIndex)
+				return this.$store.getters['model.storeCategories/categoryId'](this.categoryIndex)
 			},
 			categoryIndex() {
-				return this.$store.getters['model.reserveShop.merchandises/currentCategoryIndex'];
+				return this.$store.getters['model.store.merchandises/currentCategoryIndex'];
 			}
 		},
 		watch: {
 			categoryId(n, o) {
+				console.log(n, o);
 				if(n && !o) {
-					this.loadMerchandises(1);
+					this.loadMerchandises();
 				}
 			}
 		},
@@ -73,21 +72,25 @@
 			hdlShowPopup() {
 				this.isShow = true;
 			},
-			hdlHidePopup() {
+			async hdlHidePopup() {
+				console.log('关闭按钮')
 				this.isShow = false;
+				await this.loadCategories();
+				this.$store.dispatch('model.store.merchandises/setCurrentCategory', {
+					categoryIndex: 0
+				});
 			},
-			loadMerchandises(page) {
+			loadMerchandises(page = 1) {
 				this.$command('GET_MERCHANDISE_LIST',
-					'model.today.merchandises/setList',
-					'today',
-					this.storeId,
+					'model.store.merchandises/setList',
+					'storeMerchandises',
 					this.categoryId,
 					page);
 			},
 			menusChange(index) {
 				this.scrollTop = 0;
-				this.$command('CLEAR_MERCHANDISE', 'model.today.merchandises');
-				this.$store.dispatch('model.today.merchandises/setCurrentCategory', {
+				this.$command('CLEAR_MERCHANDISE', 'model.store.merchandises');
+				this.$store.dispatch('model.store.merchandises/setCurrentCategory', {
 					categoryIndex: index
 				});
 				this.loadMerchandises(1);
@@ -96,18 +99,38 @@
 				console.log('current page', this.currentPage);
 				this.loadMerchandises(this.currentPage + 1);
 			},
-			addCart(shopId, count, merchandiseId) {
-				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+			loadCartMerchandises(page = 1) {
+				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
-			reduceCart(shopId, count, merchandiseId) {
-				this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+			addCart(merchandiseId, id = null) {
+				console.log('加入购物车')
+				let count = this.$store.getters['model.store.shoppingCarts/quality'](merchandiseId) + 1;
+				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
 			},
-			emptyCart(storeId) {
-				this.$command('EMPTY_MERCHANDISES_TO_CART', storeId);
+			reduceCart(merchandiseId, id = null) {
+				let count = this.$store.getters['model.store.shoppingCarts/quality'](merchandiseId) - 1;
+				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+			},
+			clearShoppingCart() {
+				console.log('清空购物车')
+				try {
+					this.$command('STORE_SHOPPINGCART_CLEAR_MERCHANDISES');
+				} catch(e) {
+					console.log(e);
+				}
+			},
+			async loadCategories() {
+				await this.$command('GET_STORE_CATEGORIES_TO_MEUN');
 			},
 			async getData() {
-				await this.$command('GET_NEAREST_STORE');
-				await this.$command('GET_STORE_CATEGORIES_TO_MEUN');
+				try {
+					await this.$command('GET_NEAREST_STORE');
+					//await this.$command('GET_STORE_CATEGORIES_TO_MEUN');
+				} catch(e) {
+					console.log('抛出异常', e);
+					throw(e);
+					return false;
+				}
 			}
 		},
 		mounted() {

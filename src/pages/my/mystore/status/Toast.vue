@@ -87,7 +87,7 @@
 				} else {
 					wx.showLoading({
 						title: '正在提交...',
-					})
+					});
 					console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
 					this.$emit("modifyStock", id, primaryStockNum, modifyStockNum, reason, comment);
 					this.productInfo = {};
