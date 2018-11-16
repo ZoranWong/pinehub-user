@@ -91,6 +91,7 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			ticketsList() {
+				console.log('优惠券列表',this.$store.getters['model.tickets/list']);
 				return this.$store.getters['model.tickets/list'];
 			}
 

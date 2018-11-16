@@ -42,7 +42,7 @@
 					<i class="my_store_menu_ico ico_1"></i>
 					<em>进货</em>
 				</li>
-				<li>
+				<li @click="jump('myStoreDistributeOrder')">
 					<i class="my_store_menu_ico ico_2"></i>
 					<em>需配送订单</em>
 				</li>
