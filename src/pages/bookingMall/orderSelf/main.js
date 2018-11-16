@@ -29,8 +29,8 @@ application.setComponent(App).run(function () {
     this.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
     this.route = 'orderSelf';
 }, function () {
-  this.currentPage = new Vue(this.mountComponent);
-  this.currentPage.$mount();
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });
 
 

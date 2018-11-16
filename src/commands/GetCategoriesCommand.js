@@ -24,6 +24,6 @@ export default class GetCategoriesCommand extends Command {
 		}
 	}
 	static commandName() {
-		return 'GET_CATEGORIES_TO_MEUN';
+		return 'GET_BOOKING_MALL_CATEGORIES';
 	}
 }
