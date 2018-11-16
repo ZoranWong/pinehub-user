@@ -100,7 +100,10 @@
 				return this.$store.getters['model.my.sales.echart/chartData'];
 			}
 		},
-		mounted() {},
+		mounted() {
+			this.onloadSalesEChart('hour');
+			this.onloadSales('hour');
+		},
 		methods: {
 			selectDateNow(e) {
 				let num = e.target.value;
@@ -170,10 +173,6 @@
 				}
 				return option
 			}
-		},
-		created() {
-			this.onloadSalesEChart('hour');
-			this.onloadSales('hour');
 		}
 	}
 </script>

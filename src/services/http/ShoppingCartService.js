@@ -26,30 +26,45 @@ export default class ShoppingCartService extends ApiService {
 		}
 		return await this.list(route, parameters);
 	}
+
+	async deleteShoppingCart(id) {
+		let response = await this.httpDelete(`/shoppingcart`, [], id);
+		return response.data;
+	}
+
+	//获取预定商城购物车内全部产品
+	async reservationShoppingCartLoadMerchandises(page) {
+		let route = `shoppingcart/merchandises`;
+		return this.loadShoppingCart(route, page);
+	}
+
+	//新品预定获取购物车内全部产品
 	async activityShoppingCartLoadMerchandises(id, page) {
 		console.log('活动购物车服务------------------------------');
 		let route = `activity/${id}/shoppingcart/merchandises`;
 		return this.loadShoppingCart(route, page);
 	}
-
+	//新品预定增加到购物车
 	async activityShoppingCartAddMerchandise(activityId, merchandiseId, quality) {
 		let merchandise = {
 			merchandise_id: merchandiseId,
-			quality: quality,
-			activity_id: activityId
+			quality: quality
 		};
-		return await this.addMerchandise(merchandise);
+		let response = await this.httpPost(`/activity/${activityId}/shoppingcart/merchandise `, merchandise);
+		return response.data;
 	}
 
-	async activityShoppingCartReduceMerchandise(activityId, merchandiseId, quality) {
+	//修改预定增加到购物车
+	async activityShoppingCartChangeMerchandise(activityId, id, merchandiseId, quality) {
 		let merchandise = {
 			merchandise_id: merchandiseId,
 			quality: quality,
-			activity_id: activityId
-		}
-		return await this.reduceMerchandises(merchandise);
+		};
+		let response = await this.httpPut(`/activity/${activityId}/shoppingcart/${id}/merchandise `, merchandise);
+		return response.data;
 	}
 
+	//新品预定清空购物车
 	async activityShoppingCartClearMerchandises(acitityId) {
 		let route = `/clear/activity/${acitityId}/shoppingcart/`;
 		return this.clearShoppingCart(route);
@@ -58,38 +73,34 @@ export default class ShoppingCartService extends ApiService {
 	async storeShoppingCartAddMerchandise(storeId, merchandiseId, quality) {
 		let merchandise = {
 			merchandise_id: merchandiseId,
-			quality: quality,
-			store_id: storeId
+			quality: quality
 		};
-		return await this.addMerchandise(merchandise);
+		let response = await this.httpPost(`/activity/${storeId}/shoppingcart/merchandise `, merchandise);
+		return response.data;
+	}
+
+	async storeShoppingCartChangeMerchandise(storeId, id, merchandiseId, quality) {
+		let merchandise = {
+			merchandise_id: merchandiseId,
+			quality: quality
+		};
+		let response = await this.httpPost(`/activity/${storeId}/shoppingcart/${id}/merchandise `, merchandise);
+		return response.data;
 	}
 
 	//【增加商品】添加购物车 商品id 商品数量 场景 场景id
-	async addMerchandise(merchandise) {
+	async bookingShoppingCartAddMerchandise(merchandiseId, quality) {
 		let response = null;
+		let merchandise = {
+			merchandise_id: merchandiseId,
+			quality: quality
+		};
 		if(this.$application.needMock()) {
 			response = await this.services('mock.addMerchandises').mock(merchandise);
 		} else {
 			//服务器交互代码
 			try {
-				response = await this.httpPost(`shoppingcart/add/merchandise`, merchandise);
-			} catch(e) {
-				console.log('抛出异常', e);
-				return false;
-			}
-		}
-		return response.data;
-	}
-	//【减少商品】减少购物车
-	async reduceMerchandises(merchandise) {
-		let response = null;
-		if(this.$application.needMock()) {
-			response = await this.services('mock.reduceMerchandises').mock(merchandise);
-			//console.log(response, '减少购物车' ,response.data.name);
-		} else {
-			//服务器交互代码
-			try {
-				response = await this.httpPost(`shoppingcart/reduce/merchandise`, merchandise);
+				response = await this.httpPost(`shoppingcart/merchandise`, merchandise);
 			} catch(e) {
 				console.log('抛出异常', e);
 				return false;
@@ -98,40 +109,41 @@ export default class ShoppingCartService extends ApiService {
 		return response.data;
 	}
 
-	//清空购物车
-	async clearShoppingCart(route) {
+	//【增加商品】添加购物车 商品id 商品数量 场景 场景id
+	async bookingShoppingCartChangeMerchandise(id, merchandiseId, quality) {
 		let response = null;
-		//		let parameters = [];
-		//		switch(scene) {
-		//			case 'store':
-		//				parameters = {
-		//					merchandise_id: merchandiseId,
-		//					quality: quality,
-		//					store_id: sceneId
-		//				}
-		//				break;
-		//			case 'activity':
-		//				parameters = {
-		//					merchandise_id: merchandiseId,
-		//					quality: quality,
-		//					activity_id: sceneId
-		//				}
-		//				break;
-		//			default:
-		//				break;
-		//		}
+		let merchandise = {
+			merchandise_id: merchandiseId,
+			quality: quality,
+		};
 		if(this.$application.needMock()) {
-			response = await this.services('mock.reduceMerchandises').mock(route);
-			//console.log(response, '减少购物车' ,response.data.name);
+			response = await this.services('mock.addMerchandises').mock(merchandise);
 		} else {
 			//服务器交互代码
 			try {
-				//				let route = null;
-				//				if(scene == 'activity' || scene == 'shop') {
-				//					route = `/clear/${scene}/${sceneId}/shoppingcart/`;
-				//				} else if(scene == 'other') {
-				//					route = `/clear/shoppingcart/`;
-				//				}
+				response = await this.httpPut(`shoppingcart/${id}/merchandise`, merchandise);
+			} catch(e) {
+				console.log('抛出异常', e);
+				return false;
+			}
+		}
+		return response.data;
+	}
+	
+	//预定商城清空购物车
+	async bookingShoppingCartClearMerchandises() {
+		let route = `/clear/shoppingcart/`;
+		return this.clearShoppingCart(route);
+	}
+
+	//清空购物车
+	async clearShoppingCart(route) {
+		let response = null;
+		if(this.$application.needMock()) {
+			response = await this.services('mock.reduceMerchandises').mock(route);
+		} else {
+			//服务器交互代码
+			try {
 				response = await this.httpGet(route);
 			} catch(e) {
 				console.log('抛出异常', e);
@@ -139,17 +151,5 @@ export default class ShoppingCartService extends ApiService {
 		}
 		console.log('清空购物车', response.data['delete_count']);
 		return response.data['delete_count'];
-		//		let response = null;
-		//
-		//		if(this.$application.needMock()) {
-		//			response = await this.services('mock.emptyMerchandises').mock(storeId);
-		//			//console.log('empty response', response.data);
-		//		} else {
-		//			//服务器交互代码
-		//			response = await this.httpGet(`/clear/merchandise/${storeId}`, {
-		//				store_id: storeId
-		//			});
-		//		}
-		//		return response.data['delete_count'];
 	}
 }

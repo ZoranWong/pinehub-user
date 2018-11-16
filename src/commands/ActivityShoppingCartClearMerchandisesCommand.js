@@ -4,8 +4,9 @@ export default class ActivityShoppingCartClearMerchandisesCommand extends Comman
 		super(app);
 		this.model = 'model.activity.shoppingCarts';
 	}
-	async handle(acitityId) {
+	async handle() {
 		try {
+			console.log('======== clear activity shopping cart ========');
 			let acitityId = await this.service('mp.storage').get('activityId');
 			let result = await this.service('http.shoppingCart').activityShoppingCartClearMerchandises(
 				acitityId);

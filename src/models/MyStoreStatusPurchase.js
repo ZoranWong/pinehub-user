@@ -9,6 +9,9 @@ export default class MyStoreStatusPurchase extends Model {
 	computed() {
 		return _.extend(super.computed(), {
 			purchaseList(state) {
+				
+				
+				console.log('daying--------->',state.purchaseList);
 				return state.purchaseList;
 			},
 			purchaseTotal(state) {
@@ -24,11 +27,14 @@ export default class MyStoreStatusPurchase extends Model {
 	//监听数据
 	listeners() {
 		this.addEventListener('purchaseInfo', function({
-			purchaseList,
-			purchaseTotal
+			list,
+			totalNum,
+			currentPage,
+			totalPage,
+			pageCount
 		}) {
-			this.state.purchaseList = this.transform(purchaseList, this.transformer);
-			this.state.purchaseTotal = purchaseTotal;	
+			this.state.purchaseList = this.transform(list, this.transformer);
+			this.state.purchaseTotal = totalNum;
 		});
 	}
 }

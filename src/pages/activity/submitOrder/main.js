@@ -12,8 +12,7 @@ import MyInfoCommand from '@/commands/MyInfoCommand';
 import FillCartMerchandisesCommand from '@/commands/FillCartMerchandisesCommand';
 
 import MyInfoService from '@/services/http/MyInfoService';
-import ActivityShoppingCartAddMerchandiseCommand from '@/commands/ActivityShoppingCartAddMerchandiseCommand';
-import ActivityShoppingCartReduceMerchandiseCommand from '@/commands/ActivityShoppingCartReduceMerchandiseCommand';
+import ActivityShoppingCartChangeMerchandiseCommand from '@/commands/ActivityShoppingCartChangeMerchandiseCommand';
 import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
 
 const application = wx.$app;
@@ -34,8 +33,7 @@ application.setComponent(App).run(function () {
     * 徐钰添加的开始
     * */
     this.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
-    this.registerCommand(ActivityShoppingCartAddMerchandiseCommand.commandName(), ActivityShoppingCartAddMerchandiseCommand);
-    this.registerCommand(ActivityShoppingCartReduceMerchandiseCommand.commandName(), ActivityShoppingCartReduceMerchandiseCommand);
+    this.registerCommand(ActivityShoppingCartChangeMerchandiseCommand.commandName(), ActivityShoppingCartChangeMerchandiseCommand);
     this.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand);
     this.route = 'activitySubmitOrder';
 }, function () {

@@ -6,10 +6,6 @@ export default class Service {
     }
 
     services (name = null) {
-        return name ? this.page[name] : this.$application.instances;
-    }
-
-    $command (...params) {
-        this.page.$command.apply(this.page, params);
+        return name ? this.$application[name] : this.$application.instances;
     }
 }

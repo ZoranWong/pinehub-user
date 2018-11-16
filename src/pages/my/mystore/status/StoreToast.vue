@@ -88,6 +88,7 @@
 			//			},
 			numChange(merchandise) {
 				//向父组件提交数据
+				console.log('merchandise',merchandise);
 				this.$emit("showToast", merchandise);
 			}
 		},

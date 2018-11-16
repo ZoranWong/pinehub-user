@@ -15,7 +15,7 @@ import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
 
 import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryMerchandisesService';
 import MyStoreChangeCategoryCommand from '@/commands/MyStoreChangeCategoryCommand';
-import MyStoreCategoryMerchandises from '@/models/MyStoreCategoryMerchandises';
+import MyStoreCategoryMerchandises from '@/models/Merchandises';
 
 import MyStoreModifyStockService from '@/services/http/MyStoreModifyStockService';
 import MyStoreModifyStockCommand from '@/commands/MyStoreModifyStockCommand';

@@ -27,20 +27,27 @@
 			},
 			count() {
 				if(this.model) {
-					console.log('------count -------', this.merchandiseId, this.$store.getters[`${this.model}/quality`](this.merchandiseId));
-					return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId) : 0;
+					try {
+						console.log('------count -------', this.merchandiseId, this.$store.getters[`${this.model}/quality`](this.merchandiseId));
+						return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId) : 0;
+					} catch(e) {
+						console.log('抛出异常', e)
+					}
 				}
+			},
+			shoppingCartId() {
+				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId) : null;
 			}
 		},
 		methods: {
 			addCart() {
 				//加入购物车 
-				this.$emit('addCart', this.merchandiseId);
+				this.$emit('addCart', this.merchandiseId, this.shoppingCartId);
 			},
 			reduceCart() {
 				//移出购物车
 				if(this.count > 0) {
-					this.$emit('reduceCart', this.merchandiseId);
+					this.$emit('reduceCart', this.merchandiseId, this.shoppingCartId);
 				}
 			}
 		},

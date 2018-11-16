@@ -4,15 +4,23 @@ export default class MyStoreStatusPurchaseCommand extends Command {
 		super(app);
 	}
 
-	async handle(selectTime) {
+	async handle(selectTime, limit = 15) {
 		console.log('PER');
-	    let [purchaseList,purchaseTotal] = await this.service('http.myStoreStatusPurchase').purchaseInfo(selectTime);
-		console.log('pur------pur',[purchaseList,purchaseTotal]);
-		this.store().dispatch({
-			type: 'model.my.store.status.purchase/purchaseInfo',
-			purchaseList: purchaseList,
-			purchaseTotal: purchaseTotal
-		});
+		try {
+			let [list, totalNum, currentPage, totalPage] = await this.service('http.myStoreStatusPurchase').purchaseInfo(selectTime);
+			let eventData = {
+				list: list,
+				totalNum: totalNum,
+				currentPage: currentPage,
+				totalPage: totalPage,
+				pageCount: limit
+			};
+			this.$store.dispatch('model.my.store.status.purchase/purchaseInfo', eventData);
+		} catch(e) {
+			console.log(e);
+			return false;
+		}
+
 	}
 	static commandName() {
 		return 'MYSTORESTATUSPURCHASE';

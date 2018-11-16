@@ -35,7 +35,7 @@ export default class MerchandisesService extends ApiService {
 	}
 
 	//获取新品预定所有商品信息 parameters = []
-	async activity(activityId, page) {
+	async activityMerchandises(activityId, page) {
 		console.log('到达指定服务里');
 		let route = `/new/activity/${activityId}/merchandises`;
 		let parameters = {
@@ -45,14 +45,14 @@ export default class MerchandisesService extends ApiService {
 	}
 
 	//获取今日店铺分类下的商品信息
-	async today(storeId, categoryId, page = 1, search = null, limit = 10) {
+	async storeMerchandises(storeId, categoryId, page = 1, search = null, limit = 10) {
 		// let route = '/store/' + storeId + '/category/' + categoryId + '/merchandises';
 		let route = `/store/${storeId}/category/${categoryId}/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
 	//获取预定商城的指定分类下的所有商品信息
 	async bookingMerchandises(categoryId, page = 1, search = null, limit = 10) {
-		let route = `/category/${categoryId}/merchandises`;
+		let route = `/categories/${categoryId}/merchandises`;
 		return await this.list(route, page, search, limit);
 	}
 

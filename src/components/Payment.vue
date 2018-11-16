@@ -53,6 +53,10 @@
 				default: null,
 				type: Function
 			},
+			sendOrder: {
+				default: null,
+				type: Function
+			},
 			model: {
 				default: null,
 				type: String
@@ -84,7 +88,19 @@
 				this.reduceMerchandiseToCart(merchandiseId);
 			},
 			pay() {
-
+				//				let data = {
+				//					receiver_name: 'name',
+				//					receiver_address: 'address',
+				//					receiver_mobile: 'mobile',
+				//					comment: 'comment',
+				//					type: 1,
+				//					send_time: '7:00 - 9:00',
+				//					card_id: 'cardId',
+				//					card_code: 'cardCode',
+				//					activity_id: 'activityId',
+				//					receiving_shop_id: 'receivingShopId'
+				//				}
+				this.sendOrder()
 			}
 		},
 		created() {},

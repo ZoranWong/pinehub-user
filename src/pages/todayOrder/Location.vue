@@ -26,23 +26,23 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.nearest-store {
-		height: 88rpx;
+		height: 92rpx;
 		position: relative;
 		border-bottom: 2rpx solid #e0e0e0;
 		padding: 6rpx 20rpx;
-		box-sizing: border-box;
+		font-weight: 300;
 	}
 	
-	.nearest-store .store-title {
-		font-size: 28rpx;
+	.store-title {
+		font-size: 32rpx;
 		font-weight: 400;
 	}
 	
 	.store-address {
-		font-size: 22rpx;
-		margin-top: 8rpx;
+		font-size: 26rpx;
+		margin-top: 5rpx;
 	}
 	
 	.arrow-right-icon {

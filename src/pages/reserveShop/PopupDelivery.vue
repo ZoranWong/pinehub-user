@@ -10,7 +10,7 @@
 					<i class="i-icon free-icon" ></i>
 					 自提免配送费
 				</div>
-				<div class="place-item" @click="jump('shopsubmitorder')">
+				<div class="place-item" @click="jump('shopSubmitOrder')">
 					<i class="i-icon charge-icon" ></i>
 					满30元配送到家
 				</div>

@@ -61,13 +61,13 @@ export default class Application {
     registerModel (name, model) {
         Application.modelContainer[name] = new model(this);
     }
-    command (...params) {
+    async command (...params) {
         let command = params.shift();
         let page = params.pop();
         command = Application.commandContainer[command];
         command = new command(this);
         _.extend(command, page);
-        command.handle.apply(command, params);
+        await command.handle.apply(command, params);
     }
     // 实例化注册对象
     instanceRegister (instance) {

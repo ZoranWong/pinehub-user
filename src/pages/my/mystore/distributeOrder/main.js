@@ -4,7 +4,7 @@ import DistributeOrderCommand from '@/commands/DistributeOrderCommand';
 import DistributeOrder from '@/models/DistributeOrder';
 import Vue from 'vue';
 const application = wx.$app;
-application.setComponent(App).run(() => {
+application.setComponent(App).run(function () {
     this.registerModel('model.distribute.orders', DistributeOrder);
     this.register('http.distributeOrder', DistributeOrderService);
     this.registerCommand(DistributeOrderCommand.commandName(), DistributeOrderCommand);

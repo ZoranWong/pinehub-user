@@ -113,9 +113,9 @@
 			closeStockPanel() {
 				this.display = false;
 			},
-			modifyStock(id, primaryStockNum, modifyStockNum, reason, comment) {
+			modifyStock(index, id, primaryStockNum, modifyStockNum, reason, comment) {
 				console.log('modifyStock--------@@@OK');
-				this.$command(MyStoreModifyStockCommand.commandName(), id, primaryStockNum, modifyStockNum, reason, comment);
+				this.$command(MyStoreModifyStockCommand.commandName(), index, id, primaryStockNum, modifyStockNum, reason, comment);
 			},
 			onloadPurchase(status) {
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);

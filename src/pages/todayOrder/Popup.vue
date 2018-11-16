@@ -25,12 +25,14 @@
 		},
 		computed: {
 			position() {
+				console.log('位置确定', this.$store.getters);
 				return this.$store.getters['model.nearestStore/location'];
 			}
 		},
 		methods: {
-			popHide: function() {
-				this.$emit('hdlHidePopup')
+			popHide() {
+				console.log('关闭');
+				this.$emit('hdlHidePopup');
 			},
 			jump(router) {
 				this.$command('router', router, 'push');

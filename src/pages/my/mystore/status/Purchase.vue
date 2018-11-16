@@ -40,16 +40,16 @@
 		},
 		props: {
 			purchaseTotal: {
-				default:"",
+				default: "",
 				type: Function
 			},
-			purchaseList:{
-				default:"",
-				type:Function 
+			purchaseList: {
+				default: "",
+				type: Function
 			},
-			onloadPurchase:{
-				default:"",
-				type:Function 
+			onloadPurchase: {
+				default: "",
+				type: Function
 			}
 		},
 		methods: {
@@ -68,8 +68,8 @@
 				}
 			}
 		},
-		created() {
-
+		mounted() {
+			this.onloadPurchase('hour');
 		}
 	}
 </script>

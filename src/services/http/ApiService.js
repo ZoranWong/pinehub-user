@@ -74,7 +74,7 @@ export default class ApiService extends Service {
 			let request = this.request(await this.auth(auth));
 			route = id ? (route.trim('/') + '/' + id) : route.trim('/');
 			let result = await request.put(route, params);
-			return result;
+			return result.data;
 		} catch(e) {
 			throw e;
 			return false;
@@ -82,8 +82,11 @@ export default class ApiService extends Service {
 	}
 
 	async httpDelete(route, params = [], id = null, auth = true) {
-		let result = await (await this.request(this.auth(auth))).delete(route.trim('/') + '/' + id);
-		return null;
+		if(id) {
+			route = route.trim('/') + '/' + id
+		}
+		let result = await (await this.request(await this.auth(auth))).delete(route);
+		return result.data;
 	}
 
 	//组装搜索参数
