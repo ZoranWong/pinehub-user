@@ -1,11 +1,11 @@
-<template>	
+<template>
 	<div class="confirmation-order body">
 		<mp-title :title="title"></mp-title>
 		<!-- 收货人组件 -->
 		<consignee ></consignee>
 		<ul class="Distribution-details" >
 			<li class="li-item bgff">
-				自提地址 
+				自提地址
 				<p class="details-item">
 				 	<input type="text" placeholder="默认地址" readonly="readonly" disabled="">
 				</p>
@@ -17,9 +17,9 @@
 				</p>
 			</li>
 			<!-- <li class="li-item bgff">
-				站点联系电话 
+				站点联系电话
 				<p class="details-item tel-num">
-				16868686868	
+				16868686868
 				</p>
 			</li> -->
 		</ul>
@@ -59,22 +59,22 @@
 
     		},
     		next() {
-		        this.$command('GET_MERCHANDISE_LIST');               
+		        this.$command('LOAD_MERCHANDISE_LIST');
 		     },
     		addCart(shopId, count,  merchandiseId){
 		        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-		  
+
 		    },
 		    reduceCart(shopId, count, merchandiseId){
 		        this.$command('REDUCE_MERCHANDISE_TO_CART',merchandiseId,count, shopId);
-		    },   
-    		 	
+		    },
+
 		}
 	}
 </script>
 <style scoped>
 .confirmation-order{
-	font-size:28rpx; 
+	font-size:28rpx;
 	padding:20rpx 0rpx 20rpx 20rpx;
 }
 .li-item{
@@ -91,7 +91,7 @@
 	height: 80rpx;
 	margin-left: 100rpx;
 	vertical-align: middle;
-	
+
 }
 .Distribution-details{
 	margin-bottom: 20rpx;
@@ -105,7 +105,7 @@
 }
 .big-input{
 	width: 460rpx;
-	height: 40rpx; 
+	height: 40rpx;
   	border-radius: 10rpx;
   	border:2rpx solid #cccccc;
 }

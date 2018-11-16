@@ -47,7 +47,6 @@ export default class Model {
           return this.list();
         },
         isLoadedAll () {
-          console.log('totalPage and currentPage ', this.state, this.state);
           return this.state.currentPage > 0 && this.state.totalPage <= this.state.currentPage;
         },
         currentPage () {

@@ -39,7 +39,7 @@
         this.index = e.target.value
       },
       next () {
-        this.$command('GET_MERCHANDISE_LIST');
+        this.$command('LOAD_MERCHANDISE_LIST');
       },
       addCart (shopId, count, merchandiseId) {
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);

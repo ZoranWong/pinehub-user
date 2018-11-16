@@ -4,10 +4,10 @@ import Vue from 'vue';
 import Merchandises from '@/models/Merchandises';
 import MerchandisesService from '@/services/http/MerchandisesService';
 // 购物车相关
-import ActivityLoadingMerchandisesCommand from '@/commands/ActivityLoadingMerchandisesCommand';
-import ActivityShoppingCartChangeMerchandiseCommand from '@/commands/ActivityShoppingCartChangeMerchandiseCommand';
-import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
-import ActivityShoppingCartClearMerchandisesCommand from '@/commands/ActivityShoppingCartClearMerchandisesCommand';
+import ActivityLoadingMerchandisesCommand from './commands/ActivityLoadingMerchandisesCommand';
+import ActivityShoppingCartChangeMerchandiseCommand from './commands/ActivityShoppingCartChangeMerchandiseCommand';
+import ActivityShoppingCartLoadMerchandisesCommand from './commands/ActivityShoppingCartLoadMerchandisesCommand';
+import ActivityShoppingCartClearMerchandisesCommand from './commands/ActivityShoppingCartClearMerchandisesCommand';
 // 获取常用地址
 import ActivityUsuallyAddressService from '@/services/http/ActivityUsuallyAddressService';
 import LoadActivityUsuallyAddressCommand from '@/commands/LoadActivityUsuallyAddressCommand';

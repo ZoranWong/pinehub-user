@@ -3,17 +3,11 @@ import App from './index';
 import Merchandises from '@/models/Merchandises';
 import MyInfo from '@/models/MyInfo';
 
-import GetMerchandisesCommand from '@/commands/GetMerchandisesCommand';
-import AddMerchandiseCommand from '@/commands/AddMerchandiseCommand';
-import ReduceMerchandiseCommand from '@/commands/ReduceMerchandiseCommand';
-import EmptyMerchandisesCommand from '@/commands/EmptyMerchandisesCommand';
-
 import MyInfoCommand from '@/commands/MyInfoCommand';
-import FillCartMerchandisesCommand from '@/commands/FillCartMerchandisesCommand';
 
 import MyInfoService from '@/services/http/MyInfoService';
-import ActivityShoppingCartChangeMerchandiseCommand from '@/commands/ActivityShoppingCartChangeMerchandiseCommand';
-import ActivityShoppingCartLoadMerchandisesCommand from '@/commands/ActivityShoppingCartLoadMerchandisesCommand';
+import ActivityShoppingCartChangeMerchandiseCommand from '../commands/ActivityShoppingCartChangeMerchandiseCommand';
+import ActivityShoppingCartLoadMerchandisesCommand from '../commands/ActivityShoppingCartLoadMerchandisesCommand';
 
 const application = wx.$app;
 application.setComponent(App).run(function () {
@@ -24,11 +18,6 @@ application.setComponent(App).run(function () {
     this.register('http.myInfo', MyInfoService);
 
     this.registerCommand(MyInfoCommand.commandName(), MyInfoCommand);
-    this.registerCommand(GetMerchandisesCommand.commandName(), GetMerchandisesCommand);
-    this.registerCommand(AddMerchandiseCommand.commandName(), AddMerchandiseCommand);
-    this.registerCommand(ReduceMerchandiseCommand.commandName(), ReduceMerchandiseCommand);
-    this.registerCommand(EmptyMerchandisesCommand.commandName(), EmptyMerchandisesCommand);
-    this.registerCommand(FillCartMerchandisesCommand.commandName(), FillCartMerchandisesCommand);
     /**
     * 徐钰添加的开始
     * */

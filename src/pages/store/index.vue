@@ -55,13 +55,20 @@
         },
         nearestStore () {
           return this.$store.getters['model.nearestStore/store'];
+        },
+        isLoadedAll () {
+          return this.$store.getters['model.store.merchandises/isLoadedAll'];
         }
       },
       watch: {
         categoryId (n, o) {
-          console.log(n, o);
           if (n && n !== o) {
-            this.reloadMerchandises();
+            console.log(n, o);
+            try {
+              this.reloadMerchandises();
+            } catch (e) {
+              console.log(e);
+            }
           }
         },
         nearestStore: {
@@ -95,8 +102,7 @@
           });
         },
         loadMerchandises (page = 1) {
-          console.log('load page ', page);
-          this.$command('GET_MERCHANDISE_LIST',
+          this.$command('LOAD_MERCHANDISE_LIST',
             'model.store.merchandises/setList',
             'storeMerchandises',
             this.nearestStore['id'],
@@ -105,13 +111,12 @@
         },
         menusChange (index) {
           this.scrollTop = 0;
-          this.$store.dispatch('model.store.merchandises/setCurrentCategory', {
-            categoryIndex: index
-          });
+          this.$store.dispatch('model.store.merchandises/setCurrentCategory', { categoryIndex: index });
         },
         next () {
-          console.log('current page', this.currentPage);
-          this.loadMerchandises(this.currentPage + 1);
+          if (this.isLoadedAll) {
+            this.loadMerchandises(this.currentPage + 1);
+          }
         },
         loadCartMerchandises (page = 1) {
           this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
@@ -134,7 +139,7 @@
           }
         },
         async loadCategories (storeId) {
-          await this.$command('GET_STORE_CATEGORIES', storeId);
+          await this.$command('LOAD_STORE_CATEGORIES', storeId);
         },
         async getData () {
           try {

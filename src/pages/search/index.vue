@@ -50,7 +50,7 @@
 	   	},
     	methods:{
 				loadMerchandises(page, search){
-					this.$command('GET_MERCHANDISE_LIST',
+					this.$command('LOAD_MERCHANDISE_LIST',
 					'model.search.merchandises/setList',
 					'today',
 					this.storeId,
