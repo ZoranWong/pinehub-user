@@ -129,11 +129,12 @@
 			}
 		},
 		created() {
+
+		},
+		mounted() {
 			var a = this.status
 			this.loadOrders(this.status);
-		},
-		mounted() {},
-		updated() {}
+		}
 	}
 </script>
 

@@ -17,7 +17,7 @@
 				<sales :salesInfo="salesInfo" :sellTop="sellTop" :merchandiseTop="merchandiseTop" :statics="statics" :mySalesEChart="mySalesEChart" :onloadSales="onloadSales" :onloadSalesEChart="onloadSalesEChart"></sales>
 			</div>
 			<div class="tab_content_item sales-orders" v-if="cur === 2">
-				<purchase :purchaseList="purchaseList" :purchaseTotal="purchaseTotal" :onloadPurchase="onloadPurchase"></purchase>
+				<purchase :onloadPurchase="onloadPurchase"></purchase>
 			</div>
 		</div>
 		<div id="footNav_height"></div>
@@ -73,12 +73,7 @@
 			categoryIndex() {
 				return this.$store.getters['model.my.store.category.merchandises/currentCategoryIndex'];
 			},
-			purchaseTotal() {
-				return this.$store.getters['model.my.store.status.purchase/purchaseTotal'];
-			},
-			purchaseList() {
-				return this.$store.getters['model.my.store.status.purchase/purchaseList'];
-			},
+
 			salesInfo() {
 				return this.$store.getters['model.my.store.status.sales/salesInfo'];
 			},
@@ -114,14 +109,13 @@
 				this.display = false;
 			},
 			modifyStock(index, id, primaryStockNum, modifyStockNum, reason, comment) {
-				console.log('modifyStock--------@@@OK');
 				this.$command(MyStoreModifyStockCommand.commandName(), index, id, primaryStockNum, modifyStockNum, reason, comment);
 			},
 			onloadPurchase(status) {
+				//库存统计
 				this.$command(MyStoreStatusPurchaseCommand.commandName(), status);
 			},
 			onloadSales(status) {
-				console.log('onloadSales方法');
 				this.$command(MyStoreStatusSalesCommand.commandName(), status);
 			},
 			onloadCategory() {
@@ -129,19 +123,15 @@
 				this.$command(MyStoreCategoriesCommand.commandName());
 			},
 			onloadSalesEChart(status) {
-				console.log('开始调用echartscommand');
 				this.$command(MySalesEChartCommand.commandName(), status);
 			},
 			changeCategory(index, categoryId) {
-				console.log('KKKKK++++++', index, categoryId);
 				this.$command(MyStoreChangeCategoryCommand.commandName(), index, categoryId);
-				console.log('KKKKK-------', index, categoryId);
 			},
 			async loadMerchandises() {
 				//this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
 				//this.$command(MyStoreStatusSalesCommand.commandName(), 'hour');
 				await this.$command(MyStoreCategoriesCommand.commandName());
-				console.log('++++++++++++++++++++++++++++++');
 			}
 		},
 		mounted() {

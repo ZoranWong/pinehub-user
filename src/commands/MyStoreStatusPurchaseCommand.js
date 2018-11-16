@@ -8,6 +8,7 @@ export default class MyStoreStatusPurchaseCommand extends Command {
 		console.log('PER');
 		try {
 			let [list, totalNum, currentPage, totalPage] = await this.service('http.myStoreStatusPurchase').purchaseInfo(selectTime);
+			console.log('得到服务返回的结果', [list, totalNum, currentPage, totalPage])
 			let eventData = {
 				list: list,
 				totalNum: totalNum,
@@ -15,7 +16,7 @@ export default class MyStoreStatusPurchaseCommand extends Command {
 				totalPage: totalPage,
 				pageCount: limit
 			};
-			this.$store.dispatch('model.my.store.status.purchase/purchaseInfo', eventData);
+			this.$store.dispatch('model.my.store.status.purchase/setData', eventData);
 		} catch(e) {
 			console.log(e);
 			return false;

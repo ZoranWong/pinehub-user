@@ -24,14 +24,14 @@ export default class SignInCommand extends Command {
 
 			// 请求登录接口
 			let loginInfo = await this.service('http.auth').login(code, accessToken);
-			let token = loginInfo.data.token;
-			let openId = loginInfo.data.open_id;
-			let mobile = loginInfo.data.mobile;
-			let userScore = loginInfo.data.can_use_score;
-			let refreshTtl = loginInfo.data.refresh_ttl;
-			let ttl = loginInfo.data.ttl;
-			if(loginInfo.data.shop_id) {
-				let shopId = loginInfo.data.shop_id;
+			let token = loginInfo.token;
+			let openId = loginInfo.open_id;
+			let mobile = loginInfo.mobile;
+			let userScore = loginInfo.can_use_score;
+			let refreshTtl = loginInfo.refresh_ttl;
+			let ttl = loginInfo.ttl;
+			if(loginInfo.shop_id) {
+				let shopId = loginInfo.shop_id;
 				await this.service('mp.storage').set('shopId', shopId);
 			}
 			token = {

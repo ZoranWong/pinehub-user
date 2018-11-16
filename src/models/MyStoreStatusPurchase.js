@@ -8,33 +8,37 @@ export default class MyStoreStatusPurchase extends Model {
 	}
 	computed() {
 		return _.extend(super.computed(), {
-			purchaseList(state) {
-				
-				
-				console.log('daying--------->',state.purchaseList);
-				return state.purchaseList;
+			list(state) {
+
+				console.log('daying--------->', this.state);
+				return this.state.list;
 			},
-			purchaseTotal(state) {
-				return state.purchaseTotal;
+			totalNum(state) {
+				return state.totalNum;
 			}
 		});
 	}
 	data() {
-		return {
+		return _.extend(super.data(), {
 			purchaseInfo: []
-		};
+		});
 	}
 	//监听数据
 	listeners() {
-		this.addEventListener('purchaseInfo', function({
+		this.addEventListener('setData', function({
 			list,
 			totalNum,
 			currentPage,
 			totalPage,
 			pageCount
 		}) {
-			this.state.purchaseList = this.transform(list, this.transformer);
-			this.state.purchaseTotal = totalNum;
+			console.log('MODEL--->>>>', list,
+				totalNum,
+				currentPage,
+				totalPage,
+				pageCount)
+			this.state.list = this.transform(list, this.transformer)
+			this.state.totalNum = totalNum;
 		});
 	}
 }

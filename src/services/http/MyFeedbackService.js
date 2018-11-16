@@ -20,10 +20,7 @@ export default class MyFeedbackService extends ApiService {
 			}
 			response = await this.httpPost(`/feed/back/message`, sendData);
 		}
-		console.log('FEED-RES', response);
-		if(response.data) {
-			this.$application.$command('router', 'myfeedbacksuccess', 'replace');
-		}
+		return response.data;
 	}
 
 }

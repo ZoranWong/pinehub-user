@@ -14,12 +14,12 @@ export default class SetUserInfoCommand extends Command {
     let accessToken = await this.service('mp.storage').get('accessToken');
     let result = await this.service('http.auth').setUserInfo(accessToken, userInfo, signature, rawData, iv, encryptedData);
     let openId = await this.service('mp.storage').get('openId');
-    let token = result.data.token;
+    let token = result.token;
     let refreshUserinfo = await this.service('http.auth').getUserInfo(token);
 
-    let userScore = refreshUserinfo.data.can_use_score;
-    let refreshTtl = result.data.refresh_ttl;
-    let ttl = result.data.ttl;
+    let userScore = refreshUserinfo.can_use_score;
+    let refreshTtl = result.refresh_ttl;
+    let ttl = result.ttl;
     token = {
       'value': token,
       'ttl': ttl.date,

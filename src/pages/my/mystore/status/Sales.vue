@@ -101,7 +101,7 @@
 			}
 		},
 		mounted() {
-			this.onloadSalesEChart('hour');
+//			this.onloadSalesEChart('hour');
 			this.onloadSales('hour');
 		},
 		methods: {
@@ -112,13 +112,13 @@
 				console.log('com------', this.$parent);
 				// this.wxOptions = this.$parent.mp.eCharts.createChart('week', data[1], true);
 				if(num == 0) {
-					this.onloadSalesEChart('hour');
+//					this.onloadSalesEChart('hour');
 					this.onloadSales('hour');
 				} else if(num == 1) {
-					this.onloadSalesEChart('week');
+//					this.onloadSalesEChart('week');
 					this.onloadSales('week');
 				} else {
-					this.onloadSalesEChart('month');
+//					this.onloadSalesEChart('month');
 					this.onloadSales('month');
 				}
 				console.log('change wxechart ', this.$store.getters['model.my.sales.echart/chartData']);

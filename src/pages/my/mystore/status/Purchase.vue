@@ -16,10 +16,10 @@
 				</div>
 				<div class="purchase_order_over">
 					<i>{{item.type}}</i>
-					<em>￥{{item.payment_amount}}</em>
+					<em>￥{{item.paymentAmount}}</em>
 				</div>
 				<div class="purchase_order_date">
-					<em>{{item.paid_at}}</em>
+					<em>{{item.paidAt}}</em>
 					<i></i>
 				</div>
 				<i class="purchase_info_circle"></i>
@@ -39,17 +39,18 @@
 			}
 		},
 		props: {
-			purchaseTotal: {
-				default: "",
-				type: Function
-			},
-			purchaseList: {
-				default: "",
-				type: Function
-			},
 			onloadPurchase: {
 				default: "",
 				type: Function
+			}
+		},
+		computed: {
+			purchaseTotal() {
+				return this.$store.getters['model.my.store.status.purchase/totalNum'];
+			},
+			purchaseList() {
+				console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.$store.getters)
+				return this.$store.getters['model.my.store.status.purchase/list'];
 			}
 		},
 		methods: {

@@ -6,8 +6,7 @@ export default class MyInfoCommand extends Command {
 
 	async handle() {
 		let hasStore = false;
-		let response = await this.service('http.auth').getUserInfo();
-		let userInfo = response.data;
+		let userInfo = await this.service('http.auth').getUserInfo();
 		if(userInfo.shop_id) {
 			hasStore = true;
 			await this.service('mp.storage').set('shopId', userInfo.shop_id);

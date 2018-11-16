@@ -9,15 +9,14 @@
 				</div>
 				<div class="myorder_select_info">
 					<em>类型</em>
-					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="goodstype">	
-					      {{arr[index]}}
-				    </picker>
+					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="goodstype">
+						{{arr[index]}}
+					</picker>
 				</div>
 			</div>
 			<div id="tab_select">
 				<ul>
-					<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index"
-					 @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+					<li v-for="(tab,index) in tabs" :class="{tab_select_now:cur == index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 				</ul>
 			</div>
 		</div>
@@ -43,23 +42,23 @@
 				navName: "my",
 				tabs: [{
 					name: "全部",
-					statname:"all"
+					statname: "all"
 				}, {
 					name: "配送中",
-					statname:"send"
+					statname: "send"
 				}, {
 					name: "已完成",
-					statname:"completed"
+					statname: "completed"
 				}],
 				cur: 0,
-//				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
+				//				startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
 				status: "all",
-				startTime:"",
-				endTime:"",
-				arr:["预定商品","自提商品"],
-				index:0,
-				type:"reserve"
+				startTime: "",
+				endTime: "",
+				arr: ["预定商品", "自提商品"],
+				index: 0,
+				type: "reserve"
 			};
 		},
 		computed: {
@@ -68,57 +67,57 @@
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
-			gathorders(){
+			gathorders() {
 				return this.$store.getters['model.gather.orders/lists']
 			},
-			currentPage () {
-		       let page = this.$store.getters['model.gather.orders/currentPage'];
-		       console.log(page, "当前页数aaaaaapppppp")
-		       return page;
-		    }
+			currentPage() {
+				let page = this.$store.getters['model.gather.orders/currentPage'];
+				console.log(page, "当前页数aaaaaapppppp")
+				return page;
+			}
 
 		},
 		methods: {
-			loadOrders(startime,endtime,type,status, page = 1, limit = 15) {
+			loadOrders(startime, endtime, type, status, page = 1, limit = 15) {
 				this.$command('gather-orders', startime, endtime, type, status, page, limit);
 			},
 			tabSelect(num) {
 				this.cur = num;
-				this.status=this.tabs[num].statname
-//				console.log(this.status)
-				this.loadOrders(this.startTime, this.endTime, this.type, this.status); 
+				this.status = this.tabs[num].statname
+				//				console.log(this.status)
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status);
 			},
 			getSelectDate(e) {
 				//				console.log(new Date(e.target.value));
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
-				this.startTime=this.selectDate+" "+"00:00:00"
-			    this.endTime=this.selectDate+" "+"23:59:59"
-			    this.loadOrders(this.startTime, this.endTime, this.type, this.status)
+				this.startTime = this.selectDate + " " + "00:00:00"
+				this.endTime = this.selectDate + " " + "23:59:59"
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status)
 			},
-			bindPickerChange(e){
-				console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-				this.index= e.mp.detail.value
-				if(this.index==0){
-				    this.type="reserve"	
-				}else if(this.index==1){
-					this.type="self_lift"
+			bindPickerChange(e) {
+				console.log(e, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+				this.index = e.mp.detail.value
+				if(this.index == 0) {
+					this.type = "reserve"
+				} else if(this.index == 1) {
+					this.type = "self_lift"
 				}
-				
+
 			},
 			next() {
 				console.log('nnnnnnnnnxxxxxx', this.currentPage);
-		        this.loadOrders(this.startTime, this.endTime, this.type, this.status, this.currentPage + 1, this.pageCount);               
-		    }
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status, this.currentPage + 1, this.pageCount);
+			}
 		},
-		created:function() {
-		    this.loadOrders(this.startTime, this.endTime, this.type, this.status);
-		    this.startTime=this.selectDate+" "+"00:00:00"
-			this.endTime=this.selectDate+" "+"23:59:59"
-			this.status="all"
-		    console.log(this.gathorders[0],"uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
+		mounted: function() {
+			this.loadOrders(this.startTime, this.endTime, this.type, this.status);
+			this.startTime = this.selectDate + " " + "00:00:00"
+			this.endTime = this.selectDate + " " + "23:59:59"
+			this.status = "all"
+			console.log(this.gathorders[0], "uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
 		},
-		mounted:function(){
-						
+		created: function() {
+
 		}
 	}
 </script>
@@ -130,7 +129,7 @@
 		height: 100%;
 		background: #fafafa;
 	}
-
+	
 	#window_fixed {
 		position: fixed;
 		left: 0;
@@ -141,23 +140,23 @@
 		height: 216rpx;
 		background: #FFFFFF;
 	}
-
+	
 	#myorder_select {
 		margin: 20rpx 20rpx 0;
 	}
-
+	
 	.myorder_select_info {
 		overflow: hidden;
 		margin-bottom: 10rpx;
 	}
-
+	
 	.myorder_select_info em {
 		display: inline-block;
 		float: left;
 		font-size: 32rpx;
 		font-weight: normal;
 	}
-
+	
 	.input {
 		float: left;
 		padding: 0 15rpx;
@@ -166,14 +165,13 @@
 		border-radius: 10rpx;
 		font-size: 28rpx;
 	}
-
+	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
 		height: 74rpx;
-
 	}
-
+	
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -183,29 +181,30 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-
+	
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-
+	
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-
+	
 	#tab_content {
 		padding-top: 220rpx;
 	}
-
+	
 	.tab_content_item {}
-
+	
 	.tab_content_now {
 		display: block;
 	}
-	.goodstype{
-		font-size:32rpx;
-		padding-left:102rpx
+	
+	.goodstype {
+		font-size: 32rpx;
+		padding-left: 102rpx
 	}
 </style>

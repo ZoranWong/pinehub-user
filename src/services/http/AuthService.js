@@ -10,7 +10,7 @@ export default class AuthService extends ApiService {
 		let response = await this.httpGet(`/login/${code}`, {
 			access_token: accessToken
 		}, false);
-		return response;
+		return response.data;
 	}
 
 	// 获取assess_token
@@ -37,7 +37,7 @@ export default class AuthService extends ApiService {
 			encrypted_data: encryptedData,
 			iv: iv
 		}, false);
-		return response;
+		return response.data;
 	}
 
 	// 提交手机号
@@ -46,7 +46,7 @@ export default class AuthService extends ApiService {
 			encrypted_data: encryptedData,
 			iv: iv
 		});
-		return response;
+		return response.data;
 	}
 
 	// 获取用户信息
@@ -58,6 +58,6 @@ export default class AuthService extends ApiService {
 			response = await this.httpGet(`/user/info`, {});
 		}
 		console.log('用户信息', response);
-		return response;
+		return response.data;
 	}
 }

@@ -20,6 +20,9 @@ export default class MyFeedbackCommand extends Command {
 			return false;
 		}
 		let response = await this.service('http.myFeedback').submitFeedback(mobile, feedback);
+		if(response) {
+			this.$application.$command('router', 'myFeedbackSuccess', 'replace');
+		}
 	}
 	static commandName() {
 		return 'MYFEEDBACK';
