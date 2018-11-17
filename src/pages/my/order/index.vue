@@ -56,7 +56,7 @@
 			},
 			myOrdersList() {
 				console.log('============orders getter============');
-				return this.$store.getters['model.my.orders/lists'];
+				return this.$store.getters['model.my.orders/list'];
 			},
 			//			myOrdersList2() {
 			//				return this.$store.getters['model.my.orders/lists'];

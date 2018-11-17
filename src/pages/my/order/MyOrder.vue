@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<scroll-view class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-top="scrollPosition" :scroll-y="true" :scroll-into-view="categoryId" @scrolltolower="scrolltolower">
+		<scroll-view class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="true" :scroll-into-view="categoryId" @scrolltolower="scrolltolower">
 			<div id="tab_content_main">
 				<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
 					<div class="order_info_sn">
@@ -42,7 +42,6 @@
 				</div>
 			</div>
 		</scroll-view>
-		<div @click="goTop">DB</div>
 	</div>
 
 </template>
@@ -99,19 +98,19 @@
 				this.scrollPosition = e.mp.detail.scrollTop;
 				console.log('滚动', this.yPosition, e.mp.detail.scrollTop);
 			},
-			goTop(e) { // 一键回到顶部
-				this.scrollPosition = 0;
-				//				if(wx.pageScrollTo) {
-				//					wx.pageScrollTo({
-				//						scrollTop: 0
-				//					})
-				//				} else {
-				//					wx.showModal({
-				//						title: '提示',
-				//						content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-				//					})
-				//				}
-			}
+//			goTop(e) { // 一键回到顶部
+//				this.scrollPosition = 0;
+//				//				if(wx.pageScrollTo) {
+//				//					wx.pageScrollTo({
+//				//						scrollTop: 0
+//				//					})
+//				//				} else {
+//				//					wx.showModal({
+//				//						title: '提示',
+//				//						content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+//				//					})
+//				//				}
+//			}
 		},
 
 		watch: {

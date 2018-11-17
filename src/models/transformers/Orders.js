@@ -11,7 +11,7 @@ export default class Order {
 		this.paymentAmount = order['payment_amount'];
 		this.totalAmount = order['total_amount'].toFixed(2);
 
-		this.qrCode = QR.drawImg(`action=verification&orderId=${order['id']}`, {
+		this.qrCode = QR.drawImg(`{"action":"verification","orderId":${order['id']}}`, {
 			typeNumber: 4,
 			errorCorrectLevel: 'M',
 			size: 500

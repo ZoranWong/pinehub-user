@@ -12,7 +12,7 @@ export default class MyOrderCommand extends Command {
 		}
 		let [list, totalNum, currentPage, totalPage] = await this.service('http.orders').list(status, page, limit);
 		this.store().dispatch({
-			type: 'model.my.orders/setOrders',
+			type: 'model.my.orders/setList',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,
