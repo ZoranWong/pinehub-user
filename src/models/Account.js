@@ -1,6 +1,16 @@
 import Model from './Model';
 import _ from 'underscore';
 export default class Account extends Model {
+  constructor (app) {
+    super(app);
+    this.resetAccountFromCache();
+  }
+  async resetAccountFromCache () {
+    let account = await this.services('mp.storage').get('account');
+    if (account) {
+      _.extend(this.state, account);
+    }
+  }
   computed () {
     return _.extend(super.computed(), {
       isAuth (state) {
@@ -50,6 +60,11 @@ export default class Account extends Model {
   }
   // 监听数据
   listeners () {
+    this.addEventListener('resetFromCache', async function ({initAccount}) {
+      await this.resetAccountFromCache();
+      await initAccount();
+      console.log('reset from cache');
+    });
     this.addEventListener('setAccount', function (userInfo) {
       if (typeof userInfo['open_id'] !== 'undefined') {
         this.state.openId = userInfo['open_id'];
@@ -102,6 +117,11 @@ export default class Account extends Model {
 
       if (typeof userInfo['nickname'] !== 'undefined') {
         this.state.nickname = userInfo['nickname'];
+      }
+      try {
+        console.log(this.services('mp.storage').set('account', this.state));
+      } catch (e) {
+        console.log(e);
       }
     });
   }

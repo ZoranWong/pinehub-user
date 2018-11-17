@@ -7,8 +7,8 @@
         <div class="popup-title">
           历史站点选择
         </div>
-        <div class="place-item" v-for="(item,index ) in places" :key="index" @click="jump('activitySubmitOrder')">
-          <i class="i-icon yellow-right-arrow"></i> {{item.name}}
+        <div class="place-item" v-for="(item, index) in receiveStores" :key="index" @click="redirectToOrder(item.id)">
+          <i class="i-icon yellow-right-arrow"></i> {{ item.address }}
         </div>
         <div class="btn-big theme-color" @click="nearbyStores">重新选择</div>
         <div class="tips color75">
@@ -30,21 +30,8 @@
     },
     data () {
       return {
-        places: [{
-          id: 1,
-          name: '安徽省合肥市蜀山区丹霞路与翡翠路交叉口早餐车'
-        },
-          {
-            id: 2,
-            name: '安徽省合肥市瑶海区新蚌埠路交叉口早餐车'
-          }
-        ]
-      }
-    },
-    computed: {
-      places () {
-        return this.$store.getters['model.account/isAuth'];
-      }
+        receiveStores: []
+      };
     },
     methods: {
       popHide: function () {
@@ -57,10 +44,22 @@
             activity_id: this.activityId
           }
         });
+      },
+      redirectToOrder (storeId) {
+        this.$command('router', 'activitySubmitOrder', 'push', {
+          query: {
+            store_id: storeId,
+            activity_id: this.$route.query['activity_id']
+          }
+        });
+      },
+      async initStores () {
+        this.receiveStores = await this.mp.storage.get('activityReceiveStores');
       }
     },
     mounted () {
       this.$command('LOAD_ACTIVITY_USUALLY_ADDRESS');
+      this.initStores();
     }
 
   }
@@ -118,14 +117,15 @@
 
   .place-item {
     width: 530rpx;
-    height: 100rpx;
+    height: 86rpx;
     border-radius: 10rpx;
     box-shadow: 0rpx 2rpx 4rpx rgba(204, 202, 202, 0.6);
-    padding: 10rpx 12rpx;
+    padding: 0rpx 12rpx;
     box-sizing: border-box;
     font-size: 28rpx;
     margin: 20rpx 0rpx;
     display: flex;
+    line-height: 86rpx;
   }
 
   .yellow-right-arrow {
@@ -133,7 +133,7 @@
     height: 40rpx;
     background: url(../../../static/images/icon/yellow-right-arrow.png) no-repeat;
     background-size: contain;
-    margin-top: 30rpx;
+    margin-top: 26rpx;
     margin-right: 21rpx;
   }
 

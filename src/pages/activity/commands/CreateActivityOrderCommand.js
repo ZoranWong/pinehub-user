@@ -1,6 +1,6 @@
 import Command from '@/commands/CreateOrderCommand';
 export default class CreateActivityOrderCommand extends Command {
-  async handle (activityId, receivingShopId, sendTime, receiverName, receiverMobile, receiverAddress, comment = '') {
+  async handle (activityId, receivingShopId, receiverName, receiverMobile, receiverAddress, comment = '') {
     try {
       let params = {
         receiver_name: receiverName,
@@ -8,7 +8,6 @@ export default class CreateActivityOrderCommand extends Command {
         receiver_mobile: receiverMobile,
         comment: comment,
         type: 1,
-        send_time: sendTime,
         activity_id: activityId,
         receiving_shop_id: receivingShopId
       }

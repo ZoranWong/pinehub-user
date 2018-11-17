@@ -10,7 +10,8 @@
     "pages/activity/main",
     "pages/activity/submitOrder/main",
     "pages/search/main",
-    "pages/coupon/main"
+    "pages/coupon/main",
+    "pages/activity/coupon/main"
   ],
   "subPackages": [
     {

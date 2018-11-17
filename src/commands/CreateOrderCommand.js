@@ -1,6 +1,6 @@
 import Command from './Command';
 export default class CreateOrderCommand extends Command {
-  async handle (params) {
+  async handle (params, resetCart = null) {
     try {
       let weChatPayParams = await this.service('http.orders').createOrder(params);
       if (weChatPayParams) {

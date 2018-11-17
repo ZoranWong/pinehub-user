@@ -29,7 +29,7 @@ export default class AuthService extends ApiService {
 	}
 
 	// 提交用户信息并保存
-	async setUserInfo(accessToken, userInfo, signature, rawData, iv, encryptedData) {
+	async mpRegister(accessToken, userInfo, signature, rawData, iv, encryptedData) {
 		let response = await this.httpPost(`/register/user/?access_token=${accessToken}`, {
 			user_info: userInfo,
 			raw_data: rawData,
@@ -46,7 +46,7 @@ export default class AuthService extends ApiService {
 			encrypted_data: encryptedData,
 			iv: iv
 		});
-		return response.data;
+		return response;
 	}
 
 	// 获取用户信息
@@ -58,6 +58,6 @@ export default class AuthService extends ApiService {
 			response = await this.httpGet(`/user/info`, {});
 		}
 		console.log('用户信息', response);
-		return response.data;
+		return response;
 	}
 }

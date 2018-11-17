@@ -17,10 +17,12 @@
       </div>
     </div>
 
-    <div class="li-item bgff coupon" @click="jump('coupon')">
-      优惠券 <span class="coupon-tips">1张可用</span>
+    <div class="li-item bgff coupon" @click="jump(ticketRoute)" :disabled = "totalNum > 0">
+      优惠券
+      <span class="coupon-tips">{{ totalNum }}张可用</span>
       <label for="" class="fr">
-        有可用<i class="arrow-icon"></i>
+        有可用
+        <i class="arrow-icon"></i>
       </label>
     </div>
     <div class="count-box">
@@ -45,6 +47,10 @@
       'cart-control': CartControl
     },
     props: {
+      totalNum: {
+        default: 0,
+        type: Number
+      },
       addMerchandiseToCart: {
         default: null,
         type: Function
@@ -58,6 +64,10 @@
         type: Function
       },
       model: {
+        default: null,
+        type: String
+      },
+      ticketRoute: {
         default: null,
         type: String
       }
