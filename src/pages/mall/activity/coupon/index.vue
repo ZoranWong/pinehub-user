@@ -16,6 +16,14 @@
     },
     components: {
       'coupon-tickets': CouponTickets
+    },
+    methods: {
+      loadTickets () {
+
+      },
+      useTicket (id) {
+
+      }
     }
   }
 </script>

@@ -118,20 +118,12 @@ module.exports = {
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(__dirname, '../dist/static'),
-        ignore: ['.*', 'jssdk/*', 'images/icon/*'],
-        transform(context, path)  {
-          var reg = /(.*)+\.(jpg|bmp|gif|png)$/i;
-          return context;
-        }
+        ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
       },
       {
         from: path.resolve(__dirname, '../src/pages/my/ec-canvas'),
         to: path.resolve(__dirname, '../dist/pages/my/ec-canvas'),
-        ignore: ['.*'],
-        transform(context, path)  {
-          var reg = /(.*)+\.(jpg|bmp|gif|png)$/i;
-          return context;
-        }
+        ignore: ['.*']
       }
     ])
   ]

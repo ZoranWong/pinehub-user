@@ -67,6 +67,9 @@
       },
       totalNum () {
         return this.$store.getters['model.activity.tickets/totalNum'];
+      },
+      totalAmount () {
+        return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
       }
     },
     methods: {
@@ -92,10 +95,11 @@
       },
       async initData () {
         this.activityId = parseInt(this.$route.query['activity_id']);
+        this.storeId = parseInt(this.$route.query['store_id']);
         if (!this.hasShoppingCarts) {
           await this.loadCartMerchandises();
         }
-        console.log(await this.$command('LOAD_ACTIVITY_TICKETS', this.activityId));
+        console.log(await this.$command('LOAD_ACTIVITY_TICKETS', this.activityId, this.totalAmount));
 
         let stores = await this.mp.storage.get('activityReceiveStores');
         console.log('====== receive stores =======', stores);
@@ -103,7 +107,6 @@
         if (!stores) {
           stores = [];
         } else {
-          this.storeId = parseInt(this.$route.query['store_id']);
           console.log(store, this.storeInfo);
           store = _.findWhere(stores, { id: this.storeId });
           this.$set(this, 'queryStore', store);
