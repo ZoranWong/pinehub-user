@@ -96,21 +96,23 @@
         this.$command('router', router, 'push', options);
       },
       getPhoneNumber (e) {
-        this.$command('SET_MOBILE', e);
+        this.$command('SET_USER_MOBILE', e);
       },
       getUserInfo (e) {
-        this.$command('SET_USERINFO', e);
-        this.$command('MYINFO');
+        this.$command('USER_REGISTER', e);
       },
       async loadData () {
-        if (!this.isLogin) {
-          await this.$command('SIGN_IN');
-          await this.$command('LOAD_ACCOUNT', false);
-        }
-        console.log('activity has loaded', [this.hasLoadedActivity]);
-        if (!this.hasLoadedActivity) {
-          await this.$command('GET_ACTIVITY_INFO');
-        }
+        await this.$store.dispatch('model.account/resetFromCache', {
+          initAccount: async () => {
+            if (!this.isLogin) {
+              await this.$command('SIGN_IN');
+              await this.$command('LOAD_ACCOUNT', false);
+            }
+            if (!this.hasLoadedActivity) {
+              await this.$command('GET_ACTIVITY_INFO');
+            }
+          }
+        });
       }
     }
 

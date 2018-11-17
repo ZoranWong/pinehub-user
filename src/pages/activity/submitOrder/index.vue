@@ -5,13 +5,13 @@
     <consignee></consignee>
     <ul class="Distribution-details">
       <li class="li-item bgff">
-        自提地址
+        自提点地址
         <p class="details-item">
           {{storeInfo ? storeInfo.address : ''}}
         </p>
       </li>
       <li class="li-item bgff">
-        自提时间
+        自提点营业
         <p class="details-item">
           {{ sendDate }}
         </p>
@@ -25,7 +25,7 @@
     </ul>
 
     <!-- 支付内容的显示组件 -->
-    <payment :model="model" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
+    <payment :model="model" :totalNum = "totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :ticket-route = "'activityCoupon'"></payment>
 
   </div>
 </template>
@@ -34,13 +34,16 @@
   import Consignee from '@/components/Consignee';
   import TabDelivery from '@/components/TabDelivery';
   import Payment from '@/components/Payment';
+  import _ from 'underscore';
   export default {
     name: 'confirmationOrder',
     data () {
       return {
         title: '确认订单「新品活动」',
         model: 'model.activity.shoppingCarts',
-        activityId: null
+        activityId: null,
+        queryStore: null,
+        storeId: null
       }
     },
     components: {
@@ -51,7 +54,7 @@
     },
     computed: {
       storeInfo () {
-        return this.$store.getters['model.nearbyStores/store'](parseInt(this.$route.query['store_id']));
+        return this.queryStore ? this.queryStore : this.$store.getters['model.nearbyStores/store'](this.storeId);
       },
       userInfo () {
         return this.$store.getters['model.account/userInfo']
@@ -61,6 +64,9 @@
       },
       sendDate () {
         return this.storeInfo ? this.storeInfo['openingHours'] : null;
+      },
+      totalNum () {
+        return this.$store.getters['model.activity.tickets/totalNum'];
       }
     },
     methods: {
@@ -82,12 +88,35 @@
         this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       },
       createOrder () {
-        this.$command('CREATE_ACTIVITY_ORDER', this.activityId, this.storeInfo.id, this.sendDate, this.userInfo.nickname, this.userInfo.mobile, this.storeInfo.address);
+        this.$command('CREATE_ACTIVITY_ORDER', this.activityId, this.storeInfo.id, this.userInfo.nickname, this.userInfo.mobile, this.storeInfo.address);
       },
       async initData () {
-        this.activityId = this.$route.query['activity_id'];
+        this.activityId = parseInt(this.$route.query['activity_id']);
         if (!this.hasShoppingCarts) {
           await this.loadCartMerchandises();
+        }
+        console.log(await this.$command('LOAD_ACTIVITY_TICKETS', this.activityId));
+
+        let stores = await this.mp.storage.get('activityReceiveStores');
+        console.log('====== receive stores =======', stores);
+        let store = null;
+        if (!stores) {
+          stores = [];
+        } else {
+          this.storeId = parseInt(this.$route.query['store_id']);
+          console.log(store, this.storeInfo);
+          store = _.findWhere(stores, { id: this.storeId });
+          this.$set(this, 'queryStore', store);
+          console.log('=========<<<<>>>>======', stores, this.storeId, this.queryStore);
+        }
+        if (!store && this.storeInfo && stores.length < 4) {
+          stores.push(this.storeInfo)
+          this.mp.storage.set('activityReceiveStores', stores);
+        } else {
+          if (stores.length === 3 && this.storeInfo) {
+            stores.pop();
+            stores.push(this.storeInfo);
+          }
         }
       }
     },

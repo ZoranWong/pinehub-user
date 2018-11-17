@@ -22,5 +22,6 @@
 	"orderSelf": "/pages/bookingMall/orderSelf/main",
 	"activity": "/pages/activity/main",
 	"activitySubmitOrder": "/pages/activity/submitOrder/main",
-	"coupon": "/pages/coupon/main"
+	"coupon": "/pages/coupon/main",
+  "activityCoupon": "/pages/activity/coupon/main"
 }
