@@ -10,7 +10,7 @@
 
 <script>
   import MpTitle from '@/components/MpTitle'
-  import NewFoods from './NewFoods'
+  import NewFoods from './Newfoods'
   import Cart from '@/components/Cart'
   import PopupLocation from './PopupLocation'
   export default {

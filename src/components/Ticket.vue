@@ -4,20 +4,20 @@
     <div class="coupon-left fl ">
       <div class="voucher-part1 bgff ">
         <span class="voucher-logon-name">{{ ticket.title }} </span>
-        <span class="voucher-value">{{ticket.type === 'DISCOUNT' ? ((ticket.discount * 100) + '%') : ('¥' + parseInt(ticket.reduceCost)) }}</span>
+        <span class="voucher-value">{{ticket.type === 'DISCOUNT' ? ((ticket.discount * 100) + '%') : ('¥' + ticket.reduceCost) }}</span>
       </div>
       <div class="voucher-part2">
         <div class="voucher-name bgff">{{ticket.type === 'DISCOUNT' ? '折扣券' : '优惠券'}}</div>
       </div>
     </div>
     <div class="coupon-right fr">
-      <p class="voucher-title">{{(ticket.leastCost > 0 ? ('满' + parseInt(ticket.leastCost) + '元'): '') +
-        (ticket.type === 'DISCOUNT' ? ((((ticket.discount * 100) % 10) ? (ticket.discount * 100):(ticket.discount * 10))  + '折优惠') : ('减' + parseInt(ticket.reduceCost) + '元'))}}</p>
+      <p class="voucher-title">{{(ticket.leastCost > 0 ? ('满' + ticket.leastCost + '元'): '') +
+        (ticket.type === 'DISCOUNT' ? ((((ticket.discount * 100) % 10) ? (ticket.discount * 100):(ticket.discount * 10))  + '折优惠') : ('减' + ticket.reduceCost + '元'))}}</p>
       <p class="time-limit">
         <span>有效期：</span>
         <span>{{ticket.beginTimestamp}} - {{ticket.endTimestamp}}</span>
       </p>
-      <div v-if = "ticket.status === 1" class="btn-big fr theme-color" @click="useTicket">立即使用</div>
+      <div v-if = "(ticket.status * 1) === 1" class="btn-big fr theme-color" @click="useTicket">立即使用</div>
     </div>
   </div>
 </template>
@@ -38,6 +38,9 @@
       useTicket() {
 
       }
+    },
+    mounted() {
+      console.log(this.ticket);
     }
   }
 </script>
@@ -53,6 +56,7 @@
     border-radius: 10rpx;
     box-shadow: 0rpx 6rpx 20rpx rgba(204, 202, 202, 0.6);
     box-sizing: border-box;
+    padding-bottom:20px;
   }
 
   .coupon-left {
@@ -168,7 +172,7 @@
   }
 
   .coupon-right .time-limit {
-    font-size: 28rpx;
+    font-size: 26rpx;
     margin-bottom: 24rpx;
     color: #757575;
   }

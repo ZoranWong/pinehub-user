@@ -2,16 +2,8 @@
   "pages": [
     "pages/index/main",
     "pages/nearbyStores/main",
-    "pages/store/main",
-    "pages/store/submitOrder/main",
-    "pages/bookingMall/main",
-    "pages/bookingMall/submitOrder/main",
-    "pages/bookingMall/orderSelf/main",
-    "pages/activity/main",
-    "pages/activity/submitOrder/main",
     "pages/search/main",
-    "pages/coupon/main",
-    "pages/activity/coupon/main"
+    "pages/coupon/main"
   ],
   "subPackages": [
     {
@@ -28,6 +20,19 @@
         "feedback/main",
         "feedback/success/main",
         "main"
+      ]
+    },
+    {
+      "root": "pages/mall",
+      "pages": [
+        "store/main",
+        "store/submitOrder/main",
+        "bookingMall/main",
+        "bookingMall/submitOrder/main",
+        "bookingMall/orderSelf/main",
+        "activity/main",
+        "activity/submitOrder/main",
+        "activity/coupon/main"
       ]
     }
   ],

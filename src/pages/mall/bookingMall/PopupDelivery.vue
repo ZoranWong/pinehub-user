@@ -28,7 +28,7 @@ export default {
 	name:'PopupLocation',
 	data() {
 		return{
-			
+
 		}
 	},
 	methods:{
@@ -46,7 +46,7 @@ export default {
 <style scoped>
 .popup{
     position: fixed;
-    top:0; 
+    top:0;
     width: 100%;
     height: 100%;
   	z-index: 99;
@@ -71,7 +71,7 @@ export default {
 .cancel{
 	width:78rpx;
 	height:78rpx;
-	background:url(../../../static/images/icon/white-cancel.png) no-repeat;
+	background:url(../../../../static/images/icon/white-cancel.png) no-repeat;
 	background-size:contain;
 	position: absolute;
 	top:-16rpx;
@@ -91,7 +91,7 @@ export default {
 	height: 100rpx;
 	line-height: 100rpx;
 	border-radius: 10rpx;
-	box-shadow:0rpx 2rpx 4rpx rgba(204,202,202,0.6); 
+	box-shadow:0rpx 2rpx 4rpx rgba(204,202,202,0.6);
 	box-sizing:border-box;
 	font-size:28rpx;
 /*	border:1px solid red;*/
@@ -101,17 +101,17 @@ export default {
 .free-icon{
 	width:68rpx;
 	height:48rpx;
-	background:url(../../../static/images/icon/free-icon.png) no-repeat;
-	background-size:contain;	
+	background:url(../../../../static/images/icon/free-icon.png) no-repeat;
+	background-size:contain;
 	margin:26rpx 40rpx 26rpx 80rpx;
-	
-	
+
+
 }
 .charge-icon{
 	width:68rpx;
 	height:48rpx;
-	background:url(../../../static/images/icon/charge-icon.png) no-repeat;
-	background-size:contain;	
+	background:url(../../../../static/images/icon/charge-icon.png) no-repeat;
+	background-size:contain;
 	margin:26rpx 40rpx 26rpx 80rpx;
 }
 .tips{

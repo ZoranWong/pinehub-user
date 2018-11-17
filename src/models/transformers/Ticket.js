@@ -1,5 +1,5 @@
 export default class Ticket {
-  constructor(tickets) {
+  constructor (tickets) {
     this.id = tickets['id'];
     this.cardId = tickets['card_id']
     this.title = tickets['title'];
@@ -8,7 +8,9 @@ export default class Ticket {
     this.leastCost = tickets['least_cost'];
     this.reduceCost = tickets['reduce_cost'];
     this.recordCount = tickets['record_count'];
-    this.beginTimestamp = tickets['begin_timestamp'];
-    this.endTimestamp = tickets['end_timestamp'];
+    this.beginTimestamp = tickets['begin_at'];
+    this.endTimestamp = tickets['end_at'];
+    this.status = tickets['status'];
+    console.log('ticket =====', this);
   }
 }
