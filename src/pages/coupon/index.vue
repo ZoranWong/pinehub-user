@@ -63,12 +63,12 @@
 </template>
 
 <script>
-	import MpTitle from "@/components/MpTitle"
+	import MpTitle from '@/components/MpTitle'
 	export default {
 		data() {
 			return {
-				title: "我的卡券",
-				name: "Coupon",
+				title: '我的卡券',
+				name: 'Coupon',
 				tabs: [{
 						name: '可使用'
 					},
@@ -77,21 +77,19 @@
 					}
 				],
 				cur: 0,
-				statusType: "available"
+				statusType: 'available'
 			}
 		},
 		components: {
-			"mp-title": MpTitle,
-
+			'mp-title': MpTitle
 		},
 		computed: {
 			tabNumWidth() {
 				let num = this.tabs.length
-				num = (num == 'undefined') ? 1 : num;
+				num = (num === 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			ticketsList() {
-				console.log('优惠券列表',this.$store.getters['model.tickets/list']);
 				return this.$store.getters['model.tickets/list'];
 			}
 
@@ -104,13 +102,13 @@
 				this.cur = num;
 				switch(num) {
 					case 0:
-						this.statusType = "available";
+						this.statusType = 'available';
 						break;
 					case 1:
-						this.statusType = "overdue";
+						this.statusType = 'overdue';
 						break;
 					default:
-						this.statusType = "available";
+						this.statusType = 'available';
 						break;
 				}
 				console.log(num);

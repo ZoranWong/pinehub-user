@@ -9,6 +9,8 @@ export default class ScanCommand extends Command {
 		let codeNum = null;
 		let scanType = null;
 		scanResult = await this.service('scan')['scanCode']();
+		console.log('scanResult',scanResult)
+		return false;
 		//console.log('ok');
 		codeNum = scanResult.result;
 		scanType = scanResult.scanType;

@@ -5,7 +5,7 @@
 			<div id="myorder_select">
 				<div class="myorder_select_info">
 					<em>日期</em>
-					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
+					<picker mode="date" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
 				<div class="myorder_select_info">
 					<em>配送批次</em>
@@ -21,7 +21,7 @@
 				<order :next="next" :disOrder="disOrders" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
-		<div id="controlbar">
+		<div id="controlbar" v-show="false">
 			<em v-if="!selectOrderToPrint" id="controlbar_select" @click="openPrintOrders">选择</em>
 			<em v-if="selectOrderToPrint" id="controlbar_cancel" @click="closePrintOrders">取消</em>
 			<div v-if="selectOrderToPrint" id="select_all_order" @click="printOrders">全选</div>
@@ -54,9 +54,7 @@
 			};
 		},
 		computed: {
-			disOrders() {
-				return this.$store.getters['model.distribute.orders/lists']
-			},
+
 			currentPage() {
 				let page = this.$store.getters['model.distribute.orders/currentPage'];
 				console.log(page, "当前页数")
@@ -72,6 +70,8 @@
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
 				this.startTime = this.selectDate + " " + this.begHour + ":00"
 				this.endTime = this.selectDate + " " + this.endHour + ":00"
+				console.log('选择日期--------------------------', this.startTime, this.endTime);
+				this.loadOrders(this.startTime, this.endTime);
 			},
 			printOrders() {
 				wx.showToast({
@@ -97,26 +97,23 @@
 				this.selectOrderToPrint = false;
 			},
 			bindPickerChange(e) {
-				//console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-				this.index = e.mp.detail.value
+				this.index = e.mp.detail.value;
 				this.begHour = this.arr[this.index].split("-")[0];
 				this.endHour = this.arr[this.index].split("-")[1];
 				this.startTime = this.selectDate + " " + this.begHour + ":00"
 				this.endTime = this.selectDate + " " + this.endHour + ":00"
+				this.loadOrders(this.startTime, this.endTime);
 			},
 			next() {
 				this.$command('distribute-orders', this.startTime, this.endTime, this.currentPage + 1, this.pageCount);
 			}
 		},
-		created() {
-
-		},
 		mounted() {
 			this.begHour = this.arr[this.index].split("-")[0];
 			this.endHour = this.arr[this.index].split("-")[1];
-			this.$command('distribute-orders');
 			this.startTime = this.selectDate + " " + this.begHour + ":00"
 			this.endTime = this.selectDate + " " + this.endHour + ":00"
+			this.loadOrders(this.startTime, this.endTime);
 		}
 	}
 </script>

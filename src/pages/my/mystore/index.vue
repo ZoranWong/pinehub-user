@@ -57,7 +57,7 @@
 					<i class="my_store_menu_ico ico_4"></i>
 					<em>物流进货扫码</em>
 				</li>
-				<li>
+				<li @click="jump('myStorePickedUpOrder')">
 					<i class="my_store_menu_ico ico_5"></i>
 					<em>自提订单</em>
 				</li>

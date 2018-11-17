@@ -1,9 +1,10 @@
 import Model from './Model'
 import _ from 'underscore';
-import NearbyStoreTransformer from './transformers/NearbyStore';
+import NearbyStoreTransformer from './transformers/Store';
 export default class NearbyStore extends Model {
   constructor (application) {
     super(application);
+    this.transformer = NearbyStoreTransformer;
   } // 预定商城里获取附近的几个店铺
   computed () {
     return {

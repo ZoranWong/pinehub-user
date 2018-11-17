@@ -1,6 +1,6 @@
 import App from './index';
 import DistributeOrderService from '@/services/http/DistributeOrderService';
-import DistributeOrderCommand from '@/commands/DistributeOrderCommand';
+import DistributeOrderCommand from './commands/DistributeOrderCommand';
 import DistributeOrder from '@/models/Orders';
 import Vue from 'vue';
 const application = wx.$app;

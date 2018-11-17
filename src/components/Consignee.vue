@@ -1,7 +1,7 @@
 <template>
 	<div class="consignee bgff width710">
 		<div>
-			<p class="consignee-name">收货人：{{userInfo.nickName}}</p>
+			<p class="consignee-name">收货人：{{userInfo.nickname}}</p>
 			<p class="telphone">联系电话：{{userInfo.mobile}}</p>
 			<!-- 编辑信息 -->
 			<!-- <i class="edit-icon"></i> -->
@@ -18,14 +18,12 @@
 
 			}
 		},
-		props: ["selectMethod"],
+		props: ['selectMethod'],
 		computed: {
 			userInfo() {
-				console.log('获取用户信息<<<>>>', this.$store.getters);
-				return this.$store.getters['model.my.info/userInfo'];
-			},
+				return this.$store.getters['model.account/userInfo'];
+			}
 		}
-
 	}
 </script>
 <style>

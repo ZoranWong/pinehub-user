@@ -1,5 +1,5 @@
-import Service from '../Service';
-export default class DistributeOrderService extends Service {
+import ApiService from './ApiService';
+export default class DistributeOrderService extends ApiService {
 	constructor($application) {
 		super($application);
 	}
@@ -16,10 +16,10 @@ export default class DistributeOrderService extends Service {
 			response = await this.httpGet(`/store/send/orders`, {
 				send_start_time: startTime,
 				send_end_time: endTime,
-				page:page
+				page: page
 			});
 		}
-		console.log('getRes 3413412341',response);
+		console.log('getRes 3413412341', response);
 		distributeorders = response.data;
 		let pagination = response.meta.pagination;
 		totalNum = pagination.total;
@@ -28,13 +28,4 @@ export default class DistributeOrderService extends Service {
 		//console.log('nefffffffff-----',[distributeorders, totalNum, currentPage, totalPage]);
 		return [distributeorders, totalNum, currentPage, totalPage];
 	}
-	
-	async x() {
-		
-	}
-	
-	async y() {
-		
-	}
-
 }

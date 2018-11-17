@@ -78,36 +78,27 @@ export default class OrdersService extends ApiService {
 		return response;
 	}
 
-	//配送订单
-	async distributeOrder(startTime, endTime, type, status, page) {
-		let distributeorders = null;
+	//店铺-自提订单
+	async pickedUpOrders(startTime, endTime, page) {
+		console.log('奴家', startTime, endTime)
 		let totalNum = 0;
 		let totalPage = 0;
 		let currentPage = 0;
-		let gathorders = null;
 		let response = null;
-		console.log('查看参数是否有误', startTime, endTime, type, status);
 		if(this.$application.needMock()) {
-			//console.log('service-mock----------');
-			response = await this.services('mock.gatherOrder').mock(startTime, endTime, type, status, page);
-			//console.log('response--------',response);
+			response = await this.services('mock.distributeOrder').mock(startTime, endTime, page);
 		} else {
-			response = await this.httpGet(`/store/orders/summary`, {
+			response = await this.httpGet(`store/buffet/orders`, {
 				paid_start_time: startTime,
 				paid_end_time: endTime,
-				type: type,
-				status: status,
 				page: page
 			});
 		}
-		console.log('getRes', response);
-		gathorders = response.data;
+		let orderList = response.data;
 		let pagination = response.meta.pagination;
 		totalNum = pagination.total;
 		currentPage = pagination['current_page'];
 		totalPage = pagination['total_pages'];
-		console.log('=========nefffffffff-----', [currentPage, pagination]);
-		//console.log('se--------------',[gathorders, totalNum, currentPage, totalPage]);
-		return [gathorders, totalNum, currentPage, totalPage];
+		return [orderList, totalNum, currentPage, totalPage];
 	}
 }

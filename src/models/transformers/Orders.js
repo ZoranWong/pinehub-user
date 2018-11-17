@@ -1,3 +1,5 @@
+const QR = require('../../../static/jssdk/weapp-qrcode.js');
+
 export default class Order {
 	constructor(order) {
 		console.log('order transformer');
@@ -9,10 +11,21 @@ export default class Order {
 		this.paymentAmount = order['payment_amount'];
 		this.totalAmount = order['total_amount'].toFixed(2);
 
+		this.qrCode = QR.drawImg(`action=verification&orderId=${order['id']}`, {
+			typeNumber: 4,
+			errorCorrectLevel: 'M',
+			size: 500
+		});
+
 		//卡券使用
 		this.cardId = (typeof order['card_id'] !== 'undefined' && order['card_id'] !== null) ? order['card_id'] : '无';
 		//销售指数
 		this.sellPoint = (typeof order['sell_point'] !== 'undefined' && order['sell_point'] !== '' && order['sell_point'] !== null) ? order['sell_point'] : 0;
+		//楼号
+		this.buildNum = (typeof order['build_num'] !== 'undefined' && order['build_num'] !== '' && order['build_num'] !== null) ? order['build_num'] : '无';
+		//房号
+		this.roomNum = (typeof order['room_num'] !== 'undefined' && order['room_num'] !== '' && order['room_num'] !== null) ? order['room_num'] : '无';
+
 		//btnStatus 0 没有按钮 1 支付 取消 2 确认核销 3 确认收货
 		if(this.type == 0) {
 			this.btnStatus = 0;
@@ -61,15 +74,18 @@ export default class Order {
 				break;
 		}
 		this.quantity = order['quantity'];
+		this.receiverName = (typeof order['receiver_name'] !== 'undefined' && order['receiver_name'] !== '' && order['receiver_name'] !== null) ? order['receiver_name'] : '无';
+		this.receiverMobile = (typeof order['receiver_mobile'] !== 'undefined' && order['receiver_mobile'] !== '' && order['receiver_mobile'] !== null) ? order['receiver_mobile'] : '无';
 		this.receiverAddress = order['receiver_address'];
 		this.createdAt = order['created_at'];
+		this.createdAtSp = (new Date(order['created_at'])).format('MM/dd/h:m');
 		this.orderItems = order['order_item_merchandises'];
 		for(var i in this.orderItems) {
 			this.orderItems[i] = {
 				name: this.orderItems[i]['name'],
-				sellPrice: this.orderItems[i]['sell_price'].toFixed(2),
+				sellPrice: this.orderItems[i]['sell_price'],
 				quality: this.orderItems[i]['quality'],
-				totalAmount: this.orderItems[i]['total_amount'].toFixed(2),
+				totalAmount: this.orderItems[i]['total_amount'],
 				mainImage: this.orderItems[i]['main_image']
 			}
 		}

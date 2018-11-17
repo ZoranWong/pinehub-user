@@ -1,7 +1,7 @@
 <template>
-	<scroll-view  class="foods-wrapper" style="height:700px;" :scroll-y="true" @scrolltolower="scrolltolower" >
+	<scroll-view class="foods-wrapper" style="height:700px;" :scroll-y="true" @scrolltolower="scrolltolower">
 		<div id="tab_content_main">
-			<div class="order_info" v-for="(extraitem,index) in selfExtra" :key="index">
+			<div class="order_info" v-for="(items,index) in orderList" :key="index">
 				<div class="order_info_select">
 					<i class="selected_order"></i>
 				</div>
@@ -16,16 +16,16 @@
 				</div>
 				<div class="order_info_nowstatus">
 					<ul>
-						<li>{{extraitem.status}}</li>
-						<li>{{extraitem.createdAt}}</li>
-						<li>{{extraitem.receiverName}}</li>
-						<li>{{extraitem.code}}</li>
-						<li>{{extraitem.receiverMobile}}</li>
+						<li>{{items.status}}</li>
+						<li>{{items.createdAtSp}}</li>
+						<li>{{items.receiverName}}</li>
+						<li>{{items.code}}</li>
+						<li>{{items.receiverMobile}}</li>
 					</ul>
 				</div>
 				<div class="order_info_glist">
 					<dl>
-						<dd><img src="/static/images/icon/ewm.png" /></dd>
+						<dd><img :src="items.qrCode" /></dd>
 						<dt>
 							<div class="order_info_glist_title">
 								<ul>
@@ -36,21 +36,21 @@
 							</div>
 							<div class="order_info_glist_list">
 								<ul>
-									<li v-for="(item,idx) in extraitem.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
+									<li v-for="(item,idx) in items.orderItems" :key="idx"><em>{{item.name}}</em><em>{{item.quality}}</em><em>￥{{item.sellPrice}}</em></li>
 								</ul>
 							</div>
 						</dt>
 					</dl>
 				</div>
 				<div class="order_info_ads">
-					<em>地点:{{extraitem.receiverAddress}}</em>
+					<em>地点:{{items.receiverAddress}}</em>
 				</div>
 				<div class="order_info_footer">
 					<div class="order_info_footer_left">
-						{{datetime}}
+						{{items.createdAt}}
 					</div>
 					<div class="order_info_footer_right">
-						实付:<em>￥{{extraitem.totalAmount}}</em>
+						实付:<em>￥{{items.totalAmount}}</em>
 					</div>
 				</div>
 				<i class="order_info_circle"></i>
@@ -68,50 +68,44 @@
 
 			};
 		},
-		props:{
-			loadOrders: {
-				default:"",
-				type: Function
-			},
-			next:{
+		props: {
+			next: {
 				default: null,
 				type: Function
 			},
-			selfExtra:{
-				default:"",
-				type:Function
-			},
-			datetime:"",
-			startTime:"",
-			endTime:""
+			datetime: "",
+			startTime: "",
+			endTime: ""
 		},
-		methods: {
-            scrolltolower(){
-		         console.log('next page',"111111111111111111111111111111111");
-		        this.next();
-		    }
-		},
-		watch:{
-			startTime(v){
-//				console.log(v,"aaaaaaaaaa")
-				this.startTime=v
-				this.loadOrders(this.startTime,this.endTime)
-			},
-			endTime(n){
-				this.endTime=n
-//				console.log(n,"aaaaaaaaaa")
+		computed: {
+			orderList() {
+				console.log('model.extra.orders/list', this.$store.getters['model.extra.orders/list'])
+				return this.$store.getters['model.extra.orders/list']
 			}
 		},
-		created() {
-         console.log(this.startTime,this.endTime,"wwwwwwwwwwwwwwwwwwwwww")
-           
+		methods: {
+			scrolltolower() {
+				console.log('next page', "111111111111111111111111111111111");
+				this.next();
+			}
+		},
+		watch: {
+			startTime(v) {
+				//				console.log(v,"aaaaaaaaaa")
+				this.startTime = v
+				//				this.loadOrders(this.startTime, this.endTime)
+			},
+			endTime(n) {
+				this.endTime = n
+				//				console.log(n,"aaaaaaaaaa")
+			}
 		}
 	}
 </script>
 
 <style scoped>
 	#tab_content_main {}
-
+	
 	.order_info {
 		background: #FFFFFF;
 		border-radius: 10rpx;
@@ -122,7 +116,7 @@
 		position: relative;
 		box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
 	}
-
+	
 	.order_info_select {
 		position: absolute;
 		height: 100%;
@@ -131,7 +125,7 @@
 		z-index: 999;
 		display: none;
 	}
-
+	
 	.order_info_select i {
 		width: 58rpx;
 		height: 58rpx;
@@ -141,12 +135,12 @@
 		bottom: 20rpx;
 		left: 20rpx;
 	}
-
+	
 	.order_info_select i.selected_order {
 		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat center center;
 		background-size: 100%;
 	}
-
+	
 	.order_info_header {
 		font-size: 32rpx;
 		line-height: 68rpx;
@@ -156,7 +150,7 @@
 		margin-bottom: 20rpx;
 		background: #FECE00;
 	}
-
+	
 	.order_info_header ul li {
 		display: inline-block;
 		color: #111111;
@@ -164,146 +158,145 @@
 		float: left;
 		width: 21%;
 	}
-
+	
 	.order_info_header ul li:nth-child(1) {
 		width: 16%;
 	}
-
+	
 	.order_info_header ul li:nth-child(2) {
 		width: 20%;
 	}
-
+	
 	.order_info_header ul li:nth-child(3) {
 		width: 14%;
 	}
-
+	
 	.order_info_header ul li:nth-child(4) {
 		width: 25%;
 	}
-
+	
 	.order_info_header ul li:nth-child(5) {
 		width: 25%;
 	}
-
+	
 	.order_info_nowstatus {
 		font-size: 28rpx;
 		font-weight: normal;
 		overflow: hidden;
 	}
-
+	
 	.order_info_nowstatus ul li {
 		float: left;
 		width: 20%;
 		text-align: center;
 	}
-
+	
 	.order_info_nowstatus ul li:nth-child(1) {
 		/* background: #525252; */
 		width: 16%;
 		text-indent: 6rpx;
 	}
-
+	
 	.order_info_nowstatus ul li:nth-child(2) {
 		/* background: #005252; */
 		width: 20%;
 	}
-
+	
 	.order_info_nowstatus ul li:nth-child(3) {
 		/* background: #520052; */
 		width: 14%;
 	}
-
+	
 	.order_info_nowstatus ul li:nth-child(4) {
 		/* background: #005252; */
 		width: 25%;
 	}
-
+	
 	.order_info_nowstatus ul li:nth-child(5) {
 		/* background: #520052; */
 		width: 25%;
 	}
-
+	
 	.order_info_status {
 		font-weight: 300;
 		color: #FECE00;
 		float: right;
 	}
-
+	
 	.order_info_ads {
 		font-size: 28rpx;
 		line-height: normal;
 		font-weight: normal;
 	}
-
+	
 	.order_info_ads em {
 		display: inline-block;
 		margin: 0 20rpx 10rpx;
 	}
-
+	
 	.order_info_glist {
 		overflow: hidden;
 		clear: both;
 		margin: 20rpx;
 	}
-
+	
 	.order_info_glist dl {}
-
+	
 	.order_info_glist dl dd {
 		display: inline-block;
 		width: 160rpx;
 		height: 160rpx;
 		float: left;
 	}
-
+	
 	.order_info_glist dl dd img {
 		display: block;
 		width: 160rpx;
 		height: 160rpx;
 		background: #FAFAFA;
 	}
-
+	
 	.order_info_glist dl dt {
 		display: inline-block;
 		width: 490rpx;
 		float: right;
 		font-size: 30rpx;
 	}
-
+	
 	.order_info_glist_title {
 		line-height: normal;
 		overflow: hidden;
 	}
-
+	
 	.order_info_glist_title ul li {
 		width: 33.33%;
 		float: left;
 		text-align: center;
 	}
-
+	
 	.order_info_glist_title ul li:nth-child(1) {
 		text-align: left;
 	}
-
+	
 	.order_info_glist_list {
 		overflow: hidden;
 		font-size: 28rpx;
 	}
-
+	
 	.order_info_glist_list ul li {
 		line-height: normal;
 	}
-
+	
 	.order_info_glist_list ul li em {
 		width: 33.33%;
 		float: left;
 		text-align: center;
 	}
-
+	
 	.order_info_glist_list ul li em:nth-child(1) {
 		text-align: left;
 	}
-
-
+	
 	.order_info_footer {
 		margin: 20rpx 20rpx 10rpx;
 		padding-top: 20rpx;
@@ -311,22 +304,21 @@
 		height: 88rpx;
 		line-height: 88rpx;
 	}
-
+	
 	.order_info_footer_left {
 		float: left;
 		font-size: 30rpx;
 	}
-
+	
 	.order_info_footer_right {
 		float: right;
 	}
-
+	
 	.order_info_footer_right em {
 		display: inline-block;
 		color: #FECE00;
 	}
-
-
+	
 	.order_info_circle {
 		position: absolute;
 		background: #FAFAFA;
@@ -337,7 +329,7 @@
 		right: -25rpx;
 		z-index: 1;
 	}
-
+	
 	.order_info_circle.right_circle {
 		left: -25rpx;
 	}

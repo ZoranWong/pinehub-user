@@ -3,6 +3,7 @@
 import ServiceProvider from './ServiceProvider';
 import MpAuthService from '../services/mp/AuthService';
 import HttpAuthService from '../services/http/AuthService';
+import HttpOrdersService from '../services/http/OrdersService';
 import ShoppingCartService from '../services/http/ShoppingCartService';
 import SessionService from '../services/cache/SessionService';
 import Base64Service from '../services/encrypt/Base64Service';
@@ -15,8 +16,6 @@ import PopupService from '../services/mp/PopupService';
 import TencentMapService from '../services/mp/TencentMapService';
 import StorageService from '../services/mp/StorageService';
 
-//订单服务
-import OrdersService from '../services/http/OrdersService';
 import _ from 'underscore';
 export default class AppServiceProvider extends ServiceProvider {
 	constructor(app) {
@@ -63,6 +62,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('json', JsonService);
 		this.app.register('mp.auth', MpAuthService);
 		this.app.register('http.auth', HttpAuthService);
+		this.app.register('http.orders', HttpOrdersService);
 		this.app.register('http.shoppingCart', ShoppingCartService);
 		this.app.register('session', SessionService);
 		this.app.register('href', HrefService);
@@ -71,8 +71,6 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('popup', PopupService);
 		this.app.register('map', TencentMapService);
 		this.app.register('mp.storage', StorageService);
-		//订单服务注册
-		this.app.register('http.orders', OrdersService);
 	}
 	boot() {
 

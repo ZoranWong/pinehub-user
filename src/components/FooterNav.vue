@@ -5,7 +5,7 @@
 				<em class="fnav" :class="index"></em>
 				<i>首页</i>
 			</li>
-			<li>
+			<li @click="scanCode">
 				<em class="fnav" :class="scanning"></em>
 				<i>扫码</i>
 			</li>
@@ -58,6 +58,9 @@
 			jump(router) {
 				console.log(router)
 				this.$command('router', router, 'replace');
+			},
+			scanCode(){
+				this.$command('scanCommand', 'myfeedbacksuccess');
 			}
 		},
 		created() {

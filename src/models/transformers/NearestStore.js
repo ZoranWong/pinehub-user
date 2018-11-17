@@ -1,5 +1,5 @@
 export default class NearestStore {
-  constructor(NearestStore) {
+  constructor (NearestStore) {
     this.id = NearestStore['id'];
     this.name = NearestStore['name'];
     this.lng = NearestStore['lng'];
@@ -7,5 +7,4 @@ export default class NearestStore {
     this.address = NearestStore['address'];
     this.mobile = NearestStore['mobile'];
   }
-
 }
