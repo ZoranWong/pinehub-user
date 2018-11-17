@@ -5,7 +5,7 @@
 			<div id="myorder_select">
 				<div class="myorder_select_info">
 					<em>日期</em>
-					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
+					<picker mode="date" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
 				<div class="myorder_select_info">
 					<em>类型</em>
@@ -22,7 +22,7 @@
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order :next="next" :types="types" :gathOrders="gathorders" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
+				<order :next="next" :types="types" :loadOrders="loadOrders" :datetime="selectDate" :status="status" :startTime="startTime" :endTime="endTime"></order>
 			</div>
 		</div>
 	</div>
@@ -67,31 +67,26 @@
 				num = (num == 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
-			gathorders() {
-				return this.$store.getters['model.gather.orders/lists']
-			},
 			currentPage() {
-				let page = this.$store.getters['model.gather.orders/currentPage'];
-				console.log(page, "当前页数aaaaaapppppp")
-				return page;
+				return this.$store.getters['model.gather.orders/currentPage'];
 			}
 
 		},
 		methods: {
 			loadOrders(startime, endtime, type, status, page = 1, limit = 15) {
+				console.log('<<<<<<<<<<<<<JIAZAIGENGDUO>>>>>>>>>>>>>', startime, endtime, type, status);
 				this.$command('gather-orders', startime, endtime, type, status, page, limit);
 			},
 			tabSelect(num) {
 				this.cur = num;
-				this.status = this.tabs[num].statname
-				//				console.log(this.status)
+				this.status = this.tabs[num].statname;
 				this.loadOrders(this.startTime, this.endTime, this.type, this.status);
 			},
 			getSelectDate(e) {
 				//				console.log(new Date(e.target.value));
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
-				this.startTime = this.selectDate + " " + "00:00:00"
-				this.endTime = this.selectDate + " " + "23:59:59"
+				this.startTime = this.selectDate + " " + "00:00:00";
+				this.endTime = this.selectDate + " " + "23:59:59";
 				this.loadOrders(this.startTime, this.endTime, this.type, this.status)
 			},
 			bindPickerChange(e) {
@@ -102,22 +97,18 @@
 				} else if(this.index == 1) {
 					this.type = "self_lift"
 				}
-
+				this.loadOrders(this.startTime, this.endTime, this.type, this.status)
 			},
 			next() {
 				console.log('nnnnnnnnnxxxxxx', this.currentPage);
 				this.loadOrders(this.startTime, this.endTime, this.type, this.status, this.currentPage + 1, this.pageCount);
 			}
 		},
-		mounted: function() {
-			this.loadOrders(this.startTime, this.endTime, this.type, this.status);
+		mounted() {
 			this.startTime = this.selectDate + " " + "00:00:00"
 			this.endTime = this.selectDate + " " + "23:59:59"
 			this.status = "all"
-			console.log(this.gathorders[0], "uuuuuuuuuuuuuuuunnnnnnnnnnnnnnn")
-		},
-		created: function() {
-
+			this.loadOrders(this.startTime, this.endTime, this.type, this.status);
 		}
 	}
 </script>
@@ -143,6 +134,7 @@
 	
 	#myorder_select {
 		margin: 20rpx 20rpx 0;
+		font-weight: 300;
 	}
 	
 	.myorder_select_info {
@@ -154,7 +146,6 @@
 		display: inline-block;
 		float: left;
 		font-size: 32rpx;
-		font-weight: normal;
 	}
 	
 	.input {

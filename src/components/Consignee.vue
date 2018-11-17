@@ -21,7 +21,7 @@
 		props: ["selectMethod"],
 		computed: {
 			userInfo() {
-				console.log('获取用户信息<<<>>>', this.$store.getters['model.my.info/userInfo']);
+				console.log('获取用户信息<<<>>>', this.$store.getters);
 				return this.$store.getters['model.my.info/userInfo'];
 			},
 		}

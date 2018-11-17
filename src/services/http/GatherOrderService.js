@@ -11,6 +11,7 @@ export default class GatherOrderService extends ApiService {
 		let currentPage = 0;
 		let gathorders = null;
 		let response = null;
+		console.log('查看参数是否有误', startTime, endTime, type, status);
 		if(this.$application.needMock()) {
 			//console.log('service-mock----------');
 			response = await this.services('mock.gatherOrder').mock(startTime, endTime, type, status, page);

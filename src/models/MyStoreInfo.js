@@ -9,29 +9,31 @@ export default class MyStoreInfo extends Model {
 			storeInfo(state) {
 				return state.storeInfo;
 			},
-			sellAmountCharts(state) {
-				return state.sellAmountCharts;
+			sellAmountECharts(state) {
+				return state.sellAmountECharts;
 			},
-			buyNumCharts(state) {
-				return state.buyNumCharts;
+			buyNumECharts(state) {
+				return state.buyNumECharts;
 			}
 		});
 	}
 	data() {
 		return {
-			storeInfo: []
+			storeInfo: [],
+			sellAmountECharts: [],
+			buyNumECharts: []
 		};
 	}
 	//监听数据
 	listeners() {
 		this.addEventListener('storeInfo', function({
 			storeInfo,
-			sellAmountCharts,
-			buyNumCharts
+			sellAmountECharts,
+			buyNumECharts
 		}) {
 			this.state.storeInfo = storeInfo;
-			this.state.sellAmountCharts = sellAmountCharts;
-			this.state.buyNumCharts = buyNumCharts;
+			this.state.sellAmountECharts = sellAmountECharts;
+			this.state.buyNumECharts = buyNumECharts;
 		});
 	}
 }

@@ -10,14 +10,21 @@ export default class GatherOrderCommand extends Command {
 			console.log('com-good', [list, totalNum, currentPage, totalPage]);
 			console.log('c-end1111111111', status);
 
-			this.store().dispatch({
-				type: 'model.gather.orders/setOrders',
+			//			this.$store.dispatch({
+			//				type: 'model.gather.orders/setOrders',
+			//				list: list,
+			//				totalNum: totalNum,
+			//				currentPage: currentPage,
+			//				totalPage: totalPage,
+			//				pageCount: limit,
+			//				status: status
+			//			});
+			this.$store.dispatch('model.gather.orders/setList', {
 				list: list,
 				totalNum: totalNum,
 				currentPage: currentPage,
 				totalPage: totalPage,
-				pageCount: limit,
-				status: status
+				pageCount: limit
 			});
 		} catch(e) {
 			console.log('抛出异常', e);

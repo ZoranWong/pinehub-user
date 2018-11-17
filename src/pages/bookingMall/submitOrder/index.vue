@@ -11,9 +11,9 @@
 				</p>
 			</li>
 			<!-- <li class="li-item bgff">
-				配送联系电话 
+				配送联系电话
 				<p class="details-item tel-num">
-				16868686868	
+				16868686868
 				</p>
 			</li> -->
 		</ul>
@@ -52,7 +52,7 @@
 				this.index = e.target.value
 			},
 			next() {
-				this.$command('GET_MERCHANDISE_LIST');
+				this.$command('LOAD_MERCHANDISE_LIST');
 			},
 			addCart(shopId, count, merchandiseId) {
 				this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -75,7 +75,7 @@
 		font-size: 28rpx;
 		padding: 20rpx 0rpx 20rpx 20rpx;
 	}
-	
+
 	.li-item {
 		width: 706rpx;
 		height: 80rpx;
@@ -85,24 +85,24 @@
 		box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.3);
 		box-sizing: border-box;
 	}
-	
+
 	.li-item .details-item {
 		display: inline-block;
 		height: 80rpx;
 		margin-left: 100rpx;
 	}
-	
+
 	.Distribution-details {
 		margin-bottom: 20rpx;
 		box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.3);
 		/*border:1rpx solid black;*/
 	}
-	
+
 	.li-item p input {
 		display: inline-block;
 		vertical-align: middle;
 	}
-	
+
 	.li-item .tel-num {
 		margin-left: 44rpx;
 	}

@@ -1,7 +1,7 @@
 import App from './index';
-import GatherOrderService from '../../../../services/http/GatherOrderService';
+import GatherOrderService from '@/services/http/GatherOrderService';
 import GatherOrderCommand from '@/commands/GatherOrderCommand';
-import GatherOrder from '@/models/GatherOrder';
+import GatherOrder from '@/models/Orders';
 
 import Vue from 'vue';
 

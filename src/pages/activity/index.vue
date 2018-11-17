@@ -37,6 +37,9 @@
       currentPage () {
         let page = this.$store.getters['model.activity.merchandises/currentPage'];
         return page
+      },
+      isLoadedAll () {
+        return this.$store.getters['model.activity.merchandises/isLoadedAll'];
       }
     },
     watch: {},
@@ -55,7 +58,9 @@
         this.isShow = false;
       },
       next () {
-        this.loadMerchandises(this.currentPage + 1);
+        if (!this.isLoadedAll) {
+          this.loadMerchandises(this.currentPage + 1);
+        }
       },
       loadCartMerchandises (page = 1) {
         this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', page);

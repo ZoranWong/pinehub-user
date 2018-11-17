@@ -1,5 +1,5 @@
 import Command from './Command';
-export default class GetMerchandisesCommand extends Command {
+export default class LoadMerchandisesCommand extends Command {
   constructor (app) {
     super(app);
   }
@@ -26,6 +26,6 @@ export default class GetMerchandisesCommand extends Command {
     }
   }
   static commandName () {
-    return 'GET_MERCHANDISE_LIST';
+    return 'LOAD_MERCHANDISE_LIST';
   }
 }

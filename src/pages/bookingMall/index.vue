@@ -50,6 +50,9 @@
       },
       categoryIndex () {
         return this.$store.getters['model.bookingMall.merchandises/currentCategoryIndex'];
+      },
+      isLoadedAll () {
+        return this.$store.getters['model.bookingMall.merchandises/isLoadedAll'];
       }
     },
     watch: {
@@ -101,7 +104,9 @@
         }
       },
       next () {
-        this.loadMerchandises(this.currentPage + 1);
+        if (!this.isLoadedAll) {
+          this.loadMerchandises(this.currentPage + 1);
+        }
       },
       addCart (merchandiseId, id = null) {
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;

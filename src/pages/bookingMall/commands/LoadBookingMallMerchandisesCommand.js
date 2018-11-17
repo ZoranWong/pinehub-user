@@ -1,4 +1,4 @@
-import Command from './Command';
+import Command from '@/commands/Command';
 export default class LoadBookingMallMerchandisesCommand extends Command {
   constructor (app) {
     super(app);

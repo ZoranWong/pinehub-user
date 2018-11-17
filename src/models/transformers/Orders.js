@@ -1,13 +1,18 @@
-export default class Orders {
-	constructor(orders) {
+export default class Order {
+	constructor(order) {
 		console.log('order transformer');
-		this.code = orders['code'];
-		this.id = orders['id'];
-		this.type = orders['type'];
-		this.status = orders['status'];
-		this.merchandiesNum = orders['merchandies_num'];
-		this.paymentAmount = orders['payment_amount'];
-		this.totalAmount = orders['total_amount'].toFixed(2);
+		this.code = order['code'];
+		this.id = order['id'];
+		this.type = order['type'];
+		this.status = order['status'];
+		this.merchandiesNum = order['merchandies_num'];
+		this.paymentAmount = order['payment_amount'];
+		this.totalAmount = order['total_amount'].toFixed(2);
+
+		//卡券使用
+		this.cardId = (typeof order['card_id'] !== 'undefined' && order['card_id'] !== null) ? order['card_id'] : '无';
+		//销售指数
+		this.sellPoint = (typeof order['sell_point'] !== 'undefined' && order['sell_point'] !== '' && order['sell_point'] !== null) ? order['sell_point'] : 0;
 		//btnStatus 0 没有按钮 1 支付 取消 2 确认核销 3 确认收货
 		if(this.type == 0) {
 			this.btnStatus = 0;
@@ -55,10 +60,10 @@ export default class Orders {
 				this.status = "";
 				break;
 		}
-		this.quantity = orders['quantity'];
-		this.receiverAddress = orders['receiver_address'];
-		this.createdAt = orders['created_at'];
-		this.orderItems = orders['order_item_merchandises'];
+		this.quantity = order['quantity'];
+		this.receiverAddress = order['receiver_address'];
+		this.createdAt = order['created_at'];
+		this.orderItems = order['order_item_merchandises'];
 		for(var i in this.orderItems) {
 			this.orderItems[i] = {
 				name: this.orderItems[i]['name'],

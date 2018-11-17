@@ -1,5 +1,5 @@
-import Command from './Command';
-export default class GetStoreCategoriesCommand extends Command {
+import Command from '@/commands/Command';
+export default class LoadStoreCategoriesCommand extends Command {
   constructor (app) {
     super(app);
   }
@@ -20,6 +20,6 @@ export default class GetStoreCategoriesCommand extends Command {
     }
   }
   static commandName () {
-    return 'GET_STORE_CATEGORIES';
+    return 'LOAD_STORE_CATEGORIES';
   }
 }

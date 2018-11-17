@@ -1,4 +1,4 @@
-import Command from './ShoppingCartCommand';
+import Command from '@/commands/ShoppingCartCommand';
 export default class StoreShoppingCartClearMerchandisesCommand extends Command {
   constructor (app) {
     super(app);

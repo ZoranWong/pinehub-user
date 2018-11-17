@@ -38,9 +38,9 @@ export default class TicketsService extends ApiService {
 		}
 		return await this.list(status, parameters);
 	}
-	
-	async allCouponsList(status,page){
+
+	async allCouponsList(status, page) {
 		console.log('获取全部优惠券');
-		
+
 	}
 }

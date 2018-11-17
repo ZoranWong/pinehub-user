@@ -5,7 +5,7 @@
 			<i id="select_date_arrow"></i>
 		</div>
 		<div id="sales_charts">
-			<wx-charts :options='wxOptions'></wx-charts>
+			<wx-charts :unit="unit" :options='wxOptions'></wx-charts>
 		</div>
 		<div id="sales_total">
 			<div class="sales_total_style sales_total_all">销售总额<em>{{salesInfo.order_amount}}</em></div>
@@ -36,23 +36,6 @@
 
 <script>
 	import WxCharts from '@/components/WxCharts';
-	const data = [
-		[680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680,
-			619
-		],
-		[934, 934, 934, 934, 934, 932, 901],
-		[910, 445, 143, 643, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551, 680, 619, 680, 980, 440, 551,
-			680, 619, 680, 980, 440, 551, 680, 619
-		]
-	]
-	const day = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-	const week = ['一', '二', '三', '四', '五', '六', '日'];
-	const mouth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-		29, 30, 31
-	];
-	const dateData = [day, week, mouth];
-	let i = 0
-
 	export default {
 		components: {
 			'wx-charts': WxCharts
@@ -91,17 +74,18 @@
 		data() {
 			return {
 				nowSelectDate: 0,
-				selectDate: ["今日", "本周", "本月"]
+				selectDate: ["今日", "本周", "本月"],
+				unit: "数额"
 			};
 		},
 		computed: {
 			wxOptions() {
-				console.log('computed wx echart options', this.$store.getters['model.my.sales.echart/chartData']);
+				console.log('computed wx echart options>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<', this.$store.getters['model.my.sales.echart/chartData']);
 				return this.$store.getters['model.my.sales.echart/chartData'];
 			}
 		},
 		mounted() {
-//			this.onloadSalesEChart('hour');
+			//			this.onloadSalesEChart('hour');
 			this.onloadSales('hour');
 		},
 		methods: {
@@ -112,66 +96,16 @@
 				console.log('com------', this.$parent);
 				// this.wxOptions = this.$parent.mp.eCharts.createChart('week', data[1], true);
 				if(num == 0) {
-//					this.onloadSalesEChart('hour');
+					//					this.onloadSalesEChart('hour');
 					this.onloadSales('hour');
 				} else if(num == 1) {
-//					this.onloadSalesEChart('week');
+					//					this.onloadSalesEChart('week');
 					this.onloadSales('week');
 				} else {
-//					this.onloadSalesEChart('month');
+					//					this.onloadSalesEChart('month');
 					this.onloadSales('month');
 				}
 				console.log('change wxechart ', this.$store.getters['model.my.sales.echart/chartData']);
-			},
-			getOptions: function(i, refresh = false) {
-				let option = {
-					refresh: refresh,
-					xAxis: {
-						type: 'category',
-						data: dateData[i],
-						axisLabel: {
-							show: true,
-							textStyle: {
-								color: '#111111'
-							}
-						}
-					},
-					yAxis: {
-						type: 'value',
-						axisLine: {
-							show: false
-						},
-						axisLabel: {
-							show: true,
-							textStyle: {
-								color: '#111111'
-							}
-						}
-					},
-					grid: {
-						x: 40,
-						y: 20,
-						x2: 20,
-						y2: 20,
-						borderWidth: 1
-					},
-					series: [{
-						data: data[i],
-						type: 'line',
-						itemStyle: {
-							normal: {
-								color: '#FECE00',
-								lineStyle: {
-									width: 3, //折线宽度
-									color: '#FECE00'
-								}
-							}
-						},
-						areaStyle: {},
-						smooth: true
-					}]
-				}
-				return option
 			}
 		}
 	}

@@ -47,7 +47,6 @@ export default class Model {
           return this.list();
         },
         isLoadedAll () {
-          console.log('totalPage and currentPage ', this.state, this.state);
           return this.state.currentPage > 0 && this.state.totalPage <= this.state.currentPage;
         },
         currentPage () {
@@ -73,6 +72,10 @@ export default class Model {
       this.addEventListener('setList', (payload, state /* paylaod */) => {
         console.log(payload);
         this.setList(payload, state);
+      });
+      
+    this.addEventListener('reset', (payload, state /* paylaod */) => {
+    			_.extend(this.state, this.data());
       });
     }
 

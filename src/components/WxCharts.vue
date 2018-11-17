@@ -3,9 +3,8 @@
 		<div id="mychart-info">
 			销售曲线图表
 			<em>(每晚21:00更新当日数据)</em>
-			<!-- <i>2018/08/08 21:00</i> -->
 		</div>
-		<div id="mychart-num">数额</div>
+		<div id="mychart-num">{{unit}}</div>
 		<div class="mycharts">
 			<ec-canvas class="canvas" id="mychart" canvas-id="mychart-bar" :ec="ec"></ec-canvas>
 		</div>
@@ -14,7 +13,7 @@
 
 <script>
 	export default {
-		props: ['options'],
+		props: ['options', 'unit'],
 		data() {
 			return {
 				ec: {
@@ -49,7 +48,13 @@
 	}
 	
 	ec-canvas {
-		width: 670rpx;
+		width: 600rpx;
+	}
+	
+	canvas {
+		position: relative;
+		top: 0;
+		left: 0;
 	}
 	
 	#mychart-info {
