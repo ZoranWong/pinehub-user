@@ -19,6 +19,7 @@ import CreateOrderCommand from '@/commands/CreateOrderCommand';
 import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
 
 import LoadMerchandisesCommand from '@/commands/LoadMerchandisesCommand';
+import LoadAccountCommand from '@/commands/LoadAccountCommand';
 
 export default class CommandServiceProvider extends ServiceProvider {
   constructor (app) {
@@ -36,7 +37,8 @@ export default class CommandServiceProvider extends ServiceProvider {
       BackToScrollViewTopCommand,
       CreateOrderCommand,
       ClearMerchandiseCommand,
-      LoadMerchandisesCommand
+      LoadMerchandisesCommand,
+      LoadAccountCommand
     ];
     for (let key in commands) {
       this.app.registerCommand(commands[key].commandName(), commands[key]);

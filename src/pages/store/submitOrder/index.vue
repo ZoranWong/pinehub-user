@@ -7,8 +7,6 @@
     <tab-delivery :position="position"></tab-delivery>
     <!-- 支付内容的显示组件 -->
     <payment :next="next"  :addMerchandiseToCart = "addCart"  :reduceMerchandiseToCart = "reduceCart" ></payment>
-
-
   </div>
 </template>
 <script>

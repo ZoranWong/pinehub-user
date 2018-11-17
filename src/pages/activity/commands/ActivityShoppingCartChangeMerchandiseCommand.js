@@ -1,42 +1,42 @@
 import Command from '@/commands/ShoppingCartCommand';
 export default class ActivityShoppingCartChangeMerchandiseCommand extends Command {
-	constructor(app) {
-		super(app);
-		this.model = 'model.activity.shoppingCarts';
-	}
-	async handle(merchandiseId, id = null, quality = 1) {
-		try {
-			let acitityId = await this.service('mp.storage').get('activityId');
-			let merchandise = null;
-			if(id && quality === 0) {
-				merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
-				this.deleteShoppingCart(id);
-				return;
-			} else if(id === null) {
-				merchandise = await this.service('http.shoppingCart').activityShoppingCartAddMerchandise(
-					acitityId,
-					merchandiseId,
-					quality);
-				if(merchandise) {
-					this.addMerchandiseToShoppingCart(merchandise);
-				}
-			} else if(id && quality > 0) {
-				merchandise = await this.service('http.shoppingCart').activityShoppingCartChangeMerchandise(
-					acitityId,
-					id,
-					merchandiseId,
-					quality);
-				if(merchandise) {
-					this.changeShoppingCartMerchandise(merchandise);
-				}
-			}
+  constructor (app) {
+    super(app);
+    this.model = 'model.activity.shoppingCarts';
+  }
+  async handle (activityId, merchandiseId, id = null, quality = 1) {
+    try {
+      let merchandise = null;
+      if (id && quality === 0) {
+        merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
+        if (merchandise) {
+          this.deleteShoppingCart(id);
+        }
+        return;
+      } else if (id === null) {
+        merchandise = await this.service('http.shoppingCart').activityShoppingCartAddMerchandise(
+          activityId,
+          merchandiseId,
+          quality);
+        if (merchandise) {
+          this.addMerchandiseToShoppingCart(merchandise);
+        }
+      } else if (id && quality > 0) {
+        merchandise = await this.service('http.shoppingCart').activityShoppingCartChangeMerchandise(
+          activityId,
+          id,
+          merchandiseId,
+          quality);
+        if (merchandise) {
+          this.changeShoppingCartMerchandise(merchandise);
+        }
+      }
+    } catch (e) {
+      console.log('抛出异常', e);
+    }
+  }
 
-		} catch(e) {
-			console.log('抛出异常', e);
-		}
-	}
-
-	static commandName() {
-		return 'ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE';
-	}
+  static commandName () {
+    return 'ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE';
+  }
 }

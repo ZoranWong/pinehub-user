@@ -6,7 +6,7 @@
       </div>
       <div class="foods-item-bottom">
         <h4 class="merchandises-name">{{item.name}}</h4>
-        <span class="tag color00" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
+        <span class="tag color00" v-if="item.tags.length > 0" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
         <p class="describe color75">{{item.describe}}</p>
         <div class="content ">
           <div class="sell-price color00">{{item.sellPrice}}

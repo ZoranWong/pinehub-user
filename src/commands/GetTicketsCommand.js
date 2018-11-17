@@ -1,15 +1,15 @@
 import Command from './Command';
 export default class GetTicketsCommand extends Command {
-	constructor(app) {
+	constructor (app) {
 		super(app);
 	}
 
-	async handle(type, status = 0, page = 1) {
-		if(type == 'activity') {
+	async handle (type, status = 0, page = 1) {
+		if (type == 'activity') {
 			let activityId = await this.service('mp.storage').get('activityId');
 			console.log('优惠券进来了', activityId)
 			let [list, totalNum, currentPage, totalPage] = await this.activity(status, activityId, page);
-		} else if(type == 'store') {
+		} else if (type == 'store') {
 
 		} else {
 
@@ -24,18 +24,17 @@ export default class GetTicketsCommand extends Command {
 	}
 
 	// 活动
-	async activity(status, activityId, page) {
+	async activity (status, activityId, page) {
 		console.log('优惠券进来了<<<<A', status, activityId, page);
 		try {
 			return await this.service('http.tickets').activityCouponsList(status, activityId, page);
-		} catch(e) {
+		} catch (e) {
 			console.log('抛出异常', e);
-			throw(e);
+			throw (e);
 			return false;
 		}
-
 	}
-	static commandName() {
+	static commandName () {
 		return 'GET_TICKETS';
 	}
 }

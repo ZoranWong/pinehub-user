@@ -6,25 +6,25 @@
         <img :src="headerAnimate" />
       </div>
     </div>
-    <div v-if="!isAuth" id="index_mobile" class="bgff">
-      <button id="index_getmobile" open-type="getUserInfo" @getuserinfo="getUserInfo">
+    <div v-if="!isAuth"  class="bgff user-info-box">
+      <button class = "user-info-get-btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
         获取用户信息
       </button>
-      <em id="index_tips">
+      <em class = "tips">
         我们需要获取您的小程序用户信息来创建用户信息
       </em>
     </div>
-    <div v-else-if="!isMember" id="index_mobile" class="bgff">
-      <button id="index_getmobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+    <div v-else-if="!isMember"  class="bgff user-mobile-box">
+      <button class = "user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
         手机号授权
       </button>
-      <em id="index_tips">
+      <em class = "tips">
         我们需要您的手机号来创建账号，累计积分
       </em>
     </div>
-    <div v-else id="index_mobile" class="bgff">
-      <div id="index_getscore">{{userScore}}<i>积分</i></div>
-      <em id="index_tips">
+    <div v-else  class="bgff user-score-box">
+      <div class = "score">{{userScore}}<i>积分</i></div>
+      <em class = "tips">
         积分功能即将上线，敬请期待！
       </em>
     </div>
@@ -41,7 +41,7 @@
         </dd>
         <dt>预定商城</dt>
       </dl>
-      <div @click="jump('activity')" class="booking">
+      <div @click="jump('activity', {query: {activity_id: activityId}})" class="booking">
         <img src="../../../static/images/icon/booking.png" />
       </div>
     </div>
@@ -82,16 +82,18 @@
         return token !== null && (new Date(token['ttl'])).getTime() > Date.now();
       },
       hasLoadedActivity () {
-        console.log('MODEL__________>>>>>>>>', this.$store.getters)
         return this.$store.getters['model.activity/id'] !== null;
+      },
+      activityId () {
+        return this.$store.getters['model.activity/id'];
       }
     },
     mounted () {
       this.loadData();
     },
     methods: {
-      jump (router) {
-        this.$command('router', router, 'push');
+      jump (router, options = {}) {
+        this.$command('router', router, 'push', options);
       },
       getPhoneNumber (e) {
         this.$command('SET_MOBILE', e);
@@ -101,9 +103,9 @@
         this.$command('MYINFO');
       },
       async loadData () {
-        console.log('has login', [this.isLogin]);
         if (!this.isLogin) {
           await this.$command('SIGN_IN');
+          await this.$command('LOAD_ACCOUNT', false);
         }
         console.log('activity has loaded', [this.hasLoadedActivity]);
         if (!this.hasLoadedActivity) {
@@ -156,7 +158,7 @@
     height: 100%;
   }
 
-  #index_mobile {
+  .user-info-box, .user-mobile-box, .user-score-box {
     height: 300rpx;
     width: 670rpx;
     margin: 0 auto;
@@ -166,7 +168,7 @@
     text-align: center;
   }
 
-  #index_getmobile {
+  .user-info-get-btn,.user-mobile-get-btn {
     height: 80rpx;
     width: 320rpx;
     text-align: center;
@@ -181,7 +183,7 @@
     box-shadow: 0 10rpx 10rpx #fff6bd;
   }
 
-  #index_getscore {
+  .score {
     position: relative;
     display: inline-block;
     height: 80rpx;
@@ -192,7 +194,7 @@
     font-weight: 500;
   }
 
-  #index_getscore i {
+  .user-score-box .score i {
     position: absolute;
     top: 0;
     right: -68rpx;
@@ -201,7 +203,7 @@
     line-height: 32rpx;
   }
 
-  #index_tips {
+  .tips {
     text-align: center;
     font-size: 26rpx;
     font-weight: 200;

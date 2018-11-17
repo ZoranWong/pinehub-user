@@ -3,7 +3,7 @@
     <mp-title :title="title"></mp-title>
     <new-list :model="model" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></new-list>
     <cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
-    <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-location>
+    <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId"></pop-location>
     <div id="shopping_cart_height" v-if="isShowCart"></div>
   </div>
 </template>
@@ -18,7 +18,7 @@
       return {
         title: '新品预定',
         isShow: false,
-        activityId: 1,
+        activityId: null,
         isShowCart: true,
         screenHeight: null,
         model: 'model.activity.shoppingCarts'
@@ -44,9 +44,8 @@
     },
     watch: {},
     methods: {
-      loadMerchandises (page = 1) {
-        console.log('==============加载活动商品=================')
-        this.$command('ACTIVITY_LOADING_MERCHANDISES', page)
+      async loadMerchandises (page = 1) {
+        await this.$command('ACTIVITY_LOADING_MERCHANDISES', this.activityId, page)
       },
       hdlShowCart () {
         this.isShowCart = true;
@@ -58,36 +57,40 @@
         this.isShow = false;
       },
       next () {
-        if (!this.isLoadedAll) {
+        if (!this.isLoadedAll && this.activityId !== null) {
           this.loadMerchandises(this.currentPage + 1);
         }
       },
-      loadCartMerchandises (page = 1) {
-        this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', page);
+      async loadCartMerchandises (page = 1) {
+        await this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', this.activityId, page);
       },
       addCart (merchandiseId, id = null) {
         let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1;
-        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
       },
       reduceCart (merchandiseId, id = null) {
         let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
-        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
       },
       clearShoppingCart () {
         try {
-          this.$command('ACTIVITY_SHOPPINGCART_CLEAR_MERCHANDISES');
+          this.$command('ACTIVITY_SHOPPINGCART_CLEAR_MERCHANDISES', this.activityId);
         } catch (e) {
           console.log(e);
         }
+      },
+      async initData () {
+        await this.loadMerchandises();
+        await this.loadCartMerchandises();
       }
     },
     mounted () {
-      console.log('===========活动页面挂载成功=============')
-      this.loadMerchandises();
-      this.loadCartMerchandises();
+      this.activityId = this.$route.query['activity_id'];
+      if (this.activityId) {
+        this.initData();
+      }
     },
     created () {
-      console.log('===========活动页面创建成功=============')
       this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth * wx.getSystemInfoSync().windowHeight) + 'rpx';
     }
   }
