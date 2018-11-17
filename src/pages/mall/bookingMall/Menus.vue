@@ -28,7 +28,7 @@
 		},
 		computed: {
 			categories() {
-				return this.$store.getters['model.storeCategories/categories'];
+				return this.$store.getters['model.categories/categories'];
 			}
 		},
 		methods: {
@@ -47,15 +47,14 @@
 <style scoped>
 	.menu-wrapper {
 		width: 120rpx;
-		height: 100%;
 		overflow-y: auto;
+		float: left;
 	}
-	
+
 	#tab_select {
 		overflow: hidden;
-		width: 100%;
 	}
-	
+
 	.search {
 		height: 130rpx;
 		box-sizing: border-box;
@@ -63,46 +62,46 @@
 		border-bottom-right-radius: 10rpx;
 		padding: 28rpx 0rpx;
 	}
-	
+
 	.search-icon {
 		display: inline-block;
 		width: 40rpx;
 		height: 40rpx;
-		background: url("../../../static/images/icon/search-icon.png") no-repeat;
+		background: url("../../../../static/images/icon/search-icon.png") no-repeat;
 		background-size: contain;
 		margin: 0rpx 40rpx 10rpx;
 	}
-	
+
 	#tab_select ul li {
 		display: table;
 		width: 120rpx;
 		height: 108rpx;
-		text-align: center;
+		/*text-align: center;*/
 		font-size: 28rpx;
-		font-weight: 400;
+		font-weight: 300;
 		box-sizing: border-box;
-		box-shadow: 4rpx 0rpx 10rpx rgba(205, 205, 205, 0.3);
+		box-shadow: 1rpx 0rpx 6rpx rgba(205, 205, 205, 0.3);
 	}
-	
+
 	#tab_select ul li .category-name {
 		width: 56rpx;
 		display: inline-block;
 		line-height: 40rpx;
 		margin-top: 7px;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 		border-left: 6rpx solid #fece00;
-		background: #fafafa url("../../../static/images/icon/new-product-icon.png") no-repeat center 20%;
+		background: #f2f2f2 url("../../../../static/images/icon/new-product-icon.png") no-repeat center 20%;
 		background-size: 58rpx 66rpx;
 		padding-top: 100rpx;
 	}
-	
+
 	#tab_content {
 		padding-top: 74rpx;
 	}
-	
+
 	.tab_content_now {
 		display: block;
 	}

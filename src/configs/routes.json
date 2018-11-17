@@ -15,13 +15,13 @@
 	"logs": "/pages/logs/main",
 	"counter": "/pages/counter/main",
 	"search": "/pages/search/main",
-	"store": "/pages/store/main",
-	"todaySubmitOrder": "/pages/store/submitOrder/main",
-	"bookingMall": "/pages/bookingMall/main",
-	"shopSubmitOrder": "/pages/bookingMall/submitOrder/main",
-	"orderSelf": "/pages/bookingMall/orderSelf/main",
-	"activity": "/pages/activity/main",
-	"activitySubmitOrder": "/pages/activity/submitOrder/main",
+	"store": "/pages/mall/store/main",
+	"todaySubmitOrder": "/pages/mall/store/submitOrder/main",
+	"bookingMall": "/pages/mall/bookingMall/main",
+	"shopSubmitOrder": "/pages/mall/bookingMall/submitOrder/main",
+	"orderSelf": "/pages/mall/bookingMall/orderSelf/main",
+	"activity": "/pages/mall/activity/main",
+	"activitySubmitOrder": "/pages/mall/activity/submitOrder/main",
 	"coupon": "/pages/coupon/main",
-  "activityCoupon": "/pages/activity/coupon/main"
+  "activityCoupon": "/pages/mall/activity/coupon/main"
 }

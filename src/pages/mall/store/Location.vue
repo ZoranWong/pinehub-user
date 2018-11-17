@@ -41,7 +41,7 @@
 	.arrow-right-icon {
 		width: 18rpx;
 		height: 32rpx;
-		background-image: url(../../../static/images/icon/arrow-right-icon.png);
+		background-image: url(../../../../static/images/icon/arrow-right-icon.png);
 		background-size: contain;
 		position: absolute;
 		top: 28rpx;
