@@ -38,7 +38,7 @@
       redirectToNearbyStores () {
         this.$command('router', 'nearbyStores', 'push', {
           query: {
-            submitRoute: 'bookingMallSubmitOrder'
+            submitRoute: 'orderSelf'
           }
         });
       },
