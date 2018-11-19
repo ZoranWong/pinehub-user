@@ -1,6 +1,6 @@
 import App from './index';
 import Vue from 'vue';
-import LoadBookingMallTicketsCommand from '../commands/LoadBookingMallTicketsCommand';
+import LoadStoreTicketsCommand from '../commands/LoadStoreTicketsCommand';
 const application = wx.$app;
 application.setComponent(App).run(function() {
 	this.registerCommand(LoadStoreTicketsCommand.commandName(), LoadStoreTicketsCommand);
