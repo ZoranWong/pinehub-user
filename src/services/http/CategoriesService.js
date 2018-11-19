@@ -35,7 +35,7 @@ export default class CategoriesService extends ApiService {
       return [response.data, response.meta['total_pages'], limit, response.meta['total']];
     } catch (e) {
       console.log('抛出异常', e);
-      return false;
+      throw e;
     }
   }
 }

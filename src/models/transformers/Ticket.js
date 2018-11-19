@@ -1,16 +1,17 @@
 export default class Ticket {
-  constructor (tickets) {
-    this.id = tickets['id'];
-    this.cardId = tickets['card_id']
-    this.title = tickets['title'];
-    this.type = tickets['type'];
-    this.discount = tickets['discount'];
-    this.leastCost = tickets['least_cost'];
-    this.reduceCost = tickets['reduce_cost'];
-    this.recordCount = tickets['record_count'];
-    this.beginTimestamp = tickets['begin_at'];
-    this.endTimestamp = tickets['end_at'];
-    this.status = tickets['status'];
+  constructor (ticket) {
+    this.id = ticket['id'];
+    this.cardCode = ticket['card_code'];
+    this.cardId = ticket['card_id']
+    this.title = ticket['title'];
+    this.type = ticket['type'];
+    this.discount = ticket['discount'] ? (ticket['discount'] * 1) : 1;
+    this.leastCost = ticket['least_cost'] + 0;
+    this.reduceCost = ticket['reduce_cost'] + 0;
+    this.recordCount = ticket['record_count'] + 0;
+    this.beginTimestamp = ticket['begin_at'];
+    this.endTimestamp = ticket['end_at'];
+    this.status = ticket['status'];
     console.log('ticket =====', this);
   }
 }

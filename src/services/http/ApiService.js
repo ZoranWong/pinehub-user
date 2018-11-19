@@ -52,7 +52,7 @@ export default class ApiService extends Service {
 			return result.data;
 		} catch(e) {
       console.log(e);
-			return false;
+			throw e;
 		}
 	}
 
@@ -70,7 +70,7 @@ export default class ApiService extends Service {
 			return result.data;
 		} catch(e) {
       console.log(e);
-			return false;
+			throw e;
 		}
 	}
 
@@ -89,7 +89,7 @@ export default class ApiService extends Service {
 			return result.data;
 		} catch(e) {
 			console.log(e);
-			return false;
+			throw e;
 		}
 	}
 
@@ -109,7 +109,7 @@ export default class ApiService extends Service {
       return result.data;
     }catch (e) {
       console.log(e);
-      return false;
+      throw e;
     }
 	}
 

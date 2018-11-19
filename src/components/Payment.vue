@@ -17,22 +17,29 @@
       </div>
     </div>
 
-    <div class="li-item bgff coupon" @click="jump(ticketRoute)" :disabled = "totalNum > 0">
+    <div v-if = "!usedTicket" class="li-item bgff coupon" @click="routeTicket" :disabled = "totalNum > 0">
       优惠券
       <span class="coupon-tips">{{ totalNum }}张可用</span>
-      <label for="" class="fr">
+      <label  class="fr">
         有可用
         <i class="arrow-icon"></i>
       </label>
     </div>
+    <div v-else class="li-item bgff coupon">
+      优惠券
+      <span class="coupon-tips">{{ usedTicket }}</span>
+      <label  class="fr">
+        已使用
+      </label>
+    </div>
     <div class="count-box">
-      <p>合计<span class="fr">¥{{totalAmount}}</span></p>
+      <p>合计<span class="fr">¥{{ totalAmount }}</span></p>
       <div class="tips">
         <i class="warn-icon"></i> 食品现制现售，不适合退货服务
       </div>
     </div>
     <div class="pay-bottom">
-      实付<span class="total-price">¥{{totalAmount}}</span>
+      实付<span class="total-price">¥{{ paymentAmount }}</span>
       <label class="choose fr" @click="pay">去支付
         <i class="i-icon next-icon"></i>
       </label>
@@ -67,7 +74,11 @@
         default: null,
         type: String
       },
-      ticketRoute: {
+      redirectToTicket: {
+        default: null,
+        type: Function
+      },
+      usedTicket: {
         default: null,
         type: String
       }
@@ -82,12 +93,18 @@
       totalAmount () {
         return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
       },
+      paymentAmount () {
+        return this.model ? this.$store.getters[`${this.model}/paymentAmount`] : 0;
+      },
       totalCount () {
         console.log('购物车总数', this.model, this.$store.getters);
         return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
       }
     },
     methods: {
+      routeTicket () {
+        this.redirectToTicket();
+      },
       jump (router) {
         this.$command('router', router, 'push');
       },

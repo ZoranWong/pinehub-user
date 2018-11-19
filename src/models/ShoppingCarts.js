@@ -10,8 +10,21 @@ export default class ShoppingCarts extends Model {
   // 购物车内的相关数据计算
   computed () {
     return _.extend(super.computed(), {
+      usedTicketTitle () {
+        return this.state.ticketTitle;
+      },
+      ticketCode () {
+        return this.state.ticketCode
+      },
       totalAmount () {
         //  计算总价
+        let total = 0;
+        this.list().forEach((item) => {
+          total += item.sellPrice * item.count;
+        });
+        return total;
+      },
+      paymentAmount () {
         let total = 0;
         this.list().forEach((item) => {
           total += item.sellPrice * item.count;
@@ -54,7 +67,8 @@ export default class ShoppingCarts extends Model {
       ticketCode: null,
       cardId: null,
       discount: 1,
-      reduceCost: 0
+      reduceCost: 0,
+      ticketTitle: null
     });
     this.rebuildData();
     return data;
@@ -81,11 +95,13 @@ export default class ShoppingCarts extends Model {
     });
 
     // 使用优惠券
-    this.addEventListener('setTicketCard', function ({ticketCode, cardId, discount = 1,reduceCost = 0}) {
+    this.addEventListener('setTicketCard', function ({ticketCode, cardId, discount = 1, reduceCost = 0, title = null}) {
+      console.log('set use ticket ------');
       this.state.reduceCost = reduceCost;
       this.state.discount = discount;
       this.state.ticketCode = ticketCode;
       this.state.cardId = cardId;
+      this.state.ticketTitle = title;
     });
 
     this.addEventListener('addMerchandiseToShoppingCart', function (cart) {

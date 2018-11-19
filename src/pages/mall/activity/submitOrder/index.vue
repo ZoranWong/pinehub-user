@@ -25,7 +25,7 @@
     </ul>
 
     <!-- 支付内容的显示组件 -->
-    <payment :model="model" :totalNum = "totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :ticket-route = "'activityCoupon'"></payment>
+    <payment :model="model" :usedTicket = "usedTicket" :totalNum = "totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
 
   </div>
 </template>
@@ -70,9 +70,21 @@
       },
       totalAmount () {
         return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
+      },
+      usedTicket () {
+        return this.$store.getters['model.activity.shoppingCarts/usedTicketTitle'];
       }
     },
     methods: {
+      redirectToTicket () {
+        console.log('activityCoupon');
+        this.mp.router.push('activityCoupon', {
+          query: {
+            activity_id: this.activityId,
+            store_id: this.storeId
+          }
+        });
+      },
       radioChange (e) {
         console.log('radio发生change事件，携带value值为：', e.target.value)
       },
@@ -107,20 +119,18 @@
         if (!stores) {
           stores = [];
         } else {
-          console.log(store, this.storeInfo);
           store = _.findWhere(stores, { id: this.storeId });
           this.$set(this, 'queryStore', store);
-          console.log('=========<<<<>>>>======', stores, this.storeId, this.queryStore);
         }
-        if (!store && this.storeInfo && stores.length < 4) {
+        while (stores.length > 2) {
+          stores.pop();
+        }
+
+        if (!store && this.storeInfo) {
           stores.push(this.storeInfo)
-          this.mp.storage.set('activityReceiveStores', stores);
-        } else {
-          if (stores.length === 3 && this.storeInfo) {
-            stores.pop();
-            stores.push(this.storeInfo);
-          }
         }
+
+        this.mp.storage.set('activityReceiveStores', stores);
       }
     },
     mounted () {
