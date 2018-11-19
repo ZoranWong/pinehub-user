@@ -44,8 +44,8 @@
 			next() {
 				this.$command('LOAD_MERCHANDISE_LIST');
 			},
-			async loadCartMerchandises(page = 1) {
-				await this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', this.activityId, page);
+			loadCartMerchandises(page = 1) {
+				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
 			addCart(merchandiseId, id = null) {
 				console.log('加入购物车')

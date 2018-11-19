@@ -43,7 +43,7 @@
 				{
 					"id": 1,
 					"name": "新品预定",
-					"pathName": "pages/activity/main",
+					"pathName": "pages/mall/activity/main",
 					"query": "activity_id=7"
 				},
 				{

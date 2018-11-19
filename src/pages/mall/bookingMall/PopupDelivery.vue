@@ -6,7 +6,7 @@
 			</div>
 			<i class="cancel" @click="popHide"></i>
 			<div class="popup-content">
-				<div class="place-item" @click="jump('location')">
+				<div class="place-item" @click="jump('nearbyStores')">
 					<i class="i-icon free-icon" ></i>
 					 自提免配送费
 				</div>

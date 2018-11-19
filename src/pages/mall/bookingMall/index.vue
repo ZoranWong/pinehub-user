@@ -46,6 +46,7 @@
         return page;
       },
       categoryId () {
+        console.log('~~~~~~~~~~~~~~~~~~~~ category index ~~~~~~~~~~~~~', this.categoryIndex);
         return this.$store.getters['model.categories/categoryId'](this.categoryIndex)
       },
       categoryIndex () {
@@ -57,6 +58,7 @@
     },
     watch: {
       categoryId (n, o) {
+        console.log('---------------------- change category id----------------------', n, o);
         if (n && n !== o) {
           this.loadMerchandises();
         }
@@ -74,6 +76,7 @@
       },
       async loadMerchandises (page = 1) {
         try {
+          console.log('---------------------- load merchandise ----------------------', this.categoryIndex, this.categoryId);
           await this.$command('LOAD_BOOKING_MALL_MERCHANDISES',
             'model.bookingMall.merchandises/setList',
             'bookingMerchandises',
@@ -84,7 +87,6 @@
         }
       },
       menusChange: function (index) {
-        console.log('产品切换', index);
         try {
           this.$command('CLEAR_MERCHANDISE', 'model.bookingMall.merchandises');
           this.$store.dispatch('model.bookingMall.merchandises/setCurrentCategory', {
@@ -130,6 +132,10 @@
       }
     },
     mounted () {
+      console.log('mounted booking mall ###################');
+      // this.$store.dispatch('model.bookingMall.merchandises/setCurrentCategory', {
+      //   categoryIndex: -1
+      // });
       this.initData();
       this.loadCartMerchandises();
     }

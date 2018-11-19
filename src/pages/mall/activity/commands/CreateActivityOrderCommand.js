@@ -1,6 +1,6 @@
 import Command from '@/commands/CreateOrderCommand';
 export default class CreateActivityOrderCommand extends Command {
-  async handle (activityId, receivingShopId, receiverName, receiverMobile, receiverAddress, comment = '') {
+  async handle (activityId, receivingShopId, receiverName, receiverMobile, receiverAddress, ticketCode = null , cardId = null, comment = '') {
     try {
       let params = {
         receiver_name: receiverName,
@@ -10,6 +10,10 @@ export default class CreateActivityOrderCommand extends Command {
         type: 1,
         activity_id: activityId,
         receiving_shop_id: receivingShopId
+      }
+      if (cardId && ticketCode) {
+        params['card_id'] = cardId;
+        params['card_code'] = ticketCode;
       }
       await super.handle(params);
     } catch (e) {
