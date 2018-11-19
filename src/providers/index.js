@@ -9,10 +9,10 @@ import RouterServiceProvider from './RouterServiceProvider';
 export default {
 	commandServiceProvider: CommandServiceProvider,
 	configServiceProvider: ConfigServiceProvider,
-	mockServiceProvider:MockServiceProvider,
+	mockServiceProvider: MockServiceProvider,
 	appServiceProvider: AppServiceProvider,
 	httpServiceProvider: HttpServiceProvider,
-	modelsServiceProvider: ModelsServiceProvider,
 	mixinMethodsServiceProvider: MixinMethodsServiceProvider,
-	RouterServiceProvider: RouterServiceProvider
+	RouterServiceProvider: RouterServiceProvider,
+  modelsServiceProvider: ModelsServiceProvider
 };

@@ -19,7 +19,6 @@
     },
     computed: {
       usedCardCode () {
-        console.log('useCardCode ========================   ', this.$store.getters['model.activity.shoppingCarts/ticketCode']);
         return this.$store.getters['model.activity.shoppingCarts/ticketCode'];
       }
     },

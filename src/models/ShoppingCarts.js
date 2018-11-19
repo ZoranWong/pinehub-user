@@ -13,8 +13,11 @@ export default class ShoppingCarts extends Model {
       usedTicketTitle () {
         return this.state.ticketTitle;
       },
+      cardId () {
+        return this.state.cardId;
+      },
       ticketCode () {
-        return this.state.ticketCode
+        return this.state.ticketCode;
       },
       totalAmount () {
         //  计算总价

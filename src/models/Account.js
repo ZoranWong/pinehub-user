@@ -1,10 +1,6 @@
 import Model from './Model';
 import _ from 'underscore';
 export default class Account extends Model {
-  constructor (app) {
-    super(app);
-    this.resetAccountFromCache();
-  }
   async resetAccountFromCache () {
     let account = await this.services('mp.storage').get('account');
     if (account) {
@@ -34,7 +30,7 @@ export default class Account extends Model {
     });
   }
   data () {
-    return {
+    let data = {
       openId: null,
       unionId: null,
       avatar: null,
@@ -57,13 +53,14 @@ export default class Account extends Model {
       ticketNum: 0,
       nickname: null
     };
+    this.resetAccountFromCache();
+    return data;
   }
   // 监听数据
   listeners () {
     this.addEventListener('resetFromCache', async function ({initAccount}) {
       await this.resetAccountFromCache();
       await initAccount();
-      console.log('reset from cache');
     });
     this.addEventListener('setAccount', function (userInfo) {
       if (typeof userInfo['open_id'] !== 'undefined') {
