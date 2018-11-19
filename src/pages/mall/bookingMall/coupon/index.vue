@@ -33,14 +33,14 @@
         this.$command('LOAD_BOOKING_MALL_TICKETS');
       },
       useTicket (ticket) {
-        this.$store.dispatch('model.bookingMall.bookingMall/setTicketCard', {
+        this.$store.dispatch('model.bookingMall.shoppingCarts/setTicketCard', {
           ticketCode: ticket.cardCode,
           cardId: ticket.cardId,
           discount: ticket.discount,
           reduceCost: ticket.reduceCost,
           title: ticket.title
         });
-        this.mp.router.push(this.orderCreateRoute, {
+        this.mp.router.push(this.$route.query['back_to'], {
           query: this.$route.query
         });
       }

@@ -66,7 +66,11 @@
       },
       redirectToTicket () {
         console.log('activityCoupon');
-        this.mp.router.push('bookingMallCoupon');
+        this.mp.router.push('bookingMallCoupon', {
+          query: {
+            back_to: 'shopSubmitOrder'
+          }
+        });
       },
       addCart (merchandiseId, id) {
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
@@ -78,6 +82,7 @@
       }
     },
     mounted () {
+      this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
   }
 </script>

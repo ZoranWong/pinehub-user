@@ -77,7 +77,8 @@
         console.log('activityCoupon');
         this.mp.router.push('bookingMallCoupon', {
           query: {
-            store_id: parseInt(this.$route.query['store_id'])
+            store_id: parseInt(this.$route.query['store_id']),
+            back_to: 'orderSelf'
           }
         });
       },
@@ -89,6 +90,9 @@
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
         this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       }
+    },
+    mounted () {
+      this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
   }
 </script>
