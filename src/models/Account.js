@@ -19,6 +19,9 @@ export default class Account extends Model {
 			isMember(state) {
 				return state.mobile !== null;
 			},
+			isShopManager(state) {
+				return state.isShopManager;
+			},
 			userScore(state) {
 				return state.canUseScore;
 			},

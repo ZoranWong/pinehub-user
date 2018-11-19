@@ -94,6 +94,9 @@
 			},
 			wxOptionsForBuy() {
 				return this.$store.getters['model.my.store/buyNumECharts'];
+			},
+			shopId() {
+				return this.$store.getters['model.account/shopInfo']['id'];
 			}
 		},
 		methods: {
@@ -105,7 +108,7 @@
 			}
 		},
 		mounted() {
-			this.$command('MYSTOREINFO');
+			this.$command('MYSTOREINFO', this.shopId);
 		},
 		created() {}
 	}

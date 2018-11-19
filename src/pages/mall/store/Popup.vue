@@ -26,7 +26,7 @@
 		computed: {},
 		methods: {
 			popHide() {
-				this.$command('router', 'todaySubmitOrder', 'push');
+//				this.$command('router', 'todaySubmitOrder', 'push');
 				this.$emit('hdlHidePopup', this.store);
 			},
 			nearbyStores() {

@@ -102,7 +102,7 @@
 			},
 			hasStore() {
 				console.log(this.$store.getters)
-				return this.$store.getters['model.my.info/hasStore'];
+				return this.$store.getters['model.account/isShopManager'];
 			},
 			userToken() {
 				return this.$store.getters['account/token'];

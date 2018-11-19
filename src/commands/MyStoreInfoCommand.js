@@ -4,8 +4,7 @@ export default class MyStoreInfoCommand extends Command {
 		super(app);
 	}
 
-	async handle(id) {
-		let shopId = await this.service('mp.storage').get('shopId');
+	async handle(shopId) {
 		let [storeInfo, sellAmountCharts, buyNumCharts] = await this.service('http.myStoreInfo').storeInfo(shopId);
 		let xDate = 'week';
 		let sellAmountECharts = await this.service('mp.eCharts').createChart(xDate, sellAmountCharts, true);
