@@ -38,9 +38,6 @@
       userInfo () {
         return this.$store.getters['model.account/userInfo']
       },
-      merchandises () {
-        return this.$store.getters['model.bookingMall.merchandises/list'];
-      },
       ticketNum () {
         return this.$store.getters['model.bookingMall.tickets/totalNum'];
       },

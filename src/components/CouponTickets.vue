@@ -44,9 +44,9 @@
         },
         type: Array
       },
-      command: {
+      loadTickets: {
         default: null,
-        type: String
+        type: Function
       },
       model: {
         default: null,
@@ -74,9 +74,6 @@
     methods: {
       useTicket (ticket) {
         this.$emit('useTicket', ticket);
-      },
-      loadTickets (page = 1) {
-        this.$command(this.command, this.statusType, page);
       },
       tabSelect (num) {
         this.cur = num;

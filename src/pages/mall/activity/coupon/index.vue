@@ -1,5 +1,5 @@
 <template>
-  <coupon-tickets :model = "model" :usedCardCode = "usedCardCode" :tabs = "tabs" :command = "command" @useTicket = "useTicket"></coupon-tickets>
+  <coupon-tickets :model = "model" :usedCardCode = "usedCardCode" :tabs = "tabs" :loadTickets = "loadTickets" @useTicket = "useTicket"></coupon-tickets>
 </template>
 <script>
   import CouponTickets from '@/components/CouponTickets';
@@ -24,7 +24,7 @@
     },
     methods: {
       loadTickets () {
-
+        this.$command('LOAD_ACTIVITY_TICKETS', parseInt(this.$route.query['activity_id']));
       },
       useTicket (ticket) {
         this.$store.dispatch('model.activity.shoppingCarts/setTicketCard', {
