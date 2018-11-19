@@ -47,6 +47,18 @@
 			}
 		},
 		methods: {
+			redirectToTicket() {
+				//				wx.showToast({
+				//					title: "暂不可使用优惠券",
+				//					icon: "none"
+				//				})
+				//				return false;
+				this.mp.router.push('storeCoupon', {
+					query: {
+						store_id: this.storeInfo.id
+					}
+				});
+			},
 			radioChange(e) {
 				console.log('radio发生change事件，携带value值为：', e.target.value)
 			},

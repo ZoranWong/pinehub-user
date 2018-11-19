@@ -125,7 +125,9 @@
 </script>
 
 <style scoped>
-  .pay-box {}
+  .pay-box {
+  	margin-bottom:118rpx;
+  }
 
   .pay-box .li-item {
     height: 80rpx;

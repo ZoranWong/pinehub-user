@@ -17,6 +17,7 @@
 	"search": "/pages/search/main",
 	"store": "/pages/mall/store/main",
 	"todaySubmitOrder": "/pages/mall/store/submitOrder/main",
+	"storeCoupon": "/pages/mall/store/coupon/main",
 	"bookingMall": "/pages/mall/bookingMall/main",
 	"shopSubmitOrder": "/pages/mall/bookingMall/submitOrder/main",
   "bookingMallCoupon": "/pages/mall/bookingMall/coupon/main",
