@@ -133,9 +133,9 @@
     },
     mounted () {
       console.log('mounted booking mall ###################');
-      // this.$store.dispatch('model.bookingMall.merchandises/setCurrentCategory', {
-      //   categoryIndex: -1
-      // });
+      this.$store.dispatch('model.bookingMall.merchandises/setCurrentCategory', {
+        categoryIndex: -1
+      });
       this.initData();
       this.loadCartMerchandises();
     }
