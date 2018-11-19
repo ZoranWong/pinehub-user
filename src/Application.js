@@ -62,12 +62,16 @@ export default class Application {
         Application.modelContainer[name] = new model(this);
     }
     async command (...params) {
+      try {
         let command = params.shift();
         let page = params.pop();
         command = Application.commandContainer[command];
         command = new command(this);
         _.extend(command, page);
         await command.handle.apply(command, params);
+      } catch (e) {
+        console.log(e);
+      }
     }
     // 实例化注册对象
     instanceRegister (instance) {

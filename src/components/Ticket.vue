@@ -17,7 +17,8 @@
         <span>有效期：</span>
         <span>{{ticket.beginTimestamp}} - {{ticket.endTimestamp}}</span>
       </p>
-      <div v-if = "(ticket.status * 1) === 1" class="btn-big fr theme-color" @click="useTicket">立即使用</div>
+      <div v-if = "isUsed" class="btn-big fr theme-color" >已使用</div>
+      <div v-else class="btn-big fr theme-color" @click = "useTicket">立即使用</div>
     </div>
   </div>
 </template>
@@ -33,14 +34,32 @@
         default: null,
         type: Object
       },
+      usedCardCode: {
+        default: null,
+        type: String
+      }
+    },
+    computed: {
+      isUsed () {
+        console.log(this.usedCardCode ,  this.ticket);
+        if (this.usedCardCode && this.ticket && this.usedCardCode === this.ticket.cardCode) {
+          return true;
+        }else{
+          return false;
+        }
+      }
     },
     methods: {
       useTicket() {
-
+        try {
+          this.$emit('useTicket', this.ticket);
+          this.mp.storage.set('useTicket', this.ticket.id);
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
     mounted() {
-      console.log(this.ticket);
     }
   }
 </script>

@@ -50,7 +50,17 @@
       hdlShowCart () {
         this.isShowCart = true;
       },
-      hdlShowPopup () {
+      async hdlShowPopup () {
+        let stores = await this.mp.storage.get('activityReceiveStores');
+        if (!stores || stores.length === 0) {
+          this.mp.router.push('nearbyStores', {
+            query: {
+              submitRoute: 'activitySubmitOrder',
+              activity_id: this.activityId
+            }
+          });
+          return;
+        }
         this.isShow = true;
       },
       hdlHidePopup () {

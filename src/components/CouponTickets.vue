@@ -11,13 +11,13 @@
     </div>
     <div id="tab_content">
       <ul class="tab_content_item" v-if="cur === 0">
-        <li v-for="(ticket, ticketIndex) in ticketsList" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType">
-          <coupon-ticket :ticket = "ticket"></coupon-ticket>
+        <li v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType">
+          <coupon-ticket :usedCardCode = "usedCardCode" :ticket = "ticket" @useTicket = "useTicket"></coupon-ticket>
         </li>
       </ul>
       <ul class="tab_content_item" v-else-if="cur === 1">
-        <li v-for="(ticket, ticketIndex) in ticketsList" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType" >
-          <coupon-tickect :ticket = "ticket"></coupon-tickect>
+        <li v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType" >
+          <coupon-tickect :ticket = "ticket" ></coupon-tickect>
         </li>
       </ul>
     </div>
@@ -27,6 +27,7 @@
 <script>
   import MpTitle from '@/components/MpTitle';
   import Ticket from '@/components/Ticket';
+  import _ from 'underscore';
   export default {
     data () {
       return {
@@ -50,6 +51,10 @@
       model: {
         default: null,
         type: String
+      },
+      usedCardCode: {
+        default: null,
+        type: String
       }
     },
     components: {
@@ -62,11 +67,14 @@
         num = (num === 'undefined') ? 1 : num;
         return Math.floor((100 / num) * 100) / 100 + '%';
       },
-      ticketsList () {
+      tickets () {
         return this.$store.getters[`${this.model}/list`];
       }
     },
     methods: {
+      useTicket (ticket) {
+        this.$emit('useTicket', ticket);
+      },
       loadTickets (page = 1) {
         this.$command(this.command, this.statusType, page);
       },
@@ -83,10 +91,10 @@
             this.statusType = 'available';
             break;
         }
-        console.log(num);
       }
     },
     mounted () {
+      console.log('use ticket code =====', this.useCardCode);
       this.loadTickets();
     }
   }

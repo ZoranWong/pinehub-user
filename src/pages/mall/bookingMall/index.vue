@@ -126,6 +126,7 @@
       },
       async initData () {
         await this.$command('GET_BOOKING_MALL_CATEGORIES');
+        this.menusChange(0);
       }
     },
     mounted () {
