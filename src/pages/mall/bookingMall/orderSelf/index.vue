@@ -30,7 +30,8 @@
     data () {
       return {
         title: '预定商城-确认订单',
-        model: 'model.bookingMall.shoppingCarts'
+        model: 'model.bookingMall.shoppingCarts',
+        SELF_PICK_UP_ORDER: 1
       }
     },
 
@@ -65,6 +66,7 @@
     methods: {
       createOrder () {
         this.$command('CREATE_BOOKING_MALL_ORDER',
+          this.SELF_PICK_UP_ORDER,
           this.userInfo.nickname,
           this.userInfo.mobile,
           this.storeInfo.address,
@@ -74,7 +76,13 @@
         );
       },
       redirectToTicket () {
-
+        console.log('activityCoupon');
+        this.mp.router.push('bookingMallCoupon', {
+          query: {
+            store_id: parseInt(this.$route.query['store_id']),
+            back_to: 'orderSelf'
+          }
+        });
       },
       addCart (merchandiseId, id) {
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
@@ -84,6 +92,9 @@
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
         this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       }
+    },
+    mounted () {
+      this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
   }
 </script>
