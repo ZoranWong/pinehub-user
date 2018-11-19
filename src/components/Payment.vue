@@ -109,11 +109,11 @@
       jump (router) {
         this.$command('router', router, 'push');
       },
-      addCart (merchandiseId) {
-        this.addMerchandiseToCart(merchandiseId);
+      addCart (merchandiseId, id) {
+        this.addMerchandiseToCart(merchandiseId, id);
       },
-      reduceCart (merchandiseId) {
-        this.reduceMerchandiseToCart(merchandiseId);
+      reduceCart (merchandiseId, id) {
+        this.reduceMerchandiseToCart(merchandiseId, id);
       },
       pay () {
         this.createOrder()
