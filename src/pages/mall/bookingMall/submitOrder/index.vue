@@ -65,7 +65,8 @@
         );
       },
       redirectToTicket () {
-
+        console.log('activityCoupon');
+        this.mp.router.push('bookingMallCoupon');
       },
       addCart (merchandiseId, id) {
         let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;

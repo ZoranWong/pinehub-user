@@ -19,6 +19,7 @@
 	"todaySubmitOrder": "/pages/mall/store/submitOrder/main",
 	"bookingMall": "/pages/mall/bookingMall/main",
 	"shopSubmitOrder": "/pages/mall/bookingMall/submitOrder/main",
+  "bookingMallCoupon": "/pages/mall/bookingMall/coupon/main",
 	"orderSelf": "/pages/mall/bookingMall/orderSelf/main",
 	"activity": "/pages/mall/activity/main",
 	"activitySubmitOrder": "/pages/mall/activity/submitOrder/main",

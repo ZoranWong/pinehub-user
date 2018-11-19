@@ -30,6 +30,7 @@
         "bookingMall/main",
         "bookingMall/submitOrder/main",
         "bookingMall/orderSelf/main",
+        "bookingMall/coupon/main",
         "activity/main",
         "activity/submitOrder/main",
         "activity/coupon/main"
