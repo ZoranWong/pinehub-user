@@ -25,7 +25,8 @@
       return {
         title: '预定商城-确认订单',
         model: 'model.bookingMall.shoppingCarts',
-        address: null
+        address: null,
+        SEND_ORDER: 2
       }
     },
 
@@ -57,6 +58,7 @@
     methods: {
       createOrder () {
         this.$command('CREATE_BOOKING_MALL_ORDER',
+          this.SEND_ORDER,
           this.userInfo.nickname,
           this.userInfo.mobile,
           this.address,

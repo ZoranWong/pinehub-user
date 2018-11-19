@@ -30,7 +30,8 @@
     data () {
       return {
         title: '预定商城-确认订单',
-        model: 'model.bookingMall.shoppingCarts'
+        model: 'model.bookingMall.shoppingCarts',
+        SELF_PICK_UP_ORDER: 1
       }
     },
 
@@ -65,6 +66,7 @@
     methods: {
       createOrder () {
         this.$command('CREATE_BOOKING_MALL_ORDER',
+          this.SELF_PICK_UP_ORDER,
           this.userInfo.nickname,
           this.userInfo.mobile,
           this.storeInfo.address,
