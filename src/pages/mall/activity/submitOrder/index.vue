@@ -25,7 +25,7 @@
     </ul>
 
     <!-- 支付内容的显示组件 -->
-    <payment :model="model" :usedTicket = "usedTicket" :totalNum = "totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
+    <payment :model="model" :usedTicket = "usedTicket" :ticketNum = "ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
 
   </div>
 </template>
@@ -65,7 +65,7 @@
       sendDate () {
         return this.storeInfo ? this.storeInfo['openingHours'] : null;
       },
-      totalNum () {
+      ticketNum () {
         return this.$store.getters['model.activity.tickets/totalNum'];
       },
       totalAmount () {

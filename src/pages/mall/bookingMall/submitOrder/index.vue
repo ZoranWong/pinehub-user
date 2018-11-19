@@ -12,7 +12,7 @@
       </li>
     </ul>
     <!-- 支付内容的显示组件 -->
-    <payment :next="next" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
+    <payment :usedTicket = "usedTicket" :ticketNum = "ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
   </div>
 </template>
 <script>
@@ -23,7 +23,8 @@
     name: 'confirmationOrderTwo',
     data () {
       return {
-        title: '预定商城-确认订单'
+        title: '预定商城-确认订单',
+        model: 'model.bookingMall.shoppingCarts'
       }
     },
 
@@ -34,19 +35,20 @@
     },
     computed: {
       merchandises () {
-        return this.$store.getters['model.activity.merchandises/list'];
+        return this.$store.getters['model.bookingMall.merchandises/list'];
+      },
+      ticketNum () {
+        return this.$store.getters['model.bookingMall.tickets/totalNum'];
       }
-
     },
     methods: {
-      radioChange (e) {
-        console.log('radio发生change事件，携带value值为：', e.target.value)
+      useTicket (ticket) {
+
       },
-      bindPickerChange (e) {
-        this.index = e.target.value
+      createOrder () {
+
       },
-      next () {
-        this.$command('LOAD_MERCHANDISE_LIST');
+      redirectToTicket () {
       },
       addCart (shopId, count, merchandiseId) {
         this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
@@ -56,8 +58,6 @@
       }
     },
     mounted () {
-      this.$command('MYINFO');
-      console.log('mounted order component');
       this.$command('FILL_CART_FROM_CACHE');
     }
   }
