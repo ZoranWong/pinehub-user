@@ -112,7 +112,7 @@
         if (!this.hasShoppingCarts) {
           await this.loadCartMerchandises();
         }
-        console.log(await this.$command('LOAD_ACTIVITY_TICKETS', this.activityId, this.totalAmount));
+        console.log(await this.$command('LOAD_ACTIVITY_TICKETS', this.activityId));
 
         let stores = await this.mp.storage.get('activityReceiveStores');
         console.log('====== receive stores =======', stores);

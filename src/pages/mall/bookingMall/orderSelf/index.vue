@@ -7,24 +7,18 @@
       <li class="li-item bgff">
         自提地址
         <p class="details-item">
-          <input type="text" placeholder="默认地址" readonly="readonly" disabled="">
+          <input type="text" placeholder="默认地址" readonly="readonly" disabled="" v-model="storeInfo.address">
         </p>
       </li>
       <li class="li-item bgff">
         自提时间
         <p class="details-item">
-          <input type="text" placeholder="默认站点营业时间" readonly="readonly" disabled="" >
+          <input type="text" placeholder="默认站点营业时间" readonly="readonly" disabled="" v-model = "storeInfo.openingHours">
         </p>
       </li>
-      <!-- <li class="li-item bgff">
-                站点联系电话
-                <p class="details-item tel-num">
-                16868686868
-                </p>
-            </li> -->
     </ul>
     <!-- 支付内容的显示组件 -->
-    <payment :next="next" :list="merchandises" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart"></payment>
+    <payment :model = "model" :usedTicket = "usedTicket" :ticketNum = "ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
   </div>
 </template>
 <script>
@@ -35,7 +29,8 @@
     name: 'confirmationOrderTwo',
     data () {
       return {
-        title: '预定商城-确认订单'
+        title: '预定商城-确认订单',
+        model: 'model.bookingMall.shoppingCarts'
       }
     },
 
@@ -45,28 +40,50 @@
       'payment': Payment
     },
     computed: {
-      merchandises () {
-        return this.$store.getters['model.activity.merchandises/list'];
+      userInfo () {
+        return this.$store.getters['model.account/userInfo']
+      },
+      ticketNum () {
+        return this.$store.getters['model.bookingMall.tickets/totalNum'];
+      },
+      totalAmount () {
+        return this.model ? this.$store.getters[`model.bookingMall.shoppingCarts/totalAmount`] : 0;
+      },
+      usedTicket () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/usedTicketTitle'];
+      },
+      usedTicketCode () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/ticketCode'];
+      },
+      usedCardId () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/cardId'];
+      },
+      storeInfo () {
+        return this.$store.getters['model.nearbyStores/store'](parseInt(this.$route.query['store_id']));
       }
     },
     methods: {
-      radioChange (e) {
-        console.log('radio发生change事件，携带value值为：', e.target.value)
+      createOrder () {
+        this.$command('CREATE_BOOKING_MALL_ORDER',
+          this.userInfo.nickname,
+          this.userInfo.mobile,
+          this.storeInfo.address,
+          this.usedTicketCode,
+          this.usedCardId,
+          this.storeInfo.id
+        );
       },
-      bindPickerChange (e) {
-        // console.log(e)
-        this.index = e.target.value
-      },
-      next () {
-        this.$command('LOAD_MERCHANDISE_LIST');
-      },
-      addCart (shopId, count, merchandiseId) {
-        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-      },
-      reduceCart (shopId, count, merchandiseId) {
-        this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-      }
+      redirectToTicket () {
 
+      },
+      addCart (merchandiseId, id) {
+        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+      },
+      reduceCart (merchandiseId, id) {
+        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+      }
     }
   }
 </script>

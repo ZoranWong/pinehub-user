@@ -1,5 +1,5 @@
 <template>
-  <coupon-tickets :model = "model" :usedCardCode = "usedCardCode" :tabs = "tabs" :command = "command" @useTicket = "useTicket"></coupon-tickets>
+  <coupon-tickets :model = "model" :usedCardCode = "usedCardCode" :tabs = "tabs" :loadTickets = "loadTickets" @useTicket = "useTicket"></coupon-tickets>
 </template>
 <script>
   import CouponTickets from '@/components/CouponTickets';
@@ -30,7 +30,7 @@
     },
     methods: {
       loadTickets () {
-
+        this.$command('LOAD_BOOKING_MALL_TICKETS');
       },
       useTicket (ticket) {
         this.$store.dispatch('model.bookingMall.bookingMall/setTicketCard', {

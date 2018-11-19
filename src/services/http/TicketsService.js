@@ -15,7 +15,6 @@ export default class TicketsService extends ApiService {
       } catch (e) {
         console.log('抛出异常', e);
         throw (e);
-        return false;
       }
     }
     let tickets = response.data;
@@ -32,6 +31,15 @@ export default class TicketsService extends ApiService {
       activity_id: activityId,
       page: page
     }
-    return await this.list(status, parameters);
+    let result = await this.list(status, parameters);
+    return result;
+  }
+
+  async bookingMallTickets (status, page) {
+    let parameters = {
+      page: page
+    }
+    let result = await this.list(status, parameters);
+    return result;
   }
 }
