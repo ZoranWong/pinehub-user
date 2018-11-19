@@ -22,14 +22,15 @@ export default class ShoppingCarts extends Model {
         this.list().forEach((item) => {
           total += item.sellPrice * item.count;
         });
-        return total;
+        return total.toFixed(2);
       },
       paymentAmount () {
         let total = 0;
         this.list().forEach((item) => {
           total += item.sellPrice * item.count;
         });
-        return (total * this.state.discount) - this.state.reduceCost;
+        let amount = (total * this.state.discount) - this.state.reduceCost;
+        return amount.toFixed(2);
       },
       list (state) {
         return _.flatten(state.list);
