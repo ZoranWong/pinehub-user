@@ -101,6 +101,7 @@
 				return this.$store.getters['model.my.info/userInfo'];
 			},
 			hasStore() {
+				console.log(this.$store.getters)
 				return this.$store.getters['model.my.info/hasStore'];
 			},
 			userToken() {
