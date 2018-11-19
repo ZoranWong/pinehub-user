@@ -7,7 +7,7 @@
       <li class="li-item bgff">
         自提点地址
         <p class="details-item">
-          {{ storeInfo ? storeInfo.address : '' }}
+          {{storeInfo ? storeInfo.address : ''}}
         </p>
       </li>
       <li class="li-item bgff">
@@ -19,7 +19,7 @@
       <li class="li-item bgff">
         站点联系电话
         <p class="details-item tel-num">
-          {{ storeInfo ? storeInfo.mobile : '' }}
+          {{storeInfo ? storeInfo.mobile : ''}}
         </p>
       </li>
     </ul>
@@ -73,12 +73,6 @@
       },
       usedTicket () {
         return this.$store.getters['model.activity.shoppingCarts/usedTicketTitle'];
-      },
-      usedTicketCode () {
-        return this.$store.getters['model.activity.shoppingCarts/ticketCode'];
-      },
-      usedCardId () {
-        return this.$store.getters['model.activity.shoppingCarts/cardId'];
       }
     },
     methods: {
@@ -92,10 +86,10 @@
         });
       },
       radioChange (e) {
-        console.log('radio发生change事件，携带value值为：', e.target.value);
+        console.log('radio发生change事件，携带value值为：', e.target.value)
       },
       bindPickerChange (e) {
-        this.index = e.target.value;
+        this.index = e.target.value
       },
       async loadCartMerchandises (page = 1) {
         await this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', this.activityId, page);
@@ -109,11 +103,7 @@
         this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       },
       createOrder () {
-        this.$command('CREATE_ACTIVITY_ORDER', this.activityId,
-          this.storeInfo.id, this.userInfo.nickname,
-          this.userInfo.mobile, this.storeInfo.address,
-          this.usedTicketCode, this.usedCardId
-        );
+        this.$command('CREATE_ACTIVITY_ORDER', this.activityId, this.storeInfo.id, this.userInfo.nickname, this.userInfo.mobile, this.storeInfo.address);
       },
       async initData () {
         this.activityId = parseInt(this.$route.query['activity_id']);
@@ -137,7 +127,7 @@
         }
 
         if (!store && this.storeInfo) {
-          stores.push(this.storeInfo);
+          stores.push(this.storeInfo)
         }
 
         this.mp.storage.set('activityReceiveStores', stores);

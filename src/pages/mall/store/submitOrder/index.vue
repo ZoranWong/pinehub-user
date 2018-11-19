@@ -18,8 +18,9 @@
 		name: 'confirmationOrder',
 		data() {
 			return {
-				title: '确认订单「当日」'
-
+				title: '确认订单「当日」',
+				model: 'model.store.shoppingCarts',
+				storeId: null
 			}
 		},
 		components: {
@@ -31,7 +32,7 @@
 		computed: {
 			userInfo() {
 				return this.$store.getters['model.account/userInfo']
-			},
+			}
 		},
 		methods: {
 			radioChange(e) {
@@ -48,7 +49,7 @@
 				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
 			addCart(merchandiseId, id = null) {
-				console.log('加入购物车')
+				console.log('加入购物车', merchandiseId, id);
 				let count = this.$store.getters['model.store.shoppingCarts/quality'](merchandiseId) + 1;
 				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', this.nearestStore['id'], merchandiseId, id, count);
 			},
@@ -56,23 +57,16 @@
 				let count = this.$store.getters['model.store.shoppingCarts/quality'](merchandiseId) - 1;
 				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', this.nearestStore['id'], merchandiseId, id, count);
 			},
-			clearShoppingCart() {
-				console.log('清空购物车')
-				try {
-					this.$command('STORE_SHOPPINGCART_CLEAR_MERCHANDISES', this.nearestStore['id']);
-				} catch(e) {
-					console.log(e);
-				}
+			createOrder() {
+				//
+				this.$command('CREATE_STORE_ORDER', this.activityId,
+					this.storeInfo.id, this.userInfo.nickname,
+					this.userInfo.mobile, this.storeInfo.address,
+					this.usedTicketCode, this.usedCardId
+				);
 			},
 			async initData() {
-				await this.$command('GET_NEAREST_STORE');
-				await this.$command('MYINFO');
-				console.log('mounted order component');
-				await this.$command('FILL_CART_FROM_CACHE');
-				if(!this.hasShoppingCarts) {
-					await this.loadCartMerchandises();
-				}
-
+				this.storeId = this.$route.query['store_id'];
 			}
 		},
 		created() {},

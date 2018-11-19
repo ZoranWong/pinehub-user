@@ -96,7 +96,11 @@
 			},
 			async hdlHidePopup(store) {
 				this.isShow = false;
-				await this.loadCategories(store.id);
+				console.log('dafasdfasdfasdfsadf', this.nearestStore);
+				await this.loadCategories(this.nearestStore.id);
+				if(!this.hasShoppingCarts) {
+					await this.loadCartMerchandises();
+				}
 				this.$store.dispatch('model.store.merchandises/setCurrentCategory', {
 					categoryIndex: 0
 				});
@@ -121,7 +125,7 @@
 				}
 			},
 			loadCartMerchandises(page = 1) {
-				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
+				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', this.nearestStore.id, page);
 			},
 			addCart(merchandiseId, id = null) {
 				console.log('加入购物车')

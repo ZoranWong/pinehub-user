@@ -34,14 +34,15 @@ export default class NearestStore extends Model {
 
   listeners () {
     super.listeners();
-    this.addEventListener('location', function ({
-                                                  id,
-                                                  name,
-                                                  address
-                                                }, state) {
-      state.store.name = name;
-      state.store.id = id;
-      state.store.address = address;
+    this.addEventListener('setStore', function (store, state) {
+      state.store.name = store['name'];
+      state.store.id = store['id'];
+      state.store.address = store['address'];
+      state.store.startAt = store['start_at'];
+      state.store.endAt = store['end_at'];
+      state.store.lng = store['lng'];
+      state.store.lat = store['lat'];
+      state.store.mobile = store['mobile'];
     });
     this.cache();
   }

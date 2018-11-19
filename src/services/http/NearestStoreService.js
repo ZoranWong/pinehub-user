@@ -12,15 +12,6 @@ export default class NearestStoreService extends ApiService {
         lat: lat
       });
     }
-    console.log('纪晓岚', response.data['id'],
-      response.data['name'],
-      response.data['address'],
-      response.data['lng'],
-      response.data['lat'])
-    return [
-      response.data['id'],
-      response.data['name'],
-      response.data['address']
-    ];
+    return response.data;
   }
 }
