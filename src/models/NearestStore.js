@@ -17,7 +17,11 @@ export default class NearestStore extends Model {
       store: {
         id: null,
         name: null,
-        address: null
+        address: null,
+        mobile: null,
+        lng: null,
+        startAt: null,
+        endAt: null
       }
 
     };
@@ -43,6 +47,7 @@ export default class NearestStore extends Model {
       state.store.lng = store['lng'];
       state.store.lat = store['lat'];
       state.store.mobile = store['mobile'];
+      console.log('=========================== nearest store save =============', store);
     });
     this.cache();
   }

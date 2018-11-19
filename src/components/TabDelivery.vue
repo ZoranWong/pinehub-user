@@ -1,52 +1,40 @@
 <template>
 	<div>
 		<ul class="tab clearfix ">
-			<li class="bgff" v-for="(tab, index) in tabs" :key="index" :class="{tab_select_now:cur == index}" @click="tabSelect(index)">
+			<li class="bgff" v-for="(tab, index) in tabs" :key="index" :class="{tab_select_now:currentTab == index}" @click="tabSelect(index)">
 				<span class="txt">{{tab.txt}}</span>
 				<i class="selected"></i>
 			</li>
 		</ul>
-		<ul class="Distribution-details  width710" v-if="cur === 0">
+		<ul class="Distribution-details  width710" v-if="currentTab === 0">
 
 			<li class="li-item bgff">
 				配送地址
 				<p class="details-item">
-					<input type="text" :name="buildNum" class="mini-input"> 楼号
-					<input type="text" :name="roomNum" class="mini-input"> 房号
+					<input type="text" v-model="buildNum" class="mini-input"> 楼号
+					<input type="text" v-model="roomNum" class="mini-input"> 房号
 				</p>
 			</li>
 			<li class="li-item bgff">
 				配送时间
 				<p class="details-item">
-					<picker @change="bindPickerChange" :value="index" :range="timesArray">
+					<picker @change="bindPickerChange" :value="sendBatch" :range="timesArray">
 						<span class="picker">
-        				    {{ timesArray[index] }}
+        				    {{ timesArray[sendBatch] }}
         				    <i class="inverted-triangle"></i>
       					</span>
 					</picker>
 				</p>
 			</li>
-			<!-- <li class="li-item bgff">
-                配送联系电话
-                <p class="details-item tel-num">
-                16868686868
-                </p>
-            </li> -->
 		</ul>
-		<ul class="Distribution-details bgff" v-else-if="cur === 1">
+		<ul class="Distribution-details bgff" v-else-if="currentTab === 1">
 
 			<li class="li-item bgff">
 				自提地址
 				<p class="details-item">
-					{{position.address}}
+					{{address}}
 				</p>
 			</li>
-			<!-- <li class="li-item bgff">
-                配送联系电话
-                <p class="details-item tel-num">
-                16868686868
-                </p>
-            </li> -->
 		</ul>
 
 	</div>
@@ -56,7 +44,10 @@
 		name: 'TabDelivery',
 		data() {
 			return {
-				index: 0,
+				sendBatch: 0,
+				address: null,
+				roomNum: null,
+				buildNum: null,
 				timesArray: ['7:00 - 9:00', '11:00 - 13:00', '17:00 - 19:00'],
 				tabs: [{
 						id: 1,
@@ -67,28 +58,56 @@
 						txt: '自提'
 					}
 				],
-				cur: 0
+				currentTab: 0
 			}
 		},
 		props: {
-			position: {
+			value: {
 				default: null,
 				type: Object
 			}
 		},
-		computed: {
-			position() {
-				return this.$store.getters['model.nearestStore/location'];
+		watch: {
+			value: {
+				deep: true,
+				handler(v) {
+					if(v) {
+						this.roomNum = v.roomNum;
+						this.buildNum = v.buildingNum;
+						this.address = v.address;
+						this.sendBatch = v.sendBatch;
+						this.currentTab = v.currentTab;
+					}
+				}
+			},
+			roomNum() {
+				this.setModel();
+			},
+			buildNum() {
+				this.setModel();
+			},
+			sendBatch() {
+				this.setModel();
+			},
+			currentTab() {
+				this.setModel();
 			}
 		},
 		methods: {
-			bindPickerChange(e) {
-				// console.log(e)
-				this.index = e.target.value
+			setModel() {
+				this.$emit('input', {
+					roomNum: this.roomNum,
+					buildingNum: this.buildNum,
+					address: this.address,
+					sendBatch: this.sendBatch,
+					currentTab: this.currentTab
+				});
 			},
-			tabSelect(num) {
-				this.cur = num;
-				console.log(num);
+			bindPickerChange(e) {
+				this.sendBatch = e.target.value;
+			},
+			tabSelect(tabIndex) {
+				this.currentTab = tabIndex;
 			}
 		}
 
@@ -162,6 +181,7 @@
 		border-radius: 10rpx;
 		box-sizing: border-box;
 		vertical-align: middle;
+		text-align: center;
 	}
 	
 	.li-item .details-item select {

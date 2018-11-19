@@ -1,7 +1,5 @@
 import App from './index';
 import Vue from 'vue';
-import Merchandises from '@/models/Merchandises';
-import NearestStore from '@/models/NearestStore';
 import StoreCategories from '@/models/Categories';
 import StoreShoppingCartLoadMerchandisesCommand from './commands/StoreShoppingCartLoadMerchandisesCommand';
 import StoreShoppingCartChangeMerchandiseCommand from './commands/StoreShoppingCartChangeMerchandiseCommand';
@@ -13,8 +11,7 @@ import NearestStoreService from '@/services/http/NearestStoreService';
 const application = wx.$app;
 
 application.setComponent(App).run(function () {
-    this.models.addModel('model.store.merchandises', Merchandises);
-    this.models.addModel('model.nearestStore', NearestStore);
+
     this.models.addModel('model.storeCategories', StoreCategories);
 
     this.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);

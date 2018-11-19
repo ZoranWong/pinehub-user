@@ -4,7 +4,7 @@
 		<!-- 收货人组件 -->
 		<consignee select-method="true"></consignee>
 		<!-- 配送和自提的tab切换组件-->
-		<tab-delivery :position="position"></tab-delivery>
+		<tab-delivery v-model="addressInfo"></tab-delivery>
 		<!-- 支付内容的显示组件 -->
 		<payment :model="model" :usedTicket="usedTicket" :totalNum="totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket="redirectToTicket"></payment>
 	</div>
@@ -20,7 +20,16 @@
 			return {
 				title: '确认订单「当日」',
 				model: 'model.store.shoppingCarts',
-				storeId: null
+				storeId: null,
+				roomNum: null,
+				buildNum: null,
+				addressInfo: {
+					address: null,
+					buildingNum: null,
+					roomNum: null,
+					sendBatch: 0,
+					currentTab: 0
+				}
 			}
 		},
 		components: {
@@ -30,11 +39,11 @@
 			'payment': Payment
 		},
 		computed: {
-			storeInfo() {
-				return this.queryStore ? this.queryStore : this.$store.getters['model.nearestStore/store'](this.storeId);
-			},
 			userInfo() {
 				return this.$store.getters['model.account/userInfo']
+			},
+			storeInfo() {
+				return this.$store.getters['model.nearestStore/store']
 			}
 		},
 		methods: {
@@ -55,26 +64,37 @@
 				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', this.nearestStore['id'], merchandiseId, id, count);
 			},
 			createOrder() {
-				//
-
-				this.storeId = this.$store.getters['model.nearestStore/store'].id;
-				console.log('StoreId', this.storeId);
-
-				return false;
+				let type = null;
+				if(this.addressInfo.currentTab == 0) {
+					type = 4;
+				} else if(this.addressInfo.currentTab == 1) {
+					type = 3;
+				}
+				console.log('StoreId', this.storeInfo.id, this.userInfo.nickname, this.userInfo.mobile, this.storeInfo.address, this.addressInfo.buildingNum, this.addressInfo.roomNum, this.addressInfo.sendBatch, type);
+				if(this.addressInfo.buildingNum == null || this.addressInfo.roomNum == null) {
+					wx.showToast({
+						title: "楼号或房号不得为空",
+						icon: "none"
+					})
+					return false;
+				}
+				// 
 				this.$command('CREATE_STORE_ORDER',
+					type,
 					this.storeInfo.id,
 					this.userInfo.nickname,
 					this.userInfo.mobile,
 					this.storeInfo.address,
-					this.storeInfo.buildNum,
-					this.storeInfo.roomNum,
-					this.usedTicketCode,
-					this.usedCardId
+					this.addressInfo.buildingNum,
+					this.addressInfo.roomNum,
+					this.addressInfo.sendBatch
 				);
 			},
 			async initData() {
-				this.storeId = this.$store.getters['model.nearestStore/store'].id;
-				console.log('StoreId', this.storeId);
+				//				this.storeId = this.$store.getters['model.nearestStore/store']['id'];
+				//				console.log('StoreId', this.storeId);
+				this.addressInfo.address = this.storeInfo.address;
+				console.log('-=-=-=-=-=-=-=-=-=-----=-=-=-=-=-=-=-=-=-=-=-=-', this.storeInfo);
 			}
 		},
 		created() {},

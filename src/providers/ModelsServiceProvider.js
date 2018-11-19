@@ -5,6 +5,7 @@ import Merchandises from '@/models/Merchandises';
 import Categories from '@/models/Categories'
 ;import ShoppingCarts from '@/models/ShoppingCarts';
 import NearbyStores from '@/models/NearbyStores';
+import NearestStore from '@/models/NearestStore';
 import Tickets from '@/models/Tickets';
 
 export default class ModelServiceProvider extends ServiceProvider {
@@ -25,6 +26,8 @@ export default class ModelServiceProvider extends ServiceProvider {
     this.app.models.addModel('model.store.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.online.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.nearbyStores', NearbyStores);
+    
+    this.app.models.addModel('model.nearestStore', NearestStore);
   }
   boot () {
 
