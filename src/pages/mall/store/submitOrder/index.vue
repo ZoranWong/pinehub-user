@@ -30,6 +30,9 @@
 			'payment': Payment
 		},
 		computed: {
+			storeInfo() {
+				return this.queryStore ? this.queryStore : this.$store.getters['model.nearestStore/store'](this.storeId);
+			},
 			userInfo() {
 				return this.$store.getters['model.account/userInfo']
 			}
@@ -42,12 +45,6 @@
 				// console.log(e)
 				this.index = e.target.value
 			},
-			next() {
-				this.$command('LOAD_MERCHANDISE_LIST');
-			},
-			loadCartMerchandises(page = 1) {
-				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', page);
-			},
 			addCart(merchandiseId, id = null) {
 				console.log('加入购物车', merchandiseId, id);
 				let count = this.$store.getters['model.store.shoppingCarts/quality'](merchandiseId) + 1;
@@ -59,14 +56,25 @@
 			},
 			createOrder() {
 				//
-				this.$command('CREATE_STORE_ORDER', this.activityId,
-					this.storeInfo.id, this.userInfo.nickname,
-					this.userInfo.mobile, this.storeInfo.address,
-					this.usedTicketCode, this.usedCardId
+
+				this.storeId = this.$store.getters['model.nearestStore/store'].id;
+				console.log('StoreId', this.storeId);
+
+				return false;
+				this.$command('CREATE_STORE_ORDER',
+					this.storeInfo.id,
+					this.userInfo.nickname,
+					this.userInfo.mobile,
+					this.storeInfo.address,
+					this.storeInfo.buildNum,
+					this.storeInfo.roomNum,
+					this.usedTicketCode,
+					this.usedCardId
 				);
 			},
 			async initData() {
-				this.storeId = this.$route.query['store_id'];
+				this.storeId = this.$store.getters['model.nearestStore/store'].id;
+				console.log('StoreId', this.storeId);
 			}
 		},
 		created() {},
