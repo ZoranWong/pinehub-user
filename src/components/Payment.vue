@@ -17,10 +17,11 @@
       </div>
     </div>
 
-    <div v-if = "!usedTicket" class="li-item bgff coupon" @click="routeTicket" :disabled = "totalNum > 0">
+    <div v-if = "!usedTicket" class="li-item bgff coupon" @click="routeTicket" :disabled = "ticketNum > 0">
       优惠券
-      <span class="coupon-tips">{{ totalNum }}张可用</span>
-      <label  class="fr">
+      <span class="coupon-tips" v-if = "ticketNum > 0">{{ ticketNum }}张可用</span>
+      <span class="coupon-tips" v-else>无优惠券可使用</span>
+      <label  class="fr" v-if = "ticketNum > 0">
         有可用
         <i class="arrow-icon"></i>
       </label>
@@ -54,7 +55,7 @@
       'cart-control': CartControl
     },
     props: {
-      totalNum: {
+      ticketNum: {
         default: 0,
         type: Number
       },
@@ -108,11 +109,11 @@
       jump (router) {
         this.$command('router', router, 'push');
       },
-      addCart (merchandiseId) {
-        this.addMerchandiseToCart(merchandiseId);
+      addCart (merchandiseId, id) {
+        this.addMerchandiseToCart(merchandiseId, id);
       },
-      reduceCart (merchandiseId) {
-        this.reduceMerchandiseToCart(merchandiseId);
+      reduceCart (merchandiseId, id) {
+        this.reduceMerchandiseToCart(merchandiseId, id);
       },
       pay () {
         this.createOrder()

@@ -25,7 +25,7 @@
     </ul>
 
     <!-- 支付内容的显示组件 -->
-    <payment :model="model" :usedTicket = "usedTicket" :totalNum = "totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
+    <payment :model="model" :usedTicket = "usedTicket" :ticketNum = "ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
 
   </div>
 </template>
@@ -65,7 +65,7 @@
       sendDate () {
         return this.storeInfo ? this.storeInfo['openingHours'] : null;
       },
-      totalNum () {
+      ticketNum () {
         return this.$store.getters['model.activity.tickets/totalNum'];
       },
       totalAmount () {
@@ -95,12 +95,13 @@
         await this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', this.activityId, page);
       },
       addCart (merchandiseId, id) {
+        console.log(merchandiseId, id);
         let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1;
-        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
       },
       reduceCart (merchandiseId, id) {
         let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
-        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
       },
       createOrder () {
         this.$command('CREATE_ACTIVITY_ORDER', this.activityId, this.storeInfo.id, this.userInfo.nickname, this.userInfo.mobile, this.storeInfo.address);

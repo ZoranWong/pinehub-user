@@ -7,12 +7,12 @@
       <li class="li-item bgff">
         配送地址
         <p class="details-item">
-          <input type="text" class="big-input">
+          <input type="text" class="big-input" v-model="address">
         </p>
       </li>
     </ul>
     <!-- 支付内容的显示组件 -->
-    <payment :next="next" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart"></payment>
+    <payment :model = "model" :usedTicket = "usedTicket" :ticketNum = "ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket = "redirectToTicket"></payment>
   </div>
 </template>
 <script>
@@ -23,7 +23,9 @@
     name: 'confirmationOrderTwo',
     data () {
       return {
-        title: '预定商城-确认订单'
+        title: '预定商城-确认订单',
+        model: 'model.bookingMall.shoppingCarts',
+        address: null
       }
     },
 
@@ -33,32 +35,51 @@
       'payment': Payment
     },
     computed: {
+      userInfo () {
+        return this.$store.getters['model.account/userInfo']
+      },
       merchandises () {
-        return this.$store.getters['model.activity.merchandises/list'];
+        return this.$store.getters['model.bookingMall.merchandises/list'];
+      },
+      ticketNum () {
+        return this.$store.getters['model.bookingMall.tickets/totalNum'];
+      },
+      totalAmount () {
+        return this.model ? this.$store.getters[`model.bookingMall.shoppingCarts/totalAmount`] : 0;
+      },
+      usedTicket () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/usedTicketTitle'];
+      },
+      usedTicketCode () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/ticketCode'];
+      },
+      usedCardId () {
+        return this.$store.getters['model.bookingMall.shoppingCarts/cardId'];
       }
-
     },
     methods: {
-      radioChange (e) {
-        console.log('radio发生change事件，携带value值为：', e.target.value)
+      createOrder () {
+        this.$command('CREATE_BOOKING_MALL_ORDER',
+          this.userInfo.nickname,
+          this.userInfo.mobile,
+          this.address,
+          this.usedTicketCode,
+          this.usedCardId
+        );
       },
-      bindPickerChange (e) {
-        this.index = e.target.value
+      redirectToTicket () {
+
       },
-      next () {
-        this.$command('LOAD_MERCHANDISE_LIST');
+      addCart (merchandiseId, id) {
+        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       },
-      addCart (shopId, count, merchandiseId) {
-        this.$command('ADD_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
-      },
-      reduceCart (shopId, count, merchandiseId) {
-        this.$command('REDUCE_MERCHANDISE_TO_CART', merchandiseId, count, shopId);
+      reduceCart (merchandiseId, id) {
+        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
       }
     },
     mounted () {
-      this.$command('MYINFO');
-      console.log('mounted order component');
-      this.$command('FILL_CART_FROM_CACHE');
     }
   }
 </script>

@@ -1,7 +1,6 @@
 import App from './index';
 import Vue from 'vue';
 // 产品模型和产品服务
-import Merchandises from '@/models/Merchandises';
 import MerchandisesService from '@/services/http/MerchandisesService';
 // 购物车相关
 import ActivityLoadingMerchandisesCommand from './commands/ActivityLoadingMerchandisesCommand';
@@ -12,10 +11,7 @@ import ActivityShoppingCartClearMerchandisesCommand from './commands/ActivitySho
 import ActivityUsuallyAddressService from '@/services/http/ActivityUsuallyAddressService';
 import LoadActivityUsuallyAddressCommand from '@/commands/LoadActivityUsuallyAddressCommand';
 const application = wx.$app;
-application.setComponent(App).run(function() {
-	// 产品模型和产品服务
-	this.models.addModel('model.activity.merchandises', Merchandises)
-	this.register('http.merchandises', MerchandisesService)
+application.setComponent(App).run(function () {
 	// 注册购物车命令
 	this.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand);
 	this.registerCommand(ActivityShoppingCartChangeMerchandiseCommand.commandName(), ActivityShoppingCartChangeMerchandiseCommand);
