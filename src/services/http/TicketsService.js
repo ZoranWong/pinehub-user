@@ -34,6 +34,15 @@ export default class TicketsService extends ApiService {
     let result = await this.list(status, parameters);
     return result;
   }
+  
+  async storeTickets (status, storeId, page) {
+    let parameters = {
+      store_id: storeId,
+      page: page
+    }
+    let result = await this.list(status, parameters);
+    return result;
+  }
 
   async bookingMallTickets (status, page) {
     let parameters = {

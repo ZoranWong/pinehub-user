@@ -27,6 +27,7 @@
       "pages": [
         "store/main",
         "store/submitOrder/main",
+        "store/coupon/main",
         "bookingMall/main",
         "bookingMall/submitOrder/main",
         "bookingMall/orderSelf/main",
