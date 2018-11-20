@@ -1,161 +1,172 @@
 import Model from './Model'
 import _ from 'underscore';
 import ShoppingCartTransformer from './transformers/ShoppingCart';
-export default class ShoppingCarts extends Model{
-  constructor(application) {
+export default class ShoppingCarts extends Model {
+  constructor (application) {
     super(application);
     this.id = Math.random() * 1000000000;
     this.transformer = ShoppingCartTransformer;
-  }  // 购物车内的相关数据计算 
-  computed() {
+  }
+  // 购物车内的相关数据计算
+  computed () {
     return _.extend(super.computed(), {
-      totalAmount(state){
+      usedTicketTitle () {
+        return this.state.ticketTitle;
+      },
+      cardId () {
+        return this.state.cardId;
+      },
+      ticketCode () {
+        return this.state.ticketCode;
+      },
+      totalAmount () {
         //  计算总价
         let total = 0;
-        state.list.forEach( (item) => {
-            total += item.sellPrice * item.count;
+        this.list().forEach((item) => {
+          total += item.sellPrice * item.count;
         });
-        return total;
+        return total.toFixed(2);
       },
-      list(state){
-        //console.log('shopping cart', state.list, this.id, this.$application.name);
+      paymentAmount () {
+        let total = 0;
+        this.list().forEach((item) => {
+          total += item.sellPrice * item.count;
+        });
+        let amount = (total * this.state.discount) - this.state.reduceCost;
+        return amount.toFixed(2);
+      },
+      list (state) {
         return _.flatten(state.list);
       },
-      quality(state) {
+      quality () {
         return (id) => {
-          let cart = _.findWhere(state.list, {merchandiseId: id});
-          //console.log(cart)
+          let cart = _.findWhere(this.list(), {
+            merchandiseId: id
+          });
           return cart ? cart.count : 0;
         }
       },
-      totalCount(state){
-         let total = 0;
-         state.list.forEach( (item) => {
-          total  += item.count;
-         })
-         return total;
+      shoppingCartId () {
+        return (id) => {
+          let cart = _.findWhere(this.list(), {
+            merchandiseId: id
+          });
+          return cart ? cart.id : null;
+        }
+      },
+      totalCount () {
+        let total = 0;
+        this.list().forEach((item) => {
+          total += item.count;
+        })
+        return total;
       }
     });
   }
 
-  data() {
-    return _.extend(super.data(), {});
+  data () {
+    let data = _.extend(super.data(), {
+      activityId: null,
+      shopId: null,
+      ticketCode: null,
+      cardId: null,
+      discount: 1,
+      reduceCost: 0,
+      ticketTitle: null
+    });
+    this.rebuildData();
+    return data;
   }
 
-  async cache(){
-    //console.log(this.state);
+  async rebuildData () {
+    let data = await this.getCache();
+    _.extend(this.state, data);
+  }
+  async cache () {
     return await this.services('mp.storage').set('shoppingCarts', this.state);
   }
-  
-  async getCache() {
+
+  async getCache () {
     return await this.services('mp.storage').get('shoppingCarts');
-    //return {};
   }
-  
-  listeners() {
+
+  listeners () {
     super.listeners();
-    this.addEventListener('setList' , (
-      {list, currentPage, totalPage, totalNum, pageCount}/*paylaod*/) => {
-        this.state.currentPage = currentPage;
-        let startIndex = (currentPage - 1) * pageCount + 1;
-        this.state.list[currentPage - 1] =  this.transform(list, this.transformer, startIndex);
-        if(totalNum !== null)
-          this.state.totalNum = totalNum;
-        if(totalPage !== null) {
-          this.state.totalPage = totalPage;
-          if(pageCount !== null) {
-            this.state.pageCount = pageCount;
-          }
-        }
-        this.cache();
-
-    });
-    this.addEventListener('changeCart', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count,thumbImage}) {
-      let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
-      //console.log('changeCart',cart);
-      //console.log('add',count)
-
-      if(!cart) {
-        let newCart = {
-          id: id,
-          name: name, 
-          sellPrice: sellPrice, 
-          totalAmount: totalAmount,
-          merchandiseId: merchandiseId,
-          shopId: shopId, 
-          count: count,
-          thumbImage:thumbImage
-
-        };
-        this.state.list.push(newCart);
-      }else{
-        if(count === 0) {
-           this.state.list.remove(cart)
-        }else{
-          cart.count = count;
-        }
-      }     
+    // 设置列表
+    this.addEventListener('setList', (payload, state /* paylaod */) => {
+      this.setList(payload, state);
       this.cache();
-      //console.log("存储数据")
     });
 
-    
-    //减少购物车
+    // 使用优惠券
+    this.addEventListener('setTicketCard', function ({ticketCode, cardId, discount = 1, reduceCost = 0, title = null}) {
+      console.log('set use ticket ------');
+      this.state.reduceCost = reduceCost;
+      this.state.discount = discount;
+      this.state.ticketCode = ticketCode;
+      this.state.cardId = cardId;
+      this.state.ticketTitle = title;
+    });
 
-    this.addEventListener('reduce', function({id, name, sellPrice, totalAmount, merchandiseId, shopId, count,thumbImage}) {
-      let cart = _.findWhere(this.state.list, {merchandiseId: merchandiseId});
-
-
-      if(count > 0){
-        let newCart = {
-          id: id,
-          name: name, 
-          sellPrice: sellPrice, 
-          totalAmount: totalAmount,
-          merchandiseId: merchandiseId,
-          shopId: shopId, 
-          count: count,
-          thumbImage:thumbImage
-        };        
-        this.state.list.count --
-        cart.count = count;       
-      }else if(count === 0){  
-         let newCart = {
-          id: id,
-          name: name, 
-          sellPrice: sellPrice, 
-          totalAmount: totalAmount,
-          merchandiseId: merchandiseId,
-          shopId: shopId, 
-          count: count,
-          thumbImage:thumbImage
-
-        };   
-        this.state.list.splice(newCart,1)
-      }else{
-
+    this.addEventListener('addMerchandiseToShoppingCart', function (cart) {
+      let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
+      if (this.state.currentPage === 0) {
+        this.state.currentPage = 1;
       }
+      if (!this.state.list[idx]) {
+        this.$application.$vm.set(this.state.list, idx, []);
+      }
+      this.state.list[idx].push(cart);
       this.cache();
     });
 
-    
-
-    //清空购物车
-    this.addEventListener('reset', function({shopId}) {
-      //this.state = this.data();
-      this.state.list = [ ]
-      this.cache()
+    this.addEventListener('changeShoppingCartMerchandise', function (cart) {
+      let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
+      if (this.state.currentPage === 0) {
+        this.state.currentPage = 1;
+      }
+      _.map(this.state.list[idx], function (item) {
+        if (item.id === cart.id) {
+          item.count = cart.count;
+        }
+      });
+      this.cache();
     });
 
+    this.addEventListener('deleteMerchandiseFromShoppingCart', function ({
+                                                                           id
+                                                                         }) {
+      let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
+      if (this.state.currentPage === 0) {
+        this.state.currentPage = 1;
+      }
+      let list = _.filter(this.state.list[idx], function (item) {
+        return item.id !== id;
+      });
+      this.$application.$vm.set(this.state.list, idx, list);
+      this.cache();
+    });
 
-    //获取购物车
-    this.addEventListener('fillCartFromCache', async  function({shopId}) {    
-      console.log('get from cache'); 
-      let data = await this.getCache();
-      console.log('cache data ', data); 
-      data = data ? data : {};
-      _.extend(this.state, data);
-      this.state.shopId = shopId;
+    // 清空购物车
+    this.addEventListener('reset', function ({ activity = false, shop = false }) {
+      this.state.list = [];
+      if (activity) {
+        this.state.activityId = null;
+      }
+
+      if (shop) {
+        this.state.shopId = null;
+      }
+
+      this.state.pageCount = 0;
+      this.state.currentPage = 0;
+      this.state.totalNum = 0;
+      this.state.totalPage = 0;
+      this.state.reduceCost = 0;
+      this.state.discount = 1;
+      this.state.ticketCode = null;
+      this.state.cardId = null;
+      this.cache()
     });
   }
 }

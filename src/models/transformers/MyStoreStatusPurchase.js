@@ -36,7 +36,7 @@ export default class MyStoreStatusPurchase {
 				break;
 		}
 		this.code = purchaseList['code'];
-		this.paid_at = purchaseList['paid_at'];
-		this.payment_amount = purchaseList['payment_amount'];
+		this.paidAt = purchaseList['paid_at'];
+		this.paymentAmount = purchaseList['payment_amount'];
 	}
 }

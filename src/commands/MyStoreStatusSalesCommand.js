@@ -5,9 +5,14 @@ export default class MyStoreStatusSalesCommand extends Command {
 	}
 
 	async handle(selectTime) {
-		let [salesInfo, sellTop, merchandiseTop, statics] = await this.service('http.myStoreStatusSales').salesInfo(
-			selectTime);
-		//console.log('sales---------------A', [salesInfo, sellTop, merchandiseTop, statics]);
+		console.log('CREATE-TIME', selectTime);
+		let [salesInfo, sellTop, merchandiseTop, statics] = await this.service('http.myStoreStatusSales').salesInfo(selectTime);
+
+		//echarts 处理开始
+		let yData = statics;
+		this.loadEcharts(selectTime, yData)
+		//echarts 处理结束
+		console.log('SALE-TOP', sellTop);
 		this.store().dispatch({
 			type: 'model.my.store.status.sales/salesInfo',
 			salesInfo: salesInfo,
@@ -16,6 +21,17 @@ export default class MyStoreStatusSalesCommand extends Command {
 			statics: statics
 		});
 	}
+
+	async loadEcharts(xDate, yData) {
+		console.log('XU-ZHENG', xDate, yData, this.service('mp.eCharts'));
+		let result = await this.service('mp.eCharts').createChart(xDate, yData, true);
+		console.log('MySalesEchartCommand-------MySalesEchartCommand', result);
+		this.store().dispatch({
+			type: 'model.my.sales.echart/chartDatas',
+			chartDatas: result
+		});
+	}
+
 	static commandName() {
 		return 'MYSTORESTATUSSALES';
 	}

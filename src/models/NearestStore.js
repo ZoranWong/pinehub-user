@@ -2,56 +2,53 @@ import Model from './Model'
 import _ from 'underscore';
 import NearestStoreTransformer from './transformers/NearestStore';
 export default class NearestStore extends Model {
-	constructor(application) {
-		super(application);
-	}// 获取当日下单里的最近店铺
-	computed() {
-		return _.extend(super.computed(), {
-       	location(state){
-        	return state.location;
-      	}
-     });
-   	}
-	data() {
-		return {
-			location : {
-				id: null,
-				name:null,
-				address:null
-			}
-			
-		};
-	}
-	async cache(){
-    //console.log(this.state);
-		return await this.services('mp.storage').set('location', this.state);
-	}
-  
- 	async getCache() {
-    	return await this.services('mp.storage').get('location');
-    //return {};
-  	}
+  constructor (application) {
+    super(application);
+  } // 获取当日下单里的最近店铺
+  computed () {
+    return _.extend(super.computed(), {
+      store (state) {
+        return state.store;
+      }
+    });
+  }
+  data () {
+    return {
+      store: {
+        id: null,
+        name: null,
+        address: null,
+        mobile: null,
+        lng: null,
+        startAt: null,
+        endAt: null
+      }
 
-	listeners() {
-		super.listeners();
-		this.addEventListener('location',function ({id,  name, address}, state ){
-			this.state.location.name = name;
-			this.state.location.id = id;
-			this.state.location.address = address;
-			
-		});
-		this.cache();
-	    // console.log(this.cache(),"你当时")
+    };
+  }
+  async cache () {
+    // console.log(this.state);
+    return await this.services('mp.storage').set('nearestStore', this.state.store);
+  }
 
+  async getCache () {
+    return await this.services('mp.storage').get('nearestStore');
+    // return {};
+  }
 
-	    //获取当日下单的配送的地址
-	   //  this.addEventListener('getAddress', async  function({shopId}) {    
-    //   console.log('get from cache'); 
-    //   let data = await this.getCache();
-    //   console.log('cache data ', data); 
-    //   data = data ? data : {};
-    //   _.extend(this.state, data);
-    //   this.state.shopId = shopId;
-    // })
-	}
+  listeners () {
+    super.listeners();
+    this.addEventListener('setStore', function (store, state) {
+      state.store.name = store['name'];
+      state.store.id = store['id'];
+      state.store.address = store['address'];
+      state.store.startAt = store['start_at'];
+      state.store.endAt = store['end_at'];
+      state.store.lng = store['lng'];
+      state.store.lat = store['lat'];
+      state.store.mobile = store['mobile'];
+      console.log('=========================== nearest store save =============', store);
+    });
+    this.cache();
+  }
 }

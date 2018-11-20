@@ -1,25 +1,26 @@
-import Service from '../Service';
-export default class MyFeedbackService extends Service {
+import ApiService from './ApiService';
+export default class MyFeedbackService extends ApiService {
 	constructor($application) {
 		super($application);
-	}	
+	}
 	// 提交反馈数据
-	async submitFeedback(contact,feedbackContent) {
+	async submitFeedback(mobile, feedback) {
 		let response = null;
-		let status = null;
-		if(this.$application.needMock()){
-			response = await this.services('mock.myFeedback').mock(contact, feedbackContent);
-		}else{
+		if(this.$application.needMock()) {
+			response = await this.services('mock.myFeedback').mock(mobile, feedback);
+		} else {
+			console.log('http');
 			//服务器交互代码部分
-			response = await this.httpPost(`/feed/back/message`, {
-				comment: contact,
-				mobile: feedbackContent
-			});
+			let sendData = {
+				comment: feedback,
+				mobile: mobile
+			}
+			if(mobile == null) {
+				delete sendData.mobile;
+			}
+			response = await this.httpPost(`/feed/back/message`, sendData);
 		}
-		if(response.data){
-			console.log('this',this);
-			this.$application.$command('router', 'myfeedbacksuccess', 'push');
-		}
+		return response.data;
 	}
 
 }

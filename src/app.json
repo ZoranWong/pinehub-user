@@ -2,14 +2,6 @@
   "pages": [
     "pages/index/main",
     "pages/nearbyStores/main",
-    "pages/todayOrder/main",
-    "pages/todayOrder/submitOrder/main",
-    "pages/reserveShop/main",
-    "pages/reserveShop/submitOrder/main",
-    "pages/reserveShop/orderSelf/main",
-    "pages/activity/main",
-    "pages/activity/submitOrder/main",
-    "pages/order/main",
     "pages/search/main",
     "pages/coupon/main"
   ],
@@ -29,11 +21,26 @@
         "feedback/success/main",
         "main"
       ]
+    },
+    {
+      "root": "pages/mall",
+      "pages": [
+        "store/main",
+        "store/submitOrder/main",
+        "store/coupon/main",
+        "bookingMall/main",
+        "bookingMall/submitOrder/main",
+        "bookingMall/orderSelf/main",
+        "bookingMall/coupon/main",
+        "activity/main",
+        "activity/submitOrder/main",
+        "activity/coupon/main"
+      ]
     }
   ],
 	"window": {
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fece00",
+		"navigationBarBackgroundColor": "#ffd000",
 		"navigationBarTitleText": "",
 		"navigationBarTextStyle": "black"
 	}

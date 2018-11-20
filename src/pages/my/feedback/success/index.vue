@@ -2,7 +2,7 @@
 	<div id="myfeedback">
 		<mp-title :title="title"></mp-title>
 		<div id="myfeedback_success">
-			<img src="/static/images/my_feedback_success.png" />
+			<img src="/static/images/icon/my_feedback_success.png" />
 			<em>提交成功</em>
 			<i>感谢您对快乐松的关注与支持，我们会认证处理您的反馈，尽快修复和完善相关功能。</i>
 		</div>
@@ -27,7 +27,7 @@
 		},
 		methods: {
 			jump(router) {
-				this.$command('router', router, 'push');
+				this.$command('router', router, 'replace');
 			},
 
 			submit() {
@@ -47,14 +47,14 @@
 		height: 100%;
 		width: 100%;
 	}
-
+	
 	#myfeedback_success {
 		font-size: 32rpx;
 		font-weight: 300;
 		color: #111111;
 		margin-top: 130rpx;
 	}
-
+	
 	#myfeedback_success img {
 		display: block;
 		width: 148rpx;
@@ -62,21 +62,21 @@
 		margin: 0 auto;
 		padding: 5rpx;
 	}
-
+	
 	#myfeedback_success em {
 		text-align: center;
 		font-size: 30rpx;
 		font-weight: 400;
 		margin-top: 30rpx;
 	}
-
+	
 	#myfeedback_success i {
 		font-size: 24rpx;
 		margin: 20rpx 130rpx 140rpx;
 		text-align: center;
 		line-height: 36rpx;
 	}
-
+	
 	#btn {
 		background: #FECE00;
 		font-size: 34rpx;

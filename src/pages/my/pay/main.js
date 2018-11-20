@@ -1,12 +1,10 @@
-import Vue from 'vue';
 import App from './index';
-import Application from '../../../Application';
-import _ from 'underscore';
-const storeMystore = new Application(App, 'store.mystore');
-storeMystore.run((app) => {
-}, (mountComponent) => {
-	_.extend(App, mountComponent);
-	let app = new Vue(App);
-	app.$mount();
-	return app;
+import Vue from 'vue';
+
+const application = wx.$app;
+application.setComponent(App).run(function () {
+    this.route = 'myPay';
+}, function () {
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });

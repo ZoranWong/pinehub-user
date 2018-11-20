@@ -10,6 +10,7 @@ export default class MyStoreStatusSales extends Model {
 				return state.salesInfo;
 			},
 			sellTop(state) {
+				console.log('state.sellTop', state.sellTop);
 				return state.sellTop;
 			},
 			merchandiseTop(state) {
@@ -20,9 +21,13 @@ export default class MyStoreStatusSales extends Model {
 			}
 		});
 	}
+	//data里面不监听的都得不到值
 	data() {
 		return {
-			salesInfo: []
+			salesInfo: [],
+			sellTop: [],
+			merchandiseTop: [],
+			statics: []
 		};
 	}
 	//监听数据
@@ -37,7 +42,7 @@ export default class MyStoreStatusSales extends Model {
 			this.state.sellTop = sellTop;
 			this.state.merchandiseTop = merchandiseTop;
 			this.state.statics = statics;
-			console.log('sales---------B',this.state);
+			console.log('sales---------B', this.state);
 		});
 	}
 }

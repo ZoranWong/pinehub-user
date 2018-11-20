@@ -1,18 +1,19 @@
-import Vue from 'vue';
 import App from './index';
-import Application from '../../../Application';
-import _ from 'underscore';
-import MyOrderService from '../../../services/http/MyOrderService';
+import OrdersService from '../../../services/http/OrdersService';
 import MyOrderCommand from '@/commands/MyOrderCommand';
-import Orders from "@/models/Orders";
-const myOrder = new Application(App, 'my.order');
-myOrder.run((app) => {
-	app.registerModel('model.my.orders', Orders);
-	app.register('http.myorders', MyOrderService);
-	app.registerCommand(MyOrderCommand.commandName(), MyOrderCommand);
-}, (mountComponent) => {
-	_.extend(App, mountComponent);
-	let app = new Vue(App);
-	app.$mount();
-	return app;
+import Orders from '@/models/Orders';
+
+import OrderStatusUpdateCommand from '@/commands/OrderStatusUpdateCommand';
+import Vue from 'vue';
+
+const application = wx.$app;
+application.setComponent(App).run(function () {
+    this.registerModel('model.my.orders', Orders);
+    this.register('http.orders', OrdersService);
+    this.registerCommand(MyOrderCommand.commandName(), MyOrderCommand);
+    this.registerCommand(OrderStatusUpdateCommand.commandName(), OrderStatusUpdateCommand);
+    this.route = 'myOrder';
+}, function () {
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });

@@ -24,6 +24,7 @@ function getEntry (rootSrc) {
 
 const appEntry = { app: resolve('./src/main.js') }
 const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
+console.log(pagesEntry);
 const entry = Object.assign({}, appEntry, pagesEntry)
 
 module.exports = {
@@ -117,11 +118,12 @@ module.exports = {
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(__dirname, '../dist/static'),
-        ignore: ['.*'],
-        transform(context, path)  {
-          var reg = /(.*)+\.(jpg|bmp|gif|png)$/i;
-          return context;
-        }
+        ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
+      },
+      {
+        from: path.resolve(__dirname, '../src/pages/my/ec-canvas'),
+        to: path.resolve(__dirname, '../dist/pages/my/ec-canvas'),
+        ignore: ['.*']
       }
     ])
   ]

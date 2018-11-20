@@ -2,20 +2,20 @@
 	<div id="footNav">
 		<ul>
 			<li @click="jump('index')">
-				<img :src="index" />
+				<em class="fnav" :class="index"></em>
 				<i>首页</i>
 			</li>
-			<li>
-				<img :src="scanning" />
+			<li @click="scanCode">
+				<em class="fnav" :class="scanning"></em>
 				<i>扫码</i>
 			</li>
 
-			<li @click="jump('order')">
-				<img :src="order" />
+			<li @click="jump('myOrder')">
+				<em class="fnav" :class="order"></em>
 				<i>订单</i>
 			</li>
 			<li @click="jump('my')">
-				<img :src="my" />
+				<em class="fnav" :class="my"></em>
 				<i>我的</i>
 			</li>
 		</ul>
@@ -29,35 +29,38 @@
 		data() {
 			return {
 				navName: "",
-				index: "/static/images/index.png",
-				scanning: "/static/images/scanning.png",
-				order: "/static/images/order.png",
-				my: "/static/images/my.png"
+				index: "index",
+				scanning: "scanning",
+				order: "order",
+				my: "my"
 			};
 		},
 		methods: {
 			nowNav(name) {
 				switch(name) {
 					case "index":
-						this.index = "/static/images/index_now.png";
+						this.index = "index_now";
 						break;
 					case "scanning":
-						this.scanning = "/static/images/scanning_now.png";
+						this.scanning = "scanning_now";
 						break;
 					case "order":
-						this.order = "/static/images/order_now.png";
+						this.order = "order_now";
 						break;
 					case "my":
-						this.my = "/static/images/my_now.png";
+						this.my = "my_now";
 						break;
 					default:
-						this.index = "/static/images/index_now.png";
+						this.index = "index_now";
 						break;
 				}
 			},
-			jump(router){
+			jump(router) {
 				console.log(router)
-				this.$command('router',router, 'replace');
+				this.$command('router', router, 'replace');
+			},
+			scanCode(){
+				this.$command('scanCommand', 'myfeedbacksuccess');
 			}
 		},
 		created() {
@@ -97,5 +100,51 @@
 		font-size: 24rpx;
 		font-weight: 200;
 		line-height: 24rpx;
+	}
+	
+	.fnav {
+		width: 50rpx;
+		height: 50rpx;
+		margin: 13rpx auto 10rpx;
+	}
+	
+	.fnav.index {
+		background: url(../../static/images/icon/index.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.index_now {
+		background: url(../../static/images/icon/index_now.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.scanning {
+		background: url(../../static/images/icon/scanning.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.scanning_now {
+		background: url(../../static/images/icon/scanning_now.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.order {
+		background: url(../../static/images/icon/order.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.order_now {
+		background: url(../../static/images/icon/order_now.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.my {
+		background: url(../../static/images/icon/my.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
+	}
+	
+	.fnav.my_now {
+		background: url(../../static/images/icon/my_now.png) no-repeat center center;
+		background-size: 41rpx 49rpx;
 	}
 </style>

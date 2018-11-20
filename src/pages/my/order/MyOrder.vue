@@ -1,43 +1,49 @@
 <template>
 	<div>
-	    <scroll-view  class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="true" :scroll-into-view ="categoryId" @scrolltolower="scrolltolower" >
-		<div id="tab_content_main">
-			<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
-				<div class="order_info_sn">
-					<i>订单编号</i><em>{{orderList.code}}</em>
-					<span class="order_info_status">{{orderList.status}}</span>
-				</div>
-				<div class="order_info_glist">
-					<dl v-for="(items,ind) in orderList.orderItems" :key ="ind">
-						<dd><img :src="items.mainImage"/></dd>
-						<dt>
+		<scroll-view class="foods-wrapper" @scroll="scroll" style="height:700px;" :scroll-y="true" :scroll-into-view="categoryId" @scrolltolower="scrolltolower">
+			<div id="tab_content_main">
+				<div class="order_info" v-for="(orderList,index) in myorderList" :key="index">
+					<div class="order_info_sn">
+						<i>订单编号</i><em>{{orderList.code}}</em>
+						<span class="order_info_status">{{orderList.status}}</span>
+					</div>
+					<div class="order_info_glist">
+						<dl v-for="(items,ind) in orderList.orderItems" :key="ind">
+							<dd><img :src="items.mainImage" /></dd>
+							<dt>
 							<em>{{items.name}}</em>
 							<span>单价 ￥{{items.sellPrice}} 数量 {{items.quality}} 份</span>
 							<span>总价 ￥{{items.totalAmount}}</span>
-						</dt> 
-					</dl>
-				</div>
-				<div class="order_info_ads">
-					<i>自提地址</i>
-					<em>{{orderList.reveiverAddress}}</em>
-				</div>
-				<div class="order_info_glist_total">
-					<div class="order_info_glist_date">
-						{{orderList.createdAt}}
+						</dt>
+						</dl>
 					</div>
-					<em>共{{orderList.quality}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
+					<div class="order_info_ads">
+						<i>自提地址</i>
+						<em>{{orderList.receiverAddress}}</em>
+					</div>
+					<div class="order_info_glist_total">
+						<div class="order_info_glist_date">
+							{{orderList.createdAt}}
+						</div>
+						<em>共{{orderList.quantity}}件商品</em>实付<i>￥{{orderList.totalAmount}}</i>
+					</div>
+					<div class="order_info_btn" v-if="orderList.btnStatus==1">
+						<i @click="btnClick('rePay',orderList.id)">立即支付</i>
+						<i @click="btnClick('cancel',orderList.id)" class="cancel">取消订单</i>
+					</div>
+					<div class="order_info_btn" v-if="orderList.btnStatus==2">
+						<i @click="btnClick('verification',orderList.id)">确认核销</i>
+					</div>
+					<div class="order_info_btn" v-if="orderList.btnStatus==3">
+						<i @click="btnClick('receipt',orderList.id)">确认收货</i>
+					</div>
+					<i class="order_info_circle" v-if="orderList.btnStatus!=0"></i>
+					<i class="order_info_circle right_circle" v-if="orderList.btnStatus!==0"></i>
 				</div>
-				<div class="order_info_btn" v-if="orderList.status=='待支付'">
-					<i>立即支付</i>
-					<i class="delete">取消订单</i>
-				</div>
-				<i class="order_info_circle"></i>
-				<i class="order_info_circle right_circle"></i>
-			</div>	
-		</div>
-	</scroll-view>	
+			</div>
+		</scroll-view>
 	</div>
-	
+
 </template>
 
 <script>
@@ -49,66 +55,85 @@
 				type: String
 			},
 			loadOrders: {
-				default:"",
+				default: "",
 				type: Function
 			},
-			next:{
+			next: {
 				default: null,
 				type: Function
 			},
-			myorderList:{
-				default:"",
-				type:Function 
+			myorderList: {
+				default: "",
+				type: Function
 			}
 		},
 		data() {
 			return {
 				orderList: {},
-//				myorderList:{},
-				topNum:102,
-				flag:true,
-				categoryId:""
+				scrollPosition: 0,
+				isLoading: false,
+				categoryId: ""
 			};
 		},
 		//算术方法
 		computed: {
-
+			isLoadedAll() {
+				return this.$store.getters['model.my.orders/isLoadedAll'];
+			}
 		},
 		methods: {
-			scrolltolower(){
-		        console.log('next page',"111111111111111111111111111111111");
-		        this.next();
-		   },
-		   	scroll(e){
-		   		console.log(e,"tttttttttttttttttttt")
-//		   		this.topNum=e.mp.detail.scrollTop
-//              this.flag=false
-		   	}
+			btnClick(type, id) {
+				console.log('BTN', type, id, this);
+				this.$parent.$command('ORDER_STATUS_UPDATE', type, id);
+			},
+			async scrolltolower() {
+				console.log('翻页', this.isLoadedAll);
+				if(!this.isLoading && !this.isLoadedAll) {
+					this.isLoading = true;
+					await this.next();
+					this.isLoading = false;
+				}
+			},
+			scroll(e) {
+				this.scrollPosition = e.mp.detail.scrollTop;
+				console.log('滚动', this.yPosition, e.mp.detail.scrollTop);
+			},
+//			goTop(e) { // 一键回到顶部
+//				this.scrollPosition = 0;
+//				//				if(wx.pageScrollTo) {
+//				//					wx.pageScrollTo({
+//				//						scrollTop: 0
+//				//					})
+//				//				} else {
+//				//					wx.showModal({
+//				//						title: '提示',
+//				//						content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
+//				//					})
+//				//				}
+//			}
 		},
 
 		watch: {
-			status(n,v) {
-				 this.flag=true
-				 console.log(v)
-				 this.status=n
-				 this.categoryId=this.status
-				 
-				 if(n && !v ) {
-          this.loadOrders(this.status);
-        }
-//				 this.myorderList="";
-//				 this.myorderList=this.$store.getters['model.my.orders/lists'];
+			status(n, v) {
+				this.flag = true
+				console.log(v)
+				this.status = n
+				this.categoryId = this.status
+
+				if(n && !v) {
+					this.loadOrders(this.status);
+				}
+				//				 this.myorderList="";
+				//				 this.myorderList=this.$store.getters['model.my.orders/lists'];
 			}
 		},
 		created() {
-			var a=this.status
-			this.loadOrders(this.status); 	
+
 		},
 		mounted() {
-		},
-		updated(){
+			var a = this.status
+			this.loadOrders(this.status);
 		}
-
 	}
 </script>
 
@@ -120,7 +145,7 @@
 		border-radius: 10rpx;
 		font-size: 34rpx;
 		font-weight: 300;
-		padding: 20rpx;
+		padding: 5rpx 20rpx 20rpx;
 		margin: 20rpx;
 		overflow: hidden;
 		position: relative;
@@ -132,7 +157,7 @@
 		line-height: 68rpx;
 		border-bottom: 1rpx solid #f3f3f3;
 		overflow: hidden;
-		font-weight: 400;
+		font-weight: 300;
 		margin-bottom: 20rpx;
 		/*background: green;*/
 	}
@@ -149,8 +174,8 @@
 	}
 	
 	.order_info_status {
-		font-weight: 300;
-		color: #FECE00;
+		font-weight: 400;
+		color: #FFC000;
 		float: right;
 	}
 	
@@ -263,7 +288,7 @@
 		border-radius: 10rpx;
 	}
 	
-	.order_info_btn i.delete {
+	.order_info_btn i.cancel {
 		background: #FFFFFF;
 		border: 1rpx solid #CCCCCC;
 		color: #525252;

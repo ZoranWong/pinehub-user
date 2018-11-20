@@ -5,22 +5,16 @@
 			<div id="myorder_select">
 				<div class="myorder_select_info">
 					<em>日期</em>
-					<picker mode="date" :start="startTime" class="input" @change="getSelectDate">{{selectDate}}</picker>
-				</div>
-				<div class="myorder_select_info">
-					<em>配送批次</em>
-					<picker @change="bindPickerChange" v-model="index" :range="arr" :key="index" class="input">	
-					      {{arr[index]}}
-				    </picker>
+					<picker mode="date" class="input" @change="getSelectDate">{{selectDate}}</picker>
 				</div>
 			</div>
 		</div>
 		<div id="tab_content">
 			<div class="tab_content_item">
-				<order :selfExtra="selfextra" :loadOrders="loadOrders" :datetime="selectDate" :startTime="startTime" :endTime="endTime" :next="next"></order>
+				<order :selfExtra="selfextra" :datetime="selectDate" :startTime="startTime" :endTime="endTime" :next="next"></order>
 			</div>
 		</div>
-		<div id="controlbar">
+		<div id="controlbar" v-show="false">
 			<em v-if="!selectOrderToPrint" id="controlbar_select" @click="openPrintOrders">选择</em>
 			<em v-if="selectOrderToPrint" id="controlbar_cancel" @click="closePrintOrders">取消</em>
 			<div v-if="selectOrderToPrint" id="select_all_order" @click="printOrders">全选</div>
@@ -43,34 +37,29 @@
 				navName: "my",
 				//startTime: (new Date()).format('yyyy 年 MM 月 dd 日'),
 				selectDate: (new Date()).format('yyyy-MM-dd'),
-				startTime:"",
-				endTime:"",
+				startTime: "",
+				endTime: "",
 				selectOrderToPrint: false,
-				arr:["07:00-09:00","14:00-16:00","19:00-21:00"],
-				index:0,
-				begHour:"",
-				endHour:""
+				index: 0
 			};
 		},
 		computed: {
-            selfextra(){
-				return this.$store.getters['model.extra.orders/lists']
-			},
-			currentPage () {
-		       let page = this.$store.getters['model.extra.orders/currentPage'];
-		       console.log(page, "当前页数")
-		       return page;
-		    }
+			currentPage() {
+				let page = this.$store.getters['model.extra.orders/currentPage'];
+				console.log(page, "当前页数")
+				return page;
+			}
 		},
 		methods: {
-			loadOrders(startime,endtime) {
+			loadOrders(startime, endtime) {
 				this.$command('selfextra-orders', startime, endtime);
 			},
 			getSelectDate(e) {
-				//				console.log(e.target.value);
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
-				this.startTime=this.selectDate+" "+this.begHour+":00"
-			    this.endTime=this.selectDate+" "+this.endHour+":00"
+				this.startTime = this.selectDate + " " + "00:00:00";
+				this.endTime = this.selectDate + " " + "23:59:59";
+				console.log('时间选择e', this.startTime, this.endTime)
+				this.loadOrders(this.startTime, this.endTime)
 			},
 			printOrders() {
 				wx.showToast({
@@ -95,29 +84,15 @@
 				})
 				this.selectOrderToPrint = false;
 			},
-			bindPickerChange(e){
-				//console.log(e,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-				this.index= e.mp.detail.value
-				this.begHour=this.arr[this.index].split("-")[0];
-			    this.endHour=this.arr[this.index].split("-")[1];
-			    this.startTime=this.selectDate+" "+this.begHour+":00"
-			    this.endTime=this.selectDate+" "+this.endHour+":00"
-			},
 			next() {
-		        this.$command('selfextra-orders', this.startTime, this.endTime, this.currentPage + 1, this.pageCount);               
-		      }
+				this.$command('selfextra-orders', this.startTime, this.endTime, this.currentPage + 1, this.pageCount);
+			}
 		},
-		created() {
-			this.begHour=this.arr[this.index].split("-")[0];
-			this.endHour=this.arr[this.index].split("-")[1];
-			//console.log(this.begHour,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-			this.$command('selfextra-orders');
-			this.startTime=this.selectDate+" "+this.begHour+":00"
-			this.endTime=this.selectDate+" "+this.endHour+":00"
-//			console.log(this.selfextra[0],this.startTime,"-------------------------------")
-		},
-		mounted(){
-			
+		mounted() {
+			this.startTime = this.selectDate + " " + "00:00:00";
+			this.endTime = this.selectDate + " " + "23:59:59";
+			console.log('时间选择', this.startTime, this.endTime)
+			this.loadOrders(this.startTime, this.endTime)
 		}
 	}
 </script>
@@ -129,7 +104,7 @@
 		height: 100%;
 		background: #fafafa;
 	}
-
+	
 	#window_fixed {
 		position: fixed;
 		left: 0;
@@ -140,23 +115,23 @@
 		height: 140rpx;
 		background: #FFFFFF;
 	}
-
+	
 	#myorder_select {
 		margin: 20rpx 20rpx 0;
 	}
-
+	
 	.myorder_select_info {
 		overflow: hidden;
 		margin-bottom: 10rpx;
 	}
-
+	
 	.myorder_select_info em {
 		display: inline-block;
 		float: left;
 		font-size: 32rpx;
 		font-weight: normal;
 	}
-
+	
 	.input {
 		float: left;
 		padding: 0 15rpx;
@@ -165,14 +140,13 @@
 		border-radius: 10rpx;
 		font-size: 28rpx;
 	}
-
+	
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
 		height: 74rpx;
-
 	}
-
+	
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -182,31 +156,31 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-
+	
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-
+	
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-
+	
 	#tab_content {
 		padding-top: 140rpx;
 	}
-
+	
 	.tab_content_item {}
-
+	
 	.tab_content_now {
 		display: block;
 	}
-
+	
 	#controlbar {
 		/* background: #000000; */
-		background: url(../../../../../static/images/my_control_bar.png) no-repeat bottom center;
+		background: url(../../../../../static/images/icon/my_control_bar.png) no-repeat bottom center;
 		background-size: 750rpx;
 		height: 120rpx;
 		width: 750rpx;
@@ -214,7 +188,7 @@
 		bottom: 0;
 		left: 0;
 	}
-
+	
 	#controlbar_select {
 		width: 150rpx;
 		float: left;
@@ -223,7 +197,7 @@
 		text-align: center;
 		margin-top: 20rpx;
 	}
-
+	
 	#controlbar_cancel {
 		width: 150rpx;
 		float: left;
@@ -233,7 +207,7 @@
 		margin-top: 20rpx;
 		/* display: none; */
 	}
-
+	
 	#select_all_order {
 		width: 150rpx;
 		float: left;
@@ -243,16 +217,15 @@
 		margin-top: 20rpx;
 		/* display: none; */
 	}
-
+	
 	#print_order {
-		background: url(../../../../../static/images/my_print.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_print.png) no-repeat center center;
 		background-size: 100%;
 		width: 70rpx;
 		height: 70rpx;
 		position: absolute;
 		top: 12rpx;
 		right: 31rpx;
-
 	}
 	/*.goodstype{
 		font-size:32rpx;

@@ -1,46 +1,56 @@
 import Service from '../Service';
 export default class StorageService extends Service {
-  constructor($application) {
+  constructor ($application) {
     super($application);
   }
 
-  set(key, value) {
-    return new Promise((resole)  => {
+  set (key, value) {
+    console.log(key + '<<<<<STORAGE>>>>>写入');
+    return new Promise((resolve) => {
       wx.setStorage({
-      key: key, 
-      data: value, 
-      success:function(res){
-        console.log('set cache data', wx.getStorageSync(key));
-        resole(res);
-      }});
-    });
-  }
-  get(key) {
-    return new Promise((resole)  => {
-      wx.getStorage({
-      key: key, 
-      success:function(res){
-        resole(res.data);
-      }});
-    });
-  }
-
-  remove(key) {
-    return new Promise((resole)  => {
-        wx.removeStorage({
-        key: key, 
-        success:function(res){
-          resole(res);
-        }});
+        key: key,
+        data: value,
+        success: function (res) {
+          console.log('set cache data', wx.getStorageSync(key));
+          resolve(res);
+        }
       });
+    });
+  }
+  get (key) {
+    console.log(key + '<<<<<STORAGE>>>>>读取');
+    return new Promise((resolve, reject) => {
+      wx.getStorage({
+        key: key,
+        success: function (res) {
+          resolve(res.data);
+        },
+        fail: function (e) {
+          console.log('获取数据' + key + '失败', e);
+          resolve(false);
+        }
+      });
+    });
   }
 
-  clear() {
-    return new Promise((resole)  => {
+  remove (key) {
+    return new Promise((resolve) => {
+      wx.removeStorage({
+        key: key,
+        success: function (res) {
+          resolve(res);
+        }
+      });
+    });
+  }
+
+  clear () {
+    return new Promise((resolve) => {
       wx.clearStorage({
-      success:function(res){
-        resole(res);
-      }});
+        success: function (res) {
+          resolve(res);
+        }
+      });
     });
   }
 }

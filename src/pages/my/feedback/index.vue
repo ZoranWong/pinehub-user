@@ -32,17 +32,12 @@
 		},
 		methods: {
 			submit() {
-				if(!this.feedbackContent || this.feedbackContent.length < 10) {
-					wx.showToast({
-						title: "不得少于10字",
-						icon: "none"
-					})
-				} else {
-					this.$command('MYFEEDBACK',this.contact,this.feedbackContent);
-					this.contact = null;
-					this.feedbackContent = null;
-				}
+				this.$command('MYFEEDBACK', this.contact, this.feedbackContent)
 			}
+		},
+		mounted() {
+			this.contact = null;
+			this.feedbackContent = null;
 		},
 		created() {
 

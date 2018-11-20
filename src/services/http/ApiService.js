@@ -4,51 +4,115 @@ import _ from 'underscore';
 export default class ApiService extends Service {
 	constructor(app) {
 		super(app);
-		this.axios = this.services('$http');
-		//网关.网址
-		this.gateway = '';
-	}
-
-	request(headers) {
-		this.axios.interceptors.request.use((request) => {
-			//给所有请求添加自定义header
-			if(headers) {
-				request.headers = headers;
+		Object.defineProperty(this, 'axios', {
+			get: () => {
+				let http = this.services('$http');
+				let fly = http.fly;
+				return new fly();
 			}
+		});
+		this.gateway = this.$application.config['http']['gateway'];
+		this.isLoadingPopupShow = true;
+	}
+  showLoading(showLoading = true) {
+	  this.isLoadingPopupShow = showLoading;
+	  return this;
+  }
+	request(headers) {
+		let axios = this.axios;
+		axios.interceptors.request.use((request) => {
+			request.baseURL = this.gateway;
+			_.extend(request.headers, headers);
 			return request;
 		});
-		return this.axios
+		return axios
 	}
+
 	async auth(need) {
-		let headers = null;
+		let headers = {};
 		if(need) {
-			let token = await this.services('token').getToken();
-			headers = {};
+			let token = await this.services('mp.auth').getToken();
 			headers['Authorization'] = 'bearer ' + token;
 		}
 		return headers;
 	}
+
 	// eslint-disable-next-line
-	async httpGet(route, params = [], auth = false) {
-		let result = await (await this.request(this.auth(auth))).get(this.gateway + route + this.services().uri.query(params));
-		return result;
+	async httpGet(route, params = [], auth = true) {
+		try {
+		  if (this.isLoadingPopupShow) {
+        wx.showLoading({ title: '加载中' });
+      }
+			let request = this.request((await this.auth(auth)));
+			let result = await request.get(route.trim('/') + this.services('uri').query(params));
+			if(result && this.isLoadingPopupShow) {
+				wx.hideLoading();
+			}
+      this.isLoadingPopupShow = true;
+			return result.data;
+		} catch(e) {
+      console.log(e);
+			throw e;
+		}
 	}
 
-	async httpPost(route, params = [], auth = false) {
-		let result = await (await this.request(this.auth(auth))).post(this.gateway + route, params);
-		return result;
+	async httpPost(route, params = [], auth = true) {
+		try {
+      if (this.isLoadingPopupShow) {
+        wx.showLoading({ title: '提交中···' });
+      }
+			let request = this.request(await this.auth(auth));
+			let result = await request.post(route.trim('/'), params);
+			if(result && this.isLoadingPopupShow) {
+				wx.hideLoading();
+			}
+			this.isLoadingPopupShow = true;
+			return result.data;
+		} catch(e) {
+      console.log(e);
+			throw e;
+		}
 	}
 
-	async httpPut(route, id, params = [], auth = false) {
-		let result = await (await this.request(this.auth(auth))).put(this.gateway + route + id, params);
-		return result;
+	async httpPut(route, params = [], id = null, auth = true) {
+		try {
+      if (this.isLoadingPopupShow) {
+        wx.showLoading({ title: '提交中···' });
+      }
+			let request = this.request(await this.auth(auth));
+			route = id ? (route.trim('/') + '/' + id) : route.trim('/');
+			let result = await request.put(route, params);
+      if(result && this.isLoadingPopupShow) {
+        wx.hideLoading();
+      }
+      this.isLoadingPopupShow = true;
+			return result.data;
+		} catch(e) {
+			console.log(e);
+			throw e;
+		}
 	}
 
-	async httpDelete(route, params = [], auth = false) {
-		let result = await (await this.request(this.auth(auth))).delete(this.gateway + route + id);
-		return null;
+	async httpDelete(route, params = [], id = null, auth = true) {
+	  try{
+      if(id) {
+        route = route.trim('/') + '/' + id
+      }
+      if (this.isLoadingPopupShow) {
+        wx.showLoading({ title: '提交中···' });
+      }
+      let result = await (await this.request(await this.auth(auth))).delete(route);
+      if(result && this.isLoadingPopupShow) {
+        wx.hideLoading();
+      }
+      this.isLoadingPopupShow = true;
+      return result.data;
+    }catch (e) {
+      console.log(e);
+      throw e;
+    }
 	}
-	
+
 	//组装搜索参数
 	searchBuilder(searchFields) {
 		let search = {};

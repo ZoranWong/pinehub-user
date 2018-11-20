@@ -16,10 +16,10 @@
 				</div>
 				<div class="purchase_order_over">
 					<i>{{item.type}}</i>
-					<em>￥{{item.payment_amount}}</em>
+					<em>￥{{item.paymentAmount}}</em>
 				</div>
 				<div class="purchase_order_date">
-					<em>{{item.paid_at}}</em>
+					<em>{{item.paidAt}}</em>
 					<i></i>
 				</div>
 				<i class="purchase_info_circle"></i>
@@ -39,17 +39,18 @@
 			}
 		},
 		props: {
-			purchaseTotal: {
-				default:"",
+			onloadPurchase: {
+				default: "",
 				type: Function
+			}
+		},
+		computed: {
+			purchaseTotal() {
+				return this.$store.getters['model.my.store.status.purchase/totalNum'];
 			},
-			purchaseList:{
-				default:"",
-				type:Function 
-			},
-			onloadPurchase:{
-				default:"",
-				type:Function 
+			purchaseList() {
+				console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.$store.getters)
+				return this.$store.getters['model.my.store.status.purchase/list'];
 			}
 		},
 		methods: {
@@ -68,8 +69,8 @@
 				}
 			}
 		},
-		created() {
-
+		mounted() {
+			this.onloadPurchase('hour');
 		}
 	}
 </script>
@@ -96,7 +97,7 @@
 		top: 22rpx;
 		height: 20rpx;
 		width: 20rpx;
-		background: url(../../../../../static/images/select_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/select_arrow.png) no-repeat center center;
 		background-size: 90%;
 	}
 	
@@ -191,7 +192,7 @@
 	.purchase_order_date i {
 		height: 32rpx;
 		width: 32rpx;
-		background: url(../../../../../static/images/myordermore.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/myordermore.png) no-repeat center center;
 		background-size: 80%;
 		display: inline-block;
 		float: right;

@@ -59,7 +59,8 @@
 					"name": "商品过期"
 				}],
 				radioCur: 0,
-				productInfo: {}
+				productInfo: {},
+				comment: "默认"
 			}
 		},
 		watch: {},
@@ -71,15 +72,14 @@
 				//				console.log(num + 'aaa' + id);
 			},
 			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
-				console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
 				modifyStockNum = parseInt(modifyStockNum);
 				console.log('modifyStockNum', modifyStockNum);
-				if (isNaN(modifyStockNum) || modifyStockNum < 0) {
+				if(isNaN(modifyStockNum) || modifyStockNum < 0) {
 					wx.showToast({
 						title: "正确填写库存",
 						icon: "none"
 					})
-				} else if (modifyStockNum == this.merchandise['stockNum']) {
+				} else if(modifyStockNum == this.merchandise['stockNum']) {
 					wx.showToast({
 						title: "库存没有任何改变",
 						icon: "none"
@@ -87,12 +87,12 @@
 				} else {
 					wx.showLoading({
 						title: '正在提交...',
-					})
+					});
+					console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
 					this.$emit("modifyStock", id, primaryStockNum, modifyStockNum, reason, comment);
-					console.log('aaa', this.productInfo);
 					this.productInfo = {};
+					this.productInfo['reason'] = this.selectCause[0]['name'];
 					this.radioCur = 0;
-					console.log('bbb', this.productInfo);
 					this.$emit("close");
 				}
 			},
@@ -101,6 +101,7 @@
 			}
 		},
 		created() {
+			this.productInfo['reason'] = this.selectCause[0]['name'];
 			this.productInfo['changeAnswerId'] = this.radioCur;
 		},
 		beforeUpdate() {
@@ -117,7 +118,7 @@
 		background: rgba(0, 0, 0, .3);
 		z-index: 1000;
 	}
-
+	
 	#toast {
 		position: absolute;
 		background: #FFFFFF;
@@ -126,17 +127,17 @@
 		top: 100rpx;
 		left: 65rpx;
 	}
-
+	
 	#toast_clost {
 		position: absolute;
 		height: 78rpx;
 		width: 78rpx;
-		background: url(../../../../../static/images/my_toast_close.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_toast_close.png) no-repeat center center;
 		background-size: 100%;
 		right: -14rpx;
 		top: -20rpx;
 	}
-
+	
 	#toast_title {
 		background: #FECE00;
 		text-align: center;
@@ -145,20 +146,20 @@
 		font-size: 34rpx;
 		font-weight: 400;
 	}
-
+	
 	#toast_content {}
-
+	
 	#toast_content_info {
 		padding: 20rpx 40rpx;
 	}
-
+	
 	#input_change {
 		overflow: hidden;
 		margin-bottom: 20rpx;
-		background: url(../../../../../static/images/my_toast_arrow.png) no-repeat center center;
+		background: url(../../../../../static/images/icon/my_toast_arrow.png) no-repeat center center;
 		background-size: 52rpx;
 	}
-
+	
 	.input_num {
 		display: inline-block;
 		border: 1px solid #828282;
@@ -169,18 +170,18 @@
 		border-radius: 10rpx;
 		float: left;
 	}
-
+	
 	.input_num.input_num_right {
 		float: right;
 	}
-
+	
 	#input_change_info {
 		font-size: 32rpx;
 		font-weight: 300;
 		color: #111111;
 		margin-bottom: 20rpx;
 	}
-
+	
 	#input_change_list ul li {
 		line-height: 78rpx;
 		border-radius: 10rpx;
@@ -190,17 +191,17 @@
 		font-size: 32rpx;
 		font-weight: 400;
 		color: #111111;
-		background: url(../../../../../static/images/my_select_none.png) no-repeat;
+		background: url(../../../../../static/images/icon/my_select_none.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-
+	
 	#input_change_list ul li.input_now_select {
-		background: url(../../../../../static/images/my_select_ok.png) no-repeat;
+		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-
+	
 	#input_change_btn {
 		background: #FECE00;
 		line-height: 78rpx;
@@ -209,7 +210,7 @@
 		font-weight: 400;
 		border-radius: 10rpx;
 	}
-
+	
 	#input_change_tips {
 		font-size: 22rpx;
 		font-weight: 300;

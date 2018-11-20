@@ -5,11 +5,14 @@ export default class MyOrderCommand extends Command {
 	}
 	//
 	async handle(status, page = 1, limit = 15) {
-//		let event = args.shift();
-	    let [ list, totalNum, currentPage, totalPage] = await this.service('http.myorders').list(status, page, limit);
-	    console.log('c-start00000000', list);
+		if(page > 1) {
+			let currentPage = this.store().getters['model.my.orders/currentPage'];
+			let totalNum = this.store().getters['model.my.orders/totalNum']
+			console.log('NEXT_PAGE', currentPage, totalNum);
+		}
+		let [list, totalNum, currentPage, totalPage] = await this.service('http.orders').list(status, page, limit);
 		this.store().dispatch({
-			type: 'model.my.orders/setOrders',
+			type: 'model.my.orders/setList',
 			list: list,
 			totalNum: totalNum,
 			currentPage: currentPage,

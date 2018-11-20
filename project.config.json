@@ -43,8 +43,8 @@
 				{
 					"id": 1,
 					"name": "新品预定",
-					"pathName": "pages/activity/main",
-					"query": ""
+					"pathName": "pages/mall/activity/main",
+					"query": "activity_id=7"
 				},
 				{
 					"id": 2,
@@ -73,7 +73,7 @@
 				{
 					"id": 6,
 					"name": "当日下单",
-					"pathName": "pages/todayOrder/main",
+					"pathName": "pages/store/main",
 					"query": ""
 				},
 				{
@@ -144,6 +144,7 @@
 				},
 				{
 					"id": -1,
+<<<<<<< HEAD
 					"name": "todayorder",
 					"pathName": "pages/todayOrder/main",
 					"query": ""
@@ -152,6 +153,10 @@
 					"id": -1,
 					"name": "distributeOrder",
 					"pathName": "pages/my/mystore/distributeOrder/main",
+=======
+					"name": "地图",
+					"pathName": "pages/nearbyStores/main",
+>>>>>>> e17c533abc1c6a36362b15f8f8b3d3194d05a4bc
 					"query": ""
 				}
 			]

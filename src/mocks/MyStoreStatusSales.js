@@ -14,10 +14,11 @@ export default class MyStoreStatusSales extends Mock {
 					0,
 					12
 				],
+				"order_amount":500,
 				"reservation_order_amount": 24,
 				"store_order_amount": null,
-				"merchandise_num": "12",
-				"sell_point": "",
+				"merchandise_num": 12,
+				"sell_point": 32,
 				"order_num": 2,
 				"sell_top|5": [{
 					"customer_nickname": "xcx小强",
