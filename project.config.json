@@ -7,7 +7,7 @@
 		"minified": true,
 		"newFeature": true,
 		"nodeModules": true,
-		"uglifyFileName": true
+		"uglifyFileName": false
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 19,
 			"list": [
 				{
 					"id": -1,
@@ -144,8 +144,19 @@
 				},
 				{
 					"id": -1,
+<<<<<<< HEAD
+					"name": "todayorder",
+					"pathName": "pages/todayOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "distributeOrder",
+					"pathName": "pages/my/mystore/distributeOrder/main",
+=======
 					"name": "地图",
 					"pathName": "pages/nearbyStores/main",
+>>>>>>> e17c533abc1c6a36362b15f8f8b3d3194d05a4bc
 					"query": ""
 				}
 			]

@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Vue from 'vue'
 import ServiceProviders from './providers'
 import _ from 'underscore'
