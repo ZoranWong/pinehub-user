@@ -6,4 +6,3 @@ var application = new Application(App, 'undefined');
 application.run(function(){
 		
 });
-

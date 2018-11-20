@@ -34,7 +34,6 @@
       'new-list':NewFoods,
       'cart': Cart,
       'pop-location':PopupLocation
-
    },
    computed: {
       merchandises(){

@@ -7,7 +7,7 @@
 		"minified": true,
 		"newFeature": true,
 		"nodeModules": true,
-		"uglifyFileName": true
+		"uglifyFileName": false
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 19,
 			"list": [
 				{
 					"id": -1,
@@ -140,6 +140,18 @@
 					"id": -1,
 					"name": "预定商城-提交订单-自提",
 					"pathName": "pages/reserveShop/orderSelf/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "todayorder",
+					"pathName": "pages/todayOrder/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "distributeOrder",
+					"pathName": "pages/my/mystore/distributeOrder/main",
 					"query": ""
 				}
 			]
