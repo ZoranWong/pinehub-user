@@ -6,7 +6,7 @@
 		<!-- 配送和自提的tab切换组件-->
 		<tab-delivery v-model="addressInfo"></tab-delivery>
 		<!-- 支付内容的显示组件 -->
-		<payment :model="model" :usedTicket="usedTicket" :totalNum="totalNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket="redirectToTicket"></payment>
+		<payment :model="model" :usedTicket="usedTicket" :totalNum="totalNum" :ticketNum="ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket="redirectToTicket"></payment>
 	</div>
 </template>
 <script>
@@ -44,18 +44,31 @@
 			},
 			storeInfo() {
 				return this.$store.getters['model.nearestStore/store']
+			},
+			ticketNum() {
+
+				console.log('数量', this.$store.getters['model.store.tickets/totalNum'], this.$store.getters);
+				return this.$store.getters['model.store.tickets/totalNum'];
+			},
+			totalAmount() {
+				return this.model ? this.$store.getters[`model.store.shoppingCarts/totalAmount`] : 0;
+			},
+			usedTicket() {
+				return this.$store.getters['model.store.shoppingCarts/usedTicketTitle'];
+			},
+			usedTicketCode() {
+				return this.$store.getters['model.store.shoppingCarts/ticketCode'];
+			},
+			usedCardId() {
+				return this.$store.getters['model.store.shoppingCarts/cardId'];
 			}
 		},
 		methods: {
 			redirectToTicket() {
-				//				wx.showToast({
-				//					title: "暂不可使用优惠券",
-				//					icon: "none"
-				//				})
-				//				return false;
+				console.log('storeCoupon');
 				this.mp.router.push('storeCoupon', {
 					query: {
-						store_id: this.storeInfo.id
+						back_to: 'todaySubmitOrder'
 					}
 				});
 			},
@@ -99,18 +112,22 @@
 					this.storeInfo.address,
 					this.addressInfo.buildingNum,
 					this.addressInfo.roomNum,
-					this.addressInfo.sendBatch
+					this.addressInfo.sendBatch,
+					this.usedTicketCode,
+					this.usedCardId
 				);
 			},
 			async initData() {
 				//				this.storeId = this.$store.getters['model.nearestStore/store']['id'];
 				//				console.log('StoreId', this.storeId);
+				await this.$command('LOAD_STORE_TICKETS', this.storeInfo.id);
 				this.addressInfo.address = this.storeInfo.address;
 				console.log('-=-=-=-=-=-=-=-=-=-----=-=-=-=-=-=-=-=-=-=-=-=-', this.storeInfo);
 			}
 		},
 		created() {},
 		mounted() {
+
 			this.initData();
 		}
 	}

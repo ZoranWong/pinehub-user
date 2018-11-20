@@ -30,7 +30,7 @@
     },
     methods: {
       loadTickets () {
-        this.$command('LOAD_BOOKING_MALL_TICKETS');
+        this.$command('LOAD_STORE_TICKETS');
       },
       useTicket (ticket) {
         this.$store.dispatch('model.store.shoppingCarts/setTicketCard', {

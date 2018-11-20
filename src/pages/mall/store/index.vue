@@ -25,7 +25,7 @@
 		data() {
 			return {
 				title: '当日下单',
-				isShow: true,
+				isShow: false,
 				isShowCart: true,
 				listwidth: '530rpx',
 				model: 'model.store.shoppingCarts'
@@ -150,6 +150,7 @@
 			async getData() {
 				try {
 					await this.$command('GET_NEAREST_STORE');
+					this.isShow = true;
 					console.log('get nearest store', this.isShow);
 				} catch(e) {
 					console.log('抛出异常', e);
