@@ -2,6 +2,7 @@
 	"index": "/pages/index/main",
 	"my": "/pages/my/main",
 	"myOrder": "/pages/my/order/main",
+	"myOrderSuccess": "/pages/my/order/success/main",
 	"myPay": "/pages/my/pay/main",
 	"myFeedback": "/pages/my/feedback/main",
 	"myFeedbackSuccess": "/pages/my/feedback/success/main",
@@ -20,10 +21,10 @@
 	"storeCoupon": "/pages/mall/store/coupon/main",
 	"bookingMall": "/pages/mall/bookingMall/main",
 	"shopSubmitOrder": "/pages/mall/bookingMall/submitOrder/main",
-  "bookingMallCoupon": "/pages/mall/bookingMall/coupon/main",
+	"bookingMallCoupon": "/pages/mall/bookingMall/coupon/main",
 	"orderSelf": "/pages/mall/bookingMall/orderSelf/main",
 	"activity": "/pages/mall/activity/main",
 	"activitySubmitOrder": "/pages/mall/activity/submitOrder/main",
 	"coupon": "/pages/coupon/main",
-  "activityCoupon": "/pages/mall/activity/coupon/main"
+	"activityCoupon": "/pages/mall/activity/coupon/main"
 }

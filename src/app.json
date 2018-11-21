@@ -15,6 +15,7 @@
         "mystore/pickedUpOrder/main",
         "mystore/distributeOrder/main",
         "order/main",
+        "order/success/main",
         "pay/main",
         "share/main",
         "feedback/main",
