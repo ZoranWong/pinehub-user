@@ -5,6 +5,7 @@ export default class MyStoreCategoriesService extends ApiService {
 	}
 	//获取订单列表
 	async list(storeId, page = 1, limit = 15) {
+		console.log('进来？？？？？？？')
 		let categories = null;
 		let totalNum = null;
 		let totalPage = null;
