@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<div class="nearest-store bgff">
-			<div class="store-title text-color-11">{{store.name}}</div>
+			<div class="store-title text-color-11">{{store.name?store.name:'加载中'}}</div>
 			<div class="store-address text-color-75">
-				{{store.address}}
+				{{store.address?store.address:'加载中'}}
 			</div>
 			<i class="i-icon arrow-right-icon"></i>
 		</div>

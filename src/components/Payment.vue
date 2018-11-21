@@ -86,7 +86,7 @@
     },
     computed: {
       count (merchandiseId) {
-        return this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId)
+        return this.$store.getters[`${this.model}/quality`](merchandiseId);
       },
       cartList () {
         return this.model ? this.$store.getters[`${this.model}/list`] : [];

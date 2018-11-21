@@ -7,7 +7,7 @@
 				<div id="mystore_userinfo_baseinfo">
 					<img :src="userInfo.avatar" />
 					<div id="name_id">
-						<em>{{userInfo.nickName}}</em>
+						<em>{{userInfo.nickname}}</em>
 						<i>ID: {{userInfo.id}}</i>
 					</div>
 					<i id="lv">

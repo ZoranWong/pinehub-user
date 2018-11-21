@@ -29,10 +29,16 @@ export default class Application {
         this.currentPage = null;
         this.route = null;
         this.registeredGlobal = true;
+        let config = null;
         Object.defineProperty(this, 'config', {
             enumerable: true,
             get () {
-              return Application.configContainer;
+              return config ? config : Application.configContainer;
+            },
+            set (value) {
+              if (value) {
+                config = value;
+              }
             }
         });
     }

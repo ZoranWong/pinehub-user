@@ -51,7 +51,8 @@ export default class TicketsService extends ApiService {
 
   async userTickets (status, page) {
     let parameters = {
-      page: page
+      page: page,
+      use: true
     }
     let result = await this.list(status, parameters);
     return result;
