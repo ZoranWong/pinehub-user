@@ -10,7 +10,7 @@ import MyStoreStatusSalesService from '@/services/http/MyStoreStatusSalesService
 import MyStoreStatusSalesCommand from '@/commands/MyStoreStatusSalesCommand';
 import MyStoreStatusSales from '@/models/MyStoreStatusSales';
 
-import MyStoreCategoriesService from '@/services/http/MyStoreCategoriesService';
+import MyStoreCategoriesService from '@/services/http/CategoriesService';
 import MyStoreCategoriesCommand from '@/commands/MyStoreCategoriesCommand';
 
 import MyStoreCategoryMerchandisesService from '@/services/http/MyStoreCategoryMerchandisesService';

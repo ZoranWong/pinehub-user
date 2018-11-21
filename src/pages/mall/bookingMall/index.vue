@@ -2,7 +2,7 @@
   <div class="body">
     <mp-title :title="title"></mp-title>
     <mp-swiper></mp-swiper>
-    <div class="goods">
+    <div class = "merchandises">
       <menus @menusChange="menusChange"></menus>
       <m-list :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
       </m-list>
@@ -143,7 +143,7 @@
 </script>
 
 <style scoped>
-  .goods {
+  .merchandises {
     display: flex;
     width: 100%;
     height: 100%;

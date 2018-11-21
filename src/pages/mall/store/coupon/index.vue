@@ -29,8 +29,8 @@
       }
     },
     methods: {
-      loadTickets () {
-        this.$command('LOAD_BOOKING_MALL_TICKETS');
+      loadTickets (page, status) {
+        this.$command('LOAD_BOOKING_MALL_TICKETS', page, status);
       },
       useTicket (ticket) {
         this.$store.dispatch('model.store.shoppingCarts/setTicketCard', {

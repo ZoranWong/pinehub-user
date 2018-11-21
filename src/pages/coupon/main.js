@@ -1,14 +1,10 @@
 import App from './index';
 import Vue from 'vue';
-import Tickets from '@/models/Tickets';
-import TicketsService from '@/services/http/TicketsService';
-import GetTicketsCommand from '@/commands/GetTicketsCommand';
+import LoadUserTicketsCommand from './commands/LoadUserTicketsCommand';
 
 const application = wx.$app;
 application.setComponent(App).run(function() {
-	this.registerModel('model.tickets', Tickets);
-	this.registerCommand(GetTicketsCommand.commandName(), GetTicketsCommand);
-	this.register('http.tickets', TicketsService);
+	this.registerCommand(LoadUserTicketsCommand.commandName(), LoadUserTicketsCommand);
 	this.route = 'coupon';
 }, function() {
 	this.currentPage = new Vue(this.mountComponent);

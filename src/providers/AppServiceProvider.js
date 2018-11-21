@@ -2,16 +2,12 @@
 /* eslint-env es6 */
 import ServiceProvider from './ServiceProvider';
 import MpAuthService from '../services/mp/AuthService';
-import HttpAuthService from '../services/http/AuthService';
-import HttpOrdersService from '../services/http/OrdersService';
-import ShoppingCartService from '../services/http/ShoppingCartService';
 import SessionService from '../services/cache/SessionService';
 import Base64Service from '../services/encrypt/Base64Service';
 import MD5Service from '../services/encrypt/MD5Service';
 import JsonService from '../services/encrypt/JsonService';
 import HrefService from '../services/mp/HrefService';
 import ScanCodeService from '../services/mp/ScanCodeService';
-import MyStoreScanCodeService from '../services/http/MyStoreScanCodeService';
 import PopupService from '../services/mp/PopupService';
 import TencentMapService from '../services/mp/TencentMapService';
 import StorageService from '../services/mp/StorageService';
@@ -61,13 +57,9 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('md5', MD5Service);
 		this.app.register('json', JsonService);
 		this.app.register('mp.auth', MpAuthService);
-		this.app.register('http.auth', HttpAuthService);
-		this.app.register('http.orders', HttpOrdersService);
-		this.app.register('http.shoppingCart', ShoppingCartService);
 		this.app.register('session', SessionService);
 		this.app.register('href', HrefService);
 		this.app.register('scan', ScanCodeService);
-		this.app.register('scanCodeService', MyStoreScanCodeService);
 		this.app.register('popup', PopupService);
 		this.app.register('map', TencentMapService);
 		this.app.register('mp.storage', StorageService);

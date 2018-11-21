@@ -65,17 +65,15 @@
 </script>
 
 <style>
-  .tab_content_item {
-    padding: 0 20rpx;
-  }
-
   .coupon-wrapper {
+    position: relative;
     width: 710rpx;
     margin-bottom: 20rpx;
     border-radius: 10rpx;
     box-shadow: 0rpx 6rpx 20rpx rgba(204, 202, 202, 0.6);
     box-sizing: border-box;
     padding-bottom:20px;
+    margin-left:10px;
   }
 
   .coupon-left {

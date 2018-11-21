@@ -67,6 +67,7 @@
         this.isShow = false;
       },
       next () {
+        console.log('load more merchandises');
         if (!this.isLoadedAll && this.activityId !== null) {
           this.loadMerchandises(this.currentPage + 1);
         }

@@ -1,8 +1,5 @@
-import ApiService from './ApiService';
+import ApiService from '@/services/http/ApiService';
 export default class TicketsService extends ApiService {
-  constructor ($application) {
-    super($application);
-  }
   // 获取优惠券列表
   async list (status, parameters) {
     let response = null;
@@ -34,7 +31,7 @@ export default class TicketsService extends ApiService {
     let result = await this.list(status, parameters);
     return result;
   }
-  
+
   async storeTickets (status, storeId, page) {
     let parameters = {
       store_id: storeId,
@@ -45,6 +42,14 @@ export default class TicketsService extends ApiService {
   }
 
   async bookingMallTickets (status, page) {
+    let parameters = {
+      page: page
+    }
+    let result = await this.list(status, parameters);
+    return result;
+  }
+
+  async userTickets (status, page) {
     let parameters = {
       page: page
     }

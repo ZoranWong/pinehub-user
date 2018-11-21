@@ -26,8 +26,8 @@
       'coupon-tickets': CouponTickets
     },
     methods: {
-      loadTickets () {
-        this.$command('LOAD_USER_TICKETS', parseInt(this.$route.query['activity_id']));
+      loadTickets (page, status) {
+        this.$command('LOAD_USER_TICKETS', page, status);
       }
     }
   }

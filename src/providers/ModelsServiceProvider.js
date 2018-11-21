@@ -22,13 +22,15 @@ export default class ModelServiceProvider extends ServiceProvider {
     this.app.models.addModel('model.activity.tickets', Tickets);
     this.app.models.addModel('model.store.tickets', Tickets);
     this.app.models.addModel('model.bookingMall.tickets', Tickets);
+    this.app.registerModel('model.user.tickets', Tickets);
+
     this.app.models.addModel('model.account', Account);
     this.app.models.addModel('model.activity.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.bookingMall.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.store.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.online.shoppingCarts', ShoppingCarts);
     this.app.models.addModel('model.nearbyStores', NearbyStores);
-    
+
     this.app.models.addModel('model.nearestStore', NearestStore);
   }
   boot () {

@@ -1,9 +1,5 @@
-import ApiService from './ApiService';
+import ApiService from '@/services/http/ApiService';
 export default class CategoriesService extends ApiService {
-  constructor ($application) {
-    super($application);
-  }
-
   async categories (page, limit = 15) {
     let response = null;
 

@@ -1,8 +1,8 @@
 <template>
-  <scroll-view class="foods-wrapper" :scroll-y="true" @scrolltolower="scrolltolower" :scroll-into-view="categoryId">
-    <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
+  <scroll-view class="merchandise-wrapper" :scroll-y="true" @scrolltolower="scrolltolower" :scroll-into-view="categoryId">
+    <div class="merchandise-item clearfix bgff" v-for="(item, index) in list" :key="index">
       <img class="merchandises-pic" :src="item.thumbImage">
-      <div class="foods-item-right fr">
+      <div class="merchandise-item-right fr">
         <h4 class="merchandises-name">{{item.name}}</h4>
         <p class="sell-count">已售
           <span class="color00">{{item.sellNum}}</span>份
@@ -91,16 +91,16 @@
     overflow: hidden;
   }
 
-  .foods-wrapper {
+  .merchandise-wrapper {
     overflow-y: auto;
     width: 630rpx;
   }
-  /*.foods-wrapper::-webkit-scrollbar {
+  /*.merchandise-wrapper::-webkit-scrollbar {
         width: 1px;
         background-color: rgba(217, 217, 217, 0.3);
     }*/
 
-  .foods-item {
+  .merchandise-item {
     height: 326rpx;
     border-radius: 10rpx;
     box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.3);
@@ -117,7 +117,7 @@
     left: 38rpx;
   }
 
-  .foods-item-right {
+  .merchandise-item-right {
     position: absolute;
     top: 40rpx;
     right: 0;
@@ -126,7 +126,7 @@
     height: 250rpx;
   }
 
-  .foods-item-right h4 {
+  .merchandise-item-right h4 {
     font-size: 32rpx;
     font-weight: 400;
   }

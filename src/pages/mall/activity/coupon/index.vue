@@ -23,8 +23,8 @@
       }
     },
     methods: {
-      loadTickets () {
-        this.$command('LOAD_ACTIVITY_TICKETS', parseInt(this.$route.query['activity_id']));
+      loadTickets (page, status) {
+        this.$command('LOAD_ACTIVITY_TICKETS', parseInt(this.$route.query['activity_id']), page, status);
       },
       useTicket (ticket) {
         this.$store.dispatch('model.activity.shoppingCarts/setTicketCard', {

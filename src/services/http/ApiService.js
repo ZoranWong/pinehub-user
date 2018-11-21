@@ -116,7 +116,7 @@ export default class ApiService extends Service {
 	//组装搜索参数
 	searchBuilder(searchFields) {
 		let search = {};
-		search = this.buildSearchStr(searchFields);
+		search = this.services('json').encode(searchFields);
 		return 'searchJson=' + this.services('base64').encode(search);
 	}
 	//参数处理

@@ -1,25 +1,26 @@
 <!--suppress ALL -->
 <template>
-  <div class="Coupon body">
+  <div class = "ticket-page body">
     <mp-title :title="title"></mp-title>
     <div id="tab_select" v-if = "tabs.length > 0">
-      <ul>
-        <li v-for="(tab , index) in tabs " :key="index" :class="{tab_select_now:cur == index }" :style="{ width:tabNumWidth }" @click="tabSelect(index)">
+      <ul class="tabs">
+        <li v-for="(tab , index) in tabs " :key="index" :class="{tab_select_now:cur == index }"
+          :style="{ width:tabNumWidth }" @click="tabSelect(index)">
           <span class="span-inline">{{ tab.name }}</span>
         </li>
       </ul>
     </div>
-    <div id="tab_content">
-      <ul class="tab_content_item" v-if="cur === 0">
-        <li v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType">
-          <coupon-ticket :usedCardCode = "usedCardCode" :ticket = "ticket" @useTicket = "useTicket"></coupon-ticket>
-        </li>
-      </ul>
-      <ul class="tab_content_item" v-else-if="cur === 1">
-        <li v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :loadTickets="loadTickets" :status="statusType" >
-          <coupon-tickect :ticket = "ticket" ></coupon-tickect>
-        </li>
-      </ul>
+    <div class = "ticket-list" >
+      <scroll-view class="ticket_wrapper" :scroll-y = "1" @scroll = "scroll" @scrolltolower = "scrolltolower" :scroll-into-view = "statusType">
+        <coupon-ticket
+        :status = "statusType"
+        v-for="(ticket, ticketIndex) in tickets"
+        :key="ticketIndex"
+        :usedCardCode = "usedCardCode"
+        :ticket = "ticket"
+        @useTicket = "useTicket">
+      </coupon-ticket>
+      </scroll-view>
     </div>
   </div>
 </template>
@@ -69,11 +70,26 @@
       },
       tickets () {
         return this.$store.getters[`${this.model}/list`];
+      },
+      nextPage () {
+        return this.$store.getters[`${this.model}/currentPage`] + 1;
+      },
+      isLoadedAll () {
+        return this.$store.getters[`${this.model}/isLoadedAll`];
       }
     },
     methods: {
+      scroll () {
+        console.log('+++++++++++++++++++ scroll ++++++++++++++++++++++++');
+      },
       useTicket (ticket) {
         this.$emit('useTicket', ticket);
+      },
+      scrolltolower () {
+        console.log("================ load tockets more ================");
+        if (!this.isLoadedAll) {
+          this.loadTickets(this.nextPage, this.statusType);
+        }
       },
       tabSelect (num) {
         this.cur = num;
@@ -88,6 +104,7 @@
             this.statusType = 'available';
             break;
         }
+        this.loadTickets(1, this.statusType);
       }
     },
     mounted () {
@@ -114,8 +131,16 @@
     line-height: 70rpx;
     border-bottom: 4rpx solid #FECE00;
   }
-
-  #tab_content {
+  .ticket-list {
     padding-top: 20rpx;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #f2f2f2;
+  }
+  .ticket-list .ticket_wrapper{
+    overflow-y: auto;
   }
 </style>
