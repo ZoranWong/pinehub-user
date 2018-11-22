@@ -13,6 +13,7 @@ export default class SignInCommand extends Command {
 		try {
 			let accessToken = await this.service('http.auth').accessToken(appId, appSecret);
 			console.log('======= accessToken =======', accessToken);
+			await this.service('mp.storage').set('accessToken', accessToken);
 			let code = await this.service('mp.auth').code();
 
 			// 请求登录接口

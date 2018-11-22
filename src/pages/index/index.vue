@@ -3,7 +3,7 @@
 		<div v-show="showTips" id="toast_area">
 			<div id="toast">
 				<div id="toast_title">
-					获取用户信息提示
+					用户授权注册
 				</div>
 				<div id="toast_content">
 					<div id="toast_content_info">
@@ -27,15 +27,7 @@
 				<img :src="headerAnimate" />
 			</div>
 		</div>
-		<div v-if="!isAuth" class="bgff user-info-box">
-			<button class="user-info-get-btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-        获取用户信息
-      </button>
-			<em class="tips">
-        我们需要获取您的小程序用户信息来创建用户信息
-      </em>
-		</div>
-		<div v-else-if="!isMember" class="bgff user-mobile-box">
+		<div v-if="!isMember" class="bgff user-mobile-box">
 			<button class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
         手机号授权
       </button>
@@ -153,12 +145,12 @@
 	#footNav_height {
 		height: 109rpx;
 	}
-	
+
 	.body {
 		overflow: hidden;
 		width: 750rpx;
 	}
-	
+
 	#index_header {
 		background: #FFD000;
 		height: 402rpx;
@@ -167,7 +159,7 @@
 		border-radius: 0 0 100% 100%;
 		overflow: hidden;
 	}
-	
+
 	#index_logo {
 		background: url(../../../static/images/icon/logo.png) no-repeat top center;
 		background-size: 100%;
@@ -175,7 +167,7 @@
 		height: 92rpx;
 		margin: 40rpx auto 0;
 	}
-	
+
 	#bear {
 		position: absolute;
 		width: 429rpx;
@@ -183,13 +175,13 @@
 		top: 122rpx;
 		left: 168rpx;
 	}
-	
+
 	#bear img {
 		display: block;
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	.user-info-box,
 	.user-mobile-box,
 	.user-score-box {
@@ -201,7 +193,7 @@
 		overflow: hidden;
 		text-align: center;
 	}
-	
+
 	.user-info-get-btn,
 	.user-mobile-get-btn {
 		height: 80rpx;
@@ -217,7 +209,7 @@
 		border-radius: 80rpx;
 		box-shadow: 0 10rpx 10rpx #fff6bd;
 	}
-	
+
 	.score {
 		position: relative;
 		display: inline-block;
@@ -228,7 +220,7 @@
 		font-size: 128rpx;
 		font-weight: 500;
 	}
-	
+
 	.user-score-box .score i {
 		position: absolute;
 		top: 0;
@@ -237,7 +229,7 @@
 		font-weight: 200;
 		line-height: 32rpx;
 	}
-	
+
 	.tips {
 		text-align: center;
 		font-size: 26rpx;
@@ -245,11 +237,11 @@
 		margin-top: 46rpx;
 		color: #525252;
 	}
-	
+
 	#index_menu {
 		padding: 30rpx 40rpx 0;
 	}
-	
+
 	#index_menu dl {
 		width: 320rpx;
 		height: 198rpx;
@@ -258,11 +250,11 @@
 		box-shadow: 0 10rpx 10rpx #f1f1f1;
 		float: left;
 	}
-	
+
 	#index_menu dl:nth-child(2) {
 		margin-left: 30rpx;
 	}
-	
+
 	#index_menu .booking {
 		width: 669rpx;
 		height: 198rpx;
@@ -272,25 +264,25 @@
 		float: left;
 		background: #FFFFFF;
 	}
-	
+
 	#index_menu .booking img {
 		width: 609rpx;
 		height: 135rpx;
 		margin: 31rpx auto;
 		display: block;
 	}
-	
+
 	#index_menu dl dd {
 		padding-top: 40rpx;
 	}
-	
+
 	#index_menu dl dd img {
 		display: block;
 		width: 76rpx;
 		height: 76rpx;
 		margin: 0 auto;
 	}
-	
+
 	#index_menu dl dt {
 		font-size: 30rpx;
 		font-weight: 400;
@@ -298,7 +290,7 @@
 		text-align: center;
 		margin-top: 15rpx;
 	}
-	
+
 	#toast_area {
 		position: fixed;
 		height: 100%;
@@ -306,7 +298,7 @@
 		background: rgba(0, 0, 0, .3);
 		z-index: 1000;
 	}
-	
+
 	#toast {
 		position: absolute;
 		background: #FFFFFF;
@@ -315,7 +307,7 @@
 		top: 338rpx;
 		left: 65rpx;
 	}
-	
+
 	#toast_title {
 		background: #FECE00;
 		text-align: center;
@@ -324,20 +316,20 @@
 		font-size: 34rpx;
 		font-weight: 400;
 	}
-	
+
 	#toast_content {}
-	
+
 	#toast_content_info {
 		padding: 20rpx 40rpx;
 	}
-	
+
 	#input_change_info {
 		font-size: 32rpx;
 		font-weight: 300;
 		color: #111111;
 		margin-bottom: 20rpx;
 	}
-	
+
 	#input_change_btn {
 		background: #FECE00;
 		line-height: 78rpx;
@@ -346,7 +338,7 @@
 		font-weight: 400;
 		border-radius: 10rpx;
 	}
-	
+
 	#input_change_tips {
 		font-size: 22rpx;
 		font-weight: 300;

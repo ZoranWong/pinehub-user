@@ -4,14 +4,14 @@ export default class RegisterCommand extends Command {
 	async handle(e) {
 		let mpUserInfoDetail = e.mp.detail;
 		let userInfo = mpUserInfoDetail.userInfo;
-		let signature = mpUserInfoDetail.signature;
+		let signature = encodeURIComponent(mpUserInfoDetail.signature);
 		let rawData = mpUserInfoDetail.rawData;
-		let iv = mpUserInfoDetail.iv;
-		let encryptedData = mpUserInfoDetail.encryptedData;
+		let iv = encodeURIComponent(mpUserInfoDetail.iv);
+		let encryptedData = encodeURIComponent(mpUserInfoDetail.encryptedData);
 		let accessToken = await this.service('mp.storage').get('accessToken');
 		let result = await this.service('http.auth').mpRegister(accessToken, userInfo, signature, rawData, iv, encryptedData);
+		console.log('-----------------', result);
 		let token = result['token'];
-		userInfo = await this.service('http.auth').getUserInfo(token);
 		let refreshTtl = result['refresh_ttl'];
 		let ttl = result['ttl'];
 		token = {
@@ -20,12 +20,10 @@ export default class RegisterCommand extends Command {
 			'refreshTtl': refreshTtl.date
 		};
 		await this.service('mp.storage').set('token', token);
+		userInfo = await this.service('http.auth').getUserInfo(token);
 		if(result) {
 			userInfo['token'] = token;
 			this.store().dispatch('model.account/setAccount', userInfo);
-			wx.showToast({
-				title: '用户信息获取成功'
-			});
 		}
 	}
 	static commandName() {
