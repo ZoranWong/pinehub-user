@@ -4,6 +4,7 @@ import LoadUserTicketsCommand from './commands/LoadUserTicketsCommand';
 
 const application = wx.$app;
 application.setComponent(App).run(function() {
+	console.log('commandName ======= =======', LoadUserTicketsCommand.commandName);
 	this.registerCommand(LoadUserTicketsCommand.commandName(), LoadUserTicketsCommand);
 	this.route = 'coupon';
 }, function() {

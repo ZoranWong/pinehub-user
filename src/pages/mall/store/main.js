@@ -12,8 +12,8 @@ const application = wx.$app;
 
 application.setComponent(App).run(function () {
 
-    this.models.addModel('model.storeCategories', StoreCategories);
-
+    this.models.addModel('model.storeCategories', StoreCategories)
+    console.log('command name  =============', StoreShoppingCartClearMerchandisesCommand.commandName);
     this.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
     this.registerCommand(LoadStoreCategoriesCommand.commandName(), LoadStoreCategoriesCommand);
     this.registerCommand(StoreShoppingCartLoadMerchandisesCommand.commandName(), StoreShoppingCartLoadMerchandisesCommand);
