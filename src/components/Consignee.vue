@@ -2,7 +2,7 @@
 	<div class="consignee bgff width710">
 		<div>
 			<p class="consignee-name">收货人：{{userInfo.nickname}}</p>
-			<p class="telphone">联系电话：{{userInfo.mobile}}</p>
+			<p class="telphone">联系电话：{{userInfo.mobile?userInfo.mobile:'尚未获取'}}</p>
 			<!-- 编辑信息 -->
 			<!-- <i class="edit-icon"></i> -->
 		</div>

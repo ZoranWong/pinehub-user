@@ -4,6 +4,9 @@ import RouterCommand from '@/commands/RouterCommand';
 // 登录命令
 import SignInCommand from '@/commands/SignInCommand';
 
+// 获取手机号
+import SetUserMobileCommand from '@/commands/SetUserMobileCommand';
+
 // 购物车基类命令
 import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 // 扫描命令
@@ -30,6 +33,7 @@ export default class CommandServiceProvider extends ServiceProvider {
 		let commands = [
 			RouterCommand,
 			SignInCommand,
+			SetUserMobileCommand,
 			ShoppingCartCommand,
 			ScanCommand,
 			BackToScrollViewTopCommand,

@@ -41,8 +41,8 @@ export default class AuthService extends ApiService {
   }
 
   // 提交手机号
-  async setMobile (encryptedData, iv, token, accessToken) {
-    let response = await this.httpPost(`/save/mobile/?token=${token}&access_token=${accessToken}`, {
+  async setMobile (encryptedData, iv) {
+    let response = await this.httpPost(`/save/mobile`, {
       encrypted_data: encryptedData,
       iv: iv
     });
