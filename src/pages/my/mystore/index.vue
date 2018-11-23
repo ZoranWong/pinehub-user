@@ -6,28 +6,28 @@
 				<li>
 					<i class="my_store_ico ico_week_buy" />
 					<div class="info_list">
-						<em>{{storeInfo.week_buy_num}}</em>
+						<em>{{storeInfo.week_buy_num?storeInfo.week_buy_num:0}}</em>
 						<i>本周用户购买数</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico ico_week_sell" />
 					<div class="info_list">
-						<em>{{storeInfo.week_sell_amount}}</em>
+						<em>{{storeInfo.week_sell_amount?storeInfo.week_sell_amount:0}}</em>
 						<i>本周销售额</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico ico_today_buy" />
 					<div class="info_list">
-						<em>{{storeInfo.today_buy_num}}</em>
+						<em>{{storeInfo.today_buy_num?storeInfo.today_buy_num:0}}</em>
 						<i>今日购买数</i>
 					</div>
 				</li>
 				<li>
 					<i class="my_store_ico  ico_today_sell" />
 					<div class="info_list">
-						<em>{{storeInfo.today_sell_amount}}</em>
+						<em>{{storeInfo.today_sell_amount?storeInfo.today_sell_amount:0}}</em>
 						<i>今日营业额</i>
 					</div>
 				</li>
@@ -117,14 +117,14 @@
 <style scoped>
 	#mystore {
 		background: #fafafa;
-		position: absolute;
+		/*position: absolute;
 		height: 100%;
 		width: 100%;
-		overflow-y: auto;
+		overflow-y: auto;*/
 	}
 	
 	#mystore_buyinfo {
-		margin: 15rpx;
+		padding: 15rpx;
 		clear: both;
 		overflow: hidden;
 	}

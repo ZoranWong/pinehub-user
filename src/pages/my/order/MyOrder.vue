@@ -229,7 +229,7 @@
 	
 	.order_info_glist dl dt {
 		display: inline-block;
-		width: 516rpx;
+		width: 500rpx;
 		height: 120rpx;
 		float: left;
 	}

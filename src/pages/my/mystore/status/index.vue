@@ -131,7 +131,15 @@
 			async loadMerchandises() {
 				//this.$command(MyStoreStatusPurchaseCommand.commandName(), 'week');
 				//this.$command(MyStoreStatusSalesCommand.commandName(), 'hour');
-				await this.$command(MyStoreCategoriesCommand.commandName());
+				try {
+					await this.$command(MyStoreCategoriesCommand.commandName());
+					console.log('这地方没出错');
+				} catch(e) {
+					console.log('抛出异常', e)
+					throw(e);
+					return false;
+				}
+
 			}
 		},
 		mounted() {

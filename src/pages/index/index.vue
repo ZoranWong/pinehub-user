@@ -46,7 +46,7 @@
 				<dd>
 					<img src="../../../static/images/icon/todaysorder.png" />
 				</dd>
-				<dt>当日下单</dt>
+				<dt>邻里优鲜</dt>
 			</dl>
 			<dl @click="jump('bookingMall')">
 				<dd>
