@@ -186,36 +186,40 @@ export default class Application {
     }
 
     run (before = null, created = null) {
-        this.registeredGlobal = true;
-        this.instances = {};
-        this.$vm = Vue;
-        this.registerServiceProviders();
-        this.vueMixin();
-        if (before) {
-            this.registeredGlobal = false;
-            before.call(this, this);
-        }
-        this.vueMixin();
-        this.models.addModels(Application.modelContainer);
-        if (this.route) {
-            let store = this.instances['vue-store'] = this.$models(this.models);
-            this.mountComponent = _.extend({
-              store: store,
-              render: h => h(App)
-            }, this.mountComponent);
-            _.isFunction(created) ? created.call(this, this) : console.log(created);
-            let wxRoute = this.config['routes'][this.route];
-            this.currentPage['wxRoute'] = wxRoute;
-            _.extend(this.currentPage, this.instances);
-            _.each(this.instances, (instance) => {
-                if (instance instanceof Service) {
-                  instance['page'] = this.currentPage;
-                }
-            });
-            Application.pageContainer.push(this.currentPage);
-        }
+        try {
+          this.registeredGlobal = true;
+          this.instances = {};
+          this.$vm = Vue;
+          this.registerServiceProviders();
+          this.vueMixin();
+          if (before) {
+              this.registeredGlobal = false;
+              before.call(this, this);
+          }
+          this.vueMixin();
+          this.models.addModels(Application.modelContainer);
+          if (this.route) {
+              let store = this.instances['vue-store'] = this.$models(this.models);
+              this.mountComponent = _.extend({
+                store: store,
+                render: h => h(App)
+              }, this.mountComponent);
+              _.isFunction(created) ? created.call(this, this) : console.log(created);
+              let wxRoute = this.config['routes'][this.route];
+              this.currentPage['wxRoute'] = wxRoute;
+              _.extend(this.currentPage, this.instances);
+              _.each(this.instances, (instance) => {
+                  if (instance instanceof Service) {
+                    instance['page'] = this.currentPage;
+                  }
+              });
+              Application.pageContainer.push(this.currentPage);
+          }
 
-        return this.currentPage;
+          return this.currentPage;
+        } catch (e) {
+          console.log(e);
+        }
     }
 
     mount () {
