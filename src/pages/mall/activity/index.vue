@@ -1,16 +1,33 @@
 <template>
-  <div class="body">
-    <mp-title :title="title"></mp-title>
-    <new-list :model="model" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></new-list>
-    <cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
-    <pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId"></pop-location>
-    <div id="shopping_cart_height" v-if="isShowCart"></div>
+  <div class = "body">
+    <mp-title :title = "title"></mp-title>
+    <merchandise-list
+        :model = "model"
+        @show-cart = "hdlShowCart"
+        :next = "next"
+        :height = "screenHeight"
+        :list = "merchandises"
+        :addMerchandiseToCart = "addCart"
+        :reduceMerchandiseToCart = "reduceCart"
+        categoryId = "activity">
+    </merchandise-list>
+    <cart
+        :model = "model"
+        v-if = "isShowCart"
+        @hdlShowPopup = "hdlShowPopup"
+        :addMerchandiseToCart = "addCart"
+        :reduceMerchandiseToCart = "reduceCart"
+        :clearShoppingCart = "clearShoppingCart">
+    </cart>
+    <pop-location v-if = "isShow" @hdlHidePopup = "hdlHidePopup" :activity-id = "activityId">
+    </pop-location>
+    <div id = "shopping_cart_height" v-if = "isShowCart"></div>
   </div>
 </template>
 
 <script>
   import MpTitle from '@/components/MpTitle'
-  import NewFoods from './Newfoods'
+  import MerchandiseList from './MerchandiseList'
   import Cart from '@/components/Cart'
   import PopupLocation from './PopupLocation'
   export default {
@@ -26,7 +43,7 @@
     },
     components: {
       'mp-title': MpTitle,
-      'new-list': NewFoods,
+      'merchandise-list': MerchandiseList,
       'cart': Cart,
       'pop-location': PopupLocation
     },

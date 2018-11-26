@@ -26,6 +26,8 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     "indent": [0, 4],
+    "vue/html-indent": [0, 4],
+     "vue/script-indent": [0, 4],
     "semi": [0],
     //空行最多不能超过100行
     "no-multiple-empty-lines": [0, {"max": 100}],
