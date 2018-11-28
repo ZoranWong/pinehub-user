@@ -35,6 +35,11 @@ module.exports = {
     "no-mixed-spaces-and-tabs": [0],
     "no-trailing-spaces": 0
   },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  },
   globals: {
     App: true,
     Page: true,

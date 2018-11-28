@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import Vue from 'vue'
 import ServiceProviders from './providers'
 import _ from 'underscore'
@@ -12,10 +13,9 @@ export default class Application {
     static configContainer = {};
     static commandContainer = {};
 
-  constructor (component, name = null) {
+    constructor (component, name = null) {
         this.name = name;
         this.hashKey = md5(Date.now());
-        this.applicationBootStartTime = Date.now();
         Vue.config.productionTip = false;
         this.version = '1.0.1';
         this.instances = {};
@@ -24,7 +24,6 @@ export default class Application {
         this.exceptionHandlers = {};
         this.mixinMethods = {};
         this.mountComponent = component;
-        this.hasMixin = false;
         this.models = null;
         this.currentPage = null;
         this.route = null;
@@ -33,7 +32,7 @@ export default class Application {
         Object.defineProperty(this, 'config', {
             enumerable: true,
             get () {
-              return config ? config : Application.configContainer;
+              return config || Application.configContainer;
             },
             set (value) {
               if (value) {
@@ -108,13 +107,10 @@ export default class Application {
         })
     }
 
-    afterBoot () {
-        this.applicationBootEndTime = Date.now();
-    }
-
     registerException (name, exception) {
         this.exceptionHandlers[name] = exception;
     }
+
     extend (dist, src, deep) {
       for (let key in src) {
         if (src.hasOwnProperty(key)) {
@@ -130,6 +126,7 @@ export default class Application {
         }
       }
     }
+
     register (name, service = null) {
         let instance = null;
         if (!service && _.isFunction(name)) {
@@ -162,10 +159,12 @@ export default class Application {
     resetForm (form) {
         form.resetFields();
     }
+
     // vue全局事件绑定
     $on (event, callback) {
         this.currentPage.$on(event, callback);
     }
+
     $off (event) {
 
     }
