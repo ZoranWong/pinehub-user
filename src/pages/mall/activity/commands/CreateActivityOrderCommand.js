@@ -1,7 +1,6 @@
 import Command from '@/commands/CreateOrderCommand';
-const ACTIVITY_ORDER = 1;
+import { SHOPPING_MALL_ORDER, USER_SELF_PICK_UP } from '@/Utils/OrderDict';
 export default class CreateActivityOrderCommand extends Command {
-
   async handle (activityId, receivingShopId, receiverName, receiverMobile, receiverAddress, ticketCode = null , cardId = null, comment = '') {
     try {
       let params = {
@@ -9,9 +8,10 @@ export default class CreateActivityOrderCommand extends Command {
         receiver_address: receiverAddress,
         receiver_mobile: receiverMobile,
         comment: comment,
-        type: ACTIVITY_ORDER,
+        type: SHOPPING_MALL_ORDER,
         activity_id: activityId,
-        receiving_shop_id: receivingShopId
+        receiving_shop_id: receivingShopId,
+        pick_up_method: USER_SELF_PICK_UP
       }
       if (cardId && ticketCode) {
         params['card_id'] = cardId;

@@ -1,5 +1,5 @@
 import Mock from './Mock';
-export default class MyStoreInfo extends Mock {
+export default class MY_STORE_INFO extends Mock {
 	constructor(application) {
 		super(application);
 	}

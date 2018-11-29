@@ -2,10 +2,6 @@ import ApiService from './ApiService';
 export default class MyStoreModifyStockService extends ApiService {
   // 获取店铺产品分类列表
   async storeCategories (storeId, page = 1, limit = 15) {
-    let categories = null;
-    let totalNum = null;
-    let totalPage = null;
-    let currentPage = null;
     let response = null;
     console.log('MyStoreCategoriesService--------MyStoreCategoriesService');
     if (this.$application.needMock()) {
@@ -18,12 +14,12 @@ export default class MyStoreModifyStockService extends ApiService {
         page: page
       });
     }
-    categories = response.data;
+    let categories = response.data;
     let pagination = response.meta.pagination;
     console.log('pagination------pagination', pagination);
-    totalNum = pagination.total;
-    currentPage = pagination['current_page'];
-    totalPage = pagination['total_pages'];
+    let totalNum = pagination.total;
+    let currentPage = pagination['current_page'];
+    let totalPage = pagination['total_pages'];
     return [categories, totalNum, currentPage, totalPage];
   }
   // 提交反馈数据

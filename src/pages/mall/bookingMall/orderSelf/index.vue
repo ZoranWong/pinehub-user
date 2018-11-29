@@ -22,9 +22,10 @@
   </div>
 </template>
 <script>
-  import MpTitle from '@/components/MpTitle'
-  import Consignee from '@/components/Consignee'
-  import Payment from '@/components/Payment'
+  import MpTitle from '@/components/MpTitle';
+  import Consignee from '@/components/Consignee';
+  import Payment from '@/components/Payment';
+  import { USER_SELF_PICK_UP } from '@/Utils/OrderDict';
   export default{
     name: 'confirmationOrderTwo',
     data () {
@@ -66,7 +67,7 @@
     methods: {
       createOrder () {
         this.$command('CREATE_BOOKING_MALL_ORDER',
-          this.SELF_PICK_UP_ORDER,
+          USER_SELF_PICK_UP,
           this.userInfo.nickname,
           this.userInfo.mobile,
           this.storeInfo.address,
