@@ -19,7 +19,6 @@ export default class EChartsService extends Service {
 
 	//绘制图表主方法
 	createChart(xDate, yData, needRefresh = false) {
-		console.log('进来了', xDate, yData, needRefresh);
 		let xData = null;
 		if(xDate == 'day') {
 			xData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
@@ -32,9 +31,7 @@ export default class EChartsService extends Service {
 				month[i] = i + 1;
 			}
 			xData = month;
-			console.log('本月数组', xData);
 		}
-		console.log('xData', xData);
 		let option = {
 			refresh: needRefresh,
 			xAxis: {
@@ -82,7 +79,6 @@ export default class EChartsService extends Service {
 				smooth: true
 			}]
 		}
-		console.log('XxXxXx', option);
 		return option
 	}
 }

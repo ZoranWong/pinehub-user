@@ -4,18 +4,29 @@ export default class GetNearestStoreCommand extends Command {
 		super(app);
 	}
 
-	async handle() {
-		let [id, name, address] = [];
+	async handle(storeId) {
 		try {
-			let result = await this.service('map').getLocation();
-			let store = await this.service('http.nearestStore').nearestStore(result.lng, result.lat);
-			console.log('最近店铺信息', [id, name, address]);
-			this.$store.dispatch('model.nearestStore/setStore', store);
+			let store = null;
+			if(typeof storeId === 'undefined' || storeId === null) {
+				wx.showLoading({ title: '定位中······' });
+				let [lng, lat] = await this.map.getLocation();
+				store = await this.http.store.nearestStore(lng, lat);
+				wx.hideLoading();
+			}else{
+				store = this.$store.getters['model.stores/store'](storeId);
+			}
+
+			if(store) {
+				this.$store.dispatch('model.nearestStore/setStore', store);
+			}else{
+				throw new Error('定位错误');
+			}
+
 		} catch(e) {
-			console.log('居然来到了异常')
-			console.log('抛出异常', e);
+			console.log('定位错误', e);
+			wx.hideLoading();
+			await this.service('popup').toast('定位失败', 'warn', 2000);
 			throw(e);
-			return false;
 		}
 
 	}

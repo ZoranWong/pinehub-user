@@ -5,28 +5,23 @@ export default class OrdersService extends ApiService {
   }
 
   // 获取订单列表
-  async list (status, page = 1, limit = 15) {
-    let orders = null;
-    let totalNum = 0;
-    let totalPage = 0;
-    let currentPage = 0;
-    let response = null;
-    if (this.$application.needMock()) {
-      response = await this.services('mock.myOrders').mock(status, page, limit);
-    } else {
-      response = await this.httpGet(`/${status}/orders`, {
-        page: page
-      });
-    }
-    orders = response.data;
+  async userOrders (status, page = 1, limit = 15) {
+    let response = await this.httpGet(`/${status}/orders`, {
+        page: page,
+        limit: limit
+    });
+    let orders = response.data;
     let pagination = response.meta.pagination;
-    // 总数
-    totalNum = pagination.total;
+    // 总数
+    let totalNum = pagination.total;
     // 当前页
-    currentPage = pagination['current_page'];
+    let currentPage = pagination['current_page'];
     // 总页数
-    totalPage = pagination['total_pages'];
-    return [orders, totalNum, currentPage, totalPage];
+    let totalPage = pagination['total_pages'];
+
+    let pageCount = pagination['per_page'];
+
+    return [orders, totalNum, currentPage, totalPage, pageCount];
   }
 
   // 创建订单
@@ -36,33 +31,27 @@ export default class OrdersService extends ApiService {
   }
 
   // 重新创建订单
-  async reCreateOrder (id) {
+  async orderPayById (id) {
     let response = null;
     response = await this.httpGet(`/again/order/${id}`, {});
     return response.data;
   }
 
-  // 调用微信支付接口
-  async onloadWechatPay (timeStamp, nonceStr, packageInfo, paySign) {
-    console.log('timeStamp, nonceStr, packageInfo, paySign', timeStamp, nonceStr, packageInfo, paySign);
-    let self = this;
-    wx.requestPayment({
-      'timeStamp': timeStamp,
-      'nonceStr': nonceStr,
-      'package': packageInfo,
-      'signType': 'MD5',
-      'paySign': paySign,
-      'success': function (res) {
-        console.log('支付成功', res);
-        self.services('mp.router').push('myOrderSuccess');
-      },
-      'fail': function (res) {
-        console.log('支付失败', res);
-      },
-      'complete': function (res) {
-        console.log('支付结束', res);
-      }
-    })
+  async summaryOrders (paidDate, type, status, page, limit = 15) {
+    let response = await this.httpGet(`/store/orders/summary`, {
+      paid_date: paidDate,
+      type: type,
+      status: status,
+      page: page,
+      limit: limit
+    });
+    let orders = response.data;
+    let pagination = response.meta.pagination;
+    let totalNum = pagination.total;
+    let currentPage = pagination['current_page'];
+    let totalPage = pagination['total_pages'];
+    let pageCount = pagination['per_page'];
+    return [orders, totalNum, currentPage, totalPage, pageCount];
   }
 
   // 取消订单
@@ -80,22 +69,35 @@ export default class OrdersService extends ApiService {
   }
 
   // 店铺-自提订单
-  async pickedUpOrders (startTime, endTime, page) {
-    let response = null;
-    if (this.$application.needMock()) {
-      response = await this.services('mock.distributeOrder').mock(startTime, endTime, page);
-    } else {
-      response = await this.httpGet(`store/buffet/orders`, {
-        start_at: startTime,
-        end_at: endTime,
-        page: page
-      });
-    }
-    let orderList = response.data;
+  async pickedUpOrders (pickDate, page, limit = 15) {
+    let response = await this.httpGet(`store/buffet/orders`, {
+        pick_date: pickDate,
+        page: page,
+        limit: limit
+    });
+    let orders = response.data;
     let pagination = response.meta.pagination;
     let totalNum = pagination.total;
     let currentPage = pagination['current_page'];
     let totalPage = pagination['total_pages'];
-    return [orderList, totalNum, currentPage, totalPage];
+    let pageCount = pagination['per_page'];
+    return [orders, totalNum, currentPage, totalPage, pageCount];
+  }
+
+  // 获取订单列表
+  async sendOrders (sendDate, batch, page, limit = 15) {
+    let response = await this.httpGet(`/store/send/orders`, {
+      send_date: sendDate,
+      batch: batch,
+      page: page,
+      limit: limit
+    });
+    let orders = response.data;
+    let pagination = response.meta.pagination;
+    let totalNum = pagination.total;
+    let currentPage = pagination['current_page'];
+    let totalPage = pagination['total_pages'];
+    let pageCount = pagination['per_page'];
+    return [orders, totalNum, currentPage, totalPage, pageCount];
   }
 }

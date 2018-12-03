@@ -1,128 +1,126 @@
 <!--suppress ALL -->
 <template>
-  <div class="shopcart" v-show="totalCount>0" :style="{visiable:visiable}">
-    <div class="shoppingcart-bottom clearfix">
-      <div class="content" @click="toggleListShow">
-        <span class="black-circle"></span>
-        <i class="i-icon cart"></i>
-        <i class="i-icon num-icon  theme-color color11">{{ totalCount }}</i>
-        <span class="total-price">¥{{ totalAmount }}</span>
-      </div>
-      <label class="choose fr" @click="popShow">
-        选好了
-        <i class="i-icon next-icon" @click="orderShow"></i>
-      </label>
-    </div>
-    <div class="selected-merchandises  bgff" v-if="toggleList">
-      <div class="selected-title clearfix">
-        <div class="flag fl">
-          已选产品
+    <div class="shopping-carts" v-show="totalCount>0" :style="{visiable:visiable}">
+        <div class="shopping-carts-bottom clearfix">
+            <div class="content" @click="toggleListShow">
+                <span class="black-circle"></span>
+                <i class="i-icon cart"></i>
+                <i class="i-icon num-icon  theme-color color11">{{ totalCount }}</i>
+                <span class="total-price">¥{{ totalAmount }}</span>
+            </div>
+            <label class="choose fr" @click="popShow">
+                选好了
+                <i class="i-icon next-icon" @click="orderShow"></i>
+            </label>
         </div>
-        <label class="clear fr" @click="clearShoppingCartMerchandises">清空</label>
-      </div>
-      <div class="add-box">
-        <div class="add-merchandises color11" v-for="(item, itemIndex) in cartList" :key="itemIndex">
-          <span class="merchandises-name">{{ item.name }}</span>
-          <span class="sell-price">¥{{ item.sellPrice }}</span>
-          <div class="cartcontrol-warpper">
-            <cart-control :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId"></cart-control>
-          </div>
+        <div class="selected-merchandises  bgff" v-if="toggleList">
+            <div class="selected-title clearfix">
+                <div class="flag fl">
+                    已选产品
+                </div>
+                <label class="clear fr" @click="clearShoppingCarts">清空</label>
+            </div>
+            <div class="add-box">
+                <div class="add-merchandises color11" v-for="(item, itemIndex) in shoppingCarts" :key="itemIndex">
+                    <span class="merchandises-name">{{ item.name }}</span>
+                    <span class="sell-price">¥{{ item.sellPrice }}</span>
+                    <div class="cartcontrol-warpper">
+                        <cart-control :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId=" item['merchandiseId']" :shopId="item.shopId"></cart-control>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="mask" v-if="maskBg"></div>
     </div>
-    <div class="mask" v-if="maskBg"></div>
-  </div>
 </template>
 <script>
-  import CartControl from '@/components/CartControl'
-  export default {
+import CartControl from '@/components/CartControl'
+export default {
     data () {
-      return {
-        toggleList: false,
-        maskBg: false
-      }
+        return {
+            toggleList: false,
+            maskBg: false
+        }
     },
     props: {
-      addMerchandiseToCart: {
-        default: null,
-        type: Function
-      },
-      reduceMerchandiseToCart: {
-        default: null,
-        type: Function
-      },
-      clearShoppingCart: {
-        default: null,
-        type: Function
-      },
-      model: {
-        default: null,
-        type: String
-      }
+        addMerchandiseToCart: {
+            default: null,
+            type: Function
+        },
+        reduceMerchandiseToCart: {
+            default: null,
+            type: Function
+        },
+        clearShoppingCarts: {
+            default: null,
+            type: Function
+        },
+        model: {
+            default: null,
+            type: String
+        }
     },
     components: {
-      'cart-control': CartControl
+        'cart-control': CartControl
     },
     computed: {
-      visiable () {
-        return this.totalCount > 0 ? 'block' : 'none';
-      },
-      cartList () {
-        return this.model ? this.$store.getters[`${this.model}/list`] : [];
-      },
-      totalAmount () {
-        return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
-      },
-      totalCount () {
-        console.log('购物车总数', this.model, this.$store.getters);
-        return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
-      }
+        visiable () {
+            return this.totalCount > 0 ? 'block' : 'none';
+        },
+        shoppingCarts () {
+            return this.model ? this.$store.getters[`${this.model}/list`] : [];
+        },
+        totalAmount () {
+            return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
+        },
+        totalCount () {
+            console.log('购物车总数', this.model, this.$store.getters);
+            return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
+        }
     },
     methods: {
-      popShow: function () {
-        this.$emit('hdlShowPopup')
-      },
-      orderShow () {
-        this.$emit('hdlShowOrder')
-      },
-      toggleListShow: function () {
-        this.toggleList = !this.toggleList;
-        this.maskBg = !this.maskBg;
-      },
-      clearShoppingCartMerchandises () {
-        this.clearShoppingCart();
-      },
-      addCart (merchandiseId, id = null) {
-        this.addMerchandiseToCart(merchandiseId, id);
-      },
-      reduceCart (merchandiseId, id) {
-        this.reduceMerchandiseToCart(merchandiseId, id);
-      }
-
+        popShow: function () {
+            this.$emit('hdlShowPopup')
+        },
+        orderShow () {
+            this.$emit('hdlShowOrder')
+        },
+        toggleListShow: function () {
+            this.toggleList = !this.toggleList;
+            this.maskBg = !this.maskBg;
+        },
+        clearShoppingCarts () {
+            this.clearShoppingCarts();
+        },
+        addCart (merchandiseId, id = null) {
+            this.addMerchandiseToCart(merchandiseId, id);
+        },
+        reduceCart (merchandiseId, id) {
+            this.reduceMerchandiseToCart(merchandiseId, id);
+        }
     }
-
-  }
+}
 </script>
 <style scoped>
-  .shopcart {
+.shopping-carts {
     width: 100%;
     height: auto;
     position: fixed;
     bottom: 0rpx;
     right: 0rpx;
-  }
-  /*底部的购物车*/
+}
+/*底部的购物车*/
 
-  .shoppingcart-bottom {
+.shopping-carts-bottom {
     width: 100%;
     height: 98rpx;
     background-color: #000000;
     background-size: contain;
     position: relative;
     z-index: 99;
-  }
+}
 
-  .black-circle {
+.black-circle {
     width: 90rpx;
     height: 90rpx;
     border-radius: 50%;
@@ -130,9 +128,9 @@
     position: absolute;
     top: -20rpx;
     left: 20rpx;
-  }
+}
 
-  .cart {
+.cart {
     width: 70rpx;
     height: 70rpx;
     background: url(../../static/images/icon/cart.png) no-repeat;
@@ -140,9 +138,9 @@
     position: absolute;
     top: -10rpx;
     left: 30rpx;
-  }
+}
 
-  .num-icon {
+.num-icon {
     width: 36rpx;
     height: 36rpx;
     line-height: 36rpx;
@@ -153,27 +151,27 @@
     position: absolute;
     top: -20rpx;
     left: 78rpx;
-  }
+}
 
-  .content {
+.content {
     width: 70%;
     font-size: 32rpx;
     margin-top: 20rpx;
-  }
+}
 
-  .total-price {
+.total-price {
     margin-left: 140rpx;
     color: #ffffff;
-  }
+}
 
-  .choose {
+.choose {
     display: inline-block;
     width: 30%;
     color: #fece00;
     margin-top: -40rpx;
-  }
+}
 
-  .next-icon {
+.next-icon {
     width: 20rpx;
     height: 35.6rpx;
     background: url(../../static/images/icon/next-icon.png) no-repeat;
@@ -181,10 +179,10 @@
     position: absolute;
     bottom: 30rpx;
     right: 23rpx;
-  }
-  /*商品数量*/
+}
+/*商品数量*/
 
-  .mask {
+.mask {
     position: fixed;
     top: 0;
     width: 100%;
@@ -192,24 +190,24 @@
     z-index: 2;
     box-sizing: border-box;
     background-color: rgba(7, 17, 27, 0.6);
-  }
+}
 
-  .add-box {
+.add-box {
     margin-top: 60rpx;
-  }
+}
 
-  .selected-merchandises {
+.selected-merchandises {
     width: 100%;
-    height: 400rpx;
+    max-height: 400rpx;
     overflow: hidden;
     position: absolute;
     bottom: 98rpx;
     z-index: 20;
     box-sizing: border-box;
     overflow-y: auto;
-  }
+}
 
-  .selected-title {
+.selected-title {
     width: 100%;
     height: 58rpx;
     line-height: 58rpx;
@@ -219,42 +217,42 @@
     box-sizing: border-box;
     position: fixed;
     z-index: 2;
-  }
+}
 
-  .flag {
+.flag {
     background: url(../../static/images/icon/flag.png) 0rpx 14rpx no-repeat;
     background-size: 26rpx 30rpx;
     text-indent: 36rpx;
-  }
+}
 
-  .clear {
+.clear {
     background: url(../../static/images/icon/del-icon.png) 0rpx 14rpx no-repeat;
     background-size: 26rpx 30rpx;
     text-indent: 36rpx;
-  }
+}
 
-  .add-merchandises {
+.add-merchandises {
     height: 98rpx;
     line-height: 98rpx;
     position: relative;
-  }
+}
 
-  .merchandises-name {
+.merchandises-name {
     font-size: 28rpx;
     margin-left: 40rpx;
-  }
+}
 
-  .sell-price {
+.sell-price {
     font-size: 32rpx;
     position: absolute;
     bottom: 0rpx;
     right: 300rpx;
-  }
+}
 
-  .cartcontrol-warpper {
+.cartcontrol-warpper {
     width: 143rpx;
     position: absolute;
     bottom: 0rpx;
     right: 20rpx;
-  }
+}
 </style>

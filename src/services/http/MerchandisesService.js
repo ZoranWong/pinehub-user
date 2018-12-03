@@ -6,14 +6,7 @@ export default class MerchandisesService extends ApiService {
 
   async list (route, query) {
     // 结果
-    let response = null;
-    // limit
-    if (this.$application.needMock()) {
-      response = await this.services('mock.merchandises').mock();
-    } else {
-      // 服务器交互代码
-      response = await this.httpGet(route, query);
-    }
+    let response = await this.httpGet(route, query);
     let merchandises = response.data;
     let pagination = response.meta.pagination;
     let totalNum = pagination.total;

@@ -6,7 +6,6 @@ export default class GetCategoriesCommand extends Command {
 
 	async handle(page = 1) {
 		try {
-			console.log('预定商城分类>>>>>>>>>>>');
 			let service = this.service('http.categories');
 			let [categories, totalPage, limit, totalCount] = await service.categories(page);
 			this.$store.dispatch('model.categories/setList', {

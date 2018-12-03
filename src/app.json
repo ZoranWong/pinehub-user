@@ -1,41 +1,15 @@
 {
   "pages": [
-    "pages/index/main",
-    "pages/nearbyStores/main",
-    "pages/search/main",
-    "pages/coupon/main"
+      "pages/user/index/main",
+      "pages/user/mall/storeMarket/main",
+      "pages/user/mall/bookingMall/main",
+      "pages/user/storesMap/main"
   ],
   "subPackages": [
     {
-      "root": "pages/my",
+      "root": "pages/merchant",
       "pages": [
-        "mystore/main",
-        "mystore/order/main",
-        "mystore/status/main",
-        "mystore/pickedUpOrder/main",
-        "mystore/distributeOrder/main",
-        "order/main",
-        "order/success/main",
-        "pay/main",
-        "share/main",
-        "feedback/main",
-        "feedback/success/main",
         "main"
-      ]
-    },
-    {
-      "root": "pages/mall",
-      "pages": [
-        "store/main",
-        "store/submitOrder/main",
-        "store/coupon/main",
-        "bookingMall/main",
-        "bookingMall/submitOrder/main",
-        "bookingMall/orderSelf/main",
-        "bookingMall/coupon/main",
-        "activity/main",
-        "activity/submitOrder/main",
-        "activity/coupon/main"
       ]
     }
   ],

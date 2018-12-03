@@ -6,7 +6,6 @@ export default class TencentMapService extends Service {
 		this.map = new Qmap({
 			key: $application.config['app']['mapKey'] // 必填
 		});
-		console.log(`调用腾讯地图接口`);
 	}
 	//地址转换坐标
 	searchAddressToLocation(address) {
@@ -47,19 +46,16 @@ export default class TencentMapService extends Service {
 
 	//渲染地图
 	getLocation() {
+		let $this = this;
 		return new Promise((resolve, reject) => {
 			wx.getLocation({
 				type: 'wgs84',
 				success: function(res) {
-					let result = {
-						lat: res.latitude,
-						lng: res.longitude
-					};
+					let result = [res.longitude, res.latitude];
 					resolve(result);
 				},
 				fail: function(error) {
-					console.log(error);
-					reject(error);
+					resolve(false);
 				}
 			});
 		})

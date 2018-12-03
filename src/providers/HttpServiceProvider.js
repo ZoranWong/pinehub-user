@@ -4,7 +4,7 @@ import UriService from '@/services/http/UriService';
 import HttpAuthService from '@/services/http/AuthService';
 import HttpOrdersService from '@/services/http/OrdersService';
 import ShoppingCartService from '@/services/http/ShoppingCartService';
-import MyStoreScanCodeService from '@/services/http/MyStoreScanCodeService';
+import StoreService from '@/services/http/StoreService';
 import TicketsService from '@/services/Http/TicketsService';
 import Fly from 'flyio/dist/npm/wx';
 
@@ -22,6 +22,6 @@ export default class HttpServiceProvider extends ServiceProvider {
     this.app.register('http.orders', HttpOrdersService);
     this.app.register('http.shoppingCart', ShoppingCartService);
     this.app.register('http.tickets', TicketsService);
-    this.app.register('scanCodeService', MyStoreScanCodeService);
+    this.app.register('http.store', StoreService);
   }
 }

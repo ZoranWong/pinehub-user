@@ -45,6 +45,7 @@ module.exports = {
     alias: {
       'vue': 'mpvue',
       '@': resolve('src'),
+      'mocks': resolve('mocks')
 
     },
     symlinks: false,
@@ -121,8 +122,8 @@ module.exports = {
         ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
       },
       {
-        from: path.resolve(__dirname, '../src/pages/my/ec-canvas'),
-        to: path.resolve(__dirname, '../dist/pages/my/ec-canvas'),
+        from: path.resolve(__dirname, '../src/pages/merchant/ec-canvas'),
+        to: path.resolve(__dirname, '../dist/pages/merchant/ec-canvas'),
         ignore: ['.*']
       }
     ])

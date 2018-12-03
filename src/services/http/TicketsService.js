@@ -4,7 +4,7 @@ export default class TicketsService extends ApiService {
   async list (status, parameters) {
     let response = null;
     if (this.$application.needMock()) {
-      response = await this.services('mock.tickets').mock(parameters);
+      response = await this.service('mock.tickets').mock(parameters);
     } else {
       // 服务器交互代码
       try {
