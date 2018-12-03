@@ -3,14 +3,7 @@
         <mp-title :title="title"></mp-title>
         <!-- 收货人组件 -->
         <consignee></consignee>
-        <ul class="order-address">
-            <li class="li-item bgff">
-                配送地址
-                <p class="details-item">
-                    <input type="text" class="big-input" v-model="address">
-                </p>
-            </li>
-        </ul>
+        <order-address :order-type = "orderType" :pick-up-method = "pickUpMethod"></order-address>
         <!-- 支付内容的显示组件 -->
         <payment :model="model" :usedTicket="usedTicket" :ticketNum="ticketNum" :createOrder="createOrder" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :redirectToTicket="redirectToTicket"></payment>
     </div>
@@ -19,7 +12,8 @@
 import MpTitle from '@/components/MpTitle';
 import Consignee from '@/components/Consignee';
 import Payment from '@/components/Payment';
-import { SEND_ORDER_TO_USER } from '@/Utils/OrderDict';
+import OrderAddress from './OrderAddress';
+import { SEND_ORDER_TO_USER, USER_SELF_PICK_UP, SHOPPING_MALL_ORDER, SITE_USER_ORDER } from '@/Utils/OrderDict';
 export default {
     name: 'confirmationOrderTwo',
     data () {
@@ -27,13 +21,15 @@ export default {
             title: '预定商城-确认订单',
             model: 'model.bookingMall.shoppingCarts',
             address: null,
-            SEND_ORDER: 2
+            orderType: SHOPPING_MALL_ORDER,
+            pickUpMethod: SEND_ORDER_TO_USER
         }
     },
 
     components: {
         'mp-title': MpTitle,
         'consignee': Consignee,
+        'order-address': OrderAddress
         'payment': Payment
     },
     computed: {
@@ -68,7 +64,6 @@ export default {
         );
     },
     redirectToTicket () {
-        console.log('activityCoupon');
         this.mp.router.push('bookingMallCoupon', {
             query: {
                 back_to: 'createOrder'
