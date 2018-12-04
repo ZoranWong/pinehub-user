@@ -86,13 +86,6 @@
                 phone: '15357903187'
             };
         },
-        watch: {
-            userToken (nv, od) {
-                if (nv !== od) {
-                    this.$command('GET_USER_INFO');
-                }
-            }
-        },
         computed: {
             headerAnimate () {
                 return this.$imageUrl('bear.gif');

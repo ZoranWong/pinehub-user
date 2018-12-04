@@ -25,7 +25,7 @@
 import MpTitle from '@/components/MpTitle';
 import Consignee from '@/components/Consignee';
 import Payment from '@/components/Payment';
-import { USER_SELF_PICK_UP } from '@/Utils/OrderDict';
+import { USER_SELF_PICK_UP } from '@/utils/OrderDict';
 export default{
     name: 'confirmationOrderTwo',
     data () {

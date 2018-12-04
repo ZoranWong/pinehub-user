@@ -14,7 +14,7 @@ import MpTitle from '@/components/MpTitle';
 import Consignee from '@/components/Consignee';
 import OrderType from './OrderType';
 import Payment from '@/components/Payment';
-import { SEND_ORDER_TO_USER, USER_SELF_PICK_UP } from '@/Utils/OrderDict';
+import { SEND_ORDER_TO_USER, USER_SELF_PICK_UP } from '@/utils/OrderDict';
 export default {
     name: 'confirmationOrder',
     data () {

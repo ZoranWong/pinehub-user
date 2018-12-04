@@ -1,5 +1,5 @@
 import Command from '@/commands/CreateOrderCommand';
-import { SITE_USER_ORDER } from '@/Utils/OrderDict';
+import { SITE_USER_ORDER } from '@/utils/OrderDict';
 export default class CreateStoreOrderCommand extends Command {
     async handle (
         type,

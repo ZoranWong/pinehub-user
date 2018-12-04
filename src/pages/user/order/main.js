@@ -1,5 +1,4 @@
 import App from './index';
-import OrdersService from '../../../services/http/OrdersService';
 import LoadUserOrdersCommand from './commands/LoadUserOrdersCommand';
 import Orders from '@/models/Orders';
 

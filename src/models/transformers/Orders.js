@@ -1,4 +1,5 @@
 import {OFF_LINE_PAYMENT_ORDER, SITE_USER_ORDER, SHOPPING_MALL_ORDER, SEND_ORDER_TO_USER, USER_SELF_PICK_UP} from '@/utils/OrderDict';
+// 取货方式
 const QR = require('../../../static/jssdk/weapp-qrcode.js');
 export default class Order {
     constructor (order) {

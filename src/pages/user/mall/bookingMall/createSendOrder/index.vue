@@ -19,7 +19,7 @@
 import MpTitle from '@/components/MpTitle';
 import Consignee from '@/components/Consignee';
 import Payment from '@/components/Payment';
-import { SEND_ORDER_TO_USER } from '@/Utils/OrderDict';
+import { SEND_ORDER_TO_USER } from '@/utils/OrderDict';
 export default {
     name: 'confirmationOrderTwo',
     data () {

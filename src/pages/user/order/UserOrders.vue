@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { USER_SELF_PICK_UP } from '@/Utils/OrderDict';
+import { USER_SELF_PICK_UP } from '@/utils/OrderDict';
 export default {
     name: 'UserOrders',
     props: {

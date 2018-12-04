@@ -1,5 +1,5 @@
 import Command from '@/commands/CreateOrderCommand';
-import { SHOPPING_MALL_ORDER, USER_SELF_PICK_UP } from '@/Utils/OrderDict';
+import { SHOPPING_MALL_ORDER, USER_SELF_PICK_UP } from '@/utils/OrderDict';
 export default class CreateActivityOrderCommand extends Command {
     async handle (activityId, receivingShopId, receiverName, receiverMobile, receiverAddress, ticketCode = null , cardId = null, comment = '') {
         try {
