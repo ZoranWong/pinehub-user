@@ -1,9 +1,5 @@
 import ApiService from './ApiService';
 export default class OrdersService extends ApiService {
-    constructor ($application) {
-        super($application);
-    }
-
     // 获取订单列表
     async userOrders (status, page = 1, limit = 15) {
         let response = await this.httpGet(`/${status}/orders`, {
@@ -26,15 +22,13 @@ export default class OrdersService extends ApiService {
 
     // 创建订单
     async createPaymentOrder (params) {
-        console.log('pay order params');
         let response = await this.httpPost(`/create/order`, params);
         return response.data;
     }
 
     // 重新创建订单
     async orderPayById (id) {
-        let response = null;
-        response = await this.httpGet(`/again/order/${id}`, {});
+        let response = await this.httpGet(`/again/order/${id}`, {});
         return response.data;
     }
 
@@ -57,15 +51,13 @@ export default class OrdersService extends ApiService {
 
     // 取消订单
     async cancelOrder (id) {
-        let response = null;
-        response = await this.httpGet(`/cancel/order/${id}`, {});
+        let response = await this.httpGet(`/cancel/order/${id}`, {});
         return response;
     }
 
     // 确认收货 确认核销
     async confirmOrder (id) {
-        let response = null;
-        response = await this.httpGet(`/confirm/order/${id}`, {});
+        let response = await this.httpGet(`/confirm/order/${id}`, {});
         return response;
     }
 

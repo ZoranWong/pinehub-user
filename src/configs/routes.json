@@ -13,5 +13,6 @@
 	"newEvents": "/pages/user/mall/newEvents/main",
 	"newEvents.createOrder": "/pages/user/mall/newEvents/createOrder/main",
 	"newEvents.coupons": "/pages/user/mall/newEvents/coupon/main",
-	"userCenter": "/pages/user/userCenter/main"
+	"userCenter": "/pages/user/userCenter/main",
+    "merchant.store": "/pages/merchant/main"
 }
