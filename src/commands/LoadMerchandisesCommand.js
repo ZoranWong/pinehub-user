@@ -1,15 +1,11 @@
 import Command from './Command';
 export default class LoadMerchandisesCommand extends Command {
-  constructor (app) {
-    super(app);
-  }
   // 获取到新品预定列表
   async handle () {
     try {
       let args = Array.prototype.slice.apply(arguments);
       let event = args.shift();
       let serviceMethod = args.shift();
-      console.log('预定商品列表', serviceMethod);
       let service = this.service('http.merchandises');
       let [merchandises, totalNum, currentPage, totalPage, limit] = await service[serviceMethod].apply(service, args);
       console.log(event, merchandises, totalNum, currentPage, totalPage, 'jjjj', serviceMethod);

@@ -83,11 +83,11 @@ export default class ShoppingCarts extends Model {
     _.extend(this.state, data);
   }
   async cache () {
-    return await this.services('mp.storage').set('shoppingCarts', this.state);
+    return await this.service('mp.storage').set('shoppingCarts', this.state);
   }
 
   async getCache () {
-    return await this.services('mp.storage').get('shoppingCarts');
+    return await this.service('mp.storage').get('shoppingCarts');
   }
 
   listeners () {

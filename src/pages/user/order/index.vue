@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
     <div id="userOrders" class = "body">
         <mp-title :title="title"></mp-title>
@@ -65,7 +66,7 @@ export default {
     methods: {
         loadOrders (status) {
             this.$store.dispatch('model.user.orders/reset');
-            this.$command('LOAD_USER_ORDERS', status);
+            this.$command('LOAD_USER_ORDERS', status, 1);
         },
         tabSelect (num) {
             this.cur = num;
@@ -86,7 +87,6 @@ export default {
             this.loadOrders(this.statusType);
         },
         async next () {
-            console.log('__________ next page  ________');
             await this.$command('LOAD_USER_ORDERS', this.statusType, this.currentPage + 1, this.pageCount);
         }
     },

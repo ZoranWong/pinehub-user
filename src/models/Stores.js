@@ -54,7 +54,6 @@ export default class Stores extends Model {
                         });
                     }
                 });
-                console.log('my location lat lat', this.state.location);
                 if (this.state.location.latitude && this.state.location.longitude) {
                     markers.push({
                         iconPath: '/static/images/position.png',

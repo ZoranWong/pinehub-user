@@ -11,7 +11,8 @@ export default class StoreService extends ApiService {
         let totalNum = pagination.total;
         let currentPage = pagination['current_page'];
         let totalPage = pagination['total_pages'];
-        return [categories, totalNum, currentPage, totalPage];
+        let pageCount = pagination['per_page'];
+        return [categories, totalNum, currentPage, totalPage, pageCount];
     }
 
     // 提交反馈数据
@@ -22,12 +23,12 @@ export default class StoreService extends ApiService {
             reason: reason,
             comment: comment
         });
-        return [response.data];
+        return response.data;
     }
 
     // 获取进货统计
-    async purchaseInfo (date) {
-        let response = await this.httpGet('store/purchase/statistics', {'date': date });
+    async purchaseOrders (date) {
+        let response = await this.httpGet('store/purchase/statistics', { 'date': date });
         let list = response.data;
         let pagination = response.meta.pagination;
         // 总数
@@ -36,14 +37,14 @@ export default class StoreService extends ApiService {
         let currentPage = pagination['current_page'];
         // 总页数
         let totalPage = pagination['total_pages'];
-        return [list, totalNum, currentPage, totalPage];
+        let pageCount = pagination['per_page'];
+        let totalAmount = response.meta['total_amount'];
+        return [list, totalNum, currentPage, totalPage, pageCount, totalAmount];
     }
 
 
     async scanCode (code) {
-        let response = await this.httpGet('store/code/order/merchandise/up', {
-            order_code: code
-        });
+        let response = await this.httpGet('store/code/order/merchandise/up', {order_code: code});
         let codeNum = response.data.code;
         let status = response.data.status;
         return [codeNum, status];
@@ -57,16 +58,18 @@ export default class StoreService extends ApiService {
     // 获取进货统计
     async salesInfo (selectTime) {
         let response = await this.httpGet('store/sales/statistics', { 'date': selectTime });
-        let [salesInfo, consumptionRanking, merchandiseSalesRanking, orderStatistics] = [response, response['consumption_ranking'], response['merchandise_sales_ranking'], response['order_statistics']];
-        return [salesInfo, consumptionRanking, merchandiseSalesRanking, orderStatistics];
+        return response.data;
     }
 
     // 获取店铺信息
     async storeInfo () {
         let response = await this.httpGet('store/info');
-        let sellAmountCharts = response['order_count_statistics'];
-        let buyNumCharts = response['order_payment_amount_statistics'];
-        return [response, sellAmountCharts, buyNumCharts];
+        let storeInfo = response.data;
+        let sellAmountCharts = storeInfo['order_count_statistics'];
+        let buyNumCharts = storeInfo['order_payment_amount_statistics'];
+        delete storeInfo['order_count_statistics'];
+        delete storeInfo['order_payment_amount_statistics'];
+        return [storeInfo, sellAmountCharts, buyNumCharts];
     }
 
     // 店铺商品

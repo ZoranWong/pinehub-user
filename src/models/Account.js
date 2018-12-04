@@ -6,7 +6,7 @@ export default class Account extends Model {
         this.resetAccountFromCache();
     }
     async resetAccountFromCache () {
-        let account = await this.services('mp.storage').get('account');
+        let account = await this.service('mp.storage').get('account');
         if (account) {
             _.extend(this.state, account);
         }
@@ -54,7 +54,9 @@ export default class Account extends Model {
             shop: {
                 id: null,
                 name: null,
-                balance: null
+                balance: null,
+                sellAmountECharts: [],
+                buyNumECharts: []
             },
             vipLevel: null,
             ticketNum: 0,
@@ -69,9 +71,9 @@ export default class Account extends Model {
         });
 
         this.addEventListener('setStoreInfo', async function ({storeInfo, sellAmountECharts, buyNumECharts}) {
-            _.extend(this.state.shop, storeInfo);
-            this.state.shop.sellAmountECharts = sellAmountECharts;
-            this.state.shop.buyNumECharts = buyNumECharts;
+            storeInfo.sellAmountECharts = sellAmountECharts;
+            storeInfo.buyNumECharts = buyNumECharts;
+            this.$application.$vm.set(this.state, 'shop', storeInfo);
         });
 
 
@@ -129,7 +131,7 @@ export default class Account extends Model {
                 this.state.nickname = userInfo['nickname'];
             }
             try {
-                console.log(this.services('mp.storage').set('account', this.state));
+                console.log(this.service('mp.storage').set('account', this.state));
             } catch (e) {
                 console.log(e);
             }

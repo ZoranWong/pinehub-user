@@ -2,7 +2,7 @@ import App from './index';
 import LoadUserOrdersCommand from './commands/LoadUserOrdersCommand';
 import Orders from '@/models/Orders';
 
-import OrderStatusUpdateCommand from '@/commands/OrderStatusUpdateCommand';
+import OrderStatusUpdateCommand from './commands/OrderStatusUpdateCommand';
 import Vue from 'vue';
 
 const application = wx.$app;

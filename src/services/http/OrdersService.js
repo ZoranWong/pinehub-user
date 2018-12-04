@@ -62,9 +62,9 @@ export default class OrdersService extends ApiService {
     }
 
     // 店铺-自提订单
-    async pickedUpOrders (pickDate, page, limit = 15) {
+    async pickedUpOrders (date, page, limit = 15) {
         let response = await this.httpGet(`store/buffet/orders`, {
-            pick_date: pickDate,
+            date: date,
             page: page,
             limit: limit
         });
@@ -80,7 +80,7 @@ export default class OrdersService extends ApiService {
     // 获取订单列表
     async sendOrders (sendDate, batch, page, limit = 15) {
         let response = await this.httpGet(`/store/send/orders`, {
-            send_date: sendDate,
+            date: sendDate,
             batch: batch,
             page: page,
             limit: limit

@@ -46,11 +46,11 @@
                     <i class="my_store_menu_ico ico_1"></i>
                     <em>进货</em>
                 </li>
-                <li @click="jump('merchant-storeDistributeOrder')">
+                <li @click="jump('merchant.deliveryOrders')">
                     <i class="my_store_menu_ico ico_2"></i>
                     <em>需配送订单</em>
                 </li>
-                <li @click="jump('merchant-storeStatus')">
+                <li @click="jump('merchant.statistics')">
                     <i class="my_store_menu_ico ico_3"></i>
                     <em>店铺状态</em>
                 </li>
@@ -58,11 +58,11 @@
                     <i class="my_store_menu_ico ico_4"></i>
                     <em>物流进货扫码</em>
                 </li>
-                <li @click="jump('merchant-storePickedUpOrder')">
+                <li @click="jump('merchant.pickUpOrders')">
                     <i class="my_store_menu_ico ico_5"></i>
                     <em>自提订单</em>
                 </li>
-                <li @click="jump('merchant-storeOrder')">
+                <li @click="jump('merchant.orderSummary')">
                     <i class="my_store_menu_ico ico_6"></i>
                     <em>订单汇总</em>
                 </li>
@@ -92,11 +92,11 @@
             },
             wxOptionsForSell () {
                 let shop = this.$store.getters['model.account/shopInfo'];
-                return shop ? shop['sellAmountECharts'] : [];
+                return shop && shop['sellAmountECharts'] ? shop['sellAmountECharts'] : [];
             },
             wxOptionsForBuy () {
                 let shop = this.$store.getters['model.account/shopInfo'];
-                return shop ? shop['buyNumECharts'] : [];
+                return shop && shop['buyNumECharts'] ? shop['buyNumECharts'] : [];
             },
             shopId () {
                 return this.$store.getters['model.account/shopInfo']['id'];
@@ -104,7 +104,7 @@
         },
         methods: {
             jump (router) {
-                this.$command('router', router, 'push');
+                this.$command('REDIRECT_TO', router, 'push');
             },
             scanCode () {
                 this.$command('scanCommand', 'myfeedbacksuccess');

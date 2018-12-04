@@ -4,7 +4,7 @@ import Vue from 'vue';
 const application = wx.$app;
 application.setComponent(App).run(function () {
     this.registerCommand(LoadStoreInfoCommand.commandName(), LoadStoreInfoCommand);
-    this.route = 'myStore';
+    this.route = 'merchant.store';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
     this.currentPage.$mount();

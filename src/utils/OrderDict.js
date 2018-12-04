@@ -28,7 +28,7 @@ const SITE_USER_ORDER = 2;
 
 const SHOP_PURCHASE_ORDER = 3;
 
-export default {
+export {
     CANCEL,
     WAIT,
     MAKE_SURE,
