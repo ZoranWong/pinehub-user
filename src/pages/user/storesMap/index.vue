@@ -67,7 +67,7 @@ export default {
 		},
 		center() {
 			console.log('CENTER POINT', this.$store.getters['model.stores/centerPoint']);
-			return this.$store.getters['model.nearbyStores/centerPoint'];
+			return this.$store.getters['model.stores/centerPoint'];
 		},
 		storeInfo() {
 			return this.$store.getters['model.stores/selectStore'];

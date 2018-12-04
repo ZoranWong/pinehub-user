@@ -1,27 +1,35 @@
 import Command from './Command';
 export default class CreateOrderCommand extends Command {
-  async handle (params, resetCart = null) {
-    try {
-      let weChatPayParams = await this.service('http.orders').createOrder(params);
-      if (weChatPayParams) {
-        let timeStamp = weChatPayParams['sdk_config']['timestamp']
-        let nonceStr = weChatPayParams['sdk_config']['nonceStr']
-        let packageInfo = weChatPayParams['sdk_config']['package']
-        let paySign = weChatPayParams['sdk_config']['paySign']
-        await this.payOrder(timeStamp, nonceStr, packageInfo, paySign);
-      }
-    } catch (e) {
-      console.log('抛出异常', e);
-      return false;
+    async createOrderSign (params, resetCart = null) {
+        try {
+            let weChatPayParams = await this.service('http.orders').createPaymentOrder(params);
+            if (weChatPayParams) {
+                let timeStamp = weChatPayParams['sdk_config']['timestamp']
+                let nonceStr = weChatPayParams['sdk_config']['nonceStr']
+                let packageInfo = weChatPayParams['sdk_config']['package']
+                let paySign = weChatPayParams['sdk_config']['paySign']
+                let result = await this.payOrder(timeStamp, nonceStr, packageInfo, paySign);
+                return result;
+            }
+        } catch (e) {
+            console.log(e);
+            let response = e['response'];
+            if (response && response['data']) {
+                if (response['data']['code'] === 20001) {
+                    this.popup.toast('参数错误', 'warn', 2000);
+                }
+            }
+            return false;
+        }
     }
-  }
 
-  // 重新支付订单
-  async payOrder (timeStamp, nonceStr, packageInfo, paySign) {
-    await this.service('http.orders').onloadWechatPay(timeStamp, nonceStr, packageInfo, paySign);
-  }
+    // 重新支付订单
+    async payOrder (timeStamp, nonceStr, packageInfo, paySign) {
+        let result = await this.mp.payment.pay(timeStamp, nonceStr, packageInfo, paySign);
+        return result;
+    }
 
-  static commandName () {
-    return 'CREATE_ORDER';
-  }
+    static commandName () {
+        return 'CREATE_ORDER';
+    }
 }

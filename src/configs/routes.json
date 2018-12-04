@@ -2,5 +2,16 @@
 	"index": "/pages/user/index/main",
 	"storeMarket": "/pages/user/mall/storeMarket/main",
 	"storesMap":   "/pages/user/storesMap/main",
-	"bookingMall": "/pages/user/mall/bookingMall/main"
+	"bookingMall": "/pages/user/mall/bookingMall/main",
+	"storeMarket.createOrder": "/pages/user/mall/storeMarket/createOrder/main",
+	"storeMarket.coupons": "/pages/user/mall/storeMarket/coupon/main",
+	"bookingMall.createSendOrder": "/pages/user/mall/bookingMall/createSendOrder/main",
+	"bookingMall.createPickOrder": "/pages/user/mall/bookingMall/createPickOrder/main",
+	"bookingMall.coupons": "/pages/user/mall/bookingMall/coupon/main",
+	"payment.success": "/pages/user/mall/paySuccess/main",
+	"user.orders": "/pages/user/order/main",
+	"newEvents": "/pages/user/mall/newEvents/main",
+	"newEvents.createOrder": "/pages/user/mall/newEvents/createOrder/main",
+	"newEvents.coupons": "/pages/user/mall/newEvents/coupon/main",
+	"userCenter": "/pages/user/userCenter/main"
 }

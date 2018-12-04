@@ -1,8 +1,8 @@
 <template>
     <div class = "body">
         <mp-title :title = "title"></mp-title>
-        <merchandise-list :model = "model" @show-cart = "hdlShowCart" :next = "next" :height = "screenHeight" :list = "merchandises" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" categoryId = "activity"></merchandise-list>
-        <cart :model = "model" v-if = "isShowCart" @hdlShowPopup = "hdlShowPopup" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :clearShoppingCart = "clearShoppingCart"></cart>
+        <merchandises :model = "model" @show-cart = "hdlShowCart" :next = "next" :height = "screenHeight" :list = "merchandises" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" categoryId = "activity"></merchandises>
+        <cart :model = "model" v-if = "isShowCart" @hdlShowPopup = "hdlShowPopup" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart" :clearShoppingCarts = "clearShoppingCarts"></cart>
         <pop-location v-if = "isShow" @hdlHidePopup = "hdlHidePopup" :activity-id = "activityId">
         </pop-location>
         <div id = "shopping_cart_height" v-if = "isShowCart"></div>
@@ -11,7 +11,7 @@
 
 <script>
 import MpTitle from '@/components/MpTitle'
-import MerchandiseList from './MerchandiseList'
+import Merchandises from './Merchandises';
 import Cart from '@/components/Cart'
 import PopupLocation from './PopupLocation'
 export default {
@@ -22,25 +22,25 @@ export default {
             activityId: null,
             isShowCart: true,
             screenHeight: null,
-            model: 'model.activity.shoppingCarts'
+            model: 'model.newEvents.shoppingCarts'
         }
     },
     components: {
         'mp-title': MpTitle,
-        'merchandise-list': MerchandiseList,
+        'merchandises': Merchandises,
         'cart': Cart,
         'pop-location': PopupLocation
     },
     computed: {
         merchandises () {
-            return this.$store.getters['model.activity.merchandises/list']
+            return this.$store.getters['model.newEvents.merchandises/list']
         },
         currentPage () {
-            let page = this.$store.getters['model.activity.merchandises/currentPage'];
+            let page = this.$store.getters['model.newEvents.merchandises/currentPage'];
             return page
         },
         isLoadedAll () {
-            return this.$store.getters['model.activity.merchandises/isLoadedAll'];
+            return this.$store.getters['model.newEvents.merchandises/isLoadedAll'];
         }
     },
     watch: {},
@@ -54,9 +54,9 @@ export default {
         async hdlShowPopup () {
             let stores = await this.mp.storage.get('activityReceiveStores');
             if (!stores || stores.length === 0) {
-                this.mp.router.push('nearbyStores', {
+                this.mp.router.push('storesMap', {
                     query: {
-                        submitRoute: 'activitySubmitOrder',
+                        next_route: 'newEvents.createOrder',
                         activity_id: this.activityId
                     }
                 });
@@ -77,14 +77,14 @@ export default {
             await this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', this.activityId, page);
         },
         addCart (merchandiseId, id = null) {
-            let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) + 1;
+            let count = this.$store.getters['model.newEvents.shoppingCarts/quality'](merchandiseId) + 1;
             this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
         },
         reduceCart (merchandiseId, id = null) {
-            let count = this.$store.getters['model.activity.shoppingCarts/quality'](merchandiseId) - 1;
+            let count = this.$store.getters['model.newEvents.shoppingCarts/quality'](merchandiseId) - 1;
             this.$command('ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE', this.activityId, merchandiseId, id, count);
         },
-        clearShoppingCart () {
+        clearShoppingCarts () {
             try {
                 this.$command('ACTIVITY_SHOPPINGCART_CLEAR_MERCHANDISES', this.activityId);
             } catch (e) {

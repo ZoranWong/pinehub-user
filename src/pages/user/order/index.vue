@@ -1,28 +1,27 @@
 <template>
-    <div id="myorder">
+    <div id="userOrders" class = "body">
         <mp-title :title="title"></mp-title>
-
         <div id="tab_select">
             <ul>
                 <li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur === index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
             </ul>
         </div>
         <div id="tab_content">
-            <my-order :loadOrders="loadOrders" :status="statusType" :orders="orders" :next="next"></my-order>
+            <orders :screenHeight = "screenHeight" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
         </div>
-        <div id="footNav_height"></div>
+        <div id="footNavHeight"></div>
         <footer-nav :navName="navName"></footer-nav>
     </div>
 </template>
 
 <script>
-import MyOrder from './MyOrder';
+import UserOrders from './UserOrders';
 import MpTitle from '@/components/MpTitle';
 import FooterNav from '@/components/FooterNav';
 export default {
     components: {
         'mp-title': MpTitle,
-        'my-order': MyOrder,
+        'orders': UserOrders,
         'footer-nav': FooterNav
     },
     data () {
@@ -37,7 +36,8 @@ export default {
                 name: '已完成'
             }],
             cur: 0,
-            statusType: 'all'
+            statusType: 'all',
+            screenHeight: 0
         };
     },
     watch: {
@@ -52,19 +52,20 @@ export default {
             return Math.floor((100 / num) * 100) / 100 + '%';
         },
         orders () {
-            return this.$store.getters['model.my.orders/list'];
+            return this.$store.getters['model.user.orders/list'];
         },
         totalNum () {
-            return this.$store.getters['model.my.orders/totalNum'];
+            return this.$store.getters['model.user.orders/totalNum'];
         },
         currentPage () {
-            let page = this.$store.getters['model.my.orders/currentPage'];
+            let page = this.$store.getters['model.user.orders/currentPage'];
             return page;
         }
     },
     methods: {
         loadOrders (status) {
-            this.$command('my-orders', status);
+            this.$store.dispatch('model.user.orders/reset');
+            this.$command('LOAD_USER_ORDERS', status);
         },
         tabSelect (num) {
             this.cur = num;
@@ -85,11 +86,13 @@ export default {
             this.loadOrders(this.statusType);
         },
         async next () {
-            await this.$command('my-orders', this.statusType, this.currentPage + 1, this.pageCount);
+            console.log('__________ next page  ________');
+            await this.$command('LOAD_USER_ORDERS', this.statusType, this.currentPage + 1, this.pageCount);
         }
     },
-    mounted () {},
-    created () {}
+    created () {
+        this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth * wx.getSystemInfoSync().windowHeight);
+    }
 }
 </script>
 
@@ -99,11 +102,11 @@ page {
     background: #fafafa;
 }
 
-#footNav_height {
+#footNavHeight {
     height: 109rpx;
 }
 
-#myorder {
+#userOrders {
     position: relative;
 }
 

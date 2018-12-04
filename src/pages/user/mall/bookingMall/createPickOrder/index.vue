@@ -3,7 +3,7 @@
         <mp-title :title="title"></mp-title>
         <!-- 收货人组件 -->
         <consignee ></consignee>
-        <ul class="Distribution-details" >
+        <ul class="order-address" >
             <li class="li-item bgff">
                 自提地址
                 <p class="details-item">
@@ -61,7 +61,7 @@ export default{
             return this.$store.getters['model.bookingMall.shoppingCarts/cardId'];
         },
         storeInfo () {
-            return this.$store.getters['model.nearbyStores/store'](parseInt(this.$route.query['store_id']));
+            return this.$store.getters['model.stores/store'](parseInt(this.$route.query['store_id']));
         }
     },
     methods: {
@@ -73,30 +73,28 @@ export default{
             this.storeInfo.address,
             this.usedTicketCode,
             this.usedCardId,
-            this.storeInfo.id
-        );
+            this.storeInfo.id);
+        },
+        redirectToTicket () {
+            this.mp.router.push('bookingMall.coupons', {
+                query: {
+                    store_id: parseInt(this.$route.query['store_id']),
+                    back_to: 'bookingMall.createPickOrder'
+                }
+            });
+        },
+        addCart (merchandiseId, id) {
+            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+            this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        },
+        reduceCart (merchandiseId, id) {
+            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+            this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        }
     },
-    redirectToTicket () {
-        console.log('activityCoupon');
-        this.mp.router.push('bookingMallCoupon', {
-            query: {
-                store_id: parseInt(this.$route.query['store_id']),
-                back_to: 'orderSelf'
-            }
-        });
-    },
-    addCart (merchandiseId, id) {
-        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
-        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
-    },
-    reduceCart (merchandiseId, id) {
-        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
-        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+    mounted () {
+        this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
-},
-mounted () {
-    this.$command('LOAD_BOOKING_MALL_TICKETS');
-}
 }
 </script>
 <style scoped>
@@ -120,7 +118,7 @@ mounted () {
     vertical-align: middle;
 
 }
-.Distribution-details{
+.order-address{
     margin-bottom: 20rpx;
     box-shadow: 0rpx 8rpx 36rpx rgba(204,202,202,0.3);
     /*border:1rpx solid black;*/

@@ -41,7 +41,7 @@
 		</div>
 		<div id="mystore_menu">
 			<ul>
-				<li @click="jump('myOrder')">
+				<li @click="jump('user.orders')">
 					<img src="../../../../static/images/icon/my_ico_menu1.png" />
 					<span>个人订单</span>
 					<i></i>
@@ -53,7 +53,7 @@
 					<i></i>
 					<em>邀请好友</em>
 				</li>
-				<li @click="jump('myFeedback')">
+				<li @click="jump('feedback')">
 					<img src="../../../../static/images/icon/my_ico_menu3.png" />
 					<span>意见反馈</span>
 					<i></i>
@@ -110,7 +110,7 @@
 		},
 		methods: {
 			jump(router) {
-				this.$command('router', router, 'push');
+				this.$command('REDIRECT_TO', router, 'push');
 			},
 			connectKf() {
 				wx.makePhoneCall({

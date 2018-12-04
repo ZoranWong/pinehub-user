@@ -8,7 +8,7 @@ export default class ActivityLoadingMerchandisesCommand extends Command {
         try {
           let [merchandises, totalNum, currentPage, totalPage, limit] = await this.service('http.merchandises').activityMerchandises(activityId, page);
           console.log('新品列表', merchandises, totalNum, currentPage, totalPage, limit);
-          this.$store.dispatch('model.activity.merchandises/setList', {
+          this.$store.dispatch('model.newEvents.merchandises/setList', {
             list: merchandises,
             totalNum: totalNum,
             currentPage: currentPage,

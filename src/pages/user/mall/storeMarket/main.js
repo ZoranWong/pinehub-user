@@ -15,7 +15,6 @@ const application = wx.$app;
 application.setComponent(App).run(function () {
     this.registerModel('model.storeMarket.categories', Categories);
     this.registerModel('model.storeMarket.merchandises', Merchandises);
-    this.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
 
     this.registerCommand(GetNearestStoreCommand.commandName(), GetNearestStoreCommand);
     this.registerCommand(LoadStoreCategoriesCommand.commandName(), LoadStoreCategoriesCommand);

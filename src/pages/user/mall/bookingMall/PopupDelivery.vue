@@ -36,14 +36,14 @@ export default {
             this.$emit('hdlHidePopup')
         },
         redirectToNearbyStores () {
-            this.$command('router', 'nearbyStores', 'push', {
+            this.$command('REDIRECT_TO', 'storesMap', 'push', {
                 query: {
-                    submitRoute: 'orderSelf'
+                    next_route: 'bookingMall.createPickOrder'
                 }
             });
         },
         sendToHand () {
-            this.$command('router', 'shopSubmitOrder', 'push');
+            this.$command('REDIRECT_TO', 'bookingMall.createSendOrder', 'push');
         }
     }
 

@@ -33,7 +33,7 @@ export default class ShoppingCartService extends ApiService {
 
     // 新品预定获取购物车内全部产品
     async activityShoppingCartLoadMerchandises (id, page) {
-        let route = `activity/${id}/shoppingcart/merchandises`;
+        let route = `new/events/${id}/shoppingcart/merchandises`;
         return this.loadShoppingCart(route, page);
     }
 
@@ -53,7 +53,7 @@ export default class ShoppingCartService extends ApiService {
             merchandise_id: merchandiseId,
             quality: quality
         };
-        let response = await this.httpPost(`/activity/${activityId}/shoppingcart/merchandise `, merchandise);
+        let response = await this.httpPost(`/new/events/${activityId}/shoppingcart/merchandise `, merchandise);
         return response.data;
     }
 
@@ -63,13 +63,13 @@ export default class ShoppingCartService extends ApiService {
             merchandise_id: merchandiseId,
             quality: quality
         };
-        let response = await this.httpPut(`/activity/${activityId}/shoppingcart/${id}/merchandise `, merchandise);
+        let response = await this.httpPut(`/new/events/${activityId}/shoppingcart/${id}/merchandise `, merchandise);
         return response.data;
     }
 
     // 新品预定清空购物车
     async activityShoppingCartClearMerchandises (acitivityId) {
-        let route = `/clear/activity/${acitivityId}/shoppingcart/`;
+        let route = `/clear/new/events/${acitivityId}/shoppingcart/`;
         return this.clearShoppingCart(route);
     }
 

@@ -66,11 +66,9 @@
 				this.$command('distribute-orders', startime, endtime);
 			},
 			getSelectDate(e) {
-				//				console.log(e.target.value);
 				this.selectDate = (new Date(e.target.value)).format('yyyy-MM-dd');
 				this.startTime = this.selectDate + " " + this.begHour + ":00"
 				this.endTime = this.selectDate + " " + this.endHour + ":00"
-				console.log('选择日期--------------------------', this.startTime, this.endTime);
 				this.loadOrders(this.startTime, this.endTime);
 			},
 			printOrders() {
@@ -125,7 +123,7 @@
 		height: 100%;
 		background: #fafafa;
 	}
-	
+
 	#window_fixed {
 		position: fixed;
 		left: 0;
@@ -136,23 +134,23 @@
 		height: 140rpx;
 		background: #FFFFFF;
 	}
-	
+
 	#myorder_select {
 		margin: 20rpx 20rpx 0;
 	}
-	
+
 	.myorder_select_info {
 		overflow: hidden;
 		margin-bottom: 10rpx;
 	}
-	
+
 	.myorder_select_info em {
 		display: inline-block;
 		float: left;
 		font-size: 32rpx;
 		font-weight: normal;
 	}
-	
+
 	.input {
 		float: left;
 		padding: 0 15rpx;
@@ -161,13 +159,13 @@
 		border-radius: 10rpx;
 		font-size: 28rpx;
 	}
-	
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
 		height: 74rpx;
 	}
-	
+
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -177,28 +175,28 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-	
+
 	#tab_content {
 		padding-top: 140rpx;
 	}
-	
+
 	.tab_content_item {}
-	
+
 	.tab_content_now {
 		display: block;
 	}
-	
+
 	#controlbar {
 		/* background: #000000; */
 		background: url(../../../../static/images/icon/my_control_bar.png) no-repeat bottom center;
@@ -209,7 +207,7 @@
 		bottom: 0;
 		left: 0;
 	}
-	
+
 	#controlbar_select {
 		width: 150rpx;
 		float: left;
@@ -218,7 +216,7 @@
 		text-align: center;
 		margin-top: 20rpx;
 	}
-	
+
 	#controlbar_cancel {
 		width: 150rpx;
 		float: left;
@@ -228,7 +226,7 @@
 		margin-top: 20rpx;
 		/* display: none; */
 	}
-	
+
 	#select_all_order {
 		width: 150rpx;
 		float: left;
@@ -238,7 +236,7 @@
 		margin-top: 20rpx;
 		/* display: none; */
 	}
-	
+
 	#print_order {
 		background: url(../../../../static/images/icon/my_print.png) no-repeat center center;
 		background-size: 100%;
@@ -248,7 +246,7 @@
 		top: 12rpx;
 		right: 31rpx;
 	}
-	
+
 	.goodstype {
 		font-size: 32rpx;
 		padding-left: 112rpx;

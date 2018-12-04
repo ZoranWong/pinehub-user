@@ -25,12 +25,8 @@ export default {
 
 	},
 	methods: {
-		jump(router) {
-			this.$command('router', router, 'replace');
-		},
-
 		submit() {
-			this.jump('myOrder');
+			this.$command('REDIRECT_TO', 'user.orders', 'replace');
 		}
 	},
 	created() {

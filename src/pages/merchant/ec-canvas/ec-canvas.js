@@ -1,8 +1,6 @@
 import WxCanvas from './wx-canvas';
 import * as echarts from './echarts';
-
 let ctx;
-
 Component({
 	properties: {
 		canvasId: {

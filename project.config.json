@@ -5,7 +5,7 @@
 	},
 	"setting": {
 		"urlCheck": true,
-		"es6": false,
+		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
@@ -13,7 +13,7 @@
 		"uglifyFileName": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.0",
+	"libVersion": "2.4.1",
 	"appid": "wx67127c10ce9c598c",
 	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"miniprogramRoot": "dist/",

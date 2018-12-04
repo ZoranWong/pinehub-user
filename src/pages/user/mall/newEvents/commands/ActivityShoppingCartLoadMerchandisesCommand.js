@@ -3,7 +3,7 @@ export default class ActivityShoppingCartLoadMerchandisesCommand extends Command
 
 	constructor(app) {
 		super(app);
-		this.model = 'model.activity.shoppingCarts';
+		this.model = 'model.newEvents.shoppingCarts';
 	}
 	async handle(activityId, page = 1) {
 		try {

@@ -17,6 +17,10 @@ export default class PaymentService extends Service {
                     resolve(false);
                 },
                 'complete': function (res) {
+                    if (res.errMsg === 'requestPayment:fail cancel') {
+                        console.log('requestPayment:fail cancel');
+                        resolve(false);
+                    }
                     console.log('支付结束', res);
                 }
             })

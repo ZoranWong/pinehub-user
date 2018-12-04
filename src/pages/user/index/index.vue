@@ -54,7 +54,7 @@
 				</dd>
 				<dt>预定商城</dt>
 			</dl>
-			<div @click="redirectTo('activity', {query: {activity_id: activityId}})" class="booking">
+			<div @click="redirectTo('newEvents', {query: {activity_id: activityId}})" class="booking">
 				<img src="../../../../static/images/icon/booking.png" />
 			</div>
 		</div>

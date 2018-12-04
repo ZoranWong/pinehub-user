@@ -1,10 +1,10 @@
 <template>
-    <scroll-view class="foods-wrapper" :lower-threshold = '5' :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower">
-        <div class="foods-item clearfix bgff" v-for="(item, index) in list" :key="index">
-            <div class="foods-item-top ">
+    <scroll-view class="merchandises-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower">
+        <div class="merchandises-item clearfix bgff" v-for="(item, index) in list" :key="index">
+            <div class="merchandises-item-top">
                 <img mode = "widthFix" class="merchandises-pic" :src="item.thumbImage" :style="{ width: widthPic, height: heightPic }">
             </div>
-            <div class="foods-item-bottom">
+            <div class="merchandises-item-bottom">
                 <h4 class="merchandises-name">{{item.name}}</h4>
                 <span class="tag color00" v-if="item.tags.length > 0" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
                 <p class="describe color75">{{item.describe}}</p>
@@ -53,7 +53,7 @@ export default {
             type: String
         },
         heightPic: {
-            default: '100%',
+            default: 'auto',
             type: String
         },
         model: {
@@ -88,23 +88,18 @@ export default {
         reduceCart (merchandiseId, id) {
             this.reduceMerchandiseToCart(merchandiseId, id);
         }
-    },
-    watch: {
-          width: function (val) {
-
-          }
-      }
-  }
+    }
+}
 </script>
 
 <style scoped>
-  .foods-wrapper {
+.merchandises-wrapper {
     padding: 20rpx;
     box-sizing: border-box;
     overflow-y: auto;
-  }
+}
 
-  .foods-item {
+.merchandises-item {
     width: 100%;
     border-radius: 10rpx;
     box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.6);
@@ -112,27 +107,27 @@ export default {
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-  }
+}
 
-  .foods-item-top {
+.merchandises-item-top {
     width: 100%;
     height: 330rpx;
     overflow-y: hidden;
-  }
+}
 
-  .foods-item-bottom {
+.merchandises-item-bottom {
     width: 100%;
     padding: 20rpx 20rpx 0rpx;
     box-sizing: border-box;
-  }
+}
 
-  .foods-item-bottom h4 {
+.merchandises-item-bottom h4 {
     font-size: 32rpx;
     font-weight: 400;
     margin-bottom: 12rpx;
-  }
+}
 
-  .tag {
+.tag {
     padding: 8rpx 15rpx;
     line-height: 36rpx;
     letter-spacing: 4rpx;
@@ -144,36 +139,39 @@ export default {
     display: inline-block;
     margin-right: 20rpx;
     margin-bottom: 12rpx;
-  }
+}
 
-  .describe {
+.describe {
     font-size: 22rpx;
-  }
+}
 
-  .content {
+.content {
     width: 100%;
     margin-top: 20rpx;
     height: 100rpx;
     position: relative;
-  }
+}
 
-  .sell-price {
+.sell-price {
     font-size: 36rpx;
     font-weight: 400;
     position: absolute;
     bottom: 40rpx;
     left: 0rpx;
-  }
+}
 
-  .sell-price span {
+.sell-price span {
     font-size: 28rpx;
     font-weight: 400;
-  }
+}
 
-  .cartcontrol-warpper {
+.cartcontrol-warpper {
     margin-top: 30rpx;
     position: absolute;
     bottom: 40rpx;
     right: 0rpx;
-  }
+}
+image {
+    display: block;
+}
 </style>

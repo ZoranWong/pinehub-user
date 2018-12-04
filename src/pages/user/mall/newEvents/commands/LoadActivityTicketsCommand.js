@@ -3,7 +3,7 @@ export default class LoadActivityTicketsCommand extends Command {
   async handle (activityId, page = 1, status = 'available') {
     try {
       let [list, totalNum, currentPage, totalPage, limit] = await this.service('http.tickets').activityTickets(status, activityId, page);
-      this.store().dispatch('model.activity.tickets/setList', {
+      this.store().dispatch('model.newEvents.tickets/setList', {
         list: list,
         totalNum: totalNum,
         currentPage: currentPage,

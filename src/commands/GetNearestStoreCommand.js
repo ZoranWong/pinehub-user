@@ -10,7 +10,7 @@ export default class GetNearestStoreCommand extends Command {
 			if(typeof storeId === 'undefined' || storeId === null) {
 				wx.showLoading({ title: '定位中······' });
 				let [lng, lat] = await this.map.getLocation();
-				store = await this.http.store.nearestStore(lng, lat);
+				store = await this.http.store.showLoading(false).nearestStore(lng, lat);
 				wx.hideLoading();
 			}else{
 				store = this.$store.getters['model.stores/store'](storeId);

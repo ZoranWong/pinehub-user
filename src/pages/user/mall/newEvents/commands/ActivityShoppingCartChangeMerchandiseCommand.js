@@ -2,7 +2,7 @@ import Command from '@/commands/ShoppingCartCommand';
 export default class ActivityShoppingCartChangeMerchandiseCommand extends Command {
   constructor (app) {
     super(app);
-    this.model = 'model.activity.shoppingCarts';
+    this.model = 'model.newEvents.shoppingCarts';
   }
   async handle (activityId, merchandiseId, id = null, quality = 1) {
     try {

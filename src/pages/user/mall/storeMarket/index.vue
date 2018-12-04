@@ -8,7 +8,7 @@
 			<merchandises :model = "model" :width = "listwidth" :next = "next" :list = "merchandises" :categoryId = "'today_order_merchandises_' + categoryId" :addMerchandiseToCart = "addCart" :reduceMerchandiseToCart = "reduceCart">
 			</merchandises>
 		</div>
-		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
+		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCart"></cart>
 		<popup v-if = "isShow" @hdlHidePopup = "hdlHidePopup" :store = "nearestStore"></popup>
 	</div>
 </template>
@@ -62,8 +62,7 @@
 			}
 		},
 		watch: {
-			categoryId(n, o) {
-				console.log('categoryId', n);
+			categoryId (n, o) {
 				if(n && n !== o) {
 					try {
 						this.reloadMerchandises();
@@ -74,8 +73,7 @@
 			},
 			nearestStore: {
 				deep: true,
-				handler(store) {
-					console.log('======= store ======== ', store);
+				handler (store) {
 					if(store) {
 						this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', store['id']);
 					}
@@ -83,7 +81,7 @@
 			}
 		},
 		methods: {
-			reloadMerchandises() {
+			reloadMerchandises () {
 				this.$command('CLEAR_MERCHANDISE', 'model.storeMarket.merchandises');
 				this.loadMerchandises();
 			},
@@ -92,16 +90,16 @@
 	                'next_route': 'storeMarket'
 	            }});
 	        },
-			jump(router) {
+			jump (router) {
 				this.$command('REDIRECT_TO', router, 'push');
 			},
-			hdlShowCart() {
+			hdlShowCart () {
 				this.isShowCart = true;
 			},
-			hdlShowPopup() {
-				this.mp.router.push('todaySubmitOrder');
+			hdlShowPopup () {
+				this.mp.router.push('storeMarket.createOrder');
 			},
-			async hdlHidePopup(store) {
+			async hdlHidePopup (store) {
 				this.isShow = false;
 				await this.loadCategories(this.nearestStore.id);
 				if(!this.hasShoppingCarts) {
@@ -111,38 +109,39 @@
 					categoryIndex: 0
 				});
 			},
-			loadMerchandises(page = 1) {
-				this.$command('LOAD_MERCHANDISE_LIST',
+			loadMerchandises (page = 1) {
+				this.$command(
+					'LOAD_MERCHANDISE_LIST',
 					'model.storeMarket.merchandises/setList',
 					'storeMerchandises',
 					this.nearestStore['id'],
 					this.categoryId,
-					page);
+					page
+				);
 			},
-			categoryChange(index) {
-				this.scrollTop = 0;
-				console.log('categoryIndex = ', index);
+			categoryChange (index) {
 				this.$store.dispatch('model.storeMarket.merchandises/setCurrentCategory', {
 					categoryIndex: index
 				});
 			},
-			next() {
+			next () {
 				if(this.isLoadedAll) {
 					this.loadMerchandises(this.currentPage + 1);
 				}
 			},
-			loadCartMerchandises(page = 1) {
+			loadCartMerchandises (page = 1) {
+				console.log('load cart merchandises');
 				this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', this.nearestStore.id, page);
 			},
-			addCart(merchandiseId, id = null) {
+			addCart (merchandiseId, id = null) {
 				let count = this.$store.getters['model.storeMarket.shoppingCarts/quality'](merchandiseId) + 1;
 				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', this.nearestStore['id'], merchandiseId, id, count);
 			},
-			reduceCart(merchandiseId, id = null) {
+			reduceCart (merchandiseId, id = null) {
 				let count = this.$store.getters['model.storeMarket.shoppingCarts/quality'](merchandiseId) - 1;
 				this.$command('STORE_SHOPPINGCART_CHANGE_MERCHANDISE', this.nearestStore['id'], merchandiseId, id, count);
 			},
-			clearShoppingCart() {
+			clearShoppingCart () {
 				try {
 					this.$command('STORE_SHOPPINGCART_CLEAR_MERCHANDISES', this.nearestStore['id']);
 				} catch(e) {
@@ -150,11 +149,12 @@
 					this.popup.toast('购物车清空失败', 'warn', 2000);
 				}
 			},
-			async loadCategories(storeId) {
+			async loadCategories (storeId) {
 				await this.$command('LOAD_STORE_CATEGORIES', storeId);
 			},
 			async location(storeId) {
 				try {
+					console.log('GET_NEAREST_STORE');
 					await this.$command('GET_NEAREST_STORE', storeId);
 					if (!storeId) {
 						this.isShow = true;
@@ -165,18 +165,21 @@
 					console.log('抛出异常', e);
 					return false;
 				}
+			},
+			initData () {
+				this.$store.dispatch('model.storeMarket.merchandises/setCurrentCategory', {categoryIndex: -1});
+				let storeId = typeof this.$route.query['store_id'] === 'undefined' ?
+				 null : parseInt(this.$route.query['store_id']);
+				this.location(storeId);
+				this.categoryChange(0);
+				this.$store.dispatch('model.storeMarket.shoppingCarts/reset', {});
 			}
-		},
-		mounted () {
-			this.$store.dispatch('model.storeMarket.merchandises/setCurrentCategory', {categoryIndex: -1});
-			let storeId = typeof this.$route.query['store_id'] === 'undefined' ?
-			 null : parseInt(this.$route.query['store_id']);
-			this.location(storeId);
-			this.categoryChange(0);
-
 		},
 		destroyed () {
 			this.$command('CLEAR_MERCHANDISE', 'model.storeMarket.merchandises');
+		},
+		onShow () {
+			this.initData();
 		}
 	}
 </script>

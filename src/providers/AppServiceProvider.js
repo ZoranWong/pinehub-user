@@ -1,16 +1,17 @@
 /* eslint constructor-super: "error" */
 /* eslint-env es6 */
 import ServiceProvider from './ServiceProvider';
-import MpAuthService from '../services/mp/AuthService';
-import SessionService from '../services/cache/SessionService';
-import Base64Service from '../services/encrypt/Base64Service';
-import MD5Service from '../services/encrypt/MD5Service';
-import JsonService from '../services/encrypt/JsonService';
-import HrefService from '../services/mp/HrefService';
-import ScanCodeService from '../services/mp/ScanCodeService';
-import PopupService from '../services/mp/PopupService';
-import TencentMapService from '../services/mp/TencentMapService';
-import StorageService from '../services/mp/StorageService';
+import MpAuthService from '@/services/mp/AuthService';
+import SessionService from '@/services/cache/SessionService';
+import Base64Service from '@/services/encrypt/Base64Service';
+import MD5Service from '@/services/encrypt/MD5Service';
+import JsonService from '@/services/encrypt/JsonService';
+import HrefService from '@/services/mp/HrefService';
+import ScanCodeService from '@/services/mp/ScanCodeService';
+import PopupService from '@/services/mp/PopupService';
+import TencentMapService from '@/services/mp/TencentMapService';
+import StorageService from '@/services/mp/StorageService';
+import PaymentService from '@/services/mp/PaymentService';
 
 import _ from 'underscore';
 export default class AppServiceProvider extends ServiceProvider {
@@ -63,6 +64,7 @@ export default class AppServiceProvider extends ServiceProvider {
 		this.app.register('popup', PopupService);
 		this.app.register('map', TencentMapService);
 		this.app.register('mp.storage', StorageService);
+		this.app.register('mp.payment', PaymentService);
 	}
 	boot() {
 

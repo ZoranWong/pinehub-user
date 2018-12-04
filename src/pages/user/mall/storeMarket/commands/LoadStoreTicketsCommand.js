@@ -3,7 +3,7 @@ export default class LoadStoreTicketsCommand extends Command {
 	async handle(storeId, status = 'available', page = 1) {
 		try {
 			let [list, totalNum, currentPage, totalPage, limit] = await this.service('http.tickets').storeTickets(status, storeId, page);
-			this.store().dispatch('model.store.tickets/setList', {
+			this.store().dispatch('model.storeMarket.tickets/setList', {
 				list: list,
 				totalNum: totalNum,
 				currentPage: currentPage,

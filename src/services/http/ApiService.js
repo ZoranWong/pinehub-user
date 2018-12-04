@@ -45,7 +45,7 @@ export default class ApiService extends Service {
 			}
 			let request = this.request((await this.auth(auth)));
 			let result = await request.get(route.trim('/') + this.service('uri').query(params));
-			if(result && this.isLoadingPopupShow) {
+			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}
 			this.isLoadingPopupShow = true;
@@ -65,7 +65,7 @@ export default class ApiService extends Service {
 			}
 			let request = this.request(await this.auth(auth));
 			let result = await request.post(route.trim('/'), params);
-			if(result && this.isLoadingPopupShow) {
+			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}
 			this.isLoadingPopupShow = true;
@@ -85,7 +85,7 @@ export default class ApiService extends Service {
 			let request = this.request(await this.auth(auth));
 			route = id ? (route.trim('/') + '/' + id) : route.trim('/');
 			let result = await request.put(route, params);
-			if(result && this.isLoadingPopupShow) {
+			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}
 			this.isLoadingPopupShow = true;
@@ -106,7 +106,7 @@ export default class ApiService extends Service {
 				wx.showLoading({ title: '提交中···' });
 			}
 			let result = await (await this.request(await this.auth(auth))).delete(route);
-			if(result && this.isLoadingPopupShow) {
+			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}
 			this.isLoadingPopupShow = true;

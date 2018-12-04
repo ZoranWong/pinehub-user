@@ -1,13 +1,12 @@
 <template>
-    <div class = "address-box">
+    <div>
         <ul class="tab clearfix ">
-            <li class="bgff" v-for="(tab, index) in tabs" :key="index" :class="{tab_select_now:currentTab === index}" @click="tabSelect(index)">
+            <li class="bgff" v-for="(tab, index) in tabs" :key="index" :class="{tab_select_now:currentTab == index}" @click="tabSelect(index)">
                 <span class="txt">{{tab.txt}}</span>
                 <i class="selected"></i>
             </li>
         </ul>
         <ul class="order-address  width710" v-if="currentTab === 0">
-
             <li class="li-item bgff">
                 配送地址
                 <p class="details-item">
@@ -16,7 +15,13 @@
                 </p>
             </li>
             <li class="li-item bgff">
-                配送时间
+                配送日期
+                <p class="details-item">
+                    <picker mode="date" class="send-date" @change="selectSendDate">{{sendDate}}</picker>
+                </p>
+            </li>
+            <li class="li-item bgff">
+                配送批次
                 <p class="details-item">
                     <picker @change="bindPickerChange" :value="sendBatch" :range="timesArray">
                         <span class="picker">
@@ -28,11 +33,27 @@
             </li>
         </ul>
         <ul class="order-address bgff" v-else-if="currentTab === 1">
-
             <li class="li-item bgff">
                 自提地址
                 <p class="details-item">
                     {{address}}
+                </p>
+            </li>
+            <li class="li-item bgff">
+                自提日期
+                <p class="details-item">
+                    <picker mode="date" class="send-date" @change="selectSendDate">{{sendDate}}</picker>
+                </p>
+            </li>
+            <li class="li-item bgff">
+                自提时间
+                <p class="details-item">
+                    <picker @change="bindPickerChange" :value="sendBatch" :range="timesArray">
+                        <span class="picker">
+                            {{ timesArray[sendBatch] }}
+                            <i class="inverted-triangle"></i>
+                        </span>
+                    </picker>
                 </p>
             </li>
         </ul>
@@ -41,13 +62,15 @@
 </template>
 <script>
 export default {
-    name: 'TabDelivery',
+    name: 'OrderAddress',
     data () {
+        let now = (new Date()).format('yyyy-MM-dd');
         return {
             sendBatch: 0,
             address: null,
             roomNum: null,
             buildNum: null,
+            sendDate: now,
             timesArray: ['7:00 - 9:00', '11:00 - 13:00', '17:00 - 19:00'],
             tabs: [
                 {
@@ -109,8 +132,13 @@ export default {
         },
         tabSelect (tabIndex) {
             this.currentTab = tabIndex;
+        },
+        selectSendDate (e) {
+            console.log('selected send date', e);
+            this.sendDate = e['target']['value'];
         }
     }
+
 }
 </script>
 <style>
@@ -134,7 +162,7 @@ export default {
 .selected {
     width: 48rpx;
     height: 48rpx;
-    background: url(../../static/images/icon/unselected.png) no-repeat;
+    background: url(../../../../../../static/images/icon/unselected.png) no-repeat;
     background-size: contain;
     display: inline-block;
     position: absolute;
@@ -143,7 +171,7 @@ export default {
 }
 
 .tab_select_now .selected {
-    background: url(../../static/images/icon/selected.png) no-repeat;
+    background: url(../../../../../../static/images/icon/selected.png) no-repeat;
     background-size: contain;
 }
 /*配送细节*/
@@ -165,7 +193,6 @@ export default {
 
 .li-item .details-item {
     display: inline-block;
-    height: 80rpx;
     margin-left: 100rpx;
 }
 

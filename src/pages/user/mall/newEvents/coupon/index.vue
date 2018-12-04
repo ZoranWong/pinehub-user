@@ -10,7 +10,7 @@
         name: 'ActivityTickets',
         cur: 0,
         statusType: 'available',
-        model: 'model.activity.tickets',
+        model: 'model.newEvents.tickets',
         command: 'LOAD_ACTIVITY_TICKETS'
       };
     },
@@ -19,7 +19,7 @@
     },
     computed: {
       usedCardCode () {
-        return this.$store.getters['model.activity.shoppingCarts/ticketCode'];
+        return this.$store.getters['model.newEvents.shoppingCarts/ticketCode'];
       }
     },
     methods: {
@@ -27,7 +27,7 @@
         this.$command('LOAD_ACTIVITY_TICKETS', parseInt(this.$route.query['activity_id']), page, status);
       },
       useTicket (ticket) {
-        this.$store.dispatch('model.activity.shoppingCarts/setTicketCard', {
+        this.$store.dispatch('model.newEvents.shoppingCarts/setTicketCard', {
           ticketCode: ticket.cardCode,
           cardId: ticket.cardId,
           discount: ticket.discount,

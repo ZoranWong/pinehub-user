@@ -50,10 +50,7 @@ export default class StoreService extends ApiService {
     }
 
     async nearestStore (lng, lat) {
-        let response = await this.httpGet(`/nearest/store`, {
-            lng: lng,
-            lat: lat
-        });
+        let response = await this.httpGet(`/nearest/store`, {lng: lng, lat: lat});
         return response.data;
     }
 

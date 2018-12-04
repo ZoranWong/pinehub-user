@@ -58,35 +58,36 @@ export default {
     },
     methods: {
         createOrder () {
-            this.$command('CREATE_BOOKING_MALL_ORDER',
-            SEND_ORDER_TO_USER,
-            this.userInfo.nickname,
-            this.userInfo.mobile,
-            this.address,
-            this.usedTicketCode,
-            this.usedCardId
-        );
+            this.$command(
+                'CREATE_BOOKING_MALL_ORDER',
+                SEND_ORDER_TO_USER,
+                this.userInfo.nickname,
+                this.userInfo.mobile,
+                this.address,
+                this.usedTicketCode,
+                this.usedCardId
+            );
+        },
+        redirectToTicket () {
+            console.log('activityCoupon');
+            this.mp.router.push('bookingMall.coupons', {
+                query: {
+                    back_to: 'bookingMall.createSendOrder'
+                }
+            });
+        },
+        addCart (merchandiseId, id) {
+            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+            this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        },
+        reduceCart (merchandiseId, id) {
+            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) - 1;
+            this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+        }
     },
-    redirectToTicket () {
-        console.log('activityCoupon');
-        this.mp.router.push('bookingMallCoupon', {
-            query: {
-                back_to: 'shopSubmitOrder'
-            }
-        });
-    },
-    addCart (merchandiseId, id) {
-        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
-        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
-    },
-    reduceCart (merchandiseId, id) {
-        let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) - 1;
-        this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+    mounted () {
+        this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
-},
-mounted () {
-    this.$command('LOAD_BOOKING_MALL_TICKETS');
-}
 }
 </script>
 <style scoped>

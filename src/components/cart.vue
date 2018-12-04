@@ -18,7 +18,7 @@
                 <div class="flag fl">
                     已选产品
                 </div>
-                <label class="clear fr" @click="clearShoppingCarts">清空</label>
+                <label class="clear fr" @click="clear">清空</label>
             </div>
             <div class="add-box">
                 <div class="add-merchandises color11" v-for="(item, itemIndex) in shoppingCarts" :key="itemIndex">
@@ -89,7 +89,7 @@ export default {
             this.toggleList = !this.toggleList;
             this.maskBg = !this.maskBg;
         },
-        clearShoppingCarts () {
+        clear () {
             this.clearShoppingCarts();
         },
         addCart (merchandiseId, id = null) {

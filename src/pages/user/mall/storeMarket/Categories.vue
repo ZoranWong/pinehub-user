@@ -2,10 +2,10 @@
 	<div class="category-wrapper">
 		<div id="tab_select">
 			<ul>
-				<li class="category-item search" @click="redirectTo('search')">
+				<!-- <li class="category-item search" @click="redirectTo('search')">
 					<i class="i-icon search-icon"></i>
 					<span class="search-txt category-name">搜索</span>
-				</li>
+				</li> -->
 				<li v-for="(tab, index) in categories" :class="{tab_select_now : currentCategoryIndex == index}" :key="index" @click="categoryChange(index)">
 					<span class="new-txt category-name">{{ tab.name }}</span>
 				</li>

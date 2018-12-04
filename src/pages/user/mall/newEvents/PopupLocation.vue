@@ -1,72 +1,72 @@
 <template>
-  <div class="popup">
-    <div class="popup-box bgff color11">
-      <i class="location-icon"></i>
-      <i class="cancel" @click="popHide"></i>
-      <div class="popup-content">
-        <div class="popup-title">
-          历史站点选择
+    <div class="popup">
+        <div class="popup-box bgff color11">
+            <i class="location-icon"></i>
+            <i class="cancel" @click="popHide"></i>
+            <div class="popup-content">
+                <div class="popup-title">
+                    历史站点选择
+                </div>
+                <div class="place-item" v-for="(item, index) in receiveStores" :key="index" @click="redirectToOrder(item.id)">
+                    <i class="i-icon yellow-right-arrow"></i> {{ item.address }}
+                </div>
+                <div class="btn-big theme-color" @click="nearbyStores">重新选择</div>
+                <div class="tips color75">
+                    注：请您务必在上午9:00前领取您的早餐
+                </div>
+            </div>
         </div>
-        <div class="place-item" v-for="(item, index) in receiveStores" :key="index" @click="redirectToOrder(item.id)">
-          <i class="i-icon yellow-right-arrow"></i> {{ item.address }}
-        </div>
-        <div class="btn-big theme-color" @click="nearbyStores">重新选择</div>
-        <div class="tips color75">
-          注：请您务必在上午9:00前领取您的早餐
-        </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
-  export default {
+export default {
     name: 'PopupLocation',
     props: {
-      activityId: {
-        default: null,
-        type: Number
-      }
+        activityId: {
+            default: null,
+            type: Number
+        }
     },
     data () {
-      return {
-        receiveStores: []
-      };
+        return {
+            receiveStores: []
+        };
     },
     methods: {
-      popHide: function () {
-        this.$emit('hdlHidePopup')
-      },
-      nearbyStores () {
-        this.$command('router', 'nearbyStores', 'push', {
-          query: {
-            submitRoute: 'activitySubmitOrder',
-            activity_id: this.activityId
-          }
-        });
-      },
-      redirectToOrder (storeId) {
-        this.$command('router', 'activitySubmitOrder', 'push', {
-          query: {
-            store_id: storeId,
-            activity_id: this.$route.query['activity_id']
-          }
-        });
-      },
-      async initStores () {
-        this.receiveStores = await this.mp.storage.get('activityReceiveStores');
-      }
+        popHide: function () {
+            this.$emit('hdlHidePopup')
+        },
+        nearbyStores () {
+            this.$command('REDIRECT_TO', 'storesMap', 'push', {
+                query: {
+                    next_to: 'newEvents.createOrder',
+                    activity_id: this.activityId
+                }
+            });
+        },
+        redirectToOrder (storeId) {
+            this.$command('REDIRECT_TO', 'newEvents.createOrder', 'push', {
+                query: {
+                    store_id: storeId,
+                    activity_id: this.$route.query['activity_id']
+                }
+            });
+        },
+        async initStores () {
+            this.receiveStores = await this.mp.storage.get('activityReceiveStores');
+        }
     },
     mounted () {
-      this.$command('LOAD_ACTIVITY_USUALLY_ADDRESS');
-      this.initStores();
+        this.$command('LOAD_ACTIVITY_USUALLY_ADDRESS');
+        this.initStores();
     }
 
-  }
+}
 </script>
 
 <style scoped>
-  .popup {
+.popup {
     position: fixed;
     top: 0;
     width: 100%;
@@ -74,9 +74,9 @@
     z-index: 99;
     box-sizing: border-box;
     background-color: rgba(7, 17, 27, 0.6);
-  }
+}
 
-  .popup-box {
+.popup-box {
     width: 630rpx;
     height: 610rpx;
     font-size: 32rpx;
@@ -89,9 +89,9 @@
     left: 50%;
     margin-left: -315rpx;
     margin-top: -305rpx;
-  }
+}
 
-  .location-icon {
+.location-icon {
     width: 118rpx;
     height: 180rpx;
     background: url(../../../../../static/images/icon/location-icon.png) no-repeat;
@@ -99,9 +99,9 @@
     position: absolute;
     top: -84rpx;
     left: 256rpx;
-  }
+}
 
-  .cancel {
+.cancel {
     width: 78rpx;
     height: 78rpx;
     background: url(../../../../../static/images/icon/yellow-cancel.png) no-repeat;
@@ -109,13 +109,13 @@
     position: absolute;
     top: -16rpx;
     right: -16rpx;
-  }
+}
 
-  .popup-content {
+.popup-content {
     margin: 60rpx 50rpx 0rpx 50rpx;
-  }
+}
 
-  .place-item {
+.place-item {
     width: 530rpx;
     height: 86rpx;
     border-radius: 10rpx;
@@ -126,29 +126,29 @@
     margin: 20rpx 0rpx;
     display: flex;
     line-height: 86rpx;
-  }
+}
 
-  .yellow-right-arrow {
+.yellow-right-arrow {
     width: 40rpx;
     height: 40rpx;
     background: url(../../../../../static/images/icon/yellow-right-arrow.png) no-repeat;
     background-size: contain;
     margin-top: 26rpx;
     margin-right: 21rpx;
-  }
+}
 
-  .btn-big {
+.btn-big {
     width: 530rpx;
     height: 80rpx;
     line-height: 80rpx;
     text-align: center;
     border-radius: 10rpx;
     margin-top: 40rpx;
-  }
-  
-  .tips {
+}
+
+.tips {
     font-size: 20rpx;
     text-align: center;
     margin-top: 20rpx;
-  }
+}
 </style>
