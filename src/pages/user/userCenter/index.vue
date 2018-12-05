@@ -20,7 +20,7 @@
                             <em>{{userInfo.balance}}</em>
                             <i>余额</i>
                         </li>
-                        <li @click="jump('coupon')" class="my_card">
+                        <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
                             <em>{{userInfo.ticketNum}}</em>
                             <i>卡券</i>

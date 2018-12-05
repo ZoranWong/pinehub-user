@@ -73,6 +73,7 @@ export default class Account extends Model {
         this.addEventListener('setStoreInfo', async function ({storeInfo, sellAmountECharts, buyNumECharts}) {
             storeInfo.sellAmountECharts = sellAmountECharts;
             storeInfo.buyNumECharts = buyNumECharts;
+            console.log('--------+++++++++--------', storeInfo);
             this.$application.$vm.set(this.state, 'shop', storeInfo);
         });
 

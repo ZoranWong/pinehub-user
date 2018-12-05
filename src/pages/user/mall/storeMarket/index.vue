@@ -17,7 +17,7 @@
     import MpTitle from '@/components/MpTitle';
     import Banner from '@/components/Banner';
     import MerchandiseList from '@/components/MerchandiseList';
-    import Cart from '@/components/Cart';
+    import Cart from '@/components/ShoppingCarts';
     import Location from './Location';
     import Categories from './Categories';
     import Popup from './Popup';

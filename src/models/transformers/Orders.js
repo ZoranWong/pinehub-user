@@ -17,7 +17,8 @@ export default class Order {
             errorCorrectLevel: 'M',
             size: 500
         });
-
+        this.show = true;
+        this.top = 0;
         // 卡券使用
         this.cardId = (typeof order['card_id'] !== 'undefined' && order['card_id'] !== null) ? order['card_id'] : '无';
         // 销售指数

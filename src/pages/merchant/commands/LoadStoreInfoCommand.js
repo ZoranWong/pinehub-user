@@ -1,15 +1,12 @@
 import Command from '@/commands/Command';
 export default class LoadStoreInfoCommand extends Command {
-    async handle (shopId) {
+    async handle (shopId, date = 'week') {
         try {
             let [storeInfo, sellAmountCharts, buyNumCharts] = await this.service('http.store').storeInfo(shopId);
-            let xDate = 'week';
-            let sellAmountECharts = await this.service('mp.eCharts').createChart(xDate, sellAmountCharts, true);
-            let buyNumECharts = await this.service('mp.eCharts').createChart(xDate, buyNumCharts, true);
             storeInfo = {
                 storeInfo: storeInfo,
-                sellAmountECharts: sellAmountECharts,
-                buyNumECharts: buyNumECharts
+                sellAmountECharts: sellAmountCharts,
+                buyNumECharts: buyNumCharts
             };
             this.store().dispatch('model.account/setStoreInfo', storeInfo);
         } catch (e) {

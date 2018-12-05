@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
-    <scroll-view class="orders-wrapper" :style ="{height: (screenHeight - 182) + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
-        <div class="order_info" v-for="(order, index) in orders" :key="index">
+    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: screenHeight + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
+        <div class="order_info" :id = "'order-item-' + order.id" v-for="(order, index) in orders" :key="index" v-if ="order.show"  :top = "orderItemTop(order, index)">
             <div class="order_info_sn">
                 <i>订单编号</i><em>{{order.code}}</em>
                 <span class="order_info_status">{{order.status}}</span>
@@ -67,7 +67,9 @@
             screenHeight: {
                 default: 0,
                 type: Number
-            }
+            },
+            showTop: 0,
+            rpxRate: 1
         },
         data () {
             return {
@@ -78,22 +80,51 @@
         // 算术方法
         computed: {
             isLoadedAll () {
-                return this.$store.getters['model.orders/isLoadedAll'];
+                return this.$store.getters['model.user.orders/isLoadedAll'];
+            },
+            list () {
+
             }
         },
         methods: {
             btnClick (type, id) {
+                console.log('++++++++++++++++ update order status ++++++++++++++++++', type, id);
                 this.$command('ORDER_STATUS_UPDATE', type, id);
+            },
+            orderItemTop (order, index) {
+                const query = wx.createSelectorQuery()
+                query.select(`#order-item-${index}`).boundingClientRect()
+                query.selectViewport().scrollOffset()
+                query.exec((res) => {
+                    if (res[0]) {
+                        order.top = res[0].top * this.rpxRate;
+                        order.show = true;
+                    }
+                })
             },
             async scrolltolower () {
                 if (!this.isLoading && !this.isLoadedAll) {
                     this.isLoading = true;
-                    await this.next();
-                    this.isLoading = false;
+                    let result = await this.next();
+                    if(result) {
+                        this.isLoading = false;
+                    }
                 }
+            },
+            onScroll (e) {
+                let minTop = e.target.scrollTop - this.screenHeight;
+                let maxTop = e.target.scrollTop + this.screenHeight * 2;
+                let count = 0;
+                this.orders.map((order) => {
+                    if (this.setOrderItemVisible(order, minTop, maxTop)) {
+                        count ++;
+                    }
+                });
+            },
+            setOrderItemVisible (order, minTop, maxTop) {
+                return order.top >= minTop && order.top < maxTop;
             }
         },
-
         watch: {
             status (n, v) {
                 this.flag = true

@@ -28,7 +28,7 @@ export default class OrdersService extends ApiService {
 
     // 重新创建订单
     async orderPayById (id) {
-        let response = await this.httpGet(`/again/order/${id}`, {});
+        let response = await this.httpGet(`/order/${id}/payment`, {});
         return response.data;
     }
 

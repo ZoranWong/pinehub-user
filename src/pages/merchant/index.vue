@@ -35,10 +35,10 @@
             </ul>
         </div>
         <div id="merchant-store_charts1">
-            <wx-charts :unit="unitSell" :options='wxOptionsForSell'></wx-charts>
+            <wx-charts canvasId = "chart1" :unit="unitSell" :options='wxOptionsForSell'></wx-charts>
         </div>
         <div id="merchant-store_charts2">
-            <wx-charts :unit="unitBuy" :options='wxOptionsForBuy'></wx-charts>
+            <wx-charts canvasId = "chart2" :unit="unitBuy" :options='wxOptionsForBuy'></wx-charts>
         </div>
         <div id="merchant-store_menu">
             <ul>
@@ -92,11 +92,16 @@
             },
             wxOptionsForSell () {
                 let shop = this.$store.getters['model.account/shopInfo'];
-                return shop && shop['sellAmountECharts'] ? shop['sellAmountECharts'] : [];
+                let data = shop && shop['sellAmountECharts'] ? shop['sellAmountECharts'] : [];
+                let result = this.mp.eCharts.createChart('week', data, true);
+                console.log('----------------', result);
+                return result;
             },
             wxOptionsForBuy () {
                 let shop = this.$store.getters['model.account/shopInfo'];
-                return shop && shop['buyNumECharts'] ? shop['buyNumECharts'] : [];
+                let data = shop && shop['buyNumECharts'] ? shop['buyNumECharts'] : [];
+                let result = this.mp.eCharts.createChart('week', data, true);
+                return result;
             },
             shopId () {
                 return this.$store.getters['model.account/shopInfo']['id'];
@@ -108,6 +113,19 @@
             },
             scanCode () {
                 this.$command('scanCommand', 'myfeedbacksuccess');
+            },
+            onInit (options) {
+                return (canvas, width, height) => {
+                    chart = this.echarts.init(canvas, null, {
+                        width: width,
+                        height: height
+                    });
+                    canvas.setChart(chart);
+
+                    chart.setOption(options);
+
+                    return chart; // 返回 chart 后可以自动绑定触摸操作
+                }
             }
         },
         mounted () {

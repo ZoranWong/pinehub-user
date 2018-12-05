@@ -2,7 +2,7 @@ import Command from '@/commands/Command';
 export default class OrderStatusUpdateCommand extends Command {
     // 取消订单
     async cancel (id) {
-        let response = await this.service('http.orders').cancel(id);
+        let response = await this.service('http.orders').cancelOrder(id);
         if (response.data) {
             wx.showToast({
                 title: '订单已取消',
@@ -58,6 +58,7 @@ export default class OrderStatusUpdateCommand extends Command {
                 title: '温馨提示',
                 content: '确认取消此订单？',
                 async success (res) {
+                    console.log('order update ', res);
                     if (res.confirm) {
                         await self.cancel(id);
                         self.refresh();

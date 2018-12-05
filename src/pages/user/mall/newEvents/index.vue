@@ -12,7 +12,7 @@
 <script>
 import MpTitle from '@/components/MpTitle'
 import Merchandises from './Merchandises';
-import Cart from '@/components/Cart'
+import Cart from '@/components/ShoppingCarts'
 import PopupLocation from './PopupLocation'
 export default {
     data () {

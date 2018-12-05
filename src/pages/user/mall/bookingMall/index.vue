@@ -18,7 +18,7 @@ import PopupDelivery from './PopupDelivery';
 import Banner from '@/components/Banner';
 import MerchandiseList from '@/components/MerchandiseList';
 import Categories from './Categories';
-import Cart from '@/components/Cart'
+import Cart from '@/components/ShoppingCarts'
 export default {
     data () {
         return {

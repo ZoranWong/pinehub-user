@@ -109,6 +109,22 @@ module.exports = {
                     limit: 10000,
                     name: utils.assetsPath('fonts/[name].[ext]')
                 }
+            },
+            {
+                test: /\.js$/,
+                include: [
+                    resolve('src'),
+                    resolve('node_modules/mpvue-echarts')
+                ],
+                use: [
+                    'babel-loader',
+                    {
+                        loader: 'mpvue-loader',
+                        options: {
+                            checkMPEntry: true
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -125,11 +141,6 @@ module.exports = {
                 from: path.resolve(__dirname, '../static'),
                 to: path.resolve(__dirname, '../dist/static'),
                 ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
-            },
-            {
-                from: path.resolve(__dirname, '../src/pages/merchant/ec-canvas'),
-                to: path.resolve(__dirname, '../dist/pages/merchant/ec-canvas'),
-                ignore: ['.*']
             }
         ])
     ]

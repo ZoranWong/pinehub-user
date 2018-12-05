@@ -6,7 +6,7 @@
             <i id="select_date_arrow"></i>
         </div>
         <div id="sales_charts">
-            <wx-charts :unit="unit" :options='wxOptions'></wx-charts>
+            <wx-charts :unit="unit" :options='wxOptions' :canvasId = "chart3"></wx-charts>
         </div>
         <div id="sales_total">
             <div class="sales_total_style sales_total_all">销售总额<em>{{salesInfo['total_order_amount']}}</em></div>
@@ -61,7 +61,6 @@
         },
         computed: {
             wxOptions () {
-                console.log(this.$store.getters['model.salesInfo/chartData']);
                 return this.$store.getters['model.salesInfo/chartData'];
             }
         },

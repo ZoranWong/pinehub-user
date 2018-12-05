@@ -8,7 +8,7 @@
             </ul>
         </div>
         <div id="tab_content">
-            <orders :screenHeight = "screenHeight" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
+            <orders :rpxRate = "rpxRate" :screenHeight = "screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
         </div>
         <div id="footNavHeight"></div>
         <footer-nav :navName="navName"></footer-nav>
@@ -38,7 +38,9 @@ export default {
             }],
             cur: 0,
             statusType: 'all',
-            screenHeight: 0
+            screenHeight: 0,
+            rpxRate: 1,
+            screenWitdh: 0
         };
     },
     watch: {
@@ -88,10 +90,13 @@ export default {
         },
         async next () {
             await this.$command('LOAD_USER_ORDERS', this.statusType, this.currentPage + 1, this.pageCount);
+            return true;
         }
     },
     created () {
-        this.screenHeight = (750 / wx.getSystemInfoSync().windowWidth * wx.getSystemInfoSync().windowHeight);
+        this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+        this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+        this.screenHeight = (this.rpxRate * this.screenWitdh);
     }
 }
 </script>

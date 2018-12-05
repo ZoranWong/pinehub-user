@@ -19,7 +19,7 @@
 
 <script>
 	import CartControl from '@/components/CartControl'
-	import Cart from '@/components/Cart'
+	import Cart from '@/components/ShoppingCarts'
 	export default {
 		props: {
 			addMerchandiseToCart: {
@@ -90,7 +90,7 @@
 		top: 0;
 		overflow: hidden;
 	}
-	
+
 	.merchandise-wrapper {
 		overflow-y: auto;
 		width: 630rpx;
@@ -99,7 +99,7 @@
         width: 1px;
         background-color: rgba(217, 217, 217, 0.3);
     }*/
-	
+
 	.merchandise-item {
 		height: 326rpx;
 		border-radius: 10rpx;
@@ -108,7 +108,7 @@
 		position: relative;
 		width: 590rpx;
 	}
-	
+
 	.merchandises-pic {
 		width: 250rpx;
 		height: 250rpx;
@@ -116,7 +116,7 @@
 		top: 38rpx;
 		left: 38rpx;
 	}
-	
+
 	.merchandise-item-right {
 		position: absolute;
 		top: 40rpx;
@@ -125,27 +125,27 @@
 		width: 270rpx;
 		height: 250rpx;
 	}
-	
+
 	.merchandise-item-right h4 {
 		font-size: 32rpx;
 		font-weight: 400;
 	}
-	
+
 	.sell-count {
 		font-size: 22rpx;
 	}
-	
+
 	.sell-price {
 		font-size: 28rpx;
 		font-weight: 400;
 		margin-top: 30rpx;
 	}
-	
+
 	.origin-price {
 		text-decoration: line-through;
 		font-size: 20rpx;
 	}
-	
+
 	.plus-icon {
 		width: 48rpx;
 		height: 48rpx;
@@ -155,7 +155,7 @@
 		bottom: 58rpx;
 		right: 40rpx;
 	}
-	
+
 	.cartcontrol-warpper {
 		position: absolute;
 		bottom: 0;

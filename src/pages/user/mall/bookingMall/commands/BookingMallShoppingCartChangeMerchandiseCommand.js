@@ -9,8 +9,9 @@ export default class BookingMallShoppingCartChangeMerchandiseCommand extends Com
             let merchandise = null;
             if (id && quality === 0) {
                 merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
-                this.deleteShoppingCart(id);
-                return;
+                if (merchandise) {
+                    this.deleteShoppingCart(id);
+                }
             } else if (id === null) {
                 merchandise = await this.service('http.shoppingCart').bookingShoppingCartAddMerchandise(
                     merchandiseId,
