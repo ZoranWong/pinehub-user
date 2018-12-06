@@ -26,5 +26,6 @@
 	"activity": "/pages/mall/activity/main",
 	"activitySubmitOrder": "/pages/mall/activity/submitOrder/main",
 	"coupon": "/pages/coupon/main",
-	"activityCoupon": "/pages/mall/activity/coupon/main"
+	"activityCoupon": "/pages/mall/activity/coupon/main",
+	"myStoreStockPurchase":"/pages/my/mystore/stockPurchase/main"
 }
