@@ -2,10 +2,10 @@ import ServiceProvider from './ServiceProvider';
 import Model from '../models';
 import Account from '@/models/Account';
 import Merchandises from '@/models/Merchandises';
-import Categories from '@/models/Categories'
-;import ShoppingCarts from '@/models/ShoppingCarts';
-import NearbyStores from '@/models/NearbyStores';
+import Categories from '@/models/Categories';
+import ShoppingCarts from '@/models/ShoppingCarts';
 import NearestStore from '@/models/NearestStore';
+import Stores from '@/models/Stores';
 import Tickets from '@/models/Tickets';
 
 export default class ModelServiceProvider extends ServiceProvider {
@@ -13,25 +13,22 @@ export default class ModelServiceProvider extends ServiceProvider {
     let models = new Model(this.app);
     this.app.register('models', models);
 
-    this.app.models.addModel('model.categories', Categories)
+    this.app.registerModel('model.categories', Categories);
 
-    this.app.models.addModel('model.bookingMall.merchandises', Merchandises)
-    this.app.models.addModel('model.store.merchandises', Merchandises)
-    this.app.models.addModel('model.activity.merchandises', Merchandises)
+    this.app.registerModel('model.merchandises', Merchandises);
 
-    this.app.models.addModel('model.activity.tickets', Tickets);
-    this.app.models.addModel('model.store.tickets', Tickets);
-    this.app.models.addModel('model.bookingMall.tickets', Tickets);
-    this.app.registerModel('model.user.tickets', Tickets);
+    this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
+    this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
+    this.app.registerModel('model.newEvents.shoppingCarts', ShoppingCarts);
 
-    this.app.models.addModel('model.account', Account);
-    this.app.models.addModel('model.activity.shoppingCarts', ShoppingCarts);
-    this.app.models.addModel('model.bookingMall.shoppingCarts', ShoppingCarts);
-    this.app.models.addModel('model.store.shoppingCarts', ShoppingCarts);
-    this.app.models.addModel('model.online.shoppingCarts', ShoppingCarts);
-    this.app.models.addModel('model.nearbyStores', NearbyStores);
+    this.app.registerModel('model.storeMarket.tickets', Tickets);
+    this.app.registerModel('model.bookingMall.tickets', Tickets);
+    this.app.registerModel('model.newEvents.tickets', Tickets);
 
-    this.app.models.addModel('model.nearestStore', NearestStore);
+    this.app.registerModel('model.account', Account);
+    this.app.registerModel('model.shoppingCarts', ShoppingCarts);
+    this.app.registerModel('model.stores', Stores);
+    this.app.registerModel('model.nearestStore', NearestStore);
   }
   boot () {
 

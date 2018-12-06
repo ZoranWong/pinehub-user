@@ -5,7 +5,7 @@ export default class Service {
         this.page = null;
     }
 
-    services (name = null) {
+    service (name = null) {
         return name ? this.$application[name] : this.$application.instances;
     }
 }

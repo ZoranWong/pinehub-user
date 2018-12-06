@@ -16,8 +16,11 @@ export default class RouterService extends Service {
 		this.$router.go(n);
 	}
 
-	replace(route, onCompleted, onAbort, onSuccess) {
+	replace(route, onCompleted = null, onAbort = null, onSuccess = null) {
 		let page = this.routes[route];
+		onCompleted = onCompleted ? onCompleted : function () {};
+		onAbort = onAbort ? onAbort : function () {};
+		onSuccess = onSuccess ? onSuccess : function () {};
 		this.$router.replace(page, onCompleted, onAbort, onSuccess);
 	}
 

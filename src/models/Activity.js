@@ -12,7 +12,7 @@ export default class Activity extends Model {
 		});
 	}
 	data() {
-		//		let userInfo = this.services();
+		//		let userInfo = this.service();
 		return {
 			id: null
 		};
@@ -21,8 +21,8 @@ export default class Activity extends Model {
 	listeners() {
 		this.addEventListener('info', function(userInfo) {
 			_.extend(this.state, userInfo);
-			//			this.services('mp.storage').set('token', userInfo.token);
-			//			this.services('mp.storage').set('userInfo', userInfo);
+			//			this.service('mp.storage').set('token', userInfo.token);
+			//			this.service('mp.storage').set('userInfo', userInfo);
 		});
 	}
 }

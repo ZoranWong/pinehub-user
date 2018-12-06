@@ -7,7 +7,7 @@ export default class Base64Service extends Service{
   }
   encode(data) {
     if(!_.isString(data)){
-      data = this.services('json').encode(data); 
+      data = this.service('json').encode(data); 
     }
     return base64.encode(data);
   }

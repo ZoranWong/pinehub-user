@@ -1,11 +1,7 @@
 import Service from '@/services/Service';
-
 export default class AuthService extends Service {
-	constructor(application) {
-		super(application);
-	}
 	// 获取小程序code
-	code() {
+	code () {
 		return new Promise((resolve, reject) => {
 			wx.login({
 				success: ({
@@ -20,51 +16,45 @@ export default class AuthService extends Service {
 		});
 	}
 	// 获取token
-	async getToken() {
+	async getToken () {
 		try {
-			let token = await this.services('mp.storage').get('token');
+			let token = await this.service('mp.storage').get('token');
 			let ttlTime = new Date(token.ttl).getTime();
 			let nowTime = new Date().getTime();
 			console.log('-------><--------', token, ttlTime, nowTime);
-			if(!token || ttlTime <= nowTime) {
-				console.log('重新获取TOKEN>>>>>>>>>>>>>>>>>>>>进来了');
+			if (!token || ttlTime <= nowTime) {
 				// 获取appId
 				let appId = this.$application.config['app']['appId'];
 				// 获取appSecret
 				let appSecret = this.$application.config['app']['appSecret'];
 				// 获取accessToken
-				let accessToken = await this.services('http.auth').accessToken(appId, appSecret);
+				let accessToken = await this.service('http.auth').accessToken(appId, appSecret);
 				// 存储accessToken
-				await this.services('mp.storage').set('accessToken', accessToken);
+				await this.service('mp.storage').set('accessToken', accessToken);
 				// 获取code
-				let code = await this.services('mp.auth').code();
+				let code = await this.service('mp.auth').code();
 				// 存储code
-				await this.services('mp.storage').set('code', code);
+				await this.service('mp.storage').set('code', code);
 				// 请求登录接口
-				let loginInfo = await this.services('http.auth').login(code, accessToken);
-				console.log('获取用户信息<<<<<<', loginInfo)
+				let loginInfo = await this.service('http.auth').login(code, accessToken);
 				let token = loginInfo.token;
 				let openId = loginInfo.open_id;
 				let mobile = loginInfo.mobile;
 				let userScore = loginInfo.can_use_score;
 				let refreshTtl = loginInfo.refresh_ttl;
 				let ttl = loginInfo.ttl;
-				if(loginInfo.shop_id) {
+				if (loginInfo.shop_id) {
 					let shopId = loginInfo.shop_id;
-					await this.services('mp.storage').set('shopId', shopId);
+					await this.service('mp.storage').set('shopId', shopId);
 				}
-				console.log('重新获取TOKEN>>>>>>>>>>>>>>>>>>>>进来了，第一次获取TOKEN', token);
 				token = {
 					'value': token,
 					'ttl': ttl['date'],
 					'refreshTtl': refreshTtl['date']
 				};
-				console.log('重新获取TOKEN>>>>>>>>>>>>>>>>>>>>进来了，新TOKEN', token);
-				await this.services('mp.storage').set('token', token);
-				await this.services('mp.storage').set('openId', openId);
-				if(token === undefined) {
-					console.log('用户未注册，无法获取token');
-				} else {
+				await this.service('mp.storage').set('token', token);
+				await this.service('mp.storage').set('openId', openId);
+				if (token !== undefined) {
 					let eventData = {
 						openId: openId,
 						mobile: mobile,
@@ -77,13 +67,12 @@ export default class AuthService extends Service {
 			} else {
 				return token['value'];
 			}
-		} catch(e) {
+		} catch (e) {
 			console.log('抛出异常', e);
 			return false;
 		}
-
 	}
-	checkSession() {
+	checkSession () {
 		return new Promise((resolve, reject) => {
 			wx.checkSession({
 				success: () => {
@@ -96,7 +85,7 @@ export default class AuthService extends Service {
 		});
 	}
 
-	code2Session() {
+	code2Session () {
 
 	}
 }

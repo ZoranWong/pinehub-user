@@ -28,11 +28,11 @@ export default class NearestStore extends Model {
   }
   async cache () {
     // console.log(this.state);
-    return await this.services('mp.storage').set('nearestStore', this.state.store);
+    return await this.service('mp.storage').set('nearestStore', this.state.store);
   }
 
   async getCache () {
-    return await this.services('mp.storage').get('nearestStore');
+    return await this.service('mp.storage').get('nearestStore');
     // return {};
   }
 

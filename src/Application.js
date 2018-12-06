@@ -1,9 +1,9 @@
 /* eslint-disable new-cap */
-import Vue from 'vue'
-import ServiceProviders from './providers'
-import _ from 'underscore'
-import App from './App'
-import md5 from 'md5'
+import Vue from 'vue';
+import ServiceProviders from './providers';
+import _ from 'underscore';
+import App from './App';
+import md5 from 'md5';
 import Service from './services/Service'
 export default class Application {
     static pageContainer = [];

@@ -1,8 +1,5 @@
 import Service from '../Service';
 export default class HrefService extends Service {
-	constructor($application) {
-		super($application);
-	}
 	//跳转到非 tabbar 页面，保留当前页面
 	async jump(url) {
 		return await wx.navigateTo({
