@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class = "footer">
-                <button type="primary" >立即支付</button>
+                <button type="primary" @click = "payment">立即支付</button>
             </div>
         </div>
     </div>
@@ -32,8 +32,9 @@
             shopName: '福年来早餐车',
             storeId: null,
             ticketCode: null,
-            cardId: null,
-            paymentAmount: null
+            mobile: null,
+            paymentAmount: null,
+            address: null
         },
         computed: {
             logo () {
@@ -53,6 +54,11 @@
 
                 let store = await this.http.store.store(this.storeId);
                 this.shopName = store['name'];
+                this.mobile = store['mobile'];
+                this.address = store['address'];
+            },
+            payment () {
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, this.paymentAmount);
             }
         },
         mounted () {
