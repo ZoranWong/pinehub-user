@@ -1,4 +1,4 @@
-import App from './index';
+import App from '.';
 import Vue from 'vue';
 
 const application = wx.$app;

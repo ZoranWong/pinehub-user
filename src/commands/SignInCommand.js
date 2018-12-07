@@ -8,9 +8,17 @@ export default class SignInCommand extends Command {
         let appSecret = this.$application.config['app']['appSecret'];
         // 获取accessToken
         try {
-            let accessToken = await this.service('http.auth').accessToken(appId, appSecret);
-            console.log('======= accessToken =======', accessToken);
-            await this.service('mp.storage').set('accessToken', accessToken);
+            let data = await this.service('http.auth').accessToken(appId, appSecret);
+            let accessToken = data['access_token'];
+            let logo = data['logo'];
+            let contactPhoneNum = data['contact_phone_num'];
+            this.$store.dispatch('model.app/setData', {
+                accessToken: accessToken,
+                appId: appId,
+                logo: logo,
+                contactPhoneNum: contactPhoneNum
+            });
+
             let code = await this.service('mp.auth').code();
 
             // 请求登录接口

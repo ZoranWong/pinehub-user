@@ -72,6 +72,13 @@ export default class StoreService extends ApiService {
         return [storeInfo, sellAmountCharts, buyNumCharts];
     }
 
+    // 获取店铺信息
+    async store (id) {
+        let response = await this.httpGet(`store/${id}/info`);
+        let storeInfo = response.data;
+        return storeInfo;
+    }
+
     // 店铺商品
     async merchandises (storeId, categoryId, page = 1, limit = 15) {
         let response = await this.httpGet(`/store/${storeId}/category/${categoryId}/merchandises`, {

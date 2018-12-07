@@ -5,9 +5,12 @@
         <div id="orderpay_success">
             <div id="success_ico"></div>
             <em>支付成功</em>
-            <i>感谢您对快乐松的关注与支持。</i>
+            <i>您可以在我的订单中随时查看订单情况</i>
         </div>
-        <div id="btn" @click="submit">完成</div>
+        <div class = "btns">
+            <div class = "btn orders-btn" size  = "mini" @click="submit">查看订单</div>
+            <div class = "btn buy-btn" size  = "mini" @click="submit">继续购买</div>
+        </div>
     </div>
 </template>
 
@@ -56,7 +59,7 @@
         height: 148rpx;
         margin: 0 auto;
         padding: 5rpx;
-        background: url(../../../../../static/images/icon/feedBackSuccess.png) no-repeat center center;
+        background: url(../../../../static/images/icon/feedBackSuccess.png) no-repeat center center;
         background-size: 100%;
     }
 
@@ -74,7 +77,7 @@
         line-height: 36rpx;
     }
 
-    #btn {
+    .btn {
         background: #FECE00;
         font-size: 34rpx;
         font-weight: 300;

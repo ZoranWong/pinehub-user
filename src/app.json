@@ -11,13 +11,14 @@
     "pages/user/mall/newEvents/main",
     "pages/user/mall/newEvents/createOrder/main",
     "pages/user/mall/bookingMall/coupon/main",
-    "pages/user/mall/paySuccess/main",
+    "pages/user/paySuccess/main",
     "pages/user/userCenter/main",
     "pages/user/order/main",
     "pages/user/feedBack/main",
     "pages/user/feedBack/success/main",
     "pages/user/share/main",
-    "pages/user/coupon/main"
+    "pages/user/coupon/main",
+    "pages/user/payment/main"
   ],
   "subPackages": [
     {

@@ -21,7 +21,7 @@ export default class AuthService extends ApiService {
             sign: sign,
             timestamp: timestamp
         }, false);
-        return response.data['access_token'];
+        return response.data;
     }
 
     // 提交用户信息并保存
