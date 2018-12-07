@@ -2,7 +2,8 @@ import Command from './Command';
 export default class CreateOrderCommand extends Command {
     async createOrderSign (params, resetCart = null) {
         try {
-            let weChatPayParams = await this.service('http.orders').createPaymentOrder(params);
+            let order = await this.service('http.orders').createPaymentOrder(params);
+            let weChatPayParams = await this.service('http.orders').orderPayById(order.id);
             if (weChatPayParams) {
                 let timeStamp = weChatPayParams['sdk_config']['timestamp']
                 let nonceStr = weChatPayParams['sdk_config']['nonceStr']
