@@ -8,8 +8,8 @@
             <i>您可以在我的订单中随时查看订单情况</i>
         </div>
         <div class = "btns">
-            <div class = "btn orders-btn" size  = "mini" @click="submit">查看订单</div>
-            <div class = "btn buy-btn" size  = "mini" @click="submit">继续购买</div>
+            <button class = "btn orders-btn" size  = "mini" @click="orders">查看订单</button>
+            <button class = "btn buy-btn" size  = "mini" @click="index">返回首页</button>
         </div>
     </div>
 </template>
@@ -29,8 +29,11 @@
 
         },
         methods: {
-            submit () {
+            orders () {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
+            },
+            index () {
+                this.$command('REDIRECT_TO', 'index', 'replace');
             }
         },
         created () {
@@ -76,15 +79,25 @@
         text-align: center;
         line-height: 36rpx;
     }
+    .btns {
+        width: 520rpx;
+        margin: auto;
+    }
 
     .btn {
-        background: #FECE00;
-        font-size: 34rpx;
-        font-weight: 300;
-        text-align: center;
-        color: #111111;
-        line-height: 78rpx;
-        margin: 15rpx;
-        border-radius: 15rpx;
+        font-size: 32rpx;
+        font-weight:200;
+        text-align:center;
+        color:#111111;
+        line-height:56rpx;
+        margin:15rpx;
+        height:56rpx;
+        width:230rpx;
+    }
+    .btn.orders-btn {
+        background:#FFFFFF;
+    }
+    .btn.buy-btn {
+        background:#FECE00;
     }
 </style>

@@ -1,7 +1,7 @@
 import Command from '@/commands/CreateOrderCommand';
 import { OFF_LINE_PAYMENT_ORDER, SEND_ORDER_TO_USER } from '@/utils/OrderDict';
 export default class CreateBookingMallOrderCommand extends Command {
-    async handle (receiverName, receiverMobile, receiverAddress, ticketCode = null, cardId = null, receivingShopId = null, comment = '') {
+    async handle (receiverName, receiverMobile, storeId, receiverAddress, paymentAmount, ticketCode = null, cardId = null, comment = '') {
         try {
             let params = {
                 type: OFF_LINE_PAYMENT_ORDER,
@@ -10,7 +10,10 @@ export default class CreateBookingMallOrderCommand extends Command {
                 receiver_address: receiverAddress,
                 receiver_mobile: receiverMobile,
                 comment: comment,
-                receiving_shop_id: receivingShopId
+                receiving_shop_id: storeId,
+                store_id: storeId,
+                payment_amount: paymentAmount,
+                total_amount: paymentAmount
             }
             if (cardId && ticketCode) {
                 params['card_id'] = cardId;
@@ -27,6 +30,6 @@ export default class CreateBookingMallOrderCommand extends Command {
     }
 
     static commandName () {
-        return 'CREATE_BOOKING_MALL_ORDER';
+        return 'CREATE_OFF_LINE_ORDER';
     }
 }

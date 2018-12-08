@@ -6,17 +6,20 @@
                 <i>订单编号</i><em>{{order.code}}</em>
                 <span class="order_info_status">{{order.status}}</span>
             </div>
-            <div class="order_info_glist">
-                <dl v-for="(items,ind) in order.orderItems" :key="ind">
-                    <dd><img :src="items.mainImage" /></dd>
+            <div v-if = "order.type === OFF_LINE_PAYMENT_ORDER">
+                线下扫码支付
+            </div>
+            <div class="order_info_glist" v-else>
+                <dl v-for="(item, idx) in order.orderItems" :key="idx">
+                    <dd><img :src="item.mainImage" /></dd>
                     <dt>
-                        <em>{{items.name}}</em>
-                        <span>单价 ￥{{items.sellPrice}} 数量 {{items.quality}} 份</span>
-                        <span>总价 ￥{{items.totalAmount}}</span>
+                        <em>{{item.name}}</em>
+                        <span>单价 ￥{{item.sellPrice}} 数量 {{item.quality}} 份</span>
+                        <span>总价 ￥{{item.totalAmount}}</span>
                     </dt>
                 </dl>
             </div>
-            <div class="order_info_ads">
+            <div class="order_info_ads" v-if = "order.type !== OFF_LINE_PAYMENT_ORDER">
                 <i v-if = "order.pickUpMethod === USER_SELF_PICK_UP">自提地址</i>
                 <i v-else>配送地址</i>
                 <em>{{order.receiverAddress}}</em>
@@ -25,7 +28,7 @@
                 <div class="order_info_glist_date">
                     {{order.createdAt}}
                 </div>
-                <em>共{{order.quantity}}件商品</em>实付<i>￥{{order.totalAmount}}</i>
+                <em v-if = "order.type !== OFF_LINE_PAYMENT_ORDER">共{{order.quantity}}件商品</em>实付<i>￥{{order.paymentAmount}}</i>
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 1">
                 <i @click="btnClick('pay', order.id)">立即支付</i>
@@ -44,7 +47,7 @@
 </template>
 
 <script>
-    import { USER_SELF_PICK_UP } from '@/utils/OrderDict';
+    import { USER_SELF_PICK_UP, OFF_LINE_PAYMENT_ORDER} from '@/utils/OrderDict';
     export default {
         name: 'UserOrders',
         props: {
@@ -74,19 +77,21 @@
         data () {
             return {
                 isLoading: false,
-                USER_SELF_PICK_UP: USER_SELF_PICK_UP
+                USER_SELF_PICK_UP: USER_SELF_PICK_UP,
+                OFF_LINE_PAYMENT_ORDER: OFF_LINE_PAYMENT_ORDER
             };
         },
         // 算术方法
         computed: {
             isLoadedAll () {
                 return this.$store.getters['model.user.orders/isLoadedAll'];
-            },
-            list () {
-
             }
         },
         methods: {
+            isOffLineOrder (order) {
+                console.log('is off line order', order.type === OFF_LINE_PAYMENT_ORDER);
+                return order.type === OFF_LINE_PAYMENT_ORDER;
+            },
             btnClick (type, id) {
                 console.log('++++++++++++++++ update order status ++++++++++++++++++', type, id);
                 this.$command('ORDER_STATUS_UPDATE', type, id);
