@@ -42,7 +42,7 @@
         </div>
         <div id="merchant-store_menu">
             <ul>
-                <li>
+                <li  @click="jump('merchant.purchase')">
                     <i class="my_store_menu_ico ico_1"></i>
                     <em>进货</em>
                 </li>
@@ -109,6 +109,7 @@
         },
         methods: {
             jump (router) {
+                console.log(router);
                 this.$command('REDIRECT_TO', router, 'push');
             },
             scanCode () {

@@ -24,7 +24,7 @@
 	"merchant.deliveryOrders": "/pages/merchant/deliveryOrder/main",
 	"merchant.orderSummary": "/pages/merchant/orderSummary/main",
 	"merchant.pickUpOrders": "/pages/merchant/pickUpOrder/main",
-	"merchant.purchase": "/pages/merchant/puechase/main",
+	"merchant.purchase": "/pages/merchant/purchase/main",
 	"merchant.purchase.createOrder": "/pages/merchant/purchase/createOrder/main",
 	"merchant.purchase.shoppingCart": "/pages/merchant/purchase/shoppingCart/main"
 }
