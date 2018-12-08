@@ -1,6 +1,7 @@
 <template>
 	<div id="create_order">
 		<mp-title :title="title"></mp-title>
+		<favorite :display="display" @close="closeImportShoppingCart"></favorite>
 		<div id="merchant_info">
 			<i id="edit"></i>
 			<ul>
@@ -13,10 +14,10 @@
 		<div id="select_tab">
 			<ul>
 				<li><i id="ico_product"></i><em>选择产品</em></li>
-				<li><i id="ico_shopping_cart"></i><em>导入常用购物车</em></li>
+				<li @click="favoriteBtn"><i id="ico_shopping_cart"></i><em>导入常用购物车</em></li>
 			</ul>
 		</div>
-		<div id="shopping_cart_list">
+		<!--<div id="shopping_cart_list">
 			<ul>
 				<li>
 					<em class="shopping_cart_no">
@@ -49,23 +50,31 @@
 					</em>
 				</li>
 			</ul>
-		</div>
+		</div>-->
 	</div>
 </template>
 <script>
 	import MpTitle from '@/components/MpTitle';
+	import Favorite from './Favorite';
 	export default {
 		data() {
 			return {
-				title: '订单'
+				title: '订单',
+				display: false
 			}
 		},
 		components: {
 			'mp-title': MpTitle,
+			'favorite': Favorite
 		},
 		computed: {},
 		methods: {
-
+			favoriteBtn() {
+				this.display = true;
+			},
+			closeImportShoppingCart() {
+				this.display = false;
+			}
 		},
 		mounted() {}
 	}

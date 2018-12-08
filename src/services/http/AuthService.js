@@ -3,7 +3,7 @@ export default class AuthService extends ApiService {
     // 获取小程序登录并验证用户是否存在
     async login (code, accessToken) {
         // 服务器交互代码
-        let response = await this.httpGet(`/login/${code}`, {
+        let response = await this.httpGet(`/wx/login/${code}`, {
             access_token: accessToken
         }, false);
         return response.data;
@@ -21,12 +21,12 @@ export default class AuthService extends ApiService {
             sign: sign,
             timestamp: timestamp
         }, false);
-        return response.data['access_token'];
+        return response.data;
     }
 
     // 提交用户信息并保存
     async mpRegister (accessToken, userInfo, signature, rawData, iv, encryptedData) {
-        let response = await this.httpPost(`/register/user/?access_token=${accessToken}`, {
+        let response = await this.httpPost(`/wx/register/user/?access_token=${accessToken}`, {
             user_info: userInfo,
             raw_data: rawData,
             signature: signature,

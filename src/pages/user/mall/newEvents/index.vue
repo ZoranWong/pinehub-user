@@ -96,7 +96,8 @@ export default {
             await this.loadCartMerchandises();
         }
     },
-    mounted () {
+    onShow () {
+        this.isShow = false;
         this.activityId = this.$route.query['activity_id'];
         if (this.activityId) {
             this.initData();

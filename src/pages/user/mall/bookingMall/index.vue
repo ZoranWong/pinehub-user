@@ -26,7 +26,6 @@ export default {
             isShow: false,
             isShowCart: true,
             model: 'model.bookingMall.shoppingCarts',
-            pageShow: false
         }
     },
     components: {
@@ -132,12 +131,11 @@ export default {
             await this.loadCartMerchandises();
         }
     },
-    mounted () {
+    onShow () {
+        this.isShow = false;
         this.initData();
-        this.pageShow = true;
     },
     destroyed () {
-        this.pageShow = false;
         this.$command('CLEAR_MERCHANDISE', 'model.bookingMall.merchandises');
     }
 }

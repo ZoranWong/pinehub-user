@@ -1,11 +1,11 @@
 import Command from '@/commands/CreateOrderCommand';
-import { SHOPPING_MALL_ORDER, SEND_ORDER_TO_USER, USER_SELF_PICK_UP } from '@/utils/OrderDict';
+import { OFF_LINE_PAYMENT_ORDER, SEND_ORDER_TO_USER } from '@/utils/OrderDict';
 export default class CreateBookingMallOrderCommand extends Command {
-    async handle (orderType, receiverName, receiverMobile, receiverAddress, ticketCode = null, cardId = null, receivingShopId = null, comment = '') {
+    async handle (receiverName, receiverMobile, receiverAddress, ticketCode = null, cardId = null, receivingShopId = null, comment = '') {
         try {
             let params = {
-                type: SHOPPING_MALL_ORDER,
-                pick_up_method: orderType,
+                type: OFF_LINE_PAYMENT_ORDER,
+                pick_up_method: SEND_ORDER_TO_USER,
                 receiver_name: receiverName,
                 receiver_address: receiverAddress,
                 receiver_mobile: receiverMobile,
@@ -17,14 +17,7 @@ export default class CreateBookingMallOrderCommand extends Command {
                 params['card_code'] = ticketCode;
             }
             let result = await super.createOrderSign(params);
-            if (!result) {
-                console.log('send order to user', orderType === SEND_ORDER_TO_USER, 'user self pick up', orderType === USER_SELF_PICK_UP);
-                if (orderType === SEND_ORDER_TO_USER) {
-                    this.$command('REDIRECT_TO', 1, 'go');
-                } else if (orderType === USER_SELF_PICK_UP) {
-                    this.$command('REDIRECT_TO', 2, 'go');
-                }
-            } else {
+            if (result) {
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {

@@ -1,5 +1,5 @@
 <template>
-	<div id="tickets_area">
+	<div id="tickets_area" v-show="false">
 		<div id="tickets">
 			<div id="tickets_title">
 				您的专属福利

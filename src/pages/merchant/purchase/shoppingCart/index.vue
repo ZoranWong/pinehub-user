@@ -1,6 +1,7 @@
 <template>
 	<div id="shopping_cart">
 		<mp-title :title="title"></mp-title>
+		<favorite :display="display" @close="closeAddFavorite"></favorite>
 		<div id="shopping_cart_time">
 			<ul>
 				<li>
@@ -13,23 +14,31 @@
 				</li>
 			</ul>
 		</div>
-		<div id="save_shopping_cart">保存为常用购物车</div>
+		<div id="save_shopping_cart" @click="favoriteBtn">保存为常用购物车</div>
 	</div>
 </template>
 <script>
 	import MpTitle from '@/components/MpTitle';
+	import Favorite from './Favorite';
 	export default {
 		data() {
 			return {
-				title: '购物车'
+				title: '购物车',
+				display: false
 			}
 		},
 		components: {
 			'mp-title': MpTitle,
+			'favorite': Favorite
 		},
 		computed: {},
 		methods: {
-
+			favoriteBtn() {
+				this.display = true;
+			},
+			closeAddFavorite() {
+				this.display = false;
+			}
 		},
 		mounted() {}
 	}
