@@ -6,9 +6,11 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
-// var HtmlWebpackPlugin = require('html-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const CompressionPlugin = require("compression-webpack-plugin")
+
 
 var env = config.build.env
 
@@ -75,35 +77,35 @@ var webpackConfig = merge(baseWebpackConfig, {
           module.resource &&
           /\.js$/.test(module.resource) &&
           module.resource.indexOf('node_modules') >= 0
-        ) || count > 1
+        ) || count > 2
       }
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common/manifest',
-      chunks: ['common/vendor']
+      chunks: ['common/vendor0', 'common/vendor1', 'common/vendor2']
     })
   ]
 })
 
-// if (config.build.productionGzip) {
-//   var CompressionWebpackPlugin = require('compression-webpack-plugin')
+if (config.build.productionGzip) {
+  var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
-//   webpackConfig.plugins.push(
-//     new CompressionWebpackPlugin({
-//       asset: '[path].gz[query]',
-//       algorithm: 'gzip',
-//       test: new RegExp(
-//         '\\.(' +
-//         config.build.productionGzipExtensions.join('|') +
-//         ')$'
-//       ),
-//       threshold: 10240,
-//       minRatio: 0.8
-//     })
-//   )
-// }
+  webpackConfig.plugins.push(
+    new CompressionWebpackPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp(
+        '\\.(' +
+        config.build.productionGzipExtensions.join('|') +
+        ')$'
+      ),
+      threshold: 10240,
+      minRatio: 0.8
+    })
+  )
+}
 
 if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin

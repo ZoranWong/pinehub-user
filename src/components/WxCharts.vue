@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import echarts from 'echarts';
+    import * as echarts from './echarts';
     import mpvueEcharts from 'mpvue-echarts';
     export default {
         props: ['options', 'unit', 'canvasId'],

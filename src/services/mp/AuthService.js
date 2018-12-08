@@ -80,13 +80,13 @@ export default class AuthService extends Service {
         }
     }
     checkSession () {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             wx.checkSession({
                 success: () => {
                     return resolve(true)
                 },
                 fail: () => {
-                    return reject(false)
+                    return resolve(false)
                 }
             });
         });
