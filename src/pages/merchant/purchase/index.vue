@@ -1,6 +1,12 @@
 <template>
 	<div class="body">
-		<title :title="title"></title>1
+		<title :title="title"></title>
+		<div id="select_date">
+			<i class="shopping_cart_calendar_ico"></i>
+			<picker mode="date" class="shopping_cart_date" @change="getSelectDate">{{selectDate}}</picker>
+			<i class="shopping_cart_batch">默认批次早5:30</i>
+			<i class="shopping_cart_status">到货</i>
+		</div>
 		<div class="merchandises">
 			<categories @categoryChange="categoryChange"></categories>
 			<merchandises :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
@@ -20,6 +26,7 @@
 		data() {
 			return {
 				title: '选择产品',
+				selectDate: (new Date()).format('yyyy/MM/dd'),
 				isShow: false,
 				isShowCart: true,
 				model: 'model.purchase.shoppingCarts',
@@ -128,7 +135,10 @@
 				await this.$command('LOAD_PURCHASE_CATEGORIES');
 				this.categoryChange(0);
 				await this.loadCartMerchandises();
-			}
+			},
+			getSelectDate(e) {
+				this.selectDate = (new Date(e.target.value)).format('yyyy/MM/dd');
+			},
 		},
 		onShow() {
 			this.isShow = false;
@@ -149,5 +159,50 @@
 		box-sizing: border-box;
 		height: 100%;
 		background: #f2f2f2;
+	}
+	
+	#select_date {
+		height: 88rpx;
+		background: #FFFFFF;
+		border-bottom: 1rpx solid #E0E0E0;
+	}
+	
+	#select_date i {
+		display: inline-block;
+		float: left;
+		line-height: 42rpx;
+		height: 42rpx;
+		margin-top: 22rpx;
+		font-size: 28rpx;
+	}
+	
+	#select_date picker {
+		display: inline-block;
+		float: left;
+		line-height: 42rpx;
+		height: 42rpx;
+		margin-top: 22rpx;
+		font-size: 28rpx;
+	}
+	
+	#select_date i:first-child {
+		margin-left: 20rpx;
+	}
+	
+	.shopping_cart_calendar_ico {
+		width: 40rpx;
+		height: 42rpx;
+		background: url(../../../../static/images/icon/ico_puechase_2.png) no-repeat center center;
+		background-size: 40rpx 42rpx;
+		margin-right: 20rpx;
+	}
+	
+	.shopping_cart_batch {
+		color: #757575;
+		margin-left: 60rpx;
+	}
+	
+	.shopping_cart_status {
+		margin-left: 22rpx;
 	}
 </style>
