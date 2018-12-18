@@ -73,8 +73,8 @@
 				return this.$store.getters['model.purchase.merchandises/isLoadedAll'];
 			},
 			storeId() {
-				return 1;
-//				return this.$store.getters['model.account/shopInfo'].id;
+//				return 1;
+				return this.$store.getters['model.account/shopInfo'].id;
 			}
 		},
 		watch: {
