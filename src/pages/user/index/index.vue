@@ -108,8 +108,10 @@
 			}
 		},
 		mounted() {
-			console.log('查看MODEL',this.$store);
+			
 			this.loadData();
+			this.$command('LOAD_TICKETS');
+			console.log('查看MODEL', this.$store);
 		},
 		methods: {
 			redirectTo(router, options = {}) {
@@ -134,6 +136,7 @@
 						}
 					}
 				});
+
 			}
 		}
 

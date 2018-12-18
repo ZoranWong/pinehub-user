@@ -7,7 +7,7 @@ export default class GetActivityInfoCommand extends Command {
 	async handle() {
 		let activityInfo = await this.service('http.activity').getActivityInfo();
 		console.log('活动', activityInfo);
-		let setActivityId = await this.service('mp.storage').set('activityId', activityInfo.id);
+		await this.service('mp.storage').set('activityId', activityInfo.id);
 		let eventData = {
 			id: activityInfo.id,
 			title: activityInfo.title,

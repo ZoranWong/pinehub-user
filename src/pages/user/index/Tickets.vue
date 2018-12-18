@@ -1,35 +1,22 @@
 <template>
-	<div id="tickets_area" v-show="false">
+	<div id="tickets_area" v-show="ticketGetDisplay">
 		<div id="tickets">
 			<div id="tickets_title">
 				您的专属福利
 			</div>
 			<div id="tickets_list">
 				<ul>
-					<li>
+					<li v-for="(item, itemIndex) in cardsList" :key="itemIndex" v-if="!item.hadGet" v-show="itemIndex<2">
 						<i class="ticket_top_ico"></i>
 						<i class="ticket_bottom_ico"></i>
 						<div class="ticket_left">
-							<em class="ticket_left_money"><i>￥</i>7</em>
-							<em class="ticket_left_money_if">满29元可用</em>
+							<em class="ticket_left_money">{{item.content}}</em>
+							<em class="ticket_left_money_if" v-if="item.leastCost>0">满29元可用</em>
 						</div>
 						<div class="ticket_right">
-							<em class="ticket_right_title">新人专享</em>
-							<em class="ticket_right_time">限5日内</em>
-							<i class="ticket_right_btn">立即领取</i>
-						</div>
-					</li>
-					<li>
-						<i class="ticket_top_ico"></i>
-						<i class="ticket_bottom_ico"></i>
-						<div class="ticket_left">
-							<em class="ticket_left_money"><i>￥</i>16</em>
-							<em class="ticket_left_money_if">满69元可用</em>
-						</div>
-						<div class="ticket_right">
-							<em class="ticket_right_title">新人专享</em>
-							<em class="ticket_right_time">限3日内</em>
-							<i class="ticket_right_btn">立即领取</i>
+							<em class="ticket_right_title">{{item.title}}</em>
+							<em class="ticket_right_time">{{item.dateInfo}}</em>
+							<i class="ticket_right_btn" @click="receiveTicket(item)">立即领取</i>
 						</div>
 					</li>
 				</ul>
@@ -38,7 +25,7 @@
 				<em>对你的好</em>
 				<em>不知不觉攒了这么多</em>
 			</div>
-			<i id="close_tickets"></i>
+			<i id="close_tickets" @click="closeTips"></i>
 		</div>
 	</div>
 </template>
@@ -46,10 +33,28 @@
 	export default {
 		name: "tickets",
 		data() {
-			return {}
+			return {
+				ticketGetDisplay: this.ticketListShow()
+			}
 		},
 		components: {},
-		methods: {}
+		methods: {
+			async receiveTicket(item) {
+				await this.$command('RECEIVE_TICKET', item);
+			},
+			closeTips() {
+				this.ticketGetDisplay = false;
+			},
+			ticketListShow() {
+				return this.$store.getters['model.cards/ticketListShow'];
+			}
+		},
+		computed: {
+			cardsList() {
+				return this.$store.getters['model.cards/list'];
+			},
+
+		}
 	}
 </script>
 <style scoped>
