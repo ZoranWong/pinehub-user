@@ -13,7 +13,7 @@
 					<div class="fsc_input">
 						<input type="text" v-model="shoppingCartName" />
 					</div>
-					<div class="fsc_title">
+					<!--<div class="fsc_title">
 						产品列表
 					</div>
 					<div id="fsc_products">
@@ -21,13 +21,13 @@
 							<li><em>三明治（牛肉味）</em><i>3份</i></li>
 							<li><em>饭卷（海苔味）</em><i>1份</i></li>
 						</ul>
-					</div>
+					</div>-->
 					<!--<div id="input_change_list">
 						<ul>
 							<li v-for="(item,index) in selectCause" :key="item.id" :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">{{item.name}}</li>
 						</ul>
 					</div>-->
-					<div id="input_change_btn" @click="returnBtn(merchandise['id'], merchandise['stockNum'], productInfo['newStockNum'], productInfo['reason'], comment)">
+					<div id="input_change_btn" @click="returnBtn()">
 						保存
 					</div>
 					<div id="input_change_tips">
@@ -50,33 +50,26 @@
 		},
 		data() {
 			return {
-				shoppingCartName: ''
+				shoppingCartName: null
 			}
 		},
 		watch: {},
 		methods: {
-			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
-				modifyStockNum = parseInt(modifyStockNum);
-				console.log('modifyStockNum', modifyStockNum);
-				if(isNaN(modifyStockNum) || modifyStockNum < 0) {
+			returnBtn() {
+				let name = this.shoppingCartName;
+				console.log('modifyStockNum', name);
+
+				if(name == null) {
 					wx.showToast({
-						title: '正确填写库存',
+						title: '不得为空',
 						icon: 'none'
 					})
-				} else if(modifyStockNum === this.merchandise['stockNum']) {
-					wx.showToast({
-						title: '库存没有任何改变',
-						icon: 'none'
-					})
+					return false;
 				} else {
 					wx.showLoading({
 						title: '正在提交...'
 					});
-					console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
-					this.$emit('modifyStock', id, primaryStockNum, modifyStockNum, reason, comment);
-					this.productInfo = {};
-					this.productInfo['reason'] = this.selectCause[0]['name'];
-					this.radioCur = 0;
+					this.$command('SET_ALWAYS_SHOPPING_CART', name);
 					this.$emit('close');
 				}
 			},

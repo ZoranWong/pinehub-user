@@ -6,7 +6,7 @@
             <div id="orders_select">
                 <div class="orders_select_info">
                     <em>日期</em>
-                    <picker mode="date" class="input" @change="getSelectDate">{{selectDate}}</picker>
+                    <picker mode="date" start="" class="input" @change="getSelectDate">{{selectDate}}</picker>
                 </div>
                 <div class="orders_select_info">
                     <em>配送批次</em>

@@ -108,6 +108,7 @@
 			}
 		},
 		mounted() {
+			console.log('查看MODEL',this.$store);
 			this.loadData();
 		},
 		methods: {

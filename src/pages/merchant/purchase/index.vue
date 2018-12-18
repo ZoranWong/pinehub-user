@@ -3,17 +3,19 @@
 		<title :title="title"></title>
 		<div id="select_date">
 			<i class="shopping_cart_calendar_ico"></i>
-			<picker mode="date" class="shopping_cart_date" @change="getSelectDate">{{selectDate}}</picker>
-			<i class="shopping_cart_batch">默认批次早5:30</i>
+			<!--<picker mode="date" :start="startDate" class="shopping_cart_date" @change="getSelectDate">{{selectDate}}</picker>-->
+			<i>当前选择的是</i>
+			<picker class="shopping_cart_batch" @change="getselectBatch" :range="batchList" range-key="name" :key="index">
+				{{selectBatch}}
+			</picker>
 			<i class="shopping_cart_status">到货</i>
 		</div>
 		<div class="merchandises">
 			<categories @categoryChange="categoryChange"></categories>
-			<merchandises :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
+			<merchandises :batch="selectBatchId" :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
 			</merchandises>
 		</div>
 		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
-		<pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
 	</div>
 </template>
 
@@ -21,12 +23,25 @@
 	import MpTitle from '@/components/MpTitle';
 	import MerchandiseList from '@/components/MerchandiseList';
 	import Categories from './Categories';
-	import Cart from '@/components/ShoppingCarts'
+	import Cart from '@/components/PurchaseShoppingCarts'
 	export default {
 		data() {
 			return {
 				title: '选择产品',
 				selectDate: (new Date()).format('yyyy/MM/dd'),
+				startDate: (new Date()).format('yyyy-MM-dd'),
+				batchList: [{
+					'id': 1,
+					'name': '5:30'
+				}, {
+					'id': 2,
+					'name': '9:30'
+				}, {
+					'id': 3,
+					'name': '15:30'
+				}],
+				selectBatch: null,
+				selectBatchId: 1,
 				isShow: false,
 				isShowCart: true,
 				model: 'model.purchase.shoppingCarts',
@@ -56,6 +71,10 @@
 			},
 			isLoadedAll() {
 				return this.$store.getters['model.purchase.merchandises/isLoadedAll'];
+			},
+			storeId() {
+				return 1;
+//				return this.$store.getters['model.account/shopInfo'].id;
 			}
 		},
 		watch: {
@@ -113,21 +132,23 @@
 				}
 			},
 			addCart(merchandiseId, id = null) {
-				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId) + 1;
-				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+				console.log(merchandiseId, id);
+				let batch = this.selectBatchId;
+				let storeId = this.storeId;
+				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId, batch) + 1;
+				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', storeId, batch, merchandiseId, id, count, batch);
 			},
 			reduceCart(merchandiseId, id = null) {
-				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId) - 1;
-				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
+				let batch = this.selectBatchId;
+				let storeId = this.storeId;
+				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId, batch) - 1;
+				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', storeId, batch, merchandiseId, id, count, batch);
 			},
 			clearShoppingCart() {
-				try {
-					this.$command('PURCHASE_SHOPPINGCART_CLEAR_MERCHANDISES');
-				} catch(e) {
-					console.log(e);
-				}
+				
 			},
 			async initData() {
+				this.selectBatch = this.batchList[0].name;
 				console.log(1111111111111111110000000000000000000011111111111111100000000000000);
 				this.$store.dispatch('model.purchase.merchandises/setCurrentCategory', {
 					categoryIndex: -1
@@ -139,6 +160,10 @@
 			getSelectDate(e) {
 				this.selectDate = (new Date(e.target.value)).format('yyyy/MM/dd');
 			},
+			getselectBatch(e) {
+				this.selectBatch = this.batchList[e.target.value].name;
+				this.selectBatchId = this.batchList[e.target.value].id;
+			}
 		},
 		onShow() {
 			this.isShow = false;
@@ -199,7 +224,7 @@
 	
 	.shopping_cart_batch {
 		color: #757575;
-		margin-left: 60rpx;
+		margin-left: 16rpx;
 	}
 	
 	.shopping_cart_status {

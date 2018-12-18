@@ -8,6 +8,7 @@ export default class ShoppingCart {
 		this.sellPrice = cart['sell_price'];
 		this.totalAmount = cart['quality'] * cart['sell_price'];
 		this.shopId = cart['shop_id'];
-		this.thumbImage = cart['main_image']
+		this.thumbImage = cart['main_image'],
+		this.batch = cart['batch']
 	}
 }

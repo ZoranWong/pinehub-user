@@ -71,7 +71,7 @@ export default class Model {
             this.state.currentPage++;
         });
         this.addEventListener('setList', (payload, state /* paylaod */) => {
-            console.log(payload);
+            console.log('^^^^^^^^^^^^^^',payload);
             this.setList(payload, state);
         });
 

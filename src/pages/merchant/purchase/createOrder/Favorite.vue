@@ -11,7 +11,7 @@
 						选择常用购物车
 					</div>
 					<div id="fsc_select">
-						<dl @click="selectNowShoppingCart(index)" v-for="(item, index) in shoppingCartList" :key="index">
+						<dl @click="selectNowShoppingCart(index)" v-for="(item, index) in shoppingCartList" :key="index" :class="{fsc_unuse:item == null}">
 							<dd></dd>
 							<dt :class="{fsc_now:index == selectCur}"></dt>
 						</dl>
@@ -22,11 +22,7 @@
 					<div class="fsc_now_title">
 						{{shoppingCartName}}
 					</div>
-					<!--<div id="input_change_list">
-						<ul>
-							<li v-for="(item,index) in selectCause" :key="item.id" :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">{{item.name}}</li>
-						</ul>
-					</div>-->
+					{{shoppingCartsList}}
 					<div id="input_change_btn" @click="importShoppingCart">
 						导入购物车
 					</div>
@@ -50,33 +46,28 @@
 		},
 		data() {
 			return {
-				selectCause: [{
-					'id': 0,
-					'name': '商品损坏'
-				}, {
-					'id': 1,
-					'name': '商品丢失'
-				}, {
-					'id': 2,
-					'name': '商品过期'
-				}],
-				shoppingCartList: [{
-					'id': 1,
-					'name': '早餐专用'
-				}, {
-					'id': 2,
-					'name': '上午茶专用'
-				}, {
-					'id': 3,
-					'name': '午餐专用'
-				}, {
-					'id': 4,
-					'name': '下午茶专用'
-				}, null],
+				//				shoppingCartList: [{
+				//					'id': 1,
+				//					'name': '早餐专用'
+				//				}, {
+				//					'id': 2,
+				//					'name': '上午茶专用'
+				//				}, {
+				//					'id': 3,
+				//					'name': '午餐专用'
+				//				}, {
+				//					'id': 4,
+				//					'name': '下午茶专用'
+				//				}, null],
 				shoppingCartName: '',
 				shoppingCartId: null,
 				selectCur: 0
 			}
+		},
+		computed: {
+			shoppingCartList() {
+				return this.$store.getters['model.shoppingcart.always.use/list'];
+			},
 		},
 		watch: {},
 		methods: {
@@ -94,9 +85,12 @@
 			},
 			importShoppingCart() {
 				let shoppingCartId = this.shoppingCartId;
-				this.$command('IMPORT_SHOPPING_CART', shoppingCartId);
+				console.log(shoppingCartId)
+				let result = this.$command('IMPORT_SHOPPING_CART', shoppingCartId);
 				console.log(shoppingCartId);
-				this.$emit('close');
+				if(result) {
+					this.$emit('close');
+				}
 			},
 			//			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
 			//				modifyStockNum = parseInt(modifyStockNum);
@@ -126,9 +120,10 @@
 			toastClose() {
 				this.$emit('close');
 			},
-			shoppingCartInit() {
-				this.shoppingCartName = this.shoppingCartList[0].name;
-				this.shoppingCartId = this.shoppingCartList[0].id;
+			async shoppingCartInit() {
+				await this.$command('LOAD_MERCHANT_SAVED_SHOPPING_CARTS');
+				this.shoppingCartName = await this.shoppingCartList[0].name;
+				this.shoppingCartId = await this.shoppingCartList[0].id;
 			}
 		},
 		mounted() {
@@ -226,6 +221,31 @@
 		width: 70rpx;
 		height: 70rpx;
 		margin: 0 auto;
+	}
+	
+	#fsc_select dl:nth-child(1).fsc_unuse dd {
+		background: url(../../../../../static/images/icon/ico_my_fsc_g_1.png) no-repeat center center;
+		background-size: 70rpx 70rpx;
+	}
+	
+	#fsc_select dl:nth-child(2).fsc_unuse dd {
+		background: url(../../../../../static/images/icon/ico_my_fsc_g_2.png) no-repeat center center;
+		background-size: 70rpx 70rpx;
+	}
+	
+	#fsc_select dl:nth-child(3).fsc_unuse dd {
+		background: url(../../../../../static/images/icon/ico_my_fsc_g_3.png) no-repeat center center;
+		background-size: 70rpx 70rpx;
+	}
+	
+	#fsc_select dl:nth-child(4).fsc_unuse dd {
+		background: url(../../../../../static/images/icon/ico_my_fsc_g_4.png) no-repeat center center;
+		background-size: 70rpx 70rpx;
+	}
+	
+	#fsc_select dl:nth-child(5).fsc_unuse dd {
+		background: url(../../../../../static/images/icon/ico_my_fsc_g_5.png) no-repeat center center;
+		background-size: 70rpx 70rpx;
 	}
 	
 	#fsc_select dl:nth-child(1) dd {

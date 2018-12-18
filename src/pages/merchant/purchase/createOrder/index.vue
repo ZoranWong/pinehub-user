@@ -3,54 +3,54 @@
 		<mp-title :title="title"></mp-title>
 		<favorite :display="display" @close="closeImportShoppingCart"></favorite>
 		<div id="merchant_info">
-			<i id="edit"></i>
-			<ul>
-				<li><em>收货单位：</em>(选填)</li>
-				<li><em>收货人：</em>张雷</li>
-				<li><em>联系电话：</em>15858585858</li>
-				<li><em>配送地址：</em>安徽省合肥市高新区宁西路28号8栋5118</li>
+			<i id="edit" @click="changeBuyInfo"></i>
+			<ul v-show="editStatus">
+				<li><em>收货单位：</em>{{storeName}}</li>
+				<li><em>收货人：</em>{{storeAdmin}}</li>
+				<li><em>联系电话：</em>{{storeMobile}}</li>
+				<li><em>配送地址：</em>{{storeAddress}}</li>
+				<li><em>配送时间：</em>2018-12-18 {{}}</li>
+			</ul>
+			<ul v-show="!editStatus">
+				<li><em>收货单位：</em><input class="merchant_info_input" v-model="storeName" type="text" /></li>
+				<li><em>收货人：</em><input class="merchant_info_input" v-model="storeAdmin" type="text" /></li>
+				<li><em>联系电话：</em><input class="merchant_info_input" v-model="storeMobile" type="text" /></li>
+				<li><em>配送地址：</em><input class="merchant_info_input" v-model="storeAddress" type="text" /></li>
 			</ul>
 		</div>
 		<div id="select_tab">
 			<ul>
-				<li><i id="ico_product"></i><em>选择产品</em></li>
+				<li @click="jump('merchant.purchase')"><i id="ico_product"></i><em>选择产品</em></li>
 				<li @click="favoriteBtn"><i id="ico_shopping_cart"></i><em>导入常用购物车</em></li>
 			</ul>
 		</div>
-		<!--<div id="shopping_cart_list">
-			<ul>
-				<li>
-					<em class="shopping_cart_no">
-						购物车编号：QJI2018121200932
+		<div id="shopping_cart_list">
+			<div v-for="(items, itemsIndex) in cartList" :key="itemsIndex">
+				<div class="shopping_cart_title">
+					<i class="shopping_cart_title_date"></i>
+					<i class="shopping_cart_title_send_time">{{batch[items[0].batch]}} 到货</i>
+				</div>
+				<ul>
+					<li v-for="(item, itemIndex) in items" :key="itemIndex">
+						<em class="shopping_cart_info">
+						{{item.name}} * {{item.count}}
 					</em>
-					<div class="shopping_cart_time">
-						<i class="shopping_cart_ico"></i>
-						<i class="shopping_cart_date">2018/11/11</i>
-						<i class="shopping_cart_send_time">中午10:30</i>
-						<i class="shopping_cart_status">到货</i>
-					</div>
-					<em class="shopping_cart_price">
-						小计：￥2000.00
-						<i class="shopping_cart_price_more"></i>
+						<em class="shopping_cart_price">
+						￥{{item.sellPrice}}
 					</em>
-				</li>
-				<li>
-					<em class="shopping_cart_no">
-						购物车编号：QJI2018121200932
-					</em>
-					<div class="shopping_cart_time">
-						<i class="shopping_cart_ico"></i>
-						<i class="shopping_cart_date">2018/11/11</i>
-						<i class="shopping_cart_send_time">中午10:30</i>
-						<i class="shopping_cart_status">到货</i>
-					</div>
-					<em class="shopping_cart_price">
-						小计：￥2000.00
-						<i class="shopping_cart_price_more"></i>
-					</em>
-				</li>
-			</ul>
-		</div>-->
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="next_bottom">
+			<div class="total_price">
+				合计 {{totalAmount}} 元
+			</div>
+			<div class="choose" @click="createOrder">
+				提交订单
+				<i class="i-icon next-icon"></i>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -60,23 +60,86 @@
 		data() {
 			return {
 				title: '订单',
-				display: false
+				display: false,
+				editStatus: true,
+				storeId: null,
+				storeName: '',
+				storeAdmin: '',
+				storeMobile: '',
+				storeAddress: '',
+				model: 'model.purchase.shoppingCarts',
 			}
 		},
 		components: {
 			'mp-title': MpTitle,
 			'favorite': Favorite
 		},
-		computed: {},
+		computed: {
+			//			storeAddress() {
+			//				return "安徽省合肥市高新区宁西路28号8栋5118";
+			//			},
+			//			storeMobile() {
+			//				return "15858585858";
+			//			},
+			//			storeAdmin() {
+			//				return "张雷";
+			//			},
+			//			storeName() {
+			//				return "店铺名称";
+			//			}
+			cartList() {
+				return this.model ? this.$store.getters[`${this.model}/groupList`] : [];
+			},
+			totalAmount() {
+				return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
+			},
+			batch(){
+				return this.config['app']['batch'];
+			}
+		},
 		methods: {
 			favoriteBtn() {
 				this.display = true;
 			},
 			closeImportShoppingCart() {
 				this.display = false;
+			},
+			changeBuyInfo() {
+				let status = this.editStatus
+				if(status) {
+					this.editStatus = false;
+				} else {
+					this.editStatus = true;
+				}
+				console.log('1', '修改用户信息');
+			},
+			jump(router) {
+				this.$command('REDIRECT_TO', router, 'push');
+			},
+			getStoreSendInfo() {
+				let storeInfo = this.$store.getters['model.account/shopInfo'];
+				this.storeId = storeInfo.id;
+				this.storeName = storeInfo.name ? storeInfo.name : '暂无';
+				this.storeAddress = storeInfo.address ? storeInfo.address : '暂无';
+				let userInfo = this.$store.getters['model.account/userInfo'];
+				this.storeAdmin = userInfo.nickname ? userInfo.nickname : '暂无';
+				this.storeMobile = userInfo.mobile ? userInfo.mobile : '暂无';
+			},
+			createOrder() {
+				this.$command(
+					'CREATE_MERCHANT_ORDER',
+					1,
+					this.storeId,
+					this.storeAdmin,
+					this.storeMobile,
+					this.storeAddress
+				);
 			}
 		},
-		mounted() {}
+		mounted() {
+			this.getStoreSendInfo();
+			console.log('OPPO', this)
+		}
 	}
 </script>
 <style scoped>
@@ -105,6 +168,17 @@
 		right: 20rpx;
 	}
 	
+	.merchant_info_input {
+		border: 1rpx solid #CCCCCC;
+		display: inline-block;
+		width: 100%;
+		border-radius: 10rpx;
+		margin-top: 10rpx;
+		background: #f0f0f0;
+		padding: 0 10rpx;
+		box-sizing: border-box;
+	}
+	
 	#merchant_info ul {
 		padding: 32rpx;
 	}
@@ -115,6 +189,7 @@
 		line-height: 34rpx;
 		margin-top: 22rpx;
 		color: #111111;
+		overflow: hidden;
 	}
 	
 	#merchant_info ul li:first-child {
@@ -123,6 +198,7 @@
 	
 	#merchant_info ul li em {
 		display: inline-block;
+		float: left;
 	}
 	
 	#select_tab {
@@ -183,12 +259,38 @@
 		margin: 20rpx;
 	}
 	
+	.shopping_cart_title {
+		background: #FFD000;
+		color: #FFFFFF;
+		border-radius: 10rpx;
+		height: 70rpx;
+		line-height: 70rpx;
+		font-size: 32rpx;
+		font-weight: 400;
+		text-shadow: 1rpx 1rpx 1rpx #FFC000;
+		padding: 0 20rpx;
+		margin-bottom: 10rpx;
+	}
+	
+	.shopping_cart_title i {
+		display: inline-block;
+	}
+	
+	.shopping_cart_title_send_time {
+		float: right;
+	}
+	
 	#shopping_cart_list ul li {
 		background: #FFFFFF;
 		border-radius: 10rpx;
 		padding: 20rpx;
 		font-size: 28rpx;
 		font-weight: 300;
+		margin-bottom: 10rpx;
+		overflow: hidden;
+	}
+	
+	#shopping_cart_list ul {
 		margin-bottom: 10rpx;
 	}
 	
@@ -224,8 +326,12 @@
 		margin-right: 0 !important;
 	}
 	
+	.shopping_cart_info {
+		float: left;
+	}
+	
 	.shopping_cart_price {
-		margin-top: 16rpx;
+		float: right;
 	}
 	
 	.shopping_cart_price_more {
@@ -235,5 +341,46 @@
 		background-size: 12rpx 22rpx;
 		float: right;
 		margin-top: 8rpx;
+	}
+	
+	#next_bottom {
+		width: 750rpx;
+		height: 90rpx;
+		background: #000000;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+	
+	.total_price {
+		height: 80rpx;
+		line-height: 80rpx;
+		color: #FFFFFF;
+		position: absolute;
+		bottom: 5rpx;
+		left: 20rpx;
+	}
+	
+	.choose {
+		display: inline-block;
+		width: 26%;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: right;
+		color: #fece00;
+		position: absolute;
+		bottom: 5rpx;
+		right: 0;
+		padding-right: 64rpx;
+	}
+	
+	.next-icon {
+		width: 20rpx;
+		height: 35.6rpx;
+		background: url(../../../../../static/images/icon/next-icon.png) no-repeat;
+		background-size: contain;
+		position: absolute;
+		bottom: 22rpx;
+		right: 23rpx;
 	}
 </style>

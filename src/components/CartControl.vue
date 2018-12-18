@@ -16,6 +16,14 @@
 				default: null,
 				type: Number
 			},
+			batch: {
+				default: null,
+				type: Number
+			},
+			dateStatus: {
+				default: null,
+				type: String
+			},
 			model: {
 				default: null,
 				type: String
@@ -28,15 +36,16 @@
 			count() {
 				if(this.model) {
 					try {
-						console.log('------count -------', this.merchandiseId, this.$store.getters[`${this.model}/quality`](this.merchandiseId));
-						return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId) : 0;
+						console.log('------count -------',this.model, this.batch, this.merchandiseId, this.$store.getters,
+						this.$store.getters[`${this.model}/quality`](this.merchandiseId, this.batch));
+						return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId,this.batch) : 0;
 					} catch(e) {
 						console.log('抛出异常', e)
 					}
 				}
 			},
 			shoppingCartId() {
-				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId) : null;
+				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId,this.batch) : null;
 			}
 		},
 		methods: {
