@@ -1,5 +1,5 @@
 <template>
-	<div id="tickets_area" v-show="ticketGetDisplay">
+	<div id="tickets_area" v-show="ticketListShow">
 		<div id="tickets">
 			<div id="tickets_title">
 				您的专属福利
@@ -34,7 +34,7 @@
 		name: "tickets",
 		data() {
 			return {
-				ticketGetDisplay: this.ticketListShow()
+				//				ticketGetDisplay: false
 			}
 		},
 		components: {},
@@ -42,18 +42,17 @@
 			async receiveTicket(item) {
 				await this.$command('RECEIVE_TICKET', item);
 			},
-			closeTips() {
-				this.ticketGetDisplay = false;
-			},
-			ticketListShow() {
-				return this.$store.getters['model.cards/ticketListShow'];
+			closeTips(){
+				this.ticketListShow = false;
 			}
 		},
 		computed: {
 			cardsList() {
 				return this.$store.getters['model.cards/list'];
 			},
-
+			ticketListShow() {
+				return this.$store.getters['model.cards/ticketListShow'];
+			}
 		}
 	}
 </script>
