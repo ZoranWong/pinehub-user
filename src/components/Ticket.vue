@@ -13,7 +13,7 @@
     <div class="coupon-right fr">
       <p class="voucher-title">{{(ticket.leastCost > 0 ? ('满' + ticket.leastCost + '元'): '') +
         (ticket.type === 'DISCOUNT' ? ((((ticket.discount * 100) % 10) ? (ticket.discount * 100):(ticket.discount * 10))  + '折优惠') : ('减' + ticket.reduceCost + '元'))}}</p>
-      <p class="time-limit">
+      <p class="time-limit" v-if = "ticket.beginTimestamp">
         <span>有效期：</span>
         <span>{{ticket.beginTimestamp}} - {{ticket.endTimestamp}}</span>
       </p>

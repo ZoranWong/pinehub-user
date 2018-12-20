@@ -9,28 +9,29 @@ import Cards from '@/models/Cards';
 import App from '@/models/App';
 
 export default class ModelServiceProvider extends ServiceProvider {
-	register() {
-		let models = new Model(this.app);
-		this.app.register('models', models);
+    register () {
+        let models = new Model(this.app);
+        this.app.register('models', models);
 
-		this.app.registerModel('model.app', App);
+        this.app.registerModel('model.app', App);
 
-		this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
-		this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
-		this.app.registerModel('model.newEvents.shoppingCarts', ShoppingCarts);
-		this.app.registerModel('model.purchase.shoppingCarts', ShoppingCarts);
+        this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
+        this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
+        this.app.registerModel('model.newEvents.shoppingCarts', ShoppingCarts);
+        this.app.registerModel('model.purchase.shoppingCarts', ShoppingCarts);
 
-		this.app.registerModel('model.storeMarket.tickets', Tickets);
-		this.app.registerModel('model.bookingMall.tickets', Tickets);
-		this.app.registerModel('model.newEvents.tickets', Tickets);
+        this.app.registerModel('model.storeMarket.tickets', Tickets);
+        this.app.registerModel('model.bookingMall.tickets', Tickets);
+        this.app.registerModel('model.newEvents.tickets', Tickets);
+        this.app.registerModel('model.user.tickets', Tickets);
 
-		this.app.registerModel('model.cards', Cards);
+        this.app.registerModel('model.cards', Cards);
 
-		this.app.registerModel('model.account', Account);
-		this.app.registerModel('model.stores', Stores);
-		this.app.registerModel('model.nearestStore', NearestStore);
-	}
-	boot() {
+        this.app.registerModel('model.account', Account);
+        this.app.registerModel('model.stores', Stores);
+        this.app.registerModel('model.nearestStore', NearestStore);
+    }
+    boot() {
 
-	}
+    }
 }

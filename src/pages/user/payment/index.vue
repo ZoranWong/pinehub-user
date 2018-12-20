@@ -62,8 +62,16 @@
             }
         },
         mounted () {
-            this.storeId = this.$route.query['store_id'];
+
+            this.storeId = this.$route.query['store_id'] ? this.$route.query['store_id'] : this.storeId;
             this.init();
+        },
+        onLoad (options) {
+            if (options.q){
+                let scan_url = decodeURIComponent(options.q);
+                console.log("scan_url:" + scan_url)
+                this.storeId = scan_url.match(/\d+/) //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+            }
         }
     }
 </script>
