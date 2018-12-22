@@ -241,6 +241,6 @@ export default class ShoppingCartService extends ApiService {
 		let response = null;
 		let route = `/merchant/saved/shoppingcart/${shoppingCartId}/use/`;
 		response = await this.httpGet(route);
-		return response.message;
+		return response.data;
 	}
 }

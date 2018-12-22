@@ -9,7 +9,7 @@
 				<li><em>收货人：</em>{{storeAdmin}}</li>
 				<li><em>联系电话：</em>{{storeMobile}}</li>
 				<li><em>配送地址：</em>{{storeAddress}}</li>
-				<li><em>配送时间：</em>2018-12-18 {{}}</li>
+				<li><em>配送时间：</em>{{sendDate}}</li>
 			</ul>
 			<ul v-show="!editStatus">
 				<li><em>收货单位：</em><input class="merchant_info_input" v-model="storeName" type="text" /></li>
@@ -67,6 +67,7 @@
 				storeAdmin: '',
 				storeMobile: '',
 				storeAddress: '',
+				sendDate: '',
 				model: 'model.purchase.shoppingCarts',
 			}
 		},
@@ -93,7 +94,7 @@
 			totalAmount() {
 				return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
 			},
-			batch(){
+			batch() {
 				return this.config['app']['batch'];
 			}
 		},
@@ -124,6 +125,7 @@
 				let userInfo = this.$store.getters['model.account/userInfo'];
 				this.storeAdmin = userInfo.nickname ? userInfo.nickname : '暂无';
 				this.storeMobile = userInfo.mobile ? userInfo.mobile : '暂无';
+				this.sendDate = this.$route.query['selectDate'];
 			},
 			createOrder() {
 				this.$command(

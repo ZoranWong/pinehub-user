@@ -40,7 +40,7 @@ export default {
         nearbyStores () {
             this.$command('REDIRECT_TO', 'storesMap', 'push', {
                 query: {
-                    next_to: 'newEvents.createOrder',
+                    next_route: 'newEvents.createOrder',
                     activity_id: this.activityId
                 }
             });

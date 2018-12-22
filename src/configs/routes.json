@@ -26,5 +26,6 @@
 	"merchant.pickUpOrders": "/pages/merchant/pickUpOrder/main",
 	"merchant.purchase": "/pages/merchant/purchase/main",
 	"merchant.purchase.createOrder": "/pages/merchant/purchase/createOrder/main",
+	"merchant.payment.success": "/pages/merchant/paySuccess/main",
 	"merchant.purchase.shoppingCart": "/pages/merchant/purchase/shoppingCart/main"
 }

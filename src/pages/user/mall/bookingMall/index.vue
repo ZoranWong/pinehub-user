@@ -7,7 +7,7 @@
             <merchandises :model="model" :width="listwidth" :next="next" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :categoryId="'store_merchandises_' + categoryId">
             </merchandises>
         </div>
-        <cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCart="clearShoppingCart"></cart>
+        <cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCart"></cart>
         <pop-delivery v-if="isShow" @hdlHidePopup="hdlHidePopup"></pop-delivery>
     </div>
 </template>
@@ -119,6 +119,7 @@ export default {
         },
         clearShoppingCart () {
             try {
+            	console.log('可以了----------------------')
                 this.$command('BOOKING_MALL_SHOPPINGCART_CLEAR_MERCHANDISES');
             } catch (e) {
                 console.log(e);

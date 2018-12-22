@@ -98,7 +98,12 @@
 				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', storeId, batch, merchandiseId, id, count, batch);
 			},
 			jumpNext() {
-				this.$command('REDIRECT_TO', 'merchant.purchase.createOrder', 'push');
+				let selectDate = this.selectDate;
+				this.$command('REDIRECT_TO', 'merchant.purchase.createOrder', 'push', {
+					query: {
+						selectDate: selectDate
+					}
+				});
 			}
 		},
 		mounted() {

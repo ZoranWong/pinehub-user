@@ -89,6 +89,7 @@
 				let result = this.$command('IMPORT_SHOPPING_CART', shoppingCartId);
 				console.log(shoppingCartId);
 				if(result) {
+					console.log('PRINT THIS', this);
 					this.$emit('close');
 				}
 			},

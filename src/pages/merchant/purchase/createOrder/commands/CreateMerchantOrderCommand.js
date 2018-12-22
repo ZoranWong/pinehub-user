@@ -25,7 +25,7 @@ export default class CreateMerchantOrderCommand extends Command {
 					this.$command('REDIRECT_TO', 2, 'go');
 				}
 			} else {
-				this.$command('REDIRECT_TO', 'payment.success', 'replace');
+				this.$command('REDIRECT_TO', 'merchant.payment.success', 'replace');
 			}
 		} catch(e) {
 			console.log('抛出异常', e);

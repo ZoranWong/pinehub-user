@@ -49,10 +49,10 @@ export default class ShoppingCarts extends Model {
             },
             quality () {
                 return (id, batch = null) => {
-                    let cart = _.findWhere(this.list(), {
-                        merchandiseId: id,
-                        batch: batch
-                    });
+                	    let where = {};
+                	    where['merchandiseId'] = id;
+                	    if(batch) where['batch'] = batch;
+                    let cart = _.findWhere(this.list(), where);
                     return cart ? cart.count : 0;
                 }
             },

@@ -108,10 +108,7 @@
 			}
 		},
 		mounted() {
-			
 			this.loadData();
-			this.$command('LOAD_TICKETS');
-			console.log('查看MODEL', this.$store);
 		},
 		methods: {
 			redirectTo(router, options = {}) {
@@ -134,9 +131,12 @@
 							this.showTips = true;
 							await this.$command('GET_ACTIVITY_INFO');
 						}
+						await this.loadTickets();
 					}
 				});
-
+			},
+			async loadTickets() {
+				await this.$command('LOAD_TICKETS');
 			}
 		}
 
