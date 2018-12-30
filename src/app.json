@@ -8,9 +8,10 @@
 		"pages/user/mall/storeMarket/coupon/main",
 		"pages/user/mall/bookingMall/createSendOrder/main",
 		"pages/user/mall/bookingMall/createPickOrder/main",
+		"pages/user/mall/bookingMall/coupon/main",
 		"pages/user/mall/newEvents/main",
 		"pages/user/mall/newEvents/createOrder/main",
-		"pages/user/mall/bookingMall/coupon/main",
+		"pages/user/mall/newEvents/coupon/main",
 		"pages/user/paySuccess/main",
 		"pages/user/userCenter/main",
 		"pages/user/order/main",
@@ -31,7 +32,8 @@
 				"pickUpOrder/main",
 				"purchase/main",
 				"purchase/createOrder/main",
-				"purchase/shoppingCart/main"
+				"purchase/shoppingCart/main",
+				"collectionRecords/main"
 			]
 		}
 	],

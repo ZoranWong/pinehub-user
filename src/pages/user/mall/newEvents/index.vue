@@ -5,7 +5,7 @@
 		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCarts"></cart>
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
-		<div id="shopping_cart_height" v-if="isShow"></div>
+		<div id="shopping_cart_height" v-if="totalCount>0"></div>
 	</div>
 </template>
 
@@ -34,6 +34,9 @@
 		computed: {
 			merchandises() {
 				return this.$store.getters['model.newEvents.merchandises/list']
+			},
+			totalCount() {
+				return this.$store.getters['model.newEvents.shoppingCarts/totalCount']
 			},
 			currentPage() {
 				let page = this.$store.getters['model.newEvents.merchandises/currentPage'];

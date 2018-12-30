@@ -112,7 +112,7 @@
 	
 	.merchandises-item-top {
 		width: 100%;
-		height: 330rpx;
+		height: 400rpx;
 		overflow-y: hidden;
 	}
 	

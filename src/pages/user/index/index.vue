@@ -129,9 +129,9 @@
 						if(!this.hasLoadedActivity && this.hasToken) {
 							await this.$command('LOAD_ACCOUNT', false);
 							this.showTips = true;
+							await this.loadTickets();
 							await this.$command('GET_ACTIVITY_INFO');
 						}
-						await this.loadTickets();
 					}
 				});
 			},

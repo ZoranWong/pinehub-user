@@ -78,7 +78,8 @@
 				this.mp.router.push('newEvents.coupons', {
 					query: {
 						activity_id: this.activityId,
-						store_id: this.storeId
+						store_id: this.storeId,
+						back_to: 'newEvents.createPickOrder'
 					}
 				});
 			},

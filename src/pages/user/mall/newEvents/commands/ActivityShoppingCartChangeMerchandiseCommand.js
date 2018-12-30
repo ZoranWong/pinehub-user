@@ -31,6 +31,7 @@ export default class ActivityShoppingCartChangeMerchandiseCommand extends Comman
           this.changeShoppingCartMerchandise(merchandise);
         }
       }
+      console.log('MDS',merchandise);
     } catch (e) {
       console.log('抛出异常', e);
     }

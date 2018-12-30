@@ -86,7 +86,7 @@ export default class Order {
         this.orderItems = order['order_item_merchandises'];
         for (let i in this.orderItems) {
             this.orderItems[i] = {
-                name: this.orderItems[i]['name'],
+                name: this.orderItems[i]['merchandise_name'],
                 sellPrice: this.orderItems[i]['sell_price'],
                 quality: this.orderItems[i]['quality'],
                 totalAmount: this.orderItems[i]['total_amount'],
