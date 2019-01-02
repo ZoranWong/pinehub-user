@@ -33,7 +33,8 @@
 				"purchase/main",
 				"purchase/createOrder/main",
 				"purchase/shoppingCart/main",
-				"collectionRecords/main"
+				"collectionRecords/main",
+				"searchCollectionRecords/main"
 			]
 		}
 	],

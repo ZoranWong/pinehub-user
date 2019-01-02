@@ -5,8 +5,8 @@
 		<div class="title">{{shopInfo.name}}</div>
 		<div id="selectSearchInfo">
 			<em>{{collectionRecordsDate}}</em>
-			<i></i>
-			<em class="diy_search">自定义查询</em>
+			<i @click="jump('merchant.searchCollectionRecords')"></i>
+			<em class="diy_search" @click="jump('merchant.searchCollectionRecords')">自定义查询</em>
 		</div>
 		<div class="flex total">
 			<div>
@@ -20,15 +20,15 @@
 		</div>
 		<div class="list">
 			<ul>
-				<li v-for="(item,index) in recordData" :key="index" class="clearfix">
-					<div class="head_portrait"></div>
+				<li v-for="(item,index) in payInfoList" :key="index" class="clearfix">
+					<img class="head_portrait" :src="item.customer.avatar" />
 					<div class="record_info">
-						<span class="user_name">{{item.username}}</span>
-						<span>{{item.pay}}</span>
-						<span>{{item.time}} <i>|</i> <em>{{item.method}}</em></span>
+						<span class="user_name">{{item.customer.nickname}}</span>
+						<span>{{item.payTypeStr}}支付</span>
+						<span>{{item.paidTime}} <i>|</i> <em>首次到店</em></span>
 					</div>
 					<div class="money">
-						￥{{item.money}}
+						￥{{item.totalAmount}}
 					</div>
 				</li>
 			</ul>
@@ -48,33 +48,7 @@
 			return {
 				title: '收款记录',
 				collectionRecordsDate: (new Date()).format('yyyy-MM-dd'),
-				type: NOT_NEED_PICK_UP_METHOD,
-				status: 'all',
-				recordData: [{
-						id: 1,
-						username: 'D***',
-						time: '10-11 18:44',
-						pay: '微信',
-						method: '首次到店',
-						money: '200.00'
-					},
-					{
-						id: 3,
-						username: 'D***',
-						time: '10-11 18:44',
-						pay: '微信',
-						method: '首次到店',
-						money: '200.00'
-					},
-					{
-						id: 2,
-						username: 'D***',
-						time: '10-11 18:44',
-						pay: '微信',
-						method: '首次到店',
-						money: '200.00'
-					}
-				]
+				type: NOT_NEED_PICK_UP_METHOD
 			};
 		},
 		computed: {
@@ -82,23 +56,39 @@
 				return this.$store.getters['model.account/shopInfo'];
 			},
 			payInfoList() {
-				return this.$store.getters['model.summary.orders/list'];
+				return this.$store.getters['model.store.orders/list'];
 			},
 			totalNum() {
-				return this.$store.getters['model.summary.orders/totalNum'];
+				return this.$store.getters['model.store.orders/totalNum'];
 			},
 			totalAmount() {
-				return this.$store.getters['model.summary.orders/totalAmount'];
+				return this.$store.getters['model.store.orders/totalAmount'];
 			}
 		},
 		methods: {
-			loadOrders(collectionRecordsDate, type, status, page = 1, limit = 15) {
-				this.$command('LOAD_SUMMARY_ORDERS', collectionRecordsDate, type, status, page, limit);
+			loadOrders(collectionRecordsDate, type, payType, page = 1, limit = 15) {
+				let storeId = this.shopInfo.id;
+				this.$command('LOAD_STORE_ORDERS', storeId, collectionRecordsDate, type, payType, page, limit);
 			},
+			jump(router) {
+				this.$command('REDIRECT_TO', router, 'push');
+			}
 		},
 		mounted() {
-			console.log('XXXXXXXXXXXx', this.$store.getters);
-			this.loadOrders(this.collectionRecordsDate, this.type, this.status);
+			console.log('this.$route.query', this.$route.query);
+			let payType = this.$route.query['payType'];
+			let paidDate = this.$route.query['paidDate'];
+
+			if(payType != undefined && paidDate != undefined) {
+				console.log('payType----', payType, paidDate);
+				paidDate = JSON.parse(paidDate)
+				this.collectionRecordsDate = paidDate[0] + '-' + paidDate[1];
+				this.loadOrders(paidDate, this.type, payType);
+			} else {
+				console.log('payType----', payType);
+				this.loadOrders(this.collectionRecordsDate, this.type, payType = 0);
+			}
+
 		},
 		created() {}
 	}
@@ -149,7 +139,7 @@
 	#selectSearchInfo i {
 		display: inline-block;
 		float: right;
-		background: url(../../../../static/images/icon/ico_puechase_2.png);
+		background: url(../../../../static/images/icon/ico_puechase_2.png) no-repeat center center;
 		background-size: 40rpx 42rpx;
 		width: 40rpx;
 		height: 42rpx;

@@ -1,11 +1,11 @@
 import App from './index';
 import Vue from 'vue';
 import Orders from '@/models/Orders';
-import LoadSummaryOrdersCommand from './commands/LoadSummaryOrdersCommand';
+import LoadStoreOrdersCommand from './commands/LoadStoreOrdersCommand';
 const application = wx.$app;
 application.setComponent(App).run(function() {
-	this.registerModel('model.summary.orders', Orders);
-    this.registerCommand(LoadSummaryOrdersCommand.commandName(), LoadSummaryOrdersCommand);
+	this.registerModel('model.store.orders', Orders);
+    this.registerCommand(LoadStoreOrdersCommand.commandName(), LoadStoreOrdersCommand);
 	this.route = 'merchant.collectionRecords';
 }, function() {
 	this.currentPage = new Vue(this.mountComponent);
