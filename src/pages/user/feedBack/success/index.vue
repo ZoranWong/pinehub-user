@@ -3,7 +3,7 @@
     <div id="feedBack">
         <mp-title :title="title"></mp-title>
         <div id="feedBackSuccess">
-            <img src="/static/images/icon/feedBackSuccess.png" />
+            <div class="bgimg"></div>
             <em>提交成功</em>
             <i>感谢您对快乐松的关注与支持，我们会认证处理您的反馈，尽快修复和完善相关功能。</i>
         </div>
@@ -32,7 +32,7 @@
             },
 
             submit () {
-                this.jump('my');
+                this.jump('userCenter');
             }
         },
         created () {
@@ -56,8 +56,10 @@
         margin-top: 130rpx;
     }
 
-    #feedBackSuccess img {
+    #feedBackSuccess .bgimg {
         display: block;
+        background: url(../../../../../static/images/icon/feedBackSuccess.png) no-repeat center center;
+        background-size: 148rpx 148rpx;
         width: 148rpx;
         height: 148rpx;
         margin: 0 auto;

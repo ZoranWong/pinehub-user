@@ -73,6 +73,7 @@
 				this.$command('LOAD_STORE_ORDERS', storeId, collectionRecordsDate, type, payType, page, limit);
 			},
 			jump(router) {
+				console.log('AAA')
 				this.$command('REDIRECT_TO', router, 'replace');
 			}
 		},
