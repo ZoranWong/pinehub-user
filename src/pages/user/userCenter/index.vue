@@ -8,7 +8,7 @@
                     <img :src="userInfo.avatar" />
                     <div id="name_id">
                         <em>{{userInfo.nickname}}</em>
-                        <i>ID: {{userInfo.id}}</i>
+                        <!--<i>ID: {{userInfo.id}}</i>-->
                     </div>
                     <i id="lv">
                         {{userInfo.vipLevel}}

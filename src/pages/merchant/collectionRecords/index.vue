@@ -18,22 +18,24 @@
 				<span class="bold">￥{{totalAmount}}</span>
 			</div>
 		</div>
-		<div class="list">
-			<ul>
-				<li v-for="(item,index) in payInfoList" :key="index" class="clearfix">
-					<img class="head_portrait" :src="item.customer.avatar" />
-					<div class="record_info">
-						<span class="user_name">{{item.customer.nickname}}</span>
-						<span>{{item.payTypeStr}}支付</span>
-						<span>{{item.paidTime}} <i>|</i> <em>首次到店</em></span>
-					</div>
-					<div class="money">
-						￥{{item.totalAmount}}
-					</div>
-				</li>
-			</ul>
-		</div>
 
+		<scroll-view class="orders-wrapper" style="height:900rpx" scroll-y="true">
+			<div class="list">
+				<ul>
+					<li v-for="(item,index) in payInfoList" :key="index" class="clearfix">
+						<img class="head_portrait" :src="item.customer.avatar" />
+						<div class="record_info">
+							<span class="user_name">{{item.customer.nickname}}</span>
+							<span>{{item.payTypeStr}}支付</span>
+							<span>{{item.paidTime}} <i>|</i> <em>首次到店</em></span>
+						</div>
+						<div class="money">
+							￥{{item.totalAmount}}
+						</div>
+					</li>
+				</ul>
+			</div>
+		</scroll-view>
 	</div>
 </template>
 
@@ -71,7 +73,7 @@
 				this.$command('LOAD_STORE_ORDERS', storeId, collectionRecordsDate, type, payType, page, limit);
 			},
 			jump(router) {
-				this.$command('REDIRECT_TO', router, 'push');
+				this.$command('REDIRECT_TO', router, 'replace');
 			}
 		},
 		mounted() {

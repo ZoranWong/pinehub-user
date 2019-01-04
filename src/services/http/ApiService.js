@@ -44,7 +44,7 @@ export default class ApiService extends Service {
 				wx.showLoading({ title: '加载中' });
 			}
 			let request = this.request((await this.auth(auth)));
-			let result = await request.get(route.trim('/') + this.service('uri').query(params));
+			let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
 			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}

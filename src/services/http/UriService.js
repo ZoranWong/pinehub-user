@@ -28,8 +28,7 @@ export default class UriService extends Service {
     if (typeof params === 'string') {
       queryStr = params;
     }
-
-    return this.encodeURI(queryStr);
+    return queryStr;
   }
   encodeURI (value) {
     return encodeURI(value);
