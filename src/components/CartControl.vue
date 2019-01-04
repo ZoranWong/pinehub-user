@@ -45,7 +45,8 @@
 				}
 			},
 			shoppingCartId() {
-				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId,this.batch) : null;
+				console.log('打印',this.merchandiseId, this.batch)
+				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId, this.batch) : null;
 			}
 		},
 		methods: {
@@ -57,6 +58,7 @@
 			reduceCart() {
 				// 移出购物车
 				if(this.count > 0) {
+					console.log('购物车',this.shoppingCartId)
 					this.$emit('reduceCart', this.merchandiseId, this.shoppingCartId);
 				}
 			}
