@@ -9,8 +9,8 @@ export default class Ticket {
     this.leastCost = ticket['least_cost'] + 0;
     this.reduceCost = ticket['reduce_cost'] + 0;
     this.recordCount = ticket['record_count'] + 0;
-    this.beginTimestamp = ticket['begin_at'];
-    this.endTimestamp = ticket['end_at'];
+    this.beginTimestamp = ticket['begin_timestamp'];
+    this.endTimestamp = ticket['end_timestamp'];
     this.status = ticket['status'];
     console.log('ticket =====', this);
   }

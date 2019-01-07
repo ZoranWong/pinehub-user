@@ -94,7 +94,6 @@
                 return this.$store.getters['model.account/userInfo'];
             },
             hasStore () {
-                console.log(this.$store.getters)
                 return this.$store.getters['model.account/isShopManager'];
             },
             userToken () {

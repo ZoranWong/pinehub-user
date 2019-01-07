@@ -22,16 +22,15 @@
 			<span class="coupon-tips" v-if="ticketNum > 0">{{ ticketNum }}张可用</span>
 			<span class="coupon-tips" v-else>无优惠券可使用</span>
 			<label class="fr" v-if="ticketNum > 0">
-        有可用
-        <i class="arrow-icon"></i>
-      </label>
+				有可用<i class="arrow-icon"></i>
+		    </label>
 		</div>
-		<div v-else class="li-item bgff coupon">
+		<div v-else class="li-item bgff coupon"  @click="routeTicket" :disabled="ticketNum > 0">
 			优惠券
 			<span class="coupon-tips">{{ usedTicket }}</span>
 			<label class="fr">
-        已使用
-      </label>
+				- {{totalAmount - paymentAmount}}
+			</label>
 		</div>
 		<div class="count-box">
 			<p>合计<span class="fr">¥{{ totalAmount }}</span></p>
@@ -142,7 +141,7 @@
 	.pay-box {
 		margin-bottom: 118rpx;
 	}
-	
+
 	.pay-box .li-item {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -155,7 +154,7 @@
 		box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.3);
 		/*border:1rpx solid red;*/
 	}
-	
+
 	.select-icon {
 		width: 48rpx;
 		height: 48rpx;
@@ -165,7 +164,7 @@
 		top: 16rpx;
 		right: 19rpx;
 	}
-	
+
 	.product {
 		height: 160rpx;
 		display: flex;
@@ -178,51 +177,51 @@
 		position: relative;
 		/*border:1rpx solid red;*/
 	}
-	
+
 	.product img {
 		width: 180rpx;
 		height: 120rpx;
 		margin-right: 42rpx;
 		/*border:1rpx solid red*/
 	}
-	
+
 	.product-details {
 		width: 648rpx;
 		height: 100%;
 		float: right;
 		/*border:1rpx solid blue;*/
 	}
-	
+
 	.product-details p {
 		width: 100%;
 	}
-	
+
 	.amount {
 		font-size: 22rpx;
 		color: #757575;
 	}
-	
+
 	.product-details p .sell-count {
 		font-size: 22rpx;
 		position: relative;
 	}
-	
+
 	.product-details p .sell-price {
 		float: right;
 		margin-right: 203rpx;
 	}
-	
+
 	.cartcontrol-warpper {
 		position: absolute;
 		bottom: 56rpx;
 		right: 20rpx;
 		/*border:1rpx solid red;*/
 	}
-	
+
 	.coupon {
 		font-size: 28rpx;
 	}
-	
+
 	.coupon-tips {
 		border-radius: 10rpx;
 		padding: 4rpx;
@@ -230,12 +229,12 @@
 		font-size: 22rpx;
 		margin-left: 20rpx;
 	}
-	
+
 	.coupon label {
 		color: #757575;
 		margin-right: 60rpx;
 	}
-	
+
 	.nowpay {
 		margin: 0;
 		padding: 0;
@@ -246,7 +245,7 @@
 		width: 190rpx;
 		font-size: 38rpx;
 	}
-	
+
 	.arrow-icon {
 		width: 28rpx;
 		height: 26rpx;
@@ -256,7 +255,7 @@
 		top: 28rpx;
 		right: 20rpx;
 	}
-	
+
 	.count-box {
 		height: 120rpx;
 		background-color: #ffffff;
@@ -266,18 +265,18 @@
 		box-sizing: border-box;
 		border-radius: 10rpx;
 	}
-	
+
 	.count-box p {
 		height: 32rpx;
 		line-height: 32rpx;
 		margin-bottom: 20rpx;
 	}
-	
+
 	.count-box .tips {
 		font-size: 22rpx;
 		color: #757575;
 	}
-	
+
 	.warn-icon {
 		width: 26rpx;
 		height: 26rpx;
@@ -286,7 +285,7 @@
 		display: inline-block;
 		margin: 10rpx 10rpx -4rpx 0rpx;
 	}
-	
+
 	.pay-bottom {
 		width: 750rpx;
 		height: 98rpx;
@@ -300,15 +299,15 @@
 		padding: 0rpx 40rpx 0rpx 40rpx;
 		box-sizing: border-box;
 	}
-	
+
 	.total-price {
 		margin-right: 20rpx;
 	}
-	
+
 	.choose {
 		color: #fece00;
 	}
-	
+
 	.next-icon {
 		width: 18rpx;
 		height: 32rpx;

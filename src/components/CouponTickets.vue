@@ -81,6 +81,7 @@
 			},
 			useTicket(ticket) {
 				this.$emit('useTicket', ticket);
+				console.log('use ticket', this.$route);
 			},
 			scrolltolower() {
 				console.log("================ load tockets more ================");
@@ -117,18 +118,18 @@
 		width: 750rpx;
 		height: 74rpx;
 	}
-	
+
 	#tab_select ul li {
 		font-size: 28rpx;
 		font-weight: 400;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		width: 150rpx;
 		line-height: 70rpx;
 		border-bottom: 4rpx solid #FECE00;
 	}
-	
+
 	.ticket-list {
 		padding-top: 20rpx;
 		display: flex;
@@ -139,7 +140,7 @@
 		background: #f2f2f2;
 		position: relative;
 	}
-	
+
 	#null_ico {
 		width: 390rpx;
 		height: 355rpx;
@@ -149,7 +150,7 @@
 		left: 50%;
 		margin-left: -185rpx;
 	}
-	
+
 	.ticket-list .ticket_wrapper {
 		overflow-y: auto;
 	}

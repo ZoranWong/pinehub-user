@@ -34,7 +34,7 @@
           reduceCost: ticket.reduceCost,
           title: ticket.title
         });
-        this.mp.router.push('activitySubmitOrder', {
+        this.mp.router.push('newEvents.createOrder', {
           query: this.$route.query
         });
       }

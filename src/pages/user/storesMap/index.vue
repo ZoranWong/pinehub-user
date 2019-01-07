@@ -24,8 +24,13 @@
                         <button class="confirm" @click="onSubmit">确定</button>
                     </cover-view>
                 </cover-view>
-                <cover-view id="nowposition" @click="nowLocation"></cover-view>
+                <!-- <cover-view id="locatePosition" @click="nowLocation">
+					<cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src = "../../../../static/images/nowposition.png"></cover-image>
+				</cover-view> -->
             </map>
+			<div id="locatePosition" @click="nowLocation">
+				<image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src = "../../../../static/images/nowposition.png"></image>
+			</div>
 		</div>
 	</div>
 </template>
@@ -105,8 +110,8 @@
 					this.$store.dispatch('model.stores/selectMarker', {
 						id: storeId
 					});
+					this.show = true;
 				}
-				this.show = true;
 			},
 			onSubmit() {
 				this.show = false;
@@ -131,24 +136,24 @@
 	page {
 		height: 100%;
 	}
-	
+
 	#location {
 		position: relative;
 		height: 100%;
 		width: 100%;
 	}
-	
+
 	.bottom-part {
 		display: flex;
 	}
-	
+
 	.bottom-part button {
 		width: 40%;
 		line-height: 64rpx;
 		font-size: 32rpx;
 		background-color: #FFD000;
 	}
-	
+
 	#location_search {
 		padding: 30rpx;
 		background: #FECE00;
@@ -158,7 +163,7 @@
 		box-sizing: border-box;
 		display: none;
 	}
-	
+
 	#location_search_input {
 		background: #ffffff;
 		font-size: 28rpx;
@@ -168,7 +173,7 @@
 		height: 70rpx;
 		padding-left: 1em;
 	}
-	
+
 	#location_search_button {
 		position: absolute;
 		top: 30rpx;
@@ -182,7 +187,7 @@
 		font-weight: 200;
 		border-radius: 0 70rpx 70rpx 0;
 	}
-	
+
 	#location_map {
 		position: absolute;
 		top: 0;
@@ -190,12 +195,12 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+
 	#map {
 		height: 100%;
 		width: 100%;
 	}
-	
+
 	#send_time_select {
 		position: absolute;
 		width: 550rpx;
@@ -210,7 +215,7 @@
 		overflow: hidden;
 		z-index: 999;
 	}
-	
+
 	.select_li {
 		display: block;
 		clear: both;
@@ -218,7 +223,7 @@
 		line-height: 40rpx;
 		font-size: 28rpx;
 	}
-	
+
 	.select_li_title {
 		background: #FECE00;
 		color: #FFFFFF;
@@ -230,7 +235,7 @@
 		padding: 0 10rpx;
 		border-radius: 10rpx;
 	}
-	
+
 	.select_li_smalltitle {
 		background: #FAFAFA;
 		color: #000000;
@@ -242,24 +247,24 @@
 		padding: 0 10rpx;
 		border-radius: 10rpx;
 	}
-	
+
 	.input {
 		float: left;
 		padding: 0 15rpx;
 		margin: 0 20rpx;
 		border-radius: 10rpx;
 	}
-	
-	#nowposition {
-		background: url(../../../../static/images/icon/nowposition.png) no-repeat center center;
+
+	#locatePosition {
+		/* background: url(../../../../static/images/icon/nowposition.png) no-repeat center center; */
 		background-color: #FFFFFF;
 		border-radius: 50%;
 		width: 50rpx;
 		height: 50rpx;
 		background-size: 100%;
 		position: absolute;
-		right: 30rpx;
+		left: 682rpx;
 		top: 160rpx;
-		z-index: 999;
+		z-index: 99999999;
 	}
 </style>

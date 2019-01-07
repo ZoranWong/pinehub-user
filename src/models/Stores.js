@@ -56,22 +56,21 @@ export default class Stores extends Model {
                 });
                 if (this.state.location.latitude && this.state.location.longitude) {
                     markers.push({
-                        iconPath: '/static/images/position.png',
+                        iconPath: '/static/images/my_position.png',
                         width: 42,
                         height: 56.4,
                         id: 0,
                         title: '自己',
                         longitude: this.state.location.longitude,
                         latitude: this.state.location.latitude,
-                        callout: {
-                            content: '自己所在位置',
-                            color: '#ff0000',
-                            fontSize: '16',
-                            borderRadius: '10',
-                            bgColor: '#ffffff',
-                            padding: '10',
-                            display: 'ALWAYS'
-                        }
+                        // callout: {
+                        //     color: '#ff0000',
+                        //     fontSize: '16',
+                        //     borderRadius: '10',
+                        //     bgColor: '#ffffff',
+                        //     padding: '10',
+                        //     display: 'ALWAYS'
+                        // }
                     });
                 }
                 return markers;
@@ -91,7 +90,9 @@ export default class Stores extends Model {
                     lng += this.state.location.longitude;
                     count++;
                 }
-
+                if(this.state.selectMarkerId) {
+                    console.log('select store');
+                }
                 return {
                     lat: count ? lat / count : lat,
                     lng: count ? lng / count : lng

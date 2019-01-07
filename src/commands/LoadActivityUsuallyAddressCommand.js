@@ -6,7 +6,7 @@ export default class LoadActivityUsuallyAddressCommand extends Command {
 	async handle() {
 		let activityId = await this.service('mp.storage').get('activityId');
 		try {
-			let response = await this.service('http.activityUsuallyAddress').list(activityId);
+			//let response = await this.service('http.activityUsuallyAddress').list(activityId);
 			//			this.$store.dispatch('model.activity.merchandises/setList', {
 			//				list: merchandises,
 			//				totalNum: totalNum,

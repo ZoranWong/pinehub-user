@@ -185,7 +185,8 @@
   }
 
   .coupon-right .voucher-title {
-    margin: 30rpx 0;
+    margin: 24rpx 0;
+    font-size: 24rpx;
   }
 
   .coupon-right .time-limit {
@@ -200,13 +201,13 @@
 
   /*noinspection ALL*/
   .coupon-right .btn-big {
-    width: 250rpx;
-    height: 60rpx;
-    line-height: 60rpx;
+    width: 198rpx;
+    height: 52rpx;
+    line-height: 54rpx;
     border-radius: 30rpx;
     text-align: center;
-    font-size: 32rpx;
-    margin-right: 50rpx;
+    font-size: 26rpx;
+    margin-right: 112rpx;
     margin-bottom: 30rpx;
   }
 
