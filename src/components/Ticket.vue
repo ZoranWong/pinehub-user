@@ -17,8 +17,11 @@
         <span>有效期：</span>
         <span>{{ticket.beginTimestamp}} - {{ticket.endTimestamp}}</span>
       </p>
-      <div v-if = "isUsed" class="btn-big fr theme-color" >已使用</div>
-      <div v-else class="btn-big fr theme-color" @click = "useTicket">立即使用</div>
+      <div v-if = "ticket.status === 2" class="btn-big fr theme-color" >已使用</div>
+      <div v-else-if = "ticket.status === 1" class="btn-big fr theme-color" @click = "useTicket">立即使用</div>
+      <div v-else class="over-date">
+          <image style ="width: 136rpx; height: 136rpx; margin-left: 120rpx;" src = "../../../static/images/ticket_over_date.png"></image>
+      </div>
     </div>
   </div>
 </template>

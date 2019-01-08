@@ -18,13 +18,16 @@
 export default {
 	data() {
 		return {
-			currentCategoryIndex: 0
 		}
 	},
 	computed: {
 		categories() {
 			return this.$store.getters['model.storeMarket.categories/categories'];
-		}
+		},
+		currentCategoryIndex () {
+            console.log('=================================', this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex']);
+            return this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex'];
+        }
 	},
 	methods: {
 		categoryChange(index) {
@@ -35,7 +38,10 @@ export default {
 		redirectTo(router) {
 			this.$command('REDIRECT_TO', router, 'push');
 		}
-	}
+	},
+	mounted() {
+        this.$emit('categoryChange', 0);
+    }
 }
 </script>
 

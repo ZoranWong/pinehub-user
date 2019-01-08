@@ -17,13 +17,9 @@ export default class CreateBookingMallOrderCommand extends Command {
                 params['card_code'] = ticketCode;
             }
             let result = await super.createOrderSign(params);
+            console.log('pay result', result);
             if (!result) {
-                console.log('send order to user', orderType === SEND_ORDER_TO_USER, 'user self pick up', orderType === USER_SELF_PICK_UP);
-                if (orderType === SEND_ORDER_TO_USER) {
-                    this.$command('REDIRECT_TO', 1, 'go');
-                } else if (orderType === USER_SELF_PICK_UP) {
-                    this.$command('REDIRECT_TO', 2, 'go');
-                }
+                this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }

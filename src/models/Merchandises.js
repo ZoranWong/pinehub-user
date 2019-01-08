@@ -35,6 +35,7 @@ export default class Merchandises extends Model {
         });
 
         this.addEventListener('setCurrentCategory', function ({ categoryIndex }) {
+            console.log('===========set category=============', categoryIndex);
             this.state.currentCategoryIndex = categoryIndex;
         });
 

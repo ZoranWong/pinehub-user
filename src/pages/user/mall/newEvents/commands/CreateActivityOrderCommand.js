@@ -19,7 +19,7 @@ export default class CreateActivityOrderCommand extends Command {
             }
             let result = await super.createOrderSign(params);
             if (!result) {
-                this.$command('REDIRECT_TO', -1, 'go');
+                this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }

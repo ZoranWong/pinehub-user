@@ -7,12 +7,14 @@
 			<div class="merchandises-item-bottom">
 				<h4 class="merchandises-name">{{item.name}}</h4>
 				<span class="tag color00" v-if="item.tags.length > 0" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
+				<div style="position:absolute;color: #484848;top: 518rpx;right:32rpx;font-size:24rpx;"><span >剩余 {{item.stockNum}} 份</span></div>
 				<p class="describe color75">{{item.describe}}</p>
 				<div class="content ">
-					<div class="origin-price">{{item.originPrice}}<span>RMB</span></div>
 					<div class="sell-price color00">{{item.sellPrice}}<span>RMB</span></div>
+					<div class="origin-price">{{item.originPrice}}<span>RMB</span></div>
 					<div class="cartcontrol-warpper ">
-						<cart-control :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId="item.merchandiseId" :shopId="item.shopId"></cart-control>
+						<cart-control v-if="item.stockNum > 0" :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId="item.merchandiseId" :shopId="item.shopId"></cart-control>
+						<div v-else class="sell-out"><span style = "color: #6b6b6b; font-size: 32rpx;">已售完</span></div>
 					</div>
 				</div>
 			</div>
@@ -99,7 +101,7 @@
 		box-sizing: border-box;
 		overflow-y: auto;
 	}
-	
+
 	.merchandises-item {
 		width: 100%;
 		border-radius: 10rpx;
@@ -109,25 +111,25 @@
 		position: relative;
 		overflow: hidden;
 	}
-	
+
 	.merchandises-item-top {
 		width: 100%;
 		height: 400rpx;
 		overflow-y: hidden;
 	}
-	
+
 	.merchandises-item-bottom {
 		width: 100%;
 		padding: 20rpx 20rpx 0rpx;
 		box-sizing: border-box;
 	}
-	
+
 	.merchandises-item-bottom h4 {
 		font-size: 32rpx;
 		font-weight: 400;
 		margin-bottom: 12rpx;
 	}
-	
+
 	.tag {
 		padding: 8rpx 15rpx;
 		line-height: 36rpx;
@@ -141,27 +143,27 @@
 		margin-right: 20rpx;
 		margin-bottom: 12rpx;
 	}
-	
+
 	.describe {
 		font-size: 22rpx;
 	}
-	
+
 	.content {
 		width: 100%;
 		margin-top: 20rpx;
 		height: 100rpx;
 		position: relative;
 	}
-	
+
 	.origin-price {
-		font-size: 30rpx;
+		font-size: 20rpx;
 		font-weight: 400;
 		position: absolute;
 		bottom: 68rpx;
 		left: 0rpx;
 		text-decoration: line-through;
 	}
-	
+
 	.sell-price {
 		font-size: 36rpx;
 		font-weight: 400;
@@ -169,19 +171,19 @@
 		bottom: 24rpx;
 		left: 0rpx;
 	}
-	
+
 	.sell-price span {
 		font-size: 28rpx;
 		font-weight: 400;
 	}
-	
+
 	.cartcontrol-warpper {
 		margin-top: 30rpx;
 		position: absolute;
 		bottom: 40rpx;
 		right: 0rpx;
 	}
-	
+
 	image {
 		display: block;
 	}

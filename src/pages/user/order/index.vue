@@ -37,7 +37,7 @@
 				}, {
 					name: '已完成'
 				}],
-				cur: 0,
+				cur: -1,
 				statusType: 'all',
 				screenHeight: 0,
 				rpxRate: 1,
@@ -98,6 +98,9 @@
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
+		},
+		mounted() {
+			this.cur = 0;
 		}
 	}
 </script>
@@ -107,15 +110,15 @@
 		height: 100%;
 		background: #fafafa;
 	}
-	
+
 	#footNavHeight {
 		height: 109rpx;
 	}
-	
+
 	#userOrders {
 		position: relative;
 	}
-	
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -125,7 +128,7 @@
 		top: 0;
 		z-index: 999;
 	}
-	
+
 	#tab_select ul li {
 		height: 74rpx;
 		line-height: 74rpx;
@@ -135,23 +138,23 @@
 		font-size: 32rpx;
 		font-weight: 300;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 	}
-	
+
 	#tab_select ul li.tab_select_now span {
 		display: inline-block;
 		width: 68%;
 		line-height: 64rpx;
 		border-bottom: 5rpx solid #FECE00;
 	}
-	
+
 	#tab_content {
 		padding-top: 74rpx;
 		position: relative;
 	}
-	
+
 	#null_ico {
 		width: 390rpx;
 		height: 355rpx;
@@ -161,11 +164,11 @@
 		left: 50%;
 		margin-left: -185rpx;
 	}
-	
+
 	.tab_content_item {
 		display: none;
 	}
-	
+
 	.tab_content_now {
 		display: block;
 	}
