@@ -100,7 +100,7 @@
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		},
 		mounted() {
-			this.cur = 0;
+			this.tabSelect(0);
 		}
 	}
 </script>

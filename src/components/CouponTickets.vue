@@ -102,12 +102,12 @@
 						this.statusType = 'available';
 						break;
 				}
-				this.loadTickets(1, this.statusType);
+				this.loadTickets(num, this.statusType);
 			}
 		},
 		mounted() {
 			console.log('use ticket code =====', this.useCardCode);
-			this.loadTickets();
+			this.tabSelect(0);
 		}
 	}
 </script>

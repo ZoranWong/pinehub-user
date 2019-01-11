@@ -12,12 +12,12 @@ export default class Ticket {
 
 		} else if(this.type === 'cash') {
 
-			this.reduceCost = ticket['info']['reduce_cost'] + 0;
-			this.content = '￥ '+this.reduceCost;
+			this.reduceCost = ticket['info']['reduce_cost'];
+			this.content = '￥'+this.reduceCost;
 
 		}
 
-		this.leastCost = ticket['info']['least_cost'] + 0;
+		this.leastCost = ticket['info']['least_cost'];
 
 		this.dType = ticket['info']['base_info']['date_info']['type'];
 		if(this.dType === "DATE_TYPE_FIX_TERM") {

@@ -11,7 +11,7 @@
 						<i class="ticket_bottom_ico"></i>
 						<div class="ticket_left">
 							<em class="ticket_left_money">{{item.content}}</em>
-							<em class="ticket_left_money_if" v-if="item.leastCost>0">满29元可用</em>
+							<em class="ticket_left_money_if" v-if="item.leastCost>0">满{{item.leastCost}}元可用</em>
 						</div>
 						<div class="ticket_right">
 							<em class="ticket_right_title">{{item.title}}</em>
@@ -69,7 +69,7 @@
 		background: rgba(0, 0, 0, 0.3);
 		z-index: 999;
 	}
-	
+
 	#tickets {
 		width: 630rpx;
 		min-height: 500rpx;
@@ -79,7 +79,7 @@
 		left: 60rpx;
 		border-radius: 10rpx;
 	}
-	
+
 	#tickets_title {
 		line-height: 120rpx;
 		text-align: center;
@@ -87,11 +87,11 @@
 		font-size: 36rpx;
 		font-weight: 500;
 	}
-	
+
 	#tickets_list {
 		margin-top: 20rpx;
 	}
-	
+
 	#tickets_list ul li {
 		width: 520rpx;
 		height: 180rpx;
@@ -101,7 +101,7 @@
 		position: relative;
 		margin-bottom: 20rpx;
 	}
-	
+
 	.ticket_top_ico {
 		width: 28rpx;
 		height: 28rpx;
@@ -111,7 +111,7 @@
 		top: -14rpx;
 		left: 167rpx;
 	}
-	
+
 	.ticket_bottom_ico {
 		width: 28rpx;
 		height: 28rpx;
@@ -121,42 +121,42 @@
 		bottom: -14rpx;
 		left: 167rpx;
 	}
-	
+
 	.ticket_left {
 		width: 180rpx;
 		height: 180rpx;
 		border-right: 1rpx dashed #CCCCCC;
 		float: left;
 	}
-	
+
 	.ticket_left_money {
 		color: #FFD000;
 	}
-	
+
 	.ticket_left_money {
 		margin-top: 26rpx;
 		text-align: center;
 		font-size: 60rpx;
 	}
-	
+
 	.ticket_left_money i {
 		display: inline;
 		font-size: 32rpx;
 	}
-	
+
 	.ticket_left_money_if {
 		color: #757575;
 		font-size: 22rpx;
 		text-align: center;
 	}
-	
+
 	.ticket_right {
 		float: right;
 		width: 339rpx;
 		height: 180rpx;
 		position: relative;
 	}
-	
+
 	.ticket_right_title {
 		position: absolute;
 		top: 20rpx;
@@ -165,7 +165,7 @@
 		line-height: 28rpx;
 		color: #111111;
 	}
-	
+
 	.ticket_right_time {
 		position: absolute;
 		top: 68rpx;
@@ -174,7 +174,7 @@
 		font-size: 22rpx;
 		line-height: 22rpx;
 	}
-	
+
 	.ticket_right_btn {
 		position: absolute;
 		width: 160rpx;
@@ -189,7 +189,7 @@
 		text-align: center;
 		font-weight: 400;
 	}
-	
+
 	#tickets_tips {
 		font-size: 36rpx;
 		line-height: 36rpx;
@@ -199,11 +199,11 @@
 		margin-top: 50rpx;
 		margin-bottom: 30rpx;
 	}
-	
+
 	#tickets_tips em {
 		margin-bottom: 10rpx;
 	}
-	
+
 	#close_tickets {
 		width: 64rpx;
 		height: 64rpx;
