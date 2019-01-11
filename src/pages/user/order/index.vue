@@ -87,6 +87,7 @@
 						this.statusType = 'all';
 						break;
 				}
+				this.$command('CLEAR_MODEL', 'model.user.orders');
 				this.loadOrders(this.statusType);
 			},
 			async next() {

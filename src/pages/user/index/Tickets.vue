@@ -37,7 +37,11 @@
 				ticketListShow: true
 			}
 		},
-		components: {},
+		watch: {
+			ticketShow(value) {
+				this.ticketListShow = value;
+			}
+		},
 		methods: {
 			async receiveTicket(item) {
 				await this.$command('RECEIVE_TICKET', item);
@@ -48,7 +52,6 @@
 		},
 		computed: {
 			cardsList() {
-				console.log('----- card list ---- ');
 				return this.$store.getters['model.cards/list'];
 			},
 			async ticketShow() {
@@ -57,7 +60,6 @@
 		},
 		mounted() {
 			this.ticketListShow = this.ticketShow;
-			console.log('GGGGGGGGGGGGGGGGG', this.ticketShow);
 		}
 	}
 </script>

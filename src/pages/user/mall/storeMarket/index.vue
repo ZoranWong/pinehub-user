@@ -82,7 +82,7 @@
         },
         methods: {
             reloadMerchandises () {
-                this.$command('CLEAR_MERCHANDISE', 'model.storeMarket.merchandises');
+                this.$command('CLEAR_MODEL', 'model.storeMarket.merchandises');
                 this.loadMerchandises();
             },
             nearbyStores () {
@@ -176,7 +176,7 @@
             }
         },
         destroyed () {
-            this.$command('CLEAR_MERCHANDISE', 'model.storeMarket.merchandises');
+            this.$command('CLEAR_MODEL', 'model.storeMarket.merchandises');
         },
         onShow () {
             this.initData();

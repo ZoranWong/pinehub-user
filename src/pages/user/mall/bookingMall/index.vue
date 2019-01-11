@@ -87,7 +87,7 @@ export default {
         },
         categoryChange: function (index) {
             try {
-                this.$command('CLEAR_MERCHANDISE', 'model.bookingMall.merchandises');
+                this.$command('CLEAR_MODEL', 'model.bookingMall.merchandises');
                 this.$store.dispatch('model.bookingMall.merchandises/setCurrentCategory', {
                     categoryIndex: index
                 });
@@ -137,7 +137,7 @@ export default {
         this.initData();
     },
     destroyed () {
-        this.$command('CLEAR_MERCHANDISE', 'model.bookingMall.merchandises');
+        this.$command('CLEAR_MODEL', 'model.bookingMall.merchandises');
     }
 }
 </script>

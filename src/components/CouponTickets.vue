@@ -77,14 +77,11 @@
 		},
 		methods: {
 			scroll() {
-				console.log('+++++++++++++++++++ scroll ++++++++++++++++++++++++');
 			},
 			useTicket(ticket) {
 				this.$emit('useTicket', ticket);
-				console.log('use ticket', this.$route);
 			},
 			scrolltolower() {
-				console.log("================ load tockets more ================");
 				if(!this.isLoadedAll) {
 					this.loadTickets(this.nextPage, this.statusType);
 				}
@@ -102,11 +99,11 @@
 						this.statusType = 'available';
 						break;
 				}
+				this.$command('CLEAR_MODEL', this.model);
 				this.loadTickets(num, this.statusType);
 			}
 		},
 		mounted() {
-			console.log('use ticket code =====', this.useCardCode);
 			this.tabSelect(0);
 		}
 	}

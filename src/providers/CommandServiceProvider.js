@@ -11,7 +11,7 @@ import ScanCommand from '@/commands/ScanCommand';
 
 
 // 清空产品命令（切换分类）
-import ClearMerchandiseCommand from '@/commands/ClearMerchandiseCommand';
+import ClearModelCommand from '@/commands/ClearModelCommand';
 
 import LoadMerchandisesCommand from '@/commands/LoadMerchandisesCommand';
 import LoadAccountCommand from '@/commands/LoadAccountCommand';
@@ -27,7 +27,7 @@ export default class CommandServiceProvider extends ServiceProvider {
             SignInCommand,
             ShoppingCartCommand,
             ScanCommand,
-            ClearMerchandiseCommand,
+            ClearModelCommand,
             LoadMerchandisesCommand,
             LoadAccountCommand
         ];

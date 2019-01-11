@@ -109,7 +109,7 @@
 			},
 			categoryChange: function(index) {
 				try {
-					this.$command('CLEAR_MERCHANDISE', 'model.purchase.merchandises');
+					this.$command('CLEAR_MODEL', 'model.purchase.merchandises');
 					this.$store.dispatch('model.purchase.merchandises/setCurrentCategory', {
 						categoryIndex: index
 					});
@@ -145,7 +145,7 @@
 				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', storeId, batch, merchandiseId, id, count, batch);
 			},
 			clearShoppingCart() {
-				
+
 			},
 			async initData() {
 				this.selectBatch = this.batchList[0].name;
@@ -170,7 +170,7 @@
 			this.initData();
 		},
 		destroyed() {
-			this.$command('CLEAR_MERCHANDISE', 'model.purchase.merchandises');
+			this.$command('CLEAR_MODEL', 'model.purchase.merchandises');
 		}
 	}
 </script>
@@ -185,13 +185,13 @@
 		height: 100%;
 		background: #f2f2f2;
 	}
-	
+
 	#select_date {
 		height: 88rpx;
 		background: #FFFFFF;
 		border-bottom: 1rpx solid #E0E0E0;
 	}
-	
+
 	#select_date i {
 		display: inline-block;
 		float: left;
@@ -200,7 +200,7 @@
 		margin-top: 22rpx;
 		font-size: 28rpx;
 	}
-	
+
 	#select_date picker {
 		display: inline-block;
 		float: left;
@@ -209,11 +209,11 @@
 		margin-top: 22rpx;
 		font-size: 28rpx;
 	}
-	
+
 	#select_date i:first-child {
 		margin-left: 20rpx;
 	}
-	
+
 	.shopping_cart_calendar_ico {
 		width: 40rpx;
 		height: 42rpx;
@@ -221,12 +221,12 @@
 		background-size: 40rpx 42rpx;
 		margin-right: 20rpx;
 	}
-	
+
 	.shopping_cart_batch {
 		color: #757575;
 		margin-left: 16rpx;
 	}
-	
+
 	.shopping_cart_status {
 		margin-left: 22rpx;
 	}

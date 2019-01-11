@@ -1,9 +1,9 @@
 import Command from './Command';
-export default class ClearMerchandiseCommand extends Command {
+export default class ClearModelCommand extends Command {
     async handle (model) {
         this.store().dispatch(`${model}/reset`)
     }
     static commandName () {
-        return 'CLEAR_MERCHANDISE';
+        return 'CLEAR_MODEL';
     }
 }
