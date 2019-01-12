@@ -70,11 +70,33 @@ export default class Account extends Model {
             await initAccount();
         });
 
+        this.addEventListener('reduceTicket', function ({count = 1}) {
+            this.state.ticketNum -= count;
+            try {
+                console.log(this.service('mp.storage').set('account', this.state));
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
+        this.addEventListener('addTicket', function ({count = 1}) {
+            this.state.ticketNum += count;
+            try {
+                console.log(this.service('mp.storage').set('account', this.state));
+            } catch (e) {
+                console.log(e);
+            }
+        });
+
         this.addEventListener('setStoreInfo', async function ({storeInfo, sellAmountECharts, buyNumECharts}) {
             storeInfo.sellAmountECharts = sellAmountECharts;
             storeInfo.buyNumECharts = buyNumECharts;
-            console.log('--------+++++++++--------', storeInfo);
             this.$application.$vm.set(this.state, 'shop', storeInfo);
+            try {
+                console.log(this.service('mp.storage').set('account', this.state));
+            } catch (e) {
+                console.log(e);
+            }
         });
 
 

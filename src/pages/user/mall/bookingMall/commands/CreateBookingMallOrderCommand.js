@@ -21,6 +21,9 @@ export default class CreateBookingMallOrderCommand extends Command {
             if (!result) {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {
+                if(cardId && ticketCode) {
+                    this.$store.dispatch('model.account/reduceTicket', {count: 1});
+                }
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {

@@ -3,14 +3,16 @@ export default class CreateOrderCommand extends Command {
     async createOrderSign (params, resetCart = null) {
         try {
             let order = await this.service('http.orders').createPaymentOrder(params);
-            let weChatPayParams = await this.service('http.orders').orderPayById(order.id);
-            if (weChatPayParams) {
-                let timeStamp = weChatPayParams['sdk_config']['timestamp']
-                let nonceStr = weChatPayParams['sdk_config']['nonceStr']
-                let packageInfo = weChatPayParams['sdk_config']['package']
-                let paySign = weChatPayParams['sdk_config']['paySign']
+            let data = await this.service('http.orders').orderPayById(order.id);
+            if (data && typeof data['sdk_config'] !== 'undefined') {
+                let timeStamp = data['sdk_config']['timestamp']
+                let nonceStr = data['sdk_config']['nonceStr']
+                let packageInfo = data['sdk_config']['package']
+                let paySign = data['sdk_config']['paySign']
                 let result = await this.payOrder(timeStamp, nonceStr, packageInfo, paySign);
                 return result;
+            }else if (typeof data['status'] !== 'undefined' && data['status'] === 300) {
+                this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {
             console.log(e);
