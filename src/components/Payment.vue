@@ -17,7 +17,7 @@
 			</div>
 		</div>
 
-		<div v-if="!usedTicket" class="li-item bgff coupon" @click="routeTicket" :disabled="ticketNum > 0">
+		<div v-if="!usedTicketTitle" class="li-item bgff coupon" @click="routeTicket" :disabled="ticketNum > 0">
 			优惠券
 			<span class="coupon-tips" v-if="ticketNum > 0">{{ ticketNum }}张可用</span>
 			<span class="coupon-tips" v-else>无优惠券可使用</span>
@@ -27,9 +27,9 @@
 		</div>
 		<div v-else class="li-item bgff coupon"  @click="routeTicket" :disabled="ticketNum > 0">
 			优惠券
-			<span class="coupon-tips">{{ usedTicket }}</span>
+			<span class="coupon-tips">{{ usedTicketTitle }}</span>
 			<label class="fr">
-				- {{totalAmount - paymentAmount}}
+				- {{reduceAmount}}
 			</label>
 		</div>
 		<div class="count-box">
@@ -77,7 +77,7 @@
 				default: null,
 				type: Function
 			},
-			usedTicket: {
+			usedTicketTitle: {
 				default: null,
 				type: String
 			}
@@ -95,12 +95,14 @@
 			paymentAmount() {
 				return this.model ? this.$store.getters[`${this.model}/paymentAmount`] : 0;
 			},
+			reduceAmount() {
+				let amount = this.totalAmount - this.paymentAmount;
+				return amount.toFixed(2);
+			},
 			totalCount() {
-				console.log('购物车总数', this.model, this.$store.getters);
 				return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
 			},
 			hasMobile() {
-				console.log('存在手机号', this.$store.getters);
 				return this.$store.getters['model.account/userInfo'].mobile ? true : false;
 			}
 		},

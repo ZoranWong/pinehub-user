@@ -6,6 +6,7 @@ export default class BookingMallShoppingCartChangeMerchandiseCommand extends Com
     }
     async handle (merchandiseId, id = null, quality = 1) {
         try {
+            console.log('------++++++-------', merchandiseId, id, quality);
             let merchandise = null;
             if (id && quality === 0) {
                 merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);

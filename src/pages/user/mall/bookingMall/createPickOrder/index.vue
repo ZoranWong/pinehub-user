@@ -88,7 +88,7 @@ export default{
             this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
         },
         reduceCart (merchandiseId, id) {
-            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) + 1;
+            let count = this.$store.getters['model.bookingMall.shoppingCarts/quality'](merchandiseId) - 1;
             this.$command('BOOKING_MALL_SHOPPINGCART_CHANGE_MERCHANDISE', merchandiseId, id, count);
         }
     },

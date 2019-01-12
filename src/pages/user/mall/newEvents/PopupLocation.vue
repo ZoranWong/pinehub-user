@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import _ from 'underscore';
 export default {
     name: 'PopupLocation',
     props: {
@@ -54,11 +55,16 @@ export default {
             });
         },
         async initStores () {
-            this.receiveStores = await this.mp.storage.get('activityReceiveStores');
+            let stores = await this.mp.storage.get('activityReceiveStores');
+            let ids = [];
+            _.each(stores, function (store) {
+                ids.push(store['id']);
+            });
+            stores = await this.http.store.stores(ids);
+            this.receiveStores = stores;
         }
     },
     mounted () {
-        this.$command('LOAD_ACTIVITY_USUALLY_ADDRESS');
         this.initStores();
     }
 

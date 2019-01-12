@@ -6,6 +6,7 @@ export default class Store {
     this.lat = store['lat'];
     this.address = store['address'];
     this.mobile = store['mobile'];
-    this.openingHours = store['start_at'] + '～' + store['end_at'];
+    this.openingHours = (store['start_at'].length > 5 ? store['start_at'].substr(0, 5) : store['start_at'])
+    + '～' + (store['end_at'].length > 5 ? store['end_at'].substr(0, 5) : store['end_at']);
   }
 }

@@ -44,7 +44,6 @@
     },
     computed: {
       isUsed () {
-        console.log(this.usedCardCode ,  this.ticket);
         if (this.usedCardCode && this.ticket && this.usedCardCode === this.ticket.cardCode) {
           return true;
         }else{

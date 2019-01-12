@@ -68,7 +68,6 @@
 		computed: {
 			markers() {
 				let markers = this.$store.getters['model.stores/markers'];
-				console.log('markers', markers);
 				return markers.length > 0 ? markers : null;
 			},
 			center() {
@@ -91,7 +90,6 @@
 				let result = await this.map.getLocation();
 				this.latitude = result[1];
 				this.longitude = result[0];
-				console.log('location position in', result);
 				this.$store.dispatch('model.stores/setLocation', {
 					latitude: result[1],
 					longitude: result[0]
@@ -117,7 +115,6 @@
 				this.show = false;
 				let storeInfo = this.storeInfo;
 				let route = this.$route.query['next_route'];
-				console.log('route--------------->', this.$route);
 				this.$command('REDIRECT_TO', route, 'push', {
 					query: {
 						store_id: storeInfo.id,

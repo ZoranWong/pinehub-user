@@ -27,16 +27,16 @@
         this.$command('LOAD_ACTIVITY_TICKETS', parseInt(this.$route.query['activity_id']), page, status);
       },
       useTicket (ticket) {
-        this.$store.dispatch('model.newEvents.shoppingCarts/setTicketCard', {
-          ticketCode: ticket.cardCode,
-          cardId: ticket.cardId,
-          discount: ticket.discount,
-          reduceCost: ticket.reduceCost,
-          title: ticket.title
-        });
-        this.mp.router.push('newEvents.createOrder', {
-          query: this.$route.query
-        });
+          this.$store.dispatch('model.newEvents.shoppingCarts/setTicketCard', {
+              ticketCode: ticket.cardCode,
+              cardId: ticket.cardId,
+              discount: ticket.discount,
+              reduceCost: ticket.reduceCost,
+              title: ticket.title
+          });
+          this.mp.router.push('newEvents.createOrder', {
+              query: this.$route.query
+          });
       }
     }
   }

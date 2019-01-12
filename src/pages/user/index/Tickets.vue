@@ -38,8 +38,9 @@
 			}
 		},
 		watch: {
-			ticketShow(value) {
-				this.ticketListShow = value;
+			async ticketShow(value) {
+				console.log('ticket show', value);
+				this.ticketListShow = await value;
 			}
 		},
 		methods: {

@@ -93,10 +93,10 @@
 						this.statusType = 'available';
 						break;
 					case 1:
-						this.statusType = 'unavailable';
+						this.statusType = 'used';
 						break;
 					default:
-						this.statusType = 'available';
+						this.statusType = 'all';
 						break;
 				}
 				this.$command('CLEAR_MODEL', this.model);
