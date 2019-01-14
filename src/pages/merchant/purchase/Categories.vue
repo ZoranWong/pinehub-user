@@ -21,7 +21,6 @@
 		},
 		computed: {
 			categories() {
-				console.log('BBB', this.$store.getters['model.purchase.categories/categories'])
 				return this.$store.getters['model.purchase.categories/categories'];
 			},
 			currentIndex() {
@@ -45,11 +44,11 @@
 		overflow-y: auto;
 		float: left;
 	}
-	
+
 	#tab_select {
 		overflow: hidden;
 	}
-	
+
 	.search {
 		height: 130rpx;
 		box-sizing: border-box;
@@ -57,7 +56,7 @@
 		border-bottom-right-radius: 10rpx;
 		padding: 28rpx 0rpx;
 	}
-	
+
 	.search-icon {
 		display: inline-block;
 		width: 40rpx;
@@ -66,7 +65,7 @@
 		background-size: contain;
 		margin: 0rpx 40rpx 10rpx;
 	}
-	
+
 	#tab_select ul li {
 		display: table;
 		width: 120rpx;
@@ -77,14 +76,14 @@
 		box-sizing: border-box;
 		box-shadow: 1rpx 0rpx 6rpx rgba(205, 205, 205, 0.3);
 	}
-	
+
 	#tab_select ul li .category-name {
 		width: 56rpx;
 		display: inline-block;
 		line-height: 40rpx;
 		margin-top: 7px;
 	}
-	
+
 	#tab_select ul li.tab_select_now {
 		color: #FECE00;
 		border-left: 6rpx solid #fece00;
@@ -92,11 +91,11 @@
 		background-size: 58rpx 66rpx;
 		padding-top: 100rpx;
 	}
-	
+
 	#tab_content {
 		padding-top: 74rpx;
 	}
-	
+
 	.tab_content_now {
 		display: block;
 	}

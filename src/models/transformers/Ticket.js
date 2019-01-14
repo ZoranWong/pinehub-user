@@ -12,6 +12,5 @@ export default class Ticket {
     this.beginTimestamp = ticket['begin_timestamp'];
     this.endTimestamp = ticket['end_timestamp'];
     this.status = ticket['status'];
-    console.log('ticket =====', this);
   }
 }

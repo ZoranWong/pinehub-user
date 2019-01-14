@@ -11,7 +11,7 @@ export default class LoadActivityTicketsCommand extends Command {
         pageCount: limit
       });
     } catch (e) {
-      console.log('load activity tickets ==========', e);
+        return false;
     }
   }
 

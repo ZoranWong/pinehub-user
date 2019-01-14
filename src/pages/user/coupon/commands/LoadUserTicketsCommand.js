@@ -11,7 +11,7 @@ export default class LoadUserTicketsCommand extends Command {
         pageCount: limit
       });
     } catch (e) {
-      console.log('load user tickets ==========', e);
+        throw e;
     }
   }
 

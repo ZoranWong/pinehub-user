@@ -74,7 +74,7 @@ export default class Application {
         _.extend(command, page);
         await command.handle.apply(command, params);
       } catch (e) {
-        console.log(e);
+          return false;
       }
     }
     // 实例化注册对象
@@ -203,7 +203,7 @@ export default class Application {
                 store: store,
                 render: h => h(App)
               }, this.mountComponent);
-              _.isFunction(created) ? created.call(this, this) : console.log(created);
+              _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
               let wxRoute = this.config['routes'][this.route];
               this.currentPage['wxRoute'] = wxRoute;
               _.extend(this.currentPage, this.instances);

@@ -25,7 +25,6 @@ export default {
             return this.$store.getters['model.bookingMall.categories/categories'];
         },
         currentIndex () {
-            console.log('=================================', this.$store.getters['model.bookingMall.merchandises/currentCategoryIndex']);
             return this.$store.getters['model.bookingMall.merchandises/currentCategoryIndex'];
         }
     },

@@ -51,7 +51,6 @@
                 return this.$store.getters['model.storeMarket.categories/categoryId'](this.categoryIndex)
             },
             categoryIndex () {
-                console.log(this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex']);
                 return this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex'];
             },
             nearestStore () {
@@ -67,7 +66,7 @@
                     try {
                         this.reloadMerchandises();
                     } catch (e) {
-                        console.log(e);
+                        return false;
                     }
                 }
             },
@@ -130,7 +129,6 @@
                 }
             },
             loadCartMerchandises (page = 1) {
-                console.log('load cart merchandises');
                 this.$command('STORE_SHOPPINGCART_LOAD_MERCHANDISES', this.nearestStore.id, page);
             },
             addCart (merchandiseId, id = null) {
@@ -145,7 +143,6 @@
                 try {
                     this.$command('STORE_SHOPPINGCART_CLEAR_MERCHANDISES', this.nearestStore['id']);
                 } catch (e) {
-                    console.log(e)
                     this.popup.toast('购物车清空失败', 'warn', 2000);
                 }
             },
@@ -154,7 +151,6 @@
             },
             async location (storeId) {
                 try {
-                    console.log('GET_NEAREST_STORE');
                     await this.$command('GET_NEAREST_STORE', storeId);
                     if (!storeId) {
                         this.isShow = true;
@@ -162,7 +158,6 @@
                         await this.loadCategories(storeId);
                     }
                 } catch (e) {
-                    console.log('抛出异常', e);
                     return false;
                 }
             },

@@ -46,19 +46,6 @@
 		},
 		data() {
 			return {
-				//				shoppingCartList: [{
-				//					'id': 1,
-				//					'name': '早餐专用'
-				//				}, {
-				//					'id': 2,
-				//					'name': '上午茶专用'
-				//				}, {
-				//					'id': 3,
-				//					'name': '午餐专用'
-				//				}, {
-				//					'id': 4,
-				//					'name': '下午茶专用'
-				//				}, null],
 				shoppingCartName: '',
 				shoppingCartId: null,
 				selectCur: 0
@@ -85,39 +72,11 @@
 			},
 			importShoppingCart() {
 				let shoppingCartId = this.shoppingCartId;
-				console.log(shoppingCartId)
 				let result = this.$command('IMPORT_SHOPPING_CART', shoppingCartId);
-				console.log(shoppingCartId);
 				if(result) {
-					console.log('PRINT THIS', this);
 					this.$emit('close');
 				}
 			},
-			//			returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
-			//				modifyStockNum = parseInt(modifyStockNum);
-			//				console.log('modifyStockNum', modifyStockNum);
-			//				if(isNaN(modifyStockNum) || modifyStockNum < 0) {
-			//					wx.showToast({
-			//						title: '正确填写库存',
-			//						icon: 'none'
-			//					})
-			//				} else if(modifyStockNum === this.merchandise['stockNum']) {
-			//					wx.showToast({
-			//						title: '库存没有任何改变',
-			//						icon: 'none'
-			//					})
-			//				} else {
-			//					wx.showLoading({
-			//						title: '正在提交...'
-			//					});
-			//					console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
-			//					this.$emit('modifyStock', id, primaryStockNum, modifyStockNum, reason, comment);
-			//					this.productInfo = {};
-			//					this.productInfo['reason'] = this.selectCause[0]['name'];
-			//					this.radioCur = 0;
-			//					this.$emit('close');
-			//				}
-			//			},
 			toastClose() {
 				this.$emit('close');
 			},
@@ -141,7 +100,7 @@
 		background: rgba(0, 0, 0, .3);
 		z-index: 1000;
 	}
-	
+
 	#toast {
 		position: absolute;
 		background: #FFFFFF;
@@ -150,7 +109,7 @@
 		top: 100rpx;
 		left: 65rpx;
 	}
-	
+
 	#toast_clost {
 		position: absolute;
 		height: 78rpx;
@@ -160,7 +119,7 @@
 		right: -14rpx;
 		top: -20rpx;
 	}
-	
+
 	#toast_title {
 		background: #FECE00;
 		text-align: center;
@@ -169,42 +128,42 @@
 		font-size: 34rpx;
 		font-weight: 400;
 	}
-	
+
 	#toast_content {}
-	
+
 	#toast_content_info {
 		padding: 20rpx 40rpx;
 	}
-	
+
 	.fsc_title {
 		font-size: 32rpx;
 		font-weight: 400;
 		color: #111111;
 		margin-bottom: 20rpx;
 	}
-	
+
 	.fsc_now_title {
 		font-size: 32rpx;
 		font-weight: 300;
 		color: #787878;
 		margin-bottom: 30rpx;
 	}
-	
+
 	#fsc_select {
 		overflow: hidden;
 		margin: 20rpx 0 40rpx;
 	}
-	
+
 	#fsc_select dl {
 		float: left;
 		width: 75rpx;
 		margin-right: 42rpx;
 	}
-	
+
 	#fsc_select dl:last-child {
 		margin-right: 0;
 	}
-	
+
 	#fsc_select dl dt {
 		width: 48rpx;
 		height: 48rpx;
@@ -212,68 +171,68 @@
 		background-size: 48rpx 48rpx;
 		margin: 30rpx auto 0;
 	}
-	
+
 	#fsc_select dl dt.fsc_now {
 		background: url(../../../../../static/images/icon/ico_select_fsc_on.png) no-repeat center center;
 		background-size: 48rpx 48rpx;
 	}
-	
+
 	#fsc_select dl dd {
 		width: 70rpx;
 		height: 70rpx;
 		margin: 0 auto;
 	}
-	
+
 	#fsc_select dl:nth-child(1).fsc_unuse dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_g_1.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(2).fsc_unuse dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_g_2.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(3).fsc_unuse dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_g_3.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(4).fsc_unuse dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_g_4.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(5).fsc_unuse dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_g_5.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(1) dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_1.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(2) dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_2.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(3) dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_3.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(4) dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_4.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#fsc_select dl:nth-child(5) dd {
 		background: url(../../../../../static/images/icon/ico_my_fsc_5.png) no-repeat center center;
 		background-size: 70rpx 70rpx;
 	}
-	
+
 	#input_change_list ul li {
 		line-height: 78rpx;
 		border-radius: 10rpx;
@@ -287,13 +246,13 @@
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-	
+
 	#input_change_list ul li.input_now_select {
 		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-	
+
 	#input_change_btn {
 		background: #FECE00;
 		line-height: 78rpx;
@@ -302,7 +261,7 @@
 		font-weight: 400;
 		border-radius: 10rpx;
 	}
-	
+
 	#input_change_tips {
 		font-size: 22rpx;
 		font-weight: 300;

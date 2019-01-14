@@ -5,7 +5,6 @@ export default class Merchandises extends Mock {
     this.total = 12;
   }
   data(page = 1, search = null, limit = 20) {
-    console.log(search)
     return {
       "data|12":[{
         "id|+1": 1,

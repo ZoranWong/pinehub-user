@@ -90,9 +90,6 @@ export default class Stores extends Model {
                     lng += this.state.location.longitude;
                     count++;
                 }
-                if(this.state.selectMarkerId) {
-                    console.log('select store');
-                }
                 return {
                     lat: count ? lat / count : lat,
                     lng: count ? lng / count : lng
@@ -110,7 +107,6 @@ export default class Stores extends Model {
             store () {
                 return (id) => {
                     let list = this.list();
-                    console.log('get store info by id ', id, 'store list ', list);
                     for (let i in list) {
                         if (list[i].id === id) {
                             return list[i];

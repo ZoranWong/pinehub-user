@@ -47,7 +47,6 @@ export default class NearestStore extends Model {
       state.store.lng = store['lng'];
       state.store.lat = store['lat'];
       state.store.mobile = store['mobile'];
-      console.log('=========================== nearest store save =============', store);
     });
     this.cache();
   }

@@ -11,7 +11,7 @@ export default class LoadBookingMallTicketsCommand extends Command {
         pageCount: limit
       });
     } catch (e) {
-      console.log('load booking mall tickets ==========', e);
+        return false;
     }
   }
 

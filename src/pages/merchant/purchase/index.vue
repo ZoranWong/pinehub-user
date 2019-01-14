@@ -56,7 +56,6 @@
 		},
 		computed: {
 			merchandises() {
-				console.log('AAA', this.$store.getters['model.purchase.merchandises/list'])
 				return this.$store.getters['model.purchase.merchandises/list'];
 			},
 			currentPage() {
@@ -73,7 +72,6 @@
 				return this.$store.getters['model.purchase.merchandises/isLoadedAll'];
 			},
 			storeId() {
-//				return 1;
 				return this.$store.getters['model.account/shopInfo'].id;
 			}
 		},
@@ -132,7 +130,6 @@
 				}
 			},
 			addCart(merchandiseId, id = null) {
-				console.log(merchandiseId, id);
 				let batch = this.selectBatchId;
 				let storeId = this.storeId;
 				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId, batch) + 1;
@@ -149,7 +146,6 @@
 			},
 			async initData() {
 				this.selectBatch = this.batchList[0].name;
-				console.log(1111111111111111110000000000000000000011111111111111100000000000000);
 				this.$store.dispatch('model.purchase.merchandises/setCurrentCategory', {
 					categoryIndex: -1
 				});

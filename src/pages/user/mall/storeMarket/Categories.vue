@@ -25,13 +25,11 @@ export default {
 			return this.$store.getters['model.storeMarket.categories/categories'];
 		},
 		currentCategoryIndex () {
-            console.log('=================================', this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex']);
             return this.$store.getters['model.storeMarket.merchandises/currentCategoryIndex'];
         }
 	},
 	methods: {
 		categoryChange(index) {
-			console.log('categoryChange event', index);
 			this.currentCategoryIndex = index;
 			this.$emit('categoryChange', index);
 		},

@@ -89,11 +89,9 @@
         },
         methods: {
             isOffLineOrder (order) {
-                console.log('is off line order', order.type === OFF_LINE_PAYMENT_ORDER);
                 return order.type === OFF_LINE_PAYMENT_ORDER;
             },
             btnClick (type, id) {
-                console.log('++++++++++++++++ update order status ++++++++++++++++++', type, id);
                 this.$command('ORDER_STATUS_UPDATE', type, id);
             },
             orderItemTop (order, index) {

@@ -47,7 +47,6 @@
         },
         computed: {
             totalAmount () {
-                console.log('total amount', this.$store.getters['model.purchase.orders/totalAmount']);
                 return this.$store.getters['model.purchase.orders/totalAmount'];
             },
             purchaseList () {

@@ -53,7 +53,6 @@ export default class AuthService extends ApiService {
         } else {
             response = await this.httpGet(`/user/info`, {});
         }
-        console.log('用户信息', response);
         return response.data;
     }
 }

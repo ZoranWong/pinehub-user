@@ -1,5 +1,5 @@
 <template>
-	<div id="tickets_area" v-if="ticketListShow">
+	<div id="tickets_area" v-if="ticketShow">
 		<div id="tickets">
 			<div id="tickets_title">
 				您的专属福利
@@ -37,12 +37,6 @@
 				ticketListShow: true
 			}
 		},
-		watch: {
-			async ticketShow(value) {
-				console.log('ticket show', value);
-				this.ticketListShow = await value;
-			}
-		},
 		methods: {
 			async receiveTicket(item) {
 				await this.$command('RECEIVE_TICKET', item);
@@ -55,12 +49,14 @@
 			cardsList() {
 				return this.$store.getters['model.cards/list'];
 			},
-			async ticketShow() {
-				return await this.$store.getters['model.cards/ticketListShow'] ? true : false;
+			ticketShow() {
+				return this.$store.getters['model.account/isAuth']
+					&& this.$store.getters['model.account/registered']
+					&& this.ticketListShow
+					&& this.$store.getters['model.cards/ticketListShow'];
 			}
 		},
 		mounted() {
-			this.ticketListShow = this.ticketShow;
 		}
 	}
 </script>

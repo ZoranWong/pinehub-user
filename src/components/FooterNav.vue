@@ -56,7 +56,6 @@
                 }
             },
             jump (router) {
-                console.log(router)
                 this.$command('REDIRECT_TO', router, 'replace');
             },
             scanCode () {
@@ -65,7 +64,6 @@
         },
         created () {
             this.nowNav(this.navName);
-            console.log(this.navName);
         }
     }
 </script>

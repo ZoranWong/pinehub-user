@@ -73,22 +73,18 @@
 				this.$command('LOAD_STORE_ORDERS', storeId, collectionRecordsDate, type, payType, page, limit);
 			},
 			jump(router) {
-				console.log('AAA')
 				this.$command('REDIRECT_TO', router, 'replace');
 			}
 		},
 		mounted() {
-			console.log('this.$route.query', this.$route.query);
 			let payType = this.$route.query['payType'];
 			let paidDate = this.$route.query['paidDate'];
 
 			if(payType != undefined && paidDate != undefined) {
-				console.log('payType----', payType, paidDate);
 				paidDate = JSON.parse(paidDate)
 				this.collectionRecordsDate = paidDate[0] + '-' + paidDate[1];
 				this.loadOrders(paidDate, this.type, payType);
 			} else {
-				console.log('payType----', payType);
 				this.loadOrders(this.collectionRecordsDate, this.type, payType = 0);
 			}
 
@@ -108,14 +104,14 @@
 		box-sizing: border-box;
 		font-size: 22rpx;
 	}
-	
+
 	.title {
 		text-align: center;
 		color: #666;
 		margin-bottom: 20rpx;
 		font-size: 28rpx;
 	}
-	
+
 	#selectSearchInfo {
 		background: #FFFFFF;
 		width: 710rpx;
@@ -129,16 +125,16 @@
 		padding: 0 20rpx;
 		box-sizing: border-box;
 	}
-	
+
 	#selectSearchInfo em {
 		display: inline-block;
 		color: #757575;
 	}
-	
+
 	.diy_search {
 		float: right;
 	}
-	
+
 	#selectSearchInfo i {
 		display: inline-block;
 		float: right;
@@ -148,7 +144,7 @@
 		height: 42rpx;
 		margin: 12rpx 0 0 12rpx;
 	}
-	
+
 	.total {
 		background: #fff;
 		border-radius: 10rpx;
@@ -157,29 +153,29 @@
 		margin-bottom: 10rpx;
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
-	
+
 	.total span {
 		display: block;
 		color: #666;
 		font-size: 22rpx;
 	}
-	
+
 	.text_right span {
 		text-align: right;
 	}
-	
+
 	.flex {
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	span.bold {
 		color: #000;
 		font-size: 18px;
 	}
-	
+
 	.list {}
-	
+
 	.list li {
 		padding: 36rpx 20rpx 12rpx;
 		width: 675rpx;
@@ -188,13 +184,13 @@
 		border-radius: 10rpx;
 		margin-bottom: 4rpx;
 	}
-	
+
 	.list .clearfix::after {
 		clear: both;
 		display: table;
 		content: "";
 	}
-	
+
 	.head_portrait {
 		background: #f2f2f2;
 		border-radius: 10rpx;
@@ -203,35 +199,35 @@
 		float: left;
 		margin-right: 30rpx;
 	}
-	
+
 	.record_info {
 		float: left;
 	}
-	
+
 	.record_info span {
 		display: block;
 		color: #666;
 		line-height: 22rpx;
 		margin-bottom: 20rpx;
 	}
-	
+
 	span.user_name {
 		color: #000;
 		line-height: 22rpx;
 		margin-bottom: 30rpx;
 	}
-	
+
 	.record_info em {
 		color: #FFCC00;
 		display: inline-block;
 	}
-	
+
 	.record_info i {
 		display: inline-block;
 		margin: 0 10rpx;
 		color: #999;
 	}
-	
+
 	.money {
 		float: right;
 		color: #000;

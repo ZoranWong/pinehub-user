@@ -1,6 +1,5 @@
 export default class UserInfo {
 	constructor(userInfo) {
-		console.log('userInfo transformer');
 		this.avatar = userInfo['avatar'];
 		this.balance = userInfo['balance'];
 		this.canUseScore = userInfo['can_use_score'];

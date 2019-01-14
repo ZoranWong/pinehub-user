@@ -18,7 +18,6 @@ export default class CreateMerchantOrderCommand extends Command {
 			}
 			let result = await super.createOrderSign(params);
 			if(!result) {
-				console.log('send order to user', orderType === SEND_ORDER_TO_USER, 'user self pick up', orderType === USER_SELF_PICK_UP);
 				if(orderType === SEND_ORDER_TO_USER) {
 					this.$command('REDIRECT_TO', 1, 'go');
 				} else if(orderType === USER_SELF_PICK_UP) {

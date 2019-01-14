@@ -1,24 +1,17 @@
 import Service from '../Service';
 export default class StorageService extends Service {
-  constructor ($application) {
-    super($application);
-  }
-
   set (key, value) {
-    console.log(key + '<<<<<STORAGE>>>>>写入');
     return new Promise((resolve) => {
       wx.setStorage({
         key: key,
         data: value,
         success: function (res) {
-          console.log('set cache data', wx.getStorageSync(key));
           resolve(res);
         }
       });
     });
   }
   get (key) {
-    console.log(key + '<<<<<STORAGE>>>>>读取');
     return new Promise((resolve, reject) => {
       wx.getStorage({
         key: key,
@@ -26,7 +19,6 @@ export default class StorageService extends Service {
           resolve(res.data);
         },
         fail: function (e) {
-          console.log('获取数据' + key + '失败', e);
           resolve(false);
         }
       });

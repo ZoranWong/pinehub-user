@@ -74,7 +74,6 @@
 				return this.model ? this.$store.getters[`${this.model}/totalAmount`] : 0;
 			},
 			totalCount() {
-				console.log('购物车总数', this.model, this.$store.getters);
 				return this.model ? this.$store.getters[`${this.model}/totalCount`] : 0;
 			}
 		},
@@ -110,7 +109,7 @@
 		right: 0rpx;
 	}
 	/*底部的购物车*/
-	
+
 	.shopping-carts-bottom {
 		width: 100%;
 		height: 98rpx;
@@ -119,7 +118,7 @@
 		position: relative;
 		z-index: 99;
 	}
-	
+
 	.black-circle {
 		width: 90rpx;
 		height: 90rpx;
@@ -129,7 +128,7 @@
 		top: -20rpx;
 		left: 20rpx;
 	}
-	
+
 	.cart {
 		width: 70rpx;
 		height: 70rpx;
@@ -139,7 +138,7 @@
 		top: -10rpx;
 		left: 30rpx;
 	}
-	
+
 	.num-icon {
 		width: 36rpx;
 		height: 36rpx;
@@ -152,25 +151,25 @@
 		top: -20rpx;
 		left: 78rpx;
 	}
-	
+
 	.content {
 		width: 70%;
 		font-size: 32rpx;
 		margin-top: 20rpx;
 	}
-	
+
 	.total-price {
 		margin-left: 140rpx;
 		color: #ffffff;
 	}
-	
+
 	.choose {
 		display: inline-block;
 		width: 30%;
 		color: #fece00;
 		margin-top: -40rpx;
 	}
-	
+
 	.next-icon {
 		width: 20rpx;
 		height: 35.6rpx;
@@ -181,7 +180,7 @@
 		right: 23rpx;
 	}
 	/*商品数量*/
-	
+
 	.mask {
 		position: fixed;
 		top: 0;
@@ -191,11 +190,11 @@
 		box-sizing: border-box;
 		background-color: rgba(7, 17, 27, 0.6);
 	}
-	
+
 	.add-box {
 		margin-top: 60rpx;
 	}
-	
+
 	.selected-merchandises {
 		width: 100%;
 		max-height: 400rpx;
@@ -206,7 +205,7 @@
 		box-sizing: border-box;
 		overflow-y: auto;
 	}
-	
+
 	.selected-title {
 		width: 100%;
 		height: 58rpx;
@@ -218,37 +217,37 @@
 		position: fixed;
 		z-index: 2;
 	}
-	
+
 	.flag {
 		background: url(../../static/images/icon/flag.png) 0rpx 14rpx no-repeat;
 		background-size: 26rpx 30rpx;
 		text-indent: 36rpx;
 	}
-	
+
 	.clear {
 		background: url(../../static/images/icon/del-icon.png) 0rpx 14rpx no-repeat;
 		background-size: 26rpx 30rpx;
 		text-indent: 36rpx;
 	}
-	
+
 	.add-merchandises {
 		height: 98rpx;
 		line-height: 98rpx;
 		position: relative;
 	}
-	
+
 	.merchandises-name {
 		font-size: 28rpx;
 		margin-left: 40rpx;
 	}
-	
+
 	.sell-price {
 		font-size: 32rpx;
 		position: absolute;
 		bottom: 0rpx;
 		right: 300rpx;
 	}
-	
+
 	.cartcontrol-warpper {
 		position: absolute;
 		bottom: -10rpx;

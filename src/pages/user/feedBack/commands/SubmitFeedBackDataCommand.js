@@ -1,7 +1,6 @@
 import Command from '@/commands/Command';
 export default class SubmitFeedBackDataCommand extends Command {
     async handle (mobile, feedback) {
-        console.log('FEEDBACK', mobile, feedback);
         if (mobile && !(/^1[34578]\d{9}$/.test(mobile))) {
             wx.showToast({
                 title: '手机号填写不正确',

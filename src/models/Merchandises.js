@@ -9,7 +9,6 @@ export default class Merchandises extends Model {
     computed () {
         return _.extend(super.computed(), {
             list (state) {
-                // console.log( state.list[state.currentCategoryIndex],'merchandises-models-001');
                 return state.currentPage ? _.flatten(state.list) : [];
             },
             currentCategoryIndex (state) {
@@ -35,7 +34,6 @@ export default class Merchandises extends Model {
         });
 
         this.addEventListener('setCurrentCategory', function ({ categoryIndex }) {
-            console.log('===========set category=============', categoryIndex);
             this.state.currentCategoryIndex = categoryIndex;
         });
 
@@ -47,7 +45,6 @@ export default class Merchandises extends Model {
                 }
             });
         });
-        // console.log(this.state ,'merchandises-models-002')
         this.addEventListener('setList', ({ list, currentPage, totalPage, totalNum, pageCount } /* paylaod */) => {
             this.state.currentPage = currentPage;
             let startIndex = (currentPage - 1) * pageCount + 1;
@@ -61,7 +58,6 @@ export default class Merchandises extends Model {
                 }
             }
             this.$application.$vm.set(this.state.list, currentPage - 1, merchandises);
-            console.log(this.state, 'merchandises-models-004')
         });
     }
 }

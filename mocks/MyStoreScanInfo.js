@@ -4,7 +4,6 @@ export default class MyStoreScanInfo extends Mock {
 		super(application);
 	}
 	data() {
-		console.log('myStoreScanInfo-mock')
 		return {
 			"data": {
 				"code": "2018091208310654",

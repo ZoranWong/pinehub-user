@@ -89,7 +89,6 @@
 				this.display = false;
 			},
 			addCart(merchandiseId, storeId = null) {
-				console.log(merchandiseId, id);
 				let count = this.$store.getters['model.purchase.shoppingCarts/quality'](merchandiseId, batch) + 1;
 				this.$command('PURCHASE_SHOPPINGCART_CHANGE_MERCHANDISE', storeId, batch, merchandiseId, id, count, batch);
 			},
@@ -107,7 +106,6 @@
 			}
 		},
 		mounted() {
-			console.log('dayin', this.$store);
 		}
 	}
 </script>
@@ -118,12 +116,12 @@
 		height: 100%;
 		width: 100%;
 	}
-	
+
 	.shopping_cart_time {
 		margin: 20rpx;
 		overflow: hidden;
 	}
-	
+
 	.shopping_cart_time ul li {
 		background: #FFFFFF;
 		padding: 14rpx 20rpx;
@@ -133,14 +131,14 @@
 		margin-bottom: 1rpx;
 		font-size: 28rpx;
 	}
-	
+
 	.shopping_cart_time ul li i {
 		display: inline-block;
 		float: left;
 		line-height: 42rpx;
 		height: 42rpx;
 	}
-	
+
 	.shopping_cart_time ul li picker {
 		display: inline-block;
 		float: left;
@@ -148,7 +146,7 @@
 		width: 580rpx;
 		height: 42rpx;
 	}
-	
+
 	.shopping_cart_calendar_ico {
 		width: 40rpx;
 		height: 42rpx;
@@ -156,7 +154,7 @@
 		background-size: 40rpx 42rpx;
 		margin-right: 20rpx;
 	}
-	
+
 	.shopping_cart_time_ico {
 		width: 42rpx;
 		height: 42rpx;
@@ -164,7 +162,7 @@
 		background-size: 42rpx 42rpx;
 		margin-right: 20rpx;
 	}
-	
+
 	.select_shopping_cart_date_ico {
 		width: 12rpx;
 		height: 22rpx;
@@ -172,7 +170,7 @@
 		background-size: 12rpx 22rpx;
 		float: right !important;
 	}
-	
+
 	#save_shopping_cart {
 		background: #FFD000;
 		font-size: 32rpx;
@@ -185,7 +183,7 @@
 		border-radius: 10rpx;
 	}
 	/*产品列表*/
-	
+
 	.product {
 		height: 160rpx;
 		display: flex;
@@ -199,47 +197,47 @@
 		margin: 0 20rpx 10rpx;
 		/*border:1rpx solid red;*/
 	}
-	
+
 	.product img {
 		width: 180rpx;
 		height: 120rpx;
 		margin-right: 42rpx;
 		/*border:1rpx solid red*/
 	}
-	
+
 	.product-details {
 		width: 648rpx;
 		height: 100%;
 		float: right;
 		/*border:1rpx solid blue;*/
 	}
-	
+
 	.product-details p {
 		width: 100%;
 	}
-	
+
 	.amount {
 		font-size: 22rpx;
 		color: #757575;
 	}
-	
+
 	.product-details p .sell-count {
 		font-size: 22rpx;
 		position: relative;
 	}
-	
+
 	.product-details p .sell-price {
 		float: right;
 		margin-right: 203rpx;
 	}
-	
+
 	.cartcontrol-warpper {
 		position: absolute;
 		bottom: 56rpx;
 		right: 20rpx;
 		/*border:1rpx solid red;*/
 	}
-	
+
 	#next_bottom {
 		width: 750rpx;
 		height: 90rpx;
@@ -248,7 +246,7 @@
 		bottom: 0;
 		left: 0;
 	}
-	
+
 	.total_price {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -257,7 +255,7 @@
 		bottom: 5rpx;
 		left: 5rpx;
 	}
-	
+
 	.choose {
 		display: inline-block;
 		width: 26%;
@@ -270,7 +268,7 @@
 		right: 0;
 		padding-right: 64rpx;
 	}
-	
+
 	.next-icon {
 		width: 20rpx;
 		height: 35.6rpx;

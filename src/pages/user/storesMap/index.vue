@@ -71,7 +71,6 @@
 				return markers.length > 0 ? markers : null;
 			},
 			center() {
-				console.log('CENTER POINT', this.$store.getters['model.stores/centerPoint']);
 				return this.$store.getters['model.stores/centerPoint'];
 			},
 			storeInfo() {

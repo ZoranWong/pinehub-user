@@ -8,7 +8,6 @@ export default class LoadMerchandisesCommand extends Command {
       let serviceMethod = args.shift();
       let service = this.service('http.merchandises');
       let [merchandises, totalNum, currentPage, totalPage, limit] = await service[serviceMethod].apply(service, args);
-      console.log(event, merchandises, totalNum, currentPage, totalPage, 'jjjj', serviceMethod);
       this.store().dispatch(event, {
         list: merchandises,
         totalNum: totalNum,
@@ -17,7 +16,6 @@ export default class LoadMerchandisesCommand extends Command {
         pageCount: limit
       });
     } catch (e) {
-      console.log('抛出错误', e);
       return false;
     }
   }

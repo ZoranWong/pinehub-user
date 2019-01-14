@@ -19,64 +19,28 @@ export default class AuthService extends Service {
     async getToken () {
         try {
             let token = await this.service('mp.storage').get('token');
-            let ttlTime = new Date(token.ttl).getTime();
-            let nowTime = new Date().getTime();
-            console.log('-------><--------', token, ttlTime, nowTime);
+            let format = token.ttl.replace(/-/g, '/');
+            let ttlTime = (new Date(format)).getTime();
+            let nowTime = (new Date()).getTime();
             if (!token || ttlTime <= nowTime) {
                 // 获取appId
-                let appId = this.$application.config['app']['appId'];
-                // 获取appSecret
-                let appSecret = this.$application.config['app']['appSecret'];
-                // 获取accessToken
-                let data = await this.service('http.auth').accessToken(appId, appSecret);
-                let accessToken = data['access_token'];
-                let logo = data['logo'];
-                let contactPhoneNum = data['contact_phone_num'];
-                this.$store.dispatch('model.app/setData', {
-                    accessToken: accessToken,
-                    appId: appId,
-                    logo: logo,
-                    contactPhoneNum: contactPhoneNum
-                });
-                // 获取code
-                let code = await this.service('mp.auth').code();
-                // 存储code
-                await this.service('mp.storage').set('code', code);
-                // 请求登录接口
-                let loginInfo = await this.service('http.auth').login(code, accessToken);
-                let token = loginInfo.token;
-                let openId = loginInfo.open_id;
-                let mobile = loginInfo.mobile;
-                let userScore = loginInfo.can_use_score;
-                let refreshTtl = loginInfo.refresh_ttl;
-                let ttl = loginInfo.ttl;
-                if (loginInfo.shop_id) {
-                    let shopId = loginInfo.shop_id;
-                    await this.service('mp.storage').set('shopId', shopId);
-                }
-                token = {
-                    'value': token,
-                    'ttl': ttl['date'],
-                    'refreshTtl': refreshTtl['date']
-                };
-                await this.service('mp.storage').set('token', token);
-                await this.service('mp.storage').set('openId', openId);
-                if (token !== undefined) {
-                    let eventData = {
-                        openId: openId,
-                        mobile: mobile,
-                        userScore: userScore,
-                        token: token
-                    };
-                    this.$store.dispatch('model.account/setAccount', eventData);
-                }
-                return token
+                return await this.appSignIn();
             } else {
                 return token['value'];
             }
         } catch (e) {
-            console.log('抛出异常', e);
-            return false;
+            return await this.appSignIn();
+        }
+    }
+    async appSignIn() {
+        try {
+            let accessToken = await this.command('APP_ACCESS');
+            // 请求登录接口
+            let token = await this.command('SIGN_IN', accessToken);
+            return token
+        }catch (e) {
+            console.log(e);
+            throw e;
         }
     }
     checkSession () {
@@ -90,9 +54,5 @@ export default class AuthService extends Service {
                 }
             });
         });
-    }
-
-    code2Session () {
-
     }
 }

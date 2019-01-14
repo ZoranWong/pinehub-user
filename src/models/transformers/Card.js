@@ -31,7 +31,5 @@ export default class Ticket {
 			this.dateInfo = (new Date(beginTimestamp)).format('yyyy-MM-dd') +
 				'~' + (new Date(endTimestamp)).format('yyyy-MM-dd');
 		}
-
-		console.log('ticket =====', this);
 	}
 }

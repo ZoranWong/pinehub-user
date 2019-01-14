@@ -82,7 +82,7 @@ export default {
                     page
                 );
             } catch (e) {
-                console.log(e);
+                return false;
             }
         },
         categoryChange: function (index) {
@@ -92,7 +92,6 @@ export default {
                     categoryIndex: index
                 });
             } catch (e) {
-                console.log(e);
                 return false;
             }
         },
@@ -100,7 +99,6 @@ export default {
             try {
                 await this.$command('BOOKING_MALL_SHOPPINGCART_LOAD_MERCHANDISES', page)
             } catch (e) {
-                console.log('抛出异常', e);
                 return false;
             }
         },
@@ -119,10 +117,9 @@ export default {
         },
         clearShoppingCart () {
             try {
-            	console.log('可以了----------------------')
                 this.$command('BOOKING_MALL_SHOPPINGCART_CLEAR_MERCHANDISES');
             } catch (e) {
-                console.log(e);
+                return false;
             }
         },
         async initData () {

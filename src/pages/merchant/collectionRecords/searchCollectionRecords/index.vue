@@ -45,24 +45,16 @@
 				selectDateEnd: (new Date()).format('yyyy-MM-dd'),
 			};
 		},
-		computed: {
-			//			shopInfo() {
-			//				return this.$store.getters['model.account/shopInfo'];
-			//			}
-		},
 		methods: {
 			selectPayType(e) {
-				console.log('当前选择', e.target.value);
 				this.payTypeStrIndex = e.target.value;
 			},
 			getSelectDateStart(e) {
 				let utn = e.target.value;
-				console.log('当前选择', e.target.value);
 				this.selectDateStart = (new Date(utn)).format('yyyy-MM-dd');
 			},
 			getSelectDateEnd(e) {
 				let utn = e.target.value;
-				console.log('当前选择', e.target.value);
 				this.selectDateEnd = (new Date(utn)).format('yyyy-MM-dd');
 			},
 			getResult(paidDate, payType) {
@@ -75,13 +67,10 @@
 			},
 			submit() {
 				let paidDate = JSON.stringify([this.selectDateStart + " 00:00:00", this.selectDateEnd + " 23:59:59"]);
-				console.log('paidDate', paidDate);
 				let payType = this.payTypeStrIndex;
 				this.getResult(paidDate, payType)
 			}
-		},
-		mounted() {},
-		created() {}
+		}
 	}
 </script>
 
@@ -96,14 +85,14 @@
 		box-sizing: border-box;
 		font-size: 22rpx;
 	}
-	
+
 	.title {
 		text-align: center;
 		color: #666;
 		margin-bottom: 20rpx;
 		font-size: 28rpx;
 	}
-	
+
 	.box_window {
 		background: #FFFFFF;
 		width: 710rpx;
@@ -117,17 +106,17 @@
 		overflow: hidden;
 		position: relative;
 	}
-	
+
 	.box_window em {
 		padding-left: 20rpx;
 		display: inline-block;
 	}
-	
+
 	#search {
 		text-align: center;
 		margin-top: 20rpx;
 	}
-	
+
 	.diy_search {
 		position: absolute;
 		top: 0;
@@ -135,11 +124,11 @@
 		color: #757575;
 		padding-right: 24rpx;
 	}
-	
+
 	.diy_search.date {
 		right: 210rpx;
 	}
-	
+
 	.diy_search i {
 		background: url(../../../../../static/images/icon/my_ico_menu_more.png) no-repeat center center;
 		background-size: 12rpx 22rpx;

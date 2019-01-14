@@ -1,6 +1,5 @@
 export default class SelfextraOrders {
   constructor(selfextraOrders) {
-  	console.log('order transformer');
     this.code = selfextraOrders['code'];
     this.id = selfextraOrders['id'];
     switch(parseInt(selfextraOrders['status'])) {
@@ -46,7 +45,7 @@ export default class SelfextraOrders {
     		totalAmount: this.orderItems[i]['total_amount'].toFixed(2)
     	}
     }
-    
+
   }
- 
+
 }

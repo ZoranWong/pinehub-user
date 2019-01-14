@@ -53,7 +53,6 @@
                 }
 
                 let store = await this.http.store.store(this.storeId);
-                console.log('store info', store);
                 this.shopName = store['name'];
                 this.mobile = store['mobile'];
                 this.address = store['address'];
@@ -63,17 +62,13 @@
             }
         },
         mounted () {
-            console.log('store query ', this.$route.query, 'store id', this.storeId);
             this.storeId = this.$route.query['store_id'] ? this.$route.query['store_id'] : this.storeId;
             this.init();
         },
         onLoad (options) {
-            console.log(options);
             if (options.q){
                 let scan_url = decodeURIComponent(options.q);
-                console.log("scan_url:" + scan_url)
                 this.storeId = scan_url.match(/\d+/)[0] //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
-                console.log('----- storeId ----', this.storeId);
             }
         }
     }

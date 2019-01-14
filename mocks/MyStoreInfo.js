@@ -4,7 +4,6 @@ export default class MY_STORE_INFO extends Mock {
 		super(application);
 	}
 	data() {
-		console.log('myStoreInfo-mock')
 		return {
 			"data": {
 				"today_buy_num": 2,

@@ -26,13 +26,25 @@ export default class Account extends Model {
                 return state.canUseScore;
             },
             token (state) {
-                return state.token;
+                if (state.token) {
+                    let format = state.token['ttl'].replace(/-/g, '/')
+                    let ttlDate = new Date(format);
+                    let nowDate = new Date();
+                    console.log('-----------user token---------', format, ttlDate, nowDate);
+                    if(ttlDate.getTime() > nowDate.getTime()) {
+                        return state.token;
+                    }
+                }
+                return false;
             },
             userInfo (state) {
                 return _.omit(state, 'shop');
             },
             shopInfo (state) {
                 return state.shop;
+            },
+            registered() {
+                return !!this.state.nickname;
             }
         });
     }
@@ -73,18 +85,18 @@ export default class Account extends Model {
         this.addEventListener('reduceTicket', function ({count = 1}) {
             this.state.ticketNum -= count;
             try {
-                console.log(this.service('mp.storage').set('account', this.state));
+                return this.service('mp.storage').set('account', this.state);
             } catch (e) {
-                console.log(e);
+                return false;
             }
         });
 
         this.addEventListener('addTicket', function ({count = 1}) {
             this.state.ticketNum += count;
             try {
-                console.log(this.service('mp.storage').set('account', this.state));
+                return this.service('mp.storage').set('account', this.state);
             } catch (e) {
-                console.log(e);
+                return false;
             }
         });
 
@@ -93,9 +105,9 @@ export default class Account extends Model {
             storeInfo.buyNumECharts = buyNumECharts;
             this.$application.$vm.set(this.state, 'shop', storeInfo);
             try {
-                console.log(this.service('mp.storage').set('account', this.state));
+                return this.service('mp.storage').set('account', this.state);
             } catch (e) {
-                console.log(e);
+                return false;
             }
         });
 
@@ -154,9 +166,9 @@ export default class Account extends Model {
                 this.state.nickname = userInfo['nickname'];
             }
             try {
-                console.log(this.service('mp.storage').set('account', this.state));
+                this.service('mp.storage').set('account', this.state);
             } catch (e) {
-                console.log(e);
+                return false;
             }
         });
     }

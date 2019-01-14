@@ -43,13 +43,10 @@ export default class ShoppingCarts extends Model {
 				let newList = _.groupBy(list, function(n) {
 					return n.batch
 				})
-
-				console.log('当前分组类别', newList);
 				return newList;
 			},
 			quality() {
 				return(id, batch = null) => {
-					console.log('BATCH__________', id, batch, this.list())
 					let where = {};
 					where['merchandiseId'] = id;
 					if(batch) where['batch'] = batch;
@@ -59,7 +56,6 @@ export default class ShoppingCarts extends Model {
 			},
 			shoppingCartId() {
 				return(id, batch = null) => {
-					console.log('BATCH__________B', id, batch, this.list())
 					let where = {};
 					where['merchandiseId'] = id;
 					if(batch) where['batch'] = batch;
@@ -119,7 +115,6 @@ export default class ShoppingCarts extends Model {
 			reduceCost = 0,
 			title = null
 		}) {
-			console.log('set use ticket ------');
 			this.state.reduceCost = reduceCost;
 			this.state.discount = discount;
 			this.state.ticketCode = ticketCode;

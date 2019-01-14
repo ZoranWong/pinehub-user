@@ -5,13 +5,11 @@ export default class PurchaseShoppingCartLoadMerchandisesCommand extends Command
     this.model = 'model.purchase.shoppingCarts';
   }
   async handle (page = 1) {
-    console.log('购物车+++++++++++++');
     try {
-      let [merchandises, totalNum, currentPage, totalPage, limit] = await this.service('http.shoppingCart').purchaseShoppingCartLoadMerchandises(page);
-      console.log('活动购物车内全部商品', merchandises, totalNum, currentPage, totalPage, limit);
+      let [merchandises, totalNum, currentPage, totalPage, limit] = await this.service('http.shoppingCart')
+        .purchaseShoppingCartLoadMerchandises(page);
       this.addMerchandisesToModel(merchandises, totalNum, currentPage, totalPage, limit);
     } catch (e) {
-      console.log('异常抛出========+++++++', e);
       return false;
     }
   }

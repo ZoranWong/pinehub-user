@@ -57,8 +57,6 @@
 		methods: {
 			returnBtn() {
 				let name = this.shoppingCartName;
-				console.log('modifyStockNum', name);
-
 				if(name == null) {
 					wx.showToast({
 						title: '不得为空',
@@ -88,7 +86,7 @@
 		background: rgba(0, 0, 0, .3);
 		z-index: 1000;
 	}
-	
+
 	#toast {
 		position: absolute;
 		background: #FFFFFF;
@@ -97,7 +95,7 @@
 		top: 100rpx;
 		left: 65rpx;
 	}
-	
+
 	#toast_clost {
 		position: absolute;
 		height: 78rpx;
@@ -107,7 +105,7 @@
 		right: -14rpx;
 		top: -20rpx;
 	}
-	
+
 	#toast_title {
 		background: #FECE00;
 		text-align: center;
@@ -116,24 +114,24 @@
 		font-size: 34rpx;
 		font-weight: 400;
 	}
-	
+
 	#toast_content {}
-	
+
 	#toast_content_info {
 		padding: 20rpx 40rpx;
 	}
-	
+
 	.fsc_title {
 		font-size: 32rpx;
 		font-weight: 400;
 		color: #111111;
 		margin-bottom: 20rpx;
 	}
-	
+
 	.fsc_input {
 		margin-bottom: 22rpx;
 	}
-	
+
 	.fsc_input input {
 		border: 1rpx solid #FFD000;
 		height: 56rpx;
@@ -141,28 +139,28 @@
 		border-radius: 10rpx;
 		font-size: 28rpx;
 	}
-	
+
 	#fsc_products {
 		margin-bottom: 20rpx;
 	}
-	
+
 	#fsc_products ul li {
 		font-size: 32rpx;
 		font-weight: 300;
 		line-height: 52rpx;
 	}
-	
+
 	#fsc_products ul li em {
 		display: inline-block;
 		width: 60%;
 	}
-	
+
 	#fsc_products ul li i {
 		display: inline-block;
 		width: 40%;
 		text-align: right;
 	}
-	
+
 	#input_change_list ul li {
 		line-height: 78rpx;
 		border-radius: 10rpx;
@@ -176,13 +174,13 @@
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-	
+
 	#input_change_list ul li.input_now_select {
 		background: url(../../../../../static/images/icon/my_select_ok.png) no-repeat;
 		background-size: 44rpx;
 		background-position: 40rpx center;
 	}
-	
+
 	#input_change_btn {
 		background: #FECE00;
 		line-height: 78rpx;
@@ -191,7 +189,7 @@
 		font-weight: 400;
 		border-radius: 10rpx;
 	}
-	
+
 	#input_change_tips {
 		font-size: 22rpx;
 		font-weight: 300;

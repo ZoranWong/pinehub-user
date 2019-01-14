@@ -5,7 +5,9 @@ export default class App extends Model {
             appId: null,
             logo: null,
             accessToken: null,
-            contactPhoneNum: null
+            contactPhoneNum: null,
+            ttl: null,
+            refreshTtl: null
         };
     }
 
@@ -15,7 +17,15 @@ export default class App extends Model {
                 return this.state.logo;
             },
             accessToken () {
-                return this.state.logo;
+                if(this.state.ttl) {
+                    let format = this.state.ttl.replace(/-/g, '/');
+                    let ttlDate = new Date(format);
+                    let nowDate = new Date();
+                    if (ttlDate.getTime() > nowDate.getTime()) {
+                        return this.state.accessToken;
+                    }
+                }
+                return false;
             },
             contactPhoneNum () {
                 return this.state.contactPhoneNum;
@@ -24,7 +34,7 @@ export default class App extends Model {
     }
 
     listeners () {
-        this.addEventListener('setData', function ({appId = null, logo = null, accessToken = null, contactPhoneNum = null}) {
+        this.addEventListener('setData', function ({appId = null, logo = null, accessToken = null, contactPhoneNum = null, ttl = null}) {
             if (appId) {
                 this.state.appId = appId;
             }
@@ -37,6 +47,10 @@ export default class App extends Model {
 
             if (contactPhoneNum) {
                 this.state.contactPhoneNum = contactPhoneNum;
+            }
+
+            if(ttl) {
+                this.state.ttl = ttl;
             }
         });
     }

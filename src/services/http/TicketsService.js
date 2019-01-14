@@ -25,7 +25,6 @@ export default class TicketsService extends ApiService {
     async loadtickets () {
         let response = null;
         response = await this.httpGet(`/tickets/`);
-        console.log('respone cards', response);
         let tickets = response.data;
         let pagination = response.meta.pagination;
         let totalNum = pagination.total;
@@ -38,7 +37,6 @@ export default class TicketsService extends ApiService {
     async receiveTicket (cardId) {
         let response = null;
         response = await this.httpGet(`/user/receive/ticket/${cardId}/`);
-        console.log('已领券', response);
         return response.data;
     }
 

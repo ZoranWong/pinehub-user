@@ -94,7 +94,6 @@
 				let shop = this.$store.getters['model.account/shopInfo'];
 				let data = shop && shop['sellAmountECharts'] ? shop['sellAmountECharts'] : [];
 				let result = this.mp.eCharts.createChart('week', data, true);
-				console.log('----------------', result);
 				return result;
 			},
 			wxOptionsForBuy() {
@@ -109,7 +108,6 @@
 		},
 		methods: {
 			jump(router) {
-				console.log(router);
 				this.$command('REDIRECT_TO', router, 'push');
 			},
 			scanCode() {
@@ -139,16 +137,16 @@
 	#merchant-store {
 		background: #fafafa;
 	}
-	
+
 	#merchant-store_buyinfo {
 		clear: both;
 		overflow: hidden;
 	}
-	
+
 	#merchant-store_buyinfo {
 		padding: 15rpx;
 	}
-	
+
 	#merchant-store_buyinfo ul li {
 		width: 333rpx;
 		height: 140rpx;
@@ -160,7 +158,7 @@
 		position: relative;
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
-	
+
 	.my_store_ico {
 		display: inline-block;
 		width: 60rpx;
@@ -172,63 +170,63 @@
 		top: 40rpx;
 		left: 40rpx;
 	}
-	
+
 	.my_store_ico.ico_week_buy {
 		background-image: url(../../../static/images/icon/my_store_week_buy.png);
 	}
-	
+
 	.my_store_ico.ico_week_sell {
 		background-image: url(../../../static/images/icon/my_store_week_sell.png);
 	}
-	
+
 	.my_store_ico.ico_today_buy {
 		background-image: url(../../../static/images/icon/my_store_today_buy.png);
 	}
-	
+
 	.my_store_ico.ico_today_sell {
 		background-image: url(../../../static/images/icon/my_store_today_total.png);
 	}
-	
+
 	.info_list {
 		position: absolute;
 		top: 35rpx;
 		left: 120rpx;
 		clear: both;
 	}
-	
+
 	.info_list em {
 		font-size: 30rpx;
 		font-weight: 400;
 		line-height: 34rpx;
 	}
-	
+
 	.info_list i {
 		font-size: 24rpx;
 		line-height: 22rpx;
 		color: #bbbbbb;
 		margin-top: 10rpx;
 	}
-	
+
 	#merchant-store_charts1 {
 		margin: 0 30rpx;
 		background: #FFFFFF;
 		border-radius: 10rpx;
 		padding: 15rpx;
 	}
-	
+
 	#merchant-store_charts2 {
 		margin: 30rpx 30rpx 0;
 		background: #FFFFFF;
 		border-radius: 10rpx;
 		padding: 15rpx;
 	}
-	
+
 	#merchant-store_menu {
 		margin: 15rpx;
 		/*background: #FFF6BD;*/
 		overflow: hidden;
 	}
-	
+
 	#merchant-store_menu ul li {
 		margin: 15rpx;
 		background: #FFFFFF;
@@ -238,14 +236,14 @@
 		float: left;
 		box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
 	}
-	
+
 	#merchant-store_menu ul li em {
 		font-size: 28rpx;
 		font-weight: 300;
 		text-align: center;
 		color: #828282;
 	}
-	
+
 	.my_store_menu_ico {
 		display: block;
 		width: 60rpx;
@@ -255,27 +253,27 @@
 		background-position: center center;
 		margin: 30rpx auto 15rpx;
 	}
-	
+
 	.ico_1 {
 		background-image: url(../../../static/images/icon/my_store_m1.png);
 	}
-	
+
 	.ico_2 {
 		background-image: url(../../../static/images/icon/my_store_m2.png);
 	}
-	
+
 	.ico_3 {
 		background-image: url(../../../static/images/icon/my_store_m3.png);
 	}
-	
+
 	.ico_4 {
 		background-image: url(../../../static/images/icon/my_store_m4.png);
 	}
-	
+
 	.ico_5 {
 		background-image: url(../../../static/images/icon/my_store_m5.png);
 	}
-	
+
 	.ico_6 {
 		background-image: url(../../../static/images/icon/my_store_m6.png);
 	}

@@ -22,13 +22,11 @@ export default class CreateActivityOrderCommand extends Command {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {
                 if(cardId && ticketCode) {
-                    console.log('================= card code ====================');
                     this.$store.dispatch('model.account/reduceTicket', {count: 1});
                 }
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {
-            console.log('抛出异常', e);
             return false;
         }
     }

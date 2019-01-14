@@ -20,7 +20,6 @@ export default class Cards extends Model {
             },
             ticketListShow() {
                 let list = this.list();
-                console.log(list.length);
                 if (list.length === 0) {
                     return false;
                 } else {

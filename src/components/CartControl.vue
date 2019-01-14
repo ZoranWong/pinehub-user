@@ -36,35 +36,28 @@
 			count() {
 				if(this.model) {
 					try {
-						console.log('------count -------',this.model, this.batch, this.merchandiseId, this.$store.getters,
-						this.$store.getters[`${this.model}/quality`](this.merchandiseId, this.batch));
 						return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId,this.batch) : 0;
 					} catch(e) {
 						console.log('抛出异常', e)
+						return 0;
 					}
 				}
 			},
 			shoppingCartId() {
-				console.log('打印',this.merchandiseId, this.batch)
 				return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId, this.batch) : null;
 			}
 		},
 		methods: {
 			addCart() {
 				// 加入购物车
-				console.log(this.model, this.shoppingCartId);
 				this.$emit('addCart', this.merchandiseId, this.shoppingCartId);
 			},
 			reduceCart() {
 				// 移出购物车
 				if(this.count > 0) {
-					console.log('购物车',this.shoppingCartId)
 					this.$emit('reduceCart', this.merchandiseId, this.shoppingCartId);
 				}
 			}
-		},
-		mounted: function() {
-			// console.log(this.pageCount)
 		}
 	}
 </script>
@@ -79,11 +72,11 @@
 		overflow: hidden;
 		border: 1rpx solid #ffcc00;
 	}
-	
+
 	.cartcontrol-width {
 		width: 144rpx;
 	}
-	
+
 	.cart-decrease {
 		width: 48rpx;
 		height: 48rpx;
@@ -93,13 +86,13 @@
 		top: 0;
 		left: 0;
 	}
-	
+
 	.cart-count {
 		font-size: 28rpx;
 		text-align: center;
 		height: 48rpx;
 	}
-	
+
 	.cart-add {
 		width: 48rpx;
 		height: 48rpx;
@@ -109,7 +102,7 @@
 		bottom: 0;
 		right: 0;
 	}
-	
+
 	.add-border {
 		border: 1rpx solid #ffcc00;
 	}

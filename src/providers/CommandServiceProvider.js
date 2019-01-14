@@ -1,6 +1,7 @@
 import ServiceProvider from './ServiceProvider';
 // 路由跳转命令
 import RouterCommand from '@/commands/RouterCommand';
+import AppAccessCommand from '@/commands/AppAccessCommand';
 // 登录命令
 import SignInCommand from '@/commands/SignInCommand';
 
@@ -22,6 +23,7 @@ export default class CommandServiceProvider extends ServiceProvider {
         this.commands = [];
     }
     register () {
+        console.log('======== registered commmand ========');
         let commands = [
             RouterCommand,
             SignInCommand,
@@ -29,7 +31,8 @@ export default class CommandServiceProvider extends ServiceProvider {
             ScanCommand,
             ClearModelCommand,
             LoadMerchandisesCommand,
-            LoadAccountCommand
+            LoadAccountCommand,
+            AppAccessCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

@@ -52,7 +52,7 @@ export default class ApiService extends Service {
 			return result.data;
 		} catch(e) {
 			wx.hideLoading();
-			console.log(e);
+			console.log('get method request error ', e);
 			await this.service('popup').toast('请求错误', 'warn', 2000);
 			throw e;
 		}
@@ -72,7 +72,6 @@ export default class ApiService extends Service {
 			return result.data;
 		} catch(e) {
 			wx.hideLoading();
-			console.log(e);
 			throw e;
 		}
 	}
@@ -91,7 +90,6 @@ export default class ApiService extends Service {
 			this.isLoadingPopupShow = true;
 			return result.data;
 		} catch(e) {
-			console.log(e);
 			wx.hideLoading();
 			throw e;
 		}
@@ -112,7 +110,6 @@ export default class ApiService extends Service {
 			this.isLoadingPopupShow = true;
 			return result.data;
 		}catch (e) {
-			console.log(e);
 			wx.hideLoading();
 			throw e;
 		}

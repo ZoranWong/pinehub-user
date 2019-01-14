@@ -34,7 +34,6 @@ export default class OrderStatusUpdateCommand extends Command {
     async payOrder (id) {
         let response = await this.service('http.orders').orderPayById(id);
         if (response) {
-            console.log('支付返回信息', response);
             let timeStamp = response.sdk_config.timestamp;
             let nonceStr = response.sdk_config.nonceStr;
             let packageInfo = response.sdk_config.package;
@@ -58,7 +57,6 @@ export default class OrderStatusUpdateCommand extends Command {
                 title: '温馨提示',
                 content: '确认取消此订单？',
                 async success (res) {
-                    console.log('order update ', res);
                     if (res.confirm) {
                         await self.cancel(id);
                         self.refresh();

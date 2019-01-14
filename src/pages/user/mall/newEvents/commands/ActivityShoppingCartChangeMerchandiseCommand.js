@@ -7,7 +7,6 @@ export default class ActivityShoppingCartChangeMerchandiseCommand extends Comman
 	async handle(activityId, merchandiseId, id = null, quality = 1) {
 		try {
 			let merchandise = null;
-			console.log('merchandiseId', merchandiseId, 'quality', quality,'id',id)
 			if(id && quality === 0) {
 				merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
 				if(merchandise) {
@@ -32,14 +31,12 @@ export default class ActivityShoppingCartChangeMerchandiseCommand extends Comman
 					this.changeShoppingCartMerchandise(merchandise);
 				}
 			}
-			console.log('MDS', merchandise);
 		} catch(e) {
 			wx.showToast({
 				title: e.response.data.message,
 				icon: 'none',
 				duration: 4000
-			})
-			console.log('抛出异常', e);
+			});
 		}
 	}
 

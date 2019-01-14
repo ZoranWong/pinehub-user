@@ -69,7 +69,6 @@
 				);
 			},
 			redirectToTicket() {
-				console.log('activityCoupon');
 				this.mp.router.push('bookingMall.coupons', {
 					query: {
 						back_to: 'bookingMall.createSendOrder'
@@ -95,7 +94,7 @@
 		font-size: 28rpx;
 		padding: 20rpx 0rpx 20rpx 20rpx;
 	}
-	
+
 	.li-item {
 		width: 706rpx;
 		height: 80rpx;
@@ -106,24 +105,24 @@
 		box-sizing: border-box;
 		padding-left: 20rpx;
 	}
-	
+
 	.li-item .details-item {
 		display: inline-block;
 		height: 80rpx;
 		margin-left: 100rpx;
 	}
-	
+
 	.Distribution-details {
 		margin-bottom: 20rpx;
 		box-shadow: 0rpx 8rpx 36rpx rgba(204, 202, 202, 0.3);
 		/*border:1rpx solid black;*/
 	}
-	
+
 	.li-item p input {
 		display: inline-block;
 		vertical-align: middle;
 	}
-	
+
 	.li-item .tel-num {
 		margin-left: 44rpx;
 	}

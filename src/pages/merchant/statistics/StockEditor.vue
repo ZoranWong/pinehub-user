@@ -72,7 +72,6 @@
             },
             returnBtn (id, primaryStockNum, modifyStockNum, reason, comment) {
                 modifyStockNum = parseInt(modifyStockNum);
-                console.log('modifyStockNum', modifyStockNum);
                 if (isNaN(modifyStockNum) || modifyStockNum < 0) {
                     wx.showToast({
                         title: '正确填写库存',
@@ -87,7 +86,6 @@
                     wx.showLoading({
                         title: '正在提交...'
                     });
-                    console.log('returnBtn', id, primaryStockNum, modifyStockNum, reason, comment);
                     this.$emit('modifyStock', id, primaryStockNum, modifyStockNum, reason, comment);
                     this.productInfo = {};
                     this.productInfo['reason'] = this.selectCause[0]['name'];

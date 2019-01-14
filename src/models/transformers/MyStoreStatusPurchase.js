@@ -1,6 +1,5 @@
 export default class MyStoreStatusPurchase {
 	constructor(purchaseList) {
-		console.log('MyStoreStatusPurchase transformer');
 		switch (parseInt(purchaseList['type'])) {
 			case 1:
 				this.type = "进货订单";

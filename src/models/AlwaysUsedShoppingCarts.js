@@ -12,7 +12,6 @@ export default class AlwaysUsedShoppingCarts extends Model {
 			list(state) {
 
 				let list = _.flatten(state.list);
-				console.log('数组长度', list.length);
 				let newArray = []
 				for(let i = 0; i < 5; i++) {
 					if(i < list.length) {
@@ -21,7 +20,6 @@ export default class AlwaysUsedShoppingCarts extends Model {
 						newArray[i] = null
 					}
 				}
-				console.log('新数组', newArray);
 				return newArray;
 			}
 		});

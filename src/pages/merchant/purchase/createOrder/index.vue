@@ -76,18 +76,6 @@
 			'favorite': Favorite
 		},
 		computed: {
-			//			storeAddress() {
-			//				return "安徽省合肥市高新区宁西路28号8栋5118";
-			//			},
-			//			storeMobile() {
-			//				return "15858585858";
-			//			},
-			//			storeAdmin() {
-			//				return "张雷";
-			//			},
-			//			storeName() {
-			//				return "店铺名称";
-			//			}
 			cartList() {
 				return this.model ? this.$store.getters[`${this.model}/groupList`] : [];
 			},
@@ -112,7 +100,6 @@
 				} else {
 					this.editStatus = true;
 				}
-				console.log('1', '修改用户信息');
 			},
 			jump(router) {
 				this.$command('REDIRECT_TO', router, 'push');
@@ -140,7 +127,6 @@
 		},
 		mounted() {
 			this.getStoreSendInfo();
-			console.log('OPPO', this)
 		}
 	}
 </script>
@@ -151,7 +137,7 @@
 		height: 100%;
 		width: 100%;
 	}
-	
+
 	#merchant_info {
 		background: #FFFFFF;
 		margin: 20rpx;
@@ -159,7 +145,7 @@
 		border-radius: 10rpx;
 		position: relative;
 	}
-	
+
 	#edit {
 		background: url(../../../../../static/images/icon/edit-icon.png) no-repeat center center;
 		background-size: 23rpx 30rpx;
@@ -169,7 +155,7 @@
 		top: 27rpx;
 		right: 20rpx;
 	}
-	
+
 	.merchant_info_input {
 		border: 1rpx solid #CCCCCC;
 		display: inline-block;
@@ -180,11 +166,11 @@
 		padding: 0 10rpx;
 		box-sizing: border-box;
 	}
-	
+
 	#merchant_info ul {
 		padding: 32rpx;
 	}
-	
+
 	#merchant_info ul li {
 		font-size: 28rpx;
 		font-weight: 300;
@@ -193,24 +179,24 @@
 		color: #111111;
 		overflow: hidden;
 	}
-	
+
 	#merchant_info ul li:first-child {
 		margin-top: 0;
 	}
-	
+
 	#merchant_info ul li em {
 		display: inline-block;
 		float: left;
 	}
-	
+
 	#select_tab {
 		margin: 20rpx;
 	}
-	
+
 	#select_tab ul {
 		overflow: hidden;
 	}
-	
+
 	#select_tab ul li {
 		background: #FFFFFF;
 		width: 344rpx;
@@ -220,15 +206,15 @@
 		font-size: 28rpx;
 		font-size: 300;
 	}
-	
+
 	#select_tab ul li:first-child {
 		float: left;
 	}
-	
+
 	#select_tab ul li:last-child {
 		float: right;
 	}
-	
+
 	#select_tab ul li i {
 		width: 48rpx;
 		height: 48rpx;
@@ -238,17 +224,17 @@
 		margin-top: 18rpx;
 		margin-right: 20rpx;
 	}
-	
+
 	#ico_product {
 		background: url(../../../../../static/images/icon/ico_puechase_0.png) no-repeat center center;
 		background-size: 48rpx;
 	}
-	
+
 	#ico_shopping_cart {
 		background: url(../../../../../static/images/icon/ico_puechase_1.png) no-repeat center center;
 		background-size: 48rpx;
 	}
-	
+
 	#select_tab ul li em {
 		height: 48rpx;
 		line-height: 48rpx;
@@ -256,11 +242,11 @@
 		vertical-align: middle;
 		margin-top: 18rpx;
 	}
-	
+
 	#shopping_cart_list {
 		margin: 20rpx;
 	}
-	
+
 	.shopping_cart_title {
 		background: #FFD000;
 		color: #FFFFFF;
@@ -273,15 +259,15 @@
 		padding: 0 20rpx;
 		margin-bottom: 10rpx;
 	}
-	
+
 	.shopping_cart_title i {
 		display: inline-block;
 	}
-	
+
 	.shopping_cart_title_send_time {
 		float: right;
 	}
-	
+
 	#shopping_cart_list ul li {
 		background: #FFFFFF;
 		border-radius: 10rpx;
@@ -291,51 +277,51 @@
 		margin-bottom: 10rpx;
 		overflow: hidden;
 	}
-	
+
 	#shopping_cart_list ul {
 		margin-bottom: 10rpx;
 	}
-	
+
 	#shopping_cart_list ul li:last-child {
 		margin-bottom: 0;
 	}
-	
+
 	.shopping_cart_time {
 		height: 42rpx;
 		line-height: 42rpx;
 		margin-top: 16rpx;
 	}
-	
+
 	.shopping_cart_time i {
 		display: inline-block;
 		margin-right: 20rpx;
 		float: left;
 	}
-	
+
 	.shopping_cart_ico {
 		width: 40rpx;
 		height: 42rpx;
 		background: url(../../../../../static/images/icon/ico_puechase_2.png) no-repeat center center;
 		background-size: 40rpx 42rpx;
 	}
-	
+
 	.shopping_cart_send_time {
 		color: #757575 !important;
 	}
-	
+
 	.shopping_cart_status {
 		float: right !important;
 		margin-right: 0 !important;
 	}
-	
+
 	.shopping_cart_info {
 		float: left;
 	}
-	
+
 	.shopping_cart_price {
 		float: right;
 	}
-	
+
 	.shopping_cart_price_more {
 		width: 12rpx;
 		height: 22rpx;
@@ -344,7 +330,7 @@
 		float: right;
 		margin-top: 8rpx;
 	}
-	
+
 	#next_bottom {
 		width: 750rpx;
 		height: 90rpx;
@@ -353,7 +339,7 @@
 		bottom: 0;
 		left: 0;
 	}
-	
+
 	.total_price {
 		height: 80rpx;
 		line-height: 80rpx;
@@ -362,7 +348,7 @@
 		bottom: 5rpx;
 		left: 20rpx;
 	}
-	
+
 	.choose {
 		display: inline-block;
 		width: 26%;
@@ -375,7 +361,7 @@
 		right: 0;
 		padding-right: 64rpx;
 	}
-	
+
 	.next-icon {
 		width: 20rpx;
 		height: 35.6rpx;
