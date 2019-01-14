@@ -78,7 +78,9 @@ export default class Account extends Model {
     // 监听数据
     listeners () {
         this.addEventListener('resetFromCache', async function ({initAccount}) {
+            console.log('-------------- reset account ----------------');
             await this.resetAccountFromCache();
+            console.log('-------------- reset account 1 ----------------');
             await initAccount();
         });
 

@@ -74,7 +74,8 @@
 		},
 		data() {
 			return {
-				navName: 'index'
+				navName: 'index',
+				inited: false
 			};
 		},
 		computed: {
@@ -128,7 +129,6 @@
 				}
 			},
 			registered (value) {
-				console.log('registered change =====', this.registered, value);
 				if (this.registered) {
 					this.loadTickets();
 				}
@@ -136,6 +136,14 @@
 		},
 		mounted() {
 			this.initAccount();
+		},
+		onShow() {
+			if(this.inited) {
+				this.initAccount();
+			}
+		},
+		onHide(){
+			this.inited = ture;
 		},
 		methods: {
 			redirectTo(router, options = {}) {
@@ -148,11 +156,13 @@
 				this.$command('USER_REGISTER', e);
 			},
 			async initAccount() {
+				console.log('-------------- init account ----------------');
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async() => {
-						console.log('---------------------------', this.accessToken);
 						if (!this.accessToken) {
 							await this.$command('APP_ACCESSS');
+						}else{
+							this.$command('SIGN_IN', this.accessToken);
 						}
 					}
 				});

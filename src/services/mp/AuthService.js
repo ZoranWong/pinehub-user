@@ -24,12 +24,12 @@ export default class AuthService extends Service {
             let nowTime = (new Date()).getTime();
             if (!token || ttlTime <= nowTime) {
                 // 获取appId
-                return await this.appSignIn();
+                this.service('mp.router').push('index', {needRefresh: true});
             } else {
                 return token['value'];
             }
         } catch (e) {
-            return await this.appSignIn();
+            this.service('mp.router').push('index', {needRefresh: true});
         }
     }
     async appSignIn() {
@@ -39,7 +39,6 @@ export default class AuthService extends Service {
             let token = await this.command('SIGN_IN', accessToken);
             return token
         }catch (e) {
-            console.log(e);
             throw e;
         }
     }
