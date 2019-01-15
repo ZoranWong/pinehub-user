@@ -138,12 +138,9 @@
 			this.initAccount();
 		},
 		onShow() {
-			if(this.inited) {
+			if(this.$route.query['needRefresh']) {
 				this.initAccount();
 			}
-		},
-		onHide(){
-			this.inited = ture;
 		},
 		methods: {
 			redirectTo(router, options = {}) {
