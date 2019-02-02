@@ -10,12 +10,6 @@
         name: 'Tickets',
         cur: 0,
         tabs: [
-          {
-            name: '可使用'
-          },
-          {
-            name: '已使用'
-          }
         ],
         statusType: 'available',
         model: 'model.user.tickets',

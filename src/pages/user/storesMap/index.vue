@@ -24,13 +24,13 @@
                         <button class="confirm" @click="onSubmit">确定</button>
                     </cover-view>
                 </cover-view>
-                <!-- <cover-view id="locatePosition" @click="nowLocation">
-					<cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src = "../../../../static/images/nowposition.png"></cover-image>
-				</cover-view> -->
+                <cover-view id="locatePosition" @click="nowLocation">
+					<!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
+				</cover-view>
             </map>
-			<div id="locatePosition" @click="nowLocation">
+			<!-- <div id="locatePosition" @click="nowLocation">
 				<image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" src = "../../../../static/images/nowposition.png"></image>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -252,7 +252,7 @@
 	}
 
 	#locatePosition {
-		/* background: url(../../../../static/images/icon/nowposition.png) no-repeat center center; */
+		background: url(../../../../static/images/icon/nowposition.png) no-repeat center center;
 		background-color: #FFFFFF;
 		border-radius: 50%;
 		width: 50rpx;

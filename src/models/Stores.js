@@ -2,12 +2,12 @@ import Model from './Model';
 import _ from 'underscore';
 import StoreTransformer from '@/models/transformers/Store';
 export default class Stores extends Model {
-    constructor (app) {
+    constructor(app) {
         super(app);
         this.transformer = StoreTransformer;
     }
 
-    data () {
+    data() {
         return _.extend(super.data(), {
             selectMarkerId: null,
             location: {
@@ -17,9 +17,9 @@ export default class Stores extends Model {
         });
     }
 
-    computed () {
+    computed() {
         return _.extend(super.computed(), {
-            markers () {
+            markers() {
                 let list = this.list();
                 let markers = [];
                 _.each(list, (store) => {
@@ -33,7 +33,7 @@ export default class Stores extends Model {
                             latitude: store.lat,
                             title: store.name,
                             callout: {
-                                content: store.name + store.address,
+                                content: store.name,
                                 color: '#ff0000',
                                 fontSize: '16',
                                 borderRadius: '10',
@@ -62,20 +62,12 @@ export default class Stores extends Model {
                         id: 0,
                         title: '自己',
                         longitude: this.state.location.longitude,
-                        latitude: this.state.location.latitude,
-                        // callout: {
-                        //     color: '#ff0000',
-                        //     fontSize: '16',
-                        //     borderRadius: '10',
-                        //     bgColor: '#ffffff',
-                        //     padding: '10',
-                        //     display: 'ALWAYS'
-                        // }
+                        latitude: this.state.location.latitude
                     });
                 }
                 return markers;
             },
-            centerPoint () {
+            centerPoint() {
                 let list = this.list();
                 let lat = 0;
                 let lng = 0;
@@ -95,7 +87,7 @@ export default class Stores extends Model {
                     lng: count ? lng / count : lng
                 };
             },
-            selectStore () {
+            selectStore() {
                 let list = this.list();
                 for (let i in list) {
                     if (this.state.selectMarkerId && list[i].id === this.state.selectMarkerId) {
@@ -104,7 +96,7 @@ export default class Stores extends Model {
                 }
                 return null;
             },
-            store () {
+            store() {
                 return (id) => {
                     let list = this.list();
                     for (let i in list) {
@@ -118,13 +110,13 @@ export default class Stores extends Model {
         });
     }
 
-    listeners () {
+    listeners() {
         super.listeners();
-        this.addEventListener('selectMarker', function ({ id }) {
+        this.addEventListener('selectMarker', function({ id }) {
             this.state.selectMarkerId = parseInt(id);
         });
 
-        this.addEventListener('setLocation', function (location) {
+        this.addEventListener('setLocation', function(location) {
             this.state.location = location;
         })
     }

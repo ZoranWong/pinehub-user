@@ -44,12 +44,18 @@
                 let token = this.$store.getters['model.account/token'];
                 let userInfo = this.$store.getters['model.account/userInfo'];
                 return token !== null && (new Date(token['ttl'])).getTime() > Date.now();
-            }
+            },
+            accessToken() {
+				return this.$store.getters['model.app/accessToken'];
+			}
         },
         methods: {
             async init () {
+                if (!this.accessToken) {
+                    await this.$command('APP_ACCESSS');
+                }
                 if (!this.isLogin) {
-                    await this.$command('SIGN_IN');
+                    await this.$command('SIGN_IN', this.accessToken);
                 }
 
                 let store = await this.http.store.store(this.storeId);
