@@ -30,7 +30,9 @@ export default {
                 roomNum: null,
                 sendBatch: 0,
                 currentTab: 0
-            }
+            },
+			orderId: null,
+			paid: false
         }
     },
     components: {
@@ -99,19 +101,24 @@ export default {
                 return false;
             }
             //
-            this.$command(
-                'CREATE_STORE_ORDER',
-                type,
-                this.storeInfo.id,
-                this.userInfo.nickname,
-                this.userInfo.mobile,
-                this.storeInfo.address,
-                this.addressInfo.buildingNum,
-                this.addressInfo.roomNum,
-                this.addressInfo.sendBatch,
-                this.usedTicketCode,
-                this.usedCardId
-            );
+			if(!this.orderId && !this.paid) {
+				this.$command(
+				    'CREATE_STORE_ORDER',
+				    type,
+				    this.storeInfo.id,
+				    this.userInfo.nickname,
+				    this.userInfo.mobile,
+				    this.storeInfo.address,
+				    this.addressInfo.buildingNum,
+				    this.addressInfo.roomNum,
+				    this.addressInfo.sendBatch,
+				    this.usedTicketCode,
+				    this.usedCardId
+				);
+			}else if(this.orderId && this.paid) {
+				
+			}
+            
         },
         async initData () {
             await this.$command('LOAD_STORE_TICKETS', this.storeInfo.id);
@@ -119,6 +126,8 @@ export default {
         }
     },
     mounted () {
+		this.orderId = null;
+		this.paid = false;
         this.initData();
     }
 }

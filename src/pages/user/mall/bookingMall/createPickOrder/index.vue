@@ -32,7 +32,9 @@ export default{
         return {
             title: '预定商城-确认订单',
             model: 'model.bookingMall.shoppingCarts',
-            SELF_PICK_UP_ORDER: 1
+            SELF_PICK_UP_ORDER: 1,
+			orderId: null,
+			paid: false
         }
     },
 
@@ -93,6 +95,8 @@ export default{
         }
     },
     mounted () {
+		this.orderId = null;
+		this.paid = false;
         this.$command('LOAD_BOOKING_MALL_TICKETS');
     }
 }

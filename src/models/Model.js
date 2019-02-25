@@ -86,10 +86,15 @@ export default class Model {
                  totalPage,
                  list
              }, state) {
+		console.log('ddddd', list);
         this.state.currentPage = currentPage;
         let startIndex = (currentPage - 1) * pageCount + 1;
-        this.$application.$vm.set(this.state.list, currentPage - 1, this.transform(list, this.transformer, startIndex));
-        // this.state.list[currentPage - 1] = this.transform(list, this.transformer, startIndex);
+		try{
+			this.$application.$vm.set(this.state.list, currentPage - 1, this.transform(list, this.transformer, startIndex));
+		}catch(e){
+			//TODO handle the exception
+			console.log(e);
+		}
         if (totalNum !== null) { this.state.totalNum = totalNum; }
         if (totalPage !== null) {
             this.state.totalPage = totalPage;
@@ -97,6 +102,7 @@ export default class Model {
                 this.state.pageCount = pageCount;
             }
         }
+		console.log('--------- list push ----------', this.state.list);
     }
 
     /**

@@ -27,7 +27,9 @@
 				title: '预定商城-确认订单',
 				model: 'model.bookingMall.shoppingCarts',
 				address: null,
-				SEND_ORDER: 2
+				SEND_ORDER: 2,
+				paid: false,
+				orderId: null
 			}
 		},
 
@@ -85,6 +87,8 @@
 			}
 		},
 		mounted() {
+			this.orderId = null;
+			this.paid = false;
 			this.$command('LOAD_BOOKING_MALL_TICKETS');
 		}
 	}

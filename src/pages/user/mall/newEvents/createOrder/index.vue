@@ -42,7 +42,9 @@
 				model: 'model.newEvents.shoppingCarts',
 				activityId: null,
 				queryStore: null,
-				storeId: null
+				storeId: null,
+				orderId: null,
+				paid: false
 			}
 		},
 		components: {
@@ -144,6 +146,8 @@
 			}
 		},
 		mounted() {
+			this.orderId = null;
+			this.paid = false;
 			this.initData();
 		}
 	}

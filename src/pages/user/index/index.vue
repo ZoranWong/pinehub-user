@@ -13,8 +13,8 @@
 							尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户，请允许授权我们获取您的信息！
 						</div>
 						<button id="input_change_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-                            允许授权
-                        </button>
+							允许授权
+						</button>
 						<div id="input_change_tips">
 							注：小程序获取用户信息后才可正常使用
 						</div>
@@ -30,31 +30,31 @@
 		</div>
 		<div v-if="!isMember" class="bgff user-mobile-box">
 			<button class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                手机号授权
-            </button>
+				手机号授权
+			</button>
 			<em class="tips">
-                我们需要您的手机号来创建账号，累计积分
-            </em>
+				我们需要您的手机号来创建账号，累计积分
+			</em>
 		</div>
 		<div v-else class="bgff user-score-box">
 			<div class="score">{{userScore}}<i>积分</i></div>
 			<em class="tips">
-                积分功能即将上线，敬请期待！
-            </em>
+				积分功能即将上线，敬请期待！
+			</em>
 		</div>
 		<div id="index_menu">
-			<dl @click="redirectTo('storeMarket')">
+			<!-- <dl @click="neighborShop">
 				<dd>
 					<img src="../../../../static/images/icon/todaysorder.png" />
 				</dd>
 				<dt>邻里优鲜</dt>
 			</dl>
-			<dl @click="redirectTo('bookingMall')">
+			<dl @click="bookingMall">
 				<dd>
 					<img src="../../../../static/images/icon/prearrangedmall.png" />
 				</dd>
 				<dt>预定商城</dt>
-			</dl>
+			</dl> -->
 			<div @click="redirectTo('newEvents', {query: {activity_id: activityId}})" class="booking">
 				<img src="../../../../static/images/icon/booking.png" />
 			</div>
@@ -112,23 +112,23 @@
 			}
 		},
 		watch: {
-			accessToken (value) {
+			accessToken(value) {
 				if (value) {
-					if(!this.isLogin) {
+					if (!this.isLogin) {
 						this.$command('SIGN_IN', this.accessToken);
 					}
 				}
 			},
-			hasToken (value) {
-				if(this.hasToken) {
+			hasToken(value) {
+				if (this.hasToken) {
 					console.log('load account', this.hasLoadedActivity);
-					if(!this.hasLoadedActivity) {
+					if (!this.hasLoadedActivity) {
 						this.$command('LOAD_ACCOUNT', false);
 						this.$command('GET_ACTIVITY_INFO');
 					}
 				}
 			},
-			registered (value) {
+			registered(value) {
 				if (this.registered) {
 					this.loadTickets();
 				}
@@ -138,13 +138,38 @@
 			this.initAccount();
 		},
 		onShow() {
-			if(this.$route.query['needRefresh']) {
+			if (this.$route.query['needRefresh']) {
 				this.initAccount();
 			}
 		},
 		methods: {
+			neighborShop() {
+				wx.showToast({
+				    title: '敬请期待',
+				    icon: 'none'
+				});
+			},
 			redirectTo(router, options = {}) {
 				this.$command('REDIRECT_TO', router, 'push', options);
+			},
+			bookingMall() {
+				wx.navigateToMiniProgram({
+					appId: 'wx2bee13173fa2ca54',
+					path: 'pages/index/index',
+					extraData: {
+						from: 'booking_mall'
+					},
+					envVersion: 'trial',
+					success(res) {
+						// 打开成功
+					},
+					fail(res) {
+						console.log(res);
+					},
+					complete(res) {
+						console.log(res);
+					}
+				});
 			},
 			getPhoneNumber(e) {
 				this.$command('SET_USER_MOBILE', e);
@@ -153,12 +178,14 @@
 				this.$command('USER_REGISTER', e);
 			},
 			async initAccount() {
-				console.log('-------------- init account ----------------');
+				console.log('-------------- init account ----------------', this.accessToken);
 				await this.$store.dispatch('model.account/resetFromCache', {
-					initAccount: async() => {
+					initAccount: async () => {
 						if (!this.accessToken) {
+							console.log('===== app access in index page ====');
 							await this.$command('APP_ACCESSS');
-						}else{
+						} else {
+							console.log('===== app signin in index page ====');
 							this.$command('SIGN_IN', this.accessToken);
 						}
 					}

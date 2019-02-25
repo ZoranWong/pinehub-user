@@ -17,13 +17,14 @@ import ClearModelCommand from '@/commands/ClearModelCommand';
 import LoadMerchandisesCommand from '@/commands/LoadMerchandisesCommand';
 import LoadAccountCommand from '@/commands/LoadAccountCommand';
 
+import PaymentByIdCommand from '@/commands/PaymentByIdCommand';
+
 export default class CommandServiceProvider extends ServiceProvider {
     constructor (app) {
         super(app);
         this.commands = [];
     }
     register () {
-        console.log('======== registered commmand ========');
         let commands = [
             RouterCommand,
             SignInCommand,
@@ -32,7 +33,8 @@ export default class CommandServiceProvider extends ServiceProvider {
             ClearModelCommand,
             LoadMerchandisesCommand,
             LoadAccountCommand,
-            AppAccessCommand
+            AppAccessCommand,
+			PaymentByIdCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

@@ -17,7 +17,6 @@ export default class CreateBookingMallOrderCommand extends Command {
                 params['card_code'] = ticketCode;
             }
             let result = await super.createOrderSign(params);
-            console.log('pay result', result);
             if (!result) {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {

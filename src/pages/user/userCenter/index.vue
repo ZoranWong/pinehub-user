@@ -47,12 +47,12 @@
                     <i></i>
                     <em>查看所有订单</em>
                 </li>
-                <li @click="jump('user.share')">
+     <!--           <li @click="jump('user.share')">
                     <img src="../../../../static/images/icon/my_ico_menu2.png" />
                     <span>邀请享奖励</span>
                     <i></i>
                     <em>邀请好友</em>
-                </li>
+                </li> -->
                 <li @click="jump('user.feedBack')">
                     <img src="../../../../static/images/icon/my_ico_menu3.png" />
                     <span>意见反馈</span>

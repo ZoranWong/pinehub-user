@@ -65,6 +65,7 @@ export default class Stores extends Model {
                         latitude: this.state.location.latitude
                     });
                 }
+                console.log('++++++++++ markers ++++++++++++', markers, list);
                 return markers;
             },
             centerPoint() {

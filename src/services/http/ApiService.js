@@ -32,7 +32,11 @@ export default class ApiService extends Service {
 		let headers = {};
 		if(need) {
 			let token = await this.service('mp.auth').getToken();
-			headers['Authorization'] = 'bearer ' + token;
+			if(token) {
+				headers['Authorization'] = 'bearer ' + token;
+			}else{
+				return null;
+			}
 		}
 		return headers;
 	}
@@ -43,7 +47,11 @@ export default class ApiService extends Service {
 			if (this.isLoadingPopupShow) {
 				wx.showLoading({ title: '加载中' });
 			}
-			let request = this.request((await this.auth(auth)));
+			let headerAuth = await this.auth(auth);
+			if(auth && ! headerAuth) {
+				throw '未登录或者登陆失效';
+			}
+			let request = this.request(headerAuth);
 			let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
 			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
@@ -53,7 +61,8 @@ export default class ApiService extends Service {
 		} catch(e) {
 			wx.hideLoading();
 			console.log('get method request error ', e);
-			await this.service('popup').toast('请求错误', 'warn', 2000);
+			let message = e.response && e.response.data && e.response.data.message ? e.response.data.message : e;
+			await this.service('popup').toast(message, 'warn', 2000);
 			throw e;
 		}
 	}
@@ -63,7 +72,11 @@ export default class ApiService extends Service {
 			if (this.isLoadingPopupShow) {
 				wx.showLoading({ title: '提交中···' });
 			}
-			let request = this.request(await this.auth(auth));
+			let headerAuth = await this.auth(auth);
+			if(auth && ! headerAuth) {
+				throw '未登录或者登陆失效';
+			}
+			let request = this.request(headerAuth);
 			let result = await request.post(route.trim('/'), params);
 			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
@@ -81,7 +94,11 @@ export default class ApiService extends Service {
 			if (this.isLoadingPopupShow) {
 				wx.showLoading({ title: '提交中···' });
 			}
-			let request = this.request(await this.auth(auth));
+			let headerAuth = await this.auth(auth);
+			if(auth && ! headerAuth) {
+				throw '未登录或者登陆失效';
+			}
+			let request = this.request(headerAuth);
 			route = id ? (route.trim('/') + '/' + id) : route.trim('/');
 			let result = await request.put(route, params);
 			if(this.isLoadingPopupShow) {
@@ -103,7 +120,12 @@ export default class ApiService extends Service {
 			if (this.isLoadingPopupShow) {
 				wx.showLoading({ title: '提交中···' });
 			}
-			let result = await (await this.request(await this.auth(auth))).delete(route);
+			let headerAuth = await this.auth(auth);
+			if(auth && ! headerAuth) {
+				throw '未登录或者登陆失效';
+			}
+			let request = this.request(headerAuth);
+			let result = await request.delete(route);
 			if(this.isLoadingPopupShow) {
 				wx.hideLoading();
 			}
