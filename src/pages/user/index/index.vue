@@ -178,14 +178,19 @@
 				this.$command('USER_REGISTER', e);
 			},
 			async initAccount() {
-				console.log('-------------- init account ----------------', this.accessToken);
+        let result = await this.map.getLocation();
+        if(!result) {
+        }else{
+          this.$store.dispatch('model.stores/setLocation', {
+  					latitude: result[1],
+  					longitude: result[0]
+  				});
+        }
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async () => {
 						if (!this.accessToken) {
-							console.log('===== app access in index page ====');
 							await this.$command('APP_ACCESSS');
 						} else {
-							console.log('===== app signin in index page ====');
 							this.$command('SIGN_IN', this.accessToken);
 						}
 					}
