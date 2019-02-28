@@ -16,16 +16,11 @@ export default class App extends Model {
       logo() {
         return this.state.logo;
       },
+      overDate() {
+        return this.state.ttl;
+      },
       accessToken() {
-        if (this.state.ttl) {
-          let format = this.state.ttl.replace(/-/g, '/');
-          let ttlDate = new Date(format);
-          let nowDate = new Date();
-          if (ttlDate.getTime() - 5000 > nowDate.getTime()) {
-            return this.state.accessToken;
-          }
-        }
-        return false;
+        return this.state.accessToken;
       },
       contactPhoneNum() {
         return this.state.contactPhoneNum;
@@ -50,7 +45,10 @@ export default class App extends Model {
       }
 
       if (ttl) {
+        let format = ttl.replace(/-/g, '/');
+        ttl = (new Date(format)).getTime();
         this.state.ttl = ttl;
+        console.log('accessToken ttl -------', ttl, this.state.ttl);
       }
     });
   }

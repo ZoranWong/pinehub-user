@@ -96,6 +96,9 @@
             hasStore () {
                 return this.$store.getters['model.account/isShopManager'];
             },
+            userTokenTTL() {
+                return this.$store.getters['account/overDate'];
+            },
             userToken () {
                 return this.$store.getters['account/token'];
             }

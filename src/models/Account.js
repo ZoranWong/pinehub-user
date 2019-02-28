@@ -25,17 +25,16 @@ export default class Account extends Model {
       userScore(state) {
         return state.canUseScore;
       },
-      token(state) {
+      overDate(state) {
         if (state.token) {
           let format = state.token['ttl'].replace(/-/g, '/')
           let ttlDate = new Date(format);
-          let nowDate = new Date();
-          console.log('-----------user token---------', format, ttlDate, nowDate);
-          if (ttlDate.getTime() - 5000 > nowDate.getTime()) {
-            return state.token;
-          }
+          return ttlDate.getTime() - 5000;
         }
         return false;
+      },
+      token(state) {
+        return state.token;
       },
       userInfo(state) {
         return _.omit(state, 'shop');

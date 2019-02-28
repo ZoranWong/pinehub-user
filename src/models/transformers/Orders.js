@@ -1,6 +1,6 @@
 import { OFF_LINE_PAYMENT_ORDER, SITE_USER_ORDER, SHOPPING_MALL_ORDER, SEND_ORDER_TO_USER, USER_SELF_PICK_UP } from '@/utils/OrderDict';
 // 取货方式
-const QR = require('../../../static/jssdk/weapp-qrcode.js');
+// const QR = require('../../../static/jssdk/weapp-qrcode.js');
 export default class Order {
   constructor(order) {
 
@@ -81,11 +81,8 @@ export default class Order {
     this.customer = order['customer'];
     this.orderItems = order['order_item_merchandises'];
     this.paidTime = order['paid_time'];
-    this.payType = order['pay_type'];
+    this.payType = parseInt(order['pay_type']);
     switch (this.payType) {
-      case 0:
-        this.payTypeStr = '未知';
-        break;
       case 1:
         this.payTypeStr = '支付宝';
         break;

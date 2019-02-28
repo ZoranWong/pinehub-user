@@ -41,9 +41,8 @@
                 return this.$store.getters['model.app/logo']
             },
             isLogin () {
-                let token = this.$store.getters['model.account/token'];
-                let userInfo = this.$store.getters['model.account/userInfo'];
-                return token !== null && (new Date(token['ttl'])).getTime() > Date.now();
+                let overDate = this.$store.getters['model.account/overDate'];
+                return overDate ? overDate > Date.now() : false;
             },
             accessToken() {
 				return this.$store.getters['model.app/accessToken'];
@@ -62,6 +61,7 @@
                 this.shopName = store['name'];
                 this.mobile = store['mobile'];
                 this.address = store['address'];
+                this.paymentAmount = null;
             },
             payment () {
                 this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, this.paymentAmount);

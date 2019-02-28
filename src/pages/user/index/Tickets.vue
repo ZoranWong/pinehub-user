@@ -32,6 +32,7 @@
 <script>
 	export default {
 		name: 'tickets',
+		props: ['show'],
 		data() {
 			return {
 				ticketListShow: true
@@ -42,7 +43,7 @@
 				await this.$command('RECEIVE_TICKET', item);
 			},
 			closeTips() {
-				this.ticketListShow = false;
+				this.$emit('close');
 			}
 		},
 		computed: {
@@ -52,7 +53,7 @@
 			ticketShow() {
 				return this.$store.getters['model.account/isAuth']
 					&& this.$store.getters['model.account/registered']
-					&& this.ticketListShow
+					&& this.show
 					&& this.$store.getters['model.cards/ticketListShow'];
 			}
 		},

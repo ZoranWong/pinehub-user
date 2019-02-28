@@ -25,9 +25,9 @@
 					<li v-for="(item,index) in payInfoList" :key="index" class="clearfix">
 						<img class="head_portrait" :src="item.customer.avatar" />
 						<div class="record_info">
-							<span class="user_name">{{item.customer.nickname}}</span>
+							<span class="user_name">{{item.customer.nickname ? item.customer.nickname : '匿名支付'}}</span>
 							<span>{{item.payTypeStr}}支付</span>
-							<span>{{item.paidTime}} <i>|</i> <em>首次到店</em></span>
+							<span>{{item.paidTime}}  支付完成</span>
 						</div>
 						<div class="money">
 							￥{{item.totalAmount}}

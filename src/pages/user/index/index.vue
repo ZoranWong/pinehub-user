@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div class="body">
-		<tickets></tickets>
+		<tickets :show = "ticketShow" v-on:close = "ticketListClose"></tickets>
 		<div v-show="!registered" id="toast_area">
 			<div id="toast">
 				<div id="toast_title">
@@ -75,7 +75,8 @@
 		data() {
 			return {
 				navName: 'index',
-				inited: false
+				inited: false,
+        ticketShow: true,
 			};
 		},
 		computed: {
@@ -83,8 +84,8 @@
 				return this.$imageUrl('bear01.gif');
 			},
 			hasToken() {
-				console.log('======== change token ========', this.$store.getters['model.account/token']);
-				return this.$store.getters['model.account/token'];
+        let overDate = this.$store.getters['model.account/overDate'];
+        return overDate ? overDate > Date.now() : false;
 			},
 			registered() {
 				return this.$store.getters['model.account/registered'];
@@ -99,7 +100,8 @@
 				return this.$store.getters['model.account/userScore'];
 			},
 			isLogin() {
-				return this.$store.getters['model.account/token'];
+        let overDate = this.$store.getters['model.account/overDate'];
+        return overDate ? overDate > Date.now() : false;
 			},
 			hasLoadedActivity() {
 				return this.$store.getters['model.activity/id'] !== null;
@@ -109,6 +111,9 @@
 			},
 			accessToken() {
 				return this.$store.getters['model.app/accessToken'];
+			},
+			accessTokenTTL () {
+				return this.$store.getters['model.app/overDate'];
 			}
 		},
 		watch: {
@@ -121,7 +126,6 @@
 			},
 			hasToken(value) {
 				if (this.hasToken) {
-					console.log('load account', this.hasLoadedActivity);
 					if (!this.hasLoadedActivity) {
 						this.$command('LOAD_ACCOUNT', false);
 						this.$command('GET_ACTIVITY_INFO');
@@ -142,7 +146,18 @@
 				this.initAccount();
 			}
 		},
+    onLoad () {
+      console.log('======== page load =======');
+      wx.onAppShow(() => {
+        this.ticketShow = true;
+        this.loadTickets();
+      });
+    },
 		methods: {
+      ticketListClose() {
+        this.ticketShow = false;
+      },
+
 			neighborShop() {
 				wx.showToast({
 				    title: '敬请期待',
@@ -188,7 +203,7 @@
         }
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async () => {
-						if (!this.accessToken) {
+						if (((this.accessTokenTTL - Date.now()) <= 0)|| !this.accessToken) {
 							await this.$command('APP_ACCESSS');
 						} else {
 							this.$command('SIGN_IN', this.accessToken);
@@ -200,7 +215,6 @@
 				await this.$command('LOAD_TICKETS');
 			}
 		}
-
 	}
 </script>
 
