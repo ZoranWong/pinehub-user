@@ -22,7 +22,7 @@
 				<li>2.食品现制现售，暂不支持自主退货服务哦！</li>
 			</ul>
 		</div>
-		<div id="active_banner" v-if = "true">
+		<div id="active_banner" v-if="true">
 			<img :src="imgUrl" @click="goUrl()" />
 		</div>
 	</div>
@@ -68,17 +68,17 @@
 					this.siteUserOrder = true;
 				}
 			},
-			async getTicket() {
+			async getAdvertisement() {
 				console.log(456);
 				// let id = await this.mp.storage.get('payOrderId');
 				// let id = '978';
 				let id = this.$route.query['order_id'];
-				let res = await this.http.orders.getTicketByOrder(id);
-				console.log('a', res);
-				if (res.data.banner_url != undefined) {
+				let advertisement = await this.http.orders.getAdvertisementByOrder(id);
+				console.log('a', advertisement);
+				if (advertisement.banner_url != undefined) {
 					this.ticketShow = true;
-					this.ticketInfo = res.data.ticket.data;
-					this.imgUrl = res.data.banner_url;
+					this.ticketInfo = advertisement.ticket.data;
+					this.imgUrl = advertisement.banner_url;
 					console.log('===---===---===', this.imgUrl, this);
 				}
 			},
@@ -96,7 +96,7 @@
 		},
 		mounted() {
 			this.getOrderInfo();
-			this.getTicket();
+			this.getAdvertisement();
 		},
 		created() {
 			console.log('A------', (new Date((new Date('2019-01-24')).getTime() + (24 * 60 * 60 * 1000))).format('yyyy-MM-dd'));

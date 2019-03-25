@@ -23,7 +23,9 @@ export default class RegisterCommand extends Command {
         if (result) {
             userInfo['token'] = token;
             this.store().dispatch('model.account/setAccount', userInfo);
+			return true;
         }
+		return false;
     }
     static commandName () {
         return 'USER_REGISTER';

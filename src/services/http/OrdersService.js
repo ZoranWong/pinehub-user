@@ -129,9 +129,9 @@ export default class OrdersService extends ApiService {
 		return response;
 	}
 
-	// 通过订单ID获取优惠券信息
-	async getTicketByOrder(id) {
+	// 通过订单ID获取广告信息
+	async getAdvertisementByOrder(id) {
 		let response = await this.httpGet(`/advertisement/latest?order_id=${id}&include=ticket`, {});
-		return response;
+		return response.data;
 	}
 }

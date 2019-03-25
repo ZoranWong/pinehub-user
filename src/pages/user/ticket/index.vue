@@ -8,12 +8,16 @@
 			<span>{{ticketInfo.info.base_info.title}}</span>
 			<i id="ticket_body_icon"></i>
 		</div>
-		<button v-if="registered" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
+		<button v-if="registered && this.ticketInfo.can_get" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
 			{{ticketBtn}}
+		</button>
+		<button v-else-if="!this.ticketInfo.can_get" id="ticket_btn" @click="url">
+			去使用
 		</button>
 		<button v-else id="ticket_btn" :class="newClass" open-type="getUserInfo" @getuserinfo="getUserInfo">
 			{{ticketBtn}}
 		</button>
+
 		<div id="ticket_info">
 			<ul>
 				<li>
@@ -131,9 +135,10 @@
 			},
 			async getUserInfo(e) {
 				let res = await this.$command('USER_REGISTER', e);
-				if(res){
+				console.log(res);
+				if (res) {
 					this.getTicket(this.ticketInfo.id);
-				}else{
+				} else {
 					wx.showToast({
 						title: '授权失败',
 						icon: 'none'
@@ -141,6 +146,7 @@
 				}
 			},
 			async getTicket(ticketId) {
+				console.log(ticketId, this.ticket);
 				if (!this.ticket) {
 					if (this.$store.getters['model.account/registered']) {
 						console.log('VVVVVVVVVVV', ticketId);
@@ -191,6 +197,9 @@
 						}
 					}
 				});
+			},
+			url() {
+				this.$command('REDIRECT_TO', 'index', 'replace');
 			}
 		},
 		mounted() {
