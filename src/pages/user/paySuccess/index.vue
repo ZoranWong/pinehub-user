@@ -22,8 +22,8 @@
 				<li>2.食品现制现售，暂不支持自主退货服务哦！</li>
 			</ul>
 		</div>
-		<div id="active_banner" v-if="ticket">
-			<img :src="imgSrc" @click="goUrl()" />
+		<div id="active_banner" v-if = "true">
+			<img :src="imgUrl" @click="goUrl()" />
 		</div>
 	</div>
 </template>
@@ -40,9 +40,14 @@
 				siteUserOrder: false,
 				ticket: true,
 				ticketInfo: null,
-				imgSrc: null,
+				imgUrl: null,
 				getFoodsTime: null
 			};
+		},
+		watch: {
+			imgUrl: function(value) {
+				console.log('adv image url', value);
+			}
 		},
 		computed: {
 
@@ -55,10 +60,7 @@
 				this.$command('REDIRECT_TO', 'index', 'replace');
 			},
 			async getOrderInfo() {
-				// let id = await this.mp.storage.get('payOrderId');
-				// let id = '978';
 				let id = this.$route.query['order_id'];
-				// console.log(id);
 				let res = await this.http.orders.getOrder(id);
 				console.log('B----', res);
 				if (res.data.type != 0 && res.data.pick_up_method == 2) {
@@ -76,7 +78,8 @@
 				if (res.data.banner_url != undefined) {
 					this.ticketShow = true;
 					this.ticketInfo = res.data.ticket.data;
-					this.imgSrc = res.data.banner_url;
+					this.imgUrl = res.data.banner_url;
+					console.log('===---===---===', this.imgUrl, this);
 				}
 			},
 			async goUrl() {

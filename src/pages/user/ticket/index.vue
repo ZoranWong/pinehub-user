@@ -8,8 +8,11 @@
 			<span>{{ticketInfo.info.base_info.title}}</span>
 			<i id="ticket_body_icon"></i>
 		</div>
-		<button id="ticket_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-			立即领取
+		<button v-if="registered" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
+			{{ticketBtn}}
+		</button>
+		<button v-else id="ticket_btn" :class="newClass" open-type="getUserInfo" @getuserinfo="getUserInfo">
+			{{ticketBtn}}
 		</button>
 		<div id="ticket_info">
 			<ul>
@@ -42,10 +45,34 @@
 		data() {
 			return {
 				title: '领取优惠券',
-				ticketInfo: null
+				ticketInfo: null,
+				ticketBtn: '立即领取',
+				newClass: '',
+				ticket: null
 			};
 		},
-		watch: {},
+		watch: {
+			accessToken(value) {
+				if (value) {
+					if (!this.isLogin) {
+						this.$command('SIGN_IN', this.accessToken);
+					}
+				}
+			},
+			hasToken(value) {
+				if (this.hasToken) {
+					if (!this.hasLoadedActivity) {
+						this.$command('LOAD_ACCOUNT', false);
+						this.$command('GET_ACTIVITY_INFO');
+					}
+				}
+			},
+			registered(value) {
+				if (this.registered) {
+					//this.loadTickets();
+				}
+			}
+		},
 		computed: {
 			timeType() {
 				return `从${this.beginTime()}到${this.endTime()}止`;
@@ -61,6 +88,29 @@
 			},
 			timeType3() {
 				return `永久有效`;
+			},
+			hasToken() {
+				let overDate = this.$store.getters['model.account/overDate'];
+				return overDate ? overDate > Date.now() : false;
+			},
+			registered() {
+				return this.$store.getters['model.account/registered'];
+			},
+			isAuth() {
+				return this.$store.getters['model.account/isAuth'];
+			},
+			isMember() {
+				return this.$store.getters['model.account/isMember'];
+			},
+			isLogin() {
+				let overDate = this.$store.getters['model.account/overDate'];
+				return overDate ? overDate > Date.now() : false;
+			},
+			accessToken() {
+				return this.$store.getters['model.app/accessToken'];
+			},
+			accessTokenTTL() {
+				return this.$store.getters['model.app/overDate'];
 			}
 		},
 		methods: {
@@ -76,14 +126,76 @@
 					return (new Date(timestamp * 1000)).format('yyyy-MM-dd');
 				}
 			},
-			getUserInfo(e) {
-				console.log('e', e);
-				this.$command('USER_REGISTER', e);
+			getPhoneNumber(e) {
+				this.$command('SET_USER_MOBILE', e);
+			},
+			async getUserInfo(e) {
+				let res = await this.$command('USER_REGISTER', e);
+				if(res){
+					this.getTicket(this.ticketInfo.id);
+				}else{
+					wx.showToast({
+						title: '授权失败',
+						icon: 'none'
+					});
+				}
+			},
+			async getTicket(ticketId) {
+				if (!this.ticket) {
+					if (this.$store.getters['model.account/registered']) {
+						console.log('VVVVVVVVVVV', ticketId);
+						await this.receiveTicket(ticketId);
+						this.ticket = true;
+						this.ticketBtn = '去逛逛';
+						this.newClass = 'ticketBtnGray';
+					} else {
+						wx.showToast({
+							title: '领券失败',
+							icon: 'none'
+						});
+					}
+				} else {
+					this.$command('REDIRECT_TO', 'index', 'replace');
+				}
+			},
+			async receiveTicket(ticketId) {
+				console.log('EEEEEEEE');
+				let res = await this.http.tickets.receiveTicket(ticketId);
+				console.log(res);
+				if (res) {
+					wx.showToast({
+						title: '领券成功',
+						icon: 'none'
+					});
+				} else {
+					wx.showToast({
+						title: '领券失败',
+						icon: 'none'
+					});
+				}
+			},
+			async initAccount() {
+				let result = await this.map.getLocation();
+				if (!result) {} else {
+					this.$store.dispatch('model.stores/setLocation', {
+						latitude: result[1],
+						longitude: result[0]
+					});
+				}
+				await this.$store.dispatch('model.account/resetFromCache', {
+					initAccount: async () => {
+						if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
+							await this.$command('APP_ACCESSS');
+						} else {
+							this.$command('SIGN_IN', this.accessToken);
+						}
+					}
+				});
 			}
 		},
 		mounted() {
 			this.ticketInfo = JSON.parse(this.$route.query['ticketInfo']);
-			console.log(this.ticketInfo);
+			console.log(this.ticketInfo, this.registered);
 		}
 	}
 </script>
@@ -139,6 +251,10 @@
 		font-size: 34rpx;
 		margin: 20rpx;
 		border-radius: 10rpx;
+	}
+
+	.ticketBtnGray {
+		background: #CCCCCC !important;
 	}
 
 	#ticket_info {

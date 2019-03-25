@@ -7,12 +7,13 @@ import Stores from '@/models/Stores';
 import Tickets from '@/models/Tickets';
 import Cards from '@/models/Cards';
 import App from '@/models/App';
+import Activity from '@/models/Activity'
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
         let models = new Model(this.app);
         this.app.register('models', models);
-
+		this.app.registerModel('model.activity', Activity);
         this.app.registerModel('model.app', App);
 
         this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);

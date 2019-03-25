@@ -9,7 +9,6 @@ import ReceiveTicketCommand from './commands/ReceiveTicketCommand';
 import Activity from '@/models/Activity';
 const application = wx.$app;
 application.setComponent(App).run(function() {
-	this.registerModel('model.activity', Activity);
 	this.register('http.activity', ActivityService);
 	this.registerCommand(GetActivityInfoCommand.commandName(), GetActivityInfoCommand);
 	this.registerCommand(RegisterCommand.commandName(), RegisterCommand);

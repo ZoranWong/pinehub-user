@@ -13,7 +13,8 @@ export default class GetActivityInfoCommand extends Command {
 			image: activityInfo.poster_img,
 			description: activityInfo.description
 		};
-		this.store().dispatch('model.activity/info', eventData);
+		console.log(this);
+		this.$store.dispatch('model.activity/info', eventData);
 	}
 	static commandName() {
 		return 'GET_ACTIVITY_INFO';

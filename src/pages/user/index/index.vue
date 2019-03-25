@@ -202,6 +202,7 @@
 				}
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async () => {
+						console.log('dddddasfdsfasdfasfasdfa');
 						if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
 							await this.$command('APP_ACCESSS');
 						} else {
