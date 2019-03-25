@@ -24,6 +24,7 @@ export default class Order {
     this.roomNum = (typeof order['room_num'] !== 'undefined' && order['room_num'] !== '' && order['room_num'] !== null) ? order['room_num'] : '无';
 
     // btnStatus 0 没有按钮 1 支付 取消 2 确认核销 3 确认收货
+		// SITE_USER_ORDER => 站点订单 SHOPPING_MALL_ORDER => 商城订单 USER_SELF_PICK_UP => 自提订单 
     if (this.type === OFF_LINE_PAYMENT_ORDER) {
       this.btnStatus = 0;
     } else if (this.type === SITE_USER_ORDER || this.type === SHOPPING_MALL_ORDER) {

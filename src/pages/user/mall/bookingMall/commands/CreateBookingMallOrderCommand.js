@@ -23,6 +23,7 @@ export default class CreateBookingMallOrderCommand extends Command {
                 if(cardId && ticketCode) {
                     this.$store.dispatch('model.account/reduceTicket', {count: 1});
                 }
+				this.service('mp.storage').set('payInfo',);
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {

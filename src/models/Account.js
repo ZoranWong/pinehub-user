@@ -14,9 +14,11 @@ export default class Account extends Model {
   computed() {
     return _.extend(super.computed(), {
       isAuth(state) {
+				// 是否获取到OPENID
         return state.openId !== null;
       },
       isMember(state) {
+				// 是否已经注册
         return state.mobile !== null;
       },
       isShopManager(state) {
@@ -26,6 +28,7 @@ export default class Account extends Model {
         return state.canUseScore;
       },
       overDate(state) {
+				// 是否已经过期
         if (state.token) {
           let format = state.token['ttl'].replace(/-/g, '/')
           let ttlDate = new Date(format);
@@ -34,6 +37,7 @@ export default class Account extends Model {
         return false;
       },
       token(state) {
+				// 获取token
         return state.token;
       },
       userInfo(state) {
@@ -43,6 +47,7 @@ export default class Account extends Model {
         return state.shop;
       },
       registered() {
+				// 是否获取到用户信息
         return !!this.state.nickname;
       }
     });

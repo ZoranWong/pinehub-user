@@ -17,6 +17,7 @@
 	"user.feedBack": "/pages/user/feedBack/main",
 	"user.share": "/pages/user/share/main",
 	"user.feedBack.success": "/pages/user/feedBack/success/main",
+	"user.ticket": "/pages/user/ticket/main",
 	"couponCenter": "/pages/user/coupon/main",
 	"payment": "/pages/user/payment/main",
 	"merchant.store": "/pages/merchant/main",

@@ -1,5 +1,6 @@
 import Command from './Command';
 export default class CreateOrderCommand extends Command {
+	// 支付
   async createOrderSign(params, resetCart = null) {
     try {
       let order = await this.service('http.orders').createPaymentOrder(params);
@@ -13,7 +14,7 @@ export default class CreateOrderCommand extends Command {
         this.paid = false;
       }
       if (result) {
-        this.$command('REDIRECT_TO', 'payment.success', 'replace');
+        this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {order_id: this.orderId}});
       }
       return result;
     } catch (e) {

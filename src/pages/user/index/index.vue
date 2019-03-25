@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div class="body">
-		<tickets :show = "ticketShow" v-on:close = "ticketListClose"></tickets>
+		<tickets :show="ticketShow" v-on:close="ticketListClose"></tickets>
 		<div v-show="!registered" id="toast_area">
 			<div id="toast">
 				<div id="toast_title">
@@ -76,7 +76,7 @@
 			return {
 				navName: 'index',
 				inited: false,
-        ticketShow: true,
+				ticketShow: true,
 			};
 		},
 		computed: {
@@ -84,8 +84,8 @@
 				return this.$imageUrl('bear01.gif');
 			},
 			hasToken() {
-        let overDate = this.$store.getters['model.account/overDate'];
-        return overDate ? overDate > Date.now() : false;
+				let overDate = this.$store.getters['model.account/overDate'];
+				return overDate ? overDate > Date.now() : false;
 			},
 			registered() {
 				return this.$store.getters['model.account/registered'];
@@ -100,8 +100,8 @@
 				return this.$store.getters['model.account/userScore'];
 			},
 			isLogin() {
-        let overDate = this.$store.getters['model.account/overDate'];
-        return overDate ? overDate > Date.now() : false;
+				let overDate = this.$store.getters['model.account/overDate'];
+				return overDate ? overDate > Date.now() : false;
 			},
 			hasLoadedActivity() {
 				return this.$store.getters['model.activity/id'] !== null;
@@ -112,7 +112,7 @@
 			accessToken() {
 				return this.$store.getters['model.app/accessToken'];
 			},
-			accessTokenTTL () {
+			accessTokenTTL() {
 				return this.$store.getters['model.app/overDate'];
 			}
 		},
@@ -146,22 +146,22 @@
 				this.initAccount();
 			}
 		},
-    onLoad () {
-      console.log('======== page load =======');
-      wx.onAppShow(() => {
-        this.ticketShow = true;
-        this.loadTickets();
-      });
-    },
+		onLoad() {
+			console.log('======== page load =======');
+			wx.onAppShow(() => {
+				this.ticketShow = true;
+				this.loadTickets();
+			});
+		},
 		methods: {
-      ticketListClose() {
-        this.ticketShow = false;
-      },
+			ticketListClose() {
+				this.ticketShow = false;
+			},
 
 			neighborShop() {
 				wx.showToast({
-				    title: '敬请期待',
-				    icon: 'none'
+					title: '敬请期待',
+					icon: 'none'
 				});
 			},
 			redirectTo(router, options = {}) {
@@ -193,17 +193,16 @@
 				this.$command('USER_REGISTER', e);
 			},
 			async initAccount() {
-        let result = await this.map.getLocation();
-        if(!result) {
-        }else{
-          this.$store.dispatch('model.stores/setLocation', {
-  					latitude: result[1],
-  					longitude: result[0]
-  				});
-        }
+				let result = await this.map.getLocation();
+				if (!result) {} else {
+					this.$store.dispatch('model.stores/setLocation', {
+						latitude: result[1],
+						longitude: result[0]
+					});
+				}
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async () => {
-						if (((this.accessTokenTTL - Date.now()) <= 0)|| !this.accessToken) {
+						if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
 							await this.$command('APP_ACCESSS');
 						} else {
 							this.$command('SIGN_IN', this.accessToken);
