@@ -70,11 +70,6 @@
 						this.$command('GET_ACTIVITY_INFO');
 					}
 				}
-			},
-			registered(value) {
-				if (this.registered) {
-					//this.loadTickets();
-				}
 			}
 		},
 		computed: {
@@ -149,7 +144,6 @@
 				console.log(ticketId, this.ticket);
 				if (!this.ticket) {
 					if (this.$store.getters['model.account/registered']) {
-						console.log('VVVVVVVVVVV', ticketId);
 						await this.receiveTicket(ticketId);
 						this.ticket = true;
 						this.ticketBtn = '去逛逛';
@@ -165,7 +159,6 @@
 				}
 			},
 			async receiveTicket(ticketId) {
-				console.log('EEEEEEEE');
 				let res = await this.http.tickets.receiveTicket(ticketId);
 				console.log(res);
 				if (res) {
@@ -204,7 +197,6 @@
 		},
 		mounted() {
 			this.ticketInfo = JSON.parse(this.$route.query['ticketInfo']);
-			console.log(this.ticketInfo, this.registered);
 		}
 	}
 </script>

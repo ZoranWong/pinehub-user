@@ -69,9 +69,6 @@
 				}
 			},
 			async getAdvertisement() {
-				console.log(456);
-				// let id = await this.mp.storage.get('payOrderId');
-				// let id = '978';
 				let id = this.$route.query['order_id'];
 				let advertisement = await this.http.orders.getAdvertisementByOrder(id);
 				console.log('a', advertisement);
@@ -79,7 +76,6 @@
 					this.ticketShow = true;
 					this.ticketInfo = advertisement.ticket.data;
 					this.imgUrl = advertisement.banner_url;
-					console.log('===---===---===', this.imgUrl, this);
 				}
 			},
 			async goUrl() {
