@@ -1,4 +1,5 @@
 import Command from '@/commands/Command';
+
 export default class SalesChartsUpdateCommand extends Command {
     async handle (dateType) {
         let salesInfo = await this.service('http.store').salesInfo(dateType);
@@ -8,6 +9,7 @@ export default class SalesChartsUpdateCommand extends Command {
             dateType: dateType
         });
     }
+
     static commandName () {
         return 'SALES_CHARTS_UPDATE';
     }

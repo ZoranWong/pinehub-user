@@ -14,6 +14,7 @@ import StorageService from '@/services/mp/StorageService';
 import PaymentService from '@/services/mp/PaymentService';
 import EChartsService from '@/services/mp/EChartsService';
 import _ from 'underscore';
+
 export default class AppServiceProvider extends ServiceProvider {
     constructor (app) {
         super(app)
@@ -53,6 +54,7 @@ export default class AppServiceProvider extends ServiceProvider {
             }
         });
     }
+
     register () {
         this.app.register('base64', Base64Service);
         this.app.register('md5', MD5Service);
@@ -67,6 +69,7 @@ export default class AppServiceProvider extends ServiceProvider {
         this.app.register('mp.payment', PaymentService);
         this.app.register('mp.eCharts', EChartsService);
     }
+
     boot () {
 
     }

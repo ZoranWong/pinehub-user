@@ -1,4 +1,5 @@
 import Command from '@/commands/Command';
+
 export default class LoadMerchantStoreMerchandisesCommand extends Command {
     async handle (storeId, currentCategoryIndex, categoryId, page = 1, limit = 15) {
         try {
@@ -21,6 +22,7 @@ export default class LoadMerchantStoreMerchandisesCommand extends Command {
             console.log(e);
         }
     }
+
     static commandName () {
         return 'LOAD_MERCHANT_STORE_MERCHANDISES';
     }

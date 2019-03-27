@@ -1,6 +1,7 @@
 import App from './index';
 import LoadStoreInfoCommand from './commands/LoadStoreInfoCommand';
 import Vue from 'vue';
+
 const application = wx.$app;
 application.setComponent(App).run(function () {
     this.registerCommand(LoadStoreInfoCommand.commandName(), LoadStoreInfoCommand);

@@ -45,8 +45,8 @@
                 return overDate ? overDate > Date.now() : false;
             },
             accessToken() {
-				return this.$store.getters['model.app/accessToken'];
-			}
+              return this.$store.getters['model.app/accessToken'];
+            }
         },
         methods: {
             async init () {

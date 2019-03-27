@@ -13,7 +13,7 @@ export default class ModelServiceProvider extends ServiceProvider {
     register () {
         let models = new Model(this.app);
         this.app.register('models', models);
-		this.app.registerModel('model.activity', Activity);
+        this.app.registerModel('model.activity', Activity);
         this.app.registerModel('model.app', App);
 
         this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
@@ -32,7 +32,8 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.stores', Stores);
         this.app.registerModel('model.nearestStore', NearestStore);
     }
-    boot() {
+
+    boot () {
 
     }
 }

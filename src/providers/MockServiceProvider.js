@@ -28,19 +28,19 @@ import Tickets from "mocks/Tickets";
 
 /* eslint-disable */
 
-export default class MockServiceProvider extends ServiceProvider{
+export default class MockServiceProvider extends ServiceProvider {
     register () {
-        if(this.app.needMock()) {
+        if (this.app.needMock()) {
             this.app.register('mock', require('mockjs'));
             this.app.register('mock.nearbyStores', NearbyStores);
             this.app.register('mock.merchandises', Merchandises);
-            this.app.register('mock.addMerchandises',AddMerchandises);
+            this.app.register('mock.addMerchandises', AddMerchandises);
             this.app.register('mock.reduceMerchandises', ReduceMerchandises);
             this.app.register('mock.categories', Categories);
             this.app.register('mock.neareststore', NearestStore);
             this.app.register('mock.emptyMerchandises', EmptyMerchandises);
-            this.app.register('mock.storeCategories',StoreCategories);
-            this.app.register('mock.tickets',Tickets);
+            this.app.register('mock.storeCategories', StoreCategories);
+            this.app.register('mock.tickets', Tickets);
 
             this.app.register('mock.myInfo', MyInfo);
             this.app.register('mock.myFeedback', MyFeedback);
@@ -57,6 +57,7 @@ export default class MockServiceProvider extends ServiceProvider{
             this.app.register('mock.gatherOrder', GatherOrder);
         }
     }
+
     boot () {
 
     }

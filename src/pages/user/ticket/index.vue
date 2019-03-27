@@ -8,10 +8,10 @@
 			<span>{{ticketInfo.info.base_info.title}}</span>
 			<i id="ticket_body_icon"></i>
 		</div>
-		<button v-if="registered && this.ticketInfo.can_get" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
+		<button v-if="canGet" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
 			{{ticketBtn}}
 		</button>
-		<button v-else-if="!this.ticketInfo.can_get" id="ticket_btn" @click="url">
+		<button v-else-if="!ticketInfo.can_get" :class="newClass" id="ticket_btn" @click="url">
 			去使用
 		</button>
 		<button v-else id="ticket_btn" :class="newClass" open-type="getUserInfo" @getuserinfo="getUserInfo">
@@ -95,6 +95,10 @@
 			registered() {
 				return this.$store.getters['model.account/registered'];
 			},
+      canGet() {
+        console.log(this.ticketInfo);
+        return  this.registerd && this.ticketInfo['can_get'];
+      },
 			isAuth() {
 				return this.$store.getters['model.account/isAuth'];
 			},
@@ -146,8 +150,6 @@
 					if (this.$store.getters['model.account/registered']) {
 						await this.receiveTicket(ticketId);
 						this.ticket = true;
-						this.ticketBtn = '去逛逛';
-						this.newClass = 'ticketBtnGray';
 					} else {
 						wx.showToast({
 							title: '领券失败',

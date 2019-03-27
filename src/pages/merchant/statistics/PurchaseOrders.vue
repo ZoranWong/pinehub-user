@@ -2,7 +2,9 @@
 <template>
     <div id="purchase">
         <div id="select_date">
-            <picker :range="selectDate" :value="nowSelectDate" id="select_date_ranges" @change="selectDateNow">{{selectDate[nowSelectDate]}}</picker>
+            <picker :range="selectDate" :value="nowSelectDate" id="select_date_ranges" @change="selectDateNow">
+                {{selectDate[nowSelectDate]}}
+            </picker>
             <i id="select_date_arrow"></i>
         </div>
         <div id="purchase_total">
@@ -33,7 +35,7 @@
 <script>
     export default {
         name: 'Purchase',
-        data () {
+        data() {
             return {
                 nowSelectDate: 0,
                 selectDate: ['今日', '本周', '本月']
@@ -46,15 +48,15 @@
             }
         },
         computed: {
-            totalAmount () {
+            totalAmount() {
                 return this.$store.getters['model.purchase.orders/totalAmount'];
             },
-            purchaseList () {
+            purchaseList() {
                 return this.$store.getters['model.purchase.orders/list'];
             }
         },
         methods: {
-            selectDateNow (e) {
+            selectDateNow(e) {
                 let num = e.target.value;
                 this.nowSelectDate = num;
                 if (num === 0) {
@@ -66,7 +68,7 @@
                 }
             }
         },
-        mounted () {
+        mounted() {
             this.onLoadPurchase('day');
         }
     }
@@ -74,38 +76,38 @@
 
 <style scoped>
     #select_date {
-        margin: 20rpx;
-        padding: 6rpx 20rpx;
-        line-height: 52rpx;
+        margin: 20 rpx;
+        padding: 6 rpx 20 rpx;
+        line-height: 52 rpx;
         background: #FFFFFF;
-        border-radius: 10rpx;
-        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
+        border-radius: 10 rpx;
+        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
         position: relative;
     }
 
     #select_date_ranges {
-        font-size: 28rpx;
+        font-size: 28 rpx;
         font-weight: 300;
     }
 
     #select_date_arrow {
         position: absolute;
-        right: 20rpx;
-        top: 22rpx;
-        height: 20rpx;
-        width: 20rpx;
+        right: 20 rpx;
+        top: 22 rpx;
+        height: 20 rpx;
+        width: 20 rpx;
         background: url(../../../../static/images/icon/select_arrow.png) no-repeat center center;
         background-size: 90%;
     }
 
     #purchase_total {
-        margin: 20rpx;
-        padding: 6rpx 20rpx;
-        line-height: 52rpx;
+        margin: 20 rpx;
+        padding: 6 rpx 20 rpx;
+        line-height: 52 rpx;
         background: #FFFFFF;
-        border-radius: 10rpx;
-        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
-        font-size: 28rpx;
+        border-radius: 10 rpx;
+        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        font-size: 28 rpx;
         font-weight: 300;
     }
 
@@ -122,22 +124,22 @@
 
     .purchase_order {
         background: #FFFFFF;
-        border-radius: 10rpx;
-        font-size: 34rpx;
+        border-radius: 10 rpx;
+        font-size: 34 rpx;
         font-weight: 300;
-        padding: 20rpx;
-        margin: 20rpx;
+        padding: 20 rpx;
+        margin: 20 rpx;
         overflow: hidden;
         position: relative;
-        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
+        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
     }
 
     .purchase_order_sn {
-        font-size: 28rpx;
-        line-height: 48rpx;
+        font-size: 28 rpx;
+        line-height: 48 rpx;
         overflow: hidden;
         font-weight: 300;
-        margin-bottom: 1rpx;
+        margin-bottom: 1 rpx;
         /*background: green;*/
     }
 
@@ -145,7 +147,7 @@
         display: inline-block;
         color: #111111;
         font-weight: 400;
-        padding-right: 10rpx;
+        padding-right: 10 rpx;
     }
 
     .purchase_order_sn em {
@@ -159,9 +161,9 @@
     }
 
     .purchase_order_over {
-        font-size: 28rpx;
+        font-size: 28 rpx;
         font-weight: 300;
-        margin-bottom: 10rpx;
+        margin-bottom: 10 rpx;
     }
 
     .purchase_order_over i {
@@ -174,40 +176,40 @@
     }
 
     .purchase_order_date {
-        margin-top: 10rpx;
-        padding-top: 10rpx;
-        border-top: 1rpx dashed #f3f3f3;
+        margin-top: 10 rpx;
+        padding-top: 10 rpx;
+        border-top: 1 rpx dashed #f3f3f3;
     }
 
     .purchase_order_date em {
         display: inline-block;
-        font-size: 28rpx;
+        font-size: 28 rpx;
         font-weight: 200;
         color: #CCCCCC;
     }
 
     .purchase_order_date i {
-        height: 32rpx;
-        width: 32rpx;
+        height: 32 rpx;
+        width: 32 rpx;
         background: url(../../../../static/images/icon/myordermore.png) no-repeat center center;
         background-size: 80%;
         display: inline-block;
         float: right;
-        margin-top: 10rpx;
+        margin-top: 10 rpx;
     }
 
     .purchase_info_circle {
         position: absolute;
         background: #FAFAFA;
-        width: 40rpx;
-        height: 40rpx;
+        width: 40 rpx;
+        height: 40 rpx;
         border-radius: 50%;
-        bottom: 60rpx;
-        right: -22rpx;
+        bottom: 60 rpx;
+        right: -22 rpx;
         z-index: 1;
     }
 
     .purchase_info_circle.right_circle {
-        left: -22rpx;
+        left: -22 rpx;
     }
 </style>

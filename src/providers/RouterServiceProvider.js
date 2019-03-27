@@ -4,10 +4,11 @@ import MpvueRouterPatch from 'mpvue-router-patch';
 
 export default class RouteServiceProvider extends ServiceProvider {
     constructor (app) {
-      super(app);
+        super(app);
     }
+
     register () {
-      this.app.use(MpvueRouterPatch);
-      this.app.register('mp.router', Router);
+        this.app.use(MpvueRouterPatch);
+        this.app.register('mp.router', Router);
     }
 }

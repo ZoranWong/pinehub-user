@@ -1,4 +1,5 @@
 import Command from '@/commands/Command';
+
 export default class UpdateMerchandiseStockCommand extends Command {
     async handle (id, primaryStockNum, modifyStockNum, reason, comment = '') {
         try {
@@ -19,6 +20,7 @@ export default class UpdateMerchandiseStockCommand extends Command {
             console.log(e);
         }
     }
+
     static commandName () {
         return 'UPDATE_MERCHANDISE_STOCK';
     }

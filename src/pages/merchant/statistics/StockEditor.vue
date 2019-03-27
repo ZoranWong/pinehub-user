@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
     <div v-show="display" id="toast_area">
         <div id="toast">
@@ -11,17 +12,21 @@
                         <div class="input_num">
                             {{merchandise['stockNum']}}
                         </div>
-                        <input class="input_num input_num_right" type="number" v-model="productInfo.newStockNum" />
+                        <input class="input_num input_num_right" type="number" v-model="productInfo.newStockNum"/>
                     </div>
                     <div id="input_change_info">
                         修改原因
                     </div>
                     <div id="input_change_list">
                         <ul>
-                            <li v-for="(item,index) in selectCause" :key="item.id" :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">{{item.name}}</li>
+                            <li v-for="(item,index) in selectCause" :key="item.id"
+                                :class="{input_now_select:radioCur == index}" @click="radioSelect(index,item.id)">
+                                {{item.name}}
+                            </li>
                         </ul>
                     </div>
-                    <div id="input_change_btn" @click="returnBtn(merchandise['id'], merchandise['stockNum'], productInfo['newStockNum'], productInfo['reason'], comment)">
+                    <div id="input_change_btn"
+                         @click="returnBtn(merchandise['id'], merchandise['stockNum'], productInfo['newStockNum'], productInfo['reason'], comment)">
                         确认修改
                     </div>
                     <div id="input_change_tips">
@@ -46,7 +51,7 @@
                 type: Boolean
             }
         },
-        data () {
+        data() {
             return {
                 selectCause: [{
                     'id': 0,
@@ -65,12 +70,12 @@
         },
         watch: {},
         methods: {
-            radioSelect (num, id) {
+            radioSelect(num, id) {
                 this.radioCur = num;
                 this.productInfo['changeAnswerId'] = id;
                 this.productInfo['reason'] = this.selectCause[num]['name'];
             },
-            returnBtn (id, primaryStockNum, modifyStockNum, reason, comment) {
+            returnBtn(id, primaryStockNum, modifyStockNum, reason, comment) {
                 modifyStockNum = parseInt(modifyStockNum);
                 if (isNaN(modifyStockNum) || modifyStockNum < 0) {
                     wx.showToast({
@@ -93,15 +98,15 @@
                     this.$emit('close');
                 }
             },
-            toastClose () {
+            toastClose() {
                 this.$emit('close');
             }
         },
-        created () {
+        created() {
             this.productInfo['reason'] = this.selectCause[0]['name'];
             this.productInfo['changeAnswerId'] = this.radioCur;
         },
-        beforeUpdate () {
+        beforeUpdate() {
             // 数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。
         }
     }
@@ -119,52 +124,53 @@
     #toast {
         position: absolute;
         background: #FFFFFF;
-        width: 620rpx;
-        border-radius: 10rpx;
-        top: 100rpx;
-        left: 65rpx;
+        width: 620 rpx;
+        border-radius: 10 rpx;
+        top: 100 rpx;
+        left: 65 rpx;
     }
 
     #toast_clost {
         position: absolute;
-        height: 78rpx;
-        width: 78rpx;
+        height: 78 rpx;
+        width: 78 rpx;
         background: url(../../../../static/images/icon/my_toast_close.png) no-repeat center center;
         background-size: 100%;
-        right: -14rpx;
-        top: -20rpx;
+        right: -14 rpx;
+        top: -20 rpx;
     }
 
     #toast_title {
         background: #FECE00;
         text-align: center;
-        line-height: 96rpx;
-        border-radius: 10rpx 10rpx 0 0;
-        font-size: 34rpx;
+        line-height: 96 rpx;
+        border-radius: 10 rpx 10 rpx 0 0;
+        font-size: 34 rpx;
         font-weight: 400;
     }
 
-    #toast_content {}
+    #toast_content {
+    }
 
     #toast_content_info {
-        padding: 20rpx 40rpx;
+        padding: 20 rpx 40 rpx;
     }
 
     #input_change {
         overflow: hidden;
-        margin-bottom: 20rpx;
+        margin-bottom: 20 rpx;
         background: url(../../../../static/images/icon/my_toast_arrow.png) no-repeat center center;
-        background-size: 52rpx;
+        background-size: 52 rpx;
     }
 
     .input_num {
         display: inline-block;
         border: 1px solid #828282;
-        width: 160rpx;
-        line-height: 66rpx;
-        height: 66rpx;
+        width: 160 rpx;
+        line-height: 66 rpx;
+        height: 66 rpx;
         text-align: center;
-        border-radius: 10rpx;
+        border-radius: 10 rpx;
         float: left;
     }
 
@@ -173,46 +179,46 @@
     }
 
     #input_change_info {
-        font-size: 32rpx;
+        font-size: 32 rpx;
         font-weight: 300;
         color: #111111;
-        margin-bottom: 20rpx;
+        margin-bottom: 20 rpx;
     }
 
     #input_change_list ul li {
-        line-height: 78rpx;
-        border-radius: 10rpx;
-        box-shadow: 0rpx 2rpx 5rpx rgba(204, 202, 202, .6);
-        margin-bottom: 20rpx;
+        line-height: 78 rpx;
+        border-radius: 10 rpx;
+        box-shadow: 0 rpx 2 rpx 5 rpx rgba(204, 202, 202, .6);
+        margin-bottom: 20 rpx;
         text-align: center;
-        font-size: 32rpx;
+        font-size: 32 rpx;
         font-weight: 400;
         color: #111111;
         background: url(../../../../static/images/icon/my_select_none.png) no-repeat;
-        background-size: 44rpx;
-        background-position: 40rpx center;
+        background-size: 44 rpx;
+        background-position: 40 rpx center;
     }
 
     #input_change_list ul li.input_now_select {
         background: url(../../../../static/images/icon/my_select_ok.png) no-repeat;
-        background-size: 44rpx;
-        background-position: 40rpx center;
+        background-size: 44 rpx;
+        background-position: 40 rpx center;
     }
 
     #input_change_btn {
         background: #FECE00;
-        line-height: 78rpx;
+        line-height: 78 rpx;
         text-align: center;
-        font-size: 34rpx;
+        font-size: 34 rpx;
         font-weight: 400;
-        border-radius: 10rpx;
+        border-radius: 10 rpx;
     }
 
     #input_change_tips {
-        font-size: 22rpx;
+        font-size: 22 rpx;
         font-weight: 300;
         color: #828282;
         text-align: center;
-        line-height: 68rpx;
+        line-height: 68 rpx;
     }
 </style>

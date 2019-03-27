@@ -5,6 +5,6 @@ const application = wx.$app;
 application.setComponent(App).run(function () {
     this.route = 'payment.success';
 }, function () {
-  this.currentPage = new Vue(this.mountComponent);
-  this.currentPage.$mount();
+    this.currentPage = new Vue(this.mountComponent);
+    this.currentPage.$mount();
 });

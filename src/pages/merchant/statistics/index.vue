@@ -1,20 +1,23 @@
 <template>
     <div id="status">
-        <store-editor :merchandise="merchandise" :display="display" @close="closeStockPanel" @modifyStock="modifyStock"/>
+        <store-editor :merchandise="merchandise" :display="display" @close="closeStockPanel"
+                      @modifyStock="modifyStock"/>
         <mp-title :title="title"/>
         <div id="tab_select">
             <ul>
-                <li v-for="(tab, index) in tabs" :class="{tab_select_now:currentTab === index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)">
+                <li v-for="(tab, index) in tabs" :class="{tab_select_now:currentTab === index}"
+                    :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)">
                     <span>{{tab.name}}</span>
                 </li>
             </ul>
         </div>
         <div id="tab_content">
             <div class="tab_content_item store-orders" v-if="currentTab === 0">
-                <merchandises @showStockEditor="showStockEditor" :onLoadCategory = "onLoadCategory" :changeCategory = "changeCategory"/>
+                <merchandises @showStockEditor="showStockEditor" :onLoadCategory="onLoadCategory"
+                              :changeCategory="changeCategory"/>
             </div>
             <div class="tab_content_item purchase-orders" v-if="currentTab === 1">
-                <sales :salesInfo = "salesInfo"  :onLoadSales = "onLoadSales" :onLoadSalesEChart = "onLoadSalesEChart"/>
+                <sales :salesInfo="salesInfo" :onLoadSales="onLoadSales" :onLoadSalesEChart="onLoadSalesEChart"/>
             </div>
             <div class="tab_content_item sales-orders" v-if="currentTab === 2">
                 <purchase-order :onLoadPurchase="onLoadPurchase"/>
@@ -32,6 +35,7 @@
     import StoreMerchandises from './StoreMerchandises';
     import MpTitle from '@/components/MpTitle';
     import FooterNav from '@/components/FooterNav';
+
     export default {
         components: {
             'mp-title': MpTitle,
@@ -124,7 +128,7 @@
     }
 
     #footNav_height {
-        height: 109rpx;
+        height: 109 rpx;
     }
 
     #status {
@@ -136,8 +140,8 @@
     /*noinspection ALL*/
     #tab_select {
         overflow: hidden;
-        width: 750rpx;
-        height: 74rpx;
+        width: 750 rpx;
+        height: 74 rpx;
         position: fixed;
         left: 0;
         top: 0;
@@ -145,12 +149,12 @@
     }
 
     #tab_select ul li {
-        height: 74rpx;
-        line-height: 74rpx;
+        height: 74 rpx;
+        line-height: 74 rpx;
         float: left;
         background: #FFFFFF;
         text-align: center;
-        font-size: 32rpx;
+        font-size: 32 rpx;
         font-weight: 300;
     }
 
@@ -161,15 +165,16 @@
     #tab_select ul li.tab_select_now span {
         display: inline-block;
         width: 68%;
-        line-height: 64rpx;
-        border-bottom: 5rpx solid #FECE00;
+        line-height: 64 rpx;
+        border-bottom: 5 rpx solid #FECE00;
     }
 
     #tab_content {
-        padding-top: 74rpx;
+        padding-top: 74 rpx;
     }
 
-    .tab_content_item {}
+    .tab_content_item {
+    }
 
     .tab_content_now {
         display: block;

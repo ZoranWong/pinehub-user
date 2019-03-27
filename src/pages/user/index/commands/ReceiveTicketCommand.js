@@ -1,4 +1,5 @@
 import Command from '@/commands/Command';
+
 export default class ReceiveTicketCommand extends Command {
     async handle (card) {
         try {

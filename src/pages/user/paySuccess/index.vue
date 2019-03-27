@@ -75,6 +75,7 @@
 				if (advertisement.banner_url != undefined) {
 					this.ticketShow = true;
 					this.ticketInfo = advertisement.ticket.data;
+					this.ticketInfo.can_get = false;
 					this.imgUrl = advertisement.banner_url;
 				}
 			},
@@ -91,6 +92,7 @@
 			}
 		},
 		mounted() {
+      console.log('-----------------', this.$route);
 			this.getOrderInfo();
 			this.getAdvertisement();
 		},
