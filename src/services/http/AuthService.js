@@ -1,4 +1,5 @@
 import ApiService from './ApiService';
+
 export default class AuthService extends ApiService {
     // 获取小程序登录并验证用户是否存在
     async login (code, accessToken) {

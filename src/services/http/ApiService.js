@@ -72,6 +72,7 @@ export default class ApiService extends Service {
             let message = e.response && e.response.data && e.response.data.message ? e.response.data.message : e;
             if (this.errorShow)
                 await this.service('popup').toast(message, 'warn', 2000);
+            this.errorShow = true;
             throw e;
         }
     }

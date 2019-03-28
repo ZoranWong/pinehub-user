@@ -1,7 +1,7 @@
 import Command from './Command';
 export default class AppAccesssCommand extends Command {
     // 获取token值
-    async handle () { 
+    async handle () {
         // 获取appId
         let appId = this.$application.config['app']['appId'];
         // 获取appSecret
@@ -25,6 +25,6 @@ export default class AppAccesssCommand extends Command {
         }
     }
     static commandName () {
-        return 'APP_ACCESSS';
+        return 'APP_ACCESS';
     }
 }

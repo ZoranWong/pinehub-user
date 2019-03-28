@@ -51,7 +51,7 @@
         methods: {
             async init () {
                 if (!this.accessToken) {
-                    await this.$command('APP_ACCESSS');
+                    await this.$command('APP_ACCESS');
                 }
                 if (!this.isLogin) {
                     await this.$command('SIGN_IN', this.accessToken);

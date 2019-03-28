@@ -11,14 +11,14 @@ export default class Tickets extends Model {
 
     computed () {
         return _.extend(super.computed(), {
-            ticket() {
-                return(id) => {
+            ticket () {
+                return (id) => {
                     return _.findWhere(this.list(), {
                         id: id
                     });
                 }
             },
-            ticketsList(state) {
+            ticketsList (state) {
                 return _.flatten(state.list);
             }
         });

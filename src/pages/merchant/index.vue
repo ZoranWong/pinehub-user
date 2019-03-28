@@ -145,31 +145,31 @@
     }
 
     #merchant-store_buyinfo {
-        padding: 15 rpx;
+        padding: 15rpx;
     }
 
     #merchant-store_buyinfo ul li {
-        width: 333 rpx;
-        height: 140 rpx;
-        margin: 15 rpx;
+        width: 333rpx;
+        height: 140rpx;
+        margin: 15rpx;
         float: left;
         background: #fff;
-        border-radius: 10 rpx;
+        border-radius: 10rpx;
         font-weight: 300;
         position: relative;
-        box-shadow: 0 rpx 4 rpx 10 rpx rgba(204, 202, 202, .6);
+        box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
     }
 
     .my_store_ico {
         display: inline-block;
-        width: 60 rpx;
-        height: 60 rpx;
+        width: 60rpx;
+        height: 60rpx;
         background-size: 90%;
         background-repeat: no-repeat;
         background-position: center center;
         position: absolute;
-        top: 40 rpx;
-        left: 40 rpx;
+        top: 40rpx;
+        left: 40rpx;
     }
 
     .my_store_ico.ico_week_buy {
@@ -190,56 +190,56 @@
 
     .info_list {
         position: absolute;
-        top: 35 rpx;
-        left: 120 rpx;
+        top: 35rpx;
+        left: 120rpx;
         clear: both;
     }
 
     .info_list em {
-        font-size: 30 rpx;
+        font-size: 30rpx;
         font-weight: 400;
-        line-height: 34 rpx;
+        line-height: 34rpx;
     }
 
     .info_list i {
-        font-size: 24 rpx;
-        line-height: 22 rpx;
+        font-size: 24rpx;
+        line-height: 22rpx;
         color: #bbbbbb;
-        margin-top: 10 rpx;
+        margin-top: 10rpx;
     }
 
     #merchant-store_charts1 {
-        margin: 0 30 rpx;
+        margin: 0 30rpx;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        padding: 15 rpx;
+        border-radius: 10rpx;
+        padding: 15rpx;
     }
 
     #merchant-store_charts2 {
-        margin: 30 rpx 30 rpx 0;
+        margin: 30rpx 30rpx 0;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        padding: 15 rpx;
+        border-radius: 10rpx;
+        padding: 15rpx;
     }
 
     #merchant-store_menu {
-        margin: 15 rpx;
+        margin: 15rpx;
         /*background: #FFF6BD;*/
         overflow: hidden;
     }
 
     #merchant-store_menu ul li {
-        margin: 15 rpx;
+        margin: 15rpx;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        width: 211.3 rpx;
-        height: 170 rpx;
+        border-radius: 10rpx;
+        width: 211.3rpx;
+        height: 170rpx;
         float: left;
-        box-shadow: 0 rpx 4 rpx 10 rpx rgba(204, 202, 202, .6);
+        box-shadow: 0rpx 4rpx 10rpx rgba(204, 202, 202, .6);
     }
 
     #merchant-store_menu ul li em {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 300;
         text-align: center;
         color: #828282;
@@ -247,12 +247,12 @@
 
     .my_store_menu_ico {
         display: block;
-        width: 60 rpx;
-        height: 60 rpx;
+        width: 60rpx;
+        height: 60rpx;
         background-size: 90%;
         background-repeat: no-repeat;
         background-position: center center;
-        margin: 30 rpx auto 15 rpx;
+        margin: 30rpx auto 15rpx;
     }
 
     .ico_1 {

@@ -194,17 +194,11 @@
 			},
 			async initAccount() {
 				let result = await this.map.getLocation();
-				if (!result) {} else {
-					this.$store.dispatch('model.stores/setLocation', {
-						latitude: result[1],
-						longitude: result[0]
-					});
-				}
 				await this.$store.dispatch('model.account/resetFromCache', {
 					initAccount: async () => {
 						console.log('dddddasfdsfasdfasfasdfa');
 						if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
-							await this.$command('APP_ACCESSS');
+							await this.$command('APP_ACCESS');
 						} else {
 							this.$command('SIGN_IN', this.accessToken);
 						}

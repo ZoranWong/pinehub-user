@@ -76,38 +76,38 @@
 
 <style scoped>
     #select_date {
-        margin: 20 rpx;
-        padding: 6 rpx 20 rpx;
-        line-height: 52 rpx;
+        margin: 20rpx;
+        padding: 6rpx 20rpx;
+        line-height: 52rpx;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
         position: relative;
     }
 
     #select_date_ranges {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 300;
     }
 
     #select_date_arrow {
         position: absolute;
-        right: 20 rpx;
-        top: 22 rpx;
-        height: 20 rpx;
-        width: 20 rpx;
+        right: 20rpx;
+        top: 22rpx;
+        height: 20rpx;
+        width: 20rpx;
         background: url(../../../../static/images/icon/select_arrow.png) no-repeat center center;
         background-size: 90%;
     }
 
     #purchase_total {
-        margin: 20 rpx;
-        padding: 6 rpx 20 rpx;
-        line-height: 52 rpx;
+        margin: 20rpx;
+        padding: 6rpx 20rpx;
+        line-height: 52rpx;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
-        font-size: 28 rpx;
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
+        font-size: 28rpx;
         font-weight: 300;
     }
 
@@ -124,22 +124,22 @@
 
     .purchase_order {
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        font-size: 34 rpx;
+        border-radius: 10rpx;
+        font-size: 34rpx;
         font-weight: 300;
-        padding: 20 rpx;
-        margin: 20 rpx;
+        padding: 20rpx;
+        margin: 20rpx;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
     }
 
     .purchase_order_sn {
-        font-size: 28 rpx;
-        line-height: 48 rpx;
+        font-size: 28rpx;
+        line-height: 48rpx;
         overflow: hidden;
         font-weight: 300;
-        margin-bottom: 1 rpx;
+        margin-bottom: 1rpx;
         /*background: green;*/
     }
 
@@ -147,7 +147,7 @@
         display: inline-block;
         color: #111111;
         font-weight: 400;
-        padding-right: 10 rpx;
+        padding-right: 10rpx;
     }
 
     .purchase_order_sn em {
@@ -161,9 +161,9 @@
     }
 
     .purchase_order_over {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 300;
-        margin-bottom: 10 rpx;
+        margin-bottom: 10rpx;
     }
 
     .purchase_order_over i {
@@ -176,40 +176,40 @@
     }
 
     .purchase_order_date {
-        margin-top: 10 rpx;
-        padding-top: 10 rpx;
-        border-top: 1 rpx dashed #f3f3f3;
+        margin-top: 10rpx;
+        padding-top: 10rpx;
+        border-top: 1rpx dashed #f3f3f3;
     }
 
     .purchase_order_date em {
         display: inline-block;
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 200;
         color: #CCCCCC;
     }
 
     .purchase_order_date i {
-        height: 32 rpx;
-        width: 32 rpx;
+        height: 32rpx;
+        width: 32rpx;
         background: url(../../../../static/images/icon/myordermore.png) no-repeat center center;
         background-size: 80%;
         display: inline-block;
         float: right;
-        margin-top: 10 rpx;
+        margin-top: 10rpx;
     }
 
     .purchase_info_circle {
         position: absolute;
         background: #FAFAFA;
-        width: 40 rpx;
-        height: 40 rpx;
+        width: 40rpx;
+        height: 40rpx;
         border-radius: 50%;
-        bottom: 60 rpx;
-        right: -22 rpx;
+        bottom: 60rpx;
+        right: -22rpx;
         z-index: 1;
     }
 
     .purchase_info_circle.right_circle {
-        left: -22 rpx;
+        left: -22rpx;
     }
 </style>

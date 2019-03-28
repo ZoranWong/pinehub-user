@@ -1,4 +1,5 @@
 import Service from '@/services/Service';
+
 export default class PaymentService extends Service {
     // 调用微信支付接口
     pay (timeStamp, nonceStr, packageInfo, paySign) {

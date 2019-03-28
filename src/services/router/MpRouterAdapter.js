@@ -1,5 +1,5 @@
 export default class MpRouterAdapter {
-	go() {
-		
-	}
+    go () {
+
+    }
 }

@@ -1,4 +1,5 @@
 import Service from '../Service';
+
 export default class EChartsService extends Service {
     /* 获取一个月的天数 */
     getCountDays () {

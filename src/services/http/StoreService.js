@@ -1,4 +1,5 @@
 import ApiService from './ApiService';
+
 export default class StoreService extends ApiService {
     // 获取店铺产品分类列表
     async categories (storeId, page = 1, limit = 15) {
@@ -28,7 +29,7 @@ export default class StoreService extends ApiService {
 
     // 获取进货统计
     async purchaseOrders (date) {
-        let response = await this.httpGet('store/purchase/statistics', { 'date': date });
+        let response = await this.httpGet('store/purchase/statistics', {'date': date});
         let list = response.data;
         let pagination = response.meta.pagination;
         // 总数
@@ -57,7 +58,7 @@ export default class StoreService extends ApiService {
 
     // 获取进货统计
     async salesInfo (selectTime) {
-        let response = await this.httpGet('store/sales/statistics', { 'date': selectTime });
+        let response = await this.httpGet('store/sales/statistics', {'date': selectTime});
         return response.data;
     }
 

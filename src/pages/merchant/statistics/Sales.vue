@@ -93,44 +93,44 @@
 
 <style scoped>
     #select_date {
-        margin: 20 rpx;
-        padding: 6 rpx 20 rpx;
-        line-height: 52 rpx;
+        margin: 20rpx;
+        padding: 6rpx 20rpx;
+        line-height: 52rpx;
         background: #FFFFFF;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
         position: relative;
     }
 
     #select_date_ranges {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 300;
     }
 
     #select_date_arrow {
         position: absolute;
-        right: 20 rpx;
-        top: 22 rpx;
-        height: 20 rpx;
-        width: 20 rpx;
+        right: 20rpx;
+        top: 22rpx;
+        height: 20rpx;
+        width: 20rpx;
         background: url(../../../../static/images/icon/select_arrow.png) no-repeat center center;
         background-size: 90%;
     }
 
     #sales_charts {
         background: #FFFFFF;
-        padding: 20 rpx;
-        margin: 20 rpx;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        padding: 20rpx;
+        margin: 20rpx;
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
     }
 
     #sales_total {
         background: #FFFFFF;
-        padding: 10 rpx 20 rpx 0;
-        margin: 20 rpx;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        padding: 10rpx 20rpx 0;
+        margin: 20rpx;
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
     }
 
     .sales_total_style {
@@ -145,65 +145,65 @@
     }
 
     .sales_total_all {
-        font-size: 28 rpx;
-        margin-bottom: 20 rpx;
+        font-size: 28rpx;
+        margin-bottom: 20rpx;
     }
 
     .sales_total_booking {
-        font-size: 22 rpx;
-        margin-bottom: 10 rpx;
+        font-size: 22rpx;
+        margin-bottom: 10rpx;
     }
 
     .sales_total_site {
-        font-size: 22 rpx;
-        border-bottom: 1 rpx solid #F0F0F0;
-        padding-bottom: 10 rpx;
+        font-size: 22rpx;
+        border-bottom: 1rpx solid #F0F0F0;
+        padding-bottom: 10rpx;
     }
 
     .sales_total_index {
-        font-size: 28 rpx;
-        border-bottom: 1 rpx solid #F0F0F0;
-        line-height: 66 rpx;
+        font-size: 28rpx;
+        border-bottom: 1rpx solid #F0F0F0;
+        line-height: 66rpx;
     }
 
     .sales_total_singlenum {
-        font-size: 28 rpx;
-        border-bottom: 1 rpx solid #F0F0F0;
-        line-height: 66 rpx;
+        font-size: 28rpx;
+        border-bottom: 1rpx solid #F0F0F0;
+        line-height: 66rpx;
     }
 
     .sales_total_num {
-        font-size: 28 rpx;
-        line-height: 66 rpx;
+        font-size: 28rpx;
+        line-height: 66rpx;
     }
 
     .sales_rank {
-        margin: 20 rpx;
-        border-radius: 10 rpx;
-        box-shadow: 0 rpx 9 rpx 20 rpx rgba(204, 202, 202, .6);
+        margin: 20rpx;
+        border-radius: 10rpx;
+        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
     }
 
     .sales_rank_title {
         background: #FECE00;
         color: #111111;
-        font-size: 28 rpx;
+        font-size: 28rpx;
         font-weight: 400;
-        line-height: 66 rpx;
-        text-indent: 20 rpx;
-        border-radius: 10 rpx 10 rpx 0 0;
+        line-height: 66rpx;
+        text-indent: 20rpx;
+        border-radius: 10rpx 10rpx 0 0;
     }
 
     .sales_rank_ul {
         background: #FFFFFF;
-        padding: 10 rpx 20 rpx 10 rpx 20 rpx;
-        font-size: 28 rpx;
+        padding: 10rpx 20rpx 10rpx 20rpx;
+        font-size: 28rpx;
         font-weight: 300;
-        border-radius: 0 0 10 rpx 10 rpx;
+        border-radius: 0 0 10rpx 10rpx;
     }
 
     .sales_rank_ul ul li {
-        line-height: 62 rpx;
-        border-bottom: 1 rpx solid #F0F0F0;
+        line-height: 62rpx;
+        border-bottom: 1rpx solid #F0F0F0;
     }
 
     .sales_rank_ul ul li:last-child {
@@ -212,7 +212,7 @@
 
     .sales_rank_ul ul li i {
         display: inline-block;
-        padding-right: 10 rpx;
+        padding-right: 10rpx;
     }
 
     .sales_rank_ul ul li em {

@@ -128,7 +128,7 @@
     }
 
     #footNav_height {
-        height: 109 rpx;
+        height: 109rpx;
     }
 
     #status {
@@ -140,8 +140,8 @@
     /*noinspection ALL*/
     #tab_select {
         overflow: hidden;
-        width: 750 rpx;
-        height: 74 rpx;
+        width: 750rpx;
+        height: 74rpx;
         position: fixed;
         left: 0;
         top: 0;
@@ -149,12 +149,12 @@
     }
 
     #tab_select ul li {
-        height: 74 rpx;
-        line-height: 74 rpx;
+        height: 74rpx;
+        line-height: 74rpx;
         float: left;
         background: #FFFFFF;
         text-align: center;
-        font-size: 32 rpx;
+        font-size: 32rpx;
         font-weight: 300;
     }
 
@@ -165,12 +165,12 @@
     #tab_select ul li.tab_select_now span {
         display: inline-block;
         width: 68%;
-        line-height: 64 rpx;
-        border-bottom: 5 rpx solid #FECE00;
+        line-height: 64rpx;
+        border-bottom: 5rpx solid #FECE00;
     }
 
     #tab_content {
-        padding-top: 74 rpx;
+        padding-top: 74rpx;
     }
 
     .tab_content_item {

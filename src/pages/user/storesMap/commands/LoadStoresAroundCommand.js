@@ -1,6 +1,7 @@
 import Command from '@/commands/Command';
+
 export default class LoadStoresAroundCommand extends Command {
-    async handle(lng, lat) {
+    async handle (lng, lat) {
         let [listData, totalNum, currentPage, totalPage, pageCount] = await this.service('http.store')
         .nearbyStores(lng, lat);
         this.store().dispatch({
@@ -12,7 +13,8 @@ export default class LoadStoresAroundCommand extends Command {
             pageCount: pageCount
         });
     }
-    static commandName() {
+
+    static commandName () {
         return 'LOAD_STORES_AROUND';
     }
 }

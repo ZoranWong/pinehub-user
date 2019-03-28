@@ -4,21 +4,21 @@ import CardsTransformer from '@/models/transformers/Card';
 import _ from 'underscore';
 
 export default class Cards extends Model {
-    constructor(application) {
+    constructor (application) {
         super(application);
         this.transformer = CardsTransformer;
     }
 
-    computed() {
+    computed () {
         return _.extend(super.computed(), {
-            ticket() {
+            ticket () {
                 return (id) => {
                     return _.findWhere(this.list(), {
                         id: id
                     });
                 }
             },
-            ticketListShow() {
+            ticketListShow () {
                 let list = this.list();
                 if (list.length === 0) {
                     return false;
@@ -29,9 +29,9 @@ export default class Cards extends Model {
         });
     }
 
-    listeners() {
+    listeners () {
         super.listeners();
-        this.addEventListener('setCardGot', function({ id }) {
+        this.addEventListener('setCardGot', function ({id}) {
             let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
             if (this.state.currentPage === 0) {
                 this.state.currentPage = 1;

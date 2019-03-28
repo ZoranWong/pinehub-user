@@ -1,4 +1,5 @@
 import ApiService from '@/services/http/ApiService';
+
 export default class CategoriesService extends ApiService {
     async categories (page, limit = 15) {
         let response = await this.httpGet(`/categories`, {

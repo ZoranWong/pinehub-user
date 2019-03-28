@@ -1,4 +1,5 @@
 import ApiService from '@/services/http/ApiService';
+
 export default class TicketsService extends ApiService {
     // 获取优惠券列表
     async list (status, parameters) {
@@ -22,6 +23,7 @@ export default class TicketsService extends ApiService {
         let limit = pagination['pre_page'];
         return [tickets, totalNum, currentPage, totalPage, limit];
     }
+
     async loadtickets () {
         let response = null;
         response = await this.httpGet(`/tickets/`);

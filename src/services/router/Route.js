@@ -1,9 +1,9 @@
 export default class Route {
-	constructor({route, page, param, query}) {
-		this.page = page;
-	}
-	
-	go() {
-		
-	}
+    constructor ({route, page, param, query}) {
+        this.page = page;
+    }
+
+    go () {
+
+    }
 }

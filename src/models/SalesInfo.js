@@ -1,5 +1,6 @@
 import Model from './Model';
 import _ from 'underscore';
+
 export default class SalesInfo extends Model {
     computed () {
         return _.extend(super.computed(), {
@@ -13,6 +14,7 @@ export default class SalesInfo extends Model {
             }
         });
     }
+
     data () {
         return {
             dateType: 'day',
@@ -21,6 +23,7 @@ export default class SalesInfo extends Model {
             }
         };
     }
+
     // 监听数据
     listeners () {
         this.addEventListener('setData', function ({dateType, salesInfo}) {
