@@ -53,7 +53,8 @@
                 ticketInfo: null,
                 ticketBtn: '立即领取',
                 newClass: '',
-                ticket: null
+                ticket: null,
+                ticketId: null
             };
         },
         watch: {
@@ -70,6 +71,11 @@
                         this.$command('LOAD_ACCOUNT', false);
                         this.$command('GET_ACTIVITY_INFO');
                     }
+                }
+            },
+            ticketId (value) {
+                if (value) {
+                    this.loadTicket();
                 }
             }
         },
@@ -190,11 +196,23 @@
             },
             url () {
                 this.$command('REDIRECT_TO', 'index', 'replace');
+            },
+            async loadTicket () {
+                this.ticketInfo = await this.http.tickets.getTicketDetail(this.ticketId);
             }
         },
         mounted () {
-            this.ticketInfo = JSON.parse(this.$route.query['ticketInfo']);
-            console.log('==========', this.ticketInfo);
+            let ticketInfo = JSON.parse(this.$route.query['ticketInfo']);
+            if (ticketInfo) {
+                this.ticketInfo = ticketInfo;
+            }
+        },
+        onLoad (options) {
+            if (options.q) {
+                console.log(options.q);
+                let scanUrl = decodeURIComponent(options.q);
+                this.ticketId = scanUrl.match(/\d+/)[0] // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+            }
         }
     }
 </script>
@@ -203,16 +221,16 @@
 <style scoped>
     .body {
         overflow: hidden;
-        width: 750rpx;
+        width: 750 rpx;
         background-color: #FAFAFA;
         font-weight: normal;
     }
 
     #ticket_body {
         position: relative;
-        margin: 20rpx;
-        padding: 60rpx 40rpx;
-        border-radius: 10rpx;
+        margin: 20 rpx;
+        padding: 60 rpx 40 rpx;
+        border-radius: 10 rpx;
         background: url(../../../../static/images/icon/ticket-left-icon.png) no-repeat left center;
         background-size: auto 100%;
         background-color: #FFFFFF;
@@ -222,8 +240,8 @@
         position: absolute;
         right: 0;
         top: 0;
-        height: 88rpx;
-        width: 88rpx;
+        height: 88 rpx;
+        width: 88 rpx;
         background: url(../../../../static/images/icon/ticket-right-icon.png) no-repeat center center;
         background-size: 100%;
     }
@@ -234,23 +252,23 @@
 
     #ticket_body span em {
         display: inline-block;
-        font-size: 68rpx;
+        font-size: 68 rpx;
         font-weight: bolder;
     }
 
     #ticket_body span i {
         display: inline-block;
-        font-size: 34rpx;
+        font-size: 34 rpx;
     }
 
     #ticket_btn {
         background: #FFCC00;
         color: #333333;
         text-align: center;
-        line-height: 80rpx;
-        font-size: 34rpx;
-        margin: 20rpx;
-        border-radius: 10rpx;
+        line-height: 80 rpx;
+        font-size: 34 rpx;
+        margin: 20 rpx;
+        border-radius: 10 rpx;
     }
 
     .ticketBtnGray {
@@ -259,14 +277,14 @@
 
     #ticket_info {
         background: #F2F2F2;
-        border-radius: 5rpx;
-        margin: 20rpx;
-        padding: 30rpx;
-        border-radius: 10rpx;
+        border-radius: 5 rpx;
+        margin: 20 rpx;
+        padding: 30 rpx;
+        border-radius: 10 rpx;
     }
 
     #ticket_info ul li {
-        margin-bottom: 40rpx;
+        margin-bottom: 40 rpx;
     }
 
     #ticket_info ul li:last-child {
@@ -274,12 +292,12 @@
     }
 
     #ticket_info ul li em {
-        font-size: 38rpx;
-        margin-bottom: 10rpx;
+        font-size: 38 rpx;
+        margin-bottom: 10 rpx;
     }
 
     #ticket_info ul li i {
-        font-size: 28rpx;
+        font-size: 28 rpx;
         color: #828282;
     }
 </style>

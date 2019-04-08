@@ -42,6 +42,11 @@ export default class TicketsService extends ApiService {
         return response.data;
     }
 
+    async getTicketDetail (id) {
+        let response = await this.httpGet('/ticket/' + id);
+        return response.data;
+    }
+
     async activityTickets (status, activityId, page) {
         let parameters = {
             activity_id: activityId,
