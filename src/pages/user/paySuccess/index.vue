@@ -24,6 +24,7 @@
         <div id="active_banner" v-if="true">
             <img :src="imgUrl" @click="goUrl()"/>
         </div>
+        <official-account @bindload="follow" style ="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
 </template>
 

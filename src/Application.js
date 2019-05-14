@@ -215,8 +215,17 @@ export default class Application {
                 let store = this.instances['vue-store'] = this.$models(this.models);
                 this.mountComponent = _.extend({
                     store: store,
-                    render: h => h(App)
+                    render: h => h(App),
+                    mounted: () => {
+                        console.log('========== page change ==========');
+                    }
                 }, this.mountComponent);
+                let mounted = this.mountComponent.mounted;
+                this.mountComponent.mounted = function () {
+                    mounted && mounted.call(this);
+                    console.log('=---=--------=---=', this);
+                }
+                // console.log(this.mountComponent);
                 _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
                 let wxRoute = this.config['routes'][this.route];
                 this.currentPage['wxRoute'] = wxRoute;

@@ -1,5 +1,5 @@
 import Command from './Command';
-export default class AppAccesssCommand extends Command {
+export default class AppAccessCommand extends Command {
     // 获取token值
     async handle () {
         // 获取appId

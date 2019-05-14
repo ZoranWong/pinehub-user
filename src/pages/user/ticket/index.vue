@@ -7,16 +7,17 @@
             <span>{{ticketInfo.info.base_info.title}}</span>
             <i id="ticket_body_icon"></i>
         </div>
-        <button v-if="canGet" id="ticket_btn" :class="newClass" @click="getTicket(ticketInfo.id)">
-            {{ticketBtn}}
-        </button>
-        <button v-else-if="!ticketInfo.can_get" :class="newClass" id="ticket_btn" @click="url">
-            去使用
-        </button>
-        <button v-else id="ticket_btn" :class="newClass" open-type="getUserInfo" @getuserinfo="getUserInfo">
-            {{ticketBtn}}
-        </button>
-
+        <form report-submit="true" @submit = "submitFormId">
+            <button v-if="canGet" class="ticket_btn" form-type="submit" :class="newClass" @click="getTicket">
+                {{ticketBtn}}
+            </button>
+            <button v-else-if="!ticketInfo.can_get" :class="newClass" form-type="submit" class="ticket_btn" @click="url">
+                去使用
+            </button>
+            <button v-else class="ticket_btn" :class="newClass" form-type="submit" open-type="getUserInfo" @getuserinfo="getUserInfo">
+                {{ticketBtn}}
+            </button>
+        </form>
         <div id="ticket_info">
             <ul>
                 <li>
@@ -104,7 +105,9 @@
             },
             canGet () {
                 console.log(this.ticketInfo);
-                return this.registerd && this.ticketInfo['can_get'] || !this.ticketInfo;
+                return this.registerd &&
+                    this.ticketInfo['can_get'] ||
+                    !this.ticketInfo;
             },
             isAuth () {
                 return this.$store.getters['model.account/isAuth'];
@@ -151,7 +154,15 @@
                     });
                 }
             },
-            async getTicket (ticketId) {
+            async submitFormId (e) {
+                console.log('---------------------------', e);
+                let formId = e.mp.detail.formId;
+                console.log('---------------------------', formId, this.http.account);
+                await this.http.account.saveFormId(formId);
+                console.log('save form id', formId);
+            },
+            async getTicket (e) {
+                let ticketId = this.ticketInfo.id;
                 if (!this.ticket) {
                     if (this.$store.getters['model.account/registered']) {
                         await this.receiveTicket(ticketId);
@@ -182,17 +193,18 @@
                     });
                 }
             },
-            async initAccount () {
+            async initAccount (id) {
                 // let result = await this.map.getLocation();
-                await this.$store.dispatch('model.account/resetFromCache', {
-                    initAccount: async () => {
-                        if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
-                            await this.$command('APP_ACCESS');
-                        } else {
-                            this.$command('SIGN_IN', this.accessToken);
-                        }
-                    }
-                });
+                if (!this.accessToken) {
+                    await this.$command('APP_ACCESS');
+                }
+                if (!this.isLogin) {
+                    await this.$command('SIGN_IN', this.accessToken);
+                }
+
+                if (id) {
+                    this.ticketId = id;
+                }
             },
             url () {
                 this.$command('REDIRECT_TO', 'index', 'replace');
@@ -201,17 +213,26 @@
                 this.ticketInfo = await this.http.tickets.getTicketDetail(this.ticketId);
             }
         },
-        mounted () {
-            let ticketInfo = JSON.parse(this.$route.query['ticketInfo']);
+        mounted: function () {
+            console.log('-----------------', this.$route.query);
+            let ticketInfo = this.$route.query['ticketInfo'] ? JSON.parse(this.$route.query['ticketInfo']) : null;
             if (ticketInfo) {
                 this.ticketInfo = ticketInfo;
+            }
+            if (this.$route.query['id']) {
+                this.initAccount(this.$route.query['id']);
+            }
+
+            if (this.$route.query['scene']) {
+                this.initAccount(this.$route.query['scene']);
             }
         },
         onLoad (options) {
             if (options.q) {
-                console.log(options.q);
+                console.log('-------------- ticket page query ----------', options.q);
                 let scanUrl = decodeURIComponent(options.q);
-                this.ticketId = scanUrl.match(/\d+/)[0] // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+                let ticketId = scanUrl.match(/\d+/)[0] // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+                this.initAccount(ticketId);
             }
         }
     }
@@ -221,16 +242,16 @@
 <style scoped>
     .body {
         overflow: hidden;
-        width: 750 rpx;
+        width: 750rpx;
         background-color: #FAFAFA;
         font-weight: normal;
     }
 
     #ticket_body {
         position: relative;
-        margin: 20 rpx;
-        padding: 60 rpx 40 rpx;
-        border-radius: 10 rpx;
+        margin: 20rpx;
+        padding: 60rpx 40rpx;
+        border-radius: 10rpx;
         background: url(../../../../static/images/icon/ticket-left-icon.png) no-repeat left center;
         background-size: auto 100%;
         background-color: #FFFFFF;
@@ -240,8 +261,8 @@
         position: absolute;
         right: 0;
         top: 0;
-        height: 88 rpx;
-        width: 88 rpx;
+        height: 88rpx;
+        width: 88rpx;
         background: url(../../../../static/images/icon/ticket-right-icon.png) no-repeat center center;
         background-size: 100%;
     }
@@ -252,23 +273,23 @@
 
     #ticket_body span em {
         display: inline-block;
-        font-size: 68 rpx;
+        font-size: 68rpx;
         font-weight: bolder;
     }
 
     #ticket_body span i {
         display: inline-block;
-        font-size: 34 rpx;
+        font-size: 34rpx;
     }
 
-    #ticket_btn {
+    .ticket_btn {
         background: #FFCC00;
         color: #333333;
         text-align: center;
-        line-height: 80 rpx;
-        font-size: 34 rpx;
-        margin: 20 rpx;
-        border-radius: 10 rpx;
+        line-height: 80rpx;
+        font-size: 34rpx;
+        margin: 20rpx;
+        border-radius: 10rpx;
     }
 
     .ticketBtnGray {
@@ -277,14 +298,17 @@
 
     #ticket_info {
         background: #F2F2F2;
-        border-radius: 5 rpx;
-        margin: 20 rpx;
-        padding: 30 rpx;
-        border-radius: 10 rpx;
+        border-radius: 5rpx;
+        margin: 20rpx;
+        padding: 30rpx;
+        border-radius: 10rpx;
     }
 
     #ticket_info ul li {
-        margin-bottom: 40 rpx;
+    }
+
+    #ticket_info ul li {
+        margin-bottom: 40rpx;
     }
 
     #ticket_info ul li:last-child {
@@ -292,12 +316,12 @@
     }
 
     #ticket_info ul li em {
-        font-size: 38 rpx;
-        margin-bottom: 10 rpx;
+        font-size: 38rpx;
+        margin-bottom: 10rpx;
     }
 
     #ticket_info ul li i {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         color: #828282;
     }
 </style>

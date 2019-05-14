@@ -57,7 +57,8 @@ export default class ApiService extends Service {
             }
             let headerAuth = await this.auth(auth);
             if (auth && !headerAuth) {
-                throw '未登录或者登陆失效';
+                console.log(route);
+                throw '未登录或者登陆失效 ' + route;
             }
             let request = this.request(headerAuth);
             let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
