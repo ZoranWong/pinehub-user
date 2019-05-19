@@ -1,5 +1,5 @@
 import App from './index';
-
+import Vue from 'vue';
 // 购物车相关
 import LoadBookingMallMerchandisesCommand from './commands/LoadBookingMallMerchandisesCommand';
 import BookingMallShoppingCartClearMerchandisesCommand from './commands/BookingMallShoppingCartClearMerchandisesCommand';
@@ -8,9 +8,6 @@ import BookingMallShoppingCartLoadMerchandisesCommand from './commands/BookingMa
 import Categories from '@/models/Categories';
 import Merchandises from '@/models/Merchandises';
 import LoadBookingMallCategoriesCommand from './commands/LoadBookingMallCategoriesCommand';
-
-
-import Vue from 'vue';
 
 const application = wx.$app;
 application.setComponent(App).run(function () {
@@ -22,9 +19,7 @@ application.setComponent(App).run(function () {
     this.registerCommand(BookingMallShoppingCartChangeMerchandiseCommand.commandName(), BookingMallShoppingCartChangeMerchandiseCommand)
     this.registerCommand(BookingMallShoppingCartLoadMerchandisesCommand.commandName(), BookingMallShoppingCartLoadMerchandisesCommand)
     this.registerCommand(LoadBookingMallCategoriesCommand.commandName(), LoadBookingMallCategoriesCommand);
-
     this.route = 'bookingMall';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
 });

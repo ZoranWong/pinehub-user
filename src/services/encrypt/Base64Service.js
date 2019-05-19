@@ -3,10 +3,6 @@ import Service from '../Service';
 import _ from 'underscore';
 
 export default class Base64Service extends Service {
-    constructor (application) {
-        super(application);
-    }
-
     encode (data) {
         if (!_.isString(data)) {
             data = this.service('json').encode(data);

@@ -20,7 +20,9 @@
         "pages/user/share/main",
         "pages/user/coupon/main",
         "pages/user/payment/main",
-        "pages/user/ticket/main"
+        "pages/user/ticket/main",
+        "pages/user/tradeDetail/main",
+        "pages/user/balance/main"
     ],
     "subPackages": [
         {
@@ -47,7 +49,7 @@
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#ffd000",
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "首页",
         "navigationBarTextStyle": "black"
     },
     "navigateToMiniProgramAppIdList": [

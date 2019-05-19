@@ -8,7 +8,7 @@
 			</ul>
 		</div>
 		<div id="tab_content">
-			<img v-if="totalNum == 0" id="null_ico" src="../../../../static/images/orderNull.png" />
+			<img v-if="totalNum == 0" id="null_ico" src="../../../../static/images/empty_order.png" />
 			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
 		</div>
 		<div id="footNavHeight"></div>

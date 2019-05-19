@@ -1,9 +1,8 @@
 import App from './index';
+import Vue from 'vue';
 import LoadUserOrdersCommand from './commands/LoadUserOrdersCommand';
 import Orders from '@/models/Orders';
-
 import OrderStatusUpdateCommand from './commands/OrderStatusUpdateCommand';
-import Vue from 'vue';
 
 const application = wx.$app;
 application.setComponent(App).run(function () {
@@ -13,5 +12,4 @@ application.setComponent(App).run(function () {
     this.route = 'user.orders';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
 });

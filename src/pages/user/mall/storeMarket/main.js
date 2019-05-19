@@ -2,8 +2,6 @@ import App from './index';
 import Vue from 'vue';
 import Categories from '@/models/Categories';
 import Merchandises from '@/models/Merchandises';
-import ShoppingCarts from '@/models/ShoppingCarts';
-
 import StoreShoppingCartLoadMerchandisesCommand from './commands/StoreShoppingCartLoadMerchandisesCommand';
 import StoreShoppingCartChangeMerchandiseCommand from './commands/StoreShoppingCartChangeMerchandiseCommand';
 import LoadStoreCategoriesCommand from './commands/LoadStoreCategoriesCommand';
@@ -24,5 +22,4 @@ application.setComponent(App).run(function () {
     this.route = 'storeMarket';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
 });

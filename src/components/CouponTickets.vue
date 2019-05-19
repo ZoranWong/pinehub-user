@@ -10,7 +10,7 @@
 			</ul>
 		</div>
 		<div class="ticket-list">
-			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/ticketsNull.png" />
+			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
 			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower" :scroll-into-view="statusType">
 				<coupon-ticket :status="statusType" v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :usedCardCode="usedCardCode" :ticket="ticket" @useTicket="useTicket">
 				</coupon-ticket>

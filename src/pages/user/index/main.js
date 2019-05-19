@@ -16,5 +16,4 @@ application.setComponent(App).run(function () {
     this.route = 'index';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
 });

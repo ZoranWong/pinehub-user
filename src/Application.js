@@ -227,6 +227,7 @@ export default class Application {
                 }
                 // console.log(this.mountComponent);
                 _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
+                this.currentPage.$mount();
                 let wxRoute = this.config['routes'][this.route];
                 this.currentPage['wxRoute'] = wxRoute;
                 _.extend(this.currentPage, this.instances);

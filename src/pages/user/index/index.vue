@@ -1,6 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
+        <mp-title :title="title"></mp-title>
         <tickets :show="ticketShow" v-on:close="ticketListClose"></tickets>
         <div v-show="!registered" id="toast_area">
             <div id="toast">
@@ -68,17 +69,20 @@
 <script>
     import FooterNav from '@/components/FooterNav';
     import Tickets from './Tickets';
+    import MpTitle from '@/components/MpTitle';
 
     export default {
         components: {
             'footer-nav': FooterNav,
-            'tickets': Tickets
+            'tickets': Tickets,
+            'mp-title': MpTitle
         },
         data () {
             return {
                 navName: 'index',
                 inited: false,
                 ticketShow: true,
+                title: '首页'
             };
         },
         computed: {

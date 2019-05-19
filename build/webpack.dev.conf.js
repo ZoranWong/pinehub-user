@@ -18,7 +18,7 @@ const ToolConfigLoader = require('./tool-config-loader');
 //   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 // })
 
-module.exports = merge(baseWebpackConfig, {
+var webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
             sourceMap: config.dev.cssSourceMap,
@@ -82,3 +82,23 @@ module.exports = merge(baseWebpackConfig, {
         new ToolConfigLoader('dev')
     ]
 })
+
+if (config.build.productionGzip) {
+    var CompressionWebpackPlugin = require('compression-webpack-plugin')
+
+    webpackConfig.plugins.push(
+        new CompressionWebpackPlugin({
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: new RegExp(
+                '\\.(' +
+                config.build.productionGzipExtensions.join('|') +
+                ')$'
+            ),
+            threshold: 10240,
+            minRatio: 0.8
+        })
+    )
+}
+
+module.exports = webpackConfig;

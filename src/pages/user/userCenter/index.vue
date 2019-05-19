@@ -3,9 +3,9 @@
         <mp-title :title="title"></mp-title>
         <div id="merchant-store_header">
             <div id="merchant-store_userinfo">
-                <img id="bear" :src="headerAnimate" />
+                <img id="bear" :src="headerAnimate"/>
                 <div id="merchant-store_userinfo_baseinfo">
-                    <img :src="userInfo.avatar" />
+                    <img :src="userInfo.avatar"/>
                     <div id="name_id">
                         <em>{{userInfo.nickname}}</em>
                         <!--<i>ID: {{userInfo.id}}</i>-->
@@ -42,24 +42,24 @@
         <div id="merchant-store_menu">
             <ul>
                 <li @click="jump('user.orders')">
-                    <img src="../../../../static/images/icon/my_ico_menu1.png" />
+                    <img src="../../../../static/images/icon/my_ico_menu1.png"/>
                     <span>个人订单</span>
                     <i></i>
                     <em>查看所有订单</em>
                 </li>
-     <!--           <li @click="jump('user.share')">
-                    <img src="../../../../static/images/icon/my_ico_menu2.png" />
-                    <span>邀请享奖励</span>
-                    <i></i>
-                    <em>邀请好友</em>
-                </li> -->
+                <!--           <li @click="jump('user.share')">
+                               <img src="../../../../static/images/icon/my_ico_menu2.png" />
+                               <span>邀请享奖励</span>
+                               <i></i>
+                               <em>邀请好友</em>
+                           </li> -->
                 <li @click="jump('user.feedBack')">
-                    <img src="../../../../static/images/icon/my_ico_menu3.png" />
+                    <img src="../../../../static/images/icon/my_ico_menu3.png"/>
                     <span>意见反馈</span>
                     <i></i>
                 </li>
                 <li @click="connectKf">
-                    <img src="../../../../static/images/icon/my_ico_menu4.png" />
+                    <img src="../../../../static/images/icon/my_ico_menu4.png"/>
                     <span>联系客服</span>
                     <i></i>
                 </li>
@@ -96,7 +96,7 @@
             hasStore () {
                 return this.$store.getters['model.account/isShopManager'];
             },
-            userTokenTTL() {
+            userTokenTTL () {
                 return this.$store.getters['account/overDate'];
             },
             userToken () {

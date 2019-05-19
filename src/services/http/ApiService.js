@@ -11,7 +11,7 @@ export default class ApiService extends Service {
                 return new fly();
             }
         });
-        this.gateway = this.$application.config['http']['gateway'];
+        this.gateway = this.$application.config['app']['http']['gateway'];
         this.isLoadingPopupShow = true;
         this.errorShow = true;
     }

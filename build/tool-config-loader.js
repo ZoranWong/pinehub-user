@@ -4,10 +4,6 @@ const DEV_CONFIG_PATH = '../dev.config.json';
 const PROD_CONFIG_PATH = '../prod.config.json';
 const PROJECT_CONFIG_PATH = '../project.config.json';
 
-const HTTP_DEV_CONFIG_PATH = '../src/configs/http.dev.json';
-const HTTP_PROD_CONFIG_PATH = '../src/configs/http.prod.json';
-const HTTP_CONFIG_PATH = '../src/configs/http.json';
-
 const APP_DEV_CONFIG_PATH = '../src/configs/app.dev.json';
 const APP_PROD_CONFIG_PATH = '../src/configs/app.prod.json';
 const APP_CONFIG_PATH = '../src/configs/app.json';
@@ -15,19 +11,16 @@ function ToolConfigLoader (env) {
     switch (env) {
         case 'dev': {
             loadConfig(DEV_CONFIG_PATH, PROJECT_CONFIG_PATH);
-            loadConfig(HTTP_DEV_CONFIG_PATH, HTTP_CONFIG_PATH);
             loadConfig(APP_DEV_CONFIG_PATH, APP_CONFIG_PATH);
             break;
         }
         case 'prod': {
             loadConfig(PROD_CONFIG_PATH, PROJECT_CONFIG_PATH);
-            loadConfig(HTTP_PROD_CONFIG_PATH, HTTP_CONFIG_PATH);
             loadConfig(APP_PROD_CONFIG_PATH, APP_CONFIG_PATH);
             break;
         }
         default: {
             loadConfig(DEV_CONFIG_PATH, PROJECT_CONFIG_PATH);
-            loadConfig(HTTP_DEV_CONFIG_PATH, HTTP_CONFIG_PATH);
             loadConfig(APP_DEV_CONFIG_PATH, APP_CONFIG_PATH);
             break;
         }

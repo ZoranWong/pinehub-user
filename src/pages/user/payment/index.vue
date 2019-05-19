@@ -1,32 +1,37 @@
 <!--suppress ALL -->
 <template>
-    <div class = "body">
-        <div class = "payment-box">
-            <div class = "header">
-                <div class = "left">
-                    <div class = "title">付款给商家</div>
-                    <div class = "merchant-name">名称：{{ shopName }}</div>
+    <div class="body">
+        <title :title="title"></title>
+        <div class="payment-box">
+            <div class="header">
+                <div class="left">
+                    <div class="title">付款给商家</div>
+                    <div class="merchant-name">名称：{{ shopName }}</div>
                 </div>
-                <div class = "right">
+                <div class="right">
                     <div class="logo">
-                        <img :src = "logo"/>
+                        <img :src="logo"/>
                     </div>
                 </div>
             </div>
-            <div class = "content">
+            <div class="content">
                 <div class="title">金额</div>
-                <div class = "payment-input-box">
-                    <div class = "currency">¥</div>
-                    <input type = "digit" class = "payment-amount" placeholder = "请输入支付金额" v-model = "paymentAmount" auto-focus/>
+                <div class="payment-input-box">
+                    <div class="currency">¥</div>
+                    <input type="digit" class="payment-amount" placeholder="请输入支付金额" v-model="paymentAmount"
+                           auto-focus/>
                 </div>
             </div>
-            <div class = "footer">
-                <button type="primary" @click = "payment">立即支付</button>
+            <div class="footer">
+                <button type="primary" @click="payment">立即支付</button>
             </div>
         </div>
+        <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @close = "closePopup"></payment-popup>
     </div>
 </template>
 <script>
+    import PaymentPopup from './PaymentPopup';
+    import MpTitle from '@/components/MpTitle';
     export default {
         data: {
             shopName: '福年来早餐车',
@@ -34,7 +39,13 @@
             ticketCode: null,
             mobile: null,
             paymentAmount: null,
-            address: null
+            address: null,
+            paymentPopupShow: false,
+            title: '快乐松扫码付'
+        },
+        components: {
+            'payment-popup': PaymentPopup,
+            title: MpTitle
         },
         computed: {
             logo () {
@@ -44,8 +55,8 @@
                 let overDate = this.$store.getters['model.account/overDate'];
                 return overDate ? overDate > Date.now() : false;
             },
-            accessToken() {
-              return this.$store.getters['model.app/accessToken'];
+            accessToken () {
+                return this.$store.getters['model.app/accessToken'];
             }
         },
         methods: {
@@ -64,7 +75,13 @@
                 this.paymentAmount = null;
             },
             payment () {
-                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, this.paymentAmount);
+                if (this.paymentAmount) {
+                    this.paymentPopupShow = true;
+                    //this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, this.paymentAmount);
+                }
+            },
+            closePopup () {
+                this.paymentPopupShow = false;
             }
         },
         mounted () {
@@ -72,9 +89,10 @@
             this.init();
         },
         onLoad (options) {
-            if (options.q){
+            if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
-                this.storeId = scan_url.match(/\d+/)[0] //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+                //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+                this.storeId = scan_url.match(/\d+/)[0];
             }
         }
     }
@@ -84,6 +102,7 @@
         width: 750rpx;
         background-color: #F0F0F0;
     }
+
     .payment-box {
         margin: 20rpx auto;
         width: 706rpx;
@@ -101,6 +120,7 @@
         border-top-left-radius: 2%;
         border-top-right-radius: 2%;
     }
+
     .payment-box .header .left {
         width: 586rpx;
         height: 100%
@@ -130,7 +150,7 @@
         font-size: 32rpx;
     }
 
-    .payment-box .header .right .logo image{
+    .payment-box .header .right .logo image {
         width: 80rpx;
         height: 100%;
     }
@@ -165,18 +185,23 @@
         margin-bottom: 30rpx;
         margin-left: 30rpx;
     }
+
     .payment-box .content .am-amount {
         height: 250rpx;
     }
+
     .payment-box .content .am-amount .am-amount-footer {
         padding: 0;
         height: 0;
     }
+
     .payment-box .footer button {
         margin: 38rpx 40rpx 50rpx 40rpx;
-        color: #F2F2F2;
+        color: #111111;
         border-radius: 10rpx;
-        height: 90rpx;
+        height: 88rpx;
         width: 626rpx;
+        line-height: 88rpx;
+        background-color: #FFD000;
     }
 </style>

@@ -1,5 +1,5 @@
-import Vue from 'vue';
 import App from './index';
+import Vue from 'vue';
 import ActivityShoppingCartChangeMerchandiseCommand from '../commands/ActivityShoppingCartChangeMerchandiseCommand';
 import ActivityShoppingCartLoadMerchandisesCommand from '../commands/ActivityShoppingCartLoadMerchandisesCommand';
 import LoadActivityTicketsCommand from '../commands/LoadActivityTicketsCommand';
@@ -14,5 +14,4 @@ application.setComponent(App).run(function () {
     this.route = 'activitySubmitOrder';
 }, function () {
     this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
 });

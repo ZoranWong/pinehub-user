@@ -9,6 +9,5 @@ application.setComponent(App).run(function () {
     this.registerCommand(SubmitFeedBackDataCommand.commandName(), SubmitFeedBackDataCommand);
     this.route = 'myFeedback'
 }, function () {
-  this.currentPage = new Vue(this.mountComponent);
-  this.currentPage.$mount();
+    this.currentPage = new Vue(this.mountComponent);
 });

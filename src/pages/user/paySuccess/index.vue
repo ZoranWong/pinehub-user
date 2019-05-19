@@ -1,18 +1,36 @@
 <template>
     <div id="orderpay">
         <mp-title :title="title"></mp-title>
-        <div id="orderpay_success">
-            <div id="success_ico"></div>
-            <em>支付成功</em>
-            <i>您可以在我的订单中随时查看订单情况</i>
+        <div class="order-success">
+            <div id="orderpay_success">
+                <div id="success_ico"></div>
+                <em>支付成功</em>
+                <i>¥ {{order ? order['payment_amount']: ""}}</i>
+            </div>
+        </div>
+        <div class="order-detail">
+            <div class="payment-amount item">
+                <div class="title">合计金额</div>
+                <div class="content">¥ {{order ? order['payment_amount'] : "0.00"}}</div>
+            </div>
+            <div class="line"></div>
+            <div class="pay-type item">
+                <div class="title">支付方式</div>
+                <div class="content">{{payType}}</div>
+            </div>
+            <div class="line"></div>
+            <div class="pay-time item">
+                <div class="title">支付时间</div>
+                <div class="content">{{order ? order['paid_at'] : ""}}</div>
+            </div>
+            <div class="line"></div>
+            <div class="opt-btn item">
+                <button class="btn buy-btn" size="large" @click="index">返回首页</button>
+            </div>
         </div>
         <div class="notice" v-if="siteUserOrder">
             <em>请您于:</em>
             <span>明天7:00-9:00前往指定取货点，凭订单号后四位取货</span>
-        </div>
-        <div class="btns">
-            <button class="btn orders-btn" size="mini" @click="orders">查看订单</button>
-            <button class="btn buy-btn" size="mini" @click="index">返回首页</button>
         </div>
         <div class="tips" v-if="siteUserOrder">
             <em><i>温馨提示</i></em>
@@ -21,18 +39,21 @@
                 <li>2.食品现制现售，暂不支持自主退货服务哦！</li>
             </ul>
         </div>
-        <div id="active_banner" v-if="true">
+        <div id="active_banner" v-if="imgUrl">
             <img :src="imgUrl" @click="goUrl()"/>
         </div>
-        <official-account @bindload="follow" style ="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
+        <pay-toast :show = "showToast" @close = "close" :balance = "balance"></pay-toast>
+        <official-account @bindload="follow" style="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
 </template>
 
 <script>
     import MpTitle from '@/components/MpTitle';
+    import PayToast from './PayToast';
     export default {
         components: {
-            'mp-title': MpTitle
+            'mp-title': MpTitle,
+            'pay-toast': PayToast
         },
         data () {
             return {
@@ -41,8 +62,16 @@
                 ticket: true,
                 ticketInfo: null,
                 imgUrl: null,
-                getFoodsTime: null
+                getFoodsTime: null,
+                order: null,
+                payType: '余额支付',
+                showToast: true
             };
+        },
+        computed: {
+          balance () {
+              return 100;
+          }
         },
         watch: {
             imgUrl: function (value) {
@@ -50,6 +79,9 @@
             }
         },
         methods: {
+            close () {
+                this.showToast = false;
+            },
             orders () {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             },
@@ -60,6 +92,25 @@
                 let id = this.$route.query['order_id'];
                 let res = await this.http.orders.getOrder(id);
                 console.log('B----', res);
+                this.order = res.data;
+                switch (this.order['pay_type']) {
+                    case 1: {
+                        this.payType = '支付宝支付';
+                        break;
+                    }
+                    case 2: {
+                        this.payType = '微信支付';
+                        break;
+                    }
+                    case 3: {
+                        this.payType = '余额支付';
+                        break;
+                    }
+                    default: {
+                        this.payType = '其他支付';
+                        break;
+                    }
+                }
                 if (res.data.type !== 0 && res.data.pick_up_method === 2) {
                     this.siteUserOrder = true;
                 } else {
@@ -99,11 +150,16 @@
         width: 100%;
     }
 
+    .order-success {
+        background-color: #fff;
+    }
+
     #orderpay_success {
         font-size: 32rpx;
         font-weight: 300;
         color: #111111;
-        margin-top: 130rpx;
+        padding-top: 87rpx;
+        padding-bottom: 88rpx;
     }
 
     #success_ico {
@@ -118,16 +174,19 @@
 
     #orderpay_success em {
         text-align: center;
-        font-size: 30rpx;
+        font-size: 32rpx;
         font-weight: 400;
-        margin-top: 30rpx;
+        margin-top: 20rpx;
+        color: #757575;
     }
 
     #orderpay_success i {
-        font-size: 30rpx;
-        margin: 20rpx auto 20rpx;
+        font-size: 50rpx;
+        margin: 30rpx auto 20rpx;
         text-align: center;
-        line-height: 36rpx;
+        line-height: 50rpx;
+        color: #111111;
+        font-weight: bold;
     }
 
     .notice {
@@ -151,18 +210,18 @@
 
     .btn {
         font-size: 32rpx;
+        line-height: 80rpx;
         font-weight: 200;
         text-align: center;
         color: #111111;
-        line-height: 56rpx;
-        margin: 15rpx;
-        height: 56rpx;
-        width: 230rpx;
+        margin: 20rpx;
+        height: 80rpx;
+        width: 710rpx;
     }
 
-    .btn.orders-btn {
-        background: #FFFFFF;
-    }
+    /*.btn.orders-btn {*/
+    /*background: #FFFFFF;*/
+    /*}*/
 
     .btn.buy-btn {
         background: #FECE00;
@@ -206,5 +265,41 @@
         margin: 0 auto;
         display: block;
         border-radius: 10rpx;
+    }
+
+    .order-detail {
+        margin-top: 10rpx;
+    }
+
+    .order-detail .item {
+        width: 100%;
+        height: 80rpx;
+        background-color: #ffffff;
+    }
+
+    .order-detail .line {
+        height: 2rpx;
+        background-color: #f2f2f2;
+    }
+
+    .order-detail .item {
+        display: flex;
+    }
+
+    .order-detail .item .title, .order-detail .item .content {
+        margin-left: 40rpx;
+        line-height: 80rpx;
+        color: #111111;
+        font-size: 28rpx;
+    }
+
+    .order-detail .item .content {
+        right: 40rpx;
+        float: right;
+        position: absolute;
+    }
+
+    .order-detail .item.opt-btn {
+        height: 120rpx;
     }
 </style>

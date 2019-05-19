@@ -10,5 +10,8 @@
         "1": "第一批次",
         "2": "第二批次",
         "3": "第三批次"
+    },
+    "http": {
+        "gateway": "https://api.mp.kingdomcloud.cn"
     }
 }
