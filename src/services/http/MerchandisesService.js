@@ -1,10 +1,6 @@
 import ApiService from './ApiService';
 
 export default class MerchandisesService extends ApiService {
-    constructor (application) {
-        super(application);
-    }
-
     async list (route, query) {
         // 结果
         let response = await this.httpGet(route, query);

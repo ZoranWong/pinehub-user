@@ -1,5 +1,6 @@
 import Command from '@/commands/CreateOrderCommand';
-import { SHOPPING_MALL_ORDER, SEND_ORDER_TO_USER, USER_SELF_PICK_UP } from '@/utils/OrderDict';
+import {SHOPPING_MALL_ORDER, SEND_ORDER_TO_USER, USER_SELF_PICK_UP} from '@/utils/OrderDict';
+
 export default class CreateBookingMallOrderCommand extends Command {
     async handle (orderType, receiverName, receiverMobile, receiverAddress, ticketCode = null, cardId = null, receivingShopId = null, comment = '') {
         try {
@@ -20,10 +21,10 @@ export default class CreateBookingMallOrderCommand extends Command {
             if (!result) {
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             } else {
-                if(cardId && ticketCode) {
+                if (cardId && ticketCode) {
                     this.$store.dispatch('model.account/reduceTicket', {count: 1});
                 }
-				this.service('mp.storage').set('payInfo',);
+                this.service('mp.storage').set('payInfo',);
                 this.$command('REDIRECT_TO', 'payment.success', 'replace');
             }
         } catch (e) {

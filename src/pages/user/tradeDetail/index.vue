@@ -8,27 +8,46 @@
                 </div>
                 <div class="desc">亲，您还没有记录哦～</div>
             </div>
+            <ul v-else class="trade-orders">
+                <item v-for="(order, k) in orders" :key ="k" :order = "order"></item>
+            </ul>
         </div>
     </div>
 </template>
 <script>
     import MpTitle from '@/components/MpTitle';
+    import OrderItem from './OrderItem';
     export default {
         name: 'TradeDetail',
         data: function () {
           return {
-              title: '交易明细',
-              empty: true
+              title: '交易明细'
           };
         },
         components: {
-            'mp-title': MpTitle
+            'mp-title': MpTitle,
+            item: OrderItem
+        },
+        computed: {
+            orders () {
+                return this.$store.getters['model.tradeOrderItems/list'];
+            },
+            empty () {
+                return this.$store.getters['model.tradeOrderItems/list'].length === 0;
+            }
+        },
+        mounted () {
+            console.log('======================');
+            this.$command('LOAD_TRADE_ORDER_ITEMS');
         }
     }
 </script>
 <style>
     .body{
         background-color: #f2f2f2;
+        height: 100%;
+        width: 100%;
+        overflow: auto;
     }
     .empty-trade{
         width: 390rpx;
@@ -41,5 +60,8 @@
         margin-top: 60rpx;
         font-size: 32rpx;
         color: #757575;
+    }
+    .trade-orders {
+        margin-top: 20rpx;
     }
 </style>

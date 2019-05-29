@@ -2,10 +2,6 @@ import Service from '../Service';
 import _ from 'underscore';
 
 export default class UriService extends Service {
-    constructor (application) {
-        super(application);
-    }
-
     query (params, key = null) {
         let query = this.buildQuery(params, key);
         return query ? ('?' + query) : '';

@@ -1,6 +1,7 @@
 import Service from '@/services/Service';
 
 export default class AuthService extends Service {
+    except = ['index', 'payment']
     // 获取小程序code
     code () {
         return new Promise((resolve, reject) => {
@@ -24,8 +25,10 @@ export default class AuthService extends Service {
             let format = token.ttl.replace(/-/g, '/');
             let ttlTime = (new Date(format)).getTime();
             let nowTime = (new Date()).getTime();
-            if (!token || ttlTime - 5000 <= nowTime && this.service('mp.router').currentRouter !== 'index') {
+            let route = this.service('mp.router').currentRouter;
+            if (!token || ((ttlTime - 5000 <= nowTime) && (this.except.indexOf(route) === -1))) {
                 // 获取appId
+                console.log('------------ 000000 -----------');
                 this.service('mp.router').push('index', {query: {needRefresh: true}});
             } else {
                 return token['value'];

@@ -8,7 +8,8 @@ import StoreService from '@/services/http/StoreService';
 import TicketsService from '@/services/Http/TicketsService';
 import CategoriesService from '@/services/http/CategoriesService';
 import Fly from 'flyio/dist/npm/wx';
-import AccountService from "../services/http/AccountService";
+import AccountService from '@/services/http/AccountService';
+import ChargeCardService from '@/services/http/ChargeCardService';
 
 
 export default class HttpServiceProvider extends ServiceProvider {
@@ -27,5 +28,6 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.tickets', TicketsService);
         this.app.register('http.store', StoreService);
         this.app.register('http.account', AccountService);
+        this.app.register('http.chargeCard', ChargeCardService);
     }
 }

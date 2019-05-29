@@ -1,4 +1,5 @@
 import Command from '@/commands/Command';
+
 export default class RegisterCommand extends Command {
     // 获取token值
     async handle (e) {
@@ -23,10 +24,11 @@ export default class RegisterCommand extends Command {
         if (result) {
             userInfo['token'] = token;
             this.store().dispatch('model.account/setAccount', userInfo);
-			return true;
+            return true;
         }
-		return false;
+        return false;
     }
+
     static commandName () {
         return 'USER_REGISTER';
     }

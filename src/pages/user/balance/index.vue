@@ -10,10 +10,10 @@
                     <div class="inline">余额账户（元）</div>
                 </div>
                 <div class="balance-number">
-                    88.18
+                    {{balance}}
                 </div>
             </div>
-            <div class="detail-btn">
+            <div class="detail-btn" @click="tradeOrders">
                 明细<img src="../../../../static/images/icon/help-tag.png">
             </div>
         </div>
@@ -30,7 +30,7 @@
                 </scroll-view>
             </div>
         </div>
-        <button type="primary"  v-if="selectedIndex !== null" class="pay-btn">立即支付</button>
+        <button type="primary"  v-if="selectedIndex !== null" class="pay-btn" @click="charge">立即支付</button>
     </div>
 </template>
 <script>
@@ -42,7 +42,8 @@
           return {
               title: '我的余额',
               empty: true,
-              selectedIndex: null
+              selectedIndex: null,
+              chargeCard: null
           };
         },
         components: {
@@ -51,36 +52,23 @@
         },
         computed: {
             balance () {
-                return 1000;
+                return this.$store.getters['model.account/balance'];
             },
             cards () {
-                return [
-                    {
-                        id: 1,
-                        price: 10,
-                        send: 1
-                    },
-                    {
-                        id: 2,
-                        price: 20,
-                        send: 3
-                    },
-                    {
-                        id: 3,
-                        price: 30,
-                        send: 9
-                    },
-                    {
-                        id: 4,
-                        price: 40,
-                        send: 23
-                    }
-                ];
+                return this.$store.getters['model.chargeCards/list'];
             }
         },
         methods: {
-            selectedCard (index) {
+            selectedCard (index, chargeCard) {
                 this.selectedIndex = index;
+                this.chargeCard = chargeCard;
+            },
+            async charge () {
+                await this.$command('CREATE_ORDER_BY_MERCHANDISE_ID', '', '', '', '', this.chargeCard.price, this.chargeCard['merchandise_id']);
+                this.$command('LOAD_ACCOUNT');
+            },
+            tradeOrders () {
+                this.$command('REDIRECT_TO', 'user.tradeOrders', 'push');
             }
         }
     }

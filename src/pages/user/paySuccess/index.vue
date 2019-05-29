@@ -42,7 +42,7 @@
         <div id="active_banner" v-if="imgUrl">
             <img :src="imgUrl" @click="goUrl()"/>
         </div>
-        <pay-toast :show = "showToast" @close = "close" :balance = "balance"></pay-toast>
+        <pay-toast v-if="cards.length > 0" :show = "showToast" @close = "close" :balance = "balance"></pay-toast>
         <official-account @bindload="follow" style="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
 </template>
@@ -69,13 +69,22 @@
             };
         },
         computed: {
-          balance () {
-              return 100;
-          }
+            balance () {
+                if (this.order) {
+                    return this.$store.getters['model.account/balance'] - this.order['payment_amount'];
+                } else {
+                    return this.$store.getters['model.account/balance'];
+                }
+            },
+            cards () {
+                return this.$store.getters['model.chargeCards/list'];
+            }
         },
         watch: {
             imgUrl: function (value) {
                 console.log('adv image url', value);
+            },
+            popupTitle () {
             }
         },
         methods: {
@@ -93,7 +102,7 @@
                 let res = await this.http.orders.getOrder(id);
                 console.log('B----', res);
                 this.order = res.data;
-                switch (this.order['pay_type']) {
+                switch (parseInt(this.order['pay_type'])) {
                     case 1: {
                         this.payType = '支付宝支付';
                         break;

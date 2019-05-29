@@ -7,7 +7,9 @@ import Stores from '@/models/Stores';
 import Tickets from '@/models/Tickets';
 import Cards from '@/models/Cards';
 import App from '@/models/App';
-import Activity from '@/models/Activity'
+import Activity from '@/models/Activity';
+import ChargeCards from '@/models/ChargeCards';
+import TradeOrderItems from '@/models/TradeOrderItems';
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
@@ -31,6 +33,8 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.account', Account);
         this.app.registerModel('model.stores', Stores);
         this.app.registerModel('model.nearestStore', NearestStore);
+        this.app.registerModel('model.chargeCards', ChargeCards);
+        this.app.registerModel('model.tradeOrderItems', TradeOrderItems);
     }
 
     boot () {

@@ -10,7 +10,7 @@
 	"bookingMall.coupons": "/pages/user/mall/bookingMall/coupon/main",
 	"payment.success": "/pages/user/paySuccess/main",
 	"user.orders": "/pages/user/order/main",
-    "user.tradeDetail": "pages/user/tradeDetail/main",
+    "user.tradeOrders": "/pages/user/tradeDetail/main",
 	"newEvents": "/pages/user/mall/newEvents/main",
 	"newEvents.createOrder": "/pages/user/mall/newEvents/createOrder/main",
 	"newEvents.coupons": "/pages/user/mall/newEvents/coupon/main",

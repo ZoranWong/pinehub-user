@@ -38,7 +38,7 @@ export default class ShoppingCartService extends ApiService {
         return this.loadShoppingCart(route, page);
     }
 
-    //商家下单购物车全部产品
+    // 商家下单购物车全部产品
     async purchaseShoppingCartLoadMerchandises (page) {
         let route = `/merchant/shoppingcart/merchandises`;
         return this.loadShoppingCart(route, page);

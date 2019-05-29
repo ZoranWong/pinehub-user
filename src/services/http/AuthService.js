@@ -1,12 +1,20 @@
 import ApiService from './ApiService';
 
 export default class AuthService extends ApiService {
+    handling = false;
+
     // 获取小程序登录并验证用户是否存在
     async login (code, accessToken) {
+        if (this.handling) {
+            return false;
+        }
+
+        this.handling = true;
         // 服务器交互代码
         let response = await this.httpGet(`/wx/login/${code}`, {
             access_token: accessToken
         }, false);
+        this.handling = false;
         return response.data;
     }
 
@@ -49,11 +57,16 @@ export default class AuthService extends ApiService {
     // 获取用户信息
     async getUserInfo () {
         let response = null;
+        if (this.handling) {
+            return false;
+        }
+        this.handling = true;
         if (this.$application.needMock()) {
             response = await this.service('mock.myInfo').mock();
         } else {
             response = await this.httpGet(`/user/info`, {});
         }
+        this.handling = false;
         return response.data;
     }
 }

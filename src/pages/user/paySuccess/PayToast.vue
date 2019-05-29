@@ -29,7 +29,7 @@
                 this.$emit('close');
             },
             visit () {
-                this.$command('REDIRECT_TO', 'index', 'replace');
+                this.$command('REDIRECT_TO', 'user.balance', 'replace');
             }
         }
     }

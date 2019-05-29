@@ -23,4 +23,18 @@ export default class AccountService extends ApiService {
 
     setting () {
     }
+
+    async balance () {
+        let response = await this.httpGet(`/user/balance`);
+        return response.data;
+    }
+
+    async orderRecords (page, limit) {
+        console.log(`---------------------- order records ----------------`);
+        let response = await this.httpGet(`/customer/rechargeable_cards/consume/records`, {
+            page: page,
+            limit: limit
+        });
+        return [response.data, response.meta['total_pages'], limit, response.meta['total']];
+    }
 }

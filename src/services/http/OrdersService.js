@@ -23,13 +23,14 @@ export default class OrdersService extends ApiService {
 
     // 创建订单
     async createPaymentOrder (params) {
+        console.log('----- payment order ---------', params);
         let response = await this.httpPost(`/create/order`, params);
         return response.data;
     }
 
     // 重新创建订单
-    async orderPayById (id) {
-        let response = await this.httpGet(`/wx/order/${id}/payment`, {});
+    async orderPayById (id, payType = 'wx') {
+        let response = await this.httpGet(`/${payType}/order/${id}/payment`, {});
         return response.data;
     }
 
@@ -53,7 +54,7 @@ export default class OrdersService extends ApiService {
     // 店铺订单
     async storeOrders (storeId, paidDate, type, payType, page, limit = 15) {
         let response = null;
-        if (payType == 0) {
+        if (payType === 0) {
             response = await this.httpGet(`/shop/${storeId}/orders`, {
                 paid_date: paidDate,
                 type: type,

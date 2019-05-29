@@ -23,10 +23,10 @@
                 </div>
             </div>
             <div class="footer">
-                <button type="primary" @click="payment">立即支付</button>
+                <button type="primary" @click="paymentPopup">立即支付</button>
             </div>
         </div>
-        <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @close = "closePopup"></payment-popup>
+        <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @wxPay = "wxPay" @balancePay = "balancePay" @close = "closePopup" @charge = "charge"></payment-popup>
     </div>
 </template>
 <script>
@@ -61,32 +61,44 @@
         },
         methods: {
             async init () {
+                this.paymentAmount = null;
+                this.paymentPopupShow = false;
                 if (!this.accessToken) {
                     await this.$command('APP_ACCESS');
                 }
                 if (!this.isLogin) {
                     await this.$command('SIGN_IN', this.accessToken);
                 }
-
                 let store = await this.http.store.store(this.storeId);
                 this.shopName = store['name'];
                 this.mobile = store['mobile'];
                 this.address = store['address'];
-                this.paymentAmount = null;
             },
-            payment () {
+            paymentPopup () {
                 if (this.paymentAmount) {
                     this.paymentPopupShow = true;
-                    //this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, this.paymentAmount);
+                    this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
                 }
             },
             closePopup () {
                 this.paymentPopupShow = false;
+            },
+            async charge(amount, merchandiseId) {
+                await this.$command('CREATE_ORDER_BY_MERCHANDISE_ID', this.shopName, this.mobile, this.storeId, this.address, amount, merchandiseId);
+                await this.balancePay(this.paymentAmount);
+                this.$command('LOAD_ACCOUNT');
+            },
+            balancePay (amount) {
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, true);
+            },
+            wxPay (amount) {
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, false);
             }
         },
         mounted () {
             this.storeId = this.$route.query['store_id'] ? this.$route.query['store_id'] : this.storeId;
             this.init();
+            // this.http.account.orderRecords(0, 20);
         },
         onLoad (options) {
             if (options.q) {

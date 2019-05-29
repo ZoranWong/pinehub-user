@@ -10,6 +10,8 @@ import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 // 扫描命令
 import ScanCommand from '@/commands/ScanCommand';
 
+import LoadChargeCardsCommand from '@/commands/LoadChargeCardsCommand';
+
 
 // 清空产品命令（切换分类）
 import ClearModelCommand from '@/commands/ClearModelCommand';
@@ -19,6 +21,8 @@ import LoadAccountCommand from '@/commands/LoadAccountCommand';
 
 import PaymentByIdCommand from '@/commands/PaymentByIdCommand';
 import RegisterCommand from '@/commands/RegisterCommand';
+
+import CreateOrderByMerchandiseIdCommand from '@/commands/CreateOrderByMerchandiseIdCommand';
 
 export default class CommandServiceProvider extends ServiceProvider {
     constructor (app) {
@@ -37,7 +41,9 @@ export default class CommandServiceProvider extends ServiceProvider {
             LoadAccountCommand,
             AppAccessCommand,
             PaymentByIdCommand,
-            RegisterCommand
+            RegisterCommand,
+            LoadChargeCardsCommand,
+            CreateOrderByMerchandiseIdCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

@@ -2,6 +2,7 @@ import Service from '../Service';
 import _ from 'underscore';
 /* eslint-disable */
 export default class ApiService extends Service {
+    isLoadingPopupShow = false;
     constructor (app) {
         super(app);
         Object.defineProperty(this, 'axios', {
@@ -12,7 +13,7 @@ export default class ApiService extends Service {
             }
         });
         this.gateway = this.$application.config['app']['http']['gateway'];
-        this.isLoadingPopupShow = true;
+        // this.isLoadingPopupShow = true;
         this.errorShow = true;
     }
 

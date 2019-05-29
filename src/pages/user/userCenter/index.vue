@@ -16,7 +16,7 @@
                 </div>
                 <div id="merchant-store_userinfo_otherinfo">
                     <ul>
-                        <li @click="alertNotice">
+                        <li @click="toBalance">
                             <em>{{userInfo.balance}}</em>
                             <i>余额</i>
                         </li>
@@ -106,6 +106,10 @@
         methods: {
             jump (router) {
                 this.$command('REDIRECT_TO', router, 'push');
+            },
+            toBalance () {
+                this.$command('REDIRECT_TO', 'user.balance', 'push');
+                this.$command('LOAD_CHARGE_CARDS', 0);
             },
             connectKf () {
                 wx.makePhoneCall({

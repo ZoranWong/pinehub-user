@@ -20,6 +20,9 @@ export default class Account extends Model {
                 // 是否获取到OPENID
                 return state.openId !== null;
             },
+            balance (state) {
+                return state.balance;
+            },
             isMember (state) {
                 // 是否已经注册
                 return state.mobile !== null;

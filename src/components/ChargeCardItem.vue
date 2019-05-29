@@ -3,10 +3,10 @@
         <div class="hot-tag"><img src="../../static/images/icon/hot-tag.png"></div>
         <div class="card-detail">
             <div class="price">
-                <div class="price-number">{{card.price}}</div>
+                <div class="price-number">{{!card.on_sale ? card.price : card.preferential_price}}</div>
                 <div class="money-unit"><img src="../../static/images/icon/rnb-icon.png"></div>
             </div>
-            <div class="send-content">送{{card.send}}元</div>
+            <div class="send-content">送{{card.gift_amount}}元</div>
         </div>
         <div v-if="selected" class="selected-icon">
             <img src="../../static/images/icon/selected-02.png">
