@@ -10,7 +10,7 @@
                     <img src="../../../../static/images/icon/menoy-pack-01.png">
                 </div>
                 <div class="content">
-                    <div class="title">{{balance ? "余额：" + balance + "元" : "你好像错过了一个亿哦"}}</div>
+                    <!--<div class="title">{{balance ? "余额：" + balance + "元" : "你好像错过了一个亿哦"}}</div>-->
                     <div class="desc">{{balance ? "在小程序里您可以订早餐、享受品质中晚餐" : "你敢充值我敢赠送花更少的钱，吃更好的餐"}}</div>
                 </div>
                 <div class="opt-btn">
@@ -29,7 +29,7 @@
                 this.$emit('close');
             },
             visit () {
-                this.$command('REDIRECT_TO', 'user.balance', 'replace');
+                this.$command('REDIRECT_TO', 'userCenter', 'replace');
             }
         }
     }

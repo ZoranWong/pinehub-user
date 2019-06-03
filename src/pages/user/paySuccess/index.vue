@@ -65,7 +65,7 @@
                 getFoodsTime: null,
                 order: null,
                 payType: '余额支付',
-                showToast: true
+                showToast: false
             };
         },
         computed: {
@@ -149,6 +149,9 @@
         mounted () {
             this.getOrderInfo();
             this.getAdvertisement();
+            setTimeout(() => {
+                this.showToast = true;
+            }, 1500);
         }
     }
 </script>
