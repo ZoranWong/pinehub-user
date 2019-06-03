@@ -102,7 +102,6 @@
         },
         computed: {
             balance () {
-                console.log('=========================');
                 return this.$store.getters['model.account/balance'];
             },
             enough () {
