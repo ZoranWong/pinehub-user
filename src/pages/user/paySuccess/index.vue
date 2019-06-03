@@ -21,7 +21,7 @@
             <div class="line"></div>
             <div class="pay-time item">
                 <div class="title">支付时间</div>
-                <div class="content">{{order ? order['paid_at'] : ""}}</div>
+                <div class="content">{{paidAt}}</div>
             </div>
             <div class="line"></div>
             <div class="opt-btn item">
@@ -78,6 +78,9 @@
             },
             cards () {
                 return this.$store.getters['model.chargeCards/list'];
+            },
+            paidAt () {
+                return (this.order && this.order['paid_at']) || ((new Date()).format('yyyy-MM-dd hh:mm:ss'));
             }
         },
         watch: {

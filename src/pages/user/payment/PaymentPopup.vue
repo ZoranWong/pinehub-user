@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="line"></div>
-                <div class="charge-cards">
+                <div class="charge-cards" v-if="cards.length > 0">
                     <scroll-view scroll-x="true" class="card-list">
                         <ul>
                             <card v-for="(card, index) in cards" :key="index" :card="card" :index="index"
