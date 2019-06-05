@@ -1,5 +1,5 @@
 import Application from './Application';
-
+console.log('---------- application bootstrap ----------');
 const application = new Application(null, 'main');
 if (typeof wx !== 'undefined') {
     wx['$app'] = application;

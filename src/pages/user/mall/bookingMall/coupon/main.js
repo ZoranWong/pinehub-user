@@ -3,9 +3,11 @@ import Vue from 'vue';
 import LoadBookingMallTicketsCommand from '../commands/LoadBookingMallTicketsCommand';
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
-    this.route = 'activityCoupon';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-});
+if (application) {
+    application.setComponent(App).run(function () {
+        this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
+        this.route = 'activityCoupon';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+    });
+}

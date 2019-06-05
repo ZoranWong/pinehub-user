@@ -11,16 +11,18 @@ import ActivityShoppingCartClearMerchandisesCommand from './commands/ActivitySho
 import LoadActivityUsuallyAddressCommand from '@/commands/LoadActivityUsuallyAddressCommand';
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.registerModel('model.newEvents.categories', Categories);
-    this.registerModel('model.newEvents.merchandises', Merchandises);
-    // 注册购物车命令
-    this.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand);
-    this.registerCommand(ActivityShoppingCartChangeMerchandiseCommand.commandName(), ActivityShoppingCartChangeMerchandiseCommand);
-    this.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand);
-    this.registerCommand(ActivityShoppingCartClearMerchandisesCommand.commandName(), ActivityShoppingCartClearMerchandisesCommand);
-    this.registerCommand(LoadActivityUsuallyAddressCommand.commandName(), LoadActivityUsuallyAddressCommand);
-    this.route = 'newEvents';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-});
+if (application) {
+    application.setComponent(App).run(function () {
+        this.registerModel('model.newEvents.categories', Categories);
+        this.registerModel('model.newEvents.merchandises', Merchandises);
+        // 注册购物车命令
+        this.registerCommand(ActivityLoadingMerchandisesCommand.commandName(), ActivityLoadingMerchandisesCommand);
+        this.registerCommand(ActivityShoppingCartChangeMerchandiseCommand.commandName(), ActivityShoppingCartChangeMerchandiseCommand);
+        this.registerCommand(ActivityShoppingCartLoadMerchandisesCommand.commandName(), ActivityShoppingCartLoadMerchandisesCommand);
+        this.registerCommand(ActivityShoppingCartClearMerchandisesCommand.commandName(), ActivityShoppingCartClearMerchandisesCommand);
+        this.registerCommand(LoadActivityUsuallyAddressCommand.commandName(), LoadActivityUsuallyAddressCommand);
+        this.route = 'newEvents';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+    });
+}

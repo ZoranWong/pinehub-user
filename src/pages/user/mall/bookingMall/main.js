@@ -10,16 +10,18 @@ import Merchandises from '@/models/Merchandises';
 import LoadBookingMallCategoriesCommand from './commands/LoadBookingMallCategoriesCommand';
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.registerModel('model.bookingMall.categories', Categories);
-    this.registerModel('model.bookingMall.merchandises', Merchandises);
-    // 注册购物车命令
-    this.registerCommand(LoadBookingMallMerchandisesCommand.commandName(), LoadBookingMallMerchandisesCommand)
-    this.registerCommand(BookingMallShoppingCartClearMerchandisesCommand.commandName(), BookingMallShoppingCartClearMerchandisesCommand)
-    this.registerCommand(BookingMallShoppingCartChangeMerchandiseCommand.commandName(), BookingMallShoppingCartChangeMerchandiseCommand)
-    this.registerCommand(BookingMallShoppingCartLoadMerchandisesCommand.commandName(), BookingMallShoppingCartLoadMerchandisesCommand)
-    this.registerCommand(LoadBookingMallCategoriesCommand.commandName(), LoadBookingMallCategoriesCommand);
-    this.route = 'bookingMall';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-});
+if (application) {
+    application.setComponent(App).run(function () {
+        this.registerModel('model.bookingMall.categories', Categories);
+        this.registerModel('model.bookingMall.merchandises', Merchandises);
+        // 注册购物车命令
+        this.registerCommand(LoadBookingMallMerchandisesCommand.commandName(), LoadBookingMallMerchandisesCommand)
+        this.registerCommand(BookingMallShoppingCartClearMerchandisesCommand.commandName(), BookingMallShoppingCartClearMerchandisesCommand)
+        this.registerCommand(BookingMallShoppingCartChangeMerchandiseCommand.commandName(), BookingMallShoppingCartChangeMerchandiseCommand)
+        this.registerCommand(BookingMallShoppingCartLoadMerchandisesCommand.commandName(), BookingMallShoppingCartLoadMerchandisesCommand)
+        this.registerCommand(LoadBookingMallCategoriesCommand.commandName(), LoadBookingMallCategoriesCommand);
+        this.route = 'bookingMall';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+    });
+}

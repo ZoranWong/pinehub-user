@@ -3,11 +3,13 @@ import LoadBookingMallTicketsCommand from '../commands/LoadBookingMallTicketsCom
 import Vue from 'vue';
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
-    this.route = 'orderSelf';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-});
+if (application) {
+    application.setComponent(App).run(function () {
+        this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
+        this.route = 'orderSelf';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+    });
+}
 
 

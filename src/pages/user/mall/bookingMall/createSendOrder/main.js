@@ -6,14 +6,16 @@ import BookingMallShoppingCartChangeMerchandiseCommand
     from '../commands/BookingMallShoppingCartChangeMerchandiseCommand'
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
-    this.registerCommand(CreateBookingMallOrderCommand.commandName(), CreateBookingMallOrderCommand);
-    this.registerCommand(BookingMallShoppingCartChangeMerchandiseCommand.commandName(), BookingMallShoppingCartChangeMerchandiseCommand);
+if (application) {
+    application.setComponent(App).run(function () {
+        this.registerCommand(LoadBookingMallTicketsCommand.commandName(), LoadBookingMallTicketsCommand);
+        this.registerCommand(CreateBookingMallOrderCommand.commandName(), CreateBookingMallOrderCommand);
+        this.registerCommand(BookingMallShoppingCartChangeMerchandiseCommand.commandName(), BookingMallShoppingCartChangeMerchandiseCommand);
 
-    this.route = 'shopSubmitOrder';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-});
+        this.route = 'shopSubmitOrder';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+    });
+}
 
 

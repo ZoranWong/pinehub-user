@@ -104,7 +104,9 @@
             },
             onLoadCategory (page = 1) {
                 // 获取店铺产品分类
-                this.$command('LOAD_MERCHANT_STORE_CATEGORIES', this.store.id, page);
+                if (this.store && this.store.id) {
+                    this.$command('LOAD_MERCHANT_STORE_CATEGORIES', this.store.id, page);
+                }
             },
             onLoadSalesEChart (status) {
                 this.$command('SALES_CHARTS_UPDATE', status);

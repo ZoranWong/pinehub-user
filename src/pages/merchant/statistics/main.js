@@ -18,24 +18,26 @@ import Merchandises from '@/models/Merchandises';
 import Vue from 'vue';
 
 const application = wx.$app;
-application.setComponent(App).run(function () {
-    this.models.addModel('model.salesInfo', SalesInfo);
-    this.models.addModel('model.purchase.orders', Orders);
-    this.registerModel('model.merchant.store.categories', Categories);
-    this.registerModel('model.merchant.store.merchandises', Merchandises);
+if (application) {
+    application.setComponent(App).run(function () {
+        this.models.addModel('model.salesInfo', SalesInfo);
+        this.models.addModel('model.purchase.orders', Orders);
+        this.registerModel('model.merchant.store.categories', Categories);
+        this.registerModel('model.merchant.store.merchandises', Merchandises);
 
 
-    this.registerCommand(LoadStorePurchaseOrderCommand.commandName(), LoadStorePurchaseOrderCommand);
+        this.registerCommand(LoadStorePurchaseOrderCommand.commandName(), LoadStorePurchaseOrderCommand);
 
-    this.registerCommand(LoadMerchantStoreCategoriesCommand.commandName(), LoadMerchantStoreCategoriesCommand);
+        this.registerCommand(LoadMerchantStoreCategoriesCommand.commandName(), LoadMerchantStoreCategoriesCommand);
 
-    this.registerCommand(LoadMerchantStoreMerchandisesCommand.commandName(), LoadMerchantStoreMerchandisesCommand);
+        this.registerCommand(LoadMerchantStoreMerchandisesCommand.commandName(), LoadMerchantStoreMerchandisesCommand);
 
-    this.registerCommand(UpdateMerchandiseStockCommand.commandName(), UpdateMerchandiseStockCommand);
+        this.registerCommand(UpdateMerchandiseStockCommand.commandName(), UpdateMerchandiseStockCommand);
 
-    this.registerCommand(SalesChartsUpdateCommand.commandName(), SalesChartsUpdateCommand);
-    this.route = 'merchant.salesInfo';
-}, function () {
-    this.currentPage = new Vue(this.mountComponent);
-    this.currentPage.$mount();
-});
+        this.registerCommand(SalesChartsUpdateCommand.commandName(), SalesChartsUpdateCommand);
+        this.route = 'merchant.salesInfo';
+    }, function () {
+        this.currentPage = new Vue(this.mountComponent);
+        this.currentPage.$mount();
+    });
+}

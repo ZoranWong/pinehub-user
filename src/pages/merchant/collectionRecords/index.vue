@@ -77,17 +77,19 @@
 			}
 		},
 		mounted() {
-			let payType = this.$route.query['payType'];
-			let paidDate = this.$route.query['paidDate'];
+		    if(this.$route && this.$route.query){
+                let payType = this.$route.query['payType'];
+                let paidDate = this.$route.query['paidDate'];
 
-			if(payType != undefined && paidDate != undefined) {
-				paidDate = JSON.parse(paidDate)
-				this.collectionRecordsDate = paidDate[0] + '-' + paidDate[1];
-				this.loadOrders(paidDate, this.type, payType);
-			} else {
-				this.loadOrders(this.collectionRecordsDate, this.type, payType = 0);
-			}
+                if(payType != undefined && paidDate != undefined) {
+                    paidDate = JSON.parse(paidDate)
+                    this.collectionRecordsDate = paidDate[0] + '-' + paidDate[1];
+                    this.loadOrders(paidDate, this.type, payType);
+                } else {
+                    this.loadOrders(this.collectionRecordsDate, this.type, payType = 0);
+                }
 
+            }
 		},
 		created() {}
 	}
