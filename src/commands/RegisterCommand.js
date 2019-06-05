@@ -10,7 +10,10 @@ export default class RegisterCommand extends Command {
         let iv = encodeURIComponent(mpUserInfoDetail.iv);
         let encryptedData = encodeURIComponent(mpUserInfoDetail.encryptedData);
         let accessToken = this.$store.getters['model.app/accessToken'];
-        console.log('------------- register auth ---------');
+        if (!accessToken) {
+            accessToken = await this.$command('APP_ACCESS');
+        }
+        console.log('------------- register auth ---------', accessToken);
         let result = await this.service('http.auth').mpRegister(accessToken, userInfo, signature, rawData, iv, encryptedData);
         let token = result['token'];
         let refreshTtl = result['refresh_ttl'];
