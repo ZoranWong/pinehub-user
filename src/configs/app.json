@@ -1,8 +1,8 @@
 {
     "model": "mp",
     "mock": false,
-    "appId": "2018090423350000",
-    "appSecret": "2b785c803642f13c4759352847ab0b2a",
+    "appId": "kdy5ccd661e38a97",
+    "appSecret": "EVYgbcyNcGxippqsJLBz5OAnbW2GhQ5N",
     "mapKey": "HJ4BZ-A7UK3-RTP3T-YS7MZ-WCPYO-XVBOD",
     "staticHost": "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com",
     "imgPath": "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/",
@@ -12,6 +12,6 @@
         "3": "第三批次"
     },
     "http": {
-        "gateway": "https://api.mp.klsfood.cn"
+        "gateway": "https://api.mp.kingdomcloud.cn"
     }
 }

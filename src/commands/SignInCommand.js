@@ -1,14 +1,19 @@
 import Command from './Command';
 export default class SignInCommand extends Command {
+    static handling = false;
     // 获取token值
     async handle (accessToken) {
+        if (SignInCommand.handling) {
+            return false;
+        }
         // 获取accessToken
         try {
+            SignInCommand.handling = true;
             let code = await this.service('mp.auth').code();
-
+            console.log('---------- before ------', [code, accessToken]);
             // 请求登录接口
             let loginInfo = await this.service('http.auth').login(code, accessToken);
-
+            console.log('------ login info ------', loginInfo);
             if (!loginInfo.token) {
                 console.log('到这里来就不登录了')
             } else {
@@ -39,7 +44,9 @@ export default class SignInCommand extends Command {
                 this.$store.dispatch('model.account/setAccount', userInfo);
                 return token['value'];
             }
+            SignInCommand.handling = false;
         } catch (e) {
+            SignInCommand.handling = false;
             console.log(e);
         }
     }

@@ -15,6 +15,7 @@ export default class AuthService extends ApiService {
             access_token: accessToken
         }, false);
         this.handling = false;
+        console.log('----- login ------', response);
         return response.data;
     }
 
@@ -35,6 +36,7 @@ export default class AuthService extends ApiService {
 
     // 提交用户信息并保存
     async mpRegister (accessToken, userInfo, signature, rawData, iv, encryptedData) {
+        console.log('------ register ------');
         let response = await this.httpPost(`/wx/register/user/?access_token=${accessToken}`, {
             user_info: userInfo,
             raw_data: rawData,
@@ -55,7 +57,7 @@ export default class AuthService extends ApiService {
     }
 
     // 获取用户信息
-    async getUserInfo () {
+    async getUserInfo (token = null) {
         let response = null;
         if (this.handling) {
             return false;
@@ -64,7 +66,11 @@ export default class AuthService extends ApiService {
         if (this.$application.needMock()) {
             response = await this.service('mock.myInfo').mock();
         } else {
-            response = await this.httpGet(`/user/info`, {});
+            if (token) {
+                response = await this.httpGet(`/user/info`, {access_token: token});
+            } else {
+                response = await this.httpGet(`/user/info`, {});
+            }
         }
         this.handling = false;
         return response.data;

@@ -10,6 +10,7 @@ export default class RegisterCommand extends Command {
         let iv = encodeURIComponent(mpUserInfoDetail.iv);
         let encryptedData = encodeURIComponent(mpUserInfoDetail.encryptedData);
         let accessToken = this.$store.getters['model.app/accessToken'];
+        console.log('------------- register auth ---------');
         let result = await this.service('http.auth').mpRegister(accessToken, userInfo, signature, rawData, iv, encryptedData);
         let token = result['token'];
         let refreshTtl = result['refresh_ttl'];
@@ -20,7 +21,7 @@ export default class RegisterCommand extends Command {
             'refreshTtl': refreshTtl.date
         };
         await this.service('mp.storage').set('token', token);
-        userInfo = await this.service('http.auth').getUserInfo(token);
+        userInfo = await this.service('http.auth').getUserInfo(result['token']);
         if (result) {
             userInfo['token'] = token;
             this.store().dispatch('model.account/setAccount', userInfo);
