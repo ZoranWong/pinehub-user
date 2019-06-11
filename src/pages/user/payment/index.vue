@@ -63,12 +63,8 @@
             async init () {
                 this.paymentAmount = null;
                 this.paymentPopupShow = false;
-                if (!this.accessToken) {
-                    await this.$command('APP_ACCESS');
-                }
-                if (!this.isLogin) {
-                    await this.$command('SIGN_IN', this.accessToken);
-                }
+                await this.$command('APP_ACCESS');
+                await this.$command('SIGN_IN', this.accessToken);
                 let store = await this.http.store.store(this.storeId);
                 this.shopName = store['name'];
                 this.mobile = store['mobile'];
@@ -98,7 +94,6 @@
         mounted () {
             this.storeId = this.$route.query['store_id'] ? this.$route.query['store_id'] : this.storeId;
             this.init();
-            // this.http.account.orderRecords(0, 20);
         },
         onLoad (options) {
             if (options.q) {

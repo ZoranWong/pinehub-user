@@ -80,6 +80,12 @@
                     this.selectedPayType = 'balance';
                     this.isCharge = false;
                     this.chargeCard = null;
+                } else {
+                  if (this.enough) {
+                      this.selectedPayType = 'balance';
+                  } else {
+                      this.selectedPayType = 'wx';
+                  }
                 }
             },
             amount () {
