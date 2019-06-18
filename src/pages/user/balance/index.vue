@@ -17,7 +17,7 @@
                 明细<img src="../../../../static/images/icon/help-tag.png">
             </div>
         </div>
-        <div class="charge-cards">
+        <div class="charge-cards" v-if="cards.length > 0">
             <div class="title">
                 选择充值金额
             </div>
