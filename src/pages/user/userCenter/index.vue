@@ -91,7 +91,9 @@
                 return this.$imageUrl('bear.gif');
             },
             userInfo () {
-                return this.$store.getters['model.account/userInfo'];
+                // return this['model.account']['userInfo'];
+                console.log('-------------------', this['model.account']['userInfo']);
+                return this.model.account.userInfo;
             },
             hasStore () {
                 return this.$store.getters['model.account/isShopManager'];

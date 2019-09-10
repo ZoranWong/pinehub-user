@@ -3,6 +3,7 @@
         <mp-title :title="title"></mp-title>
         <div class="order-success">
             <div id="orderpay_success">
+                <div class = "shop-name">{{order ? order['shop']['name'] : '快乐松'}}</div>
                 <div id="success_ico"></div>
                 <em>支付成功</em>
                 <i>¥ {{order ? order['payment_amount']: ""}}</i>
@@ -316,5 +317,12 @@
 
     .order-detail .item.opt-btn {
         height: 120rpx;
+    }
+    .shop-name{
+        text-align:center;
+        font-size:46rpx;
+        font-weight:360;
+        margin-top:-46rpx;
+        margin-bottom:38rpx;
     }
 </style>

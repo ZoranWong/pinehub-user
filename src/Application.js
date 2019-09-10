@@ -68,7 +68,21 @@ export default class Application {
     }
 
     registerModel (name, model) {
-        Application.modelContainer[name] = new model(this);
+        let modelInstance = Application.modelContainer[name] = new model(this);
+        let computed = modelInstance.computed();
+        if (typeof this[name] === 'undefined') {
+            this.register(name, {});
+        }
+        let app = this;
+        for (let key in computed) {
+            Object.defineProperty(this[name], key, {
+                readonly: true,
+                enumerable: true,
+                get () {
+                    return app['currentPage'].$store.getters[name + '/' + key];
+                }
+            })
+        }
     }
 
     async command (...params) {
@@ -95,6 +109,7 @@ export default class Application {
     // 注册配置
     registerConfig (name, config) {
         Application.configContainer[name] = config;
+        this.register('config.' + name, config);
     }
 
     // 注册服务提供者
@@ -190,11 +205,12 @@ export default class Application {
 
     vueMixin () {
         let extend = {};
-        extend['config'] = Application.configContainer;
+        // extend['config'] = Application.configContainer;
         extend['appName'] = this.name;
         this.instances = _.extend(this.instances, Application.instanceContainer);
         this.instances = _.extend(this.instances, extend, this.mixinMethods);
         _.extend(this.$vm.prototype, this.instances);
+        // _.extend(this.$vm.prototype, this.modelInstances);
         _.extend(this, this.instances);
     }
 
