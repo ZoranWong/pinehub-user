@@ -11,7 +11,7 @@ export default class Application {
     static globalProviderRegistered = false;
     static instanceContainer = {};
     static modelContainer = {};
-    static configContainer = {};
+    // static configContainer = {};
     static commandContainer = {};
 
     constructor (component, name = null) {
@@ -28,19 +28,9 @@ export default class Application {
         this.models = null;
         this.currentPage = null;
         this.route = null;
+        this.currentRoute = 'index';
+        this.stores = {};
         this.registeredGlobal = true;
-        let config = null;
-        Object.defineProperty(this, 'config', {
-            enumerable: true,
-            get () {
-                return config || Application.configContainer;
-            },
-            set (value) {
-                if (value) {
-                    config = value;
-                }
-            }
-        });
     }
 
     setComponent (component) {
@@ -49,7 +39,7 @@ export default class Application {
     }
 
     needMock () {
-        return Application.configContainer.app.mock;
+        return Application.instanceContainer.config.app.mock;
     }
 
     // 插件
@@ -79,7 +69,8 @@ export default class Application {
                 readonly: true,
                 enumerable: true,
                 get () {
-                    return app['currentPage'].$store.getters[name + '/' + key];
+                    console.log(app.route, '===============');
+                    return app['stores'][app.currentRoute].getters[name + '/' + key];
                 }
             })
         }
@@ -108,16 +99,19 @@ export default class Application {
 
     // 注册配置
     registerConfig (name, config) {
-        Application.configContainer[name] = config;
+        // Application.configContainer[name] = config;
         this.register('config.' + name, config);
     }
 
     // 注册服务提供者
     registerServiceProviders () {
         if (!Application.globalProviderRegistered) {
+            console.log(ServiceProviders);
             _.each(ServiceProviders, (value, key) => {
+                console.log(key);
                 let serviceProvider = this.serviceProviders[key] = new value(this);
                 serviceProvider.register();
+                console.log(this.config);
             });
             Application.globalProviderRegistered = true;
         }
@@ -178,7 +172,8 @@ export default class Application {
         } else {
             this.extend(this.instances, tmp, keys.length - 1);
         }
-
+        this.instances = _.extend(this.instances, Application.instanceContainer);
+        _.extend(this, this.instances);
         return instance;
     }
 
@@ -205,12 +200,10 @@ export default class Application {
 
     vueMixin () {
         let extend = {};
-        // extend['config'] = Application.configContainer;
         extend['appName'] = this.name;
         this.instances = _.extend(this.instances, Application.instanceContainer);
         this.instances = _.extend(this.instances, extend, this.mixinMethods);
         _.extend(this.$vm.prototype, this.instances);
-        // _.extend(this.$vm.prototype, this.modelInstances);
         _.extend(this, this.instances);
     }
 
@@ -228,7 +221,8 @@ export default class Application {
             this.vueMixin();
             this.models.addModels(Application.modelContainer);
             if (this.route) {
-                let store = this.instances['vue-store'] = this.$models(this.models);
+                let wxRoute = this.config['routes'][this.route];
+                let store = this['stores'][this.route] = this.$models(this.models);
                 this.mountComponent = _.extend({
                     store: store,
                     render: h => h(App),
@@ -237,14 +231,16 @@ export default class Application {
                     }
                 }, this.mountComponent);
                 let mounted = this.mountComponent.mounted;
+                let app = this;
                 this.mountComponent.mounted = function () {
                     mounted && mounted.call(this);
                     console.log('=---=--------=---=', this);
+                    app.currentPage = this;
                 }
                 // console.log(this.mountComponent);
                 _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
                 this.currentPage.$mount();
-                let wxRoute = this.config['routes'][this.route];
+
                 this.currentPage['wxRoute'] = wxRoute;
                 _.extend(this.currentPage, this.instances);
                 _.each(this.instances, (instance) => {
@@ -252,9 +248,8 @@ export default class Application {
                         instance['page'] = this.currentPage;
                     }
                 });
-                Application.pageContainer.push(this.currentPage);
+                Application.pageContainer[wxRoute] = (this.currentPage);
             }
-
             return this.currentPage;
         } catch (e) {
             console.log(e);
@@ -264,7 +259,9 @@ export default class Application {
     mount () {
         this.currentPage.$mount();
     }
-
+    changePage (route) {
+        this.currentPage = Application.pageContainer[route];
+    }
     $models (instance) {
         return instance;
     }

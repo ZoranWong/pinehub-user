@@ -10,15 +10,22 @@ export default class RouterService extends Service {
         this.currentRouter = '';
     }
 
+    completed () {
+        console.log('------- route completed --------');
+    }
     push (route, options = {}) {
+        console.log('---------- page -----------', route);
         if (this.currentRouter === route && this.routeStack.indexOf([route, options]) > -1) {
             return;
         }
+        this.$application.currentRoute = route;
         this.routeStack.push([route, options]);
         this.currentRouter = route;
         let page = this.routes[route];
         options['path'] = page;
-        this.$router.push(options);
+        this.$router.push(options, () => {
+            this.completed();
+        });
     }
 
     go (n) {
@@ -27,11 +34,16 @@ export default class RouterService extends Service {
 
     replace (route, onCompleted = null, onAbort = null, onSuccess = null) {
         let page = this.routes[route];
+        console.log('---------- page -----------', route);
+        this.$application.currentRoute = route;
         let options = {};
         if (_.isArray(onCompleted) || _.isObject(onCompleted)) {
             options = onCompleted;
         } else {
-            onCompleted = onCompleted || function () {
+            let completed = onCompleted;
+            onCompleted = () => {
+                completed && completed();
+                this.completed();
             };
             onAbort = onAbort || function () {
             };

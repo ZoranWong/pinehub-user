@@ -116,9 +116,9 @@ export default {
 				    this.usedCardId
 				);
 			}else if(this.orderId && this.paid) {
-				
+
 			}
-            
+
         },
         async initData () {
             await this.$command('LOAD_STORE_TICKETS', this.storeInfo.id);

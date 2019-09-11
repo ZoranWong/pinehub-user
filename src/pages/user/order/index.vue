@@ -15,7 +15,6 @@
 		<footer-nav :navName="navName"></footer-nav>
 	</div>
 </template>
-
 <script>
 	import UserOrders from './UserOrders';
 	import MpTitle from '@/components/MpTitle';
@@ -56,7 +55,9 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			orders() {
-				return this.$store.getters['model.user.orders/list'];
+			    console.log(this.model.user.orders.list);
+				return this.model.user.orders.list;
+                // return this.$store.getters['model.user.orders/list'];
 			},
 			totalNum() {
 				return this.$store.getters['model.user.orders/totalNum'];

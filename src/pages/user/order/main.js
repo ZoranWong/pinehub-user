@@ -14,5 +14,4 @@ if (application) {
     }, function () {
         this.currentPage = new Vue(this.mountComponent);
     });
-
 }

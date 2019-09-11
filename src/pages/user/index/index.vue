@@ -113,7 +113,7 @@
                 return this.$store.getters['model.activity/id'] !== null;
             },
             activityId () {
-                return this.$store.getters['model.activity/id'];
+                return this.model.activity.id;
             },
             accessToken () {
                 return this.$store.getters['model.app/accessToken'];
