@@ -12,13 +12,22 @@ export default class AppAccessCommand extends Command {
             let accessToken = data['access_token'];
             let logo = data['logo'];
             let contactPhoneNum = data['contact_phone_num'];
-            this.$store.dispatch('model.app/setData', {
+            // this.$store.dispatch('model.app/setData', {
+            //     accessToken: accessToken,
+            //     appId: appId,
+            //     logo: logo,
+            //     contactPhoneNum: contactPhoneNum,
+            //     ttl: data['ttl']
+            // });
+
+            this.model.app.dispatch('setData', {
                 accessToken: accessToken,
                 appId: appId,
                 logo: logo,
                 contactPhoneNum: contactPhoneNum,
                 ttl: data['ttl']
             });
+
             return accessToken;
         } catch (e) {
             throw e;

@@ -57,8 +57,12 @@ export default class Application {
         return (Application.commandContainer[name] = command);
     }
 
+    get store () {
+        return this.stores[this.currentRoute];
+    }
     registerModel (name, model) {
         let modelInstance = Application.modelContainer[name] = new model(this);
+        modelInstance.alias = name;
         let computed = modelInstance.computed();
         if (typeof this[name] === 'undefined') {
             this.register(name, {});

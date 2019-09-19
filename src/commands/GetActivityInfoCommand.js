@@ -17,7 +17,7 @@ export default class GetActivityInfoCommand extends Command {
             description: activityInfo.description
         };
         console.log(this);
-        this.$store.dispatch('model.activity/info', eventData);
+        this.model.activity.dispatch('info', eventData);
         GetActivityInfoCommand.handling = false;
     }
 

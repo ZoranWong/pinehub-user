@@ -11,6 +11,7 @@ export default class Model {
         this.mutations = [];
         this.transformer = null;
         this.listeners();
+        this.alias = null;
     }
 
     // model层数据定义函数，对应vuex中的state
@@ -137,5 +138,9 @@ export default class Model {
             // 回调函数可以直接使用this指向注册model实例，回调函数接受两个参数一个payload结构体，一个model层的state
             callback.call(this, payload, state);
         }
+    }
+
+    dispatch(event, data) {
+        this.$application.store.dispatch(`${this.alias}/${event}`, data);
     }
 }
