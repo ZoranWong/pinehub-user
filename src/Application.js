@@ -65,7 +65,11 @@ export default class Application {
         modelInstance.alias = name;
         let computed = modelInstance.computed();
         if (typeof this[name] === 'undefined') {
-            this.register(name, {});
+            this.register(name, {
+                dispatch (event, data) {
+                    modelInstance.dispatch(event, data);
+                }
+            });
         }
         let app = this;
         for (let key in computed) {

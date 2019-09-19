@@ -19,7 +19,6 @@ export default class AppAccessCommand extends Command {
             //     contactPhoneNum: contactPhoneNum,
             //     ttl: data['ttl']
             // });
-
             this.model.app.dispatch('setData', {
                 accessToken: accessToken,
                 appId: appId,
