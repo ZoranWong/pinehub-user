@@ -7,7 +7,7 @@
             console.log('show tips');
         },
         created () {
-            // 调用API从本地缓存中获取数据
+            // 调用API从本地缓存中获取数据 1212
             console.log('========= mp app created =========');
         }
     }
