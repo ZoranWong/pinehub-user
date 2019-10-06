@@ -50,7 +50,8 @@
                 </div>
                 <div class="line line-10"></div>
                 <div class="pay-btn">
-                    <button type="primary" class="payment-btn" @click="pay">{{btnText}}</button>
+                    <button v-if="disabled" disabled="disabled" type="primary" class="payment-btn">{{btnText}}</button>
+                    <button v-else type="primary" class="payment-btn" @click="pay">{{btnText}}</button>
                 </div>
             </div>
         </div>
@@ -70,7 +71,8 @@
                 selectedIndex: null,
                 selectedPayType: 'balance',
                 isCharge: false,
-                chargeCard: null
+                chargeCard: null,
+                disabled: false
             };
         },
         watch: {
@@ -145,9 +147,11 @@
                 }
             },
             close () {
+                this.disabled = false;
                 this.$emit('close');
             },
             pay () {
+                this.disabled = true;
                 if (this.chargeCard) {
                     this.$emit('charge', this.payAmount, this.chargeCard['merchandise_id']);
                 } else {

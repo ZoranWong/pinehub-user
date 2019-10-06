@@ -23,7 +23,8 @@
                 </div>
             </div>
             <div class="footer">
-                <button type="primary" @click="paymentPopup">立即支付</button>
+                <button v-if="disPay" disabled="disabled" type="primary">立即支付</button>
+                <button v-else type="primary" @click="paymentPopup">立即支付</button>
             </div>
         </div>
         <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @wxPay = "wxPay" @balancePay = "balancePay" @close = "closePopup" @charge = "charge"></payment-popup>
@@ -63,6 +64,7 @@
             async init () {
                 this.paymentAmount = null;
                 this.paymentPopupShow = false;
+                this.disPay = false;
                 await this.$command('APP_ACCESS');
                 await this.$command('SIGN_IN', this.accessToken);
                 let store = await this.http.store.store(this.storeId);
@@ -70,14 +72,16 @@
                 this.mobile = store['mobile'];
                 this.address = store['address'];
             },
-            paymentPopup () {
+            async paymentPopup () {
                 if (this.paymentAmount) {
                     this.paymentPopupShow = true;
-                    this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
+                    this.disPay = true;
+                    await this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
                 }
             },
             closePopup () {
                 this.paymentPopupShow = false;
+                this.disPay = false;
             },
             async charge(amount, merchandiseId) {
                 await this.$command('CREATE_ORDER_BY_MERCHANDISE_ID', this.shopName, this.mobile, this.storeId, this.address, amount, merchandiseId);
