@@ -3,7 +3,7 @@ import Vue from 'vue';
 import LoadUserOrdersCommand from './commands/LoadUserOrdersCommand';
 import Orders from '@/models/Orders';
 import OrderStatusUpdateCommand from './commands/OrderStatusUpdateCommand';
-
+import '../../../styles/iconfont.css'
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {

@@ -2,21 +2,25 @@
     <div id="footNav">
         <ul>
             <li @click="jump('index')">
-                <em class="fnav" :class="index"></em>
-                <i>首页</i>
+                <i class="iconfont now" v-if="index === 'index_now'">&#xe6bb;</i>
+                <i class="iconfont" v-else>&#xe7d4;</i>
+                <em :class="index === 'index_now'?'active':''">首页</em>
             </li>
-            <li @click="scanCode">
-                <em class="fnav" :class="scanning"></em>
-                <i>扫码</i>
+            <li @click="jump('user.store')">
+                <i class="iconfont now" v-if="scanning === 'scanning_now'">&#xe6b9;</i>
+                <i class="iconfont" v-else>&#xe7d6;</i>
+                <em :class="scanning === 'scanning_now'?'active':''">商城</em>
             </li>
 
-            <li @click="jump('user.orders')">
-                <em class="fnav" :class="order"></em>
-                <i>订单</i>
+            <li @click="jump('user.pickup')">
+                <i class="iconfont now" v-if="order === 'order_now'">&#xe778;</i>
+                <i class="iconfont" v-else>&#xe7e4;</i>
+                <em :class="order === 'order_now'?'active':''">取货</em>
             </li>
             <li @click="jump('userCenter')">
-                <em class="fnav" :class="my"></em>
-                <i>我的</i>
+                <i class="iconfont now" v-if="my === 'my_now'">&#xe735;</i>
+                <i class="iconfont" v-else>&#xe7d5;</i>
+                <em :class="my === 'my_now'?'active':''">我的</em>
             </li>
         </ul>
     </div>
@@ -57,9 +61,6 @@
             },
             jump (router) {
                 this.$command('REDIRECT_TO', router, 'replace');
-            },
-            scanCode () {
-                this.$command('scanCommand', 'myfeedbacksuccess');
             }
         },
         created () {
@@ -83,66 +84,41 @@
     #footNav ul li {
         width: 25%;
         float: left;
+        height: 88rpx;
+        padding: 10rpx 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
     }
 
-    #footNav ul li img {
-        display: block;
-        width: 50rpx;
-        height: 50rpx;
-        margin: 13rpx auto 10rpx;
-    }
-
-    #footNav ul li i {
+    #footNav ul li em {
         text-align: center;
-        color: #111111;
-        font-size: 24rpx;
+        color: #757575;
+        font-size: 20rpx;
         font-weight: 200;
         line-height: 24rpx;
     }
 
-    .fnav {
-        width: 50rpx;
-        height: 50rpx;
-        margin: 13rpx auto 10rpx;
+    #footNav ul li .active {
+      text-align: center;
+      color: #ffcc00;
+      font-size: 20rpx;
+      font-weight: 200;
+      line-height: 24rpx;
     }
 
-    .fnav.index {
-        background: url(../../static/images/icon/index.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
+    #footNav ul li i{
+        font-size: 48rpx;
+        color :#757575;
     }
 
-    .fnav.index_now {
-        background: url(../../static/images/icon/index_now.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
+    #footNav ul li .now{
+        font-size: 48rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
-    .fnav.scanning {
-        background: url(../../static/images/icon/scanning.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
 
-    .fnav.scanning_now {
-        background: url(../../static/images/icon/scanning_now.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
-
-    .fnav.order {
-        background: url(../../static/images/icon/order.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
-
-    .fnav.order_now {
-        background: url(../../static/images/icon/order_now.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
-
-    .fnav.my {
-        background: url(../../static/images/icon/my.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
-
-    .fnav.my_now {
-        background: url(../../static/images/icon/my_now.png) no-repeat center center;
-        background-size: 41rpx 49rpx;
-    }
 </style>

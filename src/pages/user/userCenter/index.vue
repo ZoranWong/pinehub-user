@@ -2,18 +2,13 @@
     <div id="merchant-store">
         <mp-title :title="title"></mp-title>
         <div id="merchant-store_header">
-            <div id="merchant-store_userinfo">
-                <img id="bear" :src="headerAnimate"/>
-                <div id="merchant-store_userinfo_baseinfo">
-                    <img :src="userInfo.avatar"/>
-                    <div id="name_id">
-                        <em>{{userInfo.nickname}}</em>
-                        <!--<i>ID: {{userInfo.id}}</i>-->
-                    </div>
-                    <i id="lv">
-                        {{userInfo.vipLevel}}
-                    </i>
+            <div id="merchant-store_userinfo_baseinfo">
+                <img :src="userInfo.avatar"/>
+                <div id="name_id">
+                    <em>{{userInfo.nickname}}</em>
                 </div>
+            </div>
+            <div id="merchant-store_userinfo">
                 <div id="merchant-store_userinfo_otherinfo">
                     <ul>
                         <li @click="toBalance">
@@ -25,8 +20,8 @@
                             <em>{{userInfo.ticketNum}}</em>
                             <i>卡券</i>
                         </li>
-                        <li @click="alertNotice">
-                            <em>{{userInfo.canUseScore}}</em>
+                        <li @click="jump('user.integral')">
+                            <em>{{userInfo.availableScore}}</em>
                             <i>积分</i>
                         </li>
                     </ul>
@@ -39,14 +34,45 @@
             <i id="merchant-store_shop_more"></i>
             <span>我的店铺</span>
         </div>
+        <div id="merchant-store_orders_container">
+            <div id="merchant-store_orders" @click="jump('user.orders')">
+                <div id="merchant-store_orders_header" >
+                    <h3>我的订单</h3>
+                    <span>
+                        全部订单
+                        <i class="iconfont">&#xe6a3;</i>
+                    </span>
+                </div>
+                <ul id="merchant-store_orders_list">
+                    <li>
+                        <i class="iconfont">&#xe67a;</i>
+                        <div class="count">11</div>
+                        <span>待付款</span>
+                    </li>
+                    <li>
+                        <i class="iconfont">&#xe884;</i>
+                        <span>待自提</span>
+                    </li>
+                    <li>
+                        <i class="iconfont">&#xe60d;</i>
+                        <span>已完成</span>
+                    </li>
+                    <li>
+                        <i class="iconfont">&#xe7ea;</i>
+                        <span>处理中</span>
+                    </li>
+                    <li>
+                        <i class="iconfont">&#xe610;</i>
+                        <span>已退款</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
         <div id="merchant-store_menu">
             <ul>
-                <li @click="jump('user.orders')">
-                    <img src="../../../../static/images/icon/my_ico_menu1.png"/>
-                    <span>个人订单</span>
-                    <i></i>
-                    <em>查看所有订单</em>
-                </li>
                 <!--           <li @click="jump('user.share')">
                                <img src="../../../../static/images/icon/my_ico_menu2.png" />
                                <span>邀请享奖励</span>
@@ -54,14 +80,18 @@
                                <em>邀请好友</em>
                            </li> -->
                 <li @click="jump('user.feedBack')">
-                    <img src="../../../../static/images/icon/my_ico_menu3.png"/>
-                    <span>意见反馈</span>
-                    <i></i>
+                    <div class="left">
+                        <i class="iconfont blue">&#xe609;</i>
+                        <span>意见反馈</span>
+                    </div>
+                    <i class="iconfont arrow">&#xe6a3;</i>
                 </li>
                 <li @click="connectKf">
-                    <img src="../../../../static/images/icon/my_ico_menu4.png"/>
-                    <span>联系客服</span>
-                    <i></i>
+                    <div class="left">
+                        <i class="iconfont green">&#xe602;</i>
+                        <span>联系客服</span>
+                    </div>
+                    <i class="iconfont arrow">&#xe6a3;</i>
                 </li>
             </ul>
         </div>
@@ -91,8 +121,6 @@
                 return this.$imageUrl('bear.gif');
             },
             userInfo () {
-                // return this['model.account']['userInfo'];
-                console.log('-------------------', this['model.account']['userInfo']);
                 return this.model.account.userInfo;
             },
             hasStore () {
@@ -123,12 +151,6 @@
                         })
                     }
                 })
-            },
-            alertNotice () {
-                wx.showToast({
-                    title: '敬请期待',
-                    icon: 'none'
-                })
             }
         }
     }
@@ -149,49 +171,47 @@
 
     #merchant-store_header {
         position: relative;
-        height: 402rpx;
+        height: 375rpx;
         width: 800rpx;
         /*margin: -1200rpx auto 0;*/
-        margin-left: -25rpx;
-        background: #FFD000;
-        border-radius: 0 0 100% 100%;
+        padding: 0 20rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        /*border-radius: 0 0 100% 100%;*/
         /*overflow: hidden;*/
     }
 
     #merchant-store_userinfo {
-        width: 680rpx;
-        height: 320rpx;
+        width: 710rpx;
+        height: 214rpx;
         background: #FFFFFF;
-        position: absolute;
-        top: 180rpx;
-        left: 60rpx;
-        border-radius: 20rpx;
-    }
-
-    #bear {
-        position: absolute;
-        width: 452rpx;
-        height: 186rpx;
-        top: -139rpx;
-        left: 109rpx;
+        border-radius: 10rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     #merchant-store_userinfo_baseinfo {
-        margin: 50rpx 40rpx 40rpx;
+        width: 100%;
+        height: 180rpx;
+        display: flex;
+        padding-left: 20rpx;
+        justify-content: flex-start;
+        align-items: center;
         overflow: hidden;
         position: relative;
     }
 
     #merchant-store_userinfo_baseinfo img {
-        width: 90rpx;
-        height: 90rpx;
-        float: left;
-        margin-right: 20rpx;
+        width: 130rpx;
+        height: 130rpx;
+        border-radius: 50%;
+        margin-right: 50rpx;
+        border: 1px solid #fff;
     }
 
     #name_id {
+        font-weight: bold;
         height: 90rpx;
-        float: left;
     }
 
     #name_id em {
@@ -207,38 +227,23 @@
         font-size: 28rpx;
     }
 
-    #lv {
-        position: absolute;
-        right: 0;
-        top: 0;
-        background: #FECE00;
-        color: #FFFFFF;
-        width: 50rpx;
-        height: 50rpx;
-        border-radius: 50%;
-        line-height: 50rpx;
-        text-align: center;
-        font-size: 30rpx;
-        font-weight: 500;
-    }
-
     #merchant-store_userinfo_otherinfo {
-        position: absolute;
-        bottom: 40rpx;
-        width: 630rpx;
-        left: 26rpx;
+        width: 100%
     }
 
     #merchant-store_userinfo_otherinfo ul {
+        width: 100%;
         display: block;
         display: flex;
         flex-wrap: wrap;
     }
 
     #merchant-store_userinfo_otherinfo ul li {
-        flex-grow: 3;
-        width: 90rpx;
-        float: left;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     #merchant-store_userinfo_otherinfo ul li:nth-child(2) {
@@ -277,6 +282,101 @@
         font-size: 30rpx;
         font-weight: 300;
         margin-top: 10rpx;
+    }
+
+    /*我的订单*/
+    #merchant-store_orders_container{
+        width: 100%;
+        height: 260rpx;
+        background: #fafafa;
+        margin-top: 40rpx;
+        padding: 0 20rpx;
+        border-radius: 10rpx;
+    }
+
+    #merchant-store_orders{
+        width: 670rpx;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 20rpx;
+        background: #fff;
+    }
+
+    #merchant-store_orders_header{
+        width: 710rpx;
+        height: 110rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #merchant-store_orders_header h3{
+        font-size: 32rpx;
+        color: #111111;
+        font-weight: normal;
+    }
+
+    #merchant-store_orders_header span{
+        height: 100%;
+        font-size: 24rpx;
+        color: #757575;
+        margin-right: 30rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #merchant-store_orders_header span i{
+      margin-left: 5rpx;
+      font-size: 24rpx;
+    }
+
+    #merchant-store_orders_list{
+      width: 100%;
+      height: 150rpx;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    #merchant-store_orders_list li{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    #merchant-store_orders_list li .count{
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24rpx;
+      height: 24rpx;
+      right: 33rpx;
+      top: -6rpx;
+      color: #ffcc00;
+      border: 2rpx solid #ffcc00;
+      border-radius: 50%;
+      font-size: 20rpx;
+      background: #fff;
+    }
+
+    #merchant-store_orders_list li i{
+      margin-bottom: 10rpx;
+      font-size: 48rpx;
+      background: linear-gradient(to right,#FDE068,#FFCC00);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    #merchant-store_orders_list li span{
+      font-size: 24rpx;
+      color: #757575;
+      margin-top: 10rpx;
     }
 
     #merchant-store_shop {
@@ -330,32 +430,52 @@
     }
 
     #merchant-store_menu {
-        margin: 20rpx 40rpx;
+        border-radius: 20rpx;
+        margin: 20rpx;
     }
 
     #merchant-store_menu ul li {
-        padding: 0 25rpx;
-        border-bottom: 1rpx solid #EEEEEE;
-        border-radius: 20rpx;
-        height: 88rpx;
-        line-height: 87rpx;
+        padding: 0 20rpx;
+        height: 108rpx;
         background: #FFFFFF;
-        margin-bottom: 10rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    #merchant-store_menu ul li img {
-        display: block;
-        height: 48rpx;
-        width: 48rpx;
-        float: left;
-        padding: 20rpx 0;
+    #merchant-store_menu ul li i{
+        font-size: 36rpx;
     }
+
+    #merchant-store_menu ul li .arrow{
+        font-size: 22rpx;
+        color: #757575;
+    }
+
+    #merchant-store_menu ul li .blue{
+        background: linear-gradient(to right,#5EC4F9,#34B5F8);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    #merchant-store_menu ul li .green{
+        background: linear-gradient(to right,#97EF66,#83DF50);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    #merchant-store_menu ul li .left{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 
     #merchant-store_menu ul li span {
         float: left;
         margin-left: 20rpx;
-        font-size: 32rpx;
-        font-weight: 400;
+        font-size: 28rpx;
+        font-weight: normal;
         color: #111111;
     }
 
@@ -366,13 +486,4 @@
         color: #999999;
     }
 
-    #merchant-store_menu ul li i {
-        width: 40rpx;
-        height: 40rpx;
-        display: block;
-        background: url(../../../../static/images/icon/my_ico_menu_more.png) no-repeat center center;
-        background-size: 40%;
-        padding: 22rpx 0;
-        float: right;
-    }
 </style>

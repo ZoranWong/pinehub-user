@@ -19,8 +19,25 @@ export default class Tickets extends Model {
                 }
             },
             ticketsList (state) {
+                console.log(state, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
                 return _.flatten(state.list);
+            },
+            ticketDetail () {
+                return this.state.ticketDetail
             }
         });
+    }
+    
+    data () {
+        return _.extend(super.data(), {
+            ticketDetail: {}
+        });
+    }
+    
+    listeners () {
+        super.listeners();
+        this.addEventListener('saveTicketDetail', function ({detail}) {
+            this.state.ticketDetail = detail
+        })
     }
 }

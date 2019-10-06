@@ -131,11 +131,8 @@
                 }
             },
             hasToken (value) {
-                if (this.hasToken) {
-                    if (!this.hasLoadedActivity) {
-                        this.$command('LOAD_ACCOUNT', false);
-                        this.$command('GET_ACTIVITY_INFO');
-                    }
+				if (this.hasToken) {
+					this.$command('LOAD_ACCOUNT', false);
                 }
             },
             registered (value) {
@@ -204,7 +201,6 @@
                 let result = await this.map.getLocation();
                 await this.$store.dispatch('model.account/resetFromCache', {
                     initAccount: async () => {
-                        console.log('dddddasfdsfasdfasfasdfa');
                         if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
                             await this.$command('APP_ACCESS');
                         } else {

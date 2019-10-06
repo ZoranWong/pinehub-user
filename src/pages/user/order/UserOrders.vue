@@ -1,7 +1,14 @@
 <!--suppress ALL -->
 <template>
     <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: screenHeight + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
-        <div class="order_info" :id = "'order-item-' + order.id" v-for="(order, index) in orders" :key="index" v-if ="order.show"  :top = "orderItemTop(order, index)">
+        <div
+            class="order_info"
+            :id = "'order-item-' + order.id"
+            v-for="(order, index) in orders"
+            :key="index" v-if ="order.show"
+            :top = "orderItemTop(order, index)"
+            @click="orderDetail(order.id)"
+        >
             <div class="order_info_sn">
                 <i>订单编号</i><em>{{order.code}}</em>
                 <span class="order_info_status">{{order.status}}</span>
@@ -88,6 +95,13 @@
             }
         },
         methods: {
+            orderDetail (id) {
+                this.$command('REDIRECT_TO', 'user.order.detail', 'replace',{
+                    query: {
+                        order_id: id
+                    }
+                });
+            },
             isOffLineOrder (order) {
                 return order.type === OFF_LINE_PAYMENT_ORDER;
             },

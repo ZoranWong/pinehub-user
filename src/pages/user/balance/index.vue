@@ -2,35 +2,24 @@
     <div class="body">
         <mp-title :title="title"></mp-title>
         <div class="balance-detail">
-            <div class="content">
-                <div class="title">
-                    <div class="icon inline">
-                        <img src="../../../../static/images/icon/pack-02.png">
+            <div class="title">可用余额（元）</div>
+            <div class="balance-number">
+                {{balance}}
+            </div>
+            <button class="recharge" @click="jump('user.recharge')">立即充值</button>
+        </div>
+        <div class="recharge-details">
+            <h3>余额明细</h3>
+            <ul class="recharge-details-list">
+                <li v-for="item in 10" :key="item">
+                    <div class="left">
+                        <h4>充值</h4>
+                        <span>2018-10-01 18:28:58 </span>
                     </div>
-                    <div class="inline">余额账户（元）</div>
-                </div>
-                <div class="balance-number">
-                    {{balance}}
-                </div>
-            </div>
-            <div class="detail-btn" @click="tradeOrders">
-                明细<img src="../../../../static/images/icon/help-tag.png">
-            </div>
+                    <div class="right">+16.00</div>
+                </li>
+            </ul>
         </div>
-        <div class="charge-cards" v-if="cards.length > 0">
-            <div class="title">
-                选择充值金额
-            </div>
-            <div class="line"></div>
-            <div class="cards">
-                <scroll-view scroll-x="true"  class="card-list">
-                    <ul>
-                        <card v-for="(card, index) in cards" :key = "index" :card = "card" :index="index" @selectCard = "selectedCard" :selectedIndex = "selectedIndex"></card>
-                    </ul>
-                </scroll-view>
-            </div>
-        </div>
-        <button type="primary"  v-if="selectedIndex !== null" class="pay-btn" @click="charge">立即支付</button>
     </div>
 </template>
 <script>
@@ -69,6 +58,9 @@
             },
             tradeOrders () {
                 this.$command('REDIRECT_TO', 'user.tradeOrders', 'push');
+            },
+            jump (router) {
+            	this.$command('REDIRECT_TO', router, 'push');
             }
         }
     }
@@ -77,112 +69,97 @@
     .body{
         background-color: #f2f2f2;
     }
-    .empty-trade{
-        width: 390rpx;
-        height: 355rpx;
-        margin-top: 246rpx;
-        margin-left: 180rpx;
+
+    button:after{
+        border: 0;
     }
-    .empty-background .desc{
-        text-align: center;
-        margin-top: 60rpx;
-        font-size: 32rpx;
-        color: #757575;
-    }
+
     .balance-detail{
-        /*height: 250rpx;*/
-        width: 710rpx;
-        margin-top: 20rpx;
-        margin-left: 20rpx;
-        background-color: #ffffff;
-        border-radius: 12rpx;
+        box-sizing: border-box;
+        width: 100%;
+        background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));
+        height: 330rpx;
+        padding: 50rpx 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
-    .balance-detail .content{
-        position: relative;
-    }
-    .balance-detail .content .title{
-        text-align: center;
+    .balance-detail .title{
         font-size: 28rpx;
         color: #111;
-        line-height: 38rpx;
-        vertical-align: top;
-        position: relative;
-        margin-left: 228rpx;
-        top: 64rpx;
-        display: flex;
     }
-    .balance-detail .content .title .icon{
-        height: 38rpx;
-        width: 48rpx;
-        margin-right: 20rpx;
-    }
-    .balance-detail .content .title .icon img{
-        height: 100%;
-        width: 100%;
-    }
-    .balance-detail .content .balance-number{
+    .balance-detail .balance-number{
         text-align: center;
-        margin-top: 106rpx;
+        margin-top: 15rpx;
+        margin-bottom: 25rpx;
         color: #111111;
         font-size: 70rpx;
         font-weight: bold;
-        padding-bottom: 58rpx;
     }
-    .inline{
-        display: inline-flex;
+    .recharge{
+        color: #111111;
+        font-size: 32rpx;
+        width: 280rpx;
+        height: 80rpx;
+        background:rgba(253,224,104,1);
+        box-shadow:0 5rpx 10rpx 0 rgba(255,204,0,0.6);
+        border-radius:40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: normal;
     }
-    .detail-btn{
-        color: #757575;
-        font-size: 28rpx;
-        position: absolute;
-        top: 82rpx;
-        right: 64rpx;
-    }
-    .detail-btn img{
-        height: 26rpx;
-        width: 26rpx;
-        /*margin-right: 82rpx;*/
-        margin-top: 0rpx;
-        margin-left: 10rpx;
-    }
-    .charge-cards{
-        margin-top: 10rpx;
-        width: 710rpx;
-        margin-left: 20rpx;
-        height: 270rpx;
-        background-color: #ffffff;
-        border-radius: 12rpx;
-    }
-    .charge-cards .title{
-        line-height: 80rpx;
-        font-size: 28rpx;
-        color: #757575;
-        margin-left: 20rpx;
-    }
-    .charge-cards .line {
-        height: 2rpx;
-        background-color: #f2f2f2;
-    }
-    .charge-cards .cards{
-        height: 188rpx;
+
+    .recharge-details{
         width: 100%;
     }
-    .charge-cards .cards .card-list{
-        margin-left: 19rpx;
-        margin-right: 19rpx;
-        width: 680rpx;
-        /*height: 100%;*/
-        position: absolute;
-        display: flex;
-        white-space: nowrap;
-    }
-    .pay-btn{
-        background-color: #FFD000 !important;
-        width: 710rpx;
+
+    .recharge-details h3{
+        width: 100%;
         height: 80rpx;
-        margin-left: 20rpx;
-        margin-top: 20rpx;
-        color: #111 !important;
-        font-size: 32rpx;
+        box-sizing: border-box;
+        padding: 0 40rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background: #f2f2f2;
+        font-size: 28rpx;
+        color: #757575;
+        font-weight: normal;
     }
+
+    .recharge-details .recharge-details-list{
+
+    }
+
+    .recharge-details .recharge-details-list li{
+        padding: 30rpx 40rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        border-bottom: 2rpx solid #f2f2f2;
+    }
+
+    .recharge-details .recharge-details-list li .left{
+
+    }
+
+    .recharge-details .recharge-details-list li .left h4{
+        font-size: 28rpx;
+        color: #111111;
+        font-weight: normal;
+    }
+
+    .recharge-details .recharge-details-list li .left span{
+        font-size: 28rpx;
+        color: #757575;
+    }
+
+    .recharge-details .recharge-details-list li .right{
+        font-size: 32rpx;
+        color: #111;
+    }
+
 </style>

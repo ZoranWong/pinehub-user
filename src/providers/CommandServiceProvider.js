@@ -24,6 +24,10 @@ import RegisterCommand from '@/commands/RegisterCommand';
 
 import CreateOrderByMerchandiseIdCommand from '@/commands/CreateOrderByMerchandiseIdCommand';
 
+// 获取店铺命令
+import LoadCommonlyUsedPoints from '../commands/LoadCommonlyUsedPoints';
+import LoadNearbyPoints from '../commands/LoadNearbyPoints';
+
 export default class CommandServiceProvider extends ServiceProvider {
     constructor (app) {
         super(app);
@@ -43,7 +47,9 @@ export default class CommandServiceProvider extends ServiceProvider {
             PaymentByIdCommand,
             RegisterCommand,
             LoadChargeCardsCommand,
-            CreateOrderByMerchandiseIdCommand
+            CreateOrderByMerchandiseIdCommand,
+            LoadCommonlyUsedPoints,
+            LoadNearbyPoints
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

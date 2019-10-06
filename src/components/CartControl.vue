@@ -25,7 +25,7 @@
                 default: null,
                 type: String
             },
-            model: {
+            cartModel: {
                 default: null,
                 type: String
             }
@@ -35,9 +35,9 @@
                 return this.count > 0 ? 'cartcontrol-width' : '';
             },
             count () {
-                if (this.model) {
+                if (this.cartModel) {
                     try {
-                        return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId, this.batch) : 0;
+                        return this.cartModel ? this.$store.getters[`${this.cartModel}/quality`](this.merchandiseId, this.batch) : 0;
                     } catch (e) {
                         console.log('抛出异常', e)
                         return 0;
@@ -45,7 +45,7 @@
                 }
             },
             shoppingCartId () {
-                return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId, this.batch) : null;
+                return this.cartModel ? this.$store.getters[`${this.cartModel}/shoppingCartId`](this.merchandiseId, this.batch) : null;
             }
         },
         methods: {

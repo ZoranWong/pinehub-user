@@ -2,9 +2,10 @@ import Command from '@/commands/Command';
 export default class SetUserMobileCommand extends Command {
     async handle (e) {
         let detial = e.mp.detail;
+        let token = this.model.account.token.value;
         let iv = encodeURIComponent(detial.iv);
         let encryptedData = encodeURIComponent(detial.encryptedData);
-        let result = await this.service('http.auth').setMobile(encryptedData, iv);
+        let result = await this.service('http.auth').setMobile(encryptedData, iv, token);
         let mobile = result.mobile;
         if (result) {
             let eventData = {

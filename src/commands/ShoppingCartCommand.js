@@ -7,51 +7,9 @@ export default class ShoppingCartCommand extends Command {
         this.model = null;
     }
 
-    changeShoppingCartMerchandise (merchandise) {
-        this.$store.dispatch(this.model + '/changeShoppingCartMerchandise', {
-            'id': merchandise['id'],
-            'merchandiseId': merchandise['merchandise_id'],
-            'count': merchandise['quality'],
-            'name': merchandise['name'],
-            'sellPrice': merchandise['sell_price'],
-            'totalAmount': merchandise['amount'],
-            'thumbImage': merchandise['main_image'],
-            'activityId': merchandise['activity_id'],
-            'batch': merchandise['batch']
-        });
-    }
-
-    addMerchandiseToShoppingCart (merchandise) {
-        this.$store.dispatch(this.model + '/addMerchandiseToShoppingCart', {
-            'id': merchandise['id'],
-            'merchandiseId': merchandise['merchandise_id'],
-            'count': merchandise['quality'],
-            'name': merchandise['name'],
-            'sellPrice': merchandise['sell_price'],
-            'totalAmount': merchandise['amount'],
-            'thumbImage': merchandise['main_image'],
-            'activityId': merchandise['activity_id'],
-            'batch': merchandise['batch']
-        });
-    }
-
-    deleteShoppingCart (id) {
-        this.$store.dispatch(this.model + '/deleteMerchandiseFromShoppingCart', {
-            'id': id
-        })
-    }
-
-    addMerchandisesToModel (merchandises, totalNum, currentPage, totalPage, limit) {
-        this.$store.dispatch(this.model + '/setList', {
-            list: merchandises,
-            totalNum: totalNum,
-            currentPage: currentPage,
-            totalPage: totalPage,
-            pageCount: limit
-        })
-    }
+    
 
     static commandName () {
-        return 'SHOPPINGCART';
+        return 'SHOPPING_CART';
     }
 }

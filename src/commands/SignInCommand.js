@@ -17,10 +17,11 @@ export default class SignInCommand extends Command {
             if (!loginInfo.token) {
                 console.log('到这里来就不登录了')
             } else {
+    
+    
                 let token = loginInfo.token;
                 let openId = loginInfo.open_id;
-                let mobile = loginInfo.mobile;
-                let canUseScore = loginInfo.can_use_score;
+                // let canUseScore = loginInfo.can_use_score;
                 let refreshTtl = loginInfo.refresh_ttl;
                 let ttl = loginInfo.ttl;
                 if (loginInfo.shop_id) {
@@ -35,13 +36,14 @@ export default class SignInCommand extends Command {
                 };
                 await this.service('mp.storage').set('token', token);
                 await this.service('mp.storage').set('openId', openId);
-                let userInfo = {
-                    open_id: openId,
-                    mobile: mobile,
-                    can_use_score: canUseScore,
-                    token: token
-                };
-                this.$store.dispatch('model.account/setAccount', userInfo);
+                // let userInfo = {
+                //     open_id: openId,
+                //     mobile: mobile,
+                //     // can_use_score: canUseScore,
+                //     token: token
+                // };
+                loginInfo['token'] = token;
+                this.model.account.dispatch('setAccount', loginInfo);
                 return token['value'];
             }
             SignInCommand.handling = false;
