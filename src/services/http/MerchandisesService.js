@@ -4,6 +4,9 @@ export default class MerchandisesService extends ApiService {
     async list (route, query) {
         // 结果
         let response = await this.httpGet(route, query);
+    
+        console.log(response, '-----------------------------');
+    
         let merchandises = response.data;
         let pagination = response.meta.pagination;
         let totalNum = pagination.total;
@@ -14,8 +17,8 @@ export default class MerchandisesService extends ApiService {
     }
 
     // 获取新品预定所有商品信息 parameters = []
-    async activityMerchandises (activityId, page) {
-        let route = `/new/events/${activityId}/merchandises`;
+    async activityMerchandises (page) {
+        let route = '/api/mp/breakfast/booking/products';
         let query = {
             page: page
         }

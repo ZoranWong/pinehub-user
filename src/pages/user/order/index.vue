@@ -4,7 +4,7 @@
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
 			<ul>
-				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur === index}" :style="{width:tabNumWidth}" :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
+				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur === index}"  :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
 			</ul>
 		</div>
 		<div id="tab_content">
@@ -29,13 +29,17 @@
 			return {
 				title: '我的订单',
 				navName: 'order',
-				tabs: [{
-					name: '全部'
-				}, {
-					name: '未完成'
-				}, {
-					name: '已完成'
-				}],
+				tabs: [
+				    {name: '全部'},
+				    {name: '待付款'},
+				    {name: '待自提'},
+                    {name: '未完成'},
+                    {name: '已完成'},
+                    {name: '处理中'},
+                    {name: '已退款'},
+                    {name: '已取消'},
+                    {name: '订单异常'},
+                ],
 				cur: -1,
 				statusType: 'all',
 				screenHeight: 0,
@@ -55,9 +59,8 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			orders() {
-			    console.log(this.model.user.orders.list);
-				return this.model.user.orders.list;
-                // return this.$store.getters['model.user.orders/list'];
+				  return this.model.user.orders.list;
+                    // return this.$store.getters['model.user.orders/list'];
 			},
 			totalNum() {
 				return this.$store.getters['model.user.orders/totalNum'];
@@ -122,7 +125,7 @@
 	}
 
 	#tab_select {
-		overflow: hidden;
+		overflow: auto;
 		width: 750rpx;
 		height: 74rpx;
 		position: fixed;
@@ -130,8 +133,16 @@
 		top: 0;
 		z-index: 999;
 	}
+  #tab_select ul {
+    width: 2250rpx;
+    overflow: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
-	#tab_select ul li {
+  #tab_select ul li {
+    width: 250rpx;
 		height: 74rpx;
 		line-height: 74rpx;
 		float: left;

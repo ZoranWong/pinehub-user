@@ -15,6 +15,7 @@ export default class RouterService extends Service {
     }
     push (route, options = {}) {
         console.log('---------- page -----------', route);
+        console.log('---------- options -----------', options);
         if (this.currentRouter === route && this.routeStack.indexOf([route, options]) > -1) {
             return;
         }

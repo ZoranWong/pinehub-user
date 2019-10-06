@@ -6,7 +6,7 @@
             <textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" />
             <em>{{nowFontNum}}/{{totalFont}}</em>
         </div>
-        <input v-model="contact" placeholder-class="placeholder-class" id="feedBackMobile" placeholder="输入您的联系方式（选填）" />
+        <input v-model="contact" placeholder-class="placeholder-class" id="feedBackMobile" placeholder="手机号码（选填）" />
         <div id="btn" @click="submit">立即提交</div>
     </div>
 </template>
@@ -56,9 +56,8 @@
 
     #feedBackContent {
         background: #fff;
-        border-radius: 15rpx;
-        margin: 15rpx;
-        width: 720rpx;
+        margin-top: 20rpx;
+        width: 750rpx;
         font-size: 32rpx;
         font-weight: 300;
         padding: 15rpx;
@@ -80,9 +79,8 @@
 
     #feedBackMobile {
         background: #fff;
-        border-radius: 15rpx;
-        margin: 15rpx;
-        width: 690rpx;
+        margin: 10rpx 0;
+        width: 750rpx;
         font-size: 32rpx;
         font-weight: 300;
         padding: 15rpx;
@@ -97,13 +95,16 @@
     }
 
     #btn {
+        height: 80rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         background: #FECE00;
         font-size: 34rpx;
         font-weight: 300;
         text-align: center;
+        border-radius: 10rpx;
         color: #111111;
-        line-height: 78rpx;
-        margin: 15rpx;
-        border-radius: 15rpx;
+        margin: 20rpx 15rpx;
     }
 </style>

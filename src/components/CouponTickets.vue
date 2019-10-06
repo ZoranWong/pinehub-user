@@ -2,17 +2,10 @@
 <template>
 	<div class="ticket-page body">
 		<mp-title :title="title"></mp-title>
-		<div id="tab_select" v-if="tabs.length > 0">
-			<ul class="tabs">
-				<li v-for="(tab , index) in tabs " :key="index" :class="{tab_select_now:cur == index }" :style="{ width:tabNumWidth }" @click="tabSelect(index)">
-					<span class="span-inline">{{ tab.name }}</span>
-				</li>
-			</ul>
-		</div>
 		<div class="ticket-list">
 			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
-			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower" :scroll-into-view="statusType">
-				<coupon-ticket :status="statusType" v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :usedCardCode="usedCardCode" :ticket="ticket" @useTicket="useTicket">
+			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
+				<coupon-ticket v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
 				</coupon-ticket>
 			</scroll-view>
 		</div>
@@ -28,26 +21,15 @@
 			return {
 				title: '我的卡券',
 				name: 'Coupon',
-				cur: 0,
-				statusType: 'available'
+				cur: 0
 			}
 		},
 		props: {
-			tabs: {
-				default: function() {
-					return [];
-				},
-				type: Array
-			},
 			loadTickets: {
 				default: null,
 				type: Function
 			},
 			model: {
-				default: null,
-				type: String
-			},
-			usedCardCode: {
 				default: null,
 				type: String
 			}
@@ -57,13 +39,8 @@
 			'coupon-ticket': Ticket
 		},
 		computed: {
-			tabNumWidth() {
-				let num = this.tabs.length
-				num = (num === 'undefined') ? 1 : num;
-				return Math.floor((100 / num) * 100) / 100 + '%';
-			},
 			tickets() {
-				return this.$store.getters[`${this.model}/list`];
+				return this.model.user.tickets.ticketsList;
 			},
 			totalNum() {
 				return this.$store.getters[`${this.model}/totalNum`];
@@ -76,8 +53,6 @@
 			}
 		},
 		methods: {
-			scroll() {
-			},
 			useTicket(ticket) {
 				this.$emit('useTicket', ticket);
 			},
@@ -86,25 +61,8 @@
 					this.loadTickets(this.nextPage, this.statusType);
 				}
 			},
-			tabSelect(num) {
-				this.cur = num;
-				switch(num) {
-					case 0:
-						this.statusType = 'available';
-						break;
-					case 1:
-						this.statusType = 'used';
-						break;
-					default:
-						this.statusType = 'all';
-						break;
-				}
-				this.$command('CLEAR_MODEL', this.model);
-				this.loadTickets(num, this.statusType);
-			}
 		},
 		mounted() {
-			this.tabSelect(0);
 		}
 	}
 </script>
@@ -150,5 +108,8 @@
 
 	.ticket-list .ticket_wrapper {
 		overflow-y: auto;
+        box-sizing: border-box;
+        padding: 20rpx;
 	}
+
 </style>

@@ -58,7 +58,7 @@ export default class Application {
     }
 
     get store () {
-        return this.stores[this.currentRoute];
+        return this.stores[this.currentPage['routeAlias']];
     }
     registerModel (name, model) {
         let modelInstance = Application.modelContainer[name] = new model(this);
@@ -71,14 +71,14 @@ export default class Application {
                 }
             });
         }
+    
         let app = this;
         for (let key in computed) {
             Object.defineProperty(this[name], key, {
                 readonly: true,
                 enumerable: true,
                 get () {
-                    console.log(app.route, '===============');
-                    return app['stores'][app.currentRoute].getters[name + '/' + key];
+                    return app['stores'][app.currentPage['routeAlias']].getters[name + '/' + key];
                 }
             })
         }
@@ -229,17 +229,20 @@ export default class Application {
             this.vueMixin();
             this.models.addModels(Application.modelContainer);
             if (this.route) {
+                let app = this;
                 let wxRoute = this.config['routes'][this.route];
                 let store = this['stores'][this.route] = this.$models(this.models);
                 this.mountComponent = _.extend({
                     store: store,
                     render: h => h(App),
-                    mounted: () => {
-                        console.log('========== page change ==========');
+                    mounted: function () {
+                        console.log('---------------------- change page mounted ---------');
+                        app.currentPage = this;
+                        app.currentRoute = this.routeAlias;
                     }
                 }, this.mountComponent);
                 let mounted = this.mountComponent.mounted;
-                let app = this;
+               
                 this.mountComponent.mounted = function () {
                     mounted && mounted.call(this);
                     console.log('=---=--------=---=', this);
@@ -250,6 +253,7 @@ export default class Application {
                 this.currentPage.$mount();
 
                 this.currentPage['wxRoute'] = wxRoute;
+                this.currentPage['routeAlias'] = this.route;
                 _.extend(this.currentPage, this.instances);
                 _.each(this.instances, (instance) => {
                     if (instance instanceof Service) {
@@ -267,9 +271,11 @@ export default class Application {
     mount () {
         this.currentPage.$mount();
     }
+    
     changePage (route) {
         this.currentPage = Application.pageContainer[route];
     }
+    
     $models (instance) {
         return instance;
     }

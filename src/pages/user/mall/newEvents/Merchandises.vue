@@ -1,6 +1,6 @@
 <template>
 	<scroll-view class="merchandises-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower">
-		<div class="merchandises-item clearfix bgff" v-for="(item, index) in list" :key="index">
+		<div class="merchandises-item clearfix bgff" v-for="(item, index) in list" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'breakfast', good_id: item.id}})">
 			<div class="merchandises-item-top">
 				<img mode="widthFix" class="merchandises-pic" :src="item.thumbImage" :style="{ width: widthPic, height: heightPic }">
 			</div>
@@ -8,7 +8,6 @@
 				<h4 class="merchandises-name">{{item.name}}</h4>
 				<span class="tag color00" v-if="item.tags.length > 0" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
 				<div style="position:absolute;color: #484848;top: 518rpx;right:32rpx;font-size:24rpx;"><span >剩余 {{item.stockNum}} 份</span></div>
-				<p class="describe color75">{{item.describe}}</p>
 				<div class="content ">
 					<div class="sell-price color00">{{item.sellPrice}}<span>RMB</span></div>
 					<div class="origin-price">{{item.originPrice}}<span>RMB</span></div>
@@ -90,6 +89,9 @@
 			},
 			reduceCart(merchandiseId, id) {
 				this.reduceMerchandiseToCart(merchandiseId, id);
+			},
+			redirectTo (router, options = {}) {
+				this.$command('REDIRECT_TO', router, 'push', options);
 			}
 		}
 	}
@@ -178,10 +180,9 @@
 	}
 
 	.cartcontrol-warpper {
-		margin-top: 30rpx;
 		position: absolute;
-		bottom: 40rpx;
-		right: 0rpx;
+		bottom: 70rpx;
+		right: 12rpx;
 	}
 
 	image {

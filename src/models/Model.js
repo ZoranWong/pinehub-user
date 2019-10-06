@@ -87,6 +87,8 @@ export default class Model {
         let startIndex = (currentPage - 1) * pageCount + 1;
         try {
             list = this.transform(list, this.transformer, startIndex);
+            console.log(list, '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+            console.log(currentPage, 'oooooooooooooooooooooooooooooooooooooooo');
             // console.log('--------- transformer ----------', Date.now());
             this.$application.$vm.set(this.state.list, currentPage - 1, list);
         } catch (e) {
@@ -111,7 +113,8 @@ export default class Model {
      *@param Transformer transformer 数据转换器
      *@param integer startIndex 起始索引
      **/
-    transform (data, transformer, startIndex = 1) {
+    transform (data, transformer = null, startIndex = 1) {
+        transformer = transformer ? transformer : this.transformer;
         if (_.isArray(data)) {
             return _.map(data, function (value, index) {
                 value.index = startIndex + index;

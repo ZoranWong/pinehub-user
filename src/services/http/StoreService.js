@@ -2,120 +2,83 @@ import ApiService from './ApiService';
 
 export default class StoreService extends ApiService {
     // 获取店铺产品分类列表
-    async categories (storeId, page = 1, limit = 15) {
-        let response = await this.httpGet(`store/${storeId}/categories`, {
+    async categories () {
+        let response = await this.httpGet('api/mp/mall/categories');
+        return response.data;
+    }
+    
+    // 获取分类下的商品
+    async products (id, page = 1, limit = 15) {
+        let response = await this.httpGet(`/api/mp/mall/category/${id}/products`, {
             page: page,
             limit: limit
         });
-        let categories = response.data;
-        let pagination = response.meta.pagination;
-        let totalNum = pagination.total;
-        let currentPage = pagination['current_page'];
-        let totalPage = pagination['total_pages'];
-        let pageCount = pagination['per_page'];
-        return [categories, totalNum, currentPage, totalPage, pageCount];
+        return response.data
     }
-
-    // 提交反馈数据
-    async modifyStock (id, primaryStockNum, modifyStockNum, reason, comment) {
-        let response = await this.httpPut(`/store/merchandise/${id}/stock`, {
-            primary_stock_num: primaryStockNum,
-            modify_stock_num: modifyStockNum,
-            reason: reason,
-            comment: comment
+    
+    // 获取早餐预定商品详情
+    async breakfastGoodDetail (id) {
+        let response = await this.httpGet(`/api/mp/breakfast/booking/products/${id}`);
+        return response.data
+    }
+    
+    // 获取商城商品详情
+    async mallGoodDetail (id) {
+        let response = await this.httpGet(`/api/mp/mall/products/${id}`);
+        return response.data
+    }
+    
+    // 添加商城商品到购物车
+    async addMallGoodToCart (id, num) {
+        let response = await this.httpPost('api/mp/mall/carts', {
+            product_stock_id: id,
+            buy_num: num
         });
-        return response.data;
+    
+        console.log(response, 'oooooooooo');
+        return response.data
     }
-
-    // 获取进货统计
-    async purchaseOrders (date) {
-        let response = await this.httpGet('store/purchase/statistics', {'date': date});
-        let list = response.data;
-        let pagination = response.meta.pagination;
-        // 总数
-        let totalNum = pagination.total;
-        // 当前页
-        let currentPage = pagination['current_page'];
-        // 总页数
-        let totalPage = pagination['total_pages'];
-        let pageCount = pagination['per_page'];
-        let totalAmount = response.meta['total_amount'];
-        return [list, totalNum, currentPage, totalPage, pageCount, totalAmount];
-    }
-
-
-    async scanCode (code) {
-        let response = await this.httpGet('store/code/order/merchandise/up', {order_code: code});
-        let codeNum = response.data.code;
-        let status = response.data.status;
-        return [codeNum, status];
-    }
-
-    async nearestStore (lng, lat) {
-        let response = await this.httpGet(`/nearest/store`, {lng: lng, lat: lat});
-        return response.data;
-    }
-
-    // 获取进货统计
-    async salesInfo (selectTime) {
-        let response = await this.httpGet('store/sales/statistics', {'date': selectTime});
-        return response.data;
-    }
-
-    // 获取店铺信息
-    async storeInfo () {
-        let response = await this.httpGet('store/info');
-        let storeInfo = response.data;
-        let sellAmountCharts = storeInfo['order_count_statistics'];
-        let buyNumCharts = storeInfo['order_payment_amount_statistics'];
-        delete storeInfo['order_count_statistics'];
-        delete storeInfo['order_payment_amount_statistics'];
-        return [storeInfo, sellAmountCharts, buyNumCharts];
-    }
-
-    // 获取店铺信息
-    async store (id) {
-        let response = await this.httpGet(`store/${id}/info`);
-        let storeInfo = response.data;
-        return storeInfo;
-    }
-
-    // 获取店铺信息
-    async stores (ids) {
-        let response = await this.httpGet(`stores`, {stores: ids});
-        let stores = response.shops;
-        return stores;
-    }
-
-    // 店铺商品
-    async merchandises (storeId, categoryId, page = 1, limit = 15) {
-        let response = await this.httpGet(`/store/${storeId}/category/${categoryId}/merchandises`, {
-            page: page,
-            limit: limit
+    
+    // 添加早餐商品到购物车
+    async addBreakfastGoodToCart (id, num) {
+        let response = await this.httpPost('api/mp/breakfast/booking/carts', {
+            product_stock_id: id,
+            buy_num: num
         });
-        let merchandises = response.data;
-        let pagination = response.meta.pagination;
-        let totalNum = pagination.total;
-        let currentPage = pagination['current_page'];
-        let totalPage = pagination['total_pages'];
-        let pageCount = pagination['per_page'];
-        return [merchandises, totalNum, currentPage, totalPage, pageCount];
+        return response.data
     }
-
-    // 获取订单列表
-    async nearbyStores (lng, lat, page = 1, limit = 100) {
-        let response = await this.httpGet('/nearby/stores', {
-            lng: lng,
-            lat: lat,
-            limit: limit,
-            page: page
+    
+    // 商城购物车商品列表
+    async cartGoodsList () {
+        let response = await this.httpGet('api/mp/mall/carts');
+        return response.data
+    }
+    
+    // 清空商城购物车
+    async clearMallCart () {
+        let response = await this.httpDelete('api/mp/mall/carts');
+        return response.data
+    }
+    
+    //  修改商城购物车某一项数量
+    async changeBuyNum (cart, num) {
+        let response = await this.httpPut(`api/mp/mall/carts/${cart}`, {
+            buy_num: num
         });
-        let stores = response.data;
-        let pagination = response.meta.pagination;
-        let totalNum = pagination.total;
-        let currentPage = pagination['current_page'];
-        let totalPage = pagination['total_pages'];
-        let pageCount = pagination['per_page'];
-        return [stores, totalNum, currentPage, totalPage, pageCount];
+        return response.data
+    }
+    
+    // 常用自提车
+    async commonlyUsedPoints () {
+        let response = await this.httpGet('api/mp/pick_up/shops');
+        return response.data
+    }
+    
+    // 附近自提车
+    async nearbyPoints (lng, lat) {
+        let response = await this.httpGet('api/mp/around/shops', {
+            lng, lat
+        });
+        return response.data
     }
 }

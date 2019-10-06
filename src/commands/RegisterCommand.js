@@ -5,6 +5,7 @@ export default class RegisterCommand extends Command {
     async handle (e) {
         let mpUserInfoDetail = e.mp.detail;
         let userInfo = mpUserInfoDetail.userInfo;
+        console.log(mpUserInfoDetail, '-------------mpUserInfoDetail--------------');
         let signature = encodeURIComponent(mpUserInfoDetail.signature);
         let rawData = mpUserInfoDetail.rawData;
         let iv = encodeURIComponent(mpUserInfoDetail.iv);
@@ -16,18 +17,19 @@ export default class RegisterCommand extends Command {
         console.log('------------- register auth ---------', accessToken);
         let result = await this.service('http.auth').mpRegister(accessToken, userInfo, signature, rawData, iv, encryptedData);
         let token = result['token'];
+        console.log(result, '-------------result--------------');
         let refreshTtl = result['refresh_ttl'];
         let ttl = result['ttl'];
         token = {
             'value': token,
-            'ttl': ttl.date,
-            'refreshTtl': refreshTtl.date
+            'ttl': ttl,
+            'refreshTtl': refreshTtl
         };
         await this.service('mp.storage').set('token', token);
-        userInfo = await this.service('http.auth').getUserInfo(result['token']);
+        // userInfo = await this.service('http.auth').getUserInfo(result['token']);
         if (result) {
             userInfo['token'] = token;
-            this.store().dispatch('model.account/setAccount', userInfo);
+            this.model.account.dispatch('setAccount', userInfo);
             return true;
         }
         return false;

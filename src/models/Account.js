@@ -53,7 +53,6 @@ export default class Account extends Model {
                 return state.shop;
             },
             registered () {
-                // 是否获取到用户信息
                 return !!this.state.nickname;
             }
         });
@@ -130,14 +129,14 @@ export default class Account extends Model {
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }
+            if (typeof userInfo['mobile'] !== 'undefined') {
+                this.state.mobile = userInfo['mobile'];
+            }
             if (typeof userInfo['union_id'] !== 'undefined') {
                 this.state.unionId = userInfo['union_id'];
             }
             if (typeof userInfo['avatar'] !== 'undefined') {
                 this.state.avatar = userInfo['avatar'];
-            }
-            if (typeof userInfo['mobile'] !== 'undefined') {
-                this.state.mobile = userInfo['mobile'];
             }
             if (typeof userInfo['token'] !== 'undefined') {
                 this.state.token = userInfo['token'];
@@ -145,8 +144,8 @@ export default class Account extends Model {
             if (typeof userInfo['balance'] !== 'undefined') {
                 this.state.balance = userInfo['balance'];
             }
-            if (typeof userInfo['can_use_score'] !== 'undefined') {
-                this.state.canUseScore = userInfo['can_use_score'];
+            if (typeof userInfo['available_score'] !== 'undefined') {
+                this.state.availableScore = userInfo['available_score'];
             }
             if (typeof userInfo['country'] !== 'undefined') {
                 this.state.country = userInfo['country'];
@@ -162,10 +161,6 @@ export default class Account extends Model {
             }
             if (typeof userInfo['total_score'] !== 'undefined') {
                 this.state.totalScore = userInfo['total_score'];
-            }
-            if (typeof userInfo['shop_id'] !== 'undefined') {
-                this.state.isShopManager = (true && userInfo['shop_id']);
-                this.state.shop.id = userInfo['shop_id'];
             }
 
             if (typeof userInfo['vip_level'] !== 'undefined') {
