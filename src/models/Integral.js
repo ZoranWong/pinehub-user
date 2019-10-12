@@ -10,6 +10,7 @@ export default class Integral extends Model {
     computed () {
         return _.extend(super.computed(), {
             integralProducts (state) {
+                console.log(state, '***************************************');
                 return _.flatten(state.list);
             }
         });

@@ -32,7 +32,8 @@
     "pages/user/ticketDetail/main",
     "pages/user/tradeDetail/main",
     "pages/user/recharge/main",
-    "pages/user/balance/main"
+    "pages/user/balance/main",
+    "pages/user/selectPay/main"
   ],
   "permission": {
     "scope.userLocation": {

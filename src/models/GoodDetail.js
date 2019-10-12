@@ -39,8 +39,7 @@ export default class Orders extends Model {
                 spec.push(value.name)
             });
             good['spec'] = spec.join(',');
-            good['range'] = `￥${minPrice['market_price']}~￥${maxPrice['market_price']}`;
-            console.log(good, 'nnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+            good['range'] = specifications.length ? `￥${minPrice['market_price']}~￥${maxPrice['market_price']}` : `￥${minPrice['market_price']}`
             this.state.goodDetail = good
         })
     }

@@ -13,9 +13,9 @@
             </li>
 
             <li @click="jump('user.pickup')">
-                <i class="iconfont now" v-if="order === 'order_now'">&#xe778;</i>
+                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>
                 <i class="iconfont" v-else>&#xe7e4;</i>
-                <em :class="order === 'order_now'?'active':''">取货</em>
+                <em :class="pickup === 'pickup_now'?'active':''">取货</em>
             </li>
             <li @click="jump('userCenter')">
                 <i class="iconfont now" v-if="my === 'my_now'">&#xe735;</i>
@@ -35,7 +35,7 @@
                 navName: '',
                 index: 'index',
                 scanning: 'scanning',
-                order: 'order',
+				pickup: 'pickup',
                 my: 'my'
             };
         },
@@ -48,8 +48,8 @@
                     case 'scanning':
                         this.scanning = 'scanning_now';
                         break;
-                    case 'order':
-                        this.order = 'order_now';
+                    case 'pickup':
+                        this.pickup = 'pickup_now';
                         break;
                     case 'my':
                         this.my = 'my_now';
@@ -60,7 +60,7 @@
                 }
             },
             jump (router) {
-                this.$command('REDIRECT_TO', router, 'replace');
+                this.$command('REDIRECT_TO', router, 'push');
             }
         },
         created () {

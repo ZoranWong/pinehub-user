@@ -3,9 +3,18 @@
 	<div id="userOrders" class="body">
 		<mp-title :title="title"></mp-title>
 		<div id="tab_select">
-			<ul>
-				<li :test="test" v-for="(tab,index) in tabs" :class="{tab_select_now:cur === index}"  :key="index" @click="tabSelect(index)"><span>{{tab.name}}</span></li>
-			</ul>
+            <view class="page-section-spacing">
+                <scroll-view
+                    class="scroll-view_H"
+                    scroll-x="true"
+                    bindscroll="scroll"
+                    :enable-back-to-top="true"
+                    :scroll-into-view="scrollTo"
+                    style="width: 2000rpx">
+                    <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
+                </scroll-view>
+            </view>
+
 		</div>
 		<div id="tab_content">
 			<img v-if="totalNum == 0" id="null_ico" src="../../../../static/images/empty_order.png" />
@@ -30,21 +39,20 @@
 				title: '我的订单',
 				navName: 'order',
 				tabs: [
-				    {name: '全部'},
-				    {name: '待付款'},
-				    {name: '待自提'},
-                    {name: '未完成'},
-                    {name: '已完成'},
-                    {name: '处理中'},
-                    {name: '已退款'},
-                    {name: '已取消'},
-                    {name: '订单异常'},
+				    {name: '全部', key: ''},
+				    {name: '待付款', key: 'WAIT_TO_PAY'},
+				    {name: '待自提', key: 'WAIT_TO_PICK'},
+                    {name: '已完成', key: 'ORDER_COMPLETED'},
+                    {name: '处理中', key: 'ORDER_HANDLING'},
+                    {name: '已退款', key: 'ORDER_REFUNDED'},
+                    {name: '已取消', key: 'ORDER_CANCELED'},
+                    {name: '订单异常', key: 'ORDER_EXCEPTION'}
                 ],
-				cur: -1,
-				statusType: 'all',
+				statusType: '',
 				screenHeight: 0,
 				rpxRate: 1,
-				screenWitdh: 0
+				screenWitdh: 0,
+                scrollTo: ''
 			};
 		},
 		watch: {
@@ -59,8 +67,7 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			orders() {
-				  return this.model.user.orders.list;
-                    // return this.$store.getters['model.user.orders/list'];
+				return this.model.user.orders.list;
 			},
 			totalNum() {
 				return this.$store.getters['model.user.orders/totalNum'];
@@ -75,22 +82,8 @@
 				this.$store.dispatch('model.user.orders/reset');
 				this.$command('LOAD_USER_ORDERS', status, 1);
 			},
-			tabSelect(num) {
-				this.cur = num;
-				switch(num) {
-					case 0:
-						this.statusType = 'all';
-						break;
-					case 1:
-						this.statusType = 'success';
-						break;
-					case 2:
-						this.statusType = 'completed';
-						break;
-					default:
-						this.statusType = 'all';
-						break;
-				}
+			tabSelect(tab) {
+				this.statusType = tab.key
 				this.$command('CLEAR_MODEL', 'model.user.orders');
 				this.loadOrders(this.statusType);
 			},
@@ -103,9 +96,12 @@
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
+			let paramsStatus = this.$route.query.status;
+			this.statusType = paramsStatus;
+			this.scrollTo = paramsStatus
 		},
-		mounted() {
-			this.tabSelect(0);
+		created() {
+			this.loadOrders(this.statusType);
 		}
 	}
 </script>
@@ -132,35 +128,23 @@
 		left: 0;
 		top: 0;
 		z-index: 999;
-	}
-  #tab_select ul {
-    width: 2250rpx;
-    overflow: auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  #tab_select ul li {
-    width: 250rpx;
-		height: 74rpx;
-		line-height: 74rpx;
-		float: left;
-		background: #FFFFFF;
-		text-align: center;
-		font-size: 32rpx;
-		font-weight: 300;
+        background: #fff;
 	}
 
-	#tab_select ul li.tab_select_now {
+    .scroll-view_H .scroll-view-item_H{
+        width: 250rpx;
+        display: inline-block;
+        height: 70rpx;
+        background: #FFFFFF;
+        text-align: center;
+        line-height: 82rpx;
+        font-size: 32rpx;
+        font-weight: 300;
+    }
+
+	#tab_select .tab_select_now {
 		color: #FECE00;
-	}
-
-	#tab_select ul li.tab_select_now span {
-		display: inline-block;
-		width: 68%;
-		line-height: 64rpx;
-		border-bottom: 5rpx solid #FECE00;
+        border-bottom: 4rpx solid #ffcc00;
 	}
 
 	#tab_content {
@@ -172,7 +156,7 @@
 		width: 390rpx;
 		height: 355rpx;
 		position: absolute;
-		top: 50%;
+		top: 400%;
 		margin-top: -178rpx;
 		left: 50%;
 		margin-left: -185rpx;

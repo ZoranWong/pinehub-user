@@ -17,12 +17,12 @@ export default class ShoppingCartService extends ApiService {
         let parameters = {
             page: page,
             limit: limit
-        }
+        };
         return await this.list(route, parameters);
     }
 
     async deleteShoppingCart (id) {
-        let response = await this.httpDelete(`/shoppingcart`, [], id);
+        let response = await this.httpDelete(`api/mp/breakfast/booking/carts/${id}`);
         return response.data;
     }
 
@@ -51,22 +51,22 @@ export default class ShoppingCartService extends ApiService {
     }
 
     // 新品预定增加到购物车
-    async activityShoppingCartAddMerchandise (activityId, merchandiseId, quality) {
+    async activityShoppingCartAddMerchandise (id, quality) {
         let merchandise = {
-            merchandise_id: merchandiseId,
-            quality: quality
+            product_stock_id: id,
+            buy_num: quality
         };
-        let response = await this.httpPost(`/new/events/${activityId}/shoppingcart/merchandise `, merchandise);
+        let response = await this.httpPost('api/mp/breakfast/booking/carts', merchandise);
         return response.data;
     }
 
     // 修改预定增加到购物车
-    async activityShoppingCartChangeMerchandise (activityId, id, merchandiseId, quality) {
+    async activityShoppingCartChangeMerchandise (id, quality) {
+        console.log(id, 'YYYYYYYYYYYYYYYYYY');
         let merchandise = {
-            merchandise_id: merchandiseId,
-            quality: quality
+            buy_num: quality
         };
-        let response = await this.httpPut(`/new/events/${activityId}/shoppingcart/${id}/merchandise `, merchandise);
+        let response = await this.httpPut(`api/mp/breakfast/booking/carts/${id}`, merchandise);
         return response.data;
     }
 
@@ -85,6 +85,11 @@ export default class ShoppingCartService extends ApiService {
         return response.data;
     }
 
+    async deleteItem (id) {
+        let response = await this.httpDelete(`api/mp/breakfast/booking/carts/${id}`);
+        return response.data
+    }
+    
     async storeShoppingCartChangeMerchandise (storeId, id, merchandiseId, quality) {
         let merchandise = {
             merchandise_id: merchandiseId,

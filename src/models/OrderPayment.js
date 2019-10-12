@@ -1,31 +1,44 @@
 import Model from './Model';
 import _ from 'underscore';
-import OrderDetailTransformer from './transformers/OrderDetailTransformer';
 
 export default class Orders extends Model {
     constructor (app) {
         super(app);
-        this.transformer = OrderDetailTransformer;
     }
 
     computed () {
         return _.extend(super.computed(), {
-            totalAmount () {
-                return this.state.totalAmount;
+            orderInfo () {
+                return this.state.orderInfo
+            },
+            createdOrderInfo () {
+                return this.state.createdOrderInfo
             }
         });
     }
 
     data () {
         return _.extend(super.data(), {
-            totalAmount: 0
+            orderInfo: {},
+            createdOrderInfo: {}
         });
     }
 
     listeners () {
         super.listeners();
-        this.addEventListener('setTotalAmount', function ({totalAmount}) {
-            this.state.totalAmount = totalAmount;
+        this.addEventListener('saveOrderInfo', function ({orderInfo}) {
+            _.map(orderInfo['order_items'], (item) => {
+                let spec = [];
+                for (let key in item['spec_value']) {
+                    spec.push(item['spec_value'][key])
+                }
+                item['spec_desp'] = spec.join(',')
+            });
+            this.state.orderInfo = orderInfo;
         });
+        
+        this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
+            this.state.createdOrderInfo = orderInfo
+        })
     }
 }

@@ -13,6 +13,7 @@ export default class SetUserMobileCommand extends Command {
             };
             this.store().dispatch('model.account/setAccount', eventData);
         }
+        console.log('----------------------------engine start------------------------------');
         wx.showToast({
             title: '手机号获取成功'
         })

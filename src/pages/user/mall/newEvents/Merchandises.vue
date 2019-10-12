@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
 	<scroll-view class="merchandises-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower">
 		<div class="merchandises-item clearfix bgff" v-for="(item, index) in list" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'breakfast', good_id: item.id}})">
@@ -6,13 +7,13 @@
 			</div>
 			<div class="merchandises-item-bottom">
 				<h4 class="merchandises-name">{{item.name}}</h4>
-				<span class="tag color00" v-if="item.tags.length > 0" v-for="(tag, index2) in item.tags" :key="index2">{{tag}}</span>
-				<div style="position:absolute;color: #484848;top: 518rpx;right:32rpx;font-size:24rpx;"><span >剩余 {{item.stockNum}} 份</span></div>
+				<span class="tag color00" v-if="item.specifications.length > 0">规格 : {{item.spec}}</span>
+				<div style="position:absolute;color: #484848;bottom: 100rpx;right:32rpx;font-size:24rpx;"><span >剩余 {{item.stockNum || 0}} 份</span></div>
 				<div class="content ">
-					<div class="sell-price color00">{{item.sellPrice}}<span>RMB</span></div>
-					<div class="origin-price">{{item.originPrice}}<span>RMB</span></div>
+					<div class="sell-price color00">{{item.range}}</div>
+					<div class="origin-price">￥{{item.originPrice}}</div>
 					<div class="cartcontrol-warpper ">
-						<cart-control v-if="item.stockNum > 0" :model="model" @addCart="addCart" @reduceCart="reduceCart" :merchandiseId="item.merchandiseId" :shopId="item.shopId"></cart-control>
+						<cart-control v-if="item.stockNum > 0" :model="model" @addCart="addCart" @reduceCart="reduceCart" :product="item"></cart-control>
 						<div v-else class="sell-out"><span style = "color: #6b6b6b; font-size: 32rpx;">已售完</span></div>
 					</div>
 				</div>
@@ -84,8 +85,8 @@
 			scroll(e) {
 				console.log(e)
 			},
-			addCart(merchandiseId, id) {
-				this.addMerchandiseToCart(merchandiseId, id);
+			addCart(product) {
+				this.addMerchandiseToCart(product);
 			},
 			reduceCart(merchandiseId, id) {
 				this.reduceMerchandiseToCart(merchandiseId, id);
@@ -133,17 +134,10 @@
 	}
 
 	.tag {
-		padding: 8rpx 15rpx;
-		line-height: 36rpx;
-		letter-spacing: 4rpx;
-		min-width: 84rpx;
-		font-size: 28rpx;
-		border: 2rpx solid #ffcc00;
-		border-radius: 36rpx;
-		text-align: center;
+		font-size: 22rpx;
+        color: #757575;
 		display: inline-block;
 		margin-right: 20rpx;
-		margin-bottom: 12rpx;
 	}
 
 	.describe {
@@ -181,7 +175,7 @@
 
 	.cartcontrol-warpper {
 		position: absolute;
-		bottom: 70rpx;
+		bottom: 30rpx;
 		right: 12rpx;
 	}
 

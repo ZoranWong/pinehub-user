@@ -4,23 +4,22 @@
         <mp-title :title="title"></mp-title>
         <div id="shop_detail_header">
             <h3>
-              已退款
+              {{orderDetail['state_desc']}}
               <span>期待您的再次光临哦~</span>
             </h3>
             <img src="../../../../static/images/background/1.png"></img>
         </div>
-        <div id="shop_info">
+        <div id="shop_info" v-if="orderDetail['shop']">
             <i class="iconfont location">&#xe80b;</i>
             <div class="shop_info">
                 <div class="shop_info_name">
                     <h4>
-                      青松集团店
-                      <span>18513891718</span>
+                        {{orderDetail['shop']['name']}}
+                      <span>{{orderDetail['shop']['keeper_mobile']}}</span>
                     </h4>
                 </div>
                 <div class="shop_info_address">
-                  安徽省 合肥市 高新区 宁西路28号青松集
-                  团行政楼2楼
+                    {{orderDetail['shop']['address']}}
                 </div>
             </div>
             <i class="iconfont arrow">&#xe6a3;</i>
@@ -31,25 +30,25 @@
                 <div class="order_info_name">
                     <h4>
                         预约取货日期
-                        <span>2019-7-5</span>
+                        <span>{{orderDetail['plan_pickup_date']}}</span>
                     </h4>
                     <h4>
                         预约取货时间
-                        <span>09:00-21:00</span>
+                        <span>{{orderDetail['plan_pickup_time']}}</span>
                     </h4>
                 </div>
             </div>
         </div>
         <div id="order_details">
             <ul id="good_list">
-                <li v-for="(good,index) in goods" :key="index">
-                    <img :src="good.image" alt="">
+                <li v-for="(good,index) in orderDetail['order_items']" :key="index">
+                    <img :src="good.thumbnail" alt="">
                     <div id="good_info">
-                        <h3>{{good.name}}</h3>
-                        <em>{{good.spec}}</em>
+                        <h3>{{good['product_name']}}</h3>
+                        <em v-if="good.spec">{{good.spec}}</em>
                         <div id="good_info_price">
-                            <h3>{{good.price}}</h3>
-                            <em>{{good.entities}}</em>
+                            <h3>￥ {{good.price}}</h3>
+                            <em>X {{good.quantity}}</em>
                         </div>
                     </div>
                 </li>
@@ -57,11 +56,11 @@
             <ul id="order_amount">
                 <li>
                     <span>商品总价</span>
-                    <span>￥40.00</span>
+                    <span>￥{{orderDetail['total_fee']}}</span>
                 </li>
                 <li>
                     <span>优惠金额</span>
-                    <span>-￥5.00</span>
+                    <span>-￥{{orderDetail['total_preferential_fee']}}</span>
                 </li>
                 <li>
                   <span>优惠券</span>
@@ -70,27 +69,28 @@
             </ul>
             <div id="order_price">
                 <h4>实付款</h4>
-                <span>￥35.00</span>
+                <span>￥{{orderDetail['settlement_total_fee']}}</span>
             </div>
         </div>
         <div id="order_info">
             <h3>订单信息</h3>
             <div>
-                <span> 订单编号：20190888765866128</span>
-                <em>复制</em>
+                <span> 订单编号：{{orderDetail['order_no']}}</span>
+                <em @click="cpoy(orderDetail['order_no'])">复制</em>
             </div>
             <div>
-                <span>下单时间：2019-01-17 8:30:06 </span>
-                <span>待自提</span>
+                <span>下单时间：{{orderDetail['created_at']}} </span>
+                <span> {{orderDetail['state_desc']}}</span>
             </div>
 
-            <div>支付方式：微信支付  </div>
+            <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
 
-            <div>实际取货时间：2019-01-17 8:30:50  </div>
+            <div>实际取货时间：{{orderDetail['paid_at'] || '暂无'}}  </div>
         </div>
         <div id="order_total_price">
-            <span>预付款 ￥40.00</span>
-            <h3>去取货</h3>
+            <span>预付款 ￥{{orderDetail['settlement_total_fee']}}</span>
+            <h3 v-if="orderDetail['state_desc'] === '待自提'" @click="btnClick('pickup', orderDetail)" >去取货</h3>
+            <h3 v-if="orderDetail['state_desc'] === '待付款'" @click="btnClick('pay', orderDetail)" >去支付</h3>
         </div>
     </div>
 </template>
@@ -105,32 +105,39 @@
             return {
                 title: '订单详情',
                 navName: 'orderDetails',
-                goods:[
-                    {
-                        image:'../../../../static/images/background/1.png',
-                        name:'青松功夫可追溯的芝士蛋糕',
-                        spec:'芝士标准糖',
-                        price:'￥20.00',
-                        entities:'X1'
-                    },
-                    {
-                        image:'../../../../static/images/background/1.png',
-                        name:'青松功夫可追溯的芝士蛋糕',
-                        spec:'芝士标准糖',
-                        price:'￥20.00',
-                        entities:'X1'
-                    }
-                ]
             };
         },
         watch: {},
-        computed: {},
-        methods: {},
+        computed: {
+			orderDetail () {
+				return this.model.user.order.detail.orderDetail
+            }
+        },
+        methods: {
+			cpoy (text) {
+				wx.setClipboardData({
+					data: text,
+					success: function (res) {
+						wx.getClipboardData({
+							success: function (res) {
+								wx.showToast({
+									title: '复制成功'
+								})
+							}
+						})
+					}
+				})
+            },
+			btnClick (type, order) {
+				this.$command('ORDER_STATUS_UPDATE', type, order);
+            }
+        },
         created () {
 
         },
         mounted () {
-
+            let id = this.$route.query.id;
+			this.$command('ORDER_DETAIL', id)
         }
     }
 </script>
@@ -273,7 +280,7 @@
         flex: 1;
         margin-left: 20rpx;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: flex-start;
         flex-direction: column;
     }
@@ -291,7 +298,7 @@
 
     #order_details #good_list li #good_info #good_info_price{
         width: 100%;
-        margin-top: 60rpx;
+        margin-top: 30rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;

@@ -1,6 +1,7 @@
 import Model from './Model';
 import StoreTransformer from './transformers/StoreTransformer';
 import _ from 'underscore';
+import {formatMoney} from '../utils';
 
 export default class Orders extends Model {
     constructor (app) {
@@ -27,6 +28,15 @@ export default class Orders extends Model {
             },
             nearbyPoints () {
                 return this.state.nearbyPoints
+            },
+            selectedPoint () {
+                return this.state.selectedPoint
+            },
+            totalPrice () {
+                return this.state.totalPrice
+            },
+            mallType () {
+                return this.state.mallType
             }
         });
     }
@@ -38,12 +48,28 @@ export default class Orders extends Model {
             goodInShoppingCart: [],
             showPoints: false,
             commonlyPoints: [],
-            nearbyPoints: []
+            nearbyPoints: [],
+            selectedPoint: {},
+            totalPrice: '',
+            mallType: ''
         });
+    }
+    
+    calculate (state) {
+        let data = state.goodInShoppingCart;
+        if (_.isEmpty(data)) return;
+        let totalPrice = 0;
+        _.map(data, (item) => {
+            totalPrice += (parseInt(item['market_price']) * parseInt(item['buy_num']))
+        });
+       
+        state.totalPrice = formatMoney(totalPrice);
     }
     
 
     listeners () {
+        let that = this;
+        
         super.listeners();
         
         this.addEventListener('shoppingCartAnimation', function (arg) {
@@ -134,7 +160,7 @@ export default class Orders extends Model {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
-                product['range'] = `￥${minPrice['market_price']}~￥${maxPrice['market_price']}`
+                product['range'] = product['specifications'].length ? `￥${minPrice['market_price']}~￥${maxPrice['market_price']}` : `￥${minPrice['market_price']}`
             });
     
             this.state.goods = goods;
@@ -155,6 +181,13 @@ export default class Orders extends Model {
             } else {
                 this.$application.$vm.set(carts, cartIndex, goods)
             }
+            that.calculate(this.state);
+        });
+        
+        this.addEventListener('removeGoodsFromCart', function ({goods}) {
+            let carts = this.state.goodInShoppingCart;
+            this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
+            that.calculate(this.state);
         });
         
         this.addEventListener('saveCartGoodsList', function ({products}) {
@@ -167,7 +200,8 @@ export default class Orders extends Model {
                     i['spec_desp'] = specDesp.join(',')
                 }
             });
-            this.state.goodInShoppingCart = products
+            this.state.goodInShoppingCart = products;
+            that.calculate(this.state);
         });
         
         this.addEventListener('clearShoppingCart', function () {
@@ -180,19 +214,25 @@ export default class Orders extends Model {
             if (cartIndex > -1) {
                 carts[cartIndex]['buy_num'] = num;
                 this.$application.$vm.set(carts, cartIndex, carts[cartIndex])
-            }
+            };
+            that.calculate(this.state);
         });
         
-        this.addEventListener('selectPoints', function ({boolean}) {
-            this.state.showPoints = boolean
+        this.addEventListener('selectPoints', function ({boolean, type}) {
+            this.state.showPoints = boolean;
+            this.state.mallType = type;
         });
     
-        this.addEventListener('saveCommonlyUsedPoint', function ({points}) {
-            this.state.commonlyPoints = points
+        this.addEventListener('saveCommonlyUsedPoint', function ({points, type}) {
+            this.state.commonlyPoints = points;
+            this.state.type = type;
         });
     
-        this.addEventListener('saveNearbyPoints', function ({points}) {
-            this.state.nearbyPoints = points
-        })
+        this.addEventListener('saveNearbyPoints', function ({points, type}) {
+            this.state.nearbyPoints = points;
+            this.state.type = type;
+        });
+        
+       
     }
 }

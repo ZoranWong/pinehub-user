@@ -15,6 +15,52 @@ export function formatTime (date) {
     return `${t1} ${t2}`;
 }
 
+// 日期加一天
+function getFormatDate (arg) {
+    if (arg === undefined || arg === '') {
+        return '';
+    }
+    
+    var re = arg + '';
+    if (re.length < 2) {
+        re = '0' + re;
+    }
+    
+    return re;
+}
+export function addDate (date, days) {
+    if (!date) {
+        return '暂无'
+    }
+    let newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    let month = newDate.getMonth() + 1;
+    let day = newDate.getDate();
+    return newDate.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+}
+
+// 对比时间
+export function checkAuditTime (beginTime, endTime) {
+    var nowDate = new Date();
+    var beginDate = new Date(nowDate);
+    var endDate = new Date(nowDate);
+    
+    var beginIndex = beginTime.lastIndexOf("\:");
+    var beginHour = beginTime.substring(0, beginIndex);
+    var beginMinue = beginTime.substring(beginIndex + 1, beginTime.length);
+    beginDate.setHours(beginHour, beginMinue, 0, 0);
+    
+    var endIndex = endTime.lastIndexOf(" \: ");
+    var endHour = endTime.substring(0, endIndex);
+    var endMinue = endTime.substring(endIndex + 1, endTime.length);
+    endDate.setHours(endHour, endMinue, 0, 0);
+    if (nowDate.getTime() - beginDate.getTime() >= 0 && nowDate.getTime() <= endDate.getTime()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 export function formatMoney (number, cent = 2, isThousand = 1) {
     number = number.toString().replace(/\$|\,/g, '');
     

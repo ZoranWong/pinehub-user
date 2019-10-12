@@ -1,11 +1,11 @@
 import Model from './Model';
 import _ from 'underscore';
-import OrderDetailTransformer from './transformers/OrderDetailTransformer';
+import OrdersTransformers from './transformers/Orders';
 
 export default class Orders extends Model {
     constructor (app) {
         super(app);
-        this.transformer = OrderDetailTransformer;
+        this.transformer = OrdersTransformers;
     }
 
     computed () {

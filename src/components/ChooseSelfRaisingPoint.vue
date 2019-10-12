@@ -3,7 +3,7 @@
     <div id="points_wrapper" >
         <div id="points_container">
             <div id="closeIcon" @click="closeWrapper">
-                <i class="iconfont closeIcon" >&#xe658;</i>
+                <i class="iconfont closeIcon"  @click="close">&#xe658;</i>
             </div>
             <div class="header_img">
                 <img src="../../static/selfPoints/header.jpg" alt="">
@@ -13,7 +13,7 @@
                 <span @click="changeBackground('right')">附近自提点</span>
             </div>
             <ul id="points_container_list">
-                <li v-for="item in points" :key="item.id">
+                <li v-for="item in points" :key="item.id" @click="payment(item)">
                     <i class="iconfont">&#xe65a;</i>
                     <span>
                            {{item.address}}
@@ -36,44 +36,68 @@
         data(){
 		    return {
 		    	background: bg1,
-                points: []
+                points: [],
+                type : ''
             }
         },
         computed : {
 			commonlyPoints () {
-				let points = this.model.user.store.commonlyPoints
-                this.points = points;
+				let points;
+				if (this.type === 'mall') {
+					points = this.model.user.store.commonlyPoints;
+                } else {
+					points = this.model.user.map.commonlyMapPoints
+                }
+				this.points = points;
 				return points
 			},
 			nearbyPoints () {
-				let points = this.model.user.store.nearbyPoints
+				let points;
+				if (this.type === 'mall') {
+					points = this.model.user.store.nearbyPoints;
+				} else {
+					points = this.model.user.map.nearbyMapPoints
+				}
 				this.points = points;
 				return points
 			}
         },
         methods: {
+			close () {
+				this.$emit('close')
+			},
 			closeWrapper(){
 				this.model.user.store.dispatch('selectPoints', { boolean: false})
+				this.model.newEvents.shoppingCarts.dispatch('selectPoints', { boolean: false})
             },
             async changeBackground(position){
                 if (position === 'left') {
                 	this.background = bg1;
-					this.$command('LOAD_COMMONLY_USED')
+					this.$command('LOAD_COMMONLY_USED', this.type)
                 } else {
 					let result = await this.map.getLocation();
 					this.background = bg2;
-					this.$command('LOAD_NEARBY',result[0],result[1])
+					//this.$command('LOAD_NEARBY',result[0],result[1])
+					this.$command('LOAD_NEARBY',-73.9878441,40.7484404, this.type)
                 }
             },
 			nearbyStores () {
 				this.$command('REDIRECT_TO', 'storesMap', 'push', {query: {
-                    'next_route': 'storeMarket'
+                    type: this.type
                 }});
 			},
+            payment (item) {
+				this.$command('SELECTED_POINT_COMMAND', item)
+				this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+					query: {type: this.type}
+                });
+            }
         },
 
         mounted () {
-			this.$command('LOAD_COMMONLY_USED')
+			let type = this.model.user.store.mallType || this.model.newEvents.shoppingCarts.breakfastType;
+			this.type = type
+			this.$command('LOAD_COMMONLY_USED',type);
 		}
 	}
 </script>

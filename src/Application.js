@@ -58,6 +58,7 @@ export default class Application {
     }
 
     get store () {
+        console.log(this.currentPage['routeAlias'], '==========================================');
         return this.stores[this.currentPage['routeAlias']];
     }
     registerModel (name, model) {
@@ -78,6 +79,7 @@ export default class Application {
                 readonly: true,
                 enumerable: true,
                 get () {
+                    console.log('==================================');
                     return app['stores'][app.currentPage['routeAlias']].getters[name + '/' + key];
                 }
             })
@@ -234,19 +236,26 @@ export default class Application {
                 let store = this['stores'][this.route] = this.$models(this.models);
                 this.mountComponent = _.extend({
                     store: store,
-                    render: h => h(App),
-                    mounted: function () {
-                        console.log('---------------------- change page mounted ---------');
-                        app.currentPage = this;
-                        app.currentRoute = this.routeAlias;
-                    }
+                    render: h => h(App)
                 }, this.mountComponent);
-                let mounted = this.mountComponent.mounted;
-               
-                this.mountComponent.mounted = function () {
-                    mounted && mounted.call(this);
-                    console.log('=---=--------=---=', this);
+                let componentMounted = this.mountComponent.mounted;
+                let componentCreated = this.mountComponent.created;
+                let applicationCreated = function () {
                     app.currentPage = this;
+                    app.currentRoute = this.routeAlias;
+                    componentCreated && componentCreated.call(this);
+                }
+                let applicationMounted = function () {
+                    console.log('---------------------- change page mounted ---------');
+                    app.currentPage = this;
+                    app.currentRoute = this.routeAlias;
+                    componentMounted && componentMounted.call(this);
+                };
+                this.mountComponent.created = function () {
+                    applicationCreated.call(this);
+                };
+                this.mountComponent.mounted = function () {
+                    applicationMounted.call(this);
                 }
                 // console.log(this.mountComponent);
                 _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
@@ -273,6 +282,7 @@ export default class Application {
     }
     
     changePage (route) {
+        console.log('----------------- change to ' + route + '-----------------');
         this.currentPage = Application.pageContainer[route];
     }
     

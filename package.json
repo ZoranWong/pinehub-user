@@ -33,7 +33,8 @@
         "underscore": "^1.9.1",
         "underscore.string": "^3.3.4",
         "vue": "^2.5.17",
-        "vuex": "^3.0.1"
+        "vuex": "^3.0.1",
+        "weapp-qrcode": "^1.0.0"
     },
     "devDependencies": {
         "@babel/plugin-transform-async-to-generator": "^7.1.0",

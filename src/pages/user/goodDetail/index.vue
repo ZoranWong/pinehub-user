@@ -10,32 +10,35 @@
             </div>
             <i class="iconfont" @click="addToShoppingCart(goodDetail)">&#xe6d8;</i>
         </div>
-        <h4 class="good_detail_price"  v-if="goodDetail.range">{{goodDetail.range}}</h4>
-        <h4 class="good_detail_price"  v-else>{{goodDetail['sell_price']}}</h4>
+        <h4 class="good_detail_price">{{goodDetail.range}}</h4>
         <div id="good_detail_statictics">
             <span class="is-underline">￥{{goodDetail['origin_price']}}</span>
             <span>销量{{goodDetail['sell_num']}}</span>
-            <span>库存{{goodDetail.stockNum || 0}}</span>
+            <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
         </div>
 
-        <ShoppingCart />
+        <ShoppingCart :type="this.$route.query['type']" />
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
             @close="closeSelectSpec" />
+        <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
     </div>
 </template>
 
 <script>
 	import MpTitle from '@/components/MpTitle';
 	import ShoppingCart from '@/components/ShoppingCart';
+	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
+	import _ from 'underscore'
 	export default {
         name: 'goodDetail',
 		components: {
 			'mp-title': MpTitle,
 			ShoppingCart,
-			SelectSpecification
+			SelectSpecification,
+			ChooseSelfRaisingPoint
 		},
         data() {
         	return {
@@ -46,9 +49,22 @@
         },
         methods:{
 			addToShoppingCart (item) {
-				this.selectItem = item;
-				this.showShoppingCart = !this.showShoppingCart;
-				this.selectSpec = true
+				if (item.specifications.length) {
+					this.selectItem = item;
+					this.selectSpec = true
+				} else {
+					let goods = this.model.user.store.goodInShoppingCart
+					if (goods.length) {
+						_.map(goods, (product) => {
+							product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+								this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.$route.query['type'])
+								:
+								this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+						})
+                    } else {
+						this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+                    }
+				}
 			},
 			closeSelectSpec(){
 				this.selectSpec = false
@@ -60,7 +76,13 @@
         computed : {
             goodDetail () {
 				return this.model.user.goodDetail.goodDetail
-            }
+            },
+			showPoints () {
+				return this.model.user.store.showPoints
+			},
+			closePoints () {
+				this.showPoints = false
+			},
         },
         mounted () {
             this.$command('GOOD_DETAIL_COMMAND', this.$route.query['type'], this.$route.query['good_id'])

@@ -1,139 +1,220 @@
+<!--suppress ALL -->
 <template>
     <div class="body">
         <mp-title :title="title"></mp-title>
-        <div>1111111111111111111111111111111111111111111111</div>
-        <div class="charge-cards" v-if="cards.length > 0">
+        <div class="charge-cards">
             <div class="title">
                 选择充值金额
             </div>
-            <div class="line"></div>
-            <div class="cards">
-                <scroll-view scroll-x="true"  class="card-list">
-                    <ul>
-
-                    </ul>
-                </scroll-view>
+            <ul class="cards">
+                <li v-for="item in cards" @click="selectedCard(item.id)" :id="item.id === checked ? 'active-card' : ''">
+                    <h3>{{item.price}}元</h3>
+                    <span>送{{item['gift_amount']}}元</span>
+                    <img src="./img/payIcon.jpg" alt="" v-if="item.id === checked">
+                </li>
+            </ul>
+        </div>
+        <div class="pay_type">
+            <div class="header">请选择支付方式</div>
+            <div class="type" @click="selectType('wx')">
+                <div class="left">
+                    <i class="iconfont wx">&#xe883;</i>
+                    <span>微信支付</span>
+                </div>
+                <i class="iconfont right">&#xe656;</i>
             </div>
         </div>
-        <button type="primary"  v-if="selectedIndex !== null" class="pay-btn" @click="charge">立即支付</button>
+        <button class="pay-btn" @click="createRechargeOrder" :style="{bottom: checked?'0':'-100rpx'}" >充值</button>
     </div>
 </template>
 <script>
-    import MpTitle from '@/components/MpTitle';
-    export default {
-        name: 'Balance',
-        data: function () {
-          return {
-              title: '余额充值',
-              selectedIndex: null
-          };
-        },
-        components: {
-            'mp-title': MpTitle
-        },
-        computed: {
-            cards () {
-                return this.$store.getters['model.chargeCards/list'];
+	import MpTitle from '@/components/MpTitle';
+
+	export default {
+		name: 'Balance',
+		data: function () {
+			return {
+				title: '余额充值',
+				selectedIndex: null,
+				checked: ''
+			};
+		},
+		components: {
+			'mp-title': MpTitle
+		},
+		computed: {
+			cards () {
+				return this.model.user.recharge.cards
             }
-        },
-        methods: {
-            selectedCard (index, chargeCard) {
-                this.selectedIndex = index;
-                this.chargeCard = chargeCard;
+		},
+		methods: {
+			selectedCard (id) {
+				this.checked = id
+			},
+			selectType (type) {
+				this.type = type
             },
-            async charge () {
-                await this.$command('CREATE_ORDER_BY_MERCHANDISE_ID', '', '', '', '', this.chargeCard.price, this.chargeCard['merchandise_id']);
-                this.$command('LOAD_ACCOUNT');
-            },
-            tradeOrders () {
-                this.$command('REDIRECT_TO', 'user.tradeOrders', 'push');
+			createRechargeOrder () {
+				if(!this.checked) return;
+                this.$command('CREATE_RECHARGE_ORDER', this.checked)
             }
-        }
-    }
+		},
+        mounted () {
+			this.$command('RECHARGE_CARDS')
+		}
+	}
 </script>
 <style>
-    .body{
+    .body {
         background-color: #f2f2f2;
     }
 
-    button:after{
-        border: 0;
-    }
-
-    .balance-detail{
-        box-sizing: border-box;
-        width: 100%;
-        background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));
-        height: 330rpx;
-        padding: 50rpx 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-    .balance-detail .title{
-        font-size: 28rpx;
-        color: #111;
-    }
-    .balance-detail .balance-number{
-        text-align: center;
-        margin-top: 15rpx;
-        margin-bottom: 25rpx;
-        color: #111111;
-        font-size: 70rpx;
-        font-weight: bold;
-    }
-    .recharge{
-        color: #111111;
-        font-size: 32rpx;
-        width: 280rpx;
-        height: 80rpx;
-        background:rgba(253,224,104,1);
-        box-shadow:0 5rpx 10rpx 0 rgba(255,204,0,0.6);
-        border-radius:40rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: normal;
-    }
     .charge-cards{
-        margin-top: 10rpx;
-        width: 710rpx;
-        margin-left: 20rpx;
-        height: 270rpx;
-        background-color: #ffffff;
-        border-radius: 12rpx;
-    }
-    .charge-cards .title{
-        line-height: 80rpx;
-        font-size: 28rpx;
-        color: #757575;
-        margin-left: 20rpx;
-    }
-    .charge-cards .line {
-        height: 2rpx;
-        background-color: #f2f2f2;
-    }
-    .charge-cards .cards{
-        height: 188rpx;
         width: 100%;
-    }
-    .charge-cards .cards .card-list{
-        margin-left: 19rpx;
-        margin-right: 19rpx;
-        width: 680rpx;
-        /*height: 100%;*/
-        position: absolute;
-        display: flex;
-        white-space: nowrap;
-    }
-    .pay-btn{
-        background-color: #FFD000 !important;
-        width: 710rpx;
-        height: 80rpx;
-        margin-left: 20rpx;
+        background: #fff;
         margin-top: 20rpx;
-        color: #111 !important;
+        margin-bottom: 10rpx;
+        padding: 0 20rpx;
+        box-sizing: border-box;
+    }
+
+    .charge-cards .title{
+        width: 100%;
+        height: 80rpx;
+        box-sizing: border-box;
+        padding: 0 20rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 28rpx;
+        color: #111111;
+        border-bottom: 2rpx solid #f2f2f2;
+    }
+
+    .charge-cards .cards{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30rpx 20rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .charge-cards .cards li{
+        width: 212rpx;
+        height: 128rpx;
+        border-radius: 10rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-right: 11rpx;
+        border: 2rpx solid #ccc;
+        margin-bottom: 10rpx;
+        position: relative
+    }
+
+    .charge-cards .cards li:nth-child(3n){
+        margin-right: 0;
+    }
+
+    .charge-cards .cards li h3{
         font-size: 32rpx;
+        color: #111111;
+    }
+
+    .charge-cards .cards li span{
+        font-size: 24rpx;
+        color: #757575;
+    }
+
+    .charge-cards .cards li img{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 38rpx;
+        height: 38rpx;
+    }
+
+    .pay_type{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20rpx;
+        background: #fff;
+    }
+
+    .pay_type .header {
+        width: 100%;
+        height: 80rpx;
+        box-sizing: border-box;
+        padding:  0 20rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 28rpx;
+        color: #111111;
+    }
+
+    .pay_type .type{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 80rpx;
+        padding: 0 20rpx;
+        box-sizing: border-box;
+        border-top: 2rpx solid #f2f2f2;
+    }
+
+    .pay_type .type .left {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .pay_type .type .left i{
+        font-size: 48rpx;
+        margin-right: 20rpx;
+    }
+
+    .pay_type .type .left .wx{
+        color: #60B130;
+    }
+
+    .pay_type .type .left span{
+        font-size: 28rpx;
+        color: #111111;
+    }
+
+    .pay_type .type .right {
+        font-size: 48rpx;
+        color: #ffcc00;
+    }
+
+    #active-card{
+        border-color: #ffcc00;
+    }
+
+    #active-card h3 {
+        color: #ffcc00;
+    }
+
+    .pay-btn{
+        width: 100%;
+        height: 98rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32rpx;
+        color: #111111;
+        background: #ffcc00;
+        position: fixed;
+        border-radius: 0;
+        transition: all 1s;
+    }
+
+    .pay-btn:after{
+        border: none;
     }
 </style>

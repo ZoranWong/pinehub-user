@@ -7,54 +7,55 @@
             v-for="(order, index) in orders"
             :key="index" v-if ="order.show"
             :top = "orderItemTop(order, index)"
-            @click="orderDetail(order.id)"
         >
-            <div class="order_info_sn">
-                <i>订单编号</i><em>{{order.code}}</em>
-                <span class="order_info_status">{{order.status}}</span>
+            <div class="order_info_sn" @click="orderDetail(order.id)">
+                <div class="left">
+                    <i class="iconfont orderIcon">&#xe7e6;</i>
+                    <em>订单编号:{{order.code}}</em>
+                    <i class="iconfont detailIcon">&#xe6a3;</i>
+                </div>
+                <span class="order_info_status">{{order['stateDesc']}}</span>
             </div>
-            <div v-if = "order.type === OFF_LINE_PAYMENT_ORDER">
+            <div v-if = "order['type'] === 'CODE_SCAN'" class="code_scan" @click="orderDetail(order.id)">
                 线下扫码支付
             </div>
-            <div class="order_info_glist" v-else>
-                <dl v-for="(item, idx) in order.orderItems" :key="idx">
-                    <dd><img :src="item.mainImage" /></dd>
-                    <dt>
-                        <em>{{item.name}}</em>
-                        <span>单价 ￥{{item.sellPrice}} 数量 {{item.quality}} 份</span>
-                        <span>总价 ￥{{item.totalAmount}}</span>
-                    </dt>
-                </dl>
-            </div>
-            <div class="order_info_ads" v-if = "order.type !== OFF_LINE_PAYMENT_ORDER">
-                <i v-if = "order.pickUpMethod === USER_SELF_PICK_UP">自提地址</i>
-                <i v-else>配送地址</i>
-                <em>{{order.receiverAddress}}</em>
-            </div>
-            <div class="order_info_glist_total">
-                <div class="order_info_glist_date">
-                    {{order.createdAt}}
-                </div>
-                <em v-if = "order.type !== OFF_LINE_PAYMENT_ORDER">共{{order.quantity}}件商品</em>实付<i>￥{{order.paymentAmount}}</i>
+            <ul class="order_info_glist" v-else @click="orderDetail(order.id)">
+                <li v-for="(item, idx) in order.orderItems" :key="idx">
+                    <img :src="item.mainImage" alt="">
+                    <div id="good_info">
+                        <h3>{{item.name}}</h3>
+                        <em v-if="item['specDesp']">{{item['specDesp']}}</em>
+                        <div id="good_info_price">
+                            <h3>￥{{item.sellPrice}}</h3>
+                            <em>X {{item.quantity}}</em>
+                        </div>
+                    </div>
+                </li>
+                <li id="total">
+                    共{{order.orderItems.length || 0}}件商品     预付款:￥<span>{{order['settlement_total_fee']}}</span>
+                </li>
+            </ul>
+            <div class="order_info_btn" v-if="order.btnStatus === 0">
+                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+                <i @click="btnClick('pay', order)" class="yellow">去支付</i>
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 1">
-                <i @click="btnClick('pay', order.id)">立即支付</i>
-                <i @click="btnClick('cancel', order.id)" class="cancel">取消订单</i>
+                <i @click="btnClick('cancel', order)" class="white">取消订单</i>
+                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+                <i @click="btnClick('pickup', order)" class="yellow">去取货</i>
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 2">
-                <i @click="btnClick('verification', order.id)">确认核销</i>
+                <i @click="btnClick('feedback', order)" class="white">申请售后</i>
+                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 3">
-                <i @click="btnClick('received', order.id)">确认收货</i>
+                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
             </div>
-            <i class="order_info_circle" v-if="order.btnStatus !== 0"></i>
-            <i class="order_info_circle right_circle" v-if="order.btnStatus!==0"></i>
         </div>
     </scroll-view>
 </template>
 
 <script>
-    import { USER_SELF_PICK_UP, OFF_LINE_PAYMENT_ORDER} from '@/utils/OrderDict';
     export default {
         name: 'UserOrders',
         props: {
@@ -83,9 +84,7 @@
         },
         data () {
             return {
-                isLoading: false,
-                USER_SELF_PICK_UP: USER_SELF_PICK_UP,
-                OFF_LINE_PAYMENT_ORDER: OFF_LINE_PAYMENT_ORDER
+                isLoading: false
             };
         },
         // 算术方法
@@ -98,15 +97,13 @@
             orderDetail (id) {
                 this.$command('REDIRECT_TO', 'user.order.detail', 'replace',{
                     query: {
-                        order_id: id
+                        id: id
                     }
                 });
             },
-            isOffLineOrder (order) {
-                return order.type === OFF_LINE_PAYMENT_ORDER;
-            },
-            btnClick (type, id) {
-                this.$command('ORDER_STATUS_UPDATE', type, id);
+
+            btnClick (type, order) {
+                this.$command('ORDER_STATUS_UPDATE', type, order);
             },
             orderItemTop (order, index) {
                 const query = wx.createSelectorQuery()
@@ -162,44 +159,58 @@
         box-sizing: border-box;
         overflow-y: hidden;
         height: 100%;
+        background: #f2f2f2;
     }
     .order_info {
         background: #FFFFFF;
-        border-radius: 10rpx;
-        font-size: 34rpx;
-        font-weight: 300;
-        padding: 5rpx 20rpx 20rpx;
-        margin: 20rpx;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 20rpx;
         overflow: hidden;
         position: relative;
-        box-shadow: 0rpx 9rpx 20rpx rgba(204, 202, 202, .6);
+        margin-top: 20rpx;
     }
 
     .order_info_sn {
-        font-size: 32rpx;
-        line-height: 68rpx;
-        border-bottom: 1rpx solid #f3f3f3;
-        overflow: hidden;
-        font-weight: 300;
-        margin-bottom: 20rpx;
-        /*background: green;*/
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100% ;
+        height: 108rpx;
+        padding: 0 20rpx;
+        box-sizing: border-box;
     }
 
-    .order_info_sn i {
-        display: inline-block;
-        color: #111111;
+    .order_info_sn .left{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order_info_sn .left .orderIcon {
         font-size: 34rpx;
         padding-right: 20rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
-    .order_info_sn em {
-        display: inline-block;
+    .order_info_sn .left .detailIcon {
+        font-size: 20rpx;
+        margin-left: 30rpx;
+        color: #757575;
+    }
+
+    .order_info_sn .left em {
+        font-size: 32rpx;
+        color: #111111;
+        font-weight: bold;
     }
 
     .order_info_status {
         font-weight: 400;
         color: #FFC000;
-        float: right;
+        font-size: 28rpx;
     }
 
     .order_info_ads {
@@ -221,114 +232,115 @@
     }
 
     .order_info_glist {
-        overflow: hidden;
-        clear: both;
+        padding: 30rpx 20rpx;
+        box-sizing: border-box;
+        border-bottom: 1rpx solid #f2f2f2;
+        border-top: 1rpx solid #f2f2f2;
+        background: #fff;
+    }
+
+    .code_scan {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30rpx 20rpx;
+        font-size: 32rpx;
+        color: #111111;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1rpx solid #f2f2f2;
+        border-top: 1rpx solid #f2f2f2;
+    }
+
+    .order_info_glist li {
+        padding: 10rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order_info_glist li img {
+        width: 180rpx;
+        height: 180rpx;
+    }
+
+    .order_info_glist li #good_info {
+        flex: 1;
+        margin-left: 20rpx;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .order_info_glist li #good_info h3{
+        font-size: 28rpx;
+        color: #111111;
+        margin: 10rpx 0 20rpx 0;
+    }
+
+    .order_info_glist li #good_info em{
+        font-size: 24rpx;
+        color: #757575;
+    }
+
+    .order_info_glist li #good_info #good_info_price{
+        width: 100%;
         margin-top: 20rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .order_info_glist dl {
-        overflow: hidden;
-        margin-bottom: 20rpx;
+    .order_info_glist li #good_info #good_info_price h3{
+        margin: 0;
     }
 
-    .order_info_glist dl:last-child {
-        margin-bottom: 0;
+    .order_info_glist #total{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 24rpx;
+        color: #111111;
+        padding: 0 10rpx;
+        box-sizing: border-box;
     }
 
-    .order_info_glist dl dd {
-        display: inline-block;
-        width: 140rpx;
-        height: 140rpx;
-        margin-right: 20rpx;
-        float: left;
-    }
-
-    .order_info_glist dl dd img {
-        display: block;
-        width: 140rpx;
-        height: 140rpx;
-        background: #FAFAFA;
-    }
-
-    .order_info_glist dl dt {
-        display: inline-block;
-        width: 500rpx;
-        height: 120rpx;
-        float: left;
-    }
-
-    .order_info_glist dl dt em {
-        font-size: 36rpx;
-        font-weight: 300;
-        line-height: 70rpx;
-        color: #525252;
-    }
-
-    .order_info_glist dl dt span {
-        display: block;
-        font-size: 28rpx;
-        font-weight: 300;
-        color: #828282;
-        line-height: 35rpx;
-    }
-
-    .order_info_glist_total {
-        text-align: right;
-        font-size: 28rpx;
-        line-height: 46rpx;
-    }
-
-    .order_info_glist_total i {
-        display: inline-block;
-        color: #FECE00;
-        padding-right: 10rpx;
-    }
-
-    .order_info_glist_total em {
-        display: inline-block;
-        padding-right: 10rpx;
-    }
-
-    .order_info_glist_date {
-        display: inline-block;
-        float: left;
+    .order_info_glist #total span{
+        font-size: 32rpx;
+        color: #111111;
     }
 
     .order_info_btn {
-        margin-top: 20rpx;
-        padding-top: 20rpx;
-        border-top: 1rpx dashed #f3f3f3;
+        width: 100%;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 108rpx;
     }
 
     .order_info_btn i {
+        height: 60rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 28rpx;
-        float: right;
-        background: #FECE00;
-        border: 1rpx solid #FECE00;
-        color: #111111;
-        padding: 8rpx 15rpx;
-        margin-left: 20rpx;
+        background: #fff;
+        border: 1rpx solid #757575;
+        color: #757575;
+        padding: 0 25rpx;
+        margin-right: 20rpx;
         border-radius: 10rpx;
     }
 
-    .order_info_btn i.cancel {
-        background: #FFFFFF;
-        border: 1rpx solid #CCCCCC;
-        color: #525252;
+    .order_info_btn i.yellow{
+        color: #111111;
+        background: #ffcc00;
+        border-color: #ffcc00;
     }
 
-    .order_info_circle {
-        position: absolute;
-        background: #FAFAFA;
-        width: 50rpx;
-        height: 50rpx;
-        border-radius: 50%;
-        bottom: 72rpx;
-        right: -25rpx;
-        z-index: 1;
-    }
 
-    .order_info_circle.right_circle {
-        left: -25rpx;
-    }
+
 </style>

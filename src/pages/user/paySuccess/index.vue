@@ -3,21 +3,22 @@
         <mp-title :title="title"></mp-title>
         <div class="order-success">
             <div id="orderpay_success">
-                <div class = "shop-name">{{order ? order['shop']['name'] : '快乐松'}}</div>
-                <div id="success_ico"></div>
+                <div id="success_ico">
+                    <i class="iconfont">&#xe656;</i>
+                </div>
                 <em>支付成功</em>
-                <i>¥ {{order ? order['payment_amount']: ""}}</i>
+                <i class="amount">¥ {{completedOrder['settlement_total_fee'] ? completedOrder['settlement_total_fee']: "0.00"}}</i>
             </div>
         </div>
         <div class="order-detail">
             <div class="payment-amount item">
                 <div class="title">合计金额</div>
-                <div class="content">¥ {{order ? order['payment_amount'] : "0.00"}}</div>
+                <div class="content">¥ {{completedOrder ? completedOrder['settlement_total_fee'] : "0.00"}}</div>
             </div>
             <div class="line"></div>
             <div class="pay-type item">
                 <div class="title">支付方式</div>
-                <div class="content">{{payType}}</div>
+                <div class="content">{{paymentType}}</div>
             </div>
             <div class="line"></div>
             <div class="pay-time item">
@@ -26,19 +27,8 @@
             </div>
             <div class="line"></div>
             <div class="opt-btn item">
-                <button class="btn buy-btn" size="large" @click="index">返回首页</button>
+                <button class="btn buy-btn" size="large" @click="index">完成</button>
             </div>
-        </div>
-        <div class="notice" v-if="siteUserOrder">
-            <em>请您于:</em>
-            <span>明天7:00-9:00前往指定取货点，凭订单号后四位取货</span>
-        </div>
-        <div class="tips" v-if="siteUserOrder">
-            <em><i>温馨提示</i></em>
-            <ul>
-                <li>1.自提时如超时未取，则视为自动放弃！</li>
-                <li>2.食品现制现售，暂不支持自主退货服务哦！</li>
-            </ul>
         </div>
         <div id="active_banner" v-if="imgUrl">
             <img :src="imgUrl" @click="goUrl()"/>
@@ -66,7 +56,9 @@
                 getFoodsTime: null,
                 order: null,
                 payType: '余额支付',
-                showToast: false
+                showToast: false,
+				completedOrder: {},
+				paymentType: ''
             };
         },
         computed: {
@@ -153,7 +145,9 @@
             setTimeout(() => {
                 this.showToast = true;
             }, 1500);
-        }
+			this.completedOrder = JSON.parse(this.$route.query.order);
+			this.paymentType = this.$route.query.type || '微信支付'
+		}
     }
 </script>
 
@@ -179,14 +173,13 @@
     }
 
     #success_ico {
-        display: block;
-        width: 148rpx;
-        height: 148rpx;
-        margin: 0 auto;
-        padding: 5rpx;
-        background: url(../../../../static/images/icon/feedBackSuccess.png) no-repeat center center;
-        background-size: 100%;
+        width: 100%;
+        height: 158rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+
 
     #orderpay_success em {
         text-align: center;
@@ -196,13 +189,20 @@
         color: #757575;
     }
 
-    #orderpay_success i {
+    #orderpay_success .amount {
         font-size: 50rpx;
         margin: 30rpx auto 20rpx;
         text-align: center;
         line-height: 50rpx;
         color: #111111;
         font-weight: bold;
+    }
+
+    #success_ico i {
+        font-size: 158rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
     .notice {
@@ -226,9 +226,10 @@
 
     .btn {
         font-size: 32rpx;
-        line-height: 80rpx;
         font-weight: 200;
-        text-align: center;
+       display: flex;
+        justify-content: center;
+        align-items: center;
         color: #111111;
         margin: 20rpx;
         height: 80rpx;

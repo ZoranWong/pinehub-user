@@ -30,6 +30,7 @@
 	"user.ticket.detail": "/pages/user/ticketDetail/main",
 	"couponCenter": "/pages/user/coupon/main",
 	"payment": "/pages/user/payment/main",
+    "selectPay": "/pages/user/selectPay/main",
 	"user.store": "/pages/user/store/main",
 	"user.goodDetail": "/pages/user/goodDetail/main"
 }

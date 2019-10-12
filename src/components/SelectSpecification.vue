@@ -108,7 +108,6 @@
 				})
 			},
 			addToShoppingCart(){
-
 				let selectedSpec = {};
 				for (let key in this.selectedSpec){
 					if (!_.isNaN(parseInt(key))) {
@@ -120,7 +119,12 @@
 				if (keys.length < this.item.specifications.length) {
 					return;
                 }
-                this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1,'mall')
+				if (this.type === 'mall') {
+					this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                } else {
+					this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                }
+
 				this.$emit('close')
             }
         }

@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 22,
 			"list": [
 				{
 					"id": 0,
@@ -124,11 +124,10 @@
 					"query": ""
 				},
 				{
-					"id": 13,
-					"name": "pages/user/coupon/main",
-					"pathName": "pages/user/coupon/main",
-					"query": "",
-					"scene": null
+					"id": -1,
+					"name": "卡券",
+					"pathName": "pages/coupon/main",
+					"query": ""
 				},
 				{
 					"id": 14,
@@ -171,6 +170,19 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "提货",
+					"pathName": "pages/user/pickup/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "支付成功",
+					"pathName": "pages/user/paySuccess/main",
 					"scene": null
 				}
 			]

@@ -38,28 +38,24 @@
             </em>
         </div>
         <div v-else class="bgff user-score-box">
-            <div class="score">{{userScore}}<i>积分</i></div>
+            <div class="score">{{userScore || 0 }}<i>积分</i></div>
             <em class="tips">
-                积分功能即将上线，敬请期待！
+                商城购买即可获得积分哦~
             </em>
         </div>
         <div id="index_menu">
-            <!-- <dl @click="neighborShop">
+            <dl @click="redirectTo('newEvents')" class="booking">
                 <dd>
-                    <img src="../../../../static/images/icon/todaysorder.png" />
+                    <img src="./img/car.jpg" />
                 </dd>
-                <dt>邻里优鲜</dt>
+                <dt>早餐预定</dt>
             </dl>
-            <dl @click="bookingMall">
+            <dl  @click="redirectTo('user.integral')" class="booking">
                 <dd>
-                    <img src="../../../../static/images/icon/prearrangedmall.png" />
+                    <img src="./img/mall.jpg" />
                 </dd>
-                <dt>预定商城</dt>
-            </dl> -->
-            <div @click="redirectTo('newEvents', {query: {activity_id: activityId}})" class="booking">
-                <img src="../../../../static/images/icon/booking.png"/>
-            </div>
-
+                <dt>积分商城</dt>
+            </dl>
         </div>
         <footer-nav :navName="navName"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
@@ -100,10 +96,12 @@
                 return this.$store.getters['model.account/isAuth'];
             },
             isMember () {
-                return this.$store.getters['model.account/isMember'];
+				console.log(this.$store.getters['model.account/isMember'], 'isMember');
+				return this.$store.getters['model.account/isMember'];
             },
             userScore () {
-                return this.$store.getters['model.account/userScore'];
+                // return this.$store.getters['model.account/userScore'];
+				return this.model.account.userInfo.availableScore;
             },
             isLogin () {
                 let overDate = this.$store.getters['model.account/overDate'];
@@ -192,7 +190,8 @@
                 });
             },
             getPhoneNumber (e) {
-                this.$command('SET_USER_MOBILE', e);
+				console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeeeee');
+				this.$command('SET_USER_MOBILE', e);
             },
             getUserInfo (e) {
                 this.$command('USER_REGISTER', e);
@@ -267,6 +266,7 @@
         border-radius: 15rpx;
         overflow: hidden;
         text-align: center;
+        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
     }
 
     .user-info-get-btn,
@@ -315,6 +315,9 @@
 
     #index_menu {
         padding: 30rpx 40rpx 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     #index_menu dl {
@@ -322,12 +325,22 @@
         height: 198rpx;
         background: #FFFFFF;
         border-radius: 10rpx;
-        box-shadow: 0 10rpx 10rpx #f1f1f1;
-        float: left;
+        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
+
     }
 
     #index_menu dl:nth-child(2) {
         margin-left: 30rpx;
+    }
+
+    #index_menu dl img{
+        width: 80rpx;
+        height: 80rpx;
+    }
+
+    #index_menu dl dt {
+       font-size: 32rpx;
+        color: #111111;
     }
 
     #index_menu .booking {

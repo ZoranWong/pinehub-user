@@ -10,37 +10,42 @@ export default class OrderStatusUpdateCommand extends Command {
             })
         }
     }
-    // 核销订单
-    async verification (id) {
-        let response = await this.service('http.orders').confirmOrder(id);
-        if (response.data) {
-            wx.showToast({
-                title: '订单已核销',
-                icon: 'none'
-            })
-        }
+    
+    // 再来一单
+    onemore () {
+        this.$application.$command('REDIRECT_TO', 'user.store', 'replace');
     }
-    // 确认收货
-    async received (id) {
-        let response = await this.service('http.orders').confirmOrder(id);
-        if (response.data) {
-            wx.showToast({
-                title: '订单已收货',
-                icon: 'none'
-            })
-        }
+    // 去取货
+    pickup (order) {
+        this.$application.$command('REDIRECT_TO', 'user.pickup', 'replace', {
+            query: {
+                order: JSON.stringify(order)
+            }
+        });
     }
+    
+    // 申请售后
+    async feedback (id) {
+        console.log(id, '00000');
+    }
+    
     // 重新支付订单
-    async payOrder (id) {
-        let response = await this.service('http.orders').orderPayById(id);
-        if (response) {
-            let timeStamp = response.sdk_config.timestamp;
-            let nonceStr = response.sdk_config.nonceStr;
-            let packageInfo = response.sdk_config.package;
-            let paySign = response.sdk_config.paySign;
-            let result = await this.mp.payment.pay(timeStamp, nonceStr, packageInfo, paySign);
-            return result;
-        }
+    payOrder (order) {
+        this.$application.$command('REDIRECT_TO', 'selectPay', 'push', {
+            query: {
+                order: JSON.stringify(order)
+            }
+        });
+        // let response = await this.service('http.orders').orderPayById(id);
+        // console.log(response, '---------pay response ----------');
+        // if (response) {
+        //     let timeStamp = response.sdk_config.timestamp;
+        //     let nonceStr = response.sdk_config.nonceStr;
+        //     let packageInfo = response.sdk_config.package;
+        //     let paySign = response.sdk_config.paySign;
+        //     let result = await this.mp.payment.pay(timeStamp, nonceStr, packageInfo, paySign);
+        //     return result;
+        // }
     }
     refresh () {
         let self = this;
@@ -48,43 +53,36 @@ export default class OrderStatusUpdateCommand extends Command {
             self.$application.$command('REDIRECT_TO', 'user.orders', 'replace');
         }, 1500);
     }
-    async handle (type, id) {
+    async handle (type, order) {
         let self = this;
         if (type === 'pay') {
-            await this.payOrder(id);
+            await this.payOrder(order);
         } else if (type === 'cancel') {
             wx.showModal({
                 title: '温馨提示',
                 content: '确认取消此订单？',
                 async success (res) {
                     if (res.confirm) {
-                        await self.cancel(id);
+                        await self.cancel(order.id);
                         self.refresh();
                     }
                 }
             })
-        } else if (type === 'verification') {
+        } else if (type === 'feedback') {
             wx.showModal({
                 title: '温馨提示',
-                content: '确认核销此订单？',
+                content: '确认申请售后？',
                 async success (res) {
                     if (res.confirm) {
-                        await self.verification(id);
+                        await self.feedback(order.id);
                         self.refresh();
                     }
                 }
             })
-        } else if (type === 'received') {
-            wx.showModal({
-                title: '温馨提示',
-                content: '此订单确认已收货？',
-                async success (res) {
-                    if (res.confirm) {
-                        await self.received(id);
-                        self.refresh();
-                    }
-                }
-            })
+        } else if (type === 'onemore') {
+            self.onemore()
+        } else if (type === 'pickup') {
+            self.pickup(order.id)
         }
     }
     static commandName () {

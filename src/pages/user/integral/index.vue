@@ -61,6 +61,7 @@
 		},
 		computed: {
 			integralProducts(){
+				console.log(this.model.integral.integralProducts, '-------------------------- this.model.integral.integralProducts ----------');
 				return this.model.integral.integralProducts
             },
 			totalNum() {

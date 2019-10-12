@@ -9,22 +9,6 @@
         <div id="location_map">
             <map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
                  @markertap="bindmarkertap" show-location>
-                <cover-view id="send_time_select" v-if="show">
-                    <cover-view class="top-part">
-                        <cover-view class="select_li">
-                            <cover-view class="select_li_title">自提点</cover-view>
-                            <cover-view class="input">{{ storeAddress }}</cover-view>
-                        </cover-view>
-                        <cover-view class="select_li">
-                            <cover-view class="select_li_title">营业时间</cover-view>
-                            <cover-view class="input">{{ sendAt }}</cover-view>
-                        </cover-view>
-                    </cover-view>
-                    <cover-view class="bottom-part">
-                        <button class="cancel" @click="show = false">取消</button>
-                        <button class="confirm" @click="onSubmit">确定</button>
-                    </cover-view>
-                </cover-view>
                 <cover-view id="locatePosition" @click="nowLocation">
                     <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
                 </cover-view>
@@ -35,17 +19,40 @@
                 <span @click="changeBackground('left')">常用自提点</span>
                 <span @click="changeBackground('right')">附近自提点</span>
             </div>
-            <ul id="location_points_list">
-                <li v-for="item in 3" :key="item">
+            <ul id="location_points_list" v-if="position === 'left'">
+                <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
                     <div class="left">
-                        <h4>丹霞路店</h4>
-                        <em>距您当前位置1000米</em>
-                        <span>安徽省合肥市蜀山区丹霞路与翡翠路交口</span>
+                        <div class="top">
+                            <h4>{{item.name}}</h4>
+                            <span>距您当前位置{{item.distance}}米</span>
+                        </div>
+                        <div class="bottom">
+                            {{item.address}}
+                        </div>
                     </div>
-                    <div class="right"></div>
+                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
                 </li>
-                <button class="confirmBtn" @click="payment">确定</button>
+<!--                <div id="empty_list">-->
+<!--                    暂无常用自提点-->
+<!--                </div>-->
             </ul>
+            <ul id="location_points_list" v-else>
+                <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
+                    <div class="left">
+                        <div class="top">
+                            <h4>{{item.name}}</h4>
+                            <span>距您当前位置{{item.distance}}米</span>
+                        </div>
+                        <div class="bottom">
+                            {{item.address}}
+                        </div>
+                    </div>
+                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                </li>
+            </ul>
+            <button class="confirmBtn" @click="payment" v-if="checkId">确定</button>
         </div>
     </div>
 </template>
@@ -53,8 +60,10 @@
 <script>
     import MpTitle from '@/components/MpTitle';
     import _ from 'underscore';
-	let bg1 = require('../../../../static/selfPoints/bg2.jpg');
-	let bg2 = require('../../../../static/selfPoints/bg1.jpg');
+	var amapFile = require('amap-wx');
+	var markersData = [];
+	let bg1 = require('./imgs/longBanner.jpg');
+	let bg2 = require('./imgs/longBanner1.jpg');
     export default {
         components: {
             'mp-title': MpTitle
@@ -69,73 +78,108 @@
                 addressName: null,
                 city: null,
                 self: {},
-                show: false,
                 selectStoreId: null,
-                markers: null
+                markers: null,
+				position: 'left',
+				points: [],
+				textData: {},
+				nearPoints: [],
+                checkId: ''
             }
         },
         watch: {
-            stores: {
+			nearPoints: {
                 deep: true,
-                handler (stores) {
-                    this.markers = stores.map((store) => {
-                        return this.marker(store);
+                handler (points) {
+                    this.markers = points.map((point) => {
+						return this.marker(point);
                     });
                 }
             }
         },
         // 算术方法
         computed: {
-            stores () {
-                return this.$store.getters['model.stores/stores'];
-            },
-            storeInfo () {
-                return this.selectStoreId ? this.$store.getters['model.stores/store'](this.selectStoreId) : null;
-            },
-            sendAt () {
-                return this.storeInfo ? this.storeInfo.openingHours : '00:00 ～ 23:59';
-            },
-            storeAddress () {
-                return this.storeInfo ? this.storeInfo.address : '未选择店铺';
-            }
+			commonlyMapPoints () {
+				let points = this.model.user.map.commonlyMapPoints
+				this.points = points;
+				return points
+			},
+			nearbyMapPoints () {
+				let points = this.model.user.map.nearbyMapPoints
+				this.points = points;
+				this.nearPoints = points;
+				return points
+			}
         },
         // 普通方法
         methods: {
-			changeBackground(position){
-				this.background = position === 'left'? bg1 : bg2;
+			checkPoint (id) {
+				this.checkId = id;
+				let data = this.points.filter(item => item.id === id)[0];
+				this.latitude = data.position.coordinates[1];
+				this.longitude = data.position.coordinates[0];
+				this.markers = this.points.map((point) => {
+					let showCallout = false
+					if (point.id === id) {
+						showCallout = true
+					}
+					return this.marker(point, showCallout);
+				});
+            },
+			async changeBackground(position){
+				if (position === 'left') {
+					this.background = bg1;
+					this.position = 'left';
+					this.$command('LOAD_COMMONLY_USED', 'map')
+				} else {
+					let result = await this.map.getLocation();
+					this.background = bg2;
+					this.position = 'right';
+					this.$command('LOAD_NEARBY',result[0],result[1])
+				}
 			},
 			payment(){
-				this.$command('REDIRECT_TO', 'user.order.payment', 'push');
+				let data = this.points.filter(item => item.id === this.checkId)[0];
+				console.log(data);
+				this.$command('SELECTED_POINT_COMMAND', data)
+				this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
+					query : {
+						type : this.$route.query.type
+                    }
+                });
             },
             async flashLocation () {
                 let result = await this.map.getLocation();
                 this.latitude = result[1];
                 this.longitude = result[0];
-                this.$command('LOAD_STORES_AROUND', this.longitude, this.latitude);
+				this.$command('LOAD_NEARBY',result[0],result[1], 'map');
+				this.$command('LOAD_COMMONLY_USED', 'map')
             },
             changeSendDate (e) {
                 this.sendDate = e.target.value;
             },
             marker (store, callout = false) {
-                let marker = {
-                    iconPath: '/static/images/position.png',
+				let iconPath = store['is_open'] ? '/static/images/icon.jpg' : '/static/images/disabledIcon.jpg'
+				let marker = {
+                    iconPath: iconPath,
                     width: 42,
-                    height: 56.4,
+                    height: 50,
                     id: store.id,
-                    longitude: store.lng,
-                    latitude: store.lat,
+                    longitude: store.position.coordinates[0],
+                    latitude: store.position.coordinates[1],
                     title: store.name,
                     active: true
                 };
                 if (callout) {
                     marker['callout'] = {
-                        content: store.name,
-                        color: '#ff0000',
-                        fontSize: '16',
-                        borderRadius: '10',
+                        content: `${store.name}  距您当前${store.distance}米 \n 营业时间 : ${store.time || '暂无'} \n 地址 :${store.address}`,
+                        color: '#111',
+                        fontSize: '11',
+                        borderRadius: '5',
                         bgColor: '#ffffff',
                         padding: '10',
-                        display: 'ALWAYS'
+                        display: 'ALWAYS',
+                        textAlign : 'left'
                     };
                 }
                 return marker;
@@ -143,14 +187,20 @@
             nowLocation () {
                 this.map.moveToLocation();
             },
-            async bindmarkertap (event) {
-                this.selectStoreId = await event.mp.markerId;
-                this.latitude = this.storeInfo['lat'];
-                this.longitude = this.storeInfo['lng'];
-                this.show = true;
+            async bindmarkertap (e) {
+				let id = e.mp.markerId;
+				this.markers = this.points.map((point) => {
+					let showCallout = false
+					if (point.id === id) {
+						showCallout = true
+                    }
+					return this.marker(point, showCallout);
+				});
+				let data = this.points.filter(item => item.id === id)[0];
+                this.latitude = data.position.coordinates[1];
+                this.longitude = data.position.coordinates[0];
             },
             onSubmit () {
-                this.show = false;
                 let storeInfo = this.storeInfo;
                 let route = this.$route.query['next_route'];
                 this.$command('REDIRECT_TO', route, 'push', {
@@ -159,12 +209,25 @@
                         activity_id: this.$route.query['activity_id']
                     }
                 });
-            }
+            },
+			changeMarkerColor: function(data,i){
+				var that = this;
+				var markers = [];
+				for(var j = 0; j < data.length; j++){
+					if(j==i){
+						data[j].iconPath = "/static/image/position.png"; //如：..­/..­/img/marker_checked.png
+					}else{
+						data[j].iconPath = "/static/image/nowposition.png"; //如：..­/..­/img/marker.png
+					}
+					markers.push(data[j]);
+				}
+				that.markers =  markers
+			}
         },
         mounted () {
             this.flashLocation();
         }
-    }
+	}
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -305,7 +368,8 @@
     }
 
     #location_points{
-        position: absolute;
+        width: 100%;
+        position: fixed;
         bottom: 0;
     }
 
@@ -331,15 +395,27 @@
         background: #fff;
         padding: 0 40rpx;
         padding-bottom: 30rpx;
+        max-height: 484rpx;
+        overflow-y: auto;
+    }
+
+    #empty_list {
+        width: 100%;
+        height: 484rpx;
+        font-size: 30rpx;
+        color: #757575;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     #location_points #location_points_list li{
-        box-sizing: border-box;
         width: 100%;
+        box-sizing: border-box;
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
-        padding: 30rpx 0;
+        align-items: center;
+        padding: 30rpx 40rpx;
         border-bottom: 2rpx solid #f2f2f2;
     }
 
@@ -347,38 +423,53 @@
         border-bottom: 0;
     }
 
-    #location_points #location_points_list li .left{
-        display: flex;
-        flex-wrap: wrap;
-        flex: 1;
+    #location_points #location_points_list li i{
+        font-size: 48rpx;
+        margin: 0 10rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
-    #location_points #location_points_list li .left h4{
-        margin: 0;
-        font-size: 28rpx;
-        color: #111111;
-        font-weight: bold;
-        margin-right: 15rpx;
+    #location_points #location_points_list li i.disabled {
+        color: #ccc;
     }
 
-    #location_points #location_points_list li .left em{
+    #location_points #location_points_list li span{
+        display: inline-block;
         font-size: 24rpx;
         color: #757575;
+        margin: 0 10rpx;
     }
 
-    #location_points #location_points_list li .left span{
+    #location_points #location_points_list li .left{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    #location_points #location_points_list li .left .top{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #location_points #location_points_list li .left .top h4{
+        font-size: 28rpx;
+        color: #111111;
+    }
+
+    #location_points #location_points_list li .left .bottom {
         font-size: 28rpx;
         color: #111111;
     }
 
     #location_points #location_points_list li .right{
-        width: 48rpx;
-        height: 48rpx;
-        border-radius: 50%;
-        background: #ffcc00;
+
     }
 
-    #location_points #location_points_list .confirmBtn{
+    #location_points .confirmBtn{
         width: 100%;
         height: 80rpx;
         border-radius: 10rpx;
@@ -388,8 +479,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 30rpx;
-
     }
 
 </style>

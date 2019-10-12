@@ -25,7 +25,8 @@ export default class Account extends Model {
             },
             isMember (state) {
                 // 是否已经注册
-                return state.mobile !== null;
+                console.log(state.mobile, '-----------state.mobile------------');
+                return !!state.mobile;
             },
             isShopManager (state) {
                 return state.isShopManager;
@@ -82,7 +83,10 @@ export default class Account extends Model {
             },
             vipLevel: null,
             ticketNum: 0,
-            nickname: null
+            nickname: null,
+            handlingOrderCount: null,
+            waitPickOrderCount: null,
+            waitPayOrderCount: null
         };
     }
 
@@ -126,6 +130,7 @@ export default class Account extends Model {
 
 
         this.addEventListener('setAccount', function (userInfo) {
+            console.log(userInfo, '----get mobile-----');
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }
@@ -134,6 +139,15 @@ export default class Account extends Model {
             }
             if (typeof userInfo['union_id'] !== 'undefined') {
                 this.state.unionId = userInfo['union_id'];
+            }
+            if (typeof userInfo['wait_pay_order_count'] !== 'undefined') {
+                this.state.waitPayOrderCount = userInfo['wait_pay_order_count'];
+            }
+            if (typeof userInfo['wait_pick_order_count'] !== 'undefined') {
+                this.state.waitPickOrderCount = userInfo['wait_pick_order_count'];
+            }
+            if (typeof userInfo['handling_order_count'] !== 'undefined') {
+                this.state.handlingOrderCount = userInfo['handling_order_count'];
             }
             if (typeof userInfo['avatar'] !== 'undefined') {
                 this.state.avatar = userInfo['avatar'];

@@ -26,6 +26,10 @@
 		},
         mounted () {
 			this.$command('LOAD_USER_TICKETS', 1);
+			let needReturn = this.$route.query.needReturn;
+			if (needReturn) {
+
+            }
 		}
 	}
 </script>

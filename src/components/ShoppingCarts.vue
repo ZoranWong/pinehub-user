@@ -91,8 +91,8 @@
 			clear() {
 				this.clearShoppingCarts();
 			},
-			addCart(merchandiseId, id = null) {
-				this.addMerchandiseToCart(merchandiseId, id);
+			addCart(item) {
+				this.addMerchandiseToCart(item);
 			},
 			reduceCart(merchandiseId, id) {
 				this.reduceMerchandiseToCart(merchandiseId, id);

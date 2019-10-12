@@ -10,6 +10,7 @@ export default class TicketsService extends ApiService {
             // 服务器交互代码
             try {
                 response = await this.httpGet('api/mp/self/coupon/received/records', parameters);
+                console.log(response, 'UIUIUIUUIIUUIUIUUUIUIUUUUIIU');
             } catch (e) {
                 console.log('抛出异常', e);
                 throw (e);

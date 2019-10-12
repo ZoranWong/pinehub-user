@@ -28,8 +28,7 @@
                         </div>
                         <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
                         <div id="store_good_info_price">
-                            <span v-if="!item.specifications.length">￥{{item.sell_price}}</span>
-                            <span v-else>{{item.range}}</span>
+                            <span>{{item.range}}</span>
                             <em>￥{{item.origin_price}}</em>
                             <i class="iconfont" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
                         </div>
@@ -41,8 +40,9 @@
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
+            :type="'mall'"
             @close="closeSelectSpec" />
-        <ChooseSelfRaisingPoint v-if="showPoints" />
+        <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
     </div>
 </template>
 <script>
@@ -81,8 +81,8 @@
       },
       computed: {
           categories(){
-          	let categories = this.model.user.store.categories;
-            if(categories.length){
+			  let categories = this.model.user.store.categories;
+            if(categories && categories.length){
                 this.activeTab = categories[0].id
             }
           	 return categories;
@@ -95,6 +95,9 @@
           }
       },
       methods: {
+		  closePoints () {
+             this.showPoints = false
+          },
           tabSelect(id){
               this.activeTab = id;
 			  this.$command('LOAD_STORE_COMMAND',id, 1)
@@ -103,18 +106,21 @@
               this.data = data
           },
         addToShoppingCart(item){
-			console.log(item, '-------');
 			if (item.specifications.length) {
                 this.selectItem = item;
                 this.selectSpec = true
             } else {
-                let goods = this.model.user.store.goodInShoppingCart
-				_.map(goods, (product) => {
-					product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-						this.$command('CHANGE_BUY_NUM_COMMAND',product['id'],product['buy_num'] + 1,'mall')
-                        :
-						this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-                })
+                let goods = this.model.user.store.goodInShoppingCart;
+				if (goods.length) {
+					_.map(goods, (product) => {
+						product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+							this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
+							:
+							this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+					})
+                } else {
+					this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+                }
 
             }
         },

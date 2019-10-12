@@ -10,7 +10,6 @@ import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 // 扫描命令
 import ScanCommand from '@/commands/ScanCommand';
 
-import LoadChargeCardsCommand from '@/commands/LoadChargeCardsCommand';
 
 
 // 清空产品命令（切换分类）
@@ -46,7 +45,6 @@ export default class CommandServiceProvider extends ServiceProvider {
             AppAccessCommand,
             PaymentByIdCommand,
             RegisterCommand,
-            LoadChargeCardsCommand,
             CreateOrderByMerchandiseIdCommand,
             LoadCommonlyUsedPoints,
             LoadNearbyPoints

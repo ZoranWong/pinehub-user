@@ -67,4 +67,5 @@ export default class MerchandisesService extends ApiService {
         };
         return await this.list(route, query);
     }
+    
 }

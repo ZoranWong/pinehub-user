@@ -35,7 +35,7 @@
             <span>我的店铺</span>
         </div>
         <div id="merchant-store_orders_container">
-            <div id="merchant-store_orders" @click="jump('user.orders')">
+            <div id="merchant-store_orders" @click="jump('user.orders', '')">
                 <div id="merchant-store_orders_header" >
                     <h3>我的订单</h3>
                     <span>
@@ -44,24 +44,26 @@
                     </span>
                 </div>
                 <ul id="merchant-store_orders_list">
-                    <li>
+                    <li @click="jump('user.orders', 'WAIT_TO_PAY')">
                         <i class="iconfont">&#xe67a;</i>
-                        <div class="count">11</div>
+                        <div class="count">{{userInfo['waitPayOrderCount']}}</div>
                         <span>待付款</span>
                     </li>
-                    <li>
+                    <li @click="jump('user.orders', 'WAIT_TO_PICK')">
                         <i class="iconfont">&#xe884;</i>
+                        <div class="count">{{userInfo['waitPickOrderCount']}}</div>
                         <span>待自提</span>
                     </li>
-                    <li>
+                    <li @click="jump('user.orders', 'ORDER_COMPLETED')">
                         <i class="iconfont">&#xe60d;</i>
                         <span>已完成</span>
                     </li>
-                    <li>
+                    <li @click="jump('user.orders', 'ORDER_HANDLING')">
                         <i class="iconfont">&#xe7ea;</i>
+                        <div class="count">{{userInfo['handlingOrderCount']}}</div>
                         <span>处理中</span>
                     </li>
-                    <li>
+                    <li @click="jump('user.orders', 'ORDER_REFUNDED')">
                         <i class="iconfont">&#xe610;</i>
                         <span>已退款</span>
                     </li>
@@ -134,8 +136,12 @@
             }
         },
         methods: {
-            jump (router) {
-                this.$command('REDIRECT_TO', router, 'push');
+            jump (router, params) {
+                this.$command('REDIRECT_TO', router, 'push', {
+                	query: {
+                		status: params
+                    }
+                });
             },
             toBalance () {
                 this.$command('REDIRECT_TO', 'user.balance', 'push');

@@ -1,20 +1,24 @@
 import Command from './Command';
 
 export default class PaymentByIdCommand extends Command {
-    async handle (orderId, payType = 'wx') {
+    async handle (order, payType = 'wx') {
         try {
             // await this.service('mp.storage').set('payOrderId', orderId);
-            let data = await this.service('http.orders').orderPayById(orderId, payType);
+            let data = await this.service('http.orders').orderPayById(order.id, payType);
             console.log('---------------------------', data);
-            if (data && (typeof data['sdk_config'] !== 'undefined')) {
-                let timeStamp = data['sdk_config']['timestamp']
-                let nonceStr = data['sdk_config']['nonceStr']
-                let packageInfo = data['sdk_config']['package']
-                let paySign = data['sdk_config']['paySign']
+            if (data) {
+                let timeStamp = data['timeStamp'];
+                let nonceStr = data['nonceStr'];
+                let packageInfo = data['package'];
+                let paySign = data['paySign'];
                 let result = await this.payOrder(timeStamp, nonceStr, packageInfo, paySign);
+                console.log(result, '-----------pay result ------------------');
                 return result;
             } else if (typeof data['status'] !== 'undefined' && (data['status'] === 300 || data['status'] === 500)) {
-                this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {order_id: orderId}});
+                this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {
+                        order: JSON.stringify(order),
+                        type: '微信支付'
+                }});
             }
         } catch (e) {
             console.log(e);

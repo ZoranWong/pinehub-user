@@ -87,17 +87,14 @@ export default class Model {
         let startIndex = (currentPage - 1) * pageCount + 1;
         try {
             list = this.transform(list, this.transformer, startIndex);
-            console.log(list, '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-            console.log(currentPage, 'oooooooooooooooooooooooooooooooooooooooo');
             // console.log('--------- transformer ----------', Date.now());
             this.$application.$vm.set(this.state.list, currentPage - 1, list);
         } catch (e) {
             //TODO handle the exception
             console.log(e);
         }
-        if (totalNum !== null) {
-            this.state.totalNum = totalNum;
-        }
+        this.state.totalNum = totalNum || 0;
+        
         if (totalPage !== null) {
             this.state.totalPage = totalPage;
             if (pageCount !== null) {

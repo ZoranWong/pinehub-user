@@ -2,7 +2,8 @@
 <template>
 	<div class="ticket-page body">
 		<mp-title :title="title"></mp-title>
-		<div class="ticket-list">
+        <img v-if="!tickets.length" src="../../static/images/empty_tickets.png" alt="" id="empty">
+		<div class="ticket-list" v-else>
 			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
 			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
 				<coupon-ticket v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
@@ -73,6 +74,13 @@
 		width: 750rpx;
 		height: 74rpx;
 	}
+
+    #empty {
+        width: 600rpx;
+        height: 500rpx;
+        margin-left: 75rpx;
+        margin-top: 30rpx;
+    }
 
 	#tab_select ul li {
 		font-size: 28rpx;

@@ -10,13 +10,13 @@
             </h3>
         </div>
         <ul id="records">
-            <li>
+            <li v-for="item in integralRecords" :key="item.id">
                 <div class="left">
-                    <h4>接口没有数据</h4>
-                    <span>2018-10-01 18:28:58 </span>
+                    <h4>{{item.desc}}</h4>
+                    <span>没有数据 </span>
                 </div>
                 <div class="right">
-                    +16
+                    {{item.change}}
                 </div>
             </li>
         </ul>
@@ -37,6 +37,7 @@
 		},
 		computed: {
 			integralRecords () {
+				console.log(this.model.integral.records.integralRecords, '90909900990');
 				return this.model.integral.records.integralRecords
             }
 		},

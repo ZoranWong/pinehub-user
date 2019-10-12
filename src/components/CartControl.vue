@@ -1,21 +1,17 @@
 <!--suppress ALL -->
 <template>
     <div class="cartcontrol" :class="cartcontrolWidth">
-        <div class="cart-decrease" v-show="count>0" @click="reduceCart" :reduce="reduceMerchandises"></div>
+        <div class="cart-decrease" v-show="count>0" @click.stop="reduceCart" :reduce="reduceMerchandises"></div>
         <div class="cart-count" v-show="count>0"> {{count}}</div>
-        <div class="cart-add" @click="addCart" :add="addMerchandises"></div>
+        <div class="cart-add" @click.stop="addCart" :add="addMerchandises"></div>
     </div>
 </template>
 <script>
     export default {
         props: {
-            merchandiseId: {
+            product: {
                 default: null,
-                type: Number
-            },
-            shopId: {
-                default: null,
-                type: Number
+                type: Object
             },
             batch: {
                 default: null,
@@ -51,7 +47,7 @@
         methods: {
             addCart () {
                 // 加入购物车
-                this.$emit('addCart', this.merchandiseId, this.shoppingCartId);
+                this.$emit('addCart', this.product);
             },
             reduceCart () {
                 // 移出购物车

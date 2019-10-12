@@ -14,6 +14,7 @@ export default class PaymentService extends Service {
                     resolve(true);
                 },
                 'fail': function (res) {
+                    console.log(res, '_______________---res_______________________');
                     resolve(false);
                 },
                 'complete': function (res) {

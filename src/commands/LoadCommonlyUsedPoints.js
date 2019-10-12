@@ -5,11 +5,15 @@ export default class LoadCommonlyUsedPoints extends Command {
         try {
             let response = await this.service('http.store').commonlyUsedPoints();
     
-            console.log(response, '=====================commonlyUsedPoints========================');
-    
-            this.model.user.store.dispatch('saveCommonlyUsedPoint', {
-                points: response
-            });
+           if (type === 'mall') {
+               this.model.user.store.dispatch('saveCommonlyUsedPoint', {
+                   points: response
+               });
+           } else {
+               this.model.user.map.dispatch('saveMapCommonlyUsedPoint', {
+                   points: response
+               });
+           }
         } catch (e) {
             console.log(e, 'eeeeeeeeeeeeeeeeeee');
         }

@@ -24,41 +24,22 @@
 </template>
 <script>
     import MpTitle from '@/components/MpTitle';
-    import ChargeCardItem from '@/components/ChargeCardItem';
     export default {
         name: 'Balance',
         data: function () {
           return {
-              title: '我的余额',
-              empty: true,
-              selectedIndex: null,
-              chargeCard: null
+              title: '我的余额'
           };
         },
         components: {
-            'mp-title': MpTitle,
-            'card': ChargeCardItem
+            'mp-title': MpTitle
         },
         computed: {
             balance () {
                 return this.$store.getters['model.account/balance'];
-            },
-            cards () {
-                return this.$store.getters['model.chargeCards/list'];
             }
         },
         methods: {
-            selectedCard (index, chargeCard) {
-                this.selectedIndex = index;
-                this.chargeCard = chargeCard;
-            },
-            async charge () {
-                await this.$command('CREATE_ORDER_BY_MERCHANDISE_ID', '', '', '', '', this.chargeCard.price, this.chargeCard['merchandise_id']);
-                this.$command('LOAD_ACCOUNT');
-            },
-            tradeOrders () {
-                this.$command('REDIRECT_TO', 'user.tradeOrders', 'push');
-            },
             jump (router) {
             	this.$command('REDIRECT_TO', router, 'push');
             }

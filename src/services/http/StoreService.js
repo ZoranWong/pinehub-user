@@ -48,15 +48,34 @@ export default class StoreService extends ApiService {
         return response.data
     }
     
+    // 删除购物车某一项
+    async deleteItem (id) {
+        let response = await this.httpDelete(`api/mp/mall/carts/${id}`);
+        return response.data
+    }
+    
     // 商城购物车商品列表
     async cartGoodsList () {
+        console.log('^^^^^^^^^^^^');
         let response = await this.httpGet('api/mp/mall/carts');
+        return response.data
+    }
+    
+    // 早餐预订购物车商品列表
+    async cartBreakfastGoodsList () {
+        let response = await this.httpGet('api/mp/breakfast/booking/carts');
         return response.data
     }
     
     // 清空商城购物车
     async clearMallCart () {
         let response = await this.httpDelete('api/mp/mall/carts');
+        return response.data
+    }
+    
+    // 清空早餐预定购物车
+    async clearBreakfastCart () {
+        let response = await this.httpDelete('api/mp/breakfast/booking/carts');
         return response.data
     }
     
@@ -77,7 +96,9 @@ export default class StoreService extends ApiService {
     // 附近自提车
     async nearbyPoints (lng, lat) {
         let response = await this.httpGet('api/mp/around/shops', {
-            lng, lat
+            lng,
+            lat,
+            distance: 10000
         });
         return response.data
     }

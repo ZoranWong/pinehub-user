@@ -20,7 +20,7 @@
                     </h3>
                 </div>
                 <ul id="shopping_cart_goods_list" >
-                    <li v-for="item in cartGoodsList" :key="item.id">
+                    <li v-for="item in goodInShoppingCart" :key="item.id">
                         <h4>
                             {{item.name}}
                             <span>{{item['spec_desp']}}</span>
@@ -46,7 +46,6 @@
         props: ['type'],
 		data () {
 			return {
-				totalPrice : 0,
                 showMask: false,
 				showGoodsList: false,
 				cartGoodsList:[],
@@ -55,40 +54,65 @@
 		},
         computed : {
 			goodInShoppingCart(){
-				this.handleData(this.model.user.store.goodInShoppingCart)
-				return this.model.user.store.goodInShoppingCart
-			}
+				let products = [];
+				if(this.type === 'mall') {
+					products = this.model.user.store.goodInShoppingCart
+                } else {
+					products = this.model.newEvents.shoppingCarts.goodInShoppingCart
+                }
+				if(products){
+					this.showMask = products.length ? true : false;
+					this.showGoodsList = false ;
+                }
+				return products
+			},
+            totalPrice () {
+				if (this.type === 'mall') {
+					return this.model.user.store.totalPrice;
+                } else {
+					return this.model.newEvents.shoppingCarts.totalPrice
+                }
+
+            }
         },
 		created () {
 
 		},
 		methods: {
 			settle(){
-			    this.model.user.store.dispatch('selectPoints', {
-			    	boolean: true
-                })
+				if (this.type === 'mall') {
+					this.model.user.store.dispatch('selectPoints', {
+						boolean: true,
+                        type: this.type
+					})
+                } else {
+					this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
+						boolean: true,
+						type: this.type
+					})
+                }
+
             },
 			closeMask(){
 				this.showGoodsList = false;
             },
-			handleData (data) {
-				let goods = data;
-				let totalPrice = 0
-				_.map(goods,  (item) => {
-					totalPrice += (parseInt(item['market_price']) * parseInt(item['buy_num']))
-				})
-				this.showMask = goods.length ? true : false;
-				this.totalPrice = formatMoney(totalPrice);
-				this.cartGoodsList = data;
-			},
 			clearCart () {
 				this.showMask = false;
 				this.showGoodsList = false;
-                this.$command('CLEAR_CART_COMMAND','mall');
+				if (this.type === 'mall') {
+					this.$command('CLEAR_CART_COMMAND');
+                } else {
+					this.$command('CLEAR_BREAKFAST_CART_COMMAND')
+                }
+
             },
 			changeBuyNum (item,num) {
 				let newNum = item['buy_num'] + num;
-				this.$command('CHANGE_BUY_NUM_COMMAND',item,newNum)
+				if (this.type === 'mall') {
+					this.$command('CHANGE_BUY_NUM_COMMAND',item,newNum)
+				} else {
+					this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, newNum)
+				}
             }
         },
         mounted () {

@@ -5,15 +5,14 @@
         <div id="pay_shop_info">
             <i class="iconfont location">&#xe80b;</i>
             <div class="pay_shop_info">
-                <div class="pay_shop_info_name">
+                <div class="pay_shop_info_name" @click="selectPoint">
                     <h4>
-                        青松集团店
-                        <span>18513891718</span>
+                        {{selectedPoint.name}}
+                        <span>{{selectedPoint.mobile}}</span>
                     </h4>
                 </div>
                 <div class="pay_shop_info_address">
-                    安徽省 合肥市 高新区 宁西路28号青松集
-                    团行政楼2楼
+                    {{selectedPoint.address}}
                 </div>
             </div>
             <i class="iconfont arrow">&#xe6a3;</i>
@@ -24,24 +23,24 @@
                 <div class="order_info_name">
                     <h4>
                         预约取货日期
-                        <span>2019-7-5</span>
+                        <span>{{tomorrowStr}}</span>
                     </h4>
                     <h4>
                         预约取货时间
-                        <span>09:00-21:00</span>
+                        <span>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
                     </h4>
                 </div>
             </div>
         </div>
         <ul id="good_list">
-            <li v-for="(good,index) in goods" :key="index">
+            <li v-for="(good,index) in goodInShoppingCart" :key="index">
                 <img :src="good.image" alt="">
                 <div id="good_info">
-                    <h3>{{good.name}}</h3>
-                    <em>{{good.spec}}</em>
+                    <h3>{{good['name']}}</h3>
+                    <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
                     <div id="good_info_price">
-                        <h3>{{good.price}}</h3>
-                        <em>{{good.entities}}</em>
+                        <h3>￥{{good['market_price']}}</h3>
+                        <em>X {{good['buy_num']}}</em>
                     </div>
                 </div>
             </li>
@@ -49,28 +48,28 @@
         <ul id="total">
             <li>
                 <h3>商品总价</h3>
-                <span>￥40.00</span>
+                <span>￥{{orderInfo['total_fee'] || 0}}</span>
             </li>
             <li>
                 <h3>优惠金额</h3>
-                <span>￥5.00</span>
+                <span>￥{{orderInfo['total_preferential_fee'] || 0}}</span>
             </li>
-            <li>
+            <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>剩余n张</em>
+                <em>剩余0张</em>
                 <span class="use_coupon">
-                    2张已使用
+                    0张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
             </li>
             <li>
                 <h4>实付款</h4>
-                <h5>￥40.00</h5>
+                <h5>￥{{orderInfo['settlement_total_fee'] || 0}}</h5>
             </li>
         </ul>
         <div id="do_payment">
             <span>
-                预付款 ￥35.00
+                预付款 ￥{{orderInfo['settlement_total_fee'] || 0}}
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
@@ -78,6 +77,8 @@
 </template>
 <script>
     import MpTitle from '../../../components/MpTitle';
+	import {formatMoney} from '../../../utils';
+
 	export default {
 		components: {
 			'mp-title': MpTitle
@@ -85,40 +86,65 @@
 		data() {
 			return {
 				title: '支付',
-				goods:[
-					{
-						image:'../../../../static/images/background/1.png',
-						name:'青松功夫可追溯的芝士蛋糕',
-						spec:'芝士标准糖',
-						price:'￥20.00',
-						entities:'X1'
-					},
-					{
-						image:'../../../../static/images/background/1.png',
-						name:'青松功夫可追溯的芝士蛋糕',
-						spec:'芝士标准糖',
-						price:'￥20.00',
-						entities:'X1'
-					}
-				]
+                pointInfo:{},
+				tomorrowStr: '',
+                type: ''
 			};
 		},
 		watch: {
 
 		},
 		computed: {
+			selectedPoint () {
+				return this.model.user.map.selectedMapPoint
+            },
+			goodInShoppingCart () {
+				if (this.type === 'mall') {
+					return this.model.user.store.goodInShoppingCart
+                } else {
+					return this.model.newEvents.shoppingCarts.goodInShoppingCart
+                }
 
-
+            },
+			orderInfo () {
+				return this.model.user.order.payment.orderInfo
+            }
 		},
 		methods: {
+			selectPoint () {
+                this.$command('REDIRECT_TO', 'storesMap', 'push' , {
+                	query: {
+                		type: this.type
+                    }
+                });
+            },
 			createOrder(){
-				this.$command('CREATE_ORDER')
-            }
+				this.$command('CREATE_PAY_ORDER',{
+					shop_id: this.selectedPoint.id,
+					coupon_records: [],
+                },this.type);
+				this.$command('REDIRECT_TO', 'selectPay', 'push')
+            },
+            getDate () {
+				var tomorrow = new Date();
+				tomorrow.setTime(tomorrow.getTime() + 24*60*60*1000);
+				var tomorrowStr = tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate();
+				this.tomorrowStr = tomorrowStr
+			},
+			jump (router) {
+				this.$command('REDIRECT_TO', router, 'push',{
+					query: {needReturn: true}
+                });
+			}
 		},
 		created() {
 
 		},
 		mounted() {
+            this.getDate();
+            let type = this.$route.query.type;
+			this.type = type
+            this.$command('CALCULATE_PRICE_COMMAND',type,{})
 		}
 	}
 </script>
@@ -253,7 +279,7 @@
 
     #good_list li #good_info #good_info_price{
         width: 100%;
-        margin-top: 60rpx;
+        margin-top: 20rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
