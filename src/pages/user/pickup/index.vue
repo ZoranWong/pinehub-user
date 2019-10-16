@@ -104,12 +104,11 @@
 				this.currentOrderId = e.mp.detail.currentItemId;
 			},
             Qrcode (id) {
-				console.log(id, 'kkkkkkkkkkkkkkk');
 				drawQrcode({
 					width: 200,
 					height: 200,
 					canvasId: `qrcode_${id}`,
-					text: `{"order_id": ${id}`
+					text: `{"order_id": ${id}}`
 				})
             }
         },

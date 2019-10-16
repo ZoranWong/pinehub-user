@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 22,
+			"current": 20,
 			"list": [
 				{
 					"id": 0,
@@ -170,19 +170,6 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "提货",
-					"pathName": "pages/user/pickup/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "支付成功",
-					"pathName": "pages/user/paySuccess/main",
 					"scene": null
 				}
 			]
