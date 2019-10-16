@@ -24,15 +24,13 @@ export default class Account extends Model {
                 return state.balance;
             },
             isMember (state) {
-                // 是否已经注册
-                console.log(state.mobile, '-----------state.mobile------------');
                 return !!state.mobile;
             },
             isShopManager (state) {
                 return state.isShopManager;
             },
-            userScore (state) {
-                return state.canUseScore;
+            availableScore (state) {
+                return state.availableScore;
             },
             overDate (state) {
                 // 是否已经过期
@@ -68,6 +66,7 @@ export default class Account extends Model {
             token: null,
             balance: 0,
             canUseScore: 0,
+            availableScore: 0,
             country: null,
             city: null,
             sex: null,

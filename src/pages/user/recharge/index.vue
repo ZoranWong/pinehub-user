@@ -7,7 +7,7 @@
                 选择充值金额
             </div>
             <ul class="cards">
-                <li v-for="item in cards" @click="selectedCard(item.id)" :id="item.id === checked ? 'active-card' : ''">
+                <li v-for="item in cards" @click="selectedCard(item.id)" :key ="item.id" :class="item.id === checked ? 'active-card' : ''">
                     <h3>{{item.price}}元</h3>
                     <span>送{{item['gift_amount']}}元</span>
                     <img src="./img/payIcon.jpg" alt="" v-if="item.id === checked">
@@ -192,11 +192,11 @@
         color: #ffcc00;
     }
 
-    #active-card{
+    .active-card{
         border-color: #ffcc00;
     }
 
-    #active-card h3 {
+    .active-card h3 {
         color: #ffcc00;
     }
 

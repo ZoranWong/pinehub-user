@@ -38,7 +38,7 @@
             </em>
         </div>
         <div v-else class="bgff user-score-box">
-            <div class="score">{{userScore || 0 }}<i>积分</i></div>
+            <div class="score">{{availableScore || 0 }}<i>积分</i></div>
             <em class="tips">
                 商城购买即可获得积分哦~
             </em>
@@ -96,12 +96,10 @@
                 return this.$store.getters['model.account/isAuth'];
             },
             isMember () {
-				console.log(this.$store.getters['model.account/isMember'], 'isMember');
-				return this.$store.getters['model.account/isMember'];
+				return this.model.account.isMember;
             },
-            userScore () {
-                // return this.$store.getters['model.account/userScore'];
-				return this.model.account.userInfo.availableScore;
+            availableScore () {
+				return this.model.account.availableScore;
             },
             isLogin () {
                 let overDate = this.$store.getters['model.account/overDate'];
