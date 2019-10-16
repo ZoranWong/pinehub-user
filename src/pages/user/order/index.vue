@@ -17,7 +17,10 @@
 
 		</div>
 		<div id="tab_content">
-			<img v-if="totalNum == 0" id="null_ico" src="../../../../static/images/empty_order.png" />
+            <div class="empty_img" v-if="totalNum === 0">
+                <img src="../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
+                <span>暂无优惠券哦～</span>
+            </div>
 			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
 		</div>
 		<div id="footNavHeight"></div>
@@ -169,4 +172,22 @@
 	.tab_content_now {
 		display: block;
 	}
+    .empty_img{
+        width: 100%;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 350rpx;
+        height: 240rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 100rpx;
+    }
 </style>

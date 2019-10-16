@@ -3,6 +3,7 @@ import Command from './Command';
 export default class PaymentByIdCommand extends Command {
     async handle (order, payType = 'wx') {
         try {
+            console.log(order, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
             // await this.service('mp.storage').set('payOrderId', orderId);
             let data = await this.service('http.orders').orderPayById(order.id, payType);
             console.log('---------------------------', data);

@@ -1,7 +1,7 @@
 {
     "model": "mp",
     "mock": false,
-    "appId": "2018090423350000",
+    "appId": "kdy5d88c992a30a9",
     "appSecret": "Kw2OEar0aLI8Dyssm1r4zhifSTDDkPuW",
     "mapKey": "HJ4BZ-A7UK3-RTP3T-YS7MZ-WCPYO-XVBOD",
     "staticHost": "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com",
@@ -12,6 +12,6 @@
         "3": "第三批次"
     },
     "http": {
-        "gateway": "https://api.mp.klsfood.cn"
+        "gateway": "https://neptune.klsfood.cn"
     }
 }

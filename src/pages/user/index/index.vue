@@ -90,7 +90,8 @@
                 return overDate ? overDate > Date.now() : false;
             },
             registered () {
-                return this.$store.getters['model.account/registered'];
+                //return this.$store.getters['model.account/registered'];
+                return this.model.account.registered;
             },
             isAuth () {
                 return this.$store.getters['model.account/isAuth'];
@@ -101,7 +102,7 @@
             },
             userScore () {
                 // return this.$store.getters['model.account/userScore'];
-				return this.model.account.userInfo.availableScore;
+				return this.model.account.availableScore;
             },
             isLogin () {
                 let overDate = this.$store.getters['model.account/overDate'];

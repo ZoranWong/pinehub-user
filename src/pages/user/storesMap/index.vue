@@ -19,6 +19,10 @@
                 <span @click="changeBackground('left')">常用自提点</span>
                 <span @click="changeBackground('right')">附近自提点</span>
             </div>
+            <div class="empty_img" v-if="!points.length">
+                <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                <span>暂无自提点哦～</span>
+            </div>
             <ul id="location_points_list" v-if="position === 'left'">
                 <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
                     <div class="left">

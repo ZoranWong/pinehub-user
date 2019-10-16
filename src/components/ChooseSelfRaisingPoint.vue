@@ -12,7 +12,11 @@
                 <span @click="changeBackground('left')">常用自提点</span>
                 <span @click="changeBackground('right')">附近自提点</span>
             </div>
-            <ul id="points_container_list">
+            <div class="empty_img" v-if="!points.length">
+                <img  src="../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                <span>暂无自提点哦～</span>
+            </div>
+            <ul id="points_container_list" v-else>
                 <li v-for="item in points" :key="item.id" @click="payment(item)">
                     <i class="iconfont">&#xe65a;</i>
                     <span>
@@ -249,6 +253,23 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .empty_img{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 250rpx;
+        height: 180rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
     }
 
 </style>
