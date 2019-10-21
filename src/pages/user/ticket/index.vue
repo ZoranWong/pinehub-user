@@ -243,7 +243,7 @@
     .body {
         overflow: hidden;
         width: 750rpx;
-        background-color: #FAFAFA;
+        background-color: #f2f2f2;
         font-weight: normal;
     }
 

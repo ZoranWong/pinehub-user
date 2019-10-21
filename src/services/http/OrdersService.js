@@ -123,7 +123,7 @@ export default class OrdersService extends ApiService {
 
     // 取消订单
     async cancelOrder (order) {
-        let response = await this.httpGet(`api/mp/orders/${order}/cancel`, {});
+        let response = await this.httpPut(`api/mp/orders/${order}/cancel`, {});
         return response;
     }
 
@@ -175,6 +175,13 @@ export default class OrdersService extends ApiService {
     // 通过订单ID获取广告信息
     async getAdvertisementByOrder (id) {
         let response = await this.httpGet(`/advertisement/latest?order_id=${id}&include=ticket`, {});
+        return response.data;
+    }
+    
+    // 申请售后
+    async orderFeedBack (content) {
+        console.log(content, '*************8');
+        let response = await this.httpPost('api/mp/feed/back', {content});
         return response.data;
     }
 }

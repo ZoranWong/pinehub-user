@@ -158,8 +158,11 @@
                     }
                 })
             }
-        }
-    }
+        },
+        mounted () {
+        	this.$command('LOAD_ACCOUNT')
+		}
+	}
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -169,7 +172,7 @@
     }
 
     #merchant-store {
-        background: #fafafa;
+        background: #f2f2f2;
         position: absolute;
         height: 100%;
         width: 100%;
@@ -294,7 +297,7 @@
     #merchant-store_orders_container{
         width: 100%;
         height: 260rpx;
-        background: #fafafa;
+        background: #f2f2f2;
         margin-top: 40rpx;
         padding: 0 20rpx;
         border-radius: 10rpx;

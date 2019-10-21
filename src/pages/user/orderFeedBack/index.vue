@@ -3,11 +3,10 @@
     <div id="feedBack">
         <mp-title :title="title"></mp-title>
         <div id="feedBackContent">
-            <textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您宝贵的意见（500字以内）" :maxlength="totalFont" />
+            <textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您的售后问题，我们会努力为您解决的哦~" :maxlength="totalFont" />
             <em>{{nowFontNum}}/{{totalFont}}</em>
         </div>
-        <input v-model="contact" placeholder-class="placeholder-class" id="feedBackMobile" placeholder="手机号码（选填）" />
-        <div id="btn" @click="submit">立即提交</div>
+        <div id="btn" @click="submit">提交</div>
     </div>
 </template>
 
@@ -19,11 +18,10 @@
         },
         data () {
             return {
-                title: '意见反馈',
-                navName: 'feedBack',
+                title: '申请售后',
+                navName: 'feedOrderBack',
                 feedBackContent: null,
-                totalFont: 500,
-                contact: null
+                totalFont: 500
             };
         },
         computed: {
@@ -33,7 +31,7 @@
         },
         methods: {
             submit () {
-                this.$command('SUBMIT_FEED_BACK', this.contact, this.feedBackContent)
+                this.$command('SUBMIT_ORDER_FEED_BACK', this.feedBackContent)
             }
         },
         mounted () {
@@ -58,9 +56,9 @@
         background: #fff;
         margin-top: 20rpx;
         width: 750rpx;
-        font-size: 32rpx;
+        font-size: 28rpx;
         font-weight: 300;
-        padding: 15rpx;
+        padding: 40rpx;
         box-sizing: border-box;
         color: #111111;
         line-height: 46rpx;

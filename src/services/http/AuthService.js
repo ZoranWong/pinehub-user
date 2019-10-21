@@ -6,12 +6,14 @@ export default class AuthService extends ApiService {
 
     // 获取小程序登录并验证用户是否存在
     async login (code, accessToken) {
-        if (this.handling) {
-            return false;
-        }
+        console.log('-----------login ing --------', this.handling);
+        // if (this.handling) {
+        //     return false;
+        // }
 
         this.handling = true;
         // 服务器交互代码
+       
         let response = await this.httpPost(`/api/mp/login`, {
             auth_code: code,
             access_token: accessToken
@@ -79,6 +81,12 @@ export default class AuthService extends ApiService {
             }
         }
         this.handling = false;
+        return response.data;
+    }
+    
+    // 用户余额变动明细
+    async balanceRecord () {
+        let response = await this.httpGet('api/mp/user/balance/logs', {page: 1, limit: 100000});
         return response.data;
     }
 }

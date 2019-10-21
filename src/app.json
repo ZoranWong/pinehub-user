@@ -33,7 +33,8 @@
     "pages/user/tradeDetail/main",
     "pages/user/recharge/main",
     "pages/user/balance/main",
-    "pages/user/selectPay/main"
+    "pages/user/selectPay/main",
+    "pages/user/orderFeedBack/main"
   ],
   "permission": {
     "scope.userLocation": {

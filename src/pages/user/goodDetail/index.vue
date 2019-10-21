@@ -2,20 +2,24 @@
 <template>
     <div id="good_detail" v-if="goodDetail">
         <mp-title :title="title"></mp-title>
-        <img :src="goodDetail.main_image" alt="">
-        <div id="good_detail_info">
-            <div class="intro">
-                <div class="name">{{goodDetail.name}}</div>
-                <div class="desp">{{goodDetail.detail || '暂无描述'}}</div>
-            </div>
-            <i class="iconfont" @click="addToShoppingCart(goodDetail)">&#xe6d8;</i>
+        <div class="good_detail_banner">
+<!--            <Swiper :images="goodDetail.banners" />-->
+            <Banner :img-urls="goodDetail.banners" ></Banner>
         </div>
-        <h4 class="good_detail_price">{{goodDetail.range}}</h4>
+        <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
         <div id="good_detail_statictics">
-            <span class="is-underline">￥{{goodDetail['origin_price']}}</span>
+            <span class="is-underline">{{goodDetail['origin_price_format']}}</span>
             <span>销量{{goodDetail['sell_num']}}</span>
             <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
         </div>
+        <div id="good_detail_info">
+            <div class="intro">
+                <div class="name">{{goodDetail.name}}</div>
+                <div class="desp" v-html="goodDetail.detail"></div>
+            </div>
+            <i class="iconfont" @click="addToShoppingCart(goodDetail)">&#xe6d8;</i>
+        </div>
+
 
         <ShoppingCart :type="this.$route.query['type']" />
         <SelectSpecification
@@ -31,6 +35,8 @@
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
+	import Swiper from '../../../components/Swiper';
+	import Banner from '../../../components/Banner';
 	import _ from 'underscore'
 	export default {
         name: 'goodDetail',
@@ -38,7 +44,9 @@
 			'mp-title': MpTitle,
 			ShoppingCart,
 			SelectSpecification,
-			ChooseSelfRaisingPoint
+			ChooseSelfRaisingPoint,
+			Swiper,
+			Banner
 		},
         data() {
         	return {
@@ -75,6 +83,7 @@
 		},
         computed : {
             goodDetail () {
+				console.log(this.model.user.goodDetail.goodDetail, '^^^^^^^^^^^^^^^^^^^^^^^^^');
 				return this.model.user.goodDetail.goodDetail
             },
 			showPoints () {
@@ -113,10 +122,19 @@
         transition: 1s;
     }
 
+    #detailImage{
+        width: 100%;
+        height: auto;
+    }
 
-    #good_detail img{
+    #good_detail .good_detail_banner{
         width: 100%;
         height: 400rpx;
+    }
+
+    #good_detail .good_detail_banner img{
+        width: 100%;
+        display: block !important;
     }
 
     #good_detail #good_detail_info{
@@ -128,11 +146,30 @@
     }
 
     #good_detail #good_detail_info .intro{
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
     }
+
+    rich-text{
+        width: 100%;
+    }
+
+    #good_detail #good_detail_info .intro .image-wrap {
+        width: 100% !important;
+        height: auto !important;
+        background: #ffcc00;
+    }
+
+    #good_detail #good_detail_info .intro .image-wrap img{
+        width: 600rpx !important;
+        height: auto !important;
+        display: block;
+    }
+
+
 
     #good_detail #good_detail_info .intro .name{
         font-size: 32rpx;

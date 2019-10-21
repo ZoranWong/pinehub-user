@@ -19,18 +19,20 @@
             </ul>
             <ul id="store_goods_items">
                 <li v-for="item in goods" :key="index"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.id}})">
-                    <img :src="item.main_image" alt="">
+                    <div class="thumb_img">
+                        <img :src="item.main_image" alt="">
+                    </div>
                     <div id="store_good_info">
                         <h3>{{item.name}}</h3>
                         <div id="store_good_info_entities">
                             <span>销量:{{item.sell_num}}</span>
-                            <span>库存:{{item.product_entities[0].stock}}</span>
+                            <span>库存:{{item.stock}}</span>
                         </div>
                         <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
                         <div id="store_good_info_price">
-                            <span>{{item.range}}</span>
-                            <em>￥{{item.origin_price}}</em>
-                            <i class="iconfont" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
+                            <span>{{item.sell_price_format}}</span>
+                            <em>{{item.origin_price_format}}</em>
+                            <i class="iconfont" v-if="item.stock" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
                         </div>
                     </div>
                 </li>
@@ -100,6 +102,7 @@
           },
           tabSelect(id){
               this.activeTab = id;
+			  console.log(this.activeTab);
 			  this.$command('LOAD_STORE_COMMAND',id, 1)
           },
           setData(data){
@@ -142,7 +145,7 @@
 <style>
 	page {
         height: 100%;
-        background: #fafafa;
+        background: #f2f2f2;
     }
 
 	#footNavHeight {
@@ -201,6 +204,7 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
+      margin-bottom: 120rpx;
   }
 
   #store_goods #store_goods_type {
@@ -219,6 +223,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+      font-weight: bold;
   }
 
   #store_good_info_spec{
@@ -228,7 +233,7 @@
 
   #store_goods #store_goods_type .active{
       background: #fff;
-      border-left: 6rpx solid #ffcc00;
+      border-left: 12rpx solid #ffcc00;
   }
 
   #store_goods #store_goods_items{
@@ -249,11 +254,20 @@
     border-bottom: 2rpx solid #f2f2f2;
   }
 
-  #store_goods #store_goods_items img{
-      width: 190rpx;
-      height: 190rpx;
-      margin-right: 30rpx;
-  }
+    #store_goods #store_goods_items .thumb_img{
+        margin-right: 30rpx;
+        width: 190rpx;
+        height: 190rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #store_goods #store_goods_items .thumb_img img{
+        width: 100%;
+        height: 100%;
+    }
+
 
   #store_goods #store_goods_items #store_good_info{
       flex: 1;

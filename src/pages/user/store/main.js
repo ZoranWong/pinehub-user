@@ -1,6 +1,5 @@
 import App from './index';
 import Vue from 'vue';
-import Store from '../../../models/Store';
 import LoadStoreGoodsCommand from './commands/LoadStoreGoodsCommand';
 import LoadStoreGoodsCategories from './commands/LoadStoreGoodsCategories';
 import '../../../styles/iconfont.css'
@@ -13,7 +12,6 @@ const application = wx.$app;
 console.log(application, 'app');
 if (application) {
     application.setComponent(App).run(function () {
-        this.registerModel('model.user.store', Store);
         this.registerCommand(LoadStoreGoodsCommand.commandName(), LoadStoreGoodsCommand);
         this.registerCommand(AddGoodsToCart.commandName(), AddGoodsToCart);
         this.registerCommand(LoadCartCommand.commandName(), LoadCartCommand);

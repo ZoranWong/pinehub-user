@@ -37,6 +37,9 @@ export default class Orders extends Model {
             },
             mallType () {
                 return this.state.mallType
+            },
+            cartTotalFeeFormat () {
+                return this.state.cartTotalFeeFormat
             }
         });
     }
@@ -51,7 +54,8 @@ export default class Orders extends Model {
             nearbyPoints: [],
             selectedPoint: {},
             totalPrice: '',
-            mallType: ''
+            mallType: '',
+            cartTotalFeeFormat: ''
         });
     }
     
@@ -60,9 +64,8 @@ export default class Orders extends Model {
         if (_.isEmpty(data)) return;
         let totalPrice = 0;
         _.map(data, (item) => {
-            totalPrice += (parseInt(item['market_price']) * parseInt(item['buy_num']))
+            totalPrice += (Number(item['price']) * Number(item['buy_num']))
         });
-       
         state.totalPrice = formatMoney(totalPrice);
     }
     
@@ -73,62 +76,6 @@ export default class Orders extends Model {
         super.listeners();
         
         this.addEventListener('shoppingCartAnimation', function (arg) {
-          let bezierPoints = [];
-          let pointsD = [];
-          let pointsE = [];
-          
-          let points = arg[0];
-          let times = arg[1];
-  
-          const DIST_AB = Math.sqrt(Math.pow(points[1]['x'] - points[0]['x'], 2) + Math.pow(points[1]['y'] - points[0]['y'], 2));
-          
-          // 邻控制BC点间距
-          const DIST_BC = Math.sqrt(Math.pow(points[2]['x'] - points[1]['x'], 2) + Math.pow(points[2]['y'] - points[1]['y'], 2));
-          // D每次在AB方向上移动的距离
-          const EACH_MOVE_AD = DIST_AB / times;
-          // E每次在BC方向上移动的距离
-          const EACH_MOVE_BE = DIST_BC / times;
-          // 点AB的正切
-          const TAN_AB = (points[1]['y'] - points[0]['y']) / (points[1]['x'] - points[0]['x']);
-          // 点BC的正切
-          const TAN_BC = (points[2]['y'] - points[1]['y']) / (points[2]['x'] - points[1]['x']);
-          // 点AB的弧度值
-          const RADIUS_AB = Math.atan(TAN_AB);
-          // 点BC的弧度值
-          const RADIUS_BC = Math.atan(TAN_BC);
-          // 每次执行
-          for (let i = 1; i <= times; i++) {
-            // AD的距离
-            let distAD = EACH_MOVE_AD * i;
-            // BE的距离
-            let distBE = EACH_MOVE_BE * i;
-            // D点的坐标
-            let pointD = {};
-            pointD['x'] = distAD * Math.cos(RADIUS_AB) + points[0]['x'];
-            pointD['y'] = distAD * Math.sin(RADIUS_AB) + points[0]['y'];
-            pointsD.push(pointD);
-            // E点的坐标
-            let pointE = {};
-            pointE['x'] = distBE * Math.cos(RADIUS_BC) + points[1]['x'];
-            pointE['y'] = distBE * Math.sin(RADIUS_BC) + points[1]['y'];
-            pointsE.push(pointE);
-            // 此时线段DE的正切值
-            let tanDE = (pointE['y'] - pointD['y']) / (pointE['x'] - pointD['x']);
-            // tanDE的弧度值
-            let radiusDE = Math.atan(tanDE);
-            // 地市DE的间距
-            let distDE = Math.sqrt(Math.pow((pointE['x'] - pointD['x']), 2) + Math.pow((pointE['y'] - pointD['y']), 2));
-            // 此时DF的距离
-            let distDF = (distAD / DIST_AB) * distDE;
-            // 此时DF点的坐标
-            let pointF = {};
-            pointF['x'] = distDF * Math.cos(radiusDE) + pointD['x'];
-            pointF['y'] = distDF * Math.sin(radiusDE) + pointD['y'];
-            bezierPoints.push(pointF);
-          }
-          return {
-            'bezierPoints': bezierPoints
-          };
         });
     
         this.addEventListener('saveCategories', function ({categories}) {
@@ -147,12 +94,21 @@ export default class Orders extends Model {
                     itemEntities.specs = specObj
                 });
     
-                let minPrice = _.min(productEntities, (value) => {
-                    return value['market_price']
-                });
-                let maxPrice = _.max(productEntities, (value) => {
-                    return value['market_price']
-                });
+                // let minPrice = _.min(productEntities, (value) => {
+                //     return value['market_price']
+                // });
+                // let maxPrice = _.max(productEntities, (value) => {
+                //     return value['market_price']
+                // });
+                // if (product['specifications'].length) {
+                //     if (minPrice['market_price'] === maxPrice['market_price']) {
+                //         product['range'] = `￥${minPrice['market_price']}`
+                //     } else {
+                //         product['range'] = `￥${minPrice['market_price']}~￥${maxPrice['market_price']}`
+                //     }
+                // } else {
+                //     product['range'] = `￥${minPrice['market_price']}`
+                // }
     
                 let specifications = product['specifications'];
                 let spec = [];
@@ -160,7 +116,7 @@ export default class Orders extends Model {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
-                product['range'] = product['specifications'].length ? `￥${minPrice['market_price']}~￥${maxPrice['market_price']}` : `￥${minPrice['market_price']}`
+               
             });
     
             this.state.goods = goods;
@@ -191,7 +147,9 @@ export default class Orders extends Model {
         });
         
         this.addEventListener('saveCartGoodsList', function ({products}) {
-            _.map(products, (i) => {
+            let items = products.data;
+            let meta = products.meta;
+            _.map(items, (i) => {
                 if (i.specifications.length) {
                     let specDesp = [];
                     _.map(i.specifications, (item) => {
@@ -200,7 +158,8 @@ export default class Orders extends Model {
                     i['spec_desp'] = specDesp.join(',')
                 }
             });
-            this.state.goodInShoppingCart = products;
+            this.state.goodInShoppingCart = items;
+            this.state.cartTotalFeeFormat = meta['total_fee_format'];
             that.calculate(this.state);
         });
         

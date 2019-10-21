@@ -25,7 +25,7 @@
             <i class="iconfont arrow">&#xe6a3;</i>
         </div>
         <div id="pick_up_info">
-            <i class="iconfont location">&#xe80b;</i>
+            <i class="iconfont location">&#xe65e;</i>
             <div class="order_info">
                 <div class="order_info_name">
                     <h4>
@@ -145,7 +145,7 @@
 <style>
     page {
         height: 100%;
-        background: #fafafa;
+        background: #f2f2f2;
     }
 
     #userOrders {

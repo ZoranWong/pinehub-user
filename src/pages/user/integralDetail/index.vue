@@ -76,7 +76,7 @@
 <style>
 	page {
 		height: 100%;
-		background: #fafafa;
+		background: #f2f2f2;
 	}
 
     .integral_item {
@@ -103,7 +103,7 @@
         width: 30rpx;
         height: 30rpx;
         border-radius: 50%;
-        background: #fafafa;
+        background: #f2f2f2;
         transform: translateX(-15rpx);
     }
 

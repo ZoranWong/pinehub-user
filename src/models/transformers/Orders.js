@@ -31,9 +31,9 @@ export default class Order {
         } else if (this.stateDesc === '待自提') {
             this.btnStatus = 1;   // 1 取消订单 再来一单 去取货
         } else if (this.stateDesc === '已完成') {
-            this.btnStatus = 3;  // 申请售后 再来一单
+            this.btnStatus = 2;  // 申请售后 再来一单
         } else {
-            this.btnStatus = 4   // 再来一单
+            this.btnStatus = 3   // 再来一单
         }
         // 转换为中文
         switch (this.status) {
@@ -70,6 +70,9 @@ export default class Order {
         this.createdAtSp = (new Date(order['created_at'])).format('MM/dd/h:m');
         this.customer = order['customer'];
         this.orderItems = order['order_items'];
+        this.pick_date = order['pick_date'];
+        this.channel = order['channel'];
+        this.shop = order['shop'];
         this.paidTime = order['paid_time'];
         this.orderItems.forEach(item => {
            if (item['spec_value']) {

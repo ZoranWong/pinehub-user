@@ -105,7 +105,7 @@
 				return this.model.account.availableScore;
             },
             isLogin () {
-                let overDate = this.$store.getters['model.account/overDate'];
+                let overDate = this.model.account.overDate;
                 return overDate ? overDate > Date.now() : false;
             },
             hasLoadedActivity () {
@@ -124,9 +124,7 @@
         watch: {
             accessToken (value) {
                 if (value) {
-                    if (!this.isLogin) {
-                        this.$command('SIGN_IN', this.accessToken);
-                    }
+                    this.$command('SIGN_IN', this.accessToken);
                 }
             },
             hasToken (value) {
@@ -142,6 +140,7 @@
         },
         mounted () {
             this.initAccount();
+			this.$command('GET_BAR_HEIGHT',wx.getSystemInfoSync()['statusBarHeight'])
         },
         onShow () {
             if (this.$route.query['needRefresh']) {
@@ -224,6 +223,7 @@
     .body {
         overflow: hidden;
         width: 750rpx;
+        background: #FAFAFA;
     }
 
     #index_header {
@@ -264,10 +264,10 @@
         width: 670rpx;
         margin: 0 auto;
         margin-top: -90rpx;
-        border-radius: 15rpx;
+        border-radius: 16rpx;
         overflow: hidden;
         text-align: center;
-        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
+        box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
     }
 
     .user-info-get-btn,
@@ -326,7 +326,7 @@
         height: 198rpx;
         background: #FFFFFF;
         border-radius: 10rpx;
-        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
+        box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
 
     }
 
@@ -347,9 +347,8 @@
     #index_menu .booking {
         width: 669rpx;
         height: 198rpx;
-        margin-top: 20rpx;
-        border-radius: 10rpx;
-        box-shadow: 0 10rpx 10rpx rgba(204, 202, 202, 0.3);
+        border-radius: 16rpx;
+       box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
         float: left;
         background: #FFFFFF;
     }

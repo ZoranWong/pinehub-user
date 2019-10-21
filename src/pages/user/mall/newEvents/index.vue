@@ -52,7 +52,7 @@
 		computed: {
 			merchandises() {
 				let merchandises = this.$store.getters['model.newEvents.merchandises/list']
-                this.handleMerchandises(merchandises)
+				this.handleMerchandises(merchandises)
 				return merchandises
 			},
 			totalCount() {
@@ -113,7 +113,7 @@
 				this.selectSpec = false
 			},
 			async loadMerchandises(page = 1) {
-				await this.$command('ACTIVITY_LOADING_MERCHANDISES', this.activityId, page)
+				await this.$command('ACTIVITY_LOADING_MERCHANDISES', page)
 			},
 			hdlShowCart() {
 				this.isShowCart = true;
@@ -175,7 +175,7 @@
 				}
 			},
 			async initData() {
-				await this.loadMerchandises();
+				await this.loadMerchandises(1);
 				await this.loadCartMerchandises(1);
 			}
 		},

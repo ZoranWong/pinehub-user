@@ -17,12 +17,12 @@
                        【{{item.data.type}}】
                         <span>{{item.data.name}}</span>
                    </h3>
-                   <h4>￥{{item.data.benefit}}</h4>
+                   <h4>￥{{item.data.benefit/100}}</h4>
                    <div class="operation">
                        <span @click="jump('user.integral.detail',item.data.id,item.pv)">卡券详情</span>
                        <span @click="exchange(item.data.id)">立即兑换</span>
                    </div>
-                   <img src="../../../../static/images/position.png" alt="">
+                   <img :src="item.data.banner" alt="">
                    <div class="needScore">
                        <div class="left_text">{{item.pv}}</div>
                        <div class="right_text">
@@ -107,14 +107,13 @@
 <style>
 	page {
 		height: 100%;
-		background: #fafafa;
+		background: #f2f2f2;
 	}
 
     #integral{
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-        padding: 20rpx;
     }
 
     #integral #integral_list {
@@ -127,6 +126,8 @@
         align-items: center;
         width: 100%;
         height: 326rpx;
+        box-sizing: border-box;
+        padding: 20rpx;
         margin-bottom: 20rpx;
     }
 
@@ -143,7 +144,7 @@
         width: 30rpx;
         height: 30rpx;
         border-radius: 50%;
-        background: #fafafa;
+        background: #f2f2f2;
         transform: translateX(-15rpx);
     }
 
@@ -195,8 +196,8 @@
     }
 
     #integral #integral_list .integral_list_item .right img{
-        width: 289rpx;
-        height: 181rpx;
+        width: 244rpx;
+        height: 151rpx;
         position: absolute;
         right: 15rpx;
         bottom: 22rpx;

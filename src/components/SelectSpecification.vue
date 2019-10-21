@@ -56,7 +56,7 @@
 
 	export default {
         name: 'SelectSpecification',
-        props: ['selectSpec', 'item'],
+        props: ['selectSpec', 'item','type'],
         data () {
             return {
                 selectedSpec: {},
@@ -119,9 +119,12 @@
 				if (keys.length < this.item.specifications.length) {
 					return;
                 }
-				if (this.type === 'mall') {
+				console.log(this.type, '=====s');
+				if (this.type == 'mall') {
+					console.log(1111);
 					this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
                 } else {
+					console.log(2222);
 					this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
                 }
 

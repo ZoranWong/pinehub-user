@@ -91,6 +91,8 @@
                 this.$command('REDIRECT_TO', 'user.orders', 'replace');
             },
             index () {
+				this.model.user.store.dispatch('clearShoppingCart');
+				this.model.user.store.dispatch('selectPoints',false, 'mall');
                 this.$command('REDIRECT_TO', 'index', 'replace');
             },
             async getOrderInfo () {

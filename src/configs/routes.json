@@ -32,5 +32,6 @@
 	"payment": "/pages/user/payment/main",
     "selectPay": "/pages/user/selectPay/main",
 	"user.store": "/pages/user/store/main",
-	"user.goodDetail": "/pages/user/goodDetail/main"
+	"user.goodDetail": "/pages/user/goodDetail/main",
+    "order.feedback": "/pages/user/orderFeedBack/main"
 }

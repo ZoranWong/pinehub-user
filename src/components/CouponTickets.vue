@@ -4,7 +4,7 @@
 		<mp-title :title="title"></mp-title>
         <div class="empty_img" v-if="!tickets.length">
             <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
-            <span>暂无订单哦～</span>
+            <span>暂无优惠券哦～</span>
         </div>
 		<div class="ticket-list" v-else>
 			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />

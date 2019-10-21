@@ -11,12 +11,12 @@
         <div class="recharge-details">
             <h3>余额明细</h3>
             <ul class="recharge-details-list">
-                <li v-for="item in 10" :key="item">
+                <li v-for="item in balanceRecord" :key="item.id">
                     <div class="left">
-                        <h4>充值</h4>
-                        <span>2018-10-01 18:28:58 </span>
+                        <h4>{{item['type_desc']}}</h4>
+                        <span>{{item['change_at']}} </span>
                     </div>
-                    <div class="right">+16.00</div>
+                    <div class="right">{{item.amount}}</div>
                 </li>
             </ul>
         </div>
@@ -37,14 +37,20 @@
         computed: {
             balance () {
                 return this.$store.getters['model.account/balance'];
+            },
+			balanceRecord () {
+				return this.model.account.balanceRecord
             }
         },
         methods: {
             jump (router) {
             	this.$command('REDIRECT_TO', router, 'push');
             }
-        }
-    }
+        },
+        mounted () {
+        	this.$command('LOAD_BALANCE_RECORD')
+		}
+	}
 </script>
 <style>
     .body{
@@ -59,12 +65,13 @@
         box-sizing: border-box;
         width: 100%;
         background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));
-        height: 330rpx;
         padding: 50rpx 0;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        position: fixed;
+        top: 0;
     }
     .balance-detail .title{
         font-size: 28rpx;
@@ -82,6 +89,7 @@
         color: #111111;
         font-size: 32rpx;
         width: 280rpx;
+        box-sizing: border-box;
         height: 80rpx;
         background:rgba(253,224,104,1);
         box-shadow:0 5rpx 10rpx 0 rgba(255,204,0,0.6);
@@ -94,6 +102,7 @@
 
     .recharge-details{
         width: 100%;
+        margin-top: 340rpx;
     }
 
     .recharge-details h3{

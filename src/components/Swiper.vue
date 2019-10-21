@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
-    <swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+    <swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
         <block v-for="(item, index) in images" :key="index">
             <swiper-item>
-                <image :src="item.url" class="slide-image" mode="aspectFill"/>
+                <image :src="item" class="slide-image" mode="aspectFill"/>
             </swiper-item>
         </block>
     </swiper>
@@ -14,7 +14,10 @@
 		name: 'swiper',
 		props: {
 			images: {
-				type: Array
+				type: Array,
+                default: function () {
+                    return []
+				}
 			}
 		},
 		data() {
@@ -24,6 +27,9 @@
 				interval: 3000,
 				duration: 500
 			};
+		},
+        mounted () {
+			console.log(this.images, '*********************');
 		}
 	}
 </script>

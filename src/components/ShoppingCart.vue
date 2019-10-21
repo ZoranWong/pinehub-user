@@ -26,7 +26,7 @@
                             <span>{{item['spec_desp']}}</span>
                         </h4>
                         <div class="entities">
-                            <span>￥{{item['market_price']}}</span>
+                            <span>￥{{item['price']}}</span>
                             <i class="iconfont minus" @click="changeBuyNum(item,-1)">&#xe61a;</i>
                             <span>{{item['buy_num']}}</span>
                             <i class="iconfont add" @click="changeBuyNum(item,1)">&#xe6d8;</i>
@@ -48,8 +48,7 @@
 			return {
                 showMask: false,
 				showGoodsList: false,
-				cartGoodsList:[],
-                showPoints: false
+				cartGoodsList:[]
             }
 		},
         computed : {
@@ -62,7 +61,6 @@
                 }
 				if(products){
 					this.showMask = products.length ? true : false;
-					this.showGoodsList = false ;
                 }
 				return products
 			},
@@ -72,7 +70,6 @@
                 } else {
 					return this.model.newEvents.shoppingCarts.totalPrice
                 }
-
             }
         },
 		created () {

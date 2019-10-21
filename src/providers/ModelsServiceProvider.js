@@ -10,13 +10,19 @@ import App from '@/models/App';
 import Activity from '@/models/Activity';
 import ChargeCards from '@/models/ChargeCards';
 import TradeOrderItems from '@/models/TradeOrderItems';
+import BarHeight from '../models/BarHeight';
+import Store from '@/models/Store';
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
         let models = new Model(this.app);
         this.app.register('models', models);
+        this.app.register('model.global.barHeight', BarHeight);
+        
         this.app.registerModel('model.activity', Activity);
         this.app.registerModel('model.app', App);
+        this.app.registerModel('model.user.store', Store);
+
 
         this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
         this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);

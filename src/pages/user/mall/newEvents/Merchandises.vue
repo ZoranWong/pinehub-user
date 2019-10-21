@@ -10,8 +10,8 @@
 				<span class="tag color00" v-if="item.specifications.length > 0">规格 : {{item.spec}}</span>
 				<div style="position:absolute;color: #484848;bottom: 100rpx;right:32rpx;font-size:24rpx;"><span >剩余 {{item.stockNum || 0}} 份</span></div>
 				<div class="content ">
-					<div class="sell-price color00">{{item.range}}</div>
-					<div class="origin-price">￥{{item.originPrice}}</div>
+					<div class="sell-price color00">{{item.sell_price_format}}</div>
+					<div class="origin-price">{{item.origin_price_format}}</div>
 					<div class="cartcontrol-warpper ">
 						<cart-control v-if="item.stockNum > 0" :model="model" @addCart="addCart" @reduceCart="reduceCart" :product="item"></cart-control>
 						<div v-else class="sell-out"><span style = "color: #6b6b6b; font-size: 32rpx;">已售完</span></div>

@@ -19,7 +19,6 @@ export default class Tickets extends Model {
                 }
             },
             ticketsList (state) {
-                console.log(state, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
                 return _.flatten(state.list);
             },
             ticketDetail () {
