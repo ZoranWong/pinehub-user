@@ -6,11 +6,15 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
+<<<<<<< HEAD
 		"enhance": true,
+=======
+>>>>>>> 8a9cf944a2e1ae440bea45eff04452798eb74b22
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"nodeModules": true,
+<<<<<<< HEAD
 		"uglifyFileName": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -23,6 +27,12 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.0",
+=======
+		"uglifyFileName": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.6.0",
+>>>>>>> 8a9cf944a2e1ae440bea45eff04452798eb74b22
 	"appid": "wx67127c10ce9c598c",
 	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"miniprogramRoot": "dist/",
