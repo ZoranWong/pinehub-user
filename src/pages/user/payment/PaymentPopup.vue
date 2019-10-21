@@ -190,7 +190,7 @@
     }
 
     .popup-layout > .header {
-        background-color: #fafafa;
+        background-color: #f2f2f2;
         position: relative;
         height: 88rpx;
     }

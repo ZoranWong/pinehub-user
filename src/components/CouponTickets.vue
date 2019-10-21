@@ -2,7 +2,10 @@
 <template>
 	<div class="ticket-page body">
 		<mp-title :title="title"></mp-title>
-        <img v-if="!tickets.length" src="../../static/images/empty_tickets.png" alt="" id="empty">
+        <div class="empty_img" v-if="!tickets.length">
+            <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
+            <span>暂无优惠券哦～</span>
+        </div>
 		<div class="ticket-list" v-else>
 			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
 			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
@@ -75,12 +78,6 @@
 		height: 74rpx;
 	}
 
-    #empty {
-        width: 600rpx;
-        height: 500rpx;
-        margin-left: 75rpx;
-        margin-top: 30rpx;
-    }
 
 	#tab_select ul li {
 		font-size: 28rpx;
@@ -119,5 +116,25 @@
         box-sizing: border-box;
         padding: 20rpx;
 	}
+
+    .empty_img{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 350rpx;
+        height: 240rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 300rpx;
+    }
+
 
 </style>

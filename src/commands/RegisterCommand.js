@@ -27,9 +27,10 @@ export default class RegisterCommand extends Command {
         };
         await this.service('mp.storage').set('token', token);
         // userInfo = await this.service('http.auth').getUserInfo(result['token']);
+        let assignedUserInfo = Object.assign(result, userInfo)
         if (result) {
-            userInfo['token'] = token;
-            this.model.account.dispatch('setAccount', userInfo);
+            assignedUserInfo['token'] = token;
+            this.model.account.dispatch('setAccount', assignedUserInfo);
             return true;
         }
         return false;

@@ -80,7 +80,7 @@ export default class Application {
                 enumerable: true,
                 get () {
                     console.log('==================================');
-                    return app['stores'][app.currentPage['routeAlias']].getters[name + '/' + key];
+                    return app['stores'][app.currentPage ? app.currentPage['routeAlias'] : app.route].getters[name + '/' + key];
                 }
             })
         }

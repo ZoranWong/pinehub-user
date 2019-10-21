@@ -53,6 +53,9 @@ export default class Account extends Model {
             },
             registered () {
                 return !!this.state.nickname;
+            },
+            balanceRecord () {
+                return this.state.balanceRecord
             }
         });
     }
@@ -85,7 +88,8 @@ export default class Account extends Model {
             nickname: null,
             handlingOrderCount: null,
             waitPickOrderCount: null,
-            waitPayOrderCount: null
+            waitPayOrderCount: null,
+            balanceRecord:[]
         };
     }
 
@@ -97,6 +101,10 @@ export default class Account extends Model {
             console.log('-------------- reset account 1 ----------------');
             await initAccount();
         });
+
+        this.addEventListener('saveBalanceRecord', function ({list}) {
+            this.state.balanceRecord = list;
+        })
 
         this.addEventListener('reduceTicket', function ({count = 1}) {
             this.state.ticketNum -= count;

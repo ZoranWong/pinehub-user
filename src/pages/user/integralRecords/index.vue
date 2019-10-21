@@ -55,7 +55,7 @@
 <style>
 	page {
 		height: 100%;
-		background: #fafafa;
+		background: #f2f2f2;
 	}
 
     #integral_records{

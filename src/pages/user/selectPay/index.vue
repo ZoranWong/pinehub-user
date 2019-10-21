@@ -101,7 +101,7 @@
                 }
             },
             payByWechat () {
-				this.$command('PAYMENT_BY_ID', this.order.id)
+				this.$command('PAYMENT_BY_ID', this.order)
             }
         },
         mounted () {

@@ -56,15 +56,15 @@ export default class StoreService extends ApiService {
     
     // 商城购物车商品列表
     async cartGoodsList () {
-        console.log('^^^^^^^^^^^^');
         let response = await this.httpGet('api/mp/mall/carts');
-        return response.data
+        console.log('^^^^^^^^^^^^', response);
+        return response
     }
     
     // 早餐预订购物车商品列表
     async cartBreakfastGoodsList () {
         let response = await this.httpGet('api/mp/breakfast/booking/carts');
-        return response.data
+        return response
     }
     
     // 清空商城购物车

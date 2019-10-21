@@ -12,16 +12,16 @@
                 <div id="merchant-store_userinfo_otherinfo">
                     <ul>
                         <li @click="toBalance">
-                            <em>{{userInfo.balance}}</em>
+                            <em>{{userInfo.balance || 0}}</em>
                             <i>余额</i>
                         </li>
                         <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
-                            <em>{{userInfo.ticketNum}}</em>
+                            <em>{{userInfo.ticketNum || 0}}</em>
                             <i>卡券</i>
                         </li>
                         <li @click="jump('user.integral')">
-                            <em>{{userInfo.availableScore}}</em>
+                            <em>{{userInfo.availableScore || 0}}</em>
                             <i>积分</i>
                         </li>
                     </ul>
@@ -46,21 +46,21 @@
                 <ul id="merchant-store_orders_list">
                     <li @click="jump('user.orders', 'WAIT_TO_PAY')">
                         <i class="iconfont">&#xe67a;</i>
-                        <div class="count">{{userInfo['waitPayOrderCount']}}</div>
+                        <div class="count" v-if="userInfo['waitPayOrderCount']">{{userInfo['waitPayOrderCount']}}</div>
                         <span>待付款</span>
                     </li>
                     <li @click="jump('user.orders', 'WAIT_TO_PICK')">
                         <i class="iconfont">&#xe884;</i>
-                        <div class="count">{{userInfo['waitPickOrderCount']}}</div>
+                        <div class="count" v-if="userInfo['waitPickOrderCount']">{{userInfo['waitPickOrderCount']}}</div>
                         <span>待自提</span>
                     </li>
                     <li @click="jump('user.orders', 'ORDER_COMPLETED')">
-                        <i class="iconfont">&#xe60d;</i>
+                        <i class="iconfont" >&#xe60d;</i>
                         <span>已完成</span>
                     </li>
                     <li @click="jump('user.orders', 'ORDER_HANDLING')">
                         <i class="iconfont">&#xe7ea;</i>
-                        <div class="count">{{userInfo['handlingOrderCount']}}</div>
+                        <div class="count" v-if="userInfo['handlingOrderCount']">{{userInfo['handlingOrderCount']}}</div>
                         <span>处理中</span>
                     </li>
                     <li @click="jump('user.orders', 'ORDER_REFUNDED')">
@@ -158,8 +158,11 @@
                     }
                 })
             }
-        }
-    }
+        },
+        mounted () {
+        	this.$command('LOAD_ACCOUNT')
+		}
+	}
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -169,7 +172,7 @@
     }
 
     #merchant-store {
-        background: #fafafa;
+        background: #f2f2f2;
         position: absolute;
         height: 100%;
         width: 100%;
@@ -294,7 +297,7 @@
     #merchant-store_orders_container{
         width: 100%;
         height: 260rpx;
-        background: #fafafa;
+        background: #f2f2f2;
         margin-top: 40rpx;
         padding: 0 20rpx;
         border-radius: 10rpx;

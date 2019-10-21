@@ -26,7 +26,7 @@ export default class OrderStatusUpdateCommand extends Command {
     
     // 申请售后
     async feedback (id) {
-        console.log(id, '00000');
+        this.$application.$command('REDIRECT_TO', 'order.feedback', 'push');
     }
     
     // 重新支付订单
@@ -69,20 +69,11 @@ export default class OrderStatusUpdateCommand extends Command {
                 }
             })
         } else if (type === 'feedback') {
-            wx.showModal({
-                title: '温馨提示',
-                content: '确认申请售后？',
-                async success (res) {
-                    if (res.confirm) {
-                        await self.feedback(order.id);
-                        self.refresh();
-                    }
-                }
-            })
+           self.feedback()
         } else if (type === 'onemore') {
             self.onemore()
         } else if (type === 'pickup') {
-            self.pickup(order.id)
+            self.pickup(order)
         }
     }
     static commandName () {

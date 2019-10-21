@@ -39,7 +39,7 @@
                     <h3>{{good['name']}}</h3>
                     <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
                     <div id="good_info_price">
-                        <h3>￥{{good['market_price']}}</h3>
+                        <h3>{{good['price_format']}}</h3>
                         <em>X {{good['buy_num']}}</em>
                     </div>
                 </div>
@@ -48,11 +48,11 @@
         <ul id="total">
             <li>
                 <h3>商品总价</h3>
-                <span>￥{{orderInfo['total_fee'] || 0}}</span>
+                <span>{{orderInfo['total_fee_format'] || 0}}</span>
             </li>
             <li>
                 <h3>优惠金额</h3>
-                <span>￥{{orderInfo['total_preferential_fee'] || 0}}</span>
+                <span>{{orderInfo['total_preferential_fee_format'] || 0}}</span>
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
@@ -64,12 +64,12 @@
             </li>
             <li>
                 <h4>实付款</h4>
-                <h5>￥{{orderInfo['settlement_total_fee'] || 0}}</h5>
+                <h5>{{orderInfo['settlement_total_fee_format'] || 0}}</h5>
             </li>
         </ul>
         <div id="do_payment">
             <span>
-                预付款 ￥{{orderInfo['settlement_total_fee'] || 0}}
+                预付款 {{orderInfo['settlement_total_fee_format'] || 0}}
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
@@ -100,6 +100,7 @@
             },
 			goodInShoppingCart () {
 				if (this.type === 'mall') {
+					console.log(this.model.user.store.goodInShoppingCart, '^^^^^^^^^^^');
 					return this.model.user.store.goodInShoppingCart
                 } else {
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
@@ -112,7 +113,7 @@
 		},
 		methods: {
 			selectPoint () {
-                this.$command('REDIRECT_TO', 'storesMap', 'push' , {
+                this.$command('REDIRECT_TO', 'storesMap', 'replace' , {
                 	query: {
                 		type: this.type
                     }
@@ -123,7 +124,7 @@
 					shop_id: this.selectedPoint.id,
 					coupon_records: [],
                 },this.type);
-				this.$command('REDIRECT_TO', 'selectPay', 'push')
+				this.$command('REDIRECT_TO', 'selectPay', 'replace')
             },
             getDate () {
 				var tomorrow = new Date();
@@ -132,7 +133,7 @@
 				this.tomorrowStr = tomorrowStr
 			},
 			jump (router) {
-				this.$command('REDIRECT_TO', router, 'push',{
+				this.$command('REDIRECT_TO', router, 'replace',{
 					query: {needReturn: true}
                 });
 			}
@@ -152,7 +153,7 @@
 <style>
 	page {
 		height: 100%;
-		background: #fafafa;
+		background: #f2f2f2;
 	}
 
     #pay_shop_info,#pay_pick_up_info{

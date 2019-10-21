@@ -84,6 +84,9 @@ export default class ShoppingCarts extends Model {
             },
             breakfastType () {
                 return this.state.breakfastType
+            },
+            cartTotalFeeFormat () {
+                return this.state.cartTotalFeeFormat
             }
         });
     }
@@ -93,7 +96,7 @@ export default class ShoppingCarts extends Model {
         if (_.isEmpty(data)) return;
         let totalPrice = 0;
         _.map(data, (item) => {
-            totalPrice += (parseInt(item['market_price']) * parseInt(item['buy_num']))
+            totalPrice += (Number(item['price']) * Number(item['buy_num']))
         });
         
         state.totalPrice = formatMoney(totalPrice);
@@ -112,7 +115,8 @@ export default class ShoppingCarts extends Model {
             totalPrice: 0,
             selectedPoint: {},
             showPoints: false,
-            breakfastType: ''
+            breakfastType: '',
+            cartTotalFeeFormat: ''
         });
         this.rebuildData();
         return data;
@@ -156,7 +160,9 @@ export default class ShoppingCarts extends Model {
         });
 
         this.addEventListener('saveBreakfastCartGoodsList', function ({products}) {
-            _.map(products, (i) => {
+            let items = products.data;
+            let meta = products.meta;
+            _.map(items, (i) => {
                 if (i.specifications.length) {
                     let specDesp = [];
                     _.map(i.specifications, (item) => {
@@ -165,7 +171,8 @@ export default class ShoppingCarts extends Model {
                     i['spec_desp'] = specDesp.join(',')
                 }
             });
-            this.state.goodInShoppingCart = products;
+            this.state.goodInShoppingCart = items;
+            this.state.cartTotalFeeFormat = meta['total_fee_format'];
             that.calculate(this.state);
         });
         

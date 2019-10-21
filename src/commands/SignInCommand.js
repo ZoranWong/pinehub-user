@@ -17,8 +17,6 @@ export default class SignInCommand extends Command {
             if (!loginInfo.token) {
                 console.log('到这里来就不登录了')
             } else {
-    
-    
                 let token = loginInfo.token;
                 let openId = loginInfo.open_id;
                 // let canUseScore = loginInfo.can_use_score;

@@ -103,7 +103,7 @@
             },
 
             btnClick (type, order) {
-                this.$command('ORDER_STATUS_UPDATE', type, order);
+				this.$command('ORDER_STATUS_UPDATE', type, order);
             },
             orderItemTop (order, index) {
                 const query = wx.createSelectorQuery()

@@ -33,11 +33,13 @@
                     <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
                     <i class="iconfont right disabled" v-else>&#xe6d7;</i>
                 </li>
-<!--                <div id="empty_list">-->
-<!--                    暂无常用自提点-->
-<!--                </div>-->
+                <div class="empty_img" v-if="!commonPoints.length">
+                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                    <span>暂无自提点哦～</span>
+                </div>
             </ul>
-            <ul id="location_points_list" v-else>
+
+            <ul id="location_points_list" v-if="position === 'right'">
                 <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
                     <div class="left">
                         <div class="top">
@@ -51,7 +53,12 @@
                     <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
                     <i class="iconfont right disabled" v-else>&#xe6d7;</i>
                 </li>
+                <div class="empty_img" v-if="!nearPoints.length">
+                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                    <span>暂无自提点哦～</span>
+                </div>
             </ul>
+
             <button class="confirmBtn" @click="payment" v-if="checkId">确定</button>
         </div>
     </div>
@@ -84,6 +91,7 @@
 				points: [],
 				textData: {},
 				nearPoints: [],
+				commonPoints:[],
                 checkId: ''
             }
         },
@@ -102,6 +110,7 @@
 			commonlyMapPoints () {
 				let points = this.model.user.map.commonlyMapPoints
 				this.points = points;
+				this.commonPoints = points;
 				return points
 			},
 			nearbyMapPoints () {
@@ -189,6 +198,12 @@
             },
             async bindmarkertap (e) {
 				let id = e.mp.markerId;
+				this.checkId = id;
+				this.nearPoints.forEach(item=>{
+					if(item.id === id){
+					    this.changeBackground('right')
+					}
+				})
 				this.markers = this.points.map((point) => {
 					let showCallout = false
 					if (point.id === id) {
@@ -336,7 +351,7 @@
     }
 
     .select_li_smalltitle {
-        background: #FAFAFA;
+        background: #f2f2f2;
         color: #000000;
         float: left;
         font-size: 24rpx;
@@ -471,7 +486,7 @@
 
     #location_points .confirmBtn{
         width: 100%;
-        height: 80rpx;
+        height: 110rpx;
         border-radius: 10rpx;
         background: #ffcc00;
         font-size: 36rpx;
@@ -481,4 +496,24 @@
         align-items: center;
     }
 
+
+    .empty_img{
+        width: 100%;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 350rpx;
+        height: 240rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 50rpx;
+    }
 </style>

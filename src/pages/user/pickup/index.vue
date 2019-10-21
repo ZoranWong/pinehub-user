@@ -17,7 +17,7 @@
                 <block v-for="(item, index) in orders" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
-                        <canvas style="width: 200px; height: 200px;margin: 50rpx 0" :canvas-id="'qrcode_'+item['id']"></canvas>
+                        <canvas style="width: 200px; height: 200px;margin: 50rpx 0" :canvas-id="'qrcode_'+item['id']+'_'+drawTime"></canvas>
                         <div class="order_info">
                             <span>订单编号: {{item['order_no']}}</span>
                             <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
@@ -32,14 +32,14 @@
                 :circular="true">
                 <block v-for="(item, index) in orders" :key="index">
                     <swiper-item class="swiperItem" :id="'id'+item.id">
-                        <h3>请您前往【{{item.address}}】进行自提</h3>
+                        <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
                         <div class="pickupNum">
                             <span>提货码</span>
                             <h2>{{item['subOrderNo']}}</h2>
                         </div>
                         <div class="order_info">
                             <span>订单编号: {{item['order_no'] || '暂无'}}</span>
-                            <span>取货时间: {{item['pickup_time'] || '暂无'}}</span>
+                            <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
                         </div>
                     </swiper-item>
                 </block>
@@ -76,20 +76,29 @@
                 current: 1,
                 currentOrderId: null,
                 orders: [],
-				qrcode :null
+				qrcode :null,
+                drawTime: null
             };
         },
         watch: {
 			currentOrderId: function(value) {
+				console.log(value, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
 				if(value)
 					this.Qrcode(value);
-            }
+            },
+			drawTime(value){
+				if(value && this.currentOrderId){
+					this.Qrcode(this.currentOrderId);
+				}
+			}
         },
         computed: {
 			pickupOrders () {
-				this.orders = this.orders.concat(this.model.user.pickup.pickupOrders);
-				if(!this.currentOrderId && this.orders && this.orders.length) {
+				this.drawTime = (new Date).getTime();
+				this.orders = this.model.user.pickup.pickupOrders;
+				if(this.position === 'left' && !this.currentOrderId && this.orders && this.orders.length) {
 					this.currentOrderId = this.orders[0]['id'];
+					this.drawTime = (new Date).getTime();
 				}
 				return this.model.user.pickup.pickupOrders
             }
@@ -97,18 +106,25 @@
         methods: {
 			changeBackground(position){
 				this.position = position;
-				this.background = position === 'left'? bg1 : bg2
+				this.background = position === 'left'? bg1 : bg2;
+				if(position === 'left'){
+					this.currentOrderId = this.orders[0]['id']
+					this.drawTime = (new Date).getTime();
+                } else {
+					this.currentOrderId = null
+                }
 			},
 			bannerChange (e) {
 				this.current = e.mp.detail.current + 1;
 				this.currentOrderId = e.mp.detail.currentItemId;
 			},
             Qrcode (id) {
+                let time = (new Date()).getTime();
 				drawQrcode({
 					width: 200,
 					height: 200,
-					canvasId: `qrcode_${id}`,
-					text: `{"order_id": ${id}}`
+					canvasId: `qrcode_${id}_${this.drawTime}`,
+					text: `{"order_id": ${id}, 'time': ${time}`
 				})
             }
         },
@@ -119,10 +135,21 @@
 				canvasId: 'myQrcode',
 				text: `{"order_id": 0}`
 			})
-			console.log(this.qrcode, '*****************');
-			this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
-        }
-    }
+			if (this.$route.query.order) {
+				let order = JSON.parse(this.$route.query.order)
+				order['order_no'] = order.code
+				this.orders.push(order)
+            } else {
+				this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
+            }
+        },
+        beforeMount () {
+			this.currentOrderId = null;
+			this.model.user.pickup.dispatch('savePickupOrders', {
+				orders: []
+            })
+		}
+	}
 </script>
 
 <style>
@@ -157,6 +184,7 @@
         justify-content: center;
         align-items: center;
         background-size: 100%;
+        background-position: center -10rpx;
     }
 
     #pickup_header span {

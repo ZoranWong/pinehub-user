@@ -24,7 +24,7 @@
                 <i class="iconfont right">&#xe656;</i>
             </div>
         </div>
-        <button class="pay-btn" @click="createRechargeOrder" :style="{bottom: checked?'0':'-100rpx'}" >充值</button>
+        <button class="pay-btn" @click="createRechargeOrder" :style="{bottom: checked?'0':'-100rpx',zIndex:'99999'}" >充值</button>
     </div>
 </template>
 <script>
@@ -55,6 +55,7 @@
 				this.type = type
             },
 			createRechargeOrder () {
+				console.log(this.checked, '====');
 				if(!this.checked) return;
                 this.$command('CREATE_RECHARGE_ORDER', this.checked)
             }

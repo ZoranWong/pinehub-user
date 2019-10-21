@@ -51,7 +51,7 @@
         position: absolute;
         height: 100%;
         width: 100%;
-        background: #fafafa;
+        background: #f2f2f2;
     }
 
     #feedBackContent {

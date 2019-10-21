@@ -5,9 +5,7 @@ export default class MyInfoCommand extends Command {
     async handle (isShowLoadingPopup = true) {
         
         console.log('-------- user info ---------', MyInfoCommand.handling);
-        if (MyInfoCommand.handling) {
-            return false;
-        }
+       
         MyInfoCommand.handling = true;
         try {
             console.log('-------- user info ---------');

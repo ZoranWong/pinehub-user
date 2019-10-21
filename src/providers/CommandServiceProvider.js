@@ -10,7 +10,10 @@ import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 // 扫描命令
 import ScanCommand from '@/commands/ScanCommand';
 
+// 获取导航栏高度
+import GetBarHeightCommand from '../commands/BarHeightCommand';
 
+import CleanCarts from '../commands/CleanCarts';
 
 // 清空产品命令（切换分类）
 import ClearModelCommand from '@/commands/ClearModelCommand';
@@ -47,7 +50,9 @@ export default class CommandServiceProvider extends ServiceProvider {
             RegisterCommand,
             CreateOrderByMerchandiseIdCommand,
             LoadCommonlyUsedPoints,
-            LoadNearbyPoints
+            LoadNearbyPoints,
+            GetBarHeightCommand,
+            CleanCarts
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

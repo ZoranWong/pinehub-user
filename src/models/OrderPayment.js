@@ -35,6 +35,7 @@ export default class Orders extends Model {
                 item['spec_desp'] = spec.join(',')
             });
             this.state.orderInfo = orderInfo;
+            console.log(orderInfo, '_+_+_+__+_++__+__+_+_+_+__++_+__++_+_+_+__++_+__++_+_+');
         });
         
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {

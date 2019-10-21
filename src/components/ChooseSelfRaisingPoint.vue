@@ -12,14 +12,32 @@
                 <span @click="changeBackground('left')">常用自提点</span>
                 <span @click="changeBackground('right')">附近自提点</span>
             </div>
-            <ul id="points_container_list">
-                <li v-for="item in points" :key="item.id" @click="payment(item)">
+            <ul id="points_container_list" v-if="position === 'left'">
+                <li v-for="item in commonPoints" :key="item.id" @click="payment(item)">
                     <i class="iconfont">&#xe65a;</i>
                     <span>
-                           {{item.address}}
+                           {{item.name}}
                     </span>
                 </li>
+                <div class="empty_img" v-if="!commonPoints.length">
+                    <img  src="../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                    <span>暂无自提点哦～</span>
+                </div>
             </ul>
+
+            <ul id="points_container_list" v-if="position === 'right'">
+                <li v-for="item in nearPoints" :key="item.id" @click="payment(item)">
+                    <i class="iconfont">&#xe65a;</i>
+                    <span>
+                           {{item.name}}
+                    </span>
+                </li>
+                <div class="empty_img" v-if="!nearPoints.length">
+                    <img  src="../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                    <span>暂无自提点哦～</span>
+                </div>
+            </ul>
+
             <button id="points_more" @click="nearbyStores">查看更多</button>
             <h5 id="points_notice">注：请您务必在规定时间前领取您的早餐</h5>
         </div>
@@ -37,7 +55,10 @@
 		    return {
 		    	background: bg1,
                 points: [],
-                type : ''
+                type : '',
+				nearPoints: [],
+				commonPoints:[],
+                position: 'left'
             }
         },
         computed : {
@@ -49,6 +70,8 @@
 					points = this.model.user.map.commonlyMapPoints
                 }
 				this.points = points;
+				this.commonPoints = points;
+				console.log(this.commonPoints, '*******');
 				return points
 			},
 			nearbyPoints () {
@@ -59,6 +82,8 @@
 					points = this.model.user.map.nearbyMapPoints
 				}
 				this.points = points;
+				this.nearPoints = points;
+				console.log(this.nearPoints, '*******@@@@@@@@@@');
 				return points
 			}
         },
@@ -71,14 +96,15 @@
 				this.model.newEvents.shoppingCarts.dispatch('selectPoints', { boolean: false})
             },
             async changeBackground(position){
+				this.position = position;
                 if (position === 'left') {
                 	this.background = bg1;
 					this.$command('LOAD_COMMONLY_USED', this.type)
                 } else {
 					let result = await this.map.getLocation();
 					this.background = bg2;
-					//this.$command('LOAD_NEARBY',result[0],result[1])
-					this.$command('LOAD_NEARBY',-73.9878441,40.7484404, this.type)
+					this.$command('LOAD_NEARBY',result[0],result[1],this.type)
+					//this.$command('LOAD_NEARBY',-73.9878441,40.7484404, this.type)
                 }
             },
 			nearbyStores () {
@@ -249,6 +275,23 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .empty_img{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 250rpx;
+        height: 180rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
     }
 
 </style>

@@ -14,10 +14,12 @@ export default class SubmitFeedBackDataCommand extends Command {
             });
             return false;
         }
-        let response = await this.service('http.feedBack').submitFeedback(mobile, feedback);
-        if (response) {
-            this.$application.$command('REDIRECT_TO', 'user.feedBack.success', 'replace');
-        }
+    
+        this.$application.$command('REDIRECT_TO', 'user.feedBack.success', 'replace');
+        // let response = await this.service('http.feedBack').submitFeedback(mobile, feedback);
+        // if (response) {
+        //     this.$application.$command('REDIRECT_TO', 'user.feedBack.success', 'replace');
+        // }
     }
     static commandName () {
         return 'SUBMIT_FEED_BACK';

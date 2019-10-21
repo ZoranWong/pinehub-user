@@ -2,7 +2,7 @@
 <template>
     <div class="body">
         <mp-title :title="title"></mp-title>
-        <tickets :show="ticketShow" v-on:close="ticketListClose"></tickets>
+        <!--<tickets :show="ticketShow" v-on:close="ticketListClose"></tickets>-->
         <div v-show="!registered" id="toast_area">
             <div id="toast">
                 <div id="toast_title">
@@ -64,13 +64,13 @@
 
 <script>
     import FooterNav from '@/components/FooterNav';
-    import Tickets from './Tickets';
+    // import Tickets from './Tickets';
     import MpTitle from '@/components/MpTitle';
 
     export default {
         components: {
             'footer-nav': FooterNav,
-            'tickets': Tickets,
+            // 'tickets': Tickets,
             'mp-title': MpTitle
         },
         data () {
@@ -90,7 +90,7 @@
                 return overDate ? overDate > Date.now() : false;
             },
             registered () {
-                return this.$store.getters['model.account/registered'];
+                return this.model.account.registered;
             },
             isAuth () {
                 return this.$store.getters['model.account/isAuth'];
@@ -102,7 +102,7 @@
 				return this.model.account.availableScore;
             },
             isLogin () {
-                let overDate = this.$store.getters['model.account/overDate'];
+                let overDate = this.model.account.overDate;
                 return overDate ? overDate > Date.now() : false;
             },
             hasLoadedActivity () {
@@ -121,9 +121,7 @@
         watch: {
             accessToken (value) {
                 if (value) {
-                    if (!this.isLogin) {
-                        this.$command('SIGN_IN', this.accessToken);
-                    }
+                    this.$command('SIGN_IN', this.accessToken);
                 }
             },
             hasToken (value) {
@@ -132,13 +130,14 @@
                 }
             },
             registered (value) {
-                if (this.registered) {
-                    this.loadTickets();
-                }
+                // if (this.registered) {
+                //     this.loadTickets();
+                // }
             }
         },
         mounted () {
             this.initAccount();
+			this.$command('GET_BAR_HEIGHT',wx.getSystemInfoSync()['statusBarHeight'])
         },
         onShow () {
             if (this.$route.query['needRefresh']) {
@@ -146,16 +145,15 @@
             }
         },
         onLoad () {
-            console.log('======== page load =======');
             wx.onAppShow(() => {
                 this.ticketShow = true;
-                this.loadTickets();
+                // this.loadTickets();
             });
         },
         methods: {
-            ticketListClose () {
-                this.ticketShow = false;
-            },
+            // ticketListClose () {
+            //     this.ticketShow = false;
+            // },
             follow () {
 
             },
@@ -188,7 +186,6 @@
                 });
             },
             getPhoneNumber (e) {
-				console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeeeee');
 				this.$command('SET_USER_MOBILE', e);
             },
             getUserInfo (e) {
@@ -206,9 +203,9 @@
                     }
                 });
             },
-            async loadTickets () {
-                await this.$command('LOAD_TICKETS');
-            }
+            // async loadTickets () {
+            //     await this.$command('LOAD_TICKETS');
+            // }
         }
     }
 </script>
@@ -221,6 +218,7 @@
     .body {
         overflow: hidden;
         width: 750rpx;
+        background: #FAFAFA;
     }
 
     #index_header {
@@ -261,10 +259,10 @@
         width: 670rpx;
         margin: 0 auto;
         margin-top: -90rpx;
-        border-radius: 15rpx;
+        border-radius: 16rpx;
         overflow: hidden;
         text-align: center;
-        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
+        box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
     }
 
     .user-info-get-btn,
@@ -323,7 +321,7 @@
         height: 198rpx;
         background: #FFFFFF;
         border-radius: 10rpx;
-        box-shadow: 0 3rpx 10rpx 5rpx rgba(204,202,202,0.3);
+        box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
 
     }
 
@@ -344,9 +342,8 @@
     #index_menu .booking {
         width: 669rpx;
         height: 198rpx;
-        margin-top: 20rpx;
-        border-radius: 10rpx;
-        box-shadow: 0 10rpx 10rpx rgba(204, 202, 202, 0.3);
+        border-radius: 16rpx;
+       box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
         float: left;
         background: #FFFFFF;
     }

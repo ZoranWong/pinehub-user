@@ -6,7 +6,7 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
-		"enhance": false,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
@@ -22,11 +22,10 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.8.3",
+	"libVersion": "2.9.0",
 	"appid": "wx67127c10ce9c598c",
-	"projectname": "pinehub",
+	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"miniprogramRoot": "dist/",
-	"cloudfunctionTemplateRoot": "",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
@@ -47,10 +46,11 @@
 			"list": []
 		},
 		"game": {
+			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 20,
 			"list": [
 				{
 					"id": 0,
