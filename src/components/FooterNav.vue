@@ -60,7 +60,12 @@
                 }
             },
             jump (router) {
-                this.$command('REDIRECT_TO', router, 'push');
+            	if (router === 'user.store') {
+					this.$command('REDIRECT_TO', router, 'push');
+                } else {
+					this.$command('REDIRECT_TO', router, 'replace');
+                }
+
             }
         },
         created () {

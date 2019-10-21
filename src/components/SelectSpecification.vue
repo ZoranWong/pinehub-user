@@ -96,7 +96,7 @@
 					if(isEqual) return;
 					isEqual = _.isEqual(selectedSpec,item.specs);
 					this.confirmSelected = isEqual ? item : {}
-					this.totalPrice =  formatMoney(isEqual ? item['market_price'] : 0);
+					this.totalPrice =  formatMoney(isEqual ? item['retail_price'] : 0);
 				})
 			},
             handleClass (i, k) {

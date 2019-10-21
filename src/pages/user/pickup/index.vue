@@ -124,7 +124,7 @@
 					width: 200,
 					height: 200,
 					canvasId: `qrcode_${id}_${this.drawTime}`,
-					text: `{"order_id": ${id}, 'time': ${time}`
+					text: `{"order_id": ${id}, "time": ${time}}`
 				})
             }
         },
