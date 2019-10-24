@@ -143,9 +143,10 @@
 		},
 		mounted() {
             this.getDate();
-            let type = this.$route.query.type;
+			let type = this.$route.query.type;
 			this.type = type
-            this.$command('CALCULATE_PRICE_COMMAND',type,{})
+            this.$command('CALCULATE_PRICE_COMMAND',type,{});
+			// this.$command('MALL_AVAILABLE_COUPONS')
 		}
 	}
 </script>

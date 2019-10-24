@@ -33,7 +33,10 @@
             <h4>使用说明</h4>
             <span>{{detailData.description}}</span>
         </div>
-        <button class="exchange" @click="exchange">立即兑换</button>
+        <form report-submit="true" @submit="uploadFormId">
+            <button form-type="submit" class="exchange" @click="exchange">立即兑换</button>
+        </form>
+
 	</div>
 
 </template>
@@ -60,7 +63,15 @@
 		methods: {
 			exchange () {
 				this.$command('EXCHANGE_PRODUCTS', 71)
-            }
+            },
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			}
 		},
 		created() {
 

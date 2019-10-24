@@ -6,7 +6,9 @@
             <div class="balance-number">
                 {{balance}}
             </div>
-            <button class="recharge" @click="jump('user.recharge')">立即充值</button>
+            <form report-submit="true" @submit="uploadFormId">
+                <button form-type="submit" class="recharge" @click="jump('user.recharge')">立即充值</button>
+            </form>
         </div>
         <div class="recharge-details">
             <h3>余额明细</h3>
@@ -45,7 +47,15 @@
         methods: {
             jump (router) {
             	this.$command('REDIRECT_TO', router, 'push');
-            }
+            },
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			}
         },
         mounted () {
         	this.$command('LOAD_BALANCE_RECORD')

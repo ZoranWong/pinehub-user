@@ -63,9 +63,8 @@
             	if (router === 'user.store') {
 					this.$command('REDIRECT_TO', router, 'push');
                 } else {
-					this.$command('REDIRECT_TO', router, 'replace');
+					this.$command('REDIRECT_TO', router, 'reLaunch');
                 }
-
             }
         },
         created () {

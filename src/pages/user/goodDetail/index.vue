@@ -83,7 +83,7 @@
 		},
         computed : {
             goodDetail () {
-				console.log(this.model.user.goodDetail.goodDetail, '^^^^^^^^^^^^^^^^^^^^^^^^^');
+				console.log(this.model.user.goodDetail, '+++++++++++++++++++++++');
 				return this.model.user.goodDetail.goodDetail
             },
 			showPoints () {
@@ -94,7 +94,7 @@
 			},
         },
         mounted () {
-            this.$command('GOOD_DETAIL_COMMAND', this.$route.query['type'], this.$route.query['good_id'])
+			this.$command('GOOD_DETAIL_COMMAND', this.$route.query['type'], this.$route.query['good_id'])
 		}
 	}
 </script>

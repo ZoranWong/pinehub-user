@@ -25,6 +25,7 @@ export default class RouterService extends Service {
         this.currentRouter = route;
         let page = this.routes[route];
         options['path'] = page;
+        console.log(this.$router, '^^^^^^^^^^^^^^^^^^^this $router^^^^^^^^^^^^^^^^^^^^^^');
         this.$router.push(options, () => {
             this.completed();
         });

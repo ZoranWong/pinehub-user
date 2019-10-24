@@ -27,7 +27,9 @@
             </div>
             <div class="line"></div>
             <div class="opt-btn item">
-                <button class="btn buy-btn" size="large" @click="index">完成</button>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="btn buy-btn" size="large" @click="index">完成</button>
+                </form>
             </div>
         </div>
         <div id="active_banner" v-if="imgUrl">
@@ -84,6 +86,14 @@
             }
         },
         methods: {
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			},
             close () {
                 this.showToast = false;
             },

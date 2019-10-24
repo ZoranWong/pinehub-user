@@ -60,6 +60,7 @@
         // 算术方法
         computed: {
 			createdOrderInfo () {
+				console.log(this.order, '*********************');
 				this.order = this.model.user.order.payment.createdOrderInfo;
 				return this.model.user.order.payment.createdOrderInfo
             },
@@ -94,10 +95,19 @@
                 return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
             },
 			payByBalance () {
+				let self = this;
 				if (this.order['settlement_total_fee'] > this.userInfo.balance) {
 					this.$command('REDIRECT_TO', 'user.recharge', 'push');
                 } else {
-                    this.$command('PAYMENT_BY_BALANCE',this.order)
+					wx.showModal({
+						title: '温馨提示',
+						content: '确认使用余额支付吗？',
+						async success (res) {
+							if (res.confirm) {
+								self.$command('PAYMENT_BY_BALANCE',self.order)
+							}
+						}
+					})
                 }
             },
             payByWechat () {
@@ -105,6 +115,7 @@
             }
         },
         mounted () {
+			this.$command('LOAD_ACCOUNT')
         	if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
             }

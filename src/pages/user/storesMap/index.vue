@@ -58,8 +58,10 @@
                     <span>暂无自提点哦～</span>
                 </div>
             </ul>
+            <form report-submit="true" @submit="uploadFormId">
+                <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
+            </form>
 
-            <button class="confirmBtn" @click="payment" v-if="checkId">确定</button>
         </div>
     </div>
 </template>
@@ -122,6 +124,14 @@
         },
         // 普通方法
         methods: {
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			},
 			checkPoint (id) {
 				this.checkId = id;
 				let data = this.points.filter(item => item.id === id)[0];

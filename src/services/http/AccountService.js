@@ -8,8 +8,9 @@ export default class AccountService extends ApiService {
     }
 
     async saveFormId (id) {
-        console.log('==================', id);
-        let response = await this.httpPost(`/formid/${id}`);
+        let response = await this.httpPost('/api/mp/formid/collect', {
+            form_id: id
+        });
         console.log('==================', response);
         return response.data;
     }

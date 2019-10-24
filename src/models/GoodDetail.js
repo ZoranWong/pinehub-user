@@ -25,7 +25,6 @@ export default class Orders extends Model {
     listeners () {
         super.listeners();
         this.addEventListener('setGoodDetail', function ({good}) {
-            console.log(good, '----------------');
             let productEntities = good['product_entities'];
             let minPrice = _.min(productEntities, (value) => {
                 return value['market_price']
@@ -40,7 +39,7 @@ export default class Orders extends Model {
             });
             good['spec'] = spec.join(',');
             good['range'] = specifications.length ? `￥${minPrice['market_price']}~￥${maxPrice['market_price']}` : `￥${minPrice['market_price']}`
-            this.state.goodDetail = good
+            this.state.goodDetail = good;
         })
     }
 }

@@ -13,9 +13,11 @@
                         <div id="input_change_info">
                             尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户，请允许授权我们获取您的信息！
                         </div>
-                        <button id="input_change_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-                            允许授权
-                        </button>
+                        <form report-submit="true" @submit="uploadFormId">
+                            <button form-type="submit" id="input_change_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
+                                允许授权
+                            </button>
+                        </form>
                         <div id="input_change_tips">
                             注：小程序获取用户信息后才可正常使用
                         </div>
@@ -30,9 +32,12 @@
             </div>
         </div>
         <div v-if="!isMember" class="bgff user-mobile-box">
-            <button class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                手机号授权
-            </button>
+            <form report-submit="true" @submit="uploadFormId">
+                <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                    手机号授权
+                </button>
+            </form>
+
             <em class="tips">
                 我们需要您的手机号来创建账号，累计积分
             </em>
@@ -145,7 +150,8 @@
             }
         },
         onLoad () {
-            wx.onAppShow(() => {
+			console.log('this.index .loading');
+			wx.onAppShow(() => {
                 this.ticketShow = true;
                 // this.loadTickets();
             });
@@ -154,6 +160,16 @@
             // ticketListClose () {
             //     this.ticketShow = false;
             // },
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+                } else {
+					console.log('form id 不合法')
+                }
+			},
+
+
             follow () {
 
             },

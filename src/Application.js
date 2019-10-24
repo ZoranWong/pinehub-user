@@ -213,6 +213,7 @@ export default class Application {
         extend['appName'] = this.name;
         this.instances = _.extend(this.instances, Application.instanceContainer);
         this.instances = _.extend(this.instances, extend, this.mixinMethods);
+        console.log(11111, '+++++++-=-=-=-=-==-=--==-');
         _.extend(this.$vm.prototype, this.instances);
         _.extend(this, this.instances);
     }

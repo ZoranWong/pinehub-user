@@ -49,21 +49,17 @@
 </template>
 <script>
 	import MpTitle from '@/components/MpTitle';
-	import FooterNav from '@/components/FooterNav';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
 	import _ from 'underscore'
 
-
   export default {
       components: {
           'mp-title': MpTitle,
-          'footer-nav': FooterNav,
           ShoppingCart,
           SelectSpecification,
-		  ChooseSelfRaisingPoint
-
+		  ChooseSelfRaisingPoint,
       },
       data() {
           return {
@@ -131,6 +127,7 @@
               this.selectSpec = false
           },
 		  redirectTo (router, options = {}) {
+		  	console.log(options, '-------------111111111111-------------')
 			  this.$command('REDIRECT_TO', router, 'push', options);
 		  },
       },

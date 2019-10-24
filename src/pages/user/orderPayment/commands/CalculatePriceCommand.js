@@ -1,6 +1,8 @@
 import Command from '../../../../commands/Command';
 export default class CalculatePrice extends Command {
     async handle (type, params) {
+        console.log(type, '===========');
+        console.log(params, '===========');
         let respones;
         if (type === 'mall') {
             respones = await this.service('http.orders').calculateMallPrice(params);

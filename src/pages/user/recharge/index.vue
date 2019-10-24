@@ -24,7 +24,9 @@
                 <i class="iconfont right">&#xe656;</i>
             </div>
         </div>
-        <button class="pay-btn" @click="createRechargeOrder" :style="{bottom: checked?'0':'-100rpx',zIndex:'99999'}" >充值</button>
+        <form report-submit="true" @submit="uploadFormId">
+            <button form-type="submit" class="pay-btn" @click="createRechargeOrder" :style="{bottom: checked?'0':'-100rpx',zIndex:'99999'}" >充值</button>
+        </form>
     </div>
 </template>
 <script>
@@ -58,7 +60,15 @@
 				console.log(this.checked, '====');
 				if(!this.checked) return;
                 this.$command('CREATE_RECHARGE_ORDER', this.checked)
-            }
+            },
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			}
 		},
         mounted () {
 			this.$command('RECHARGE_CARDS')

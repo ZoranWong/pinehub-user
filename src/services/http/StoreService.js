@@ -102,4 +102,10 @@ export default class StoreService extends ApiService {
         });
         return response.data
     }
+    
+    // 商城购物车可用优惠券
+    async availableCoupons () {
+        let response = await this.httpGet('api/mal/mall/coupons');
+        return response.data
+    }
 }
