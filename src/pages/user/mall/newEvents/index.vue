@@ -3,7 +3,6 @@
 	<div class="body">
 		<mp-title :title="title"></mp-title>
 		<merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
-		<!--<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCarts"></cart>-->
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
 		<div id="shopping_cart_height" v-if="totalCount>0"></div>
@@ -20,7 +19,6 @@
 <script>
 	import MpTitle from '@/components/MpTitle'
 	import Merchandises from './Merchandises';
-	// import Cart from '@/components/ShoppingCarts'
 	import ShoppingCart from '@/components/ShoppingCart';
 	import PopupLocation from './PopupLocation'
     import _ from 'underscore'
@@ -43,7 +41,6 @@
 		components: {
 			'mp-title': MpTitle,
 			'merchandises': Merchandises,
-			// 'cart': Cart,
 			'pop-location': PopupLocation,
 			SelectSpecification,
 			ChooseSelfRaisingPoint,
