@@ -2,7 +2,6 @@
 <template>
     <div class="body">
         <mp-title :title="title"></mp-title>
-        <!--<tickets :show="ticketShow" v-on:close="ticketListClose"></tickets>-->
         <div v-show="!registered" id="toast_area">
             <div id="toast">
                 <div id="toast_title">
@@ -55,7 +54,7 @@
                 </dd>
                 <dt>早餐预定</dt>
             </dl>
-            <dl  @click="redirectTo('user.integral')" class="booking">
+            <dl  @click="isMember ? redirectTo('user.integral') : notMember()" class="booking">
                 <dd>
                     <img src="./img/mall.jpg" />
                 </dd>
@@ -69,7 +68,6 @@
 
 <script>
     import FooterNav from '@/components/FooterNav';
-    // import Tickets from './Tickets';
     import MpTitle from '@/components/MpTitle';
 
     export default {
@@ -111,16 +109,16 @@
                 return overDate ? overDate > Date.now() : false;
             },
             hasLoadedActivity () {
-                return this.$store.getters['model.activity/id'] !== null;
+                return this.model.activity.id !== null;
             },
             activityId () {
                 return this.model.activity.id;
             },
             accessToken () {
-                return this.$store.getters['model.app/accessToken'];
+                return this.model.app.accessToken;
             },
             accessTokenTTL () {
-                return this.$store.getters['model.app/overDate'];
+                return this.model.app.overDate;
             }
         },
         watch: {
@@ -133,11 +131,6 @@
 				if (this.hasToken) {
 					this.$command('LOAD_ACCOUNT', false);
                 }
-            },
-            registered (value) {
-                // if (this.registered) {
-                //     this.loadTickets();
-                // }
             }
         },
         mounted () {
@@ -150,16 +143,11 @@
             }
         },
         onLoad () {
-			console.log('this.index .loading');
 			wx.onAppShow(() => {
                 this.ticketShow = true;
-                // this.loadTickets();
             });
         },
         methods: {
-            // ticketListClose () {
-            //     this.ticketShow = false;
-            // },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -168,10 +156,14 @@
 					console.log('form id 不合法')
                 }
 			},
-
-
             follow () {
 
+            },
+            notMember () {
+                wx.showToast({
+                    title: '请绑定手机号码',
+                    icon: 'none'
+                });
             },
             neighborShop () {
                 wx.showToast({

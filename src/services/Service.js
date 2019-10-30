@@ -1,7 +1,7 @@
 export default class Service {
     constructor ($application) {
         this.$application = $application;
-        console.log($application, '_____________________$application_____________________________');
+        // console.log($application, '_____________________$application_____________________________');
         // this.$vm = this.$application.$vm.prototype;
         this.page = null;
     }

@@ -15,7 +15,7 @@
         <div id="good_detail_info">
             <div class="intro">
                 <div class="name">{{goodDetail.name}}</div>
-                <div class="desp" v-html="goodDetail.detail"></div>
+                <div class="desp" v-html="detailRichText"></div>
             </div>
             <i class="iconfont" @click="addToShoppingCart(goodDetail)">&#xe6d8;</i>
         </div>
@@ -77,20 +77,23 @@
 			closeSelectSpec(){
 				this.selectSpec = false
 			},
+            closePoints () {
+                this.showPoints = false
+            },
         },
         created () {
 
 		},
         computed : {
             goodDetail () {
-				console.log(this.model.user.goodDetail, '+++++++++++++++++++++++');
 				return this.model.user.goodDetail.goodDetail
+            },
+            detailRichText () {
+                let detail = this.goodDetail.detail;
+                return detail ? detail.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') : '';
             },
 			showPoints () {
 				return this.model.user.store.showPoints
-			},
-			closePoints () {
-				this.showPoints = false
 			},
         },
         mounted () {

@@ -68,6 +68,7 @@
 				return this.totalCount > 0 ? 'block' : 'none';
 			},
 			shoppingCarts() {
+			    console.log(this.$store.getters, this.model);
 				return this.model ? this.$store.getters[`${this.model}/list`] : [];
 			},
 			totalAmount() {

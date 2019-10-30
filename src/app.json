@@ -1,14 +1,7 @@
 {
   "pages": [
     "pages/user/index/main",
-    "pages/user/mall/storeMarket/main",
-    "pages/user/mall/bookingMall/main",
     "pages/user/storesMap/main",
-    "pages/user/mall/storeMarket/createOrder/main",
-    "pages/user/mall/storeMarket/coupon/main",
-    "pages/user/mall/bookingMall/createSendOrder/main",
-    "pages/user/mall/bookingMall/createPickOrder/main",
-    "pages/user/mall/bookingMall/coupon/main",
     "pages/user/mall/newEvents/main",
     "pages/user/mall/newEvents/createOrder/main",
     "pages/user/mall/newEvents/coupon/main",

@@ -8,8 +8,6 @@ import LoadCartCommand from './commands/LoadCartCommand';
 import ClearCartCommand from './commands/ClearCartCommand';
 import ChangeBuyNumCommand from './commands/ChangeBuyNumCommand';
 const application = wx.$app;
-
-console.log(application, 'app');
 if (application) {
     application.setComponent(App).run(function () {
         this.registerCommand(LoadStoreGoodsCommand.commandName(), LoadStoreGoodsCommand);

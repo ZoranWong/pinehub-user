@@ -4,8 +4,6 @@ import GoodDetail from '../../../models/GoodDetail';
 import '../../../styles/iconfont.css'
 import GoodDetailCommand from './commands/GoodDetailCommand';
 const application = wx.$app;
-
-console.log(application, 'app');
 if (application) {
     application.setComponent(App).run(function () {
         this.registerModel('model.user.goodDetail', GoodDetail);

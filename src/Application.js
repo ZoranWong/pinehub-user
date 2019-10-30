@@ -58,9 +58,9 @@ export default class Application {
     }
 
     get store () {
-        console.log(this.currentPage['routeAlias'], '==========================================');
         return this.stores[this.currentPage['routeAlias']];
     }
+
     registerModel (name, model) {
         let modelInstance = Application.modelContainer[name] = new model(this);
         modelInstance.alias = name;
@@ -72,14 +72,13 @@ export default class Application {
                 }
             });
         }
-    
+
         let app = this;
         for (let key in computed) {
             Object.defineProperty(this[name], key, {
                 readonly: true,
                 enumerable: true,
                 get () {
-                    console.log('==================================');
                     return app['stores'][app.currentPage ? app.currentPage['routeAlias'] : app.route].getters[name + '/' + key];
                 }
             })
@@ -109,19 +108,15 @@ export default class Application {
 
     // 注册配置
     registerConfig (name, config) {
-        // Application.configContainer[name] = config;
         this.register('config.' + name, config);
     }
 
     // 注册服务提供者
     registerServiceProviders () {
         if (!Application.globalProviderRegistered) {
-            console.log(ServiceProviders);
             _.each(ServiceProviders, (value, key) => {
-                console.log(key);
                 let serviceProvider = this.serviceProviders[key] = new value(this);
                 serviceProvider.register();
-                console.log(this.config);
             });
             Application.globalProviderRegistered = true;
         }
@@ -213,7 +208,7 @@ export default class Application {
         extend['appName'] = this.name;
         this.instances = _.extend(this.instances, Application.instanceContainer);
         this.instances = _.extend(this.instances, extend, this.mixinMethods);
-        console.log(11111, '+++++++-=-=-=-=-==-=--==-');
+        // console.log(11111, '+++++++-=-=-=-=-==-=--==-');
         _.extend(this.$vm.prototype, this.instances);
         _.extend(this, this.instances);
     }
@@ -242,14 +237,18 @@ export default class Application {
                 let componentMounted = this.mountComponent.mounted;
                 let componentCreated = this.mountComponent.created;
                 let applicationCreated = function () {
-                    app.currentPage = this;
-                    app.currentRoute = this.routeAlias;
+                    if (this.routeAlias) {
+                        app.currentPage = this;
+                        app.currentRoute = this.routeAlias;
+                    }
                     componentCreated && componentCreated.call(this);
                 }
                 let applicationMounted = function () {
                     console.log('---------------------- change page mounted ---------');
-                    app.currentPage = this;
-                    app.currentRoute = this.routeAlias;
+                    if (this.routeAlias) {
+                        app.currentPage = this;
+                        app.currentRoute = this.routeAlias;
+                    }
                     componentMounted && componentMounted.call(this);
                 };
                 this.mountComponent.created = function () {
@@ -258,10 +257,8 @@ export default class Application {
                 this.mountComponent.mounted = function () {
                     applicationMounted.call(this);
                 }
-                // console.log(this.mountComponent);
-                _.isFunction(created) ? created.call(this, this) : console.log('-------------- mp page created! ------------');
+                _.isFunction(created) ? created.call(this, this) : null;
                 this.currentPage.$mount();
-
                 this.currentPage['wxRoute'] = wxRoute;
                 this.currentPage['routeAlias'] = this.route;
                 _.extend(this.currentPage, this.instances);
@@ -281,12 +278,12 @@ export default class Application {
     mount () {
         this.currentPage.$mount();
     }
-    
+
     changePage (route) {
         console.log('----------------- change to ' + route + '-----------------');
         this.currentPage = Application.pageContainer[route];
     }
-    
+
     $models (instance) {
         return instance;
     }

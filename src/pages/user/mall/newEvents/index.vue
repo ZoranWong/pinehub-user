@@ -2,8 +2,8 @@
 <template>
 	<div class="body">
 		<mp-title :title="title"></mp-title>
-		<merchandises :model="model" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandisesList" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
-		<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCarts"></cart>
+		<merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
+		<!--<cart :model="model" v-if="isShowCart" @hdlShowPopup="hdlShowPopup" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" :clearShoppingCarts="clearShoppingCarts"></cart>-->
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
 		<div id="shopping_cart_height" v-if="totalCount>0"></div>
@@ -20,7 +20,7 @@
 <script>
 	import MpTitle from '@/components/MpTitle'
 	import Merchandises from './Merchandises';
-	import Cart from '@/components/ShoppingCarts'
+	// import Cart from '@/components/ShoppingCarts'
 	import ShoppingCart from '@/components/ShoppingCart';
 	import PopupLocation from './PopupLocation'
     import _ from 'underscore'
@@ -34,7 +34,7 @@
 				activityId: null,
 				isShowCart: true,
 				screenHeight: null,
-				model: 'model.newEvents.shoppingCarts',
+                cartModel: 'model.newEvents.shoppingCarts',
 				selectSpec:false,
 				selectItem:{},
 				merchandisesList: []
@@ -43,7 +43,7 @@
 		components: {
 			'mp-title': MpTitle,
 			'merchandises': Merchandises,
-			'cart': Cart,
+			// 'cart': Cart,
 			'pop-location': PopupLocation,
 			SelectSpecification,
 			ChooseSelfRaisingPoint,
@@ -51,19 +51,20 @@
 		},
 		computed: {
 			merchandises() {
-				let merchandises = this.$store.getters['model.newEvents.merchandises/list']
+				let merchandises = this.model.newEvents.merchandises.list;
 				this.handleMerchandises(merchandises)
+                console.log(merchandises, '=======111=====');
 				return merchandises
 			},
 			totalCount() {
-				return this.$store.getters['model.newEvents.shoppingCarts/totalCount']
+				return this.model.newEvents.shoppingCarts.totalCount;
 			},
 			currentPage() {
-				let page = this.$store.getters['model.newEvents.merchandises/currentPage'];
+				let page = this.model.newEvents.merchandises.currentPage;
 				return page
 			},
 			isLoadedAll() {
-				return this.$store.getters['model.newEvents.merchandises/isLoadedAll'];
+				return this.model.newEvents.merchandises.isLoadedAll;
 			},
 			goodInShoppingCart () {
 				return  this.model.newEvents.shoppingCarts.goodInShoppingCart
