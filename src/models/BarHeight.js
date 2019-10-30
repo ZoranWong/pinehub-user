@@ -26,7 +26,6 @@ export default class BarHeight extends Model {
     listeners () {
         super.listeners();
         this.addEventListener('getBarHeight', function ({height}) {
-            console.log(height, '888888');
             this.state.statusBarHeight = height;
         })
     }

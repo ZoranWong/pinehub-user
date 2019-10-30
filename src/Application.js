@@ -208,7 +208,6 @@ export default class Application {
         extend['appName'] = this.name;
         this.instances = _.extend(this.instances, Application.instanceContainer);
         this.instances = _.extend(this.instances, extend, this.mixinMethods);
-        // console.log(11111, '+++++++-=-=-=-=-==-=--==-');
         _.extend(this.$vm.prototype, this.instances);
         _.extend(this, this.instances);
     }
@@ -244,7 +243,6 @@ export default class Application {
                     componentCreated && componentCreated.call(this);
                 }
                 let applicationMounted = function () {
-                    console.log('---------------------- change page mounted ---------');
                     if (this.routeAlias) {
                         app.currentPage = this;
                         app.currentRoute = this.routeAlias;
@@ -280,7 +278,6 @@ export default class Application {
     }
 
     changePage (route) {
-        console.log('----------------- change to ' + route + '-----------------');
         this.currentPage = Application.pageContainer[route];
     }
 

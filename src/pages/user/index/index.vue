@@ -73,7 +73,6 @@
     export default {
         components: {
             'footer-nav': FooterNav,
-            // 'tickets': Tickets,
             'mp-title': MpTitle
         },
         data () {
@@ -89,14 +88,14 @@
                 return this.$imageUrl('bear01.gif');
             },
             hasToken () {
-                let overDate = this.$store.getters['model.account/overDate'];
+                let overDate = this.model.account.overDate;
                 return overDate ? overDate > Date.now() : false;
             },
             registered () {
                 return this.model.account.registered;
             },
             isAuth () {
-                return this.$store.getters['model.account/isAuth'];
+                return this.model.account.isAuth;
             },
             isMember () {
 				return this.model.account.isMember;
@@ -210,10 +209,7 @@
                         }
                     }
                 });
-            },
-            // async loadTickets () {
-            //     await this.$command('LOAD_TICKETS');
-            // }
+            }
         }
     }
 </script>

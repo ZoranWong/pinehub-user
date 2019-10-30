@@ -8,10 +8,8 @@ export default class UriService extends Service {
     }
 
     buildQuery (params, key) {
-        console.log(params, '+++++++');
         let queryStr = '';
         let self = this;
-        console.log(_.size(params), '***********************************************8');
         _.map(params, function (value, index) {
             let k = '';
             if (key) {
@@ -28,7 +26,6 @@ export default class UriService extends Service {
         if (typeof params === 'string') {
             queryStr = params;
         }
-        console.log(queryStr, '++++++++++++');
         return queryStr;
     }
 
