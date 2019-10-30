@@ -50,7 +50,6 @@
 			merchandises() {
 				let merchandises = this.model.newEvents.merchandises.list;
 				this.handleMerchandises(merchandises)
-                console.log(merchandises, '=======111=====');
 				return merchandises
 			},
 			totalCount() {
