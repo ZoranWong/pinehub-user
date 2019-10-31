@@ -17,20 +17,20 @@ export default class ModelServiceProvider extends ServiceProvider {
     register () {
         let models = new Model(this.app);
         this.app.register('models', models);
-        this.app.register('model.global.barHeight', BarHeight);
-        
+        this.app.registerModel('model.global.barHeight', BarHeight);
+
         this.app.registerModel('model.activity', Activity);
         this.app.registerModel('model.app', App);
         this.app.registerModel('model.user.store', Store);
 
 
-        this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
-        this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
+        // this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
+        // this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);
         this.app.registerModel('model.newEvents.shoppingCarts', ShoppingCarts);
-        this.app.registerModel('model.purchase.shoppingCarts', ShoppingCarts);
+        // this.app.registerModel('model.purchase.shoppingCarts', ShoppingCarts);
 
-        this.app.registerModel('model.storeMarket.tickets', Tickets);
-        this.app.registerModel('model.bookingMall.tickets', Tickets);
+        // this.app.registerModel('model.storeMarket.tickets', Tickets);
+        // this.app.registerModel('model.bookingMall.tickets', Tickets);
         this.app.registerModel('model.newEvents.tickets', Tickets);
         this.app.registerModel('model.user.tickets', Tickets);
 

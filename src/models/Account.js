@@ -89,16 +89,14 @@ export default class Account extends Model {
             handlingOrderCount: null,
             waitPickOrderCount: null,
             waitPayOrderCount: null,
-            balanceRecord:[]
+            balanceRecord: []
         };
     }
 
     // 监听数据
     listeners () {
         this.addEventListener('resetFromCache', async function ({initAccount}) {
-            console.log('-------------- reset account ----------------');
             await this.resetAccountFromCache();
-            console.log('-------------- reset account 1 ----------------');
             await initAccount();
         });
 
@@ -137,7 +135,6 @@ export default class Account extends Model {
 
 
         this.addEventListener('setAccount', function (userInfo) {
-            console.log(userInfo, '----get mobile-----');
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }

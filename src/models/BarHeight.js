@@ -2,11 +2,13 @@
 import Model from './Model';
 import _ from 'underscore';
 
-export default class Cards extends Model {
+export default class BarHeight extends Model {
     constructor (application) {
         super(application);
+        // do something
+        this.alias = '';
     }
-    
+
     computed () {
         return _.extend(super.computed(), {
             statusBarHeight () {
@@ -14,17 +16,16 @@ export default class Cards extends Model {
             }
         });
     }
-    
+
     data () {
         return _.extend(super.data(), {
             statusBarHeight: ''
         });
     }
-    
+
     listeners () {
         super.listeners();
         this.addEventListener('getBarHeight', function ({height}) {
-            console.log(height, '888888');
             this.state.statusBarHeight = height;
         })
     }

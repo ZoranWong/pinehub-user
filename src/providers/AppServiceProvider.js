@@ -12,7 +12,6 @@ import PopupService from '@/services/mp/PopupService';
 import TencentMapService from '@/services/mp/TencentMapService';
 import StorageService from '@/services/mp/StorageService';
 import PaymentService from '@/services/mp/PaymentService';
-import EChartsService from '@/services/mp/EChartsService';
 import _ from 'underscore';
 
 export default class AppServiceProvider extends ServiceProvider {
@@ -67,7 +66,6 @@ export default class AppServiceProvider extends ServiceProvider {
         this.app.register('map', TencentMapService);
         this.app.register('mp.storage', StorageService);
         this.app.register('mp.payment', PaymentService);
-        this.app.register('mp.eCharts', EChartsService);
     }
 
     boot () {

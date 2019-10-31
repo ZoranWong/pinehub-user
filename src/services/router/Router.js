@@ -11,11 +11,11 @@ export default class Router {
         let $router = this;
         Object.defineProperty(this, 'query', {
             get () {
-                return $router.currentRoute.query;
+                return $router.currentRoute ? $router.currentRoute.query : [];
             }
         })
     }
-    
+
     addRoute (route) {
         this.routes[route.name] = route;
     }
@@ -28,7 +28,7 @@ export default class Router {
 
     afterEach () {
     }
-    
+
     push (route, query = {}) {
         if (this.stack.length && this.stack.length % 9 === 0) {
             this.reLaunch(route, query);
@@ -53,7 +53,7 @@ export default class Router {
         this.app.changePage(r['page']);
         this.routerAdapter.go(r);
     }
-    
+
     getRoute (route) {
         return _.find(this.routes, function (r) {
             return route === r.name

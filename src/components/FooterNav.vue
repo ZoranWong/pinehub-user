@@ -12,12 +12,12 @@
                 <em :class="scanning === 'scanning_now'?'active':''">商城</em>
             </li>
 
-            <li @click="jump('user.pickup')">
+            <li @click="isMember ? jump('user.pickup') : notMember()">
                 <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>
                 <i class="iconfont" v-else>&#xe7e4;</i>
                 <em :class="pickup === 'pickup_now'?'active':''">取货</em>
             </li>
-            <li @click="jump('userCenter')">
+            <li @click="isMember ? jump('userCenter') : notMember()">
                 <i class="iconfont now" v-if="my === 'my_now'">&#xe735;</i>
                 <i class="iconfont" v-else>&#xe7d5;</i>
                 <em :class="my === 'my_now'?'active':''">我的</em>
@@ -35,9 +35,14 @@
                 navName: '',
                 index: 'index',
                 scanning: 'scanning',
-				pickup: 'pickup',
+                pickup: 'pickup',
                 my: 'my'
             };
+        },
+        computed: {
+            isMember () {
+                return this.model.account.isMember;
+            }
         },
         methods: {
             nowNav (name) {
@@ -60,11 +65,17 @@
                 }
             },
             jump (router) {
-            	if (router === 'user.store') {
-					this.$command('REDIRECT_TO', router, 'push');
+                if (router === 'user.store') {
+                    this.$command('REDIRECT_TO', router, 'push');
                 } else {
-					this.$command('REDIRECT_TO', router, 'reLaunch');
+                    this.$command('REDIRECT_TO', router, 'reLaunch');
                 }
+            },
+            notMember () {
+                wx.showToast({
+                    title: '请绑定手机号码',
+                    icon: 'none'
+                });
             }
         },
         created () {
@@ -105,21 +116,21 @@
     }
 
     #footNav ul li .active {
-      text-align: center;
-      color: #ffcc00;
-      font-size: 20rpx;
-      font-weight: 200;
-      line-height: 24rpx;
+        text-align: center;
+        color: #ffcc00;
+        font-size: 20rpx;
+        font-weight: 200;
+        line-height: 24rpx;
     }
 
-    #footNav ul li i{
+    #footNav ul li i {
         font-size: 48rpx;
-        color :#757575;
+        color: #757575;
     }
 
-    #footNav ul li .now{
+    #footNav ul li .now {
         font-size: 48rpx;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
     }
