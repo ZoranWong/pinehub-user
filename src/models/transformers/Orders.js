@@ -3,7 +3,6 @@
 // const QR = require('../../../static/jssdk/weapp-qrcode.js');
 export default class Order {
     constructor (order) {
-        
         this.code = order['order_no'].slice(-12);
         this.id = order['id'];
         this.type = order['order_type'];

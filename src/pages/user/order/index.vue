@@ -8,7 +8,7 @@
                     class="scroll-view_H"
                     scroll-x="true"
                     bindscroll="scroll"
-                    :enable-back-to-top="true"
+                    enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
                     style="width: 1328rpx">
                     <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
@@ -40,7 +40,7 @@
 		data() {
 			return {
 				title: '我的订单',
-				navName: 'order',
+				navName: 'my',
 				tabs: [
 				    {name: '全部', key: ''},
 				    {name: '待付款', key: 'WAIT_TO_PAY'},
@@ -99,11 +99,12 @@
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
-			let paramsStatus = this.$route.query.status;
-			this.statusType = paramsStatus;
-			this.scrollTo = paramsStatus
 		},
-		created() {
+		mounted() {
+			let paramsStatus = this.$route.query.status || '';
+			this.statusType = paramsStatus;
+			this.scrollTo = paramsStatus;
+			console.log(this.scrollTo);
 			this.loadOrders(this.statusType);
 		}
 	}

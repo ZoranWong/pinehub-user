@@ -52,7 +52,7 @@
             <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
         </div>
         <!-- 商品详情 -->
-        <wxParse :content="goodDetail.detail" />
+        <wxParse no-data="" :content="goodDetail.detail"  />
 
         <ShoppingCart v-if="registered && isMember" :type="this.$route.query['type']" />
         <SelectSpecification
@@ -99,7 +99,6 @@
 			},
 			hasToken (value) {
 				if (this.$route.currentRoute &&  this.$route.currentRoute.name === this.routeAlias && this.hasToken) {
-					console.log('~~~~~~~~~~~~~~~~~~~~~~~~had token~~~~~~~~~~~~~~~~~~~~~~~~~');
 					this.loadPageData()
 				}
 			},
@@ -118,17 +117,33 @@
 						this.selectItem = item;
 						this.selectSpec = true
 					} else {
-						let goods = this.model.user.store.goodInShoppingCart
-						if (goods.length) {
-							_.map(goods, (product) => {
-								product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-									this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.$route.query['type'])
-									:
-									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
-							})
-						} else {
-							this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
-						}
+						if (this.$route.query['type'] === 'mall') {
+							let goods = this.model.user.store.goodInShoppingCart
+							if (goods.length) {
+								_.map(goods, (product) => {
+									product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+										this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.$route.query['type'])
+										:
+										this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+								})
+							} else {
+								this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+							}
+                        } else {
+							let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
+							if (goods.length) {
+								_.map(goods, (product) => {
+									if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+										this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
+									} else {
+										this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+									}
+								})
+							} else {
+								this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+							}
+                        }
+
 					}
                 }
 			},
@@ -147,19 +162,6 @@
 				console.log('商品详情获取用户信息');
 				let self = this;
 				this.$command('USER_REGISTER', e);
-				// wx.getUserInfo({
-				// 	success: function(res) {
-				// 		var userInfo = res.userInfo
-				// 		var nickName = userInfo.nickName
-				// 		var avatarUrl = userInfo.avatarUrl
-				// 		var gender = userInfo.gender //性别 0：未知、1：男、2：女
-				// 		var province = userInfo.province
-				// 		var city = userInfo.city
-				// 		var country = userInfo.country
-				// 		console.log(userInfo, ':::::::::::::::::::::::::gooddetail:::::::::::::::::::::::::::::::');
-				// 		this.model.account.dispatch('setAccount', userInfo);
-				// 	}
-				// })
 			},
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);
@@ -211,6 +213,7 @@
                 return detail ? detail.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') : '';
             },
 			showPoints () {
+				console.log(this.model.user.store.showPoints, '||||||');
 				console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||showpoints')
 				return this.model.user.store.showPoints
 			},

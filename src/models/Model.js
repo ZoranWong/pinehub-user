@@ -38,7 +38,7 @@ export default class Model {
     }
 
     list () {
-       // console.log('----- list data -------', Date.now(), this.state.list);
+        // console.log('----- list data -------', Date.now(), this.state.list);
         return this.state.currentPage ? _.flatten(this.state.list) : [];
     }
 

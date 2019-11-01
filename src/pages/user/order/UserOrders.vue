@@ -149,7 +149,7 @@
             }
         },
         mounted () {
-            this.loadOrders(this.status);
+			this.loadOrders(this.status);
         }
     }
 </script>

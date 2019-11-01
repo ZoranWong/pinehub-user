@@ -124,7 +124,9 @@
 					shop_id: this.selectedPoint.id,
 					coupon_records: [],
                 },this.type);
-				this.$command('REDIRECT_TO', 'selectPay', 'replace')
+				this.$command('REDIRECT_TO', 'selectPay', 'replace',{
+					query: {type: this.type}
+                })
             },
             getDate () {
 				var tomorrow = new Date();
