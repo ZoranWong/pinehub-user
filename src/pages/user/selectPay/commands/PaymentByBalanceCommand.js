@@ -1,6 +1,6 @@
 import Command from '@/commands/Command'
 export default class PaymentByBalanceCommand extends Command {
-    async handle (order) {
+    async handle (order, type) {
         let self = this;
         let response = await this.service('http.orders').paymentByBalance(order.id);
         if (response) {
@@ -9,7 +9,8 @@ export default class PaymentByBalanceCommand extends Command {
                 self.$application.$command('REDIRECT_TO', 'payment.success', 'replace', {query:
                         {
                             order: JSON.stringify(order),
-                            type: '余额支付'
+                            type: '余额支付',
+                            orderType: type
                         }});
             }, 2000)
         }

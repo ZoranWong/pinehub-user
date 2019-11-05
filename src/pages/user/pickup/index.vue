@@ -14,7 +14,7 @@
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
-                <block v-for="(item, index) in orders" :key="index">
+                <block v-for="(item, index) in shop_order" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
                         <canvas style="width: 200px; height: 200px;margin: 50rpx 0" :canvas-id="'qrcode_'+item['id']+'_'+drawTime"></canvas>
@@ -30,7 +30,7 @@
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
-                <block v-for="(item, index) in orders" :key="index">
+                <block v-for="(item, index) in breakfast_order" :key="index">
                     <swiper-item class="swiperItem" :id="'id'+item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
                         <div class="pickupNum">
@@ -49,7 +49,7 @@
             <li>暂无可自提的单  赶紧去下单吧</li>
         </ul>
         <div class="total_amount" v-if="orders.length">
-            <span>{{current}}/{{orders.length}}</span>
+            <span>{{current}}/{{total}}</span>
         </div>
         <FooterNav :navName="navName" />
     </div>
@@ -58,6 +58,7 @@
 <script>
     import MpTitle from '@/components/MpTitle';
 	import FooterNav from '@/components/FooterNav';
+	import _ from 'underscore'
 	let bg1 = require('./img/aaa.jpg');
 	let bg2 = require('./img/bbb.jpg');
 	import {drawQrcode} from '../../../utils/qrcode_index';
@@ -77,12 +78,14 @@
                 currentOrderId: null,
                 orders: [],
 				qrcode :null,
-                drawTime: null
+                drawTime: null,
+				shop_order: [],
+				breakfast_order: [],
+				total: 0
             };
         },
         watch: {
 			currentOrderId: function(value) {
-				console.log(value, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
 				if(value)
 					this.Qrcode(value);
             },
@@ -90,12 +93,25 @@
 				if(value && this.currentOrderId){
 					this.Qrcode(this.currentOrderId);
 				}
+			},
+			position (value) {
+				this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
 			}
         },
         computed: {
 			pickupOrders () {
 				this.drawTime = (new Date).getTime();
 				this.orders = this.model.user.pickup.pickupOrders;
+				this.shop_order = [];
+				this.breakfast_order = [];
+				_.map(this.orders, (order)=>{
+					if (order.channel.slug === 'BREAKFAST_CAR') {
+						this.breakfast_order.push(order)
+                    } else {
+						this.shop_order.push(order)
+                    }
+                });
+				this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
 				if(this.position === 'left' && !this.currentOrderId && this.orders && this.orders.length) {
 					this.currentOrderId = this.orders[0]['id'];
 					this.drawTime = (new Date).getTime();
@@ -106,6 +122,7 @@
         methods: {
 			changeBackground(position){
 				this.position = position;
+				this.current = 1;
 				this.background = position === 'left'? bg1 : bg2;
 				if(position === 'left'){
 					this.currentOrderId = this.orders[0]['id']
@@ -119,7 +136,7 @@
 				this.currentOrderId = e.mp.detail.currentItemId;
 			},
             Qrcode (id) {
-                let time = (new Date()).getTime();
+				let time = (new Date()).getTime();
 				drawQrcode({
 					width: 200,
 					height: 200,

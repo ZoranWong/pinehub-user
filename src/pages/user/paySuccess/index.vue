@@ -98,57 +98,30 @@
                 this.showToast = false;
             },
             orders () {
-                this.$command('REDIRECT_TO', 'user.orders', 'replace');
+
             },
             index () {
-				this.model.user.store.dispatch('clearShoppingCart');
-				this.model.user.store.dispatch('selectPoints',false, 'mall');
+				console.log(this.$route.query, '|||||||||||||||');
+				if (this.$route.query.orderType === 'mall') {
+					this.model.user.store.dispatch('clearShoppingCart');
+					this.model.user.store.dispatch('selectPoints', false, 'mall');
+                } else {
+					this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart');
+					this.model.newEvents.shoppingCarts.dispatch('selectPoints', false, 'breakfast');
+                }
+
+
+
                 this.$command('REDIRECT_TO', 'index', 'replace');
             },
             async getOrderInfo () {
-                let id = this.$route.query['order_id'];
-                let res = await this.http.orders.getOrder(id);
-                console.log('B----', res);
-                this.order = res.data;
-                switch (parseInt(this.order['pay_type'])) {
-                    case 1: {
-                        this.payType = '支付宝支付';
-                        break;
-                    }
-                    case 2: {
-                        this.payType = '微信支付';
-                        break;
-                    }
-                    case 3: {
-                        this.payType = '余额支付';
-                        break;
-                    }
-                    default: {
-                        this.payType = '其他支付';
-                        break;
-                    }
-                }
-                if (res.data.type !== 0 && res.data.pick_up_method === 2) {
-                    this.siteUserOrder = true;
-                } else {
-                    this.siteUserOrder = false;
-                }
+
             },
             async getAdvertisement () {
-                let id = this.$route.query['order_id'];
-                let advertisement = await this.http.orders.showError(false).getAdvertisementByOrder(id);
-                if (advertisement) {
-                    this.ticketShow = true;
-                    this.ticketInfo = advertisement.ticket.data;
-                    this.imgUrl = advertisement.banner_url;
-                }
+
             },
             async goUrl () {
-                this.$command('REDIRECT_TO', 'user.ticket', 'push', {
-                    query: {
-                        ticketInfo: JSON.stringify(this.ticketInfo)
-                    }
-                });
+
             }
         },
         mounted () {

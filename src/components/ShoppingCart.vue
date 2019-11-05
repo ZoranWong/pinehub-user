@@ -77,6 +77,7 @@
 		},
 		methods: {
 			settle(){
+				console.log(this.type, '111111111111111111');
 				if (this.type === 'mall') {
 					this.model.user.store.dispatch('selectPoints', {
 						boolean: true,

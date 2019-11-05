@@ -127,7 +127,6 @@
               this.selectSpec = false
           },
 		  redirectTo (router, options = {}) {
-		  	console.log(options, '-------------111111111111-------------')
 			  this.$command('REDIRECT_TO', router, 'push', options);
 		  },
       },
@@ -171,6 +170,8 @@
   }
 
   #store_header{
+      box-sizing: border-box;
+      width: 100%;
       height: 108rpx;
       display: flex;
       justify-content: center;
@@ -178,6 +179,8 @@
       position: relative;
       background: #fff;
       border-bottom: 2rpx solid #f2f2f2;
+      position: fixed;
+      top: 0;
   }
 
   #store_header #store_search {
@@ -199,17 +202,18 @@
 
   #store_goods {
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: flex-start;
       margin-bottom: 120rpx;
+      margin-top: 108rpx;
   }
 
   #store_goods #store_goods_type {
-      display: flex;
       flex: 1;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      position: fixed;
+      left: 0;
+      height: 1250rpx;
+      overflow: scroll;
   }
 
   #store_goods #store_goods_type li {
@@ -290,7 +294,7 @@
       width: 100%;
       margin-top: 26rpx;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       padding-right: 20rpx;
       align-items: center;
   }
@@ -308,6 +312,7 @@
       display: inline-block;
       height: 100%;
       text-decoration: line-through;
+      margin-left: 70rpx;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_price i{
@@ -316,6 +321,7 @@
       color: transparent;
       font-size: 48rpx;
       margin-right: 20rpx;
+      margin-left: 70rpx;
   }
 
 </style>

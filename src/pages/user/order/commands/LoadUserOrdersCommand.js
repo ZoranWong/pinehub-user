@@ -18,8 +18,7 @@ export default class MyOrderCommand extends Command {
             })
         } else {
             console.log('--------- go orders ---------------');
-            this.store().dispatch({
-                type: 'model.user.orders/setList',
+            this.model.user.orders.dispatch('setList', {
                 list: list,
                 totalNum: totalNum,
                 currentPage: currentPage,

@@ -104,7 +104,7 @@
 						content: '确认使用余额支付吗？',
 						async success (res) {
 							if (res.confirm) {
-								self.$command('PAYMENT_BY_BALANCE',self.order)
+								self.$command('PAYMENT_BY_BALANCE',self.order, self.type)
 							}
 						}
 					})
@@ -116,7 +116,8 @@
         },
         mounted () {
 			this.$command('LOAD_ACCOUNT')
-        	if (this.$route.query && this.$route.query.order) {
+			this.type = this.$route.query.type
+			if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
             }
 			this.countDownServer(new Date(this.order.createdAt || this.order['created_at']))
