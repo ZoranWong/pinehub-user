@@ -138,6 +138,9 @@ export default class Account extends Model {
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }
+            if (typeof userInfo['can_use_coupon_count'] !== 'undefined') {
+                this.state.canUseCouponCount = userInfo['can_use_coupon_count'];
+            }
             if (typeof userInfo['mobile'] !== 'undefined') {
                 this.state.mobile = userInfo['mobile'];
             }

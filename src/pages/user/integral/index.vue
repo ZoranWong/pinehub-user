@@ -31,15 +31,15 @@
                    </div>
                </div>
            </div>
-            <div id="my_integral">
-                <span>{{userInfo.availableScore}} 积分</span>
-                <h3 @click="jump('user.integral.records')">
-                    积分记录
-                    <i class="iconfont">&#xe6a3;</i>
-                </h3>
-            </div>
-        </scroll-view>
 
+        </scroll-view>
+        <div id="my_integral">
+            <span>{{userInfo.availableScore}} 积分</span>
+            <h3 @click="jump('user.integral.records')">
+                积分记录
+                <i class="iconfont">&#xe6a3;</i>
+            </h3>
+        </div>
 	</div>
 </template>
 <script>
@@ -61,7 +61,6 @@
 		},
 		computed: {
 			integralProducts(){
-				console.log(this.model.integral.integralProducts, '-------------------------- this.model.integral.integralProducts ----------');
 				return this.model.integral.integralProducts
             },
 			totalNum() {
@@ -118,6 +117,7 @@
 
     #integral #integral_list {
         width: 100%;
+        margin-bottom: 100rpx;
     }
 
     #integral #integral_list .integral_list_item{
@@ -234,7 +234,7 @@
         flex-wrap: wrap;
     }
 
-    #integral_list #my_integral{
+   #my_integral{
         width: 100%;
         height: 98rpx;
         box-sizing: border-box;
@@ -247,12 +247,12 @@
         bottom: 0;
     }
 
-    #integral_list #my_integral span {
+     #my_integral span {
         font-size: 36rpx;
         color: #fff;
     }
 
-    #integral_list #my_integral h3 {
+     #my_integral h3 {
         font-size: 32rpx;
         color: #ffcc00;
         font-weight: normal;
@@ -261,7 +261,7 @@
         align-items: center;
     }
 
-    #integral_list #my_integral h3 i{
+    #my_integral h3 i{
         font-size: 32rpx;
         color: #ffcc00;
         margin-left: 13rpx;

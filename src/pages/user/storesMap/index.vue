@@ -16,10 +16,10 @@
         </div>
         <div id="location_points">
             <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">常用自提点</span>
-                <span @click="changeBackground('right')">附近自提点</span>
+                <span @click="changeBackground('left')">附近自提点</span>
+                <span @click="changeBackground('right')">常用自提点</span>
             </div>
-            <ul id="location_points_list" v-if="position === 'left'">
+            <ul id="location_points_list" v-if="position === 'right'">
                 <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
                     <div class="left">
                         <div class="top">
@@ -39,7 +39,7 @@
                 </div>
             </ul>
 
-            <ul id="location_points_list" v-if="position === 'right'">
+            <ul id="location_points_list" v-if="position === 'left'">
                 <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
                     <div class="left">
                         <div class="top">
@@ -149,12 +149,12 @@
 				if (position === 'left') {
 					this.background = bg1;
 					this.position = 'left';
-					this.$command('LOAD_COMMONLY_USED', 'map')
+					this.$command('LOAD_NEARBY',result[0],result[1])
 				} else {
 					let result = await this.map.getLocation();
 					this.background = bg2;
 					this.position = 'right';
-					this.$command('LOAD_NEARBY',result[0],result[1])
+					this.$command('LOAD_COMMONLY_USED', 'map')
 				}
 			},
 			payment(){
@@ -211,7 +211,7 @@
 				this.checkId = id;
 				this.nearPoints.forEach(item=>{
 					if(item.id === id){
-					    this.changeBackground('right')
+					    this.changeBackground('left')
 					}
 				})
 				this.markers = this.points.map((point) => {

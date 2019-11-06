@@ -23,13 +23,17 @@ export default class Tickets extends Model {
             },
             ticketDetail () {
                 return this.state.ticketDetail
+            },
+            availableCoupons () {
+                return this.state.availableCoupons
             }
         });
     }
     
     data () {
         return _.extend(super.data(), {
-            ticketDetail: {}
+            ticketDetail: {},
+            availableCoupons:[]
         });
     }
     
@@ -37,6 +41,11 @@ export default class Tickets extends Model {
         super.listeners();
         this.addEventListener('saveTicketDetail', function ({detail}) {
             this.state.ticketDetail = detail
+        });
+        
+        this.addEventListener('saveAvailableCoupons', function ({coupons}) {
+            console.log(coupons, '::::::::::::::::::::::');
+            this.state.availableCoupons = coupons
         })
     }
 }

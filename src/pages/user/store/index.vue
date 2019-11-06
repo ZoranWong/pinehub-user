@@ -23,7 +23,10 @@
                         <img :src="item.main_image" alt="">
                     </div>
                     <div id="store_good_info">
-                        <h3>{{item.name}}</h3>
+                        <div class="store_good_info_title">
+                            <h3>{{item.name}}</h3>
+                            <span>{{item.unit}}</span>
+                        </div>
                         <div id="store_good_info_entities">
                             <span>销量:{{item.sell_num}}</span>
                             <span>库存:{{item.stock}}</span>
@@ -272,13 +275,28 @@
 
   #store_goods #store_goods_items #store_good_info{
       flex: 1;
-
   }
+
+    #store_goods #store_goods_items .store_good_info_title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #store_goods #store_goods_items .store_good_info_title span{
+        font-size: 24rpx;
+        color: #757575;
+        margin-right: 40rpx;
+    }
 
   #store_goods #store_goods_items #store_good_info h3{
       font-size: 28rpx;
       color: #111111;
       margin: 10rpx 0;
+      width: 200rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_entities span{

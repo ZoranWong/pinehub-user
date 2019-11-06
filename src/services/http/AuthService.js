@@ -51,6 +51,7 @@ export default class AuthService extends ApiService {
             encrypted_data: encryptedData,
             iv: iv
         }, false);
+        console.log(response, 'mpRegister');
         return response.data;
     }
 

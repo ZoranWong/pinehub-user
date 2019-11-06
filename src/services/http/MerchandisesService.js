@@ -68,4 +68,9 @@ export default class MerchandisesService extends ApiService {
         return await this.list(route, query);
     }
     
+    // 早餐预定可用优惠券
+    async availableCoupons () {
+        let response = await this.httpGet('api/mp/breakfast/booking/coupons');
+        return response.data
+    }
 }

@@ -75,6 +75,12 @@ export default class OrdersService extends ApiService {
         let response = await this.httpGet(`api/mp/orders/${id}/payment_config`, {});
         return response.data;
     }
+    
+    // 支付失败查询信息
+    async error (code) {
+        let response = await this.httpGet(`api/mp/orders/${code}/query`, {});
+        return response.data;
+    }
 
     async summaryOrders (paidDate, type, status, page, limit = 15) {
         let response = await this.httpGet(`/store/orders/summary`, {
