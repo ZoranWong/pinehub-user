@@ -16,4 +16,8 @@ export default class RouterAdapter {
     replace (route) {
     
     }
+    
+    back () {
+    
+    }
 }

@@ -2,7 +2,7 @@ import Command from '@/commands/Command';
 
 export default class RegisterCommand extends Command {
     // 获取token值
-    async handle (e) {
+    async handle (e, options = {}) {
         let mpUserInfoDetail = e.mp.detail;
         let userInfo = mpUserInfoDetail.userInfo;
         console.log(mpUserInfoDetail, '-------------mpUserInfoDetail--------------');
@@ -27,10 +27,16 @@ export default class RegisterCommand extends Command {
         };
         await this.service('mp.storage').set('token', token);
         // userInfo = await this.service('http.auth').getUserInfo(result['token']);
-        let assignedUserInfo = Object.assign(result, userInfo)
+        let assignedUserInfo = Object.assign(result, userInfo);
         if (result) {
             assignedUserInfo['token'] = token;
             this.model.account.dispatch('setAccount', assignedUserInfo);
+            console.log(getCurrentPages(), '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            if (getCurrentPages().length > 1) {
+                this.$command('REDIRECT_TO', 'user.goodDetail', 'push', {
+                    query: options
+                })
+            }
             return true;
         }
         return false;

@@ -11,7 +11,6 @@ export default class MpRouterAdapter extends RouterAdapter {
     }
     
     push (route) {
-        console.log(route, '++++++++++++++++++++=');
         wx.navigateTo({
             url: route.url()
         })
@@ -21,5 +20,10 @@ export default class MpRouterAdapter extends RouterAdapter {
         wx.redirectTo({
             url: route.url()
         })
+    }
+    
+    back () {
+        console.log('马上就要回去啦');
+        wx.navigateBack()
     }
 }

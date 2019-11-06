@@ -74,6 +74,7 @@ export default class Router {
     }
 
     back () {
+        this.routerAdapter.back()
     }
 
     forward () {

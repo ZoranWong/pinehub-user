@@ -13,7 +13,7 @@
                             尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户，请允许授权我们获取您的信息！
                         </div>
                         <form report-submit="true" @submit="uploadFormId">
-                            <button form-type="submit" class="input_change_btn" open-type="getUserInfo" @getuserinfo="getNewUserInfo">
+                            <button form-type="submit" class="input_change_btn_detail" open-type="getUserInfo" @getuserinfo="getNewUserInfo">
                                 允许授权
                             </button>
                         </form>
@@ -24,16 +24,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="showBindMobile" class="toast_area">
-            <form report-submit="true" @submit="uploadFormId">
-                <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                    手机号授权
-                </button>
-            </form>
+        <div v-if="showBindMobile" class="bgff user-mobile-box">
+            <div class="user_mobile_box_container">
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
+                </form>
 
-            <em id="input_change_tips">
-                我们需要您的手机号来创建账号，累计积分
-            </em>
+                <em class="mobile_box_tips">
+                    我们需要您的手机号来创建账号，累计积分
+                </em>
+            </div>
+
         </div>
         <div class="good_detail_banner">
 <!--            <Swiper :images="goodDetail.banners" />-->
@@ -54,7 +57,7 @@
         <!-- 商品详情 -->
         <wxParse no-data="" :content="goodDetail.detail"  />
 
-        <ShoppingCart v-if="registered && isMember" :type="this.$route.query['type']" />
+        <ShoppingCart v-if="registered && isMember" :type="this.options['type']" />
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
@@ -88,23 +91,29 @@
 				title: '商品详情',
 				selectSpec:false,
 				selectItem:{},
-				showBindMobile: false
+				showBindMobile: false,
+                options: {}
             }
         },
         watch: {
 			accessToken (value) {
-				if (this.$route.currentRoute &&  this.$route.currentRoute.name === this.routeAlias && value) {
+				if (this.options['shop_code'] && value) {
 					this.$command('SIGN_IN', this.accessToken);
 				}
 			},
 			hasToken (value) {
-				if (this.$route.currentRoute &&  this.$route.currentRoute.name === this.routeAlias && this.hasToken) {
+				if (this.options['shop_code'] && this.hasToken) {
 					this.loadPageData()
 				}
 			},
 			registered (value) {
-				if (this.$route.currentRoute &&  this.$route.currentRoute.name === this.routeAlias && this.registered && this.$route.query['shop_code']) {
+				if (this.options['shop_code']&& this.registered && this.options['shop_code']) {
 					this.bindConsumer()
+                }
+            },
+            isMember (value) {
+				if (value) {
+				    this.showBindMobile = false
                 }
             }
         },
@@ -113,21 +122,22 @@
 				if (!this.isMember) {
 					this.showBindMobile = true
                 } else {
+					this.showBindMobile = false
 					if (item.specifications.length) {
 						this.selectItem = item;
 						this.selectSpec = true
 					} else {
-						if (this.$route.query['type'] === 'mall') {
+						if (this.options['type'] === 'mall') {
 							let goods = this.model.user.store.goodInShoppingCart
 							if (goods.length) {
 								_.map(goods, (product) => {
 									product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-										this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.$route.query['type'])
+										this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.options['type'])
 										:
-										this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+										this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
 								})
 							} else {
-								this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.$route.query['type'])
+								this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
 							}
                         } else {
 							let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
@@ -159,18 +169,17 @@
 				}
 			},
 			getNewUserInfo (e) {
-				console.log('商品详情获取用户信息');
 				let self = this;
-				this.$command('USER_REGISTER', e);
+				this.$command('USER_REGISTER', e , this.options);
 			},
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);
 			},
             loadPageData () {
-				this.$command('GOOD_DETAIL_COMMAND', this.$route.query['type'], this.$route.query['good_id'])
+				this.$command('GOOD_DETAIL_COMMAND', this.options['type'], this.options['good_id'])
             },
             bindConsumer () {
-				this.$command('BIND_CONSUMER', this.$route.query['shop_code']);
+				this.$command('BIND_CONSUMER', this.options['shop_code']);
             },
 			async initAccount () {
 				let result = await this.map.getLocation();
@@ -213,25 +222,21 @@
                 return detail ? detail.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') : '';
             },
 			showPoints () {
-				console.log(this.model.user.store.showPoints, '||||||');
-				console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||showpoints')
 				return this.model.user.store.showPoints
-			},
-			closePoints () {
-				this.showPoints = false
 			},
 			registered () {
 				return this.model.account.registered;
 			},
         },
-        mounted () {
-			if (this.$route.query['shop_code']) {
+        onShow () {
+			let pages =  getCurrentPages();
+			let options = pages[pages.length - 1]['options']
+			this.options = options;
+			if (options['shop_code']) {
 				this.initAccount();
 			} else {
-				console.log(' mounted ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 				this.loadPageData()
             }
-
 		}
 	}
 </script>
@@ -403,7 +408,15 @@
         margin-bottom: 20rpx;
     }
 
-    .input_change_btn {
+    .input_change_tips{
+        font-size: 22rpx;
+        font-weight: 300;
+        color: #828282;
+        text-align: center;
+        line-height: 68rpx;
+    }
+
+    .input_change_btn_detail {
         background: #FECE00;
         line-height: 78rpx;
         text-align: center;
@@ -412,12 +425,53 @@
         border-radius: 10rpx;
     }
 
-    .input_change_tips {
-        font-size: 22rpx;
-        font-weight: 300;
-        color: #828282;
+    .mobile_box_tips {
         text-align: center;
-        line-height: 68rpx;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
+        font-weight: 400;
+    }
+
+    .user-mobile-box{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-box .user_mobile_box_container{
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #FECE00;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
     }
 
 </style>

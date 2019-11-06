@@ -4,7 +4,7 @@
 		<mp-title :title="title"></mp-title>
         <div class="coupons_item" >
             <div class="left">
-
+                <img :src="detail['coupon_image']" alt="">
             </div>
             <div class="right">
                 <div class="name">
@@ -14,23 +14,23 @@
                 <div class="price">
                     <h4>￥{{detail.benefit}}</h4>
                 </div>
-                <div class="coupon_info">使用门槛：暂无数据暂无数据暂无数据暂无数据</div>
-                <div class="coupon_info">暂无数据暂无数据暂无数据暂无数据暂无数据</div>
+                <div class="coupon_info">使用门槛：{{detail.floor}}</div>
+                <div class="coupon_info">{{detail.useCondition}}</div>
                 <div class="coupon_info">有效期：{{detail.validTime}}</div>
-                <div class="coupon_info">暂无数据暂无数据暂无数据暂无数据</div>
+                <div class="coupon_info">{{detail['is_sharing']}}</div>
             </div>
         </div>
         <div class="integral_item_info">
             <h4>优惠说明</h4>
-            <span>价值8元的商品抵扣券，适用商品直接抵扣</span>
+            <span>{{detail.remark}}</span>
         </div>
         <div class="integral_item_info">
             <h4>使用说明</h4>
-            <span>可与其他优惠券共享</span>
+            <span>{{detail.description}}</span>
         </div>
         <div class="integral_item_info">
             <h4>适用商品</h4>
-            <span>枣泥蛋糕、抹茶蛋糕、芝士蛋糕、青松功夫蛋糕、博士馒头、培根三明治</span>
+            <span>{{detail.useCondition}}</span>
         </div>
 	</div>
 
@@ -44,31 +44,20 @@
 		data() {
 			return {
 				title: '卡券详情',
-                pv:'',
                 detail : {}
 			};
 		},
 		watch: {
 		},
 		computed: {
-			detailData () {
-				console.log(this.model.integral.detail.detailData, 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDetail');
-				return this.model.integral.detail.detailData
-            }
 		},
 		methods: {
-			exchange () {
-				this.$command('EXCHANGE_PRODUCTS', 71)
-            }
 		},
 		created() {
 
 		},
 		mounted() {
 			this.detail = this.$route.query['detail'];
-			let beginTime = ticket['valid_at'].replace(/-/g, '.');
-			let endTime =  ticket['invalid_at'].replace(/-/g, '.');
-			this.detail.validTime = `${beginTime}-${endTime}`;
 		}
 	}
 </script>
@@ -106,8 +95,12 @@
     .coupon-wrapper .coupons_item .left{
         width: 266rpx;
         height: 180rpx;
-        background: #83DF50;
         margin-right: 35rpx;
+    }
+
+    .coupon-wrapper .coupons_item .left img{
+        width: 100%;
+        height: 100%;
     }
 
     .coupon-wrapper .coupons_item .right{

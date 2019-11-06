@@ -99,6 +99,12 @@ export function formatMoney (number, cent = 2, isThousand = 1) {
     }
 }
 
+export function getPrevUrl () {
+    let pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    return prevPage
+}
+
 export default {
     formatNumber,
     formatTime

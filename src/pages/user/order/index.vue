@@ -104,7 +104,6 @@
 			let paramsStatus = this.$route.query.status || '';
 			this.statusType = paramsStatus;
 			this.scrollTo = paramsStatus;
-			console.log(this.scrollTo);
 			this.loadOrders(this.statusType);
 		}
 	}

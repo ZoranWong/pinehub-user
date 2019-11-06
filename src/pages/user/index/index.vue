@@ -134,8 +134,7 @@
         },
         mounted () {
             this.initAccount();
-			this.$command('GET_BAR_HEIGHT',wx.getSystemInfoSync()['statusBarHeight'])
-        },
+		},
         onShow () {
             if (this.$route.query['needRefresh']) {
                 this.initAccount();
@@ -196,7 +195,7 @@
 				this.$command('SET_USER_MOBILE', e);
             },
             getUserInfo (e) {
-                this.$command('USER_REGISTER', e);
+				this.$command('USER_REGISTER', e)
             },
             async initAccount () {
                 let result = await this.map.getLocation();

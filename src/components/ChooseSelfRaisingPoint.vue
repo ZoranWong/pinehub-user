@@ -9,10 +9,10 @@
                 <img src="../../static/selfPoints/header.jpg" alt="">
             </div>
             <div id="points_container_header" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">常用自提点</span>
-                <span @click="changeBackground('right')">附近自提点</span>
+                <span @click="changeBackground('left')">附近自提点</span>
+                <span @click="changeBackground('right')">常用自提点</span>
             </div>
-            <ul id="points_container_list" v-if="position === 'left'">
+            <ul id="points_container_list" v-if="position === 'right'">
                 <li v-for="item in commonPoints" :key="item.id" @click="payment(item)">
                     <i class="iconfont">&#xe65a;</i>
                     <span>
@@ -25,7 +25,7 @@
                 </div>
             </ul>
 
-            <ul id="points_container_list" v-if="position === 'right'">
+            <ul id="points_container_list" v-if="position === 'left'">
                 <li v-for="item in nearPoints" :key="item.id" @click="payment(item)">
                     <i class="iconfont">&#xe65a;</i>
                     <span>
@@ -71,7 +71,6 @@
                 }
 				this.points = points;
 				this.commonPoints = points;
-				console.log(this.commonPoints, '*******');
 				return points
 			},
 			nearbyPoints () {
@@ -83,7 +82,6 @@
 				}
 				this.points = points;
 				this.nearPoints = points;
-				console.log(this.nearPoints, '*******@@@@@@@@@@');
 				return points
 			}
         },
@@ -98,12 +96,12 @@
             async changeBackground(position){
 				this.position = position;
                 if (position === 'left') {
-                	this.background = bg1;
-					this.$command('LOAD_COMMONLY_USED', this.type)
-                } else {
 					let result = await this.map.getLocation();
-					this.background = bg2;
+                	this.background = bg1;
 					this.$command('LOAD_NEARBY',result[0],result[1],this.type)
+                } else {
+					this.background = bg2;
+					this.$command('LOAD_COMMONLY_USED', this.type)
 					//this.$command('LOAD_NEARBY',-73.9878441,40.7484404, this.type)
                 }
             },
@@ -117,13 +115,17 @@
 				this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
 					query: {type: this.type}
                 });
+            },
+            async loadMap () {
+				let result = await this.map.getLocation();
+				this.$command('LOAD_NEARBY',result[0],result[1],this.type)
             }
         },
 
         mounted () {
 			let type = this.model.user.store.mallType || this.model.newEvents.shoppingCarts.breakfastType;
 			this.type = type
-			this.$command('LOAD_COMMONLY_USED',type);
+			this.loadMap()
 		}
 	}
 </script>

@@ -56,8 +56,8 @@
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>剩余0张</em>
-                <span class="use_coupon">
+                <em>剩余{{availableCoupons.length}}张</em>
+                <span class="use_coupon" v-if="availableCoupons.length > 0">
                     0张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
@@ -100,7 +100,6 @@
             },
 			goodInShoppingCart () {
 				if (this.type === 'mall') {
-					console.log(this.model.user.store.goodInShoppingCart, '^^^^^^^^^^^');
 					return this.model.user.store.goodInShoppingCart
                 } else {
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
@@ -109,6 +108,9 @@
             },
 			orderInfo () {
 				return this.model.user.order.payment.orderInfo
+            },
+			availableCoupons () {
+				return this.model.user.tickets.availableCoupons
             }
 		},
 		methods: {
@@ -146,9 +148,9 @@
 		mounted() {
             this.getDate();
 			let type = this.$route.query.type;
-			this.type = type
-            this.$command('CALCULATE_PRICE_COMMAND',type,{});
-			// this.$command('MALL_AVAILABLE_COUPONS')
+			this.type = type;
+			this.$command('CALCULATE_PRICE_COMMAND',type,{});
+			this.$command('AVAILABLE_COUPONS', type)
 		}
 	}
 </script>

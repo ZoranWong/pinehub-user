@@ -3,7 +3,7 @@
     <div v-if="ticket" class="coupon-wrapper clearfix bgff">
         <div class="coupons_item" >
             <div class="left">
-
+                <img :src="ticket['coupon_image']" alt="">
             </div>
             <div class="right">
                 <div class="name">
@@ -14,10 +14,10 @@
                     <h4>￥{{ticket.benefit}}</h4>
                     <span @click="ticketDetail(ticket.id)">卡券详情</span>
                 </div>
-                <div class="coupon_info">使用门槛：暂无数据暂无数据暂无数据暂无数据</div>
-                <div class="coupon_info">暂无数据暂无数据暂无数据暂无数据暂无数据</div>
+                <div class="coupon_info">使用门槛：{{ticket.floor}}</div>
+                <div class="coupon_info">{{ticket['useCondition']}}</div>
                 <div class="coupon_info">有效期：{{ticket.validTime}}</div>
-                <div class="coupon_info">暂无数据暂无数据暂无数据暂无数据</div>
+                <div class="coupon_info">{{ticket['is_sharing']}}</div>
             </div>
         </div>
     </div>
@@ -41,12 +41,11 @@
 			async ticketDetail (id) {
                 await this.$command('LOAD_TICKET_DETAIL',id);
 				this.$command('REDIRECT_TO', 'user.ticket.detail', 'push', {
-					query: {detail: this.model.user.tickets.ticketDetail}
+					query: {detail: this.ticket}
                 });
             }
 		},
 		mounted () {
-
 		}
 	}
 </script>
@@ -79,8 +78,12 @@
     .coupon-wrapper .coupons_item .left{
         width: 266rpx;
         height: 180rpx;
-        background: #83DF50;
         margin-right: 35rpx;
+    }
+
+    .coupon-wrapper .coupons_item .left img{
+        width: 100%;
+        height: 100%;
     }
 
     .coupon-wrapper .coupons_item .right{

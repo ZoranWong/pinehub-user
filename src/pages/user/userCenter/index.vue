@@ -17,7 +17,7 @@
                         </li>
                         <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
-                            <em>{{userInfo.ticketNum || 0}}</em>
+                            <em>{{userInfo.canUseCouponCount || 0}}</em>
                             <i>卡券</i>
                         </li>
                         <li @click="jump('user.integral')">
@@ -106,7 +106,7 @@
     import MpTitle from '@/components/MpTitle';
     import FooterNav from '@/components/FooterNav';
 
-    export default {
+	export default {
         components: {
             'mp-title': MpTitle,
             'footer-nav': FooterNav
@@ -161,7 +161,7 @@
             }
         },
         mounted () {
-        	this.$command('LOAD_ACCOUNT')
+        	this.$command('LOAD_ACCOUNT');
 		}
 	}
 </script>

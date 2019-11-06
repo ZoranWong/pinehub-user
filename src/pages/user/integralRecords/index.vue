@@ -13,7 +13,7 @@
             <li v-for="item in integralRecords" :key="item.id">
                 <div class="left">
                     <h4>{{item.desc}}</h4>
-                    <span>没有数据 </span>
+                    <span>{{item['created_at']}} </span>
                 </div>
                 <div class="right">
                     {{item.change}}
