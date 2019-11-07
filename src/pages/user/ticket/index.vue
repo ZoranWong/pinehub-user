@@ -1,6 +1,7 @@
 <template>
     <div class="body" v-if="ticketInfo">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="ticket_body">
             <span v-if="ticketInfo.type == 'cash'"><em>{{ticketInfo.info.reduce_cost}}</em><i>元</i></span>
             <span v-else><em>{{ticketInfo.info.discount}}</em><i>折</i></span>
@@ -42,11 +43,12 @@
 
 <!--suppress ES6ShorthandObjectProperty -->
 <script>
-    import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
 
-    export default {
+
+	export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         data () {
             return {

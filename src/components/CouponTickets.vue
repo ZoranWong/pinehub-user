@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div class="ticket-page body">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
         <div class="empty_img" v-if="!tickets.length">
             <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
             <span>暂无优惠券哦～</span>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '@/components/CustomHeader';
 	import Ticket from '@/components/Ticket';
 	import _ from 'underscore';
 	export default {
@@ -39,7 +39,7 @@
 			}
 		},
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'coupon-ticket': Ticket
 		},
 		computed: {

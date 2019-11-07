@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="integral">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
         <scroll-view
             id="integral_list"
             :style="{height: screenHeight + 'rpx'}"
@@ -20,7 +20,7 @@
                    <h4>￥{{item.data.benefit/100}}</h4>
                    <div class="operation">
                        <span @click="jump('user.integral.detail',item.data.id,item.pv)">卡券详情</span>
-                       <span @click="exchange(item.data.id)">立即兑换</span>
+                       <span @click="exchange(item)">立即兑换</span>
                    </div>
                    <img :src="item.data.banner" alt="">
                    <div class="needScore">
@@ -43,10 +43,10 @@
 	</div>
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {
@@ -88,8 +88,15 @@
 			jump (router,id,pv) {
 				this.$command('REDIRECT_TO', router, 'push', {query: {id,pv}});
 			},
-			exchange(id){
-				this.$command('EXCHANGE_PRODUCTS',id)
+			exchange(item){
+				if (userInfo.availableScore < item.pv) {
+					wx.showToast({
+						title: '积分不足',
+						icon: 'none'
+					});
+                } else {
+					this.$command('EXCHANGE_PRODUCTS',item.data.id)
+                }
             }
 		},
 		created() {

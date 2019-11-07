@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <title :title="title"></title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="payment-box">
             <div class="header">
                 <div class="left">
@@ -32,8 +33,9 @@
 </template>
 <script>
     import PaymentPopup from './PaymentPopup';
-    import MpTitle from '@/components/MpTitle';
-    export default {
+	import CustomHeader from '../../../components/CustomHeader';
+
+	export default {
         data: {
             shopName: '福年来早餐车',
             storeId: null,
@@ -46,7 +48,7 @@
         },
         components: {
             'payment-popup': PaymentPopup,
-            title: MpTitle
+			CustomHeader
         },
         computed: {
             logo () {

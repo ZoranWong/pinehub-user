@@ -34,7 +34,11 @@ export default class Router {
             this.reLaunch(route, query);
             return;
         }
-        this.stack.push([route, query]);
+        _.map(this.stack, (stack) => {
+            if (stack[0] !== route) {
+                this.stack.push([route, query]);
+            }
+        });
         let r = new Route(this.getRoute(route));
         this.app.currentRoute = route;
         this.app.changePage(r['page']);
@@ -74,6 +78,12 @@ export default class Router {
     }
 
     back () {
+        // let router = this.stack[this.stack.length - 1];
+        // let route = router[0];
+        // let options = route[1];
+        // this.app.$command('REDIRECT_TO', route, 'push', options);
+        // console.log(this.stack, 'ssssssssssssssstack');
+        this.stack.pop();
         this.routerAdapter.back()
     }
 

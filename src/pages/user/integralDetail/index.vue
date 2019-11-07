@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
 	<div id="integral_detail" v-if="detailData">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="integral_item" >
             <div class="left">
                 <div class="empty"></div>
@@ -41,10 +42,11 @@
 
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {

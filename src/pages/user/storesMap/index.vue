@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="location_search">
             <input id="location_search_input" v-model.trim="addressName" placeholder="请输入地点名称"/>
             <i class="iconfont search">&#xe65c;</i>
@@ -67,15 +68,16 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
-    import _ from 'underscore';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import _ from 'underscore';
 	var amapFile = require('amap-wx');
 	var markersData = [];
 	let bg1 = require('./imgs/longBanner.jpg');
 	let bg2 = require('./imgs/longBanner1.jpg');
     export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         // 数据
         data () {

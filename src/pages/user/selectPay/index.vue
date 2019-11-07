@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="checkout_header">
             <div class="left">
                 <h4>订单金额：￥{{order['settlement_total_fee']}}</h4>
@@ -38,11 +39,12 @@
 <script>
 
 
-    import MpTitle from '@/components/MpTitle';
-    import _ from 'underscore';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import _ from 'underscore';
     export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         // 数据
         data () {

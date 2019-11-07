@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="false" />
         <div v-show="!registered" id="toast_area">
             <div id="toast">
                 <div id="toast_title">
@@ -26,7 +26,7 @@
         </div>
         <div id="index_header">
             <div id="index_logo"></div>
-            <div id="bear">
+            <div id="bear" :style="{'top': (statusBarHeight + navHeight + 61) + 'px'}">
                 <img :src="headerAnimate"/>
             </div>
         </div>
@@ -68,12 +68,11 @@
 
 <script>
     import FooterNav from '@/components/FooterNav';
-    import MpTitle from '@/components/MpTitle';
-
+    import CustomHeader from '../../../components/CustomHeader';
     export default {
         components: {
             'footer-nav': FooterNav,
-            'mp-title': MpTitle
+			CustomHeader
         },
         data () {
             return {
@@ -118,7 +117,13 @@
             },
             accessTokenTTL () {
                 return this.model.app.overDate;
-            }
+            },
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			}
         },
         watch: {
             accessToken (value) {

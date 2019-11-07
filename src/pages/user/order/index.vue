@@ -1,8 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div id="userOrders" class="body">
-		<mp-title :title="title"></mp-title>
-		<div id="tab_select">
+        <CustomHeader :title="title" :needReturn="true" />
+
+        <div id="tab_select" :style="{'top': (statusBarHeight + navHeight) + 'px'}" >
             <view class="page-section-spacing">
                 <scroll-view
                     class="scroll-view_H"
@@ -29,11 +30,12 @@
 </template>
 <script>
 	import UserOrders from './UserOrders';
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'orders': UserOrders,
 			'footer-nav': FooterNav
 		},
@@ -78,6 +80,12 @@
 			currentPage() {
 				let page = this.$store.getters['model.user.orders/currentPage'];
 				return page;
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
@@ -129,7 +137,6 @@
 		height: 74rpx;
 		position: fixed;
 		left: 0;
-		top: 0;
 		z-index: 999;
         background: #fff;
 	}

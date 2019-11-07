@@ -1,8 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div class="body">
-		<mp-title :title="title"></mp-title>
-		<merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
+        <CustomHeader :title="title" :needReturn="true" />
+
+        <merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
 		<div id="shopping_cart_height" v-if="totalCount>0"></div>
@@ -17,7 +18,8 @@
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle'
+	import CustomHeader from '../../../../components/CustomHeader';
+
 	import Merchandises from './Merchandises';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import PopupLocation from './PopupLocation'
@@ -39,7 +41,7 @@
 			}
 		},
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'merchandises': Merchandises,
 			'pop-location': PopupLocation,
 			SelectSpecification,

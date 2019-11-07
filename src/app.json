@@ -1,47 +1,48 @@
 {
-  "pages": [
-    "pages/user/index/main",
-    "pages/user/storesMap/main",
-    "pages/user/mall/newEvents/main",
-    "pages/user/mall/newEvents/createOrder/main",
-    "pages/user/mall/newEvents/coupon/main",
-    "pages/user/paySuccess/main",
-    "pages/user/userCenter/main",
-    "pages/user/order/main",
-    "pages/user/store/main",
-    "pages/user/goodDetail/main",
-    "pages/user/orderDetails/main",
-    "pages/user/orderPayment/main",
-    "pages/user/feedBack/main",
-    "pages/user/pickup/main",
-    "pages/user/integral/main",
-    "pages/user/integralDetail/main",
-    "pages/user/integralRecords/main",
-    "pages/user/feedBack/success/main",
-    "pages/user/share/main",
-    "pages/user/coupon/main",
-    "pages/user/payment/main",
-    "pages/user/ticket/main",
-    "pages/user/ticketDetail/main",
-    "pages/user/tradeDetail/main",
-    "pages/user/recharge/main",
-    "pages/user/balance/main",
-    "pages/user/selectPay/main",
-    "pages/user/orderFeedBack/main"
-  ],
-  "permission": {
-    "scope.userLocation": {
-      "desc": "快乐松需要您的位置信息，以便为您推荐附近店铺！"
-    }
-  },
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ffd000",
-    "navigationBarTitleText": "首页",
-    "navigationBarTextStyle": "black"
-  },
-  "navigateToMiniProgramAppIdList": [
-    "wx2bee13173fa2ca54"
-  ],
-  "sitemapLocation": "sitemap.json"
+    "pages": [
+        "pages/user/index/main",
+        "pages/user/storesMap/main",
+        "pages/user/mall/newEvents/main",
+        "pages/user/mall/newEvents/createOrder/main",
+        "pages/user/mall/newEvents/coupon/main",
+        "pages/user/paySuccess/main",
+        "pages/user/userCenter/main",
+        "pages/user/order/main",
+        "pages/user/store/main",
+        "pages/user/goodDetail/main",
+        "pages/user/orderDetails/main",
+        "pages/user/orderPayment/main",
+        "pages/user/feedBack/main",
+        "pages/user/pickup/main",
+        "pages/user/integral/main",
+        "pages/user/integralDetail/main",
+        "pages/user/integralRecords/main",
+        "pages/user/feedBack/success/main",
+        "pages/user/share/main",
+        "pages/user/coupon/main",
+        "pages/user/payment/main",
+        "pages/user/ticket/main",
+        "pages/user/ticketDetail/main",
+        "pages/user/tradeDetail/main",
+        "pages/user/recharge/main",
+        "pages/user/balance/main",
+        "pages/user/selectPay/main",
+        "pages/user/orderFeedBack/main"
+    ],
+    "permission": {
+        "scope.userLocation": {
+            "desc": "快乐松需要您的位置信息，以便为您推荐附近店铺！"
+        }
+    },
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#ffd000",
+        "navigationBarTitleText": "首页",
+        "navigationBarTextStyle": "black",
+        "navigationStyle": "custom"
+    },
+    "navigateToMiniProgramAppIdList": [
+        "wx2bee13173fa2ca54"
+    ],
+    "sitemapLocation": "sitemap.json"
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="body">
-        <mp-title :title="title"></mp-title>
-        <div class="balance-detail">
+        <CustomHeader :title="title" :needReturn="true" />
+        <div class="balance-detail" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
             <div class="title">可用余额（元）</div>
             <div class="balance-number">
                 {{balance}}
@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-    import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
     export default {
         name: 'Balance',
         data: function () {
@@ -34,7 +34,7 @@
           };
         },
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         computed: {
             balance () {
@@ -42,7 +42,13 @@
             },
 			balanceRecord () {
 				return this.model.account.balanceRecord
-            }
+            },
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			}
         },
         methods: {
             jump (router) {
@@ -81,7 +87,6 @@
         align-items: center;
         flex-direction: column;
         position: fixed;
-        top: 0;
     }
     .balance-detail .title{
         font-size: 28rpx;

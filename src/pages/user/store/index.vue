@@ -1,8 +1,9 @@
 <!--suppress ALL -->
 <template>
     <div id="user_store" class="body">
-        <mp-title :title="title"></mp-title>
-        <div id="store_header">
+        <CustomHeader :title="title" :needReturn="true" />
+
+        <div id="store_header" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
             <input type="text" placeholder="请输入商品名称" id="store_search">
             <i class="iconfont">&#xe65c;</i>
         </div>
@@ -51,7 +52,8 @@
     </div>
 </template>
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
@@ -59,7 +61,7 @@
 
   export default {
       components: {
-          'mp-title': MpTitle,
+		  CustomHeader,
           ShoppingCart,
           SelectSpecification,
 		  ChooseSelfRaisingPoint,
@@ -93,7 +95,13 @@
           },
           showPoints () {
 			  return this.model.user.store.showPoints
-          }
+          },
+		  statusBarHeight () {
+			  return this.model.global.barHeight.statusBarHeight
+		  },
+		  navHeight () {
+			  return this.model.global.barHeight.navHeight
+		  }
       },
       methods: {
 		  closePoints () {
@@ -183,7 +191,6 @@
       background: #fff;
       border-bottom: 2rpx solid #f2f2f2;
       position: fixed;
-      top: 0;
   }
 
   #store_header #store_search {

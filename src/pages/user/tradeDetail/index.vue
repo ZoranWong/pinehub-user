@@ -1,6 +1,7 @@
 <template>
     <div class="body">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="trade-list">
             <div v-if="empty"  class = "empty-background">
                 <div class="background-box">
@@ -15,8 +16,9 @@
     </div>
 </template>
 <script>
-    import MpTitle from '@/components/MpTitle';
-    import OrderItem from './OrderItem';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import OrderItem from './OrderItem';
     export default {
         name: 'TradeDetail',
         data: function () {
@@ -25,7 +27,7 @@
           };
         },
         components: {
-            'mp-title': MpTitle,
+			CustomHeader,
             item: OrderItem
         },
         computed: {

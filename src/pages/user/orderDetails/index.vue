@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="userOrders" class="body">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="shop_detail_header">
             <h3>
               {{orderDetail['state_desc']}}
@@ -95,11 +96,12 @@
     </div>
 </template>
 <script>
-    import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
 
-    export default {
+
+	export default {
         components: {
-            'mp-title': MpTitle,
+			CustomHeader,
         },
         data () {
             return {

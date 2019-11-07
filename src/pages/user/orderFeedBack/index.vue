@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="feedBack">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="feedBackContent">
             <textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您的售后问题，我们会努力为您解决的哦~" :maxlength="totalFont" />
             <em>{{nowFontNum}}/{{totalFont}}</em>
@@ -11,10 +12,11 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
-    export default {
+	import CustomHeader from '../../../components/CustomHeader';
+
+	export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         data () {
             return {

@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="pay_shop_info">
             <i class="iconfont location">&#xe80b;</i>
             <div class="pay_shop_info">
@@ -76,12 +77,13 @@
 	</div>
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import {formatMoney} from '../../../utils';
 
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {

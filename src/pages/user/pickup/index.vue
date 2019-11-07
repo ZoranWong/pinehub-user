@@ -1,7 +1,9 @@
 <!--suppress ALL -->
 <template>
     <div id="pickup">
-        <mp-title :title="title"></mp-title>
+
+        <CustomHeader :title="title" :needReturn="false" />
+
         <div id="pickup_container">
             <div id="pickup_header" :style="{'backgroundImage':'url(' + background + ')'}">
                 <span @click="changeBackground('left')">自提点自提</span>
@@ -56,7 +58,8 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import FooterNav from '@/components/FooterNav';
 	import _ from 'underscore'
 	let bg1 = require('./img/aaa.jpg');
@@ -65,7 +68,7 @@
 
 	export default {
         components: {
-            'mp-title': MpTitle,
+			CustomHeader,
 			FooterNav
         },
         data () {

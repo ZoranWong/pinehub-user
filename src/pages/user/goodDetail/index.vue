@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="good_detail" v-if="goodDetail">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
         <div v-show="!registered" class="toast_area">
             <div class="toast">
                 <div class="toast_title">
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
@@ -78,7 +78,7 @@
 	export default {
         name: 'goodDetail',
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			ShoppingCart,
 			SelectSpecification,
 			ChooseSelfRaisingPoint,

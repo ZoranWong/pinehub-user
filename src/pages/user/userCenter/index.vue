@@ -1,6 +1,7 @@
 <template>
     <div id="merchant-store">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="false" />
+
         <div id="merchant-store_header">
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
@@ -103,12 +104,13 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
     import FooterNav from '@/components/FooterNav';
 
 	export default {
         components: {
-            'mp-title': MpTitle,
+			CustomHeader,
             'footer-nav': FooterNav
         },
         data () {

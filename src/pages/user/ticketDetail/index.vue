@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
 	<div class="coupon-wrapper">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="coupons_item" >
             <div class="left">
                 <img :src="detail['coupon_image']" alt="">
@@ -36,10 +37,11 @@
 
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {
