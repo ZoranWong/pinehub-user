@@ -2,14 +2,13 @@
 <template>
 	<div class="ticket-page body">
         <CustomHeader :title="title" :needReturn="true" />
-        <div class="empty_img" v-if="!tickets.length">
+        <div class="empty_img" v-if="!coupons.length">
             <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
             <span>暂无优惠券哦～</span>
         </div>
 		<div class="ticket-list" v-else>
-			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
 			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
-				<coupon-ticket v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
+				<coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
 				</coupon-ticket>
 			</scroll-view>
 		</div>
@@ -25,7 +24,8 @@
 			return {
 				title: '我的卡券',
 				name: 'Coupon',
-				cur: 0
+				cur: 0,
+				coupons: []
 			}
 		},
 		props: {
@@ -44,7 +44,12 @@
 		},
 		computed: {
 			tickets() {
+				this.coupons = this.model.user.tickets.ticketsList
 				return this.model.user.tickets.ticketsList;
+			},
+			availableCoupons () {
+				this.coupons = this.model.user.tickets.availableCoupons
+				return this.model.user.tickets.availableCoupons
 			},
 			totalNum() {
 				return this.$store.getters[`${this.model}/totalNum`];
@@ -61,6 +66,7 @@
 				this.$emit('useTicket', ticket);
 			},
 			scrolltolower() {
+				if (this.$route.query.needReturn) return;
 				if(!this.isLoadedAll) {
 					this.loadTickets(this.nextPage, this.statusType);
 				}

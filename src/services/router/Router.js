@@ -77,7 +77,7 @@ export default class Router {
     go () {
     }
 
-    back () {
+    back (query = {}) {
         // let router = this.stack[this.stack.length - 1];
         // let route = router[0];
         // let options = route[1];

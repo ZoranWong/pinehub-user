@@ -201,5 +201,9 @@ export default class Account extends Model {
                 return false;
             }
         });
+        
+        this.addEventListener('changeIntegral', function ({integral}) {
+            this.state.availableScore = this.state.availableScore - integral;
+        })
     }
 }

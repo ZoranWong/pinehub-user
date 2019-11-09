@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 21,
+			"current": 22,
 			"list": [
 				{
 					"id": 0,
@@ -174,8 +174,16 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/user/pickup/main",
-					"pathName": "pages/user/pickup/main",
+					"name": "pages/user/orderPayment/main",
+					"pathName": "pages/user/orderPayment/main",
+					"query": "type=mall",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/store/main",
+					"pathName": "pages/user/store/main",
+					"query": "type=mall",
 					"scene": null
 				}
 			]

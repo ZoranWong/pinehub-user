@@ -28,6 +28,7 @@ export default class IntegralService extends ApiService {
         if (response.message === '兑换成功') {
             this.service('popup').toast(response.message, 'success', 2000);
         }
+        return response.message
     }
     
     // 积分兑换记录

@@ -59,7 +59,7 @@
                 <h3>优惠券</h3>
                 <em>剩余{{availableCoupons.length}}张</em>
                 <span class="use_coupon" v-if="availableCoupons.length > 0">
-                    0张已使用
+                    {{couponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
             </li>
@@ -113,6 +113,10 @@
             },
 			availableCoupons () {
 				return this.model.user.tickets.availableCoupons
+            },
+            couponIds () {
+				console.log(this.model.user.order.payment.couponIds, 'coupon id length');
+				return this.model.user.order.payment.couponIds
             }
 		},
 		methods: {
@@ -140,7 +144,7 @@
 			},
 			jump (router) {
 				this.$command('REDIRECT_TO', router, 'replace',{
-					query: {needReturn: true}
+					query: {needReturn: true, type: this.type}
                 });
 			}
 		},
@@ -150,8 +154,14 @@
 		mounted() {
             this.getDate();
 			let type = this.$route.query.type;
+			let id = this.$route.query.id;
 			this.type = type;
-			this.$command('CALCULATE_PRICE_COMMAND',type,{});
+			if (id) {
+				this.$command('ORDER_COUPON_IDS', id)
+            }
+			this.$command('CALCULATE_PRICE_COMMAND',type,{
+				coupon_records: this.couponIds
+            });
 			this.$command('AVAILABLE_COUPONS', type)
 		}
 	}

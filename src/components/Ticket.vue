@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div v-if="ticket" class="coupon-wrapper clearfix bgff">
-        <div class="coupons_item" >
+        <div class="coupons_item" @click="selectTicket(ticket)">
             <div class="left">
                 <img :src="ticket['coupon_image']" alt="">
             </div>
@@ -43,7 +43,17 @@
 				this.$command('REDIRECT_TO', 'user.ticket.detail', 'push', {
 					query: {detail: this.ticket}
                 });
-            }
+            },
+			selectTicket (coupon) {
+				if (this.$route.query.needReturn) {
+					this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+						query: {
+							type: this.$route.query.type,
+                            id: coupon['record_id'],
+						}
+					});
+                }
+			}
 		},
 		mounted () {
 		}

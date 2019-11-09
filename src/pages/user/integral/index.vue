@@ -19,7 +19,7 @@
                    </h3>
                    <h4>￥{{item.data.benefit/100}}</h4>
                    <div class="operation">
-                       <span @click="jump('user.integral.detail',item.data.id,item.pv)">卡券详情</span>
+                       <span @click="jump('user.integral.detail',item.data.id,item.id,item.pv)">卡券详情</span>
                        <span @click="exchange(item)">立即兑换</span>
                    </div>
                    <img :src="item.data.banner" alt="">
@@ -85,17 +85,17 @@
 					this.loadProducts(this.nextPage);
 				}
 			},
-			jump (router,id,pv) {
-				this.$command('REDIRECT_TO', router, 'push', {query: {id,pv}});
+			jump (router,id,couponId,pv) {
+				this.$command('REDIRECT_TO', router, 'push', {query: {id,couponId,pv}});
 			},
 			exchange(item){
-				if (userInfo.availableScore < item.pv) {
+				if (this.userInfo.availableScore < item.pv) {
 					wx.showToast({
 						title: '积分不足',
 						icon: 'none'
 					});
                 } else {
-					this.$command('EXCHANGE_PRODUCTS',item.data.id)
+					this.$command('EXCHANGE_PRODUCTS',item.id, item.pv)
                 }
             }
 		},

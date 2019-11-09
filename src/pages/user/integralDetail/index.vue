@@ -13,7 +13,7 @@
                     <span>{{detailData.name}}</span>
                 </h3>
                 <h4>￥{{detailData.benefit}}</h4>
-                <img src="../../../../static/images/position.png" alt="">
+                <img :src="detailData['coupon_image']" alt="">
                 <div class="needScore">
                     <div class="left_text">{{pv}}</div>
                     <div class="right_text">
@@ -58,13 +58,12 @@
 		},
 		computed: {
 			detailData () {
-				console.log(this.model.integral.detail.detailData, 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDetail');
 				return this.model.integral.detail.detailData
             }
 		},
 		methods: {
 			exchange () {
-				this.$command('EXCHANGE_PRODUCTS', 71)
+				this.$command('EXCHANGE_PRODUCTS', this.couponId, this.pv)
             },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
@@ -81,6 +80,7 @@
 		mounted() {
 			let id = this.$route.query['id'];
 			this.pv = this.$route.query['pv'];
+			this.couponId = this.$route.query['couponId'];
 			this.$command('LOAD_INTEGRAL_DETAIL', id)
 		}
 	}

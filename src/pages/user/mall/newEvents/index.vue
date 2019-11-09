@@ -29,7 +29,7 @@
 	export default {
 		data() {
 			return {
-				title: '新品预定',
+				title: '早餐预定',
 				isShow: false,
 				activityId: null,
 				isShowCart: true,

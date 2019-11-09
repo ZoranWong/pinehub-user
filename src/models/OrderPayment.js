@@ -13,6 +13,9 @@ export default class Orders extends Model {
             },
             createdOrderInfo () {
                 return this.state.createdOrderInfo
+            },
+            couponIds () {
+                return this.state.ids
             }
         });
     }
@@ -20,7 +23,8 @@ export default class Orders extends Model {
     data () {
         return _.extend(super.data(), {
             orderInfo: {},
-            createdOrderInfo: {}
+            createdOrderInfo: {},
+            ids: []
         });
     }
 
@@ -35,11 +39,23 @@ export default class Orders extends Model {
                 item['spec_desp'] = spec.join(',')
             });
             this.state.orderInfo = orderInfo;
-            console.log(orderInfo, '_+_+_+__+_++__+__+_+_+_+__++_+__++_+_+_+__++_+__++_+_+');
         });
         
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
             this.state.createdOrderInfo = orderInfo
+        });
+    
+        this.addEventListener('handleIds', function ({id}) {
+            console.log(id, '准备处理couponid');
+            let ids = this.state.ids;
+            let index = _.indexOf(ids, id);
+            if (index < 0) {
+                ids.push(id)
+            } else {
+                ids.splice(index, 1)
+            }
+            console.log(ids, 'iiiiiiiiiiiiiiiiiiiiiiiids');
+            this.state.ids = ids;
         })
     }
 }
