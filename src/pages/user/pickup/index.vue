@@ -48,7 +48,14 @@
             </swiper>
         </ul>
         <ul id="empty_pickup_info" v-else>
-            <li>暂无可自提的单  赶紧去下单吧</li>
+            <li v-if="position === 'left'">
+                <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                <span>您还没有订单需要自提哦 快到商城下单吧</span>
+            </li>
+            <li v-else>
+                <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                <span>您还没有早餐需要自提哦 快去预定早餐吧</span>
+            </li>
         </ul>
         <div class="total_amount" v-if="orders.length">
             <span>{{current}}/{{total}}</span>
@@ -104,8 +111,8 @@
         computed: {
 			pickupOrders () {
 				this.drawTime = (new Date).getTime();
+				this.orders = [];
 				this.orders = this.model.user.pickup.pickupOrders;
-				this.shop_order = [];
 				this.breakfast_order = [];
 				_.map(this.orders, (order)=>{
 					if (order.channel.slug === 'BREAKFAST_CAR') {
@@ -226,7 +233,7 @@
 
     #empty_pickup_info{
         width: 710rpx;
-        height: 400rpx;
+        height: 740rpx;
         font-size: 32rpx;
         box-sizing: border-box;
         padding-top: 50rpx;
@@ -235,6 +242,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        color: #999;
+    }
+
+    #empty_pickup_info li {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #empty_pickup_info img{
+        width: 350rpx;
+        height: 200rpx;
+        margin-bottom: 10px;
     }
 
     #pickup_info h3{

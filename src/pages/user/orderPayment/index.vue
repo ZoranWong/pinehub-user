@@ -57,7 +57,7 @@
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>剩余{{availableCoupons.length}}张</em>
+                <em>剩余{{availableCoupons.length - couponIds.length}}张</em>
                 <span class="use_coupon" v-if="availableCoupons.length > 0">
                     {{couponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
@@ -115,7 +115,6 @@
 				return this.model.user.tickets.availableCoupons
             },
             couponIds () {
-				console.log(this.model.user.order.payment.couponIds, 'coupon id length');
 				return this.model.user.order.payment.couponIds
             }
 		},
@@ -128,12 +127,15 @@
                 });
             },
 			createOrder(){
+				console.log(this.couponIds, 'before create order');
 				this.$command('CREATE_PAY_ORDER',{
 					shop_id: this.selectedPoint.id,
-					coupon_records: [],
+					coupon_records: this.couponIds,
                 },this.type);
 				this.$command('REDIRECT_TO', 'selectPay', 'replace',{
-					query: {type: this.type}
+					query: {
+						type: this.type
+					}
                 })
             },
             getDate () {
@@ -143,6 +145,7 @@
 				this.tomorrowStr = tomorrowStr
 			},
 			jump (router) {
+				if (this.availableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'replace',{
 					query: {needReturn: true, type: this.type}
                 });

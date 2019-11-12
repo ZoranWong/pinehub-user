@@ -46,10 +46,10 @@ export default class Tickets extends Model {
         this.addEventListener('saveAvailableCoupons', function ({coupons}) {
             _.map(coupons, (coupon)=>{
                 coupon['title'] = coupon['coupon_name'];
-                if (coupon.type === 'CASH') {
+                if (coupon['coupon_type'] === 'CASH') {
                     coupon.typeDesc = '现金券'
                 } else {
-                    coupon.typeDesc = '满减券'
+                    coupon.typeDesc = '折扣券'
                 }
                 coupon.floor = coupon['floor'] > 0 ? `满${coupon['floor']}元可用` : '无门槛';
                 coupon.coupon_image = coupon['banner'];

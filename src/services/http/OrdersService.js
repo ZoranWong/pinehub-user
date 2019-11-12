@@ -52,7 +52,6 @@ export default class OrdersService extends ApiService {
     // 计算商城购物车金额
     async calculateMallPrice (params) {
         console.log('-------calculate mall price-------');
-        console.log(params, '++++++++++++++++++++++++++');
         let response = await this.httpGet('api/mp/mall/calculate/carts', params);
         return response.data;
     }

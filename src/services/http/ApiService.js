@@ -73,12 +73,18 @@ export default class ApiService extends Service {
             wx.hideLoading();
             console.log('get method request error ', e);
             let message = e.response && e.response.data && e.response.data.message ? e.response.data.message : e;
+            if (message === '422 Unprocessable Entity') {
+                throw e;
+            }
+            console.log('422');
             if (message !== '没有常用自提点') {
+                console.log('没有常用');
                 if (this.errorShow) {
                     await this.service('popup').toast(message, 'none', 2000);
                 }
             }
             this.errorShow = true;
+            console.log(' throw ');
             throw e;
         }
     }

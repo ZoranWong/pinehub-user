@@ -5,7 +5,7 @@
 
         <div class="checkout_header">
             <div class="left">
-                <h4>订单金额：￥{{order['settlement_total_fee']}}</h4>
+                <h4>订单金额：{{order['settlement_total_fee_format']}}</h4>
                 <span>请您在{{minute}}:{{second}}内完成支付</span>
             </div>
             <img src="../../../../static/images/background/1.png" alt="">

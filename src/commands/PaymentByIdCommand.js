@@ -14,6 +14,12 @@ export default class PaymentByIdCommand extends Command {
                 let paySign = data['paySign'];
                 let result = await this.payOrder(timeStamp, nonceStr, packageInfo, paySign, order);
                 console.log(result, '-----------pay result ------------------');
+                if (result) {
+                    this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {
+                            order: JSON.stringify(order),
+                            type: '微信支付'
+                        }});
+                }
                 return result;
             } else if (typeof data['status'] !== 'undefined' && (data['status'] === 300 || data['status'] === 500)) {
                 this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {

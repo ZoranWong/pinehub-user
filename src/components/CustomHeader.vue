@@ -47,6 +47,7 @@
 <style>
     #custom_header{
         width: 100%;
+        z-index: 9999;
     }
 
     #status_bar {}

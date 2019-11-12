@@ -1,15 +1,25 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <CustomHeader :title="title" :needReturn="true" />
 
-        <div id="location_search">
+        <div id="location_search" :style="{'top': navHeight + statusBarHeight + 'px'}">
             <input id="location_search_input" v-model.trim="addressName" placeholder="请输入地点名称"/>
             <i class="iconfont search">&#xe65c;</i>
         </div>
         <div id="location_map">
             <map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
                  @markertap="bindmarkertap" show-location>
+                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >
+                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >
+                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >
+                        <cover-view  id="back_icon" @click="back">
+                            <i class="iconfont">&#xe679;</i>
+                        </cover-view >
+                        <cover-view  id="nav_title">
+                            {{title}}
+                        </cover-view >
+                    </cover-view >
+                </cover-view>
                 <cover-view id="locatePosition" @click="nowLocation">
                     <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
                 </cover-view>
@@ -96,7 +106,8 @@
 				textData: {},
 				nearPoints: [],
 				commonPoints:[],
-                checkId: ''
+                checkId: '',
+				barHeight: 0
             }
         },
         watch: {
@@ -122,10 +133,19 @@
 				this.points = points;
 				this.nearPoints = points;
 				return points
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
         },
         // 普通方法
         methods: {
+			back(){
+				this.$command('REDIRECT_TO','','back')
+			},
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -253,6 +273,7 @@
         },
         mounted () {
             this.flashLocation();
+			this.$command('GET_BAR_HEIGHT')
         }
 	}
 </script>
@@ -390,7 +411,7 @@
         background-size: 100%;
         position: absolute;
         left: 682rpx;
-        top: 160rpx;
+        top: 260rpx;
         z-index: 99999999;
     }
 

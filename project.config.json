@@ -176,14 +176,14 @@
 					"id": -1,
 					"name": "pages/user/orderPayment/main",
 					"pathName": "pages/user/orderPayment/main",
-					"query": "type=mall",
+					"query": "type=mall&id=134",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/user/store/main",
-					"pathName": "pages/user/store/main",
-					"query": "type=mall",
+					"name": "pages/user/coupon/main",
+					"pathName": "pages/user/coupon/main",
+					"query": "type=mall&id=134",
 					"scene": null
 				}
 			]

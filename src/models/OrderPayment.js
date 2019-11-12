@@ -54,7 +54,15 @@ export default class Orders extends Model {
             } else {
                 ids.splice(index, 1)
             }
-            console.log(ids, 'iiiiiiiiiiiiiiiiiiiiiiiids');
+            this.state.ids = ids;
+        });
+        
+        this.addEventListener('deleteId', function () {
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11');
+            let ids = this.state.ids;
+            console.log(ids, 'before delete');
+            ids.pop();
+            console.log(ids, '+++++++++delete ids++++++++++++');
             this.state.ids = ids;
         })
     }

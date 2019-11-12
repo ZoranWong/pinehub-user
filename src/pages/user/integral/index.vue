@@ -17,7 +17,8 @@
                        【{{item.data.type}}】
                         <span>{{item.data.name}}</span>
                    </h3>
-                   <h4>￥{{item.data.benefit/100}}</h4>
+                   <h4 v-if="item.data.type === '现金券'">￥{{item.data.benefit/100}}</h4>
+                   <h4 v-else>{{item.data.benefit/100}}折</h4>
                    <div class="operation">
                        <span @click="jump('user.integral.detail',item.data.id,item.id,item.pv)">卡券详情</span>
                        <span @click="exchange(item)">立即兑换</span>

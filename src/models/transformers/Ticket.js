@@ -21,7 +21,7 @@ export default class Ticket {
     if (this.type === 'CASH') {
         this.typeDesc = '现金券'
     } else {
-        this.typeDesc = '满减券'
+        this.typeDesc = '折扣券'
     }
   }
 }

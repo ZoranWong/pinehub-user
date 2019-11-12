@@ -52,13 +52,13 @@
 				return this.model.user.tickets.availableCoupons
 			},
 			totalNum() {
-				return this.$store.getters[`${this.model}/totalNum`];
+				return this.model.user.tickets.totalNum
 			},
 			nextPage() {
-				return this.$store.getters[`${this.model}/currentPage`] + 1;
+				return this.model.user.tickets.currentPage + 1;
 			},
 			isLoadedAll() {
-				return this.$store.getters[`${this.model}/isLoadedAll`];
+				return this.model.user.tickets.isLoadedAll
 			}
 		},
 		methods: {

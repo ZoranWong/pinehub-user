@@ -216,7 +216,6 @@
             }
         },
         mounted: function () {
-            console.log('-----------------', this.$route.query);
             let ticketInfo = this.$route.query['ticketInfo'] ? JSON.parse(this.$route.query['ticketInfo']) : null;
             if (ticketInfo) {
                 this.ticketInfo = ticketInfo;
