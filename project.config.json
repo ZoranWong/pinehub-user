@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 22,
+			"current": 20,
 			"list": [
 				{
 					"id": 0,
@@ -170,20 +170,6 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/orderPayment/main",
-					"pathName": "pages/user/orderPayment/main",
-					"query": "type=mall&id=134",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/coupon/main",
-					"pathName": "pages/user/coupon/main",
-					"query": "type=mall&id=134",
 					"scene": null
 				}
 			]

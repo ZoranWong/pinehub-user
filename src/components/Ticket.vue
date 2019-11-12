@@ -8,10 +8,11 @@
                 class="selected"
                 v-if="isSelected"
             >
+            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" v-if="ticket.status === '已使用'">
             <div class="left">
                 <img :src="ticket['coupon_image']" alt="">
             </div>
-            <div class="right">
+            <div :class="ticket.status === '已使用' ? 'right disabledText' : 'right'">
                 <div class="name">
                     <h4>【{{ticket.typeDesc}}】</h4>
                     <span>{{ticket.title}}</span>
@@ -72,6 +73,7 @@
 			}
 		},
 		mounted () {
+			console.log(this.ticket, '+++++++++++++++++++');
 		}
 
 	}
@@ -111,6 +113,13 @@
         bottom: 0;
     }
 
+    .disabled{
+        width: 108rpx;
+        height: 108rpx;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
 
     .coupon-wrapper .coupons_item .left{
         width: 266rpx;
@@ -181,6 +190,20 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .disabledText .name h4{
+        color: #757575!important;
+    }
+    .disabledText .name span {
+        color: #757575!important;
+    }
+    .disabledText .price h4{
+        color: #757575!important;
+    }
+
+    .disabledText .price span{
+        color: #757575!important;
     }
 
 </style>
