@@ -12,7 +12,7 @@
         </div>
         <div class="recharge-details">
             <h3>余额明细</h3>
-            <ul class="recharge-details-list">
+            <ul class="recharge-details-list" v-if="balanceRecord.length">
                 <li v-for="item in balanceRecord" :key="item.id">
                     <div class="left">
                         <h4>{{item['type_desc']}}</h4>
@@ -21,6 +21,10 @@
                     <div class="right">{{item.amount}}</div>
                 </li>
             </ul>
+            <div class="empty_list" v-else>
+                <img src="../../../../static/images/empty/empty_order.jpg" alt="">
+                <span>暂无余额变动明细哦</span>
+            </div>
         </div>
     </div>
 </template>
@@ -135,7 +139,8 @@
     }
 
     .recharge-details .recharge-details-list{
-
+        height: 1000rpx;
+        overflow: auto;
     }
 
     .recharge-details .recharge-details-list li{
@@ -165,6 +170,24 @@
     .recharge-details .recharge-details-list li .right{
         font-size: 32rpx;
         color: #111;
+    }
+
+    .empty_list{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 40rpx;
+    }
+
+    .empty_list img{
+        width: 374rpx;
+        height: 300rpx;
+    }
+    .empty_list span{
+        font-size: 28rpx;
+        color: #999;
+        margin-top: 20rpx;
     }
 
 </style>

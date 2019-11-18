@@ -121,7 +121,8 @@
 			this.type = this.$route.query.type
 			if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
-            }
+				console.log(this.order, '****^^^^****');
+			}
 			this.countDownServer(new Date(this.order.createdAt || this.order['created_at']))
 		}
 	}

@@ -13,12 +13,12 @@
                 <em :class="scanning === 'scanning_now'?'active':''">商城</em>
             </li>
 
-            <li @click="isMember ? jump('user.pickup') : notMember()">
+            <li @click="jump('user.pickup') ">
                 <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>
                 <i class="iconfont" v-else>&#xe7e4;</i>
                 <em :class="pickup === 'pickup_now'?'active':''">取货</em>
             </li>
-            <li @click="isMember ? jump('userCenter') : notMember()">
+            <li @click=" jump('userCenter') ">
                 <i class="iconfont now" v-if="my === 'my_now'">&#xe735;</i>
                 <i class="iconfont" v-else>&#xe7d5;</i>
                 <em :class="my === 'my_now'?'active':''">我的</em>
@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import Auth from './Auth';
     export default {
         name: 'FooterNav',
         props: ['navName'],
@@ -37,13 +38,15 @@
                 index: 'index',
                 scanning: 'scanning',
                 pickup: 'pickup',
-                my: 'my'
+                my: 'my',
             };
         },
+        components: {
+        },
         computed: {
-            isMember () {
-                return this.model.account.isMember;
-            }
+			registered () {
+				return this.model.account.registered;
+			},
         },
         methods: {
             nowNav (name) {
@@ -66,11 +69,17 @@
                 }
             },
             jump (router) {
-                if (router === 'user.store') {
-                    this.$command('REDIRECT_TO', router, 'push');
+				console.log(router, '+++++');
+				if (router === 'user.pickup' && !this.registered) {
+            		this.$emit('getUserAuth')
                 } else {
-                    this.$command('REDIRECT_TO', router, 'reLaunch');
+					if (router === 'user.store') {
+						this.$command('REDIRECT_TO', router, 'push');
+					} else {
+						this.$command('REDIRECT_TO', router, 'reLaunch');
+					}
                 }
+
             },
             notMember () {
                 wx.showToast({

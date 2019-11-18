@@ -10,9 +10,9 @@
                 <span @click="changeBackground('right')">早餐自提</span>
             </div>
         </div>
-        <ul id="pickup_info" v-if="orders.length">
+        <ul id="pickup_info">
             <swiper
-                v-if="position === 'left'"
+                v-if="position === 'left' && shop_order.length"
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
@@ -27,8 +27,14 @@
                     </swiper-item>
                 </block>
             </swiper>
+            <ul id="empty_pickup_info" v-if="position === 'left' && !shop_order.length">
+                <li >
+                    <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                    <span>您还没有订单需要自提哦 快到商城下单吧</span>
+                </li>
+            </ul>
             <swiper
-                v-else
+                v-if="position === 'right' && breakfast_order.length"
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
@@ -46,18 +52,18 @@
                     </swiper-item>
                 </block>
             </swiper>
+            <ul id="empty_pickup_info" v-if="position === 'right' && !breakfast_order.length">
+                <li>
+                    <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                    <span>您还没有早餐需要自提哦 快去预定早餐吧</span>
+                </li>
+            </ul>
         </ul>
-        <ul id="empty_pickup_info" v-else>
-            <li v-if="position === 'left'">
-                <img src="../../../../static/images/empty/empty_point.jpg" alt="">
-                <span>您还没有订单需要自提哦 快到商城下单吧</span>
-            </li>
-            <li v-else>
-                <img src="../../../../static/images/empty/empty_point.jpg" alt="">
-                <span>您还没有早餐需要自提哦 快去预定早餐吧</span>
-            </li>
-        </ul>
-        <div class="total_amount" v-if="orders.length">
+
+        <div class="total_amount" v-if="shop_order.length && position === 'left'" >
+            <span>{{current}}/{{total}}</span>
+        </div>
+        <div class="total_amount" v-if="breakfast_order.length && position === 'right'">
             <span>{{current}}/{{total}}</span>
         </div>
         <FooterNav :navName="navName" />
@@ -111,16 +117,22 @@
         computed: {
 			pickupOrders () {
 				this.drawTime = (new Date).getTime();
-				this.orders = [];
-				this.orders = this.model.user.pickup.pickupOrders;
-				this.breakfast_order = [];
-				_.map(this.orders, (order)=>{
-					if (order.channel.slug === 'BREAKFAST_CAR') {
-						this.breakfast_order.push(order)
-                    } else {
-						this.shop_order.push(order)
-                    }
-                });
+				let isEqual =  this.model.user.pickup.pickupOrders.every(item=>{
+					return this.orders.includes(item)
+                })
+                let isEmptyModel = _.isEmpty(this.model.user.pickup.pickupOrders);
+				if (isEqual && !isEmptyModel) {
+
+                } else {
+					this.orders = this.model.user.pickup.pickupOrders;
+					_.map(this.orders, (order)=>{
+						if (order.channel.slug === 'BREAKFAST_CAR') {
+							this.breakfast_order.push(order)
+						} else {
+							this.shop_order.push(order)
+						}
+					});
+                }
 				this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
 				if(this.position === 'left' && !this.currentOrderId && this.orders && this.orders.length) {
 					this.currentOrderId = this.orders[0]['id'];
@@ -164,8 +176,14 @@
 			})
 			if (this.$route.query.order) {
 				let order = JSON.parse(this.$route.query.order)
-				order['order_no'] = order.code
-				this.orders.push(order)
+				order['order_no'] = order.code || order['order_no']
+				order['subOrderNo'] = order['order_no'].slice(-4)
+                this.currentOrderId = order.id
+				if (order.channel.slug === 'BREAKFAST_CAR') {
+					this.breakfast_order.push(order)
+				} else {
+					this.shop_order.push(order)
+				}
             } else {
 				this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
             }

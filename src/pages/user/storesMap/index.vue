@@ -24,56 +24,57 @@
                     <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
                 </cover-view>
             </map>
-        </div>
-        <div id="location_points">
-            <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">附近自提点</span>
-                <span @click="changeBackground('right')">常用自提点</span>
+            <div id="location_points">
+                <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
+                    <span @click="changeBackground('left')">附近自提点</span>
+                    <span @click="changeBackground('right')">常用自提点</span>
+                </div>
+                <ul id="location_points_list" v-if="position === 'right'">
+                    <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
+                        <div class="left">
+                            <div class="top">
+                                <h4>{{item.name}}</h4>
+                                <span>距您当前位置{{item.distance}}米</span>
+                            </div>
+                            <div class="bottom">
+                                {{item.address}}
+                            </div>
+                        </div>
+                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                    </li>
+                    <div class="empty_img" v-if="!commonPoints.length">
+                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                        <span>暂无自提点哦～</span>
+                    </div>
+                </ul>
+
+                <ul id="location_points_list" v-if="position === 'left'">
+                    <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
+                        <div class="left">
+                            <div class="top">
+                                <h4>{{item.name}}</h4>
+                                <span>距您当前位置{{item.distance}}米</span>
+                            </div>
+                            <div class="bottom">
+                                {{item.address}}
+                            </div>
+                        </div>
+                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                    </li>
+                    <div class="empty_img" v-if="!nearPoints.length">
+                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                        <span>暂无自提点哦～</span>
+                    </div>
+                </ul>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
+                </form>
+
             </div>
-            <ul id="location_points_list" v-if="position === 'right'">
-                <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
-                    <div class="left">
-                        <div class="top">
-                            <h4>{{item.name}}</h4>
-                            <span>距您当前位置{{item.distance}}米</span>
-                        </div>
-                        <div class="bottom">
-                            {{item.address}}
-                        </div>
-                    </div>
-                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
-                </li>
-                <div class="empty_img" v-if="!commonPoints.length">
-                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                    <span>暂无自提点哦～</span>
-                </div>
-            </ul>
-
-            <ul id="location_points_list" v-if="position === 'left'">
-                <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
-                    <div class="left">
-                        <div class="top">
-                            <h4>{{item.name}}</h4>
-                            <span>距您当前位置{{item.distance}}米</span>
-                        </div>
-                        <div class="bottom">
-                            {{item.address}}
-                        </div>
-                    </div>
-                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
-                </li>
-                <div class="empty_img" v-if="!nearPoints.length">
-                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                    <span>暂无自提点哦～</span>
-                </div>
-            </ul>
-            <form report-submit="true" @submit="uploadFormId">
-                <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
-            </form>
-
         </div>
+
     </div>
 </template>
 

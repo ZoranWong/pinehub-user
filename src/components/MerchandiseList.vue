@@ -73,6 +73,9 @@
 
         },
         methods: {
+			getPhoneNumber (e) {
+				this.$command('SET_USER_MOBILE', e);
+			},
             scrolltolower (e) {
                 let $this = this;
                 if (this.timeout) {

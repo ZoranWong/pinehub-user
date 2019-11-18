@@ -1,99 +1,101 @@
 <!--suppress ALL -->
 <template>
-    <div id="userOrders" class="body">
+    <div>
         <CustomHeader :title="title" :needReturn="true" />
-
-        <div id="shop_detail_header">
-            <h3>
-              {{orderDetail['state_desc']}}
-              <span>期待您的再次光临哦~</span>
-            </h3>
-            <img src="../../../../static/images/background/1.png"></img>
-        </div>
-        <div id="shop_info" v-if="orderDetail['shop']">
-            <i class="iconfont location">&#xe80b;</i>
-            <div class="shop_info">
-                <div class="shop_info_name">
-                    <h4>
-                        {{orderDetail['shop']['name']}}
-                      <span>{{orderDetail['shop']['keeper_mobile']}}</span>
-                    </h4>
-                </div>
-                <div class="shop_info_address">
-                    {{orderDetail['shop']['address']}}
-                </div>
+        <div id="userOrders" class="body"  :style="{height: screenHeight - (navHeight + statusBarHeight) - 200 + 'rpx'}">
+            <div id="shop_detail_header">
+                <h3>
+                    {{orderDetail['state_desc']}}
+                    <span>期待您的再次光临哦~</span>
+                </h3>
+                <img src="../../../../static/images/background/1.png"></img>
             </div>
-            <i class="iconfont arrow">&#xe6a3;</i>
-        </div>
-        <div id="pick_up_info">
-            <i class="iconfont location">&#xe65e;</i>
-            <div class="order_info">
-                <div class="order_info_name">
-                    <h4>
-                        预约取货日期
-                        <span>{{orderDetail['plan_pickup_date']}}</span>
-                    </h4>
-                    <h4>
-                        预约取货时间
-                        <span>{{orderDetail['plan_pickup_time']}}</span>
-                    </h4>
-                </div>
-            </div>
-        </div>
-        <div id="order_details">
-            <ul id="good_list">
-                <li v-for="(good,index) in orderDetail['order_items']" :key="index">
-                    <img :src="good.thumbnail" alt="">
-                    <div id="good_info">
-                        <h3>{{good['product_name']}}</h3>
-                        <em v-if="good.spec">{{good.spec}}</em>
-                        <div id="good_info_price">
-                            <h3>￥ {{good.price}}</h3>
-                            <em>X {{good.quantity}}</em>
-                        </div>
+            <div id="shop_info" v-if="orderDetail['shop']">
+                <i class="iconfont location">&#xe80b;</i>
+                <div class="shop_info">
+                    <div class="shop_info_name">
+                        <h4>
+                            {{orderDetail['shop']['name']}}
+                            <span>{{orderDetail['shop']['keeper_mobile']}}</span>
+                        </h4>
                     </div>
-                </li>
-            </ul>
-            <ul id="order_amount">
-                <li>
-                    <span>商品总价</span>
-                    <span>￥{{orderDetail['total_fee']}}</span>
-                </li>
-                <li>
-                    <span>优惠金额</span>
-                    <span>-￥{{orderDetail['total_preferential_fee']}}</span>
-                </li>
-                <li>
-                  <span>优惠券</span>
-                  <span>已用2张</span>
-                </li>
-            </ul>
-            <div id="order_price">
-                <h4>实付款</h4>
-                <span>￥{{orderDetail['settlement_total_fee']}}</span>
+                    <div class="shop_info_address">
+                        {{orderDetail['shop']['address']}}
+                    </div>
+                </div>
+                <i class="iconfont arrow">&#xe6a3;</i>
             </div>
-        </div>
-        <div id="order_info">
-            <h3>订单信息</h3>
-            <div>
-                <span> 订单编号：{{orderDetail['order_no']}}</span>
-                <em @click="cpoy(orderDetail['order_no'])">复制</em>
+            <div id="pick_up_info">
+                <i class="iconfont location">&#xe65e;</i>
+                <div class="order_info">
+                    <div class="order_info_name">
+                        <h4>
+                            预约取货日期
+                            <span>{{orderDetail['plan_pickup_date']}}</span>
+                        </h4>
+                        <h4>
+                            预约取货时间
+                            <span>{{orderDetail['plan_pickup_time']}}</span>
+                        </h4>
+                    </div>
+                </div>
             </div>
-            <div>
-                <span>下单时间：{{orderDetail['created_at']}} </span>
-                <span> {{orderDetail['state_desc']}}</span>
+            <div id="order_details">
+                <ul id="good_list">
+                    <li v-for="(good,index) in orderDetail['order_items']" :key="index">
+                        <img :src="good.thumbnail" alt="">
+                        <div id="good_info">
+                            <h3>{{good['product_name']}}</h3>
+                            <em v-if="good.spec">{{good.spec}}</em>
+                            <div id="good_info_price">
+                                <h3>￥ {{good.price}}</h3>
+                                <em>X {{good.quantity}}</em>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul id="order_amount">
+                    <li>
+                        <span>商品总价</span>
+                        <span>￥{{orderDetail['total_fee']}}</span>
+                    </li>
+                    <li>
+                        <span>优惠金额</span>
+                        <span>-￥{{orderDetail['total_preferential_fee']}}</span>
+                    </li>
+                    <li>
+                        <span>优惠券</span>
+                        <span>已用{{orderDetail['coupon_records_count']}}张</span>
+                    </li>
+                </ul>
+                <div id="order_price">
+                    <h4>实付款</h4>
+                    <span>￥{{orderDetail['settlement_total_fee']}}</span>
+                </div>
             </div>
+            <div id="order_info">
+                <h3>订单信息</h3>
+                <div>
+                    <span> 订单编号：{{orderDetail['order_no']}}</span>
+                    <em @click="cpoy(orderDetail['order_no'])">复制</em>
+                </div>
+                <div>
+                    <span>下单时间：{{orderDetail['created_at']}} </span>
+                    <span> {{orderDetail['state_desc']}}</span>
+                </div>
 
-            <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
+                <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
 
-            <div>实际取货时间：{{orderDetail['paid_at'] || '暂无'}}  </div>
-        </div>
-        <div id="order_total_price">
-            <span>预付款 ￥{{orderDetail['settlement_total_fee']}}</span>
-            <h3 v-if="orderDetail['state_desc'] === '待自提'" @click="btnClick('pickup', orderDetail)" >去取货</h3>
-            <h3 v-if="orderDetail['state_desc'] === '待付款'" @click="btnClick('pay', orderDetail)" >去支付</h3>
+                <div>实际取货时间：{{orderDetail['paid_at'] || '暂无'}}  </div>
+            </div>
+            <div id="order_total_price">
+                <span>预付款 ￥{{orderDetail['settlement_total_fee']}}</span>
+                <h3 v-if="orderDetail['state_desc'] === '待自提'" @click="btnClick('pickup', orderDetail)" >去取货</h3>
+                <h3 v-if="orderDetail['state_desc'] === '待付款'" @click="btnClick('pay', orderDetail)" >去支付</h3>
+            </div>
         </div>
     </div>
+
 </template>
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
@@ -107,13 +109,21 @@
             return {
                 title: '订单详情',
                 navName: 'orderDetails',
+				screenWitdh: 0,
+				screenHeight: 0
             };
         },
         watch: {},
         computed: {
 			orderDetail () {
 				return this.model.user.order.detail.orderDetail
-            }
+            },
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			}
         },
         methods: {
 			cpoy (text) {
@@ -139,7 +149,10 @@
         },
         mounted () {
             let id = this.$route.query.id;
-			this.$command('ORDER_DETAIL', id)
+			this.$command('ORDER_DETAIL', id);
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
         }
     }
 </script>
@@ -152,6 +165,7 @@
 
     #userOrders {
         position: relative;
+        overflow: auto;
     }
 
     #shop_detail_header {
@@ -355,7 +369,6 @@
       justify-content: center;
       align-items: flex-start;
       flex-direction: column;
-      margin-bottom: 105rpx;
     }
 
     #order_info h3{

@@ -6,6 +6,7 @@ export default class Order {
         this.code = order['order_no'].slice(-12);
         this.id = order['id'];
         this.type = order['order_type'];
+        this['after_service_state'] = order['after_service_state'];
         this.pickUpMethod = parseInt(order['pick_up_method']);
         this.status = parseInt(order['status']);
         this.merchandiseNum = order['merchandise_num'];

@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="feedBack">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="false" />
+
         <div id="feedBackSuccess">
             <div class="bgimg"></div>
             <em>提交成功</em>
@@ -13,9 +14,10 @@
 
 <script>
     import MpTitle from '@/components/MpTitle';
+    import CustomHeader from '../../../../components/CustomHeader';
     export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         data () {
             return {

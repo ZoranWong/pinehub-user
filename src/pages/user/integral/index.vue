@@ -1,47 +1,50 @@
 <!--suppress ALL -->
 <template>
-	<div id="integral">
+    <div>
         <CustomHeader :title="title" :needReturn="true" />
-        <scroll-view
-            id="integral_list"
-            :style="{height: screenHeight + 'rpx'}"
-            :scroll-y="1"
-            @scrolltolower="scrolltolower"
-        >
-           <div class="integral_list_item" v-for="item in integralProducts" :key="item.data.id">
-               <div class="left">
-                   <div class="empty"></div>
-               </div>
-               <div class="right">
-                   <h3>
-                       【{{item.data.type}}】
-                        <span>{{item.data.name}}</span>
-                   </h3>
-                   <h4 v-if="item.data.type === '现金券'">￥{{item.data.benefit/100}}</h4>
-                   <h4 v-else>{{item.data.benefit/100}}折</h4>
-                   <div class="operation">
-                       <span @click="jump('user.integral.detail',item.data.id,item.id,item.pv)">卡券详情</span>
-                       <span @click="exchange(item)">立即兑换</span>
-                   </div>
-                   <img :src="item.data.banner" alt="">
-                   <div class="needScore">
-                       <div class="left_text">{{item.pv}}</div>
-                       <div class="right_text">
-                           积分
-                       </div>
-                   </div>
-               </div>
-           </div>
+        <div id="integral">
+            <scroll-view
+                id="integral_list"
+                :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 180) + 'rpx'}"
+                :scroll-y="1"
+                @scrolltolower="scrolltolower"
+            >
+                <div class="integral_list_item" v-for="item in integralProducts" :key="item.data.id">
+                    <div class="left">
+                        <div class="empty"></div>
+                    </div>
+                    <div class="right">
+                        <h3>
+                            【{{item.data.type}}】
+                            <span>{{item.data.name}}</span>
+                        </h3>
+                        <h4 v-if="item.data.type === '现金券'">￥{{item.data.benefit}}</h4>
+                        <h4 v-else>{{item.data.benefit}}折</h4>
+                        <div class="operation">
+                            <span @click="jump('user.integral.detail',item.data.id,item.id,item.pv)">卡券详情</span>
+                            <span @click="exchange(item)">立即兑换</span>
+                        </div>
+                        <img :src="item.data.banner" alt="">
+                        <div class="needScore">
+                            <div class="left_text">{{item.pv}}</div>
+                            <div class="right_text">
+                                积分
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        </scroll-view>
-        <div id="my_integral">
-            <span>{{userInfo.availableScore}} 积分</span>
-            <h3 @click="jump('user.integral.records')">
-                积分记录
-                <i class="iconfont">&#xe6a3;</i>
-            </h3>
+            </scroll-view>
+            <div id="my_integral">
+                <span>{{userInfo.availableScore}} 积分</span>
+                <h3 @click="jump('user.integral.records')">
+                    积分记录
+                    <i class="iconfont">&#xe6a3;</i>
+                </h3>
+            </div>
         </div>
-	</div>
+    </div>
+
 </template>
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
@@ -75,6 +78,12 @@
 			},
 			userInfo () {
 				return this.model.account.userInfo;
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
@@ -120,12 +129,10 @@
     #integral{
         box-sizing: border-box;
         width: 100%;
-        height: 100%;
     }
 
     #integral #integral_list {
         width: 100%;
-        margin-bottom: 100rpx;
     }
 
     #integral #integral_list .integral_list_item{

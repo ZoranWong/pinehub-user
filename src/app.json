@@ -18,7 +18,6 @@
         "pages/user/integralDetail/main",
         "pages/user/integralRecords/main",
         "pages/user/feedBack/success/main",
-        "pages/user/share/main",
         "pages/user/coupon/main",
         "pages/user/payment/main",
         "pages/user/ticket/main",

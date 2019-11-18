@@ -1,12 +1,16 @@
 <template>
     <div id="merchant-store">
         <CustomHeader :title="title" :needReturn="false" />
-
+        <Auth v-if="getAuth" @close="closeAuth" />
         <div id="merchant-store_header">
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
                 <div id="name_id">
-                    <em>{{userInfo.nickname}}</em>
+                    <em v-if="registered">{{userInfo.nickname}}</em>
+                    <button v-else class="user-mobile-get-btn" @click="getUserAuth">登录/注册</button>
+                    <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn-getMobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
                 </div>
             </div>
             <div id="merchant-store_userinfo">
@@ -99,25 +103,27 @@
             </ul>
         </div>
         <div id="footNavHeight"></div>
-        <footer-nav :navName="navName"></footer-nav>
+        <footer-nav :navName="navName" @getUserAuth="getUserAuth">></footer-nav>
     </div>
 </template>
 
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
-
+    import Auth from '../../../components/Auth';
     import FooterNav from '@/components/FooterNav';
 
 	export default {
         components: {
 			CustomHeader,
-            'footer-nav': FooterNav
+            'footer-nav': FooterNav,
+			Auth
         },
         data () {
             return {
                 title: '个人中心',
                 navName: 'my',
-                phone: '15357903187'
+                phone: '15357903187',
+                getAuth: false
             };
         },
         computed: {
@@ -125,7 +131,7 @@
                 return this.$imageUrl('bear.gif');
             },
             userInfo () {
-                return this.model.account.userInfo;
+				return this.model.account.userInfo;
             },
             hasStore () {
                 return this.$store.getters['model.account/isShopManager'];
@@ -135,20 +141,65 @@
             },
             userToken () {
                 return this.$store.getters['account/token'];
-            }
+            },
+			isMember () {
+				return this.model.account.isMember;
+			},
+			registered () {
+				return this.model.account.registered;
+			}
         },
         methods: {
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			},
+			getUserAuth () {
+				this.getAuth = true
+			},
+			closeAuth () {
+				this.getAuth = false
+			},
+			getPhoneNumber (e) {
+				this.$command('SET_USER_MOBILE', e);
+			},
             jump (router, params) {
-				console.log('jump here');
-				this.$command('REDIRECT_TO', router, 'push', {
-                	query: {
-                		status: params
+				if (!this.registered) {
+					this.getUserAuth()
+                } else {
+					if (!this.isMember){
+						wx.showToast({
+							title: '请先进行手机号授权',
+							icon: 'none'
+						})
+					} else {
+						this.$command('REDIRECT_TO', router, 'push', {
+							query: {
+								status: params
+							}
+						});
                     }
-                });
+
+                }
             },
             toBalance () {
-                this.$command('REDIRECT_TO', 'user.balance', 'push');
-                this.$command('LOAD_CHARGE_CARDS', 0);
+				if (!this.registered) {
+					this.getUserAuth()
+                } else {
+					if (!this.isMember) {
+						wx.showToast({
+							title: '请先进行手机号授权',
+							icon: 'none'
+						})
+					} else {
+						this.$command('REDIRECT_TO', 'user.balance', 'push');
+						this.$command('LOAD_CHARGE_CARDS', 0);
+					}
+				}
             },
             connectKf () {
                 wx.makePhoneCall({
@@ -192,6 +243,20 @@
         /*overflow: hidden;*/
     }
 
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #fff;
+        color: #FFC000;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+    }
+
     #merchant-store_userinfo {
         width: 710rpx;
         height: 214rpx;
@@ -224,6 +289,7 @@
     #name_id {
         font-weight: bold;
         height: 90rpx;
+
     }
 
     #name_id em {
@@ -498,4 +564,34 @@
         color: #999999;
     }
 
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #fff;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        color: #ffcc00;
+        border-radius: 80rpx;
+    }
+
+    .user-mobile-get-btn-getMobile{
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #fff;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        color: #ffcc00;
+        border-radius: 80rpx;
+        position: absolute;
+        right: 113rpx;
+        bottom: 60rpx;
+    }
 </style>

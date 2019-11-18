@@ -17,7 +17,7 @@
                     </div>
                     <div class="content">
                         <div>{{ balance ? ("储值（余额" + balance + "元)"): "推荐储值并支付，立享更多优惠"}}</div>
-                        <div class="pay-amount" v-if="isBalancePay"> - ¥ {{amount ? amount : "0.00"}}</div>
+                        <div class="pay-amount" v-if="isBalancePay">  ¥ {{amount ? amount : "0.00"}}</div>
                     </div>
                     <div v-if="isBalancePay" class="select-icon">
                         <img src="../../../../static/images/icon/selected-01.png">

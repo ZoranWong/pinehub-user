@@ -1,18 +1,22 @@
 <!--suppress ALL -->
 <template>
-	<div class="ticket-page body">
-        <CustomHeader :title="title" :needReturn="true" />
-        <div class="empty_img" v-if="!coupons.length">
-            <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
-            <span>暂无优惠券哦～</span>
+    <div>
+
+        <div class="ticket-page body">
+            <CustomHeader :title="title" :needReturn="true" />
+            <div class="empty_img" v-if="!coupons.length">
+                <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
+                <span>暂无优惠券哦～</span>
+            </div>
+            <div class="ticket-list" v-else :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 130) + 'rpx'}">
+                <scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
+                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
+                    </coupon-ticket>
+                </scroll-view>
+            </div>
         </div>
-		<div class="ticket-list" v-else>
-			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
-				<coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
-				</coupon-ticket>
-			</scroll-view>
-		</div>
-	</div>
+    </div>
+
 </template>
 
 <script>
@@ -25,7 +29,9 @@
 				title: '我的卡券',
 				name: 'Coupon',
 				cur: 0,
-				coupons: []
+				coupons: [],
+				screenHeight: 0,
+				screenWidth: 0
 			}
 		},
 		props: {
@@ -59,6 +65,12 @@
 			},
 			isLoadedAll() {
 				return this.model.user.tickets.isLoadedAll
+			},
+            statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
@@ -73,11 +85,15 @@
 			},
 		},
 		mounted() {
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		}
 	}
 </script>
 
 <style scoped>
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -100,7 +116,6 @@
 		padding-top: 20rpx;
 		display: flex;
 		width: 100%;
-		height: 100%;
 		overflow: hidden;
 		box-sizing: border-box;
 		background: #f2f2f2;

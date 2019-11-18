@@ -17,6 +17,7 @@ export default class OrderStatusUpdateCommand extends Command {
     }
     // 去取货
     pickup (order) {
+        console.log(order, '+++++++++++++++++++++');
         this.$application.$command('REDIRECT_TO', 'user.pickup', 'replace', {
             query: {
                 order: JSON.stringify(order)
@@ -26,8 +27,15 @@ export default class OrderStatusUpdateCommand extends Command {
     
     // 申请售后
     async feedback (id) {
-        this.$application.$command('REDIRECT_TO', 'order.feedback', 'push');
+        this.$application.$command('REDIRECT_TO', 'order.feedback', 'push', {
+            query: {orderId: id}
+        });
     }
+    
+    // 继续充值
+    recharge = () => {
+        this.$application.$command('REDIRECT_TO', 'user.recharge', 'push');
+    };
     
     // 重新支付订单
     payOrder (order) {
@@ -69,11 +77,13 @@ export default class OrderStatusUpdateCommand extends Command {
                 }
             })
         } else if (type === 'feedback') {
-           self.feedback()
+           self.feedback(order.id)
         } else if (type === 'onemore') {
             self.onemore()
         } else if (type === 'pickup') {
             self.pickup(order)
+        } else if (type === 'recharge') {
+            self.recharge()
         }
     }
     static commandName () {

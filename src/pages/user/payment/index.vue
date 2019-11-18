@@ -7,7 +7,7 @@
             <div class="header">
                 <div class="left">
                     <div class="title">付款给商家</div>
-                    <div class="merchant-name">名称：{{ shopName }}</div>
+                    <div class="merchant-name">名称：{{ shopInfo.name }}</div>
                 </div>
                 <div class="right">
                     <div class="logo">
@@ -24,8 +24,7 @@
                 </div>
             </div>
             <div class="footer">
-                <button v-if="disPay" disabled="disabled" type="primary">立即支付</button>
-                <button v-else type="primary" @click="paymentPopup">立即支付</button>
+                <button type="primary" @click="paymentPopup">立即支付</button>
             </div>
         </div>
         <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @wxPay = "wxPay" @balancePay = "balancePay" @close = "closePopup" @charge = "charge"></payment-popup>
@@ -60,6 +59,10 @@
             },
             accessToken () {
                 return this.$store.getters['model.app/accessToken'];
+            },
+			shopInfo () {
+				console.log(this.model.user.order.payment.shopInfo, '+++++++++++++');
+				return this.model.user.order.payment.shopInfo
             }
         },
         methods: {
@@ -98,11 +101,15 @@
             }
         },
         mounted () {
-            this.storeId = this.$route.query['store_id'] ? this.$route.query['store_id'] : this.storeId;
-            this.init();
+			let pages =  getCurrentPages();
+			let options = pages[pages.length - 1]['options']
+			this.options = options;
+			this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+			this.$command('GET_SHOP_INFO', this.storeId)
+			this.init();
         },
         onLoad (options) {
-            if (options.q) {
+			if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
                 //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = scan_url.match(/\d+/)[0];

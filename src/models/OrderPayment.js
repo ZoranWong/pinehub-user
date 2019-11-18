@@ -16,6 +16,9 @@ export default class Orders extends Model {
             },
             couponIds () {
                 return this.state.ids
+            },
+            shopInfo () {
+                return this.state.shopInfo
             }
         });
     }
@@ -24,7 +27,8 @@ export default class Orders extends Model {
         return _.extend(super.data(), {
             orderInfo: {},
             createdOrderInfo: {},
-            ids: []
+            ids: [],
+            shopInfo: {}
         });
     }
 
@@ -58,12 +62,18 @@ export default class Orders extends Model {
         });
         
         this.addEventListener('deleteId', function () {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11');
             let ids = this.state.ids;
-            console.log(ids, 'before delete');
             ids.pop();
-            console.log(ids, '+++++++++delete ids++++++++++++');
             this.state.ids = ids;
+        });
+        
+        this.addEventListener('clearIds', function () {
+            this.state.ids = [];
+        });
+        
+        this.addEventListener('saveShopInfo', function ({info}) {
+            console.log(info, '+++++++++++++++++++++');
+            this.state.shopInfo = info;
         })
     }
 }

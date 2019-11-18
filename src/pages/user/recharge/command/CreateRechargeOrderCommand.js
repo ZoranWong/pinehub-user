@@ -8,7 +8,7 @@ export default class CreateRechargeOrderCommand extends Command {
         // this.model.user.recharge.dispatch('saveRechargeCards', {
         //     cards: response
         // });
-        // this.$command('PAYMENT_BY_ID')
+        this.$command('PAYMENT_BY_ID', response)
     }
     
     static commandName () {

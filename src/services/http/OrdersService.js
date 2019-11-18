@@ -35,6 +35,19 @@ export default class OrdersService extends ApiService {
         return response.data;
     }
     
+    // 穿件扫码付订单
+    async createCodeScanOrder (params) {
+        console.log('----- payment order ---------', params);
+        let response = await this.httpPost('api/mp/scan/orders', params);
+        return response.data;
+    }
+    
+    // 扫码付获取店铺信息
+    async getShopInfo (shop) {
+        let response = await this.httpGet(`api/mp/shop/${shop}/info`);
+        return response.data;
+    }
+    
     // 订单详情
     async orderDetail (id) {
         console.log(id, 'ioiooii');
@@ -188,6 +201,12 @@ export default class OrdersService extends ApiService {
     async orderFeedBack (content) {
         console.log(content, '*************8');
         let response = await this.httpPost('api/mp/feed/back', {content});
+        return response.data;
+    }
+    
+    // 售后服务
+    async orderServiceFeedBack (order, reason) {
+        let response = await this.httpPost(`api/mp/orders/${order}/after/service`, {reason});
         return response.data;
     }
 }

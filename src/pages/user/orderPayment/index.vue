@@ -57,7 +57,7 @@
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>剩余{{availableCoupons.length - couponIds.length}}张</em>
+                <em>{{availableCoupons.length - couponIds.length}}张可用</em>
                 <span class="use_coupon" v-if="availableCoupons.length > 0">
                     {{couponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>

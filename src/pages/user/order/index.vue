@@ -11,7 +11,7 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
-                    style="width: 1328rpx">
+                    :style="{width: '1328rpx' }">
                     <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
@@ -22,7 +22,7 @@
                 <img src="../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
             </div>
-			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
+			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next" :navHeight="navHeight" :statusBarHeight="statusBarHeight"></orders>
 		</div>
 		<div id="footNavHeight"></div>
 		<footer-nav :navName="navName"></footer-nav>

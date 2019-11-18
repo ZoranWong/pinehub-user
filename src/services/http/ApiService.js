@@ -58,10 +58,10 @@ export default class ApiService extends Service {
                 wx.showLoading({title: '加载中'});
             }
             let headerAuth = await this.auth(auth);
-            if (auth && !headerAuth) {
-                console.log(route);
-                throw '未登录或者登陆失效 ' + route;
-            }
+            // if (auth && !headerAuth) {
+            //     console.log(route);
+            //     throw '未登录或者登陆失效 ' + route;
+            // }
             let request = this.request(headerAuth);
             let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
             if (this.isLoadingPopupShow) {

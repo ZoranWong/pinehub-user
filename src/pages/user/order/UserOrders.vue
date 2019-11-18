@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: screenHeight + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
+    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: (screenHeight  - (statusBarHeight + navHeight) - 90) + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
         <div
             class="order_info"
             :id = "'order-item-' + order.id"
@@ -14,10 +14,13 @@
                     <em>订单编号:{{order.code}}</em>
                     <i class="iconfont detailIcon">&#xe6a3;</i>
                 </div>
-                <span class="order_info_status">{{order['stateDesc']}}</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['after_service_state'] === 0" >{{order['stateDesc']}}</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['after_service_state'] === 1">申请售后中</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN'  && order['after_service_state'] === 2">售后处理中</span>
             </div>
             <div v-if = "order['type'] === 'CODE_SCAN'" class="code_scan" @click="orderDetail(order.id)">
-                线下扫码支付
+                <div>线下扫码支付</div>
+                <div class="total">预付款:￥<span>{{order['settlement_total_fee']}}</span></div>
             </div>
             <ul class="order_info_glist" v-else @click="orderDetail(order.id)">
                 <li v-for="(item, idx) in order.orderItems" :key="idx">
@@ -35,21 +38,25 @@
                     共{{order.orderItems.length || 0}}件商品     预付款:￥<span>{{order['settlement_total_fee']}}</span>
                 </li>
             </ul>
-            <div class="order_info_btn" v-if="order.btnStatus === 0">
-                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+            <div class="order_info_btn" v-if="order.btnStatus === 0 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2 " >
+                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
+                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
                 <i @click="btnClick('pay', order)" class="yellow">去支付</i>
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 1">
+            <div class="order_info_btn" v-if="order.btnStatus === 1 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
                 <i @click="btnClick('cancel', order)" class="white">取消订单</i>
-                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
+                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
                 <i @click="btnClick('pickup', order)" class="yellow">去取货</i>
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 2">
-                <i @click="btnClick('feedback', order)" class="white">申请售后</i>
-                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+            <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
+                <i @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</i>
+                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
+                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 3">
-                <i @click="btnClick('onemore', order)" class="white">再来一单</i>
+            <div class="order_info_btn" v-if="order.btnStatus === 3 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
+                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
+                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
             </div>
         </div>
     </scroll-view>
@@ -80,6 +87,14 @@
                 type: Number
             },
             showTop: 0,
+            navHeight: {
+				default: null,
+				type: Number
+            },
+            statusBarHeight: {
+            	default: null,
+				type: Number
+            },
           rpxRate: 1
         },
         data () {
@@ -95,7 +110,7 @@
         },
         methods: {
             orderDetail (id) {
-                this.$command('REDIRECT_TO', 'user.order.detail', 'replace',{
+                this.$command('REDIRECT_TO', 'user.order.detail', 'push',{
                     query: {
                         id: id
                     }
@@ -246,10 +261,14 @@
         font-size: 32rpx;
         color: #111111;
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
         border-bottom: 1rpx solid #f2f2f2;
         border-top: 1rpx solid #f2f2f2;
+    }
+
+    .code_scan .total{
+        font-size: 24rpx ;
     }
 
     .order_info_glist li {

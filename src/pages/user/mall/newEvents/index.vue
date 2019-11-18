@@ -2,8 +2,22 @@
 <template>
 	<div class="body">
         <CustomHeader :title="title" :needReturn="true" />
+        <Auth v-if="getAuth" @close="closeAuth" />
+        <div v-if="showBindMobile" class="bgff user-mobile-box">
+            <div class="user_mobile_box_container">
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
+                </form>
 
-        <merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity"></merchandises>
+                <em class="mobile_box_tips">
+                    我们需要您的手机号来创建账号，累计积分
+                </em>
+            </div>
+
+        </div>
+        <merchandises :cartModel="cartModel" @show-cart="hdlShowCart" :next="next" :height="screenHeight" :list="merchandises" :addMerchandiseToCart="addCart" :reduceMerchandiseToCart="reduceCart" categoryId="activity" :statusBarHeight="statusBarHeight" :navHeight="navHeight"></merchandises>
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
 		<div id="shopping_cart_height" v-if="totalCount>0"></div>
@@ -19,7 +33,7 @@
 
 <script>
 	import CustomHeader from '../../../../components/CustomHeader';
-
+	import Auth from '../../../../components/Auth';
 	import Merchandises from './Merchandises';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import PopupLocation from './PopupLocation'
@@ -37,7 +51,9 @@
                 cartModel: 'model.newEvents.shoppingCarts',
 				selectSpec:false,
 				selectItem:{},
-				merchandisesList: []
+				merchandisesList: [],
+                getAuth: false,
+				showBindMobile: false
 			}
 		},
 		components: {
@@ -46,7 +62,8 @@
 			'pop-location': PopupLocation,
 			SelectSpecification,
 			ChooseSelfRaisingPoint,
-			ShoppingCart
+			ShoppingCart,
+			Auth
 		},
 		computed: {
 			merchandises() {
@@ -56,6 +73,12 @@
 			},
 			totalCount() {
 				return this.model.newEvents.shoppingCarts.totalCount;
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			},
 			currentPage() {
 				let page = this.model.newEvents.merchandises.currentPage;
@@ -69,10 +92,28 @@
             },
 			showPoints () {
 				return this.model.newEvents.shoppingCarts.showPoints
-			}
+			},
+			registered () {
+				return this.model.account.registered;
+			},
+			isMember () {
+				return this.model.account.isMember;
+			},
 		},
-		watch: {},
+		watch: {
+			isMember (value) {
+				if (value) {
+					this.showBindMobile = false
+				}
+			}
+        },
 		methods: {
+			getUserAuth () {
+				this.getAuth = true
+			},
+			closeAuth () {
+				this.getAuth = false
+			},
 			closePoints () {
 				this.showPoints = false
 			},
@@ -143,24 +184,32 @@
 				await this.$command('ACTIVITY_SHOPPINGCART_LOAD_MERCHANDISES', page);
 			},
 			addCart(item) {
-				if (item.specifications.length) {
-					this.selectItem = item;
-					this.selectSpec = true
-				} else {
-					let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
-					if (goods.length) {
-						_.map(goods, (product) => {
-							if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
-								this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
-                            } else {
-								this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-                            }
-						})
+				if (!this.registered) {
+					this.getUserAuth();
+                } else {
+					if (!this.isMember) {
+						this.showBindMobile = true
 					} else {
-						this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-					}
-				}
-
+						this.showBindMobile = false
+						if (item.specifications.length) {
+							this.selectItem = item;
+							this.selectSpec = true
+						} else {
+							let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
+							if (goods.length) {
+								_.map(goods, (product) => {
+									if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+										this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
+									} else {
+										this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+									}
+								})
+							} else {
+								this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+							}
+						}
+                    }
+                }
 			},
 			reduceCart(merchandiseId, id = null) {
 				let count = this.$store.getters['model.newEvents.shoppingCarts/quality'](merchandiseId) - 1;
@@ -211,5 +260,54 @@
         position: fixed;
         width: 100%;
         transition: 1s;
+    }
+
+    .user-mobile-box{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-box .user_mobile_box_container{
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #FECE00;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
+    }
+
+    .mobile_box_tips {
+        text-align: center;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
+        font-weight: 400;
     }
 </style>

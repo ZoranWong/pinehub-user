@@ -38,4 +38,9 @@ export default class AccountService extends ApiService {
         });
         return [response.data, response.meta['total_pages'], limit, response.meta['total']];
     }
+    
+    async superior (code) {
+        let response = await this.httpPut(`api/mp/user/superior/shop/${code}`);
+        return response.data;
+    }
 }

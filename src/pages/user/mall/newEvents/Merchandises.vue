@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-	<scroll-view class="merchandises-wrapper" :style="{ width: width, height: '100%' }" :scroll-y="true" @scrolltolower="scrolltolower">
+	<scroll-view class="merchandises-wrapper" :style="{ width: width, height: (screenHeight  - (statusBarHeight + navHeight) - 180) + 'rpx'}" :scroll-y="true" @scrolltolower="scrolltolower">
 		<div class="merchandises-item clearfix bgff" v-for="(item, index) in list" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'breakfast', good_id: item.id}})">
 			<div class="merchandises-item-top">
 				<img mode="widthFix" class="merchandises-pic" :src="item.thumbImage" :style="{ width: widthPic, height: heightPic }">
@@ -62,11 +62,21 @@
 			model: {
 				default: null,
 				type: String
-			}
+			},
+			statusBarHeight: {
+				default : null,
+                type: String
+            },
+            navHeight: {
+				default: null,
+                type: String
+            }
 		},
 		data() {
 			return {
-				pageCount: 15
+				pageCount: 15,
+				screenHeight: 0,
+				screenWitdh: 0
 			};
 		},
 		components: {
@@ -75,6 +85,14 @@
 		created() {
 			this.next();
 		},
+        mounted(){
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
+        },
+        computed : {
+
+        },
 		methods: {
 			cartShow: function() {
 				this.$emit('show-cart')

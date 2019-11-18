@@ -5,12 +5,12 @@
 
         <div id="integral_records">
             <span>近期积分记录</span>
-            <h3>
-                积分规则
-                <i class="iconfont">&#xe6a3;</i>
-            </h3>
+<!--            <h3>-->
+<!--                积分规则-->
+<!--                <i class="iconfont">&#xe6a3;</i>-->
+<!--            </h3>-->
         </div>
-        <ul id="records">
+        <ul id="records" :style="{height: screenHeight - (navHeight + statusBarHeight) - 150 + 'rpx'}">
             <li v-for="item in integralRecords" :key="item.id">
                 <div class="left">
                     <h4>{{item.desc}}</h4>
@@ -33,6 +33,8 @@
 		data() {
 			return {
 				title: '积分记录',
+				screenWitdh: 0,
+				screenHeight: 0
 			};
 		},
 		watch: {
@@ -41,7 +43,13 @@
 			integralRecords () {
 				console.log(this.model.integral.records.integralRecords, '90909900990');
 				return this.model.integral.records.integralRecords
-            }
+            },
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			},
 		},
 		methods: {
 		},
@@ -49,6 +57,9 @@
 
 		},
 		mounted() {
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
 			this.$command('LOAD_INTEGRAL_RECORDS')
 		}
 	}
@@ -97,6 +108,7 @@
     #integral_records #records {
         background: #fff;
         width: 100%;
+        overflow: auto;
     }
 
     #integral_records #records li{

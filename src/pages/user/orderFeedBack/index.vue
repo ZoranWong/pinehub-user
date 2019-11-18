@@ -23,7 +23,8 @@
                 title: '申请售后',
                 navName: 'feedOrderBack',
                 feedBackContent: null,
-                totalFont: 500
+                totalFont: 500,
+				orderId: null
             };
         },
         computed: {
@@ -33,13 +34,14 @@
         },
         methods: {
             submit () {
-                this.$command('SUBMIT_ORDER_FEED_BACK', this.feedBackContent)
+                this.$command('SUBMIT_ORDER_FEED_BACK', this.orderId, this.feedBackContent)
             }
         },
         mounted () {
             this.contact = null;
             this.feedBackContent = null;
-        },
+            this.orderId = this.$route.query.orderId;
+		},
         created () {
 
         }
