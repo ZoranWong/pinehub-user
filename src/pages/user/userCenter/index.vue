@@ -7,7 +7,7 @@
                 <img :src="userInfo.avatar"/>
                 <div id="name_id">
                     <em v-if="registered">{{userInfo.nickname}}</em>
-                    <button v-else class="user-mobile-get-btn" @click="getUserAuth">登录/注册</button>
+                    <button v-else class="user-mobile-get-btn" @click="getUserAuth">授权登录</button>
                     <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn-getMobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                         手机号授权
                     </button>

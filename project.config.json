@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 25,
+			"current": 21,
 			"list": [
 				{
 					"id": 0,
@@ -174,37 +174,9 @@
 				},
 				{
 					"id": -1,
-					"name": "地图",
-					"pathName": "pages/user/storesMap/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/goodDetail/main",
-					"pathName": "pages/user/goodDetail/main",
-					"query": "type=breakfast&good_id=63",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "订单详情",
-					"pathName": "pages/user/orderDetails/main",
-					"query": "id=92",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/userCenter/main",
-					"pathName": "pages/user/userCenter/main",
-					"query": "id=92",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "个人中心",
-					"pathName": "pages/user/userCenter/main",
-					"query": "id=92",
+					"name": "pages/user/index/main",
+					"pathName": "pages/user/payment/main",
+					"query": "shop_code=1",
 					"scene": null
 				}
 			]

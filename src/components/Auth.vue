@@ -8,7 +8,7 @@
             <div id="toast_content">
                 <div id="toast_content_info">
                     <div id="input_change_info">
-                        尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户！
+                        尊敬的快乐松用户，我们需要您授权登录！
                     </div>
                     <form report-submit="true" @submit="uploadFormId" class="form_btn">
                         <button form-type="submit" id="input_change_btn_primary" @click="closeAuth">
@@ -30,6 +30,12 @@
 <script>
 	export default {
 		name: 'Auth',
+        props: {
+		    slug: {
+		    	default: null,
+                type: String
+            }
+        },
         mounted () {
 		},
         methods: {
@@ -51,7 +57,10 @@
 				let result = await this.$command('USER_REGISTER', e);
 				console.log(result, '&&&&&&');
 				if (result) {
-					this.$emit('close')
+					this.$emit('close');
+					if (this.slug === 'payment') {
+						this.$emit('pay')
+                    }
                 }
 			}
         }

@@ -12,7 +12,7 @@
         <div v-if="!registered" class="bgff user-mobile-box">
             <form report-submit="true" @submit="uploadFormId">
                 <button form-type="submit" class="user-mobile-get-btn" @click="this.getUserAuth">
-                    登录/注册
+                    授权登录
                 </button>
             </form>
         </div>

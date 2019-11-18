@@ -2,7 +2,21 @@
 <template>
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
+        <Auth v-if="getAuth" @close="closeAuth" @pay="pay" :slug="slug" />
+<!--        <div v-if="showBindMobile" class="bgff user-mobile-box">-->
+<!--            <div class="user_mobile_box_container">-->
+<!--                <form report-submit="true" @submit="uploadFormId">-->
+<!--                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">-->
+<!--                        手机号授权-->
+<!--                    </button>-->
+<!--                </form>-->
 
+<!--                <em class="mobile_box_tips">-->
+<!--                    我们需要您的手机号来创建账号，累计积分-->
+<!--                </em>-->
+<!--            </div>-->
+
+<!--        </div>-->
         <div class="payment-box">
             <div class="header">
                 <div class="left">
@@ -33,7 +47,7 @@
 <script>
     import PaymentPopup from './PaymentPopup';
 	import CustomHeader from '../../../components/CustomHeader';
-
+    import Auth from '../../../components/Auth';
 	export default {
         data: {
             shopName: '福年来早餐车',
@@ -43,11 +57,15 @@
             paymentAmount: null,
             address: null,
             paymentPopupShow: false,
-            title: '快乐松扫码付'
+            title: '快乐松扫码付',
+			getAuth: false,
+			showBindMobile: false,
+			slug: 'payment'
         },
         components: {
             'payment-popup': PaymentPopup,
-			CustomHeader
+			CustomHeader,
+			Auth
         },
         computed: {
             logo () {
@@ -60,12 +78,36 @@
             accessToken () {
                 return this.$store.getters['model.app/accessToken'];
             },
+			// isMember () {
+			// 	return this.model.account.isMember;
+			// },
 			shopInfo () {
 				console.log(this.model.user.order.payment.shopInfo, '+++++++++++++');
 				return this.model.user.order.payment.shopInfo
-            }
+            },
+			registered () {
+				return this.model.account.registered;
+			}
+
         },
         methods: {
+			getPhoneNumber (e) {
+				this.$command('SET_USER_MOBILE', e);
+			},
+			async uploadFormId (e) {
+				let formId = e.mp.detail.formId;
+				if (formId !== "the formId is a mock one"){
+					await this.http.account.saveFormId(formId);
+				} else {
+					console.log('form id 不合法')
+				}
+			},
+			getUserAuth () {
+				this.getAuth = true
+			},
+			closeAuth () {
+				this.getAuth = false
+			},
             async init () {
                 this.paymentAmount = null;
                 this.paymentPopupShow = false;
@@ -78,11 +120,24 @@
                 this.address = store['address'];
             },
             async paymentPopup () {
-                if (this.paymentAmount) {
-                    this.paymentPopupShow = true;
-                    this.disPay = true;
-                    await this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
+				// if (!this.isMember) {
+				// 	this.showBindMobile = true
+				// } else {
+				// 	this.showBindMobile = false
+
+                // }
+                if (!this.registered) {
+                	this.getUserAuth()
+                } else {
+					this.pay()
                 }
+            },
+            async pay () {
+				if (this.paymentAmount) {
+					this.paymentPopupShow = true;
+					this.disPay = true;
+					await this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
+				}
             },
             closePopup () {
                 this.paymentPopupShow = false;
@@ -223,5 +278,54 @@
         width: 626rpx;
         line-height: 88rpx;
         background-color: #FFD000;
+    }
+
+    .user-mobile-box{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-box .user_mobile_box_container{
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #FECE00;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
+    }
+
+    .mobile_box_tips {
+        text-align: center;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
+        font-weight: 400;
     }
 </style>
