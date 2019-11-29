@@ -80,7 +80,7 @@
                 type: Number
             },
             showTop: 0,
-          rpxRate: 1
+         rpxRate: 1
         },
         data () {
             return {

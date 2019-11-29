@@ -25,6 +25,7 @@
         "mpvue": "^1.4.0",
         "mpvue-echarts": "^0.2.7",
         "mpvue-router-patch": "^0.2.1",
+        "mpvue-wxparse": "^0.6.5",
         "object-hash": "^1.3.0",
         "popover": "^2.4.1",
         "punycode": "^2.1.1",

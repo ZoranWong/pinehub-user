@@ -132,7 +132,7 @@
     }
 
     #integral #integral_list .integral_list_item .left{
-        width: 30 rpx;
+        width: 30rpx;
         height: 100%;
         background: #ffcc00;
         display: flex;

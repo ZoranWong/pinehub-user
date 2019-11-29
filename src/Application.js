@@ -31,6 +31,7 @@ export default class Application {
         this.currentRoute = 'index';
         this.stores = {};
         this.registeredGlobal = true;
+        this.config = [];
     }
 
     setComponent (component) {
@@ -38,9 +39,7 @@ export default class Application {
         return this;
     }
 
-    needMock () {
-        return Application.instanceContainer.config.app.mock;
-    }
+    needMock = () => Application.instanceContainer.config.app.mock;
 
     // 插件
     use ($class) {
@@ -53,9 +52,7 @@ export default class Application {
     }
 
     // 注册命令
-    registerCommand (name, command) {
-        return (Application.commandContainer[name] = command);
-    }
+    registerCommand = (name, command) => (Application.commandContainer[name] = command);
 
     get store () {
         return this.stores[this.currentPage['routeAlias']];
@@ -75,13 +72,15 @@ export default class Application {
 
         let app = this;
         for (let key in computed) {
-            Object.defineProperty(this[name], key, {
-                readonly: true,
-                enumerable: true,
-                get () {
-                    return app['stores'][app.currentPage ? app.currentPage['routeAlias'] : app.route].getters[name + '/' + key];
-                }
-            })
+            if (computed.hasOwnProperty(key)) {
+                Object.defineProperty(this[name], key, {
+                    readonly: true,
+                    enumerable: true,
+                    get () {
+                        return app['stores'][app.currentPage ? app.currentPage['routeAlias'] : app.route].getters[name + '/' + key];
+                    }
+                })
+            }
         }
     }
 
@@ -182,9 +181,9 @@ export default class Application {
         return instance;
     }
 
-    resetForm (form) {
+    resetForm = form => {
         form.resetFields();
-    }
+    };
 
     // vue全局事件绑定
     $on (event, callback) {
@@ -241,7 +240,7 @@ export default class Application {
                         app.currentRoute = this.routeAlias;
                     }
                     componentCreated && componentCreated.call(this);
-                }
+                };
                 let applicationMounted = function () {
                     if (this.routeAlias) {
                         app.currentPage = this;
@@ -254,8 +253,10 @@ export default class Application {
                 };
                 this.mountComponent.mounted = function () {
                     applicationMounted.call(this);
+                };
+                if (_.isFunction(created)) {
+                    created.call(this, this);
                 }
-                _.isFunction(created) ? created.call(this, this) : null;
                 this.currentPage.$mount();
                 this.currentPage['wxRoute'] = wxRoute;
                 this.currentPage['routeAlias'] = this.route;
@@ -281,7 +282,5 @@ export default class Application {
         this.currentPage = Application.pageContainer[route];
     }
 
-    $models (instance) {
-        return instance;
-    }
+    $models = instance => instance;
 }
