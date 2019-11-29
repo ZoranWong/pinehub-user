@@ -1,10 +1,11 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="checkout_header">
             <div class="left">
-                <h4>订单金额：￥{{order['settlement_total_fee']}}</h4>
+                <h4>订单金额：{{order['settlement_total_fee_format']}}</h4>
                 <span>请您在{{minute}}:{{second}}内完成支付</span>
             </div>
             <img src="../../../../static/images/background/1.png" alt="">
@@ -38,11 +39,12 @@
 <script>
 
 
-    import MpTitle from '@/components/MpTitle';
-    import _ from 'underscore';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import _ from 'underscore';
     export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         // 数据
         data () {
@@ -119,7 +121,8 @@
 			this.type = this.$route.query.type
 			if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
-            }
+				console.log(this.order, '****^^^^****');
+			}
 			this.countDownServer(new Date(this.order.createdAt || this.order['created_at']))
 		}
 	}

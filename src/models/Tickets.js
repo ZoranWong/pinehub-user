@@ -44,7 +44,17 @@ export default class Tickets extends Model {
         });
         
         this.addEventListener('saveAvailableCoupons', function ({coupons}) {
-            console.log(coupons, '::::::::::::::::::::::');
+            _.map(coupons, (coupon)=>{
+                coupon['title'] = coupon['coupon_name'];
+                if (coupon['coupon_type'] === 'CASH') {
+                    coupon.typeDesc = '现金券'
+                } else {
+                    coupon.typeDesc = '折扣券'
+                }
+                coupon.floor = coupon['floor'] > 0 ? `满${coupon['floor']}元可用` : '无门槛';
+                coupon.coupon_image = coupon['banner'];
+                coupon.validTime = coupon['valid_term_desc']
+            });
             this.state.availableCoupons = coupons
         })
     }

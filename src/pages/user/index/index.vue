@@ -1,36 +1,22 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <mp-title :title="title"></mp-title>
-        <div v-show="!registered" id="toast_area">
-            <div id="toast">
-                <div id="toast_title">
-                    用户授权登陆
-                </div>
-                <div id="toast_content">
-                    <div id="toast_content_info">
-                        <div id="input_change_info">
-                            尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户，请允许授权我们获取您的信息！
-                        </div>
-                        <form report-submit="true" @submit="uploadFormId">
-                            <button form-type="submit" id="input_change_btn" open-type="getUserInfo" @getuserinfo="getUserInfo">
-                                允许授权
-                            </button>
-                        </form>
-                        <div id="input_change_tips">
-                            注：小程序获取用户信息后才可正常使用
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <CustomHeader :title="title" :needReturn="false" />
+        <Auth v-if="getAuth" @close="closeAuth" />
         <div id="index_header">
             <div id="index_logo"></div>
-            <div id="bear">
+            <div id="bear" :style="{'top': (statusBarHeight + navHeight + 61) + 'px'}">
                 <img :src="headerAnimate"/>
             </div>
         </div>
-        <div v-if="!isMember" class="bgff user-mobile-box">
+        <div v-if="!registered" class="bgff user-mobile-box">
+            <form report-submit="true" @submit="uploadFormId">
+                <button form-type="submit" class="user-mobile-get-btn" @click="this.getUserAuth">
+                    授权登录
+                </button>
+            </form>
+        </div>
+        <div v-if="!isMember && registered" class="bgff user-mobile-box">
             <form report-submit="true" @submit="uploadFormId">
                 <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                     手机号授权
@@ -41,7 +27,7 @@
                 我们需要您的手机号来创建账号，累计积分
             </em>
         </div>
-        <div v-else class="bgff user-score-box">
+        <div v-if="registered && isMember" class="bgff user-score-box">
             <div class="score">{{availableScore || 0 }}<i>积分</i></div>
             <em class="tips">
                 商城购买即可获得积分哦~
@@ -52,35 +38,38 @@
                 <dd>
                     <img src="./img/car.jpg" />
                 </dd>
-                <dt>早餐预定</dt>
+                <dt>新品预定</dt>
             </dl>
-            <dl  @click="isMember ? redirectTo('user.integral') : notMember()" class="booking">
+            <dl  @click="redirectTo('user.integral')" class="booking">
                 <dd>
                     <img src="./img/mall.jpg" />
                 </dd>
                 <dt>积分商城</dt>
             </dl>
         </div>
-        <footer-nav :navName="navName"></footer-nav>
+        <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
 </template>
 
 <script>
     import FooterNav from '@/components/FooterNav';
-    import MpTitle from '@/components/MpTitle';
-
+    import CustomHeader from '../../../components/CustomHeader';
+    import Auth from '../../../components/Auth';
     export default {
         components: {
             'footer-nav': FooterNav,
-            'mp-title': MpTitle
+			CustomHeader,
+			Auth
         },
         data () {
             return {
                 navName: 'index',
                 inited: false,
                 ticketShow: true,
-                title: '首页'
+                title: '首页',
+				options: [],
+				getAuth: false
             };
         },
         computed: {
@@ -118,29 +107,47 @@
             },
             accessTokenTTL () {
                 return this.model.app.overDate;
-            }
+            },
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			}
         },
         watch: {
             accessToken (value) {
                 if (value) {
-                    this.$command('SIGN_IN', this.accessToken);
+					this.$command('SIGN_IN', this.accessToken);
                 }
             },
             hasToken (value) {
 				if (this.hasToken) {
 					this.$command('LOAD_ACCOUNT', false);
                 }
-            }
+            },
+			registered (value) {
+				if (this.storeId && this.registered ) {
+					console.log('进来了吗');
+					this.bindConsumer()
+				}
+			}
         },
         mounted () {
-            this.initAccount();
+
 		},
         onShow () {
+			this.initAccount();
             if (this.$route.query['needRefresh']) {
                 this.initAccount();
             }
         },
-        onLoad () {
+        onLoad (options) {
+			if (options.q) {
+				let scan_url = decodeURIComponent(options.q);
+				//提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+				this.storeId = scan_url.match(/\d+/)[0];
+			}
 			wx.onAppShow(() => {
                 this.ticketShow = true;
             });
@@ -157,12 +164,15 @@
             follow () {
 
             },
-            notMember () {
-                wx.showToast({
-                    title: '请绑定手机号码',
-                    icon: 'none'
-                });
+			getUserAuth () {
+			    this.getAuth = true
             },
+			closeAuth () {
+			    this.getAuth = false
+            },
+			bindConsumer () {
+				this.$command('BIND_CONSUMER', this.storeId);
+			},
             neighborShop () {
                 wx.showToast({
                     title: '敬请期待',
@@ -170,7 +180,16 @@
                 });
             },
             redirectTo (router, options = {}) {
-                this.$command('REDIRECT_TO', router, 'push', options);
+				if (router === 'user.integral' && !this.registered) {
+                    this.getUserAuth()
+                } else if (router === 'user.integral' && !this.isMember){
+					wx.showToast({
+						title: '请先进行手机号授权',
+						icon: 'none'
+					})
+				} else {
+					this.$command('REDIRECT_TO', router, 'push', options);
+                }
             },
             bookingMall () {
                 wx.navigateToMiniProgram({
@@ -202,9 +221,9 @@
                 await this.$store.dispatch('model.account/resetFromCache', {
                     initAccount: async () => {
                         if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
-                            await this.$command('APP_ACCESS');
+							await this.$command('APP_ACCESS');
                         } else {
-                            this.$command('SIGN_IN', this.accessToken);
+							this.$command('SIGN_IN', this.accessToken);
                         }
                     }
                 });

@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="charge-cards">
             <div class="title">
                 选择充值金额
@@ -30,7 +31,8 @@
     </div>
 </template>
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 
 	export default {
 		name: 'Balance',
@@ -42,7 +44,7 @@
 			};
 		},
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		computed: {
 			cards () {

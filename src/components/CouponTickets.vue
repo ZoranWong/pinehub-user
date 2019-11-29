@@ -1,23 +1,26 @@
 <!--suppress ALL -->
 <template>
-	<div class="ticket-page body">
-		<mp-title :title="title"></mp-title>
-        <div class="empty_img" v-if="!tickets.length">
-            <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
-            <span>暂无优惠券哦～</span>
+    <div>
+
+        <div class="ticket-page body">
+            <CustomHeader :title="title" :needReturn="true" />
+            <div class="empty_img" v-if="!coupons.length">
+                <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
+                <span>暂无优惠券哦～</span>
+            </div>
+            <div class="ticket-list" v-else :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 130) + 'rpx'}">
+                <scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
+                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
+                    </coupon-ticket>
+                </scroll-view>
+            </div>
         </div>
-		<div class="ticket-list" v-else>
-			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
-			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
-				<coupon-ticket v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket">
-				</coupon-ticket>
-			</scroll-view>
-		</div>
-	</div>
+    </div>
+
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '@/components/CustomHeader';
 	import Ticket from '@/components/Ticket';
 	import _ from 'underscore';
 	export default {
@@ -25,7 +28,10 @@
 			return {
 				title: '我的卡券',
 				name: 'Coupon',
-				cur: 0
+				cur: 0,
+				coupons: [],
+				screenHeight: 0,
+				screenWidth: 0
 			}
 		},
 		props: {
@@ -39,21 +45,32 @@
 			}
 		},
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'coupon-ticket': Ticket
 		},
 		computed: {
 			tickets() {
+				this.coupons = this.model.user.tickets.ticketsList
 				return this.model.user.tickets.ticketsList;
 			},
+			availableCoupons () {
+				this.coupons = this.model.user.tickets.availableCoupons
+				return this.model.user.tickets.availableCoupons
+			},
 			totalNum() {
-				return this.$store.getters[`${this.model}/totalNum`];
+				return this.model.user.tickets.totalNum
 			},
 			nextPage() {
-				return this.$store.getters[`${this.model}/currentPage`] + 1;
+				return this.model.user.tickets.currentPage + 1;
 			},
 			isLoadedAll() {
-				return this.$store.getters[`${this.model}/isLoadedAll`];
+				return this.model.user.tickets.isLoadedAll
+			},
+            statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
@@ -61,17 +78,22 @@
 				this.$emit('useTicket', ticket);
 			},
 			scrolltolower() {
+				if (this.$route.query.needReturn) return;
 				if(!this.isLoadedAll) {
 					this.loadTickets(this.nextPage, this.statusType);
 				}
 			},
 		},
 		mounted() {
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		}
 	}
 </script>
 
 <style scoped>
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
@@ -94,7 +116,6 @@
 		padding-top: 20rpx;
 		display: flex;
 		width: 100%;
-		height: 100%;
 		overflow: hidden;
 		box-sizing: border-box;
 		background: #f2f2f2;

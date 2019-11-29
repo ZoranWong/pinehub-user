@@ -58,10 +58,10 @@ export default class ApiService extends Service {
                 wx.showLoading({title: '加载中'});
             }
             let headerAuth = await this.auth(auth);
-            if (auth && !headerAuth) {
-                console.log(route);
-                throw '未登录或者登陆失效 ' + route;
-            }
+            // if (auth && !headerAuth) {
+            //     console.log(route);
+            //     throw '未登录或者登陆失效 ' + route;
+            // }
             let request = this.request(headerAuth);
             let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
             if (this.isLoadingPopupShow) {
@@ -73,12 +73,18 @@ export default class ApiService extends Service {
             wx.hideLoading();
             console.log('get method request error ', e);
             let message = e.response && e.response.data && e.response.data.message ? e.response.data.message : e;
+            if (message === '422 Unprocessable Entity') {
+                throw e;
+            }
+            console.log('422');
             if (message !== '没有常用自提点') {
+                console.log('没有常用');
                 if (this.errorShow) {
                     await this.service('popup').toast(message, 'none', 2000);
                 }
             }
             this.errorShow = true;
+            console.log(' throw ');
             throw e;
         }
     }

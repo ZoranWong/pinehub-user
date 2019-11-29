@@ -70,7 +70,10 @@
                 } else {
 					return this.model.newEvents.shoppingCarts.totalPrice
                 }
-            }
+            },
+			registered () {
+				return this.model.account.registered;
+			},
         },
 		created () {
 
@@ -84,6 +87,7 @@
                         type: this.type
 					})
                 } else {
+					console.log('这是早餐车的购物车');
 					this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
 						boolean: true,
 						type: this.type
@@ -114,7 +118,9 @@
             }
         },
         mounted () {
-			this.$command('LOAD_CART_COMMAND', this.type)
+			if (this.registered) {
+				this.$command('LOAD_CART_COMMAND', this.type)
+            }
 		}
 	}
 </script>

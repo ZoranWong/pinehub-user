@@ -19,16 +19,22 @@
 		components: {
 			'coupon-tickets': CouponTickets
 		},
+        computed : {
+        },
 		methods: {
-			loadTickets (page, status) {
+			loadTickets (page) {
 				this.$command('LOAD_USER_TICKETS', page);
-			}
+			},
 		},
         mounted () {
-			this.$command('LOAD_USER_TICKETS', 1);
-			let needReturn = this.$route.query.needReturn;
-			if (needReturn) {
 
+			let needReturn = this.$route.query.needReturn;
+
+			if (needReturn) {
+				console.log('我是选择可用优惠券的');
+			} else {
+				console.log('我是从个人中心进来的');
+				this.$command('LOAD_USER_TICKETS', 1);
             }
 		}
 	}

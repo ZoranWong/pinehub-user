@@ -13,20 +13,25 @@ export default class BarHeight extends Model {
         return _.extend(super.computed(), {
             statusBarHeight () {
                 return this.state.statusBarHeight
+            },
+            navHeight () {
+                return this.state.navHeight
             }
         });
     }
 
     data () {
         return _.extend(super.data(), {
-            statusBarHeight: ''
+            statusBarHeight: '',
+            navHeight: 0
         });
     }
 
     listeners () {
         super.listeners();
-        this.addEventListener('getBarHeight', function ({height}) {
+        this.addEventListener('getBarHeight', function ({height,isIOS}) {
             this.state.statusBarHeight = height;
+            this.state.navHeight = isIOS ? 44 : 48;
         })
     }
 }

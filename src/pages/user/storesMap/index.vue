@@ -1,81 +1,94 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <mp-title :title="title"></mp-title>
-        <div id="location_search">
+
+        <div id="location_search" :style="{'top': navHeight + statusBarHeight + 'px'}">
             <input id="location_search_input" v-model.trim="addressName" placeholder="请输入地点名称"/>
             <i class="iconfont search">&#xe65c;</i>
         </div>
         <div id="location_map">
             <map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
                  @markertap="bindmarkertap" show-location>
+                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >
+                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >
+                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >
+                        <cover-view  id="back_icon" @click="back">
+                            <i class="iconfont">&#xe679;</i>
+                        </cover-view >
+                        <cover-view  id="nav_title">
+                            {{title}}
+                        </cover-view >
+                    </cover-view >
+                </cover-view>
                 <cover-view id="locatePosition" @click="nowLocation">
                     <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
                 </cover-view>
             </map>
-        </div>
-        <div id="location_points">
-            <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">附近自提点</span>
-                <span @click="changeBackground('right')">常用自提点</span>
+            <div id="location_points">
+                <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
+                    <span @click="changeBackground('left')">附近自提点</span>
+                    <span @click="changeBackground('right')">常用自提点</span>
+                </div>
+                <ul id="location_points_list" v-if="position === 'right'">
+                    <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
+                        <div class="left">
+                            <div class="top">
+                                <h4>{{item.name}}</h4>
+                                <span>距您当前位置{{item.distance}}米</span>
+                            </div>
+                            <div class="bottom">
+                                {{item.address}}
+                            </div>
+                        </div>
+                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                    </li>
+                    <div class="empty_img" v-if="!commonPoints.length">
+                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                        <span>暂无自提点哦～</span>
+                    </div>
+                </ul>
+
+                <ul id="location_points_list" v-if="position === 'left'">
+                    <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
+                        <div class="left">
+                            <div class="top">
+                                <h4>{{item.name}}</h4>
+                                <span>距您当前位置{{item.distance}}米</span>
+                            </div>
+                            <div class="bottom">
+                                {{item.address}}
+                            </div>
+                        </div>
+                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                    </li>
+                    <div class="empty_img" v-if="!nearPoints.length">
+                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                        <span>暂无自提点哦～</span>
+                    </div>
+                </ul>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
+                </form>
+
             </div>
-            <ul id="location_points_list" v-if="position === 'right'">
-                <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
-                    <div class="left">
-                        <div class="top">
-                            <h4>{{item.name}}</h4>
-                            <span>距您当前位置{{item.distance}}米</span>
-                        </div>
-                        <div class="bottom">
-                            {{item.address}}
-                        </div>
-                    </div>
-                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
-                </li>
-                <div class="empty_img" v-if="!commonPoints.length">
-                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                    <span>暂无自提点哦～</span>
-                </div>
-            </ul>
-
-            <ul id="location_points_list" v-if="position === 'left'">
-                <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
-                    <div class="left">
-                        <div class="top">
-                            <h4>{{item.name}}</h4>
-                            <span>距您当前位置{{item.distance}}米</span>
-                        </div>
-                        <div class="bottom">
-                            {{item.address}}
-                        </div>
-                    </div>
-                    <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                    <i class="iconfont right disabled" v-else>&#xe6d7;</i>
-                </li>
-                <div class="empty_img" v-if="!nearPoints.length">
-                    <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                    <span>暂无自提点哦～</span>
-                </div>
-            </ul>
-            <form report-submit="true" @submit="uploadFormId">
-                <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
-            </form>
-
         </div>
+
     </div>
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
-    import _ from 'underscore';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import _ from 'underscore';
 	var amapFile = require('amap-wx');
 	var markersData = [];
 	let bg1 = require('./imgs/longBanner.jpg');
 	let bg2 = require('./imgs/longBanner1.jpg');
     export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         // 数据
         data () {
@@ -94,7 +107,8 @@
 				textData: {},
 				nearPoints: [],
 				commonPoints:[],
-                checkId: ''
+                checkId: '',
+				barHeight: 0
             }
         },
         watch: {
@@ -120,10 +134,19 @@
 				this.points = points;
 				this.nearPoints = points;
 				return points
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
         },
         // 普通方法
         methods: {
+			back(){
+				this.$command('REDIRECT_TO','','back')
+			},
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -251,6 +274,7 @@
         },
         mounted () {
             this.flashLocation();
+			this.$command('GET_BAR_HEIGHT')
         }
 	}
 </script>
@@ -388,7 +412,7 @@
         background-size: 100%;
         position: absolute;
         left: 682rpx;
-        top: 160rpx;
+        top: 260rpx;
         z-index: 99999999;
     }
 

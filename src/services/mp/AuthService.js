@@ -29,12 +29,12 @@ export default class AuthService extends Service {
             if (!token || ((ttlTime - 5000 <= nowTime) && (this.except.indexOf(route) === -1))) {
                 // 获取appId
                 console.log('------------ 000000 -----------');
-                this.service('mp.router').push('index', {query: {needRefresh: true}});
+                // this.service('mp.router').push('index', {query: {needRefresh: true}});
             } else {
                 return token['value'];
             }
         } catch (e) {
-            this.service('mp.router').push('index', {query: {needRefresh: true}});
+            // this.service('mp.router').push('index', {query: {needRefresh: true}});
         }
     }
 

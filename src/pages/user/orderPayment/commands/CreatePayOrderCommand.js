@@ -11,6 +11,8 @@ export default class CreatePayOrderCommand extends Command {
         this.model.user.order.payment.dispatch('saveCreatedOrderInfo', {
             orderInfo: response
         });
+        this.model.user.order.payment.dispatch('clearIds');
+        
     
     
         this.$command('GET_PAYMENT_PARAMS', response.id)

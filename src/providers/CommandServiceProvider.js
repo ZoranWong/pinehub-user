@@ -30,6 +30,10 @@ import CreateOrderByMerchandiseIdCommand from '@/commands/CreateOrderByMerchandi
 import LoadCommonlyUsedPoints from '../commands/LoadCommonlyUsedPoints';
 import LoadNearbyPoints from '../commands/LoadNearbyPoints';
 
+// 绑定用户和店铺
+import BindConsumerCommand from '../commands/BindConsumerCommand';
+
+
 export default class CommandServiceProvider extends ServiceProvider {
     constructor (app) {
         super(app);
@@ -52,7 +56,8 @@ export default class CommandServiceProvider extends ServiceProvider {
             LoadCommonlyUsedPoints,
             LoadNearbyPoints,
             GetBarHeightCommand,
-            CleanCarts
+            CleanCarts,
+            BindConsumerCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

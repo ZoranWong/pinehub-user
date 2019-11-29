@@ -229,6 +229,7 @@ export default class ShoppingCarts extends Model {
         });
     
         this.addEventListener('selectPoints', function ({boolean, type}) {
+            console.log('早餐车选择自提点');
             this.state.showPoints = boolean;
             this.state.breakfastType = type
         });

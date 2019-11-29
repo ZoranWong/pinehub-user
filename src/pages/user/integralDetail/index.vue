@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
 	<div id="integral_detail" v-if="detailData">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="integral_item" >
             <div class="left">
                 <div class="empty"></div>
@@ -12,7 +13,7 @@
                     <span>{{detailData.name}}</span>
                 </h3>
                 <h4>￥{{detailData.benefit}}</h4>
-                <img src="../../../../static/images/position.png" alt="">
+                <img :src="detailData['coupon_image']" alt="">
                 <div class="needScore">
                     <div class="left_text">{{pv}}</div>
                     <div class="right_text">
@@ -41,10 +42,11 @@
 
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {
@@ -56,13 +58,12 @@
 		},
 		computed: {
 			detailData () {
-				console.log(this.model.integral.detail.detailData, 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDetail');
 				return this.model.integral.detail.detailData
             }
 		},
 		methods: {
 			exchange () {
-				this.$command('EXCHANGE_PRODUCTS', 71)
+				this.$command('EXCHANGE_PRODUCTS', this.couponId, this.pv)
             },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
@@ -79,6 +80,7 @@
 		mounted() {
 			let id = this.$route.query['id'];
 			this.pv = this.$route.query['pv'];
+			this.couponId = this.$route.query['couponId'];
 			this.$command('LOAD_INTEGRAL_DETAIL', id)
 		}
 	}
@@ -102,7 +104,7 @@
     }
 
     .integral_item .left {
-        width: 30 rpx;
+        width: 30rpx;
         height: 100%;
         background: #ffcc00;
         display: flex;

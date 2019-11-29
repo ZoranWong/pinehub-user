@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div id="feedBack">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="feedBackContent">
             <textarea placeholder-class="placeholder-class" v-model="feedBackContent" placeholder="输入您的售后问题，我们会努力为您解决的哦~" :maxlength="totalFont" />
             <em>{{nowFontNum}}/{{totalFont}}</em>
@@ -11,17 +12,19 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
-    export default {
+	import CustomHeader from '../../../components/CustomHeader';
+
+	export default {
         components: {
-            'mp-title': MpTitle
+			CustomHeader
         },
         data () {
             return {
                 title: '申请售后',
                 navName: 'feedOrderBack',
                 feedBackContent: null,
-                totalFont: 500
+                totalFont: 500,
+				orderId: null
             };
         },
         computed: {
@@ -31,13 +34,14 @@
         },
         methods: {
             submit () {
-                this.$command('SUBMIT_ORDER_FEED_BACK', this.feedBackContent)
+                this.$command('SUBMIT_ORDER_FEED_BACK', this.orderId, this.feedBackContent)
             }
         },
         mounted () {
             this.contact = null;
             this.feedBackContent = null;
-        },
+            this.orderId = this.$route.query.orderId;
+		},
         created () {
 
         }

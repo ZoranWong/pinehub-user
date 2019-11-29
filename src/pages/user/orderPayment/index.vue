@@ -1,7 +1,8 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-		<mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div id="pay_shop_info">
             <i class="iconfont location">&#xe80b;</i>
             <div class="pay_shop_info">
@@ -56,9 +57,9 @@
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>剩余{{availableCoupons.length}}张</em>
+                <em>{{availableCoupons.length - couponIds.length}}张可用</em>
                 <span class="use_coupon" v-if="availableCoupons.length > 0">
-                    0张已使用
+                    {{couponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
             </li>
@@ -76,12 +77,13 @@
 	</div>
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import {formatMoney} from '../../../utils';
 
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {
@@ -111,6 +113,9 @@
             },
 			availableCoupons () {
 				return this.model.user.tickets.availableCoupons
+            },
+            couponIds () {
+				return this.model.user.order.payment.couponIds
             }
 		},
 		methods: {
@@ -122,12 +127,15 @@
                 });
             },
 			createOrder(){
+				console.log(this.couponIds, 'before create order');
 				this.$command('CREATE_PAY_ORDER',{
 					shop_id: this.selectedPoint.id,
-					coupon_records: [],
+					coupon_records: this.couponIds,
                 },this.type);
 				this.$command('REDIRECT_TO', 'selectPay', 'replace',{
-					query: {type: this.type}
+					query: {
+						type: this.type
+					}
                 })
             },
             getDate () {
@@ -137,8 +145,9 @@
 				this.tomorrowStr = tomorrowStr
 			},
 			jump (router) {
+				if (this.availableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'replace',{
-					query: {needReturn: true}
+					query: {needReturn: true, type: this.type}
                 });
 			}
 		},
@@ -148,8 +157,14 @@
 		mounted() {
             this.getDate();
 			let type = this.$route.query.type;
+			let id = this.$route.query.id;
 			this.type = type;
-			this.$command('CALCULATE_PRICE_COMMAND',type,{});
+			if (id) {
+				this.$command('ORDER_COUPON_IDS', id)
+            }
+			this.$command('CALCULATE_PRICE_COMMAND',type,{
+				coupon_records: this.couponIds
+            });
 			this.$command('AVAILABLE_COUPONS', type)
 		}
 	}

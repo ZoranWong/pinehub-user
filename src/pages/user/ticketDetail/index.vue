@@ -1,45 +1,47 @@
 <!--suppress ALL -->
 <template>
-	<div class="coupon-wrapper">
-		<mp-title :title="title"></mp-title>
-        <div class="coupons_item" >
-            <div class="left">
-                <img :src="detail['coupon_image']" alt="">
-            </div>
-            <div class="right">
-                <div class="name">
-                    <h4>【{{detail.typeDesc}}】</h4>
-                    <span>{{detail.title}}</span>
+    <div>
+        <CustomHeader :title="title" :needReturn="true" />
+        <div class="coupon-wrapper">
+            <div class="coupons_item" >
+                <div class="left">
+                    <img :src="detail['coupon_image']" alt="">
                 </div>
-                <div class="price">
-                    <h4>￥{{detail.benefit}}</h4>
+                <div class="right">
+                    <div class="name">
+                        <h4>【{{detail.typeDesc}}】</h4>
+                        <span>{{detail.title}}</span>
+                    </div>
+                    <div class="price">
+                        <h4>￥{{detail.benefit}}</h4>
+                    </div>
+                    <div class="coupon_info">使用门槛：{{detail.floor}}</div>
+                    <div class="coupon_info">{{detail.useCondition}}</div>
+                    <div class="coupon_info">有效期：{{detail.validTime}}</div>
+                    <div class="coupon_info">{{detail['is_sharing']}}</div>
                 </div>
-                <div class="coupon_info">使用门槛：{{detail.floor}}</div>
-                <div class="coupon_info">{{detail.useCondition}}</div>
-                <div class="coupon_info">有效期：{{detail.validTime}}</div>
-                <div class="coupon_info">{{detail['is_sharing']}}</div>
+            </div>
+            <div class="integral_item_info">
+                <h4>优惠说明</h4>
+                <span>{{detail.remark}}</span>
+            </div>
+            <div class="integral_item_info">
+                <h4>使用说明</h4>
+                <span>{{detail.description}}</span>
+            </div>
+            <div class="integral_item_info">
+                <h4>适用商品</h4>
+                <span>{{detail.useCondition}}</span>
             </div>
         </div>
-        <div class="integral_item_info">
-            <h4>优惠说明</h4>
-            <span>{{detail.remark}}</span>
-        </div>
-        <div class="integral_item_info">
-            <h4>使用说明</h4>
-            <span>{{detail.description}}</span>
-        </div>
-        <div class="integral_item_info">
-            <h4>适用商品</h4>
-            <span>{{detail.useCondition}}</span>
-        </div>
-	</div>
-
+    </div>
 </template>
 <script>
-    import MpTitle from '../../../components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	export default {
 		components: {
-			'mp-title': MpTitle
+			CustomHeader
 		},
 		data() {
 			return {

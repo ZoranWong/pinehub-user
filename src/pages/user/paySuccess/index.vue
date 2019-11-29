@@ -1,6 +1,7 @@
 <template>
     <div id="orderpay">
-        <mp-title :title="title"></mp-title>
+        <CustomHeader :title="title" :needReturn="true" />
+
         <div class="order-success">
             <div id="orderpay_success">
                 <div id="success_ico">
@@ -41,11 +42,12 @@
 </template>
 
 <script>
-    import MpTitle from '@/components/MpTitle';
-    import PayToast from './PayToast';
+	import CustomHeader from '../../../components/CustomHeader';
+
+	import PayToast from './PayToast';
     export default {
         components: {
-            'mp-title': MpTitle,
+			CustomHeader,
             'pay-toast': PayToast
         },
         data () {

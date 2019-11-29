@@ -1,8 +1,23 @@
 <!--suppress ALL -->
 <template>
     <div id="user_store" class="body">
-        <mp-title :title="title"></mp-title>
-        <div id="store_header">
+        <CustomHeader :title="title" :needReturn="true" />
+        <Auth v-if="getAuth" @close="closeAuth" />
+        <div v-if="showBindMobile" class="bgff user-mobile-box">
+            <div class="user_mobile_box_container">
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
+                </form>
+
+                <em class="mobile_box_tips">
+                    我们需要您的手机号来创建账号，累计积分
+                </em>
+            </div>
+
+        </div>
+        <div id="store_header" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
             <input type="text" placeholder="请输入商品名称" id="store_search">
             <i class="iconfont">&#xe65c;</i>
         </div>
@@ -51,7 +66,8 @@
     </div>
 </template>
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+    import Auth from '../../../components/Auth';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
@@ -59,10 +75,11 @@
 
   export default {
       components: {
-          'mp-title': MpTitle,
+		  CustomHeader,
           ShoppingCart,
           SelectSpecification,
 		  ChooseSelfRaisingPoint,
+		  Auth
       },
       data() {
           return {
@@ -70,7 +87,9 @@
               navName: 'store',
               activeTab:'',
 			  selectSpec:false,
-			  selectItem:{}
+			  selectItem:{},
+			  getAuth: false,
+			  showBindMobile: false,
           };
       },
       watch: {
@@ -78,7 +97,12 @@
 			  if(val){
                   this.$command('LOAD_STORE_COMMAND',val,1)
               }
-          }
+          },
+		  isMember (value) {
+			  if (value) {
+				  this.showBindMobile = false
+			  }
+		  }
       },
       computed: {
           categories(){
@@ -93,9 +117,30 @@
           },
           showPoints () {
 			  return this.model.user.store.showPoints
-          }
+          },
+		  statusBarHeight () {
+			  return this.model.global.barHeight.statusBarHeight
+		  },
+		  navHeight () {
+			  return this.model.global.barHeight.navHeight
+		  },
+		  registered () {
+			  return this.model.account.registered;
+		  },
+		  isMember () {
+			  return this.model.account.isMember;
+		  },
       },
       methods: {
+		  getPhoneNumber (e) {
+			  this.$command('SET_USER_MOBILE', e);
+		  },
+		  getUserAuth () {
+			  this.getAuth = true
+		  },
+		  closeAuth () {
+			  this.getAuth = false
+		  },
 		  closePoints () {
              this.showPoints = false
           },
@@ -108,20 +153,30 @@
               this.data = data
           },
         addToShoppingCart(item){
-			if (item.specifications.length) {
-                this.selectItem = item;
-                this.selectSpec = true
+		  	if (!this.registered) {
+		  		this.getUserAuth()
             } else {
-                let goods = this.model.user.store.goodInShoppingCart;
-				if (goods.length) {
-					_.map(goods, (product) => {
-						product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-							this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
-							:
+				if (!this.isMember) {
+					this.showBindMobile = true
+				} else {
+					this.showBindMobile = false
+					if (item.specifications.length) {
+						this.selectItem = item;
+						this.selectSpec = true
+					} else {
+						let goods = this.model.user.store.goodInShoppingCart;
+						if (goods.length) {
+							_.map(goods, (product) => {
+								product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+									this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
+									:
+									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+							})
+						} else {
 							this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
-					})
-                } else {
-					this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+						}
+
+					}
                 }
 
             }
@@ -183,7 +238,6 @@
       background: #fff;
       border-bottom: 2rpx solid #f2f2f2;
       position: fixed;
-      top: 0;
   }
 
   #store_header #store_search {
@@ -341,5 +395,54 @@
       margin-right: 20rpx;
       margin-left: 70rpx;
   }
+    .user-mobile-box{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-box .user_mobile_box_container{
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #FECE00;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
+    }
+
+    .mobile_box_tips {
+        text-align: center;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
+        font-weight: 400;
+    }
+
 
 </style>

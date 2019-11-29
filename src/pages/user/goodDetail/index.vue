@@ -1,90 +1,75 @@
 <!--suppress ALL -->
 <template>
-    <div id="good_detail" v-if="goodDetail">
-        <mp-title :title="title"></mp-title>
-        <div v-show="!registered" class="toast_area">
-            <div class="toast">
-                <div class="toast_title">
-                    用户授权登陆
+    <div :style="{height: '100%'}">
+        <CustomHeader :title="title" :needReturn="true" />
+        <Auth v-if="getAuth" @close="closeAuth" />
+        <div id="good_detail" v-if="goodDetail"  :style="{height: screenHeight - (navHeight + statusBarHeight) -100 + 'rpx'}">
+
+            <div v-if="showBindMobile" class="bgff user-mobile-box">
+                <div class="user_mobile_box_container">
+                    <form report-submit="true" @submit="uploadFormId">
+                        <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                            手机号授权
+                        </button>
+                    </form>
+
+                    <em class="mobile_box_tips">
+                        我们需要您的手机号来创建账号，累计积分
+                    </em>
                 </div>
-                <div class="toast_content">
-                    <div class="toast_content_info">
-                        <div class="input_change_info">
-                            尊敬的快乐松用户，我们需要获取您的用户信息为您建立账户，请允许授权我们获取您的信息！
-                        </div>
-                        <form report-submit="true" @submit="uploadFormId">
-                            <button form-type="submit" class="input_change_btn_detail" open-type="getUserInfo" @getuserinfo="getNewUserInfo">
-                                允许授权
-                            </button>
-                        </form>
-                        <div class="input_change_tips">
-                            注：小程序获取用户信息后才可正常使用
-                        </div>
-                    </div>
+
+            </div>
+            <div class="good_detail_banner">
+                <!--            <Swiper :images="goodDetail.banners" />-->
+                <Banner :img-urls="goodDetail.banners" ></Banner>
+            </div>
+            <div id="good_detail_info">
+                <div class="intro">
+                    <div class="name">{{goodDetail.name}}</div>
                 </div>
+                <i class="iconfont" @click="addToShoppingCart(goodDetail)" v-if="goodDetail['product_entities'][0].stock">&#xe6d8;</i>
             </div>
-        </div>
-        <div v-if="showBindMobile" class="bgff user-mobile-box">
-            <div class="user_mobile_box_container">
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                        手机号授权
-                    </button>
-                </form>
-
-                <em class="mobile_box_tips">
-                    我们需要您的手机号来创建账号，累计积分
-                </em>
+            <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
+            <div id="good_detail_statictics">
+                <span class="is-underline">{{goodDetail['origin_price_format']}}</span>
+                <span>销量{{goodDetail['sell_num']}}</span>
+                <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
             </div>
+            <!-- 商品详情 -->
+            <wxParse no-data="" :content="goodDetail.detail"  />
 
+            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" />
+            <SelectSpecification
+                :selectSpec="selectSpec"
+                :item="selectItem"
+                @close="closeSelectSpec" />
+            <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
         </div>
-        <div class="good_detail_banner">
-<!--            <Swiper :images="goodDetail.banners" />-->
-            <Banner :img-urls="goodDetail.banners" ></Banner>
-        </div>
-        <div id="good_detail_info">
-            <div class="intro">
-                <div class="name">{{goodDetail.name}}</div>
-            </div>
-            <i class="iconfont" @click="addToShoppingCart(goodDetail)">&#xe6d8;</i>
-        </div>
-        <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
-        <div id="good_detail_statictics">
-            <span class="is-underline">{{goodDetail['origin_price_format']}}</span>
-            <span>销量{{goodDetail['sell_num']}}</span>
-            <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
-        </div>
-        <!-- 商品详情 -->
-        <wxParse no-data="" :content="goodDetail.detail"  />
-
-        <ShoppingCart v-if="registered && isMember" :type="this.options['type']" />
-        <SelectSpecification
-            :selectSpec="selectSpec"
-            :item="selectItem"
-            @close="closeSelectSpec" />
-        <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
     </div>
+
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
 	import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
 	import Swiper from '../../../components/Swiper';
 	import Banner from '../../../components/Banner';
 	import wxParse from 'mpvue-wxparse'
+    import Auth from '../../../components/Auth';
 	import _ from 'underscore'
 	export default {
         name: 'goodDetail',
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			ShoppingCart,
 			SelectSpecification,
 			ChooseSelfRaisingPoint,
 			Swiper,
 			Banner,
-			wxParse
+			wxParse,
+			Auth
 		},
         data() {
         	return {
@@ -92,22 +77,25 @@
 				selectSpec:false,
 				selectItem:{},
 				showBindMobile: false,
-                options: {}
+                options: {},
+				screenWitdh: 0,
+				screenHeight: 0,
+				getAuth: false
             }
         },
         watch: {
 			accessToken (value) {
-				if (this.options['shop_code'] && value) {
+				if (this.storeId && value) {
 					this.$command('SIGN_IN', this.accessToken);
 				}
 			},
 			hasToken (value) {
-				if (this.options['shop_code'] && this.hasToken) {
+				if (this.storeId && this.hasToken) {
 					this.loadPageData()
 				}
 			},
 			registered (value) {
-				if (this.options['shop_code']&& this.registered && this.options['shop_code']) {
+				if (this.storeId&& this.registered) {
 					this.bindConsumer()
                 }
             },
@@ -119,43 +107,48 @@
         },
         methods:{
 			addToShoppingCart (item) {
-				if (!this.isMember) {
-					this.showBindMobile = true
-                } else {
-					this.showBindMobile = false
-					if (item.specifications.length) {
-						this.selectItem = item;
-						this.selectSpec = true
+				if (!this.registered) {
+					this.getUserAuth()
+				} else {
+					if (!this.isMember) {
+						this.showBindMobile = true
 					} else {
-						if (this.options['type'] === 'mall') {
-							let goods = this.model.user.store.goodInShoppingCart
-							if (goods.length) {
-								_.map(goods, (product) => {
-									product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-										this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.options['type'])
-										:
-										this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
-								})
+						this.showBindMobile = false
+						if (item.specifications.length) {
+							this.selectItem = item;
+							this.selectSpec = true
+						} else {
+							if (this.options['type'] === 'mall') {
+								let goods = this.model.user.store.goodInShoppingCart
+								if (goods.length) {
+									_.map(goods, (product) => {
+										product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+											this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.options['type'])
+											:
+											this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
+									})
+								} else {
+									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
+								}
 							} else {
-								this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
+								let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
+								if (goods.length) {
+									_.map(goods, (product) => {
+										if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+											this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
+										} else {
+											this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+										}
+									})
+								} else {
+									this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+								}
 							}
-                        } else {
-							let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
-							if (goods.length) {
-								_.map(goods, (product) => {
-									if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
-										this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
-									} else {
-										this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-									}
-								})
-							} else {
-								this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-							}
-                        }
 
+						}
 					}
                 }
+
 			},
 			closeSelectSpec(){
 				this.selectSpec = false
@@ -179,7 +172,7 @@
 				this.$command('GOOD_DETAIL_COMMAND', this.options['type'], this.options['good_id'])
             },
             bindConsumer () {
-				this.$command('BIND_CONSUMER', this.options['shop_code']);
+				this.$command('BIND_CONSUMER', this.storeId);
             },
 			async initAccount () {
 				let result = await this.map.getLocation();
@@ -192,6 +185,12 @@
 						}
 					}
 				});
+			},
+			getUserAuth () {
+				this.getAuth = true
+			},
+			closeAuth () {
+				this.getAuth = false
 			},
 		},
         closePoints () {
@@ -211,6 +210,12 @@
 			accessTokenTTL () {
 				return this.$store.getters['model.app/overDate'];
 			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
+			},
 			isMember () {
 				return this.model.account.isMember;
 			},
@@ -222,21 +227,38 @@
                 return detail ? detail.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') : '';
             },
 			showPoints () {
-				return this.model.user.store.showPoints
+				let breakfast = this.model.newEvents.shoppingCarts.showPoints;
+				let mall = this.model.user.store.showPoints;
+				if (this.options['type'] === 'mall') {
+					return mall
+                } else {
+					return breakfast
+                }
 			},
 			registered () {
 				return this.model.account.registered;
 			},
         },
         onShow () {
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
+            this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
 			this.options = options;
-			if (options['shop_code']) {
+			if (this.storeId) {
 				this.initAccount();
 			} else {
 				this.loadPageData()
             }
+		},
+		onLoad (options) {
+			if (options.q) {
+				let scan_url = decodeURIComponent(options.q);
+				//提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+				this.storeId = scan_url.match(/\d+/)[0];
+			}
 		}
 	}
 </script>
@@ -246,6 +268,7 @@
     #good_detail{
         width: 750rpx;
         box-sizing: border-box;
+        overflow: auto;
     }
 
     #select_spec{

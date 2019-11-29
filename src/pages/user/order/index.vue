@@ -1,8 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div id="userOrders" class="body">
-		<mp-title :title="title"></mp-title>
-		<div id="tab_select">
+        <CustomHeader :title="title" :needReturn="true" />
+
+        <div id="tab_select" :style="{'top': (statusBarHeight + navHeight) + 'px'}" >
             <view class="page-section-spacing">
                 <scroll-view
                     class="scroll-view_H"
@@ -10,7 +11,7 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
-                    style="width: 1328rpx">
+                    :style="{width: '1328rpx' }">
                     <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
@@ -21,7 +22,7 @@
                 <img src="../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
             </div>
-			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next"></orders>
+			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next" :navHeight="navHeight" :statusBarHeight="statusBarHeight"></orders>
 		</div>
 		<div id="footNavHeight"></div>
 		<footer-nav :navName="navName"></footer-nav>
@@ -29,11 +30,12 @@
 </template>
 <script>
 	import UserOrders from './UserOrders';
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '../../../components/CustomHeader';
+
 	import FooterNav from '@/components/FooterNav';
 	export default {
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'orders': UserOrders,
 			'footer-nav': FooterNav
 		},
@@ -78,6 +80,12 @@
 			currentPage() {
 				let page = this.$store.getters['model.user.orders/currentPage'];
 				return page;
+			},
+			statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
@@ -129,7 +137,6 @@
 		height: 74rpx;
 		position: fixed;
 		left: 0;
-		top: 0;
 		z-index: 999;
         background: #fff;
 	}

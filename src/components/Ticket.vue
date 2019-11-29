@@ -1,18 +1,26 @@
 <!--suppress ALL -->
 <template>
     <div v-if="ticket" class="coupon-wrapper clearfix bgff">
-        <div class="coupons_item" >
+        <div class="coupons_item" @click="selectTicket(ticket)">
+            <img
+                src="../pages/user/recharge/img/payIcon.jpg"
+                alt=""
+                class="selected"
+                v-if="isSelected"
+            >
+            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" v-if="ticket.status === '已使用'">
             <div class="left">
                 <img :src="ticket['coupon_image']" alt="">
             </div>
-            <div class="right">
+            <div :class="ticket.status === '已使用' ? 'right disabledText' : 'right'">
                 <div class="name">
                     <h4>【{{ticket.typeDesc}}】</h4>
                     <span>{{ticket.title}}</span>
                 </div>
                 <div class="price">
-                    <h4>￥{{ticket.benefit}}</h4>
-                    <span @click="ticketDetail(ticket.id)">卡券详情</span>
+                    <h4 v-if="ticket['typeDesc'] === '现金券'">￥{{ticket.benefit}}</h4>
+                    <h4 v-else>{{ticket.benefit}}折</h4>
+                    <span @click="ticketDetail(ticket.id)" v-if="!ticket['record_id']">卡券详情</span>
                 </div>
                 <div class="coupon_info">使用门槛：{{ticket.floor}}</div>
                 <div class="coupon_info">{{ticket['useCondition']}}</div>
@@ -24,6 +32,7 @@
 </template>
 
 <script>
+    import _ from 'underscore'
 	export default {
 		data () {
 			return {}
@@ -35,7 +44,15 @@
 			}
 		},
 		computed: {
-
+			couponIds () {
+				return this.model.user.order.payment.couponIds
+			},
+            isSelected(){
+				if(this.ticket){
+					return _.indexOf(this.couponIds, this.ticket['record_id']) > -1;
+                }
+				return  false;
+            }
 		},
 		methods: {
 			async ticketDetail (id) {
@@ -43,10 +60,22 @@
 				this.$command('REDIRECT_TO', 'user.ticket.detail', 'push', {
 					query: {detail: this.ticket}
                 });
-            }
+            },
+			selectTicket (coupon) {
+				if (this.$route.query.needReturn) {
+					this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+						query: {
+							type: this.$route.query.type,
+                            id: coupon['record_id'],
+						}
+					});
+                }
+			}
 		},
 		mounted () {
+			console.log(this.ticket, '+++++++++++++++++++');
 		}
+
 	}
 </script>
 
@@ -60,7 +89,7 @@
 
     .coupon-wrapper .coupons_item{
         width: 100%;
-        border-radius: 10rpx;
+        border-radius: 30rpx;
         box-sizing: border-box;
     }
 
@@ -73,6 +102,23 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+    }
+
+    .selected{
+        width: 70rpx;
+        height: 70rpx;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+
+    .disabled{
+        width: 108rpx;
+        height: 108rpx;
+        position: absolute;
+        right: 10px;
+        top: 10px;
     }
 
     .coupon-wrapper .coupons_item .left{
@@ -111,6 +157,10 @@
     .coupon-wrapper .coupons_item .right .name span{
         font-size: 32rpx;
         color: #111111;
+        width: 130rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .coupon-wrapper .coupons_item .right .price {
@@ -140,6 +190,20 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .disabledText .name h4{
+        color: #757575!important;
+    }
+    .disabledText .name span {
+        color: #757575!important;
+    }
+    .disabledText .price h4{
+        color: #757575!important;
+    }
+
+    .disabledText .price span{
+        color: #757575!important;
     }
 
 </style>
