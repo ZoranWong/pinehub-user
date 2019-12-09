@@ -62,7 +62,6 @@
         // 算术方法
         computed: {
 			createdOrderInfo () {
-				console.log(this.order, '*********************');
 				this.order = this.model.user.order.payment.createdOrderInfo;
 				return this.model.user.order.payment.createdOrderInfo
             },

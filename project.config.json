@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 21,
+			"current": 20,
 			"list": [
 				{
 					"id": 0,
@@ -170,13 +170,6 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/index/main",
-					"pathName": "pages/user/payment/main",
-					"query": "shop_code=1",
 					"scene": null
 				}
 			]

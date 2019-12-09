@@ -7,7 +7,7 @@
             <i class="iconfont search">&#xe65c;</i>
         </div>
         <div id="location_map">
-            <map id="map" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
+            <map :id="checkId? 'map':'checkedMap'" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
                  @markertap="bindmarkertap" show-location>
                 <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >
                     <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>
                     </li>
                     <div class="empty_img" v-if="!commonPoints.length">
                         <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                        <i class="iconfont right disabled" v-else>&#xe6d7;</i>
+                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>
                     </li>
                     <div class="empty_img" v-if="!nearPoints.length">
                         <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
@@ -345,7 +345,12 @@
     }
 
     #map {
-        height: 100%;
+        height: 1014rpx;
+        width: 100%;
+    }
+
+    #checkedMap {
+        height: 1124rpx;
         width: 100%;
     }
 
@@ -443,6 +448,7 @@
     #location_points #location_points_list{
         background: #fff;
         padding: 0 40rpx;
+        height: 400rpx;
         padding-bottom: 30rpx;
         max-height: 484rpx;
         overflow-y: auto;
@@ -480,8 +486,13 @@
         color: transparent;
     }
 
-    #location_points #location_points_list li i.disabled {
+    #location_points #location_points_list li i.disSelected {
         color: #ccc;
+        position: absolute;
+        width: 108rpx;
+        height: 108rpx;
+        right: 20rpx;
+        top: 130rpx;
     }
 
     #location_points #location_points_list li span{

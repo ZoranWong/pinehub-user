@@ -111,7 +111,8 @@
 				}
 			},
 			position (value) {
-				this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
+                console.log('position');
+                this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
 			}
         },
         computed: {
@@ -124,16 +125,18 @@
 				if (isEqual && !isEmptyModel) {
 
                 } else {
+                    this.shop_order = [];
+                    this.breakfast_order = [];
 					this.orders = this.model.user.pickup.pickupOrders;
 					_.map(this.orders, (order)=>{
 						if (order.channel.slug === 'BREAKFAST_CAR') {
-							this.breakfast_order.push(order)
+							this.breakfast_order.push(order);
 						} else {
 							this.shop_order.push(order)
 						}
 					});
                 }
-				this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
+                this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
 				if(this.position === 'left' && !this.currentOrderId && this.orders && this.orders.length) {
 					this.currentOrderId = this.orders[0]['id'];
 					this.drawTime = (new Date).getTime();

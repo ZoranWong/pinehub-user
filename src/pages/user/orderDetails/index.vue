@@ -86,7 +86,7 @@
 
                 <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
 
-                <div>实际取货时间：{{orderDetail['paid_at'] || '暂无'}}  </div>
+                <div>实际取货时间：{{orderDetail['verified_at'] || '暂无'}}  </div>
             </div>
             <div id="order_total_price">
                 <span>预付款 ￥{{orderDetail['settlement_total_fee']}}</span>
