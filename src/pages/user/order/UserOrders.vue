@@ -107,7 +107,7 @@
             	default: null,
 				type: Number
             },
-          rpxRate: 1
+        rpxRate: 1
         },
         data () {
             return {
