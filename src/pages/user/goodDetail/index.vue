@@ -42,6 +42,7 @@
             <SelectSpecification
                 :selectSpec="selectSpec"
                 :item="selectItem"
+                :type="'mall'"
                 @close="closeSelectSpec" />
             <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
         </div>
@@ -107,7 +108,7 @@
         },
         methods:{
 			addToShoppingCart (item) {
-				if (!this.registered) {
+                if (!this.registered) {
 					this.getUserAuth()
 				} else {
 					if (!this.isMember) {

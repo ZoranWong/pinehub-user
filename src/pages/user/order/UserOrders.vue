@@ -14,9 +14,9 @@
                     <em>订单编号:{{order.code}}</em>
                     <i class="iconfont detailIcon">&#xe6a3;</i>
                 </div>
-                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['after_service_state'] === 0" >{{order['stateDesc']}}</span>
-                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['after_service_state'] === 1">申请售后中</span>
-                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN'  && order['after_service_state'] === 2">售后处理中</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' " >{{order['stateDesc']}}</span>
+                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>
+                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 2">售后处理中</span>
             </div>
             <div v-if = "order['type'] === 'CODE_SCAN'" class="code_scan" @click="orderDetail(order.id)">
                 <div>线下扫码支付</div>
@@ -39,24 +39,36 @@
                 </li>
             </ul>
             <div class="order_info_btn" v-if="order.btnStatus === 0 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2 " >
-                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
-                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
-                <i @click="btnClick('pay', order)" class="yellow">去支付</i>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
+                    <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
+                    <button form-type="submit" @click="btnClick('pay', order)" class="yellow">去支付</button>
+                </form>
+
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 1 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
-                <i @click="btnClick('cancel', order)" class="white">取消订单</i>
-                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
-                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
-                <i @click="btnClick('pickup', order)" class="yellow">去取货</i>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" @click="btnClick('cancel', order)" class="white">取消订单</button>
+                    <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
+                    <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
+                    <button form-type="submit" @click="btnClick('pickup', order)" class="yellow">去取货</button>
+                </form>
+
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
-                <i @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</i>
-                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
-                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</button>
+                    <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
+                    <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
+                </form>
+
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 3 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
-                <i @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</i>
-                <i @click="btnClick('onemore', order)" class="white" v-else>再来一单</i>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
+                    <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
+                </form>
+
             </div>
         </div>
     </scroll-view>
@@ -109,6 +121,14 @@
             }
         },
         methods: {
+            async uploadFormId (e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== "the formId is a mock one"){
+                    await this.http.account.saveFormId(formId);
+                } else {
+                    console.log('form id 不合法')
+                }
+            },
             orderDetail (id) {
                 this.$command('REDIRECT_TO', 'user.order.detail', 'push',{
                     query: {
@@ -340,11 +360,18 @@
         height: 108rpx;
     }
 
-    .order_info_btn i {
-        height: 60rpx;
+    .order_info_btn form {
+        width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
+        flex-direction: row;
+    }
+
+    .order_info_btn button {
+        display: inline-block;
+        height: 60rpx;
+        line-height: 60rpx;
         font-size: 28rpx;
         background: #fff;
         border: 1rpx solid #757575;
@@ -354,7 +381,7 @@
         border-radius: 10rpx;
     }
 
-    .order_info_btn i.yellow{
+    .order_info_btn .yellow{
         color: #111111;
         background: #ffcc00;
         border-color: #ffcc00;

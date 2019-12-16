@@ -5,7 +5,7 @@
 
         <div class="checkout_header">
             <div class="left">
-                <h4>订单金额：{{order['settlement_total_fee_format']}}</h4>
+                <h4>订单金额：{{order['settlement_total_fee_format'] || settlement_total_fee_format}}</h4>
                 <span>请您在{{minute}}:{{second}}内完成支付</span>
             </div>
             <img src="../../../../static/images/background/1.png" alt="">
@@ -43,6 +43,9 @@
 
 	import _ from 'underscore';
     export default {
+        onUnload: function () {
+            clearTimeout(this.countDownBar)
+        },
         components: {
 			CustomHeader
         },
@@ -53,17 +56,20 @@
                 order: {},
 				second: 0,
                 minute: 0,
+                settlement_total_fee_format: 0,
+                orderNew: null,
                 countDownBar : null, // 定时器句柄
-                CURRENTTIME : new Date(), // 当前时间
-                TIMEOUT_LIMIT : 1800000, // 30分钟 ms
-                orderCreatedTime : 0, // 计算时间差
             }
         },
         // 算术方法
         computed: {
 			createdOrderInfo () {
-				this.order = this.model.user.order.payment.createdOrderInfo;
-				return this.model.user.order.payment.createdOrderInfo
+                this.order = this.model.user.order.payment.createdOrderInfo;
+                console.log(this.order, 'settlement total fee');
+                if (this.order['auto_cancel_after_seconds']) {
+                    this.countDownServer(this.order['auto_cancel_after_seconds'])
+                }
+                return this.model.user.order.payment.createdOrderInfo
             },
 			userInfo () {
 				return this.model.account.userInfo;
@@ -72,24 +78,18 @@
         // 普通方法
         methods: {
 			countDownServer(time) {
-				let leftTime = null;
-				if (time) {
-					let flag = this.CURRENTTIME - time >= this.TIMEOUT_LIMIT ? 0 : (this.TIMEOUT_LIMIT - (this.CURRENTTIME - time));
-					leftTime = new Date((this.CURRENTTIME.getTime() + flag)) - (new Date());
-				} else {
-					leftTime = new Date((this.CURRENTTIME.getTime() + this.TIMEOUT_LIMIT)) - (new Date());
-				}
-				let minutes = parseInt(leftTime / 1000 / 60 % 60, 10),
-					seconds = parseInt(leftTime / 1000 % 60, 10);
-				if (seconds < 0) {
+                let minutes = Math.floor(time  / 60),
+					seconds = Math.floor(time - minutes * 60);
+				if (time < 0) {
 					// 执行具体逻辑
 					clearTimeout(this.countDownBar);
 					return false;
 				}
-				this.minute = _.isNaN(this.fix(minutes, 2)) ? '00' : this.fix(minutes, 2);
+                this.minute = _.isNaN(this.fix(minutes, 2)) ? '00' : this.fix(minutes, 2);
 				this.second = _.isNaN(this.fix(seconds, 2)) ? '00' : this.fix(seconds, 2);
 				this.countDownBar = setTimeout(function() {
-					this.countDownServer(this.orderCreatedTime);
+				    time--
+					this.countDownServer(time);
 				}.bind(this), 1000);
 			},
             fix(num, length) {
@@ -105,24 +105,38 @@
 						content: '确认使用余额支付吗？',
 						async success (res) {
 							if (res.confirm) {
-								self.$command('PAYMENT_BY_BALANCE',self.order, self.type)
+
+                                if (self.$route.query && self.$route.query.order) {
+                                    self.$command('PAYMENT_BY_BALANCE',self.orderNew, self.type)
+                                } else {
+                                    self.$command('PAYMENT_BY_BALANCE',self.order, self.type)
+                                }
 							}
 						}
 					})
                 }
             },
             payByWechat () {
-				this.$command('PAYMENT_BY_ID', this.order)
+                if (this.$route.query && this.$route.query.order) {
+                    this.$command('PAYMENT_BY_ID', this.orderNew)
+                } else {
+                    this.$command('PAYMENT_BY_ID', this.order)
+                }
+
             }
         },
         mounted () {
 			this.$command('LOAD_ACCOUNT')
-			this.type = this.$route.query.type
-			if (this.$route.query && this.$route.query.order) {
+			this.type = this.$route.query.type;
+
+            if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
-				console.log(this.order, '****^^^^****');
-			}
-			this.countDownServer(new Date(this.order.createdAt || this.order['created_at']))
+                this.orderNew = this.order;
+                this['settlement_total_fee_format'] = this.order['settlement_total_fee_format'];
+                if (this.order['auto_cancel_after_seconds']) {
+                    this.countDownServer(this.order['auto_cancel_after_seconds'])
+                }
+            }
 		}
 	}
 </script>

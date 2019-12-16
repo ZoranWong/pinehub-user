@@ -80,10 +80,13 @@
                     <em @click="cpoy(orderDetail['order_no'])">复制</em>
                 </div>
                 <div>
-                    <span>下单时间：{{orderDetail['created_at']}} </span>
+                    <span>创建时间：{{orderDetail['created_at']}} </span>
                     <span> {{orderDetail['state_desc']}}</span>
                 </div>
 
+                <div>
+                   付款时间：{{orderDetail['paid_at'] || '暂无'}}
+                </div>
                 <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
 
                 <div>实际取货时间：{{orderDetail['verified_at'] || '暂无'}}  </div>
@@ -362,7 +365,7 @@
 
     #order_info{
       margin: 20rpx 0;
-      height: 355rpx;
+      height: 450rpx;
       background: #fff;
       padding: 30rpx 40rpx;
       display: flex;

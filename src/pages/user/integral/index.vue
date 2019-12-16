@@ -99,13 +99,22 @@
 				this.$command('REDIRECT_TO', router, 'push', {query: {id,couponId,pv}});
 			},
 			exchange(item){
+			    let self = this;
 				if (this.userInfo.availableScore < item.pv) {
 					wx.showToast({
 						title: '积分不足',
 						icon: 'none'
 					});
                 } else {
-					this.$command('EXCHANGE_PRODUCTS',item.id, item.pv)
+                    wx.showModal({
+                        title: '温馨提示',
+                        content: '确认兑换吗？',
+                        async success (res) {
+                            if (res.confirm) {
+                                await self.$command('EXCHANGE_PRODUCTS',item.id, item.pv)
+                            }
+                        }
+                    })
                 }
             }
 		},

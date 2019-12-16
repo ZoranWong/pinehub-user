@@ -1,25 +1,25 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-
-        <div id="location_search" :style="{'top': navHeight + statusBarHeight + 'px'}">
+        <CustomHeader :title="title" :needReturn="true" />
+        <div id="location_search" >
             <input id="location_search_input" v-model.trim="addressName" placeholder="请输入地点名称"/>
             <i class="iconfont search">&#xe65c;</i>
         </div>
         <div id="location_map">
             <map :id="checkId? 'map':'checkedMap'" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
                  @markertap="bindmarkertap" show-location>
-                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >
-                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >
-                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >
-                        <cover-view  id="back_icon" @click="back">
-                            <i class="iconfont">&#xe679;</i>
-                        </cover-view >
-                        <cover-view  id="nav_title">
-                            {{title}}
-                        </cover-view >
-                    </cover-view >
-                </cover-view>
+<!--                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >-->
+<!--                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >-->
+<!--                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >-->
+<!--                        <cover-view  id="back_icon" @click="back">-->
+<!--                            <i class="iconfont">&#xe679;</i>-->
+<!--                        </cover-view >-->
+<!--                        <cover-view  id="nav_title">-->
+<!--                            {{title}}-->
+<!--                        </cover-view >-->
+<!--                    </cover-view >-->
+<!--                </cover-view>-->
                 <cover-view id="locatePosition" @click="nowLocation">
                     <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
                 </cover-view>
@@ -194,8 +194,8 @@
                 let result = await this.map.getLocation();
                 this.latitude = result[1];
                 this.longitude = result[0];
-				this.$command('LOAD_NEARBY',result[0],result[1], 'map');
-				this.$command('LOAD_COMMONLY_USED', 'map')
+                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
+				this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
             },
             changeSendDate (e) {
                 this.sendDate = e.target.value;
@@ -337,11 +337,14 @@
     }
 
     #location_map {
-        position: absolute;
-        top: 0;
-        left: 0;
+        /*position: absolute;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
         width: 100%;
-        height: 100%;
+        height: 500px;
+        margin-top: -109rpx;
     }
 
     #map {
@@ -472,6 +475,7 @@
         align-items: center;
         padding: 30rpx 40rpx;
         border-bottom: 2rpx solid #f2f2f2;
+        position: relative;
     }
 
     #location_points #location_points_list li:last-child {
@@ -481,18 +485,19 @@
     #location_points #location_points_list li i{
         font-size: 48rpx;
         margin: 0 10rpx;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
-        -webkit-background-clip: text;
-        color: transparent;
     }
 
     #location_points #location_points_list li i.disSelected {
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
         color: #ccc;
         position: absolute;
         width: 108rpx;
         height: 108rpx;
-        right: 20rpx;
-        top: 130rpx;
+        right: 0rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     #location_points #location_points_list li span{
@@ -526,7 +531,16 @@
     }
 
     #location_points #location_points_list li .right{
-
+        position: absolute;
+        width: 108rpx;
+        height: 108rpx;
+        right: 0rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
     }
 
     #location_points .confirmBtn{

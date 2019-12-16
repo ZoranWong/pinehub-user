@@ -12,8 +12,7 @@
             <div id="select_spec_info">
                 <h4>{{item.name}}</h4>
                 <div class="select_spec_info">
-                    <span v-if="!item.specifications.length">￥{{item.sell_price}}</span>
-                    <span v-else>{{item.range}}</span>
+                    <span>{{item['sell_price_format']}}</span>
                     <span>销量:{{item.sell_num}}</span>
                     <span>库存:{{item.product_entities[0].stock}}</span>
                 </div>
@@ -80,7 +79,8 @@
 				this.isEqual()
 			},
 			isEqual(){
-				let selectedSpec = {};
+                console.log(this._props.item, '====');
+                let selectedSpec = {};
 				let selectedDesp = [];
 				for (let key in this.selectedSpec){
 					if (!_.isNaN(parseInt(key))) {
@@ -119,13 +119,31 @@
 				if (keys.length < this.item.specifications.length) {
 					return;
                 }
-				console.log(this.type, '=====s');
-				if (this.type == 'mall') {
-					console.log(1111);
-					this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                if (this.type == 'mall') {
+                    let goods = this.model.user.store.goodInShoppingCart;
+                    if (goods.length) {
+                        _.map(goods, (product) => {
+                            product['product_stock_id'] === this.confirmSelected['product_stock_id']?
+                                this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
+                                :
+                                this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                        })
+                    } else {
+                        this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                    }
                 } else {
-					console.log(2222);
-					this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                    let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
+                    if (goods.length) {
+                        _.map(goods, (product) => {
+                            if (product['product_stock_id'] === this.confirmSelected['product_stock_id']) {
+                                this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
+                            } else {
+                                this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                            }
+                        })
+                    } else {
+                        this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                    }
                 }
 
 				this.$emit('close')
@@ -237,7 +255,7 @@
     }
 
     #select_spec_container #select_spec_choose #choose_items .left{
-        width: 70rpx;
+        width: 115rpx;
     }
 
     #select_spec_container #select_spec_choose #choose_items .right{

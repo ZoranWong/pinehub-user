@@ -97,72 +97,91 @@
                 drawTime: null,
 				shop_order: [],
 				breakfast_order: [],
-				total: 0
+				total: 0,
+                totalOrders: []
             };
         },
         watch: {
 			currentOrderId: function(value) {
-				if(value)
+                if(value)
 					this.Qrcode(value);
             },
 			drawTime(value){
-				if(value && this.currentOrderId){
+                console.log('change drawtime', value);
+                if(value && this.currentOrderId){
 					this.Qrcode(this.currentOrderId);
 				}
 			},
 			position (value) {
-                console.log('position');
                 this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
 			}
         },
         computed: {
 			pickupOrders () {
-				this.drawTime = (new Date).getTime();
-				let isEqual =  this.model.user.pickup.pickupOrders.every(item=>{
-					return this.orders.includes(item)
-                })
-                let isEmptyModel = _.isEmpty(this.model.user.pickup.pickupOrders);
-				if (isEqual && !isEmptyModel) {
-
-                } else {
-                    this.shop_order = [];
-                    this.breakfast_order = [];
-					this.orders = this.model.user.pickup.pickupOrders;
-					_.map(this.orders, (order)=>{
-						if (order.channel.slug === 'BREAKFAST_CAR') {
-							this.breakfast_order.push(order);
-						} else {
-							this.shop_order.push(order)
-						}
-					});
-                }
-                this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
-				if(this.position === 'left' && !this.currentOrderId && this.orders && this.orders.length) {
-					this.currentOrderId = this.orders[0]['id'];
-					this.drawTime = (new Date).getTime();
-				}
+                this.totalOrders = this.model.user.pickup.pickupOrders;
+                this.handleOrders( this.model.user.pickup.pickupOrders)
 				return this.model.user.pickup.pickupOrders
             }
         },
         methods: {
+            handleOrders (orders) {
+                this.drawTime = (new Date).getTime();
+                let isEqual =  orders.every(item=>{
+                    return this.orders.includes(item)
+                })
+                let isEmptyModel = _.isEmpty(orders);
+                if (isEqual && !isEmptyModel) {
+
+                } else {
+
+                }
+                this.shop_order = [];
+                this.breakfast_order = [];
+
+                this.orders = orders;
+                _.map(this.orders, (order)=>{
+                    if (order.channel.slug === 'BREAKFAST_CAR') {
+                        this.breakfast_order.push(order);
+                    } else {
+                        this.shop_order.push(order)
+                    }
+                });
+
+                this.shop_order = _.uniq(this.shop_order, (order)=>{
+                    return order.id
+                })
+
+                this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
+                if(this.position === 'left' && this.orders && this.orders.length) {
+                    //this.currentOrderId = this.shop_order[0]['id'];
+                    //this.drawTime = (new Date).getTime();
+                    this.currentOrderId = this.shop_order[0].id;
+                    _.map(this.shop_order, (order)=>{
+                        this.Qrcode(order['id'])
+                    })
+                }
+            },
 			changeBackground(position){
-				this.position = position;
+                this.position = position;
 				this.current = 1;
 				this.background = position === 'left'? bg1 : bg2;
-				if(position === 'left'){
-					this.currentOrderId = this.orders[0]['id']
+                if(position === 'left'){
+                    this.currentOrderId = this.shop_order[0]['id']
 					this.drawTime = (new Date).getTime();
+                    _.map(this.shop_order, (order)=>{
+                        this.Qrcode(order['id'])
+                    })
                 } else {
 					this.currentOrderId = null
                 }
 			},
 			bannerChange (e) {
-				this.current = e.mp.detail.current + 1;
+                this.current = e.mp.detail.current + 1;
 				this.currentOrderId = e.mp.detail.currentItemId;
 			},
             Qrcode (id) {
-				let time = (new Date()).getTime();
-				drawQrcode({
+                let time = (new Date()).getTime();
+                drawQrcode({
 					width: 200,
 					height: 200,
 					canvasId: `qrcode_${id}_${this.drawTime}`,
@@ -171,27 +190,49 @@
             }
         },
         mounted () {
-			this.qrcode = drawQrcode({
-				width: 200,
-				height: 200,
-				canvasId: 'myQrcode',
-				text: `{"order_id": 0}`
-			})
-			if (this.$route.query.order) {
+			// this.qrcode = drawQrcode({
+			// 	width: 200,
+			// 	height: 200,
+			// 	canvasId: 'myQrcode',
+			// 	text: `{"order_id": 0}`
+			// })
+            if (this.$route.query.order) {
+                this.breakfast_order = [];
+                this.shop_order = [];
 				let order = JSON.parse(this.$route.query.order)
 				order['order_no'] = order.code || order['order_no']
 				order['subOrderNo'] = order['order_no'].slice(-4)
                 this.currentOrderId = order.id
+                this.orders.push(order);
 				if (order.channel.slug === 'BREAKFAST_CAR') {
 					this.breakfast_order.push(order)
+                    this.position = 'right'
+                    this.background = bg2;
+					this.total = this.breakfast_order.length;
 				} else {
 					this.shop_order.push(order)
+                    this.position = 'left'
+                    this.background = bg1;
+                    this.total = this.shop_order.length;
+                    // this.currentOrderId = this.shop_order[0].id;
+                    // this.drawTime = (new Date).getTime();
+                    this.Qrcode(this.shop_order[0].id)
 				}
             } else {
-				this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
+                if (_.isEmpty(this.orders)) {
+                    this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
+                } else {
+                    this.handleOrders(this.orders)
+                }
             }
         },
+        onUnload: function () {
+            this.orders = [];
+            this.shop_order = [];
+            this.breakfast_order = [];
+        },
         beforeMount () {
+            this.current = 1;
 			this.currentOrderId = null;
 			this.model.user.pickup.dispatch('savePickupOrders', {
 				orders: []

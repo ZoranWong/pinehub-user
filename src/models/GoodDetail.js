@@ -37,6 +37,13 @@ export default class Orders extends Model {
             _.map(specifications, function (value) {
                 spec.push(value.name)
             });
+            _.map(productEntities, function (itemEntities) {
+                let specObj = {};
+                _.map(itemEntities.specifications, function (spec) {
+                    specObj[spec.id] = spec['value'].value
+                });
+                itemEntities.specs = specObj
+            });
             good['spec'] = spec.join(',');
             good['range'] = specifications.length ? `￥${minPrice['market_price']}~￥${maxPrice['market_price']}` : `￥${minPrice['market_price']}`
             this.state.goodDetail = good;

@@ -21,7 +21,7 @@
             <input type="text" placeholder="请输入商品名称" id="store_search">
             <i class="iconfont">&#xe65c;</i>
         </div>
-        <div id="store_goods">
+        <div id="store_goods" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 120) + 'px'}">
             <ul id="store_goods_type">
                 <li
                   v-for="item in categories"
@@ -90,6 +90,7 @@
 			  selectItem:{},
 			  getAuth: false,
 			  showBindMobile: false,
+              screenHeight: 0
           };
       },
       watch: {
@@ -191,7 +192,11 @@
       created() {
       },
       mounted() {
-		 this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+          let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+          let screenWitdh = wx.getSystemInfoSync().windowHeight;
+          this.screenHeight = (rpxRate * screenWitdh)/ 2;
+          console.log(this.screenHeight);
+          this.$command('LOAD_STORE_CATEGORIES_COMMAND')
 	  }
 	}
 </script>
@@ -199,7 +204,7 @@
 <style>
 	page {
         height: 100%;
-        background: #f2f2f2;
+        background: #fff;
     }
 
 	#footNavHeight {
@@ -208,6 +213,8 @@
 
     #user_store{
         height: 100%;
+        overflow-y: hidden;
+        background: #fff;
     }
 
   #select_spec{
@@ -261,8 +268,8 @@
       display: flex;
       justify-content: flex-end;
       align-items: flex-start;
-      margin-bottom: 120rpx;
       margin-top: 108rpx;
+      overflow-y: auto;
   }
 
   #store_goods #store_goods_type {
@@ -271,6 +278,7 @@
       left: 0;
       height: 1250rpx;
       overflow: scroll;
+      background: #f2f2f2;
   }
 
   #store_goods #store_goods_type li {
@@ -366,7 +374,7 @@
       width: 100%;
       margin-top: 26rpx;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       padding-right: 20rpx;
       align-items: center;
   }
@@ -384,7 +392,6 @@
       display: inline-block;
       height: 100%;
       text-decoration: line-through;
-      margin-left: 70rpx;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_price i{

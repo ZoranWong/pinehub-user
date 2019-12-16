@@ -23,7 +23,7 @@ export default class Order {
         this.buildNum = (typeof order['build_num'] !== 'undefined' && order['build_num'] !== '' && order['build_num'] !== null) ? order['build_num'] : '无';
         // 房号
         this.roomNum = (typeof order['room_num'] !== 'undefined' && order['room_num'] !== '' && order['room_num'] !== null) ? order['room_num'] : '无';
-        
+
         // btnStatus  1 支付 取消 2 确认核销 3 确认收货
         // SITE_USER_ORDER => 站点订单 SHOPPING_MALL_ORDER => 商城订单 USER_SELF_PICK_UP => 自提订单
         if (this.stateDesc === '待付款') {
@@ -74,6 +74,9 @@ export default class Order {
         this.channel = order['channel'];
         this.shop = order['shop'];
         this.paidTime = order['paid_time'];
+        this.state = order['state'];
+        this['auto_cancel_after_seconds'] = order['auto_cancel_after_seconds'];
+        this['settlement_total_fee_format'] = order['settlement_total_fee_format'];
         this.orderItems.forEach(item => {
            if (item['spec_value']) {
                let specDesp = [];

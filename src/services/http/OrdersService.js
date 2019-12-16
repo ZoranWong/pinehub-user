@@ -6,7 +6,7 @@ export default class OrdersService extends ApiService {
         let response = await this.httpGet(`api/mp/orders/${id}/balance/pay`);
         return response;
     }
-    
+
     // 获取订单列表
     async userOrders (status, page = 1, limit = 15) {
         let response = await this.httpGet('api/mp/orders', {
@@ -34,48 +34,48 @@ export default class OrdersService extends ApiService {
         let response = await this.httpPost('api/mp/mall/orders', params);
         return response.data;
     }
-    
+
     // 穿件扫码付订单
     async createCodeScanOrder (params) {
         console.log('----- payment order ---------', params);
         let response = await this.httpPost('api/mp/scan/orders', params);
         return response.data;
     }
-    
+
     // 扫码付获取店铺信息
     async getShopInfo (shop) {
         let response = await this.httpGet(`api/mp/shop/${shop}/info`);
         return response.data;
     }
-    
+
     // 订单详情
     async orderDetail (id) {
         console.log(id, 'ioiooii');
         let response = await this.httpGet(`api/mp/orders/${id}`);
         return response.data;
     }
-    
+
     // 创建早餐订单
     async createBreakfastPaymentOrder (params) {
         console.log('----- payment order ---------', params);
         let response = await this.httpPost('api/mp/breakfast/booking/orders', params);
         return response.data;
     }
-    
+
     // 计算商城购物车金额
     async calculateMallPrice (params) {
         console.log('-------calculate mall price-------');
         let response = await this.httpGet('api/mp/mall/calculate/carts', params);
         return response.data;
     }
-    
+
     // 计算早餐车购物车金额
     async calculateBreakfastPrice (params) {
         console.log('-------calculate breakfast price-------');
         let response = await this.httpGet('api/mp/breakfast/booking/calculate/carts', params);
         return response.data;
     }
-    
+
     // 获取支付参数　
     async getPaymentParams (id) {
         let response = await this.httpPost(`api/mp/orders/${id}/payment_config`);
@@ -87,7 +87,7 @@ export default class OrdersService extends ApiService {
         let response = await this.httpGet(`api/mp/orders/${id}/payment_config`, {});
         return response.data;
     }
-    
+
     // 支付失败查询信息
     async error (code) {
         let response = await this.httpGet(`api/mp/orders/${code}/query`, {});
@@ -196,14 +196,14 @@ export default class OrdersService extends ApiService {
         let response = await this.httpGet(`/advertisement/latest?order_id=${id}&include=ticket`, {});
         return response.data;
     }
-    
+
     // 申请售后
     async orderFeedBack (content) {
         console.log(content, '*************8');
         let response = await this.httpPost('api/mp/feed/back', {content});
         return response.data;
     }
-    
+
     // 售后服务
     async orderServiceFeedBack (order, reason) {
         let response = await this.httpPost(`api/mp/orders/${order}/after/service`, {reason});

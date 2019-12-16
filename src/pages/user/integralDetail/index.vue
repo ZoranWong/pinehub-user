@@ -63,7 +63,16 @@
 		},
 		methods: {
 			exchange () {
-				this.$command('EXCHANGE_PRODUCTS', this.couponId, this.pv)
+			    let self = this;
+                wx.showModal({
+                    title: '温馨提示',
+                    content: '确认兑换吗？',
+                    async success (res) {
+                        if (res.confirm) {
+                            await self.$command('EXCHANGE_PRODUCTS', self.couponId, self.pv)
+                        }
+                    }
+                })
             },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;

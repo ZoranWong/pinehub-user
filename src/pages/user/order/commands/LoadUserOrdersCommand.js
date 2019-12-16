@@ -27,7 +27,7 @@ export default class MyOrderCommand extends Command {
                 status: status
             });
         }
-        
+
         // console.log('----- set data -----', Date.now());
     }
 
