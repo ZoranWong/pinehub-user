@@ -1,0 +1,102 @@
+.forms{
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.forms .forms-item{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forms .forms-item input{
+    font-size: 15px;
+    color: #757575;
+}
+.forms .forms-item textarea{
+    width: 100%;
+    height: 75px;
+    font-size: 15px;
+    color: #757575;
+}
+.setting {
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    margin: 10px 0;
+}
+.setting .setting-item {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f2f2f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.setting .setting-item .default{
+    font-size: 14px;
+    color: #111;
+}
+
+.setting .setting-item .right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.setting .setting-item .right .tags{
+    width: 50px;
+    height: 28px;
+    color: #757575;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 14px;
+    margin-right: 10px;
+}
+
+.setting .setting-item .right .tagName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 10px;
+    background: #f2f2f2;
+    border-radius: 5px;
+    color: #757575;
+    font-size: 12px;
+    margin-right: 20px;
+}
+
+.setting .setting-item .right .more{
+    display: inline-block;
+    margin-right: 10px;
+    color: #757575;
+    font-size: 14px;
+}
+
+
+.submit{
+    width: 100%;
+    height: 40px;
+    margin-top: 15px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.submit .save{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FFCC00;
+}
+

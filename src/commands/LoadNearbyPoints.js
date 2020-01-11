@@ -5,7 +5,6 @@ export default class LoadNearbyPoints extends Command {
         let response;
         let channel = type === 'mall' ? 'SHOP_KEEPER' : 'BREAKFAST_CAR';
         response = await this.service('http.store').nearbyPoints(lng, lat, channel);
-    
         if (type === 'mall') {
             this.model.user.store.dispatch('saveNearbyPoints', {
                 points: response
@@ -16,7 +15,7 @@ export default class LoadNearbyPoints extends Command {
             });
         }
     }
-    
+
     static commandName () {
         return 'LOAD_NEARBY';
     }

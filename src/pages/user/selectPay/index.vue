@@ -65,9 +65,11 @@
         computed: {
 			createdOrderInfo () {
                 this.order = this.model.user.order.payment.createdOrderInfo;
-                console.log(this.order, 'settlement total fee');
-                if (this.order['auto_cancel_after_seconds']) {
-                    this.countDownServer(this.order['auto_cancel_after_seconds'])
+                    if (this.$route.query && this.$route.query.order) {
+                    } else {
+                        if (this.order['auto_cancel_after_seconds']) {
+                            this.countDownServer(this.order['auto_cancel_after_seconds'])
+                        }
                 }
                 return this.model.user.order.payment.createdOrderInfo
             },
@@ -128,7 +130,6 @@
         mounted () {
 			this.$command('LOAD_ACCOUNT')
 			this.type = this.$route.query.type;
-
             if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
                 this.orderNew = this.order;

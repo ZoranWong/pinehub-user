@@ -58,7 +58,7 @@ export default class Orders extends Model {
             cartTotalFeeFormat: ''
         });
     }
-    
+
     calculate (state) {
         let data = state.goodInShoppingCart;
         if (_.isEmpty(data)) return;
@@ -68,24 +68,24 @@ export default class Orders extends Model {
         });
         state.totalPrice = formatMoney(totalPrice);
     }
-    
+
 
     listeners () {
         let that = this;
-        
+
         super.listeners();
-        
+
         this.addEventListener('shoppingCartAnimation', function (arg) {
         });
-    
+
         this.addEventListener('saveCategories', function ({categories}) {
             this.state.categories = categories;
         });
-    
+
         this.addEventListener('saveGoods', function ({goods}) {
             _.map(goods, function (product) {
                 let productEntities = product['product_entities'];
-                
+
                 _.map(productEntities, function (itemEntities) {
                     let specObj = {};
                     _.map(itemEntities.specifications, function (spec) {
@@ -93,7 +93,7 @@ export default class Orders extends Model {
                     });
                     itemEntities.specs = specObj
                 });
-    
+
                 // let minPrice = _.min(productEntities, (value) => {
                 //     return value['market_price']
                 // });
@@ -109,19 +109,19 @@ export default class Orders extends Model {
                 // } else {
                 //     product['range'] = `￥${minPrice['market_price']}`
                 // }
-    
+
                 let specifications = product['specifications'];
                 let spec = [];
                 _.map(specifications, function (value) {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
-               
+
             });
-    
+
             this.state.goods = goods;
         });
-        
+
         this.addEventListener('addToShoppingCart', function ({goods}) {
             let carts = this.state.goodInShoppingCart;
             let cartIndex = _.findIndex(carts, {product_stock_id: goods['product_stock_id']});
@@ -139,13 +139,13 @@ export default class Orders extends Model {
             }
             that.calculate(this.state);
         });
-        
+
         this.addEventListener('removeGoodsFromCart', function ({goods}) {
             let carts = this.state.goodInShoppingCart;
             this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
             that.calculate(this.state);
         });
-        
+
         this.addEventListener('saveCartGoodsList', function ({products}) {
             let items = products.data;
             let meta = products.meta;
@@ -162,11 +162,11 @@ export default class Orders extends Model {
             this.state.cartTotalFeeFormat = meta['total_fee_format'];
             that.calculate(this.state);
         });
-        
+
         this.addEventListener('clearShoppingCart', function () {
             this.state.goodInShoppingCart = []
         });
-    
+
         this.addEventListener('changeBuyNum', function ({id, num}) {
             let carts = this.state.goodInShoppingCart;
             let cartIndex = _.findIndex(carts, {id: id});
@@ -176,22 +176,28 @@ export default class Orders extends Model {
             };
             that.calculate(this.state);
         });
-        
+
         this.addEventListener('selectPoints', function ({boolean, type}) {
             this.state.showPoints = boolean;
             this.state.mallType = type;
         });
-    
+
         this.addEventListener('saveCommonlyUsedPoint', function ({points, type}) {
+            _.map(points, (point) => {
+                point.formatDistance = Math.round(point.distance);
+            });
             this.state.commonlyPoints = points;
             this.state.type = type;
         });
-    
+
         this.addEventListener('saveNearbyPoints', function ({points, type}) {
+            _.map(points, (point) => {
+                point.formatDistance = Math.round(point.distance);
+            });
             this.state.nearbyPoints = points;
             this.state.type = type;
         });
-        
-       
+
+
     }
 }

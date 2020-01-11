@@ -50,8 +50,8 @@
                 </div>
                 <div class="line line-10"></div>
                 <div class="pay-btn">
-                    <button v-if="disabled" disabled="disabled" type="primary" class="payment-btn">{{btnText}}</button>
-                    <button v-else type="primary" class="payment-btn" @click="pay">{{btnText}}</button>
+
+                    <button  type="primary" class="payment-btn" @click="pay">{{btnText}}</button>
                 </div>
             </div>
         </div>

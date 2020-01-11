@@ -25,6 +25,8 @@
         "pages/user/tradeDetail/main",
         "pages/user/recharge/main",
         "pages/user/balance/main",
+        "pages/user/address/main",
+        "pages/user/addressOperation/main",
         "pages/user/selectPay/main",
         "pages/user/orderFeedBack/main"
     ],

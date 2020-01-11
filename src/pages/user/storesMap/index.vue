@@ -40,7 +40,7 @@
                                 {{item.address}}
                             </div>
                         </div>
-                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
+                        <i class="iconfont right" v-if="checkId === item.id && isOpen">&#xe656;</i>
                         <i class="iconfont right disSelected" v-else>&#xe6d7;</i>
                     </li>
                     <div class="empty_img" v-if="!commonPoints.length">
@@ -50,18 +50,24 @@
                 </ul>
 
                 <ul id="location_points_list" v-if="position === 'left'">
-                    <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item.id)">
+                    <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item)">
                         <div class="left">
                             <div class="top">
                                 <h4>{{item.name}}</h4>
-                                <span>距您当前位置{{item.distance}}米</span>
+                                <span>距您当前位置{{item.formatDistance}}米</span>
                             </div>
                             <div class="bottom">
                                 {{item.address}}
                             </div>
                         </div>
-                        <i class="iconfont right" v-if="checkId === item.id">&#xe656;</i>
-                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>
+<!--                        <i class="iconfont right" v-if="checkId === item.id && isOpen">&#xe656;</i>-->
+<!--                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>-->
+                        <i class="customIcon" v-if="checkId === item.id && isOpen">
+                            <i class="son">
+                                <div class="sonson"></div>
+                            </i>
+                        </i>
+                        <i class="customIcon disSelected" v-else> </i>
                     </li>
                     <div class="empty_img" v-if="!nearPoints.length">
                         <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
@@ -69,7 +75,7 @@
                     </div>
                 </ul>
                 <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId">确定</button>
+                    <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId && isOpen">确定</button>
                 </form>
 
             </div>
@@ -86,7 +92,7 @@
 	var markersData = [];
 	let bg1 = require('./imgs/longBanner.jpg');
 	let bg2 = require('./imgs/longBanner1.jpg');
-    export default {
+	export default {
         components: {
 			CustomHeader
         },
@@ -108,7 +114,8 @@
 				nearPoints: [],
 				commonPoints:[],
                 checkId: '',
-				barHeight: 0
+				barHeight: 0,
+                isOpen: true
             }
         },
         watch: {
@@ -130,8 +137,8 @@
 				return points
 			},
 			nearbyMapPoints () {
-				let points = this.model.user.map.nearbyMapPoints
-				this.points = points;
+                let points = this.model.user.store.nearbyPoints;
+                this.points = points;
 				this.nearPoints = points;
 				return points
 			},
@@ -155,8 +162,11 @@
 					console.log('form id 不合法')
 				}
 			},
-			checkPoint (id) {
-				this.checkId = id;
+			checkPoint (item) {
+			    let id = item.id;
+                console.log(item, '++++++++++++');
+                this.isOpen = item['open_preorder'];
+                this.checkId = id;
 				let data = this.points.filter(item => item.id === id)[0];
 				this.latitude = data.position.coordinates[1];
 				this.longitude = data.position.coordinates[0];
@@ -201,7 +211,7 @@
                 this.sendDate = e.target.value;
             },
             marker (store, callout = false) {
-				let iconPath = store['is_open'] ? '/static/images/icon.jpg' : '/static/images/disabledIcon.jpg'
+				let iconPath = store['open_preorder'] ? '/static/images/icon.jpg' : '/static/images/disabledIcon.jpg'
 				let marker = {
                     iconPath: iconPath,
                     width: 42,
@@ -214,7 +224,7 @@
                 };
                 if (callout) {
                     marker['callout'] = {
-                        content: `${store.name}  距您当前${store.distance}米 \n 营业时间 : ${store.time || '暂无'} \n 地址 :${store.address}`,
+                        content: `${store.name}  距您当前${Math.round(store.distance)}米 \n 营业时间 : ${store.time || '暂无'} \n 地址 :${store.address}`,
                         color: '#111',
                         fontSize: '11',
                         borderRadius: '5',
@@ -482,23 +492,47 @@
         border-bottom: 0;
     }
 
-    #location_points #location_points_list li i{
-        font-size: 48rpx;
-        margin: 0 10rpx;
-    }
+    /*#location_points #location_points_list li i{*/
+    /*    font-size: 48rpx;*/
+    /*    margin: 0 10rpx;*/
+    /*    z-index: 111111;*/
+    /*}*/
 
-    #location_points #location_points_list li i.disSelected {
-        background: linear-gradient(to right,#FDE068,#FFCC00);
-        -webkit-background-clip: text;
-        color: #ccc;
-        position: absolute;
-        width: 108rpx;
-        height: 108rpx;
-        right: 0rpx;
+
+    #location_points #location_points_list li .customIcon{
+        width: 40rpx;
+        height: 40rpx;
+        margin: 0 10rpx;
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
     }
+    .son{
+        width: 36rpx;
+        height: 36rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background: #fff;
+    }
+    .sonson{
+        width: 20rpx;
+        height: 20rpx;
+        background:linear-gradient(to right,#FDE068,#FFCC00) ;
+        border-radius: 50%;
+    }
+
+    #location_points #location_points_list li .customIcon.disSelected{
+        width: 36rpx;
+        height: 36rpx;
+        border: 2rpx solid #ccc;
+        background: #fff;
+    }
+
 
     #location_points #location_points_list li span{
         display: inline-block;
@@ -542,6 +576,19 @@
         -webkit-background-clip: text;
         color: transparent;
     }
+
+    /*#location_points #location_points_list li i.disSelected {*/
+    /*    z-index: 11111;*/
+    /*    -webkit-background-clip: text;*/
+    /*    color: #ccc;*/
+    /*    position: absolute;*/
+    /*    width: 108rpx;*/
+    /*    height: 108rpx;*/
+    /*    right: 0rpx;*/
+    /*    display: flex;*/
+    /*    justify-content: center;*/
+    /*    align-items: center;*/
+    /*}*/
 
     #location_points .confirmBtn{
         width: 100%;

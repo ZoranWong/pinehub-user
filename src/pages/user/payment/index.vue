@@ -127,14 +127,14 @@
 
                 // }
                 if (!this.registered) {
-                	this.getUserAuth()
+                    this.getUserAuth()
                 } else {
-					this.pay()
+                    this.pay()
                 }
             },
             async pay () {
-				if (this.paymentAmount) {
-					this.paymentPopupShow = true;
+                if (this.paymentAmount) {
+                    this.paymentPopupShow = true;
 					this.disPay = true;
 					await this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
 				}

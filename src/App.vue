@@ -6,7 +6,23 @@
         onShow () {
             console.log('show tips');
         },
+        // onShareAppMessage: function (res) {
+        //     var that = this;
+        //     return {
+        //         title: '呵呵哈哈哈',
+        //         path: '/pages/list/list?id=' + that.data.scratchId,
+        //         success: function (res) {
+        //             // 转发成功
+        //
+        //             that.shareClick();
+        //         },
+        //         fail: function (res) {
+        //             // 转发失败
+        //         }
+        //     }
+        // },
         created () {
+
             // 调用API从本地缓存中获取数据 1212
             console.log('========= mp app created =========');
         }

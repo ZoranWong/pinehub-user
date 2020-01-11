@@ -13,6 +13,8 @@
 	"user.feedBack": "/pages/user/feedBack/main",
 	"user.share": "/pages/user/share/main",
     "user.balance": "/pages/user/balance/main",
+    "user.address": "/pages/user/address/main",
+    "user.addressOperation": "/pages/user/addressOperation/main",
     "user.recharge": "/pages/user/recharge/main",
     "user.pickup": "/pages/user/pickup/main",
     "user.integral": "/pages/user/integral/main",

@@ -41,6 +41,7 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.nearestStore', NearestStore);
         this.app.registerModel('model.chargeCards', ChargeCards);
         this.app.registerModel('model.tradeOrderItems', TradeOrderItems);
+
     }
 
     boot () {

@@ -11,6 +11,7 @@ import Fly from 'flyio/dist/npm/wx';
 import AccountService from '@/services/http/AccountService';
 import ChargeCardService from '@/services/http/ChargeCardService';
 import IntegralService from '@/services/http/IntegralService';
+import AddressService from '@/services/http/AddressService';
 
 
 export default class HttpServiceProvider extends ServiceProvider {
@@ -31,5 +32,6 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.account', AccountService);
         this.app.register('http.chargeCard', ChargeCardService);
         this.app.register('http.integral', IntegralService);
+        this.app.register('http.address', AddressService);
     }
 }

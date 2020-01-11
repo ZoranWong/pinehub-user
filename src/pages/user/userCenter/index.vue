@@ -78,14 +78,15 @@
 
 
 
-        <div id="merchant-store_menu">
-            <ul>
+        <div class="merchant-store_menu">
+            <ul class="mesnus">
                 <!--           <li @click="jump('user.share')">
                                <img src="../../../../static/images/icon/my_ico_menu2.png" />
                                <span>邀请享奖励</span>
                                <i></i>
                                <em>邀请好友</em>
                            </li> -->
+
                 <li @click="jump('user.feedBack')">
                     <div class="left">
                         <i class="iconfont blue">&#xe609;</i>
@@ -93,7 +94,7 @@
                     </div>
                     <i class="iconfont arrow">&#xe6a3;</i>
                 </li>
-                <li @click="connectKf">
+                <li @click="connectKf" class="lines">
                     <div class="left">
                         <i class="iconfont green">&#xe602;</i>
                         <span>联系客服</span>
@@ -102,6 +103,20 @@
                 </li>
             </ul>
         </div>
+
+        <div class="merchant-store_menu">
+            <ul class="mesnus">
+
+                <li @click="jump('user.address')">
+                    <div class="left">
+                        <i class="iconfont yellow">&#xe80b;</i>
+                        <span>收货地址</span>
+                    </div>
+                    <i class="iconfont arrow">&#xe6a3;</i>
+                </li>
+            </ul>
+        </div>
+
         <div id="footNavHeight"></div>
         <footer-nav :navName="navName" @getUserAuth="getUserAuth">></footer-nav>
     </div>
@@ -380,6 +395,7 @@
         flex-direction: column;
         padding: 0 20rpx;
         background: #fff;
+        border-radius: 10rpx;
     }
 
     #merchant-store_orders_header{
@@ -508,12 +524,12 @@
         right: 180rpx;
     }
 
-    #merchant-store_menu {
+    .merchant-store_menu {
         border-radius: 20rpx;
         margin: 20rpx;
     }
 
-    #merchant-store_menu ul li {
+    .merchant-store_menu ul li {
         padding: 0 20rpx;
         height: 108rpx;
         background: #FFFFFF;
@@ -522,35 +538,65 @@
         align-items: center;
     }
 
-    #merchant-store_menu ul li i{
+   .merchant-store_menu ul li:first-child{
+        border-top-left-radius: 10rpx;
+        border-top-right-radius: 10rpx
+    }
+    .merchant-store_menu ul li:last-child{
+        border-bottom-left-radius: 10rpx;
+        border-bottom-right-radius: 10rpx
+    }
+
+    .lines{
+        position: relative;
+    }
+
+    .lines:after{
+        content: '';
+        position: absolute;
+        width: 630rpx;
+        height: 2rpx;
+        background: #f2f2f2;
+        top: 0;
+        left: 80rpx;
+    }
+
+    .merchant-store_menu ul li i{
         font-size: 36rpx;
     }
 
-    #merchant-store_menu ul li .arrow{
+    .merchant-store_menu ul li .arrow{
         font-size: 22rpx;
         color: #757575;
     }
 
-    #merchant-store_menu ul li .blue{
+    .merchant-store_menu ul li .blue{
         background: linear-gradient(to right,#5EC4F9,#34B5F8);
         -webkit-background-clip: text;
         color: transparent;
     }
 
-    #merchant-store_menu ul li .green{
+    .merchant-store_menu ul li .yellow{
+        font-size: 46rpx;
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .merchant-store_menu ul li .green{
         background: linear-gradient(to right,#97EF66,#83DF50);
         -webkit-background-clip: text;
         color: transparent;
     }
 
-    #merchant-store_menu ul li .left{
+   .merchant-store_menu ul li .left{
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
 
-    #merchant-store_menu ul li span {
+    .merchant-store_menu ul li span {
         float: left;
         margin-left: 20rpx;
         font-size: 28rpx;
@@ -558,7 +604,7 @@
         color: #111111;
     }
 
-    #merchant-store_menu ul li em {
+    .merchant-store_menu ul li em {
         float: right;
         font-size: 32rpx;
         font-weight: 300;
