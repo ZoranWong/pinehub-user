@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 23,
+			"current": 21,
 			"list": [
 				{
 					"id": 0,
@@ -174,21 +174,7 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/user/index/main",
-					"pathName": "pages/user/index/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/address/main",
-					"pathName": "pages/user/address/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "new",
+					"name": "1",
 					"pathName": "pages/user/addressOperation/main",
 					"scene": null
 				}

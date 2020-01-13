@@ -7,10 +7,10 @@
                 <i class="iconfont" @click="closeModal">&#xe646;</i>
             </div>
             <ul class="tags" >
-                <li class="custom">
+                <li class="custom" @click="select('custom')">
                     <div class="left">
                         <span class="icon" v-if="name">{{name[0]}}</span>
-                        <i class="iconfont" v-else>&#xe7d5;</i>
+                        <img v-else src="../../static/icons/person.png" alt="">
                         <input
                             type="text"
                             :placeholder="placeholder"
@@ -24,21 +24,36 @@
                             <i class="iconfont" @click.stop="clear">&#xe658;</i>
                         </div>
                     </div>
-                    <div class="right">
-                        <i class="iconfont">&#xe645;</i>
+                    <div class="right" v-if="checked === 'custom'">
+                        <img src="../../static/icons/corrent.png" alt="">
                     </div>
                 </li>
-                <li>
-                    <i class="iconfont yellow">&#xe80b;</i>
-                    <span>家</span>
+                <li @click="select('home')">
+                    <div class="left">
+                        <img src="../../static/icons/home.png" alt="">
+                        <span>家</span>
+                    </div>
+                    <div class="right" v-if="checked === 'home'">
+                        <img src="../../static/icons/corrent.png" alt="">
+                    </div>
                 </li>
-                <li>
-                    <i class="iconfont blue">&#xe80b;</i>
-                    <span>公司</span>
+                <li @click="select('company')">
+                    <div class="left">
+                        <img src="../../static/icons/company.png" alt="">
+                        <span>公司</span>
+                    </div>
+                    <div class="right" v-if="checked === 'company'">
+                        <img src="../../static/icons/corrent.png" alt="">
+                    </div>
                 </li>
-                <li>
-                    <i class="iconfont green">&#xe80b;</i>
-                    <span>学校</span>
+                <li @click="select('school')">
+                    <div class="left">
+                        <img src="../../static/icons/school.png" alt="">
+                        <span>学校</span>
+                    </div>
+                    <div class="right" v-if="checked === 'school'">
+                        <img src="../../static/icons/corrent.png" alt="">
+                    </div>
                 </li>
             </ul>
             <div class="submitBtn">
@@ -56,7 +71,8 @@
 		    return {
                 name: '',
                 tips: false,
-                placeholder: '默认显示姓名,可输入自定义标签'
+                placeholder: '默认显示姓名,可输入自定义标签',
+                checked: 'custom'
             }
         },
         watch: {
@@ -78,16 +94,25 @@
                 this.$emit('close')
             },
             saveCustom () {
-                if (this.name) {
-                    this.$emit('save',this.name)
-                }
-            }
+                let type = this.checked === 'custom' ? this.name : this.checked;
+                this.$emit('save',type)
+            },
+            select (type) {
+                 this.checked = type;
+            },
         },
         computed : {
 
         },
         mounted () {
-            this.name = this._props.tagName
+		    let tagName = this._props.tagName;
+		    if (tagName === 'school' || tagName === 'home' || tagName === 'company') {
+		        this.name = '';
+		        this.checked = tagName;
+            } else {
+                this.name = this._props.tagName
+                this.checked =  'custom'
+            }
         }
     }
 </script>
@@ -150,8 +175,9 @@
         align-items: center;
     }
 
-    .tags li .iconfont{
-        font-size: 66rpx;
+    .tags li img{
+        width: 66rpx;
+        height: 66rpx;
     }
 
     .yellow {
@@ -178,11 +204,11 @@
         margin-left: 22rpx;
     }
 
-    .tags .custom{
+    .tags li{
         justify-content: space-between;
     }
 
-    .tags .custom .left {
+    .tags li .left {
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -234,9 +260,9 @@
         z-index: 1000;
     }
 
-    .tags .custom .right .iconfont {
-        font-size: 26rpx;
-        color: #FFCC00;
+    .tags li .right img {
+        width: 26rpx;
+        height: 18rpx;
     }
 
     .submitBtn{

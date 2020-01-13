@@ -17,13 +17,13 @@
 
 .forms .forms-item input{
     font-size: 15px;
-    color: #757575;
+    color: #111;
 }
 .forms .forms-item textarea{
     width: 100%;
     height: 75px;
     font-size: 15px;
-    color: #757575;
+    color: #111;
 }
 .setting {
     width: 100%;
@@ -45,6 +45,26 @@
     color: #111;
 }
 
+/*swtich整体大小及背景色*/
+.wx-switch-input{
+    width:40px !important;
+    height:22px !important;
+    background: #FFEDA6!important;
+}
+/*白色样式（false的样式）*/
+.wx-switch-input::before{
+    width:40px !important;
+    height: 20px !important;
+    background: #ACACAC!important;
+}
+/*绿色样式（true的样式）*/
+.wx-switch-input::after{
+    width: 20px !important;
+    height: 20px !important;
+    background: #ffcc00;
+}
+
+
 .setting .setting-item .right {
     display: flex;
     justify-content: flex-end;
@@ -60,6 +80,12 @@
     justify-content: center;
     align-items: center;
     border-radius: 14px;
+    margin-right: 10px;
+}
+
+.setting .setting-item .right .icons{
+    width: 33px;
+    height: 33px;
     margin-right: 10px;
 }
 

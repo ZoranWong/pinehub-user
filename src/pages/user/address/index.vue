@@ -6,7 +6,7 @@
 
         </div>
         <div v-else class="empty-list">
-            <h3></h3>
+            <img src="./empty_point.jpg" alt="">
             <span>你还没有收货地址哦~</span>
         </div>
         <div class="addAddress">
@@ -78,13 +78,13 @@
         align-items: center;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        height: 70vh;
     }
 
-    .empty-list h3{
+    .empty-list img{
         width: 350rpx;
         height: 200rpx;
-        background: url("./empty_point.jpg") center center;
+        margin-bottom: 50rpx;
     }
 
     .empty-list span{
