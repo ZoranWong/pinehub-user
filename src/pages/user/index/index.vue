@@ -47,6 +47,11 @@
                 <dt>积分商城</dt>
             </dl>
         </div>
+        <div class="newActivity" @click="redirectTo('user.QingSongKungfu')">
+            <div>
+                轻松功夫
+            </div>
+        </div>
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
@@ -357,6 +362,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .newActivity{
+        margin-top: 40rpx;
+        padding: 0 40rpx;
+        width: 100%;
+        height: 100rpx;
+        background: #FFCC00;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
     }
 
     #index_menu dl {

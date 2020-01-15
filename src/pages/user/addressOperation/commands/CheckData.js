@@ -1,6 +1,6 @@
 import Command from '../../../../commands/Command';
 export default class LoadIntegralProductsCommand extends Command {
-    async handle (forms, code, isDefault, tag) {
+    async handle (forms, code, isDefault, tag, id) {
         if (!forms['consignee_name']) {
             wx.showToast({
                 title: '请填写收货人姓名',
@@ -32,7 +32,14 @@ export default class LoadIntegralProductsCommand extends Command {
         }
         if (!forms['detail_address']) {
             wx.showToast({
-                title: '请填写收货人详细地址号',
+                title: '请填写收货人详细地址',
+                icon: 'none'
+            });
+            return
+        }
+        if (forms['detail_address'].length < 5) {
+            wx.showToast({
+                title: '收货人详细地址字数不可小于5',
                 icon: 'none'
             });
             return
@@ -44,14 +51,17 @@ export default class LoadIntegralProductsCommand extends Command {
             });
             return
         }
-
         forms['province_code'] = code[0];
         forms['city_code'] = code[1];
         forms['area_code'] = code[2];
         forms['is_default'] = isDefault;
         forms['tag'] = tag;
 
-        this.$command('CREATE_ADDRESS', forms)
+        if (id) {
+            this.$command('EDIT_ADDRESS', forms, id)
+        } else {
+            this.$command('CREATE_ADDRESS', forms)
+        }
     }
     static commandName () {
         return 'CHECK_DATA';

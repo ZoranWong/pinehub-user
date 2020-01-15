@@ -24,7 +24,20 @@ export default class Address extends Model {
     // 监听数据
     listeners () {
         this.addEventListener('loadUserAddress', function ({addresses}) {
-            this.state.addresses = addresses
+            _.map(addresses, (address) => {
+                address.rangeAddress = address.pca.join(' ');
+                let ary = [];
+                ary.push(address['province']['region_code']);
+                ary.push(address['city']['region_code']);
+                ary.push(address['area']['region_code']);
+                address.regionCode = ary;
+                if (address.tag === 'school' || address.tag === 'company' || address.tag === 'home') {
+                     address.isDefaultTag = true
+                 } else {
+                     address.isDefaultTag = false
+                 }
+            });
+            this.state.addresses = addresses;
         })
     }
 }

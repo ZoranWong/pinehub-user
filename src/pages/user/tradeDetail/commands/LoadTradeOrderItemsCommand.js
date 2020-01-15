@@ -2,7 +2,6 @@ import Command from '@/commands/Command';
 
 export default class LoadTradeOrderItemsCommand extends Command {
     async handle (page = 1, limit = 15) {
-        console.log('======================');
         let [list, totalNum, currentPage, totalPage] = await this.service('http.account').orderRecords(page, limit);
         this.store().dispatch({
             type: 'model.tradeOrderItems/setList',

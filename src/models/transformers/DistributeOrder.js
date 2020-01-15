@@ -1,6 +1,5 @@
 export default class DistributeOrder {
     constructor (distributeOrders) {
-        //console.log('order transformer');
         this.code = distributeOrders['code'];
         this.id = distributeOrders['id'];
         switch (parseInt(distributeOrders['status'])) {

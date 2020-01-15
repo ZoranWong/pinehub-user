@@ -29,6 +29,7 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.newEvents.shoppingCarts', ShoppingCarts);
         // this.app.registerModel('model.purchase.shoppingCarts', ShoppingCarts);
 
+
         // this.app.registerModel('model.storeMarket.tickets', Tickets);
         // this.app.registerModel('model.bookingMall.tickets', Tickets);
         this.app.registerModel('model.newEvents.tickets', Tickets);

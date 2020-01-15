@@ -20,9 +20,17 @@
 
     export default {
 		name: 'AddressSelector',
+        props: ['regions'],
         data () {
 		    return {
                 region: ['请选择地区'],
+            }
+        },
+        watch: {
+		    regions (val) {
+		        if (val.length) {
+		            this.region = val;
+                }
             }
         },
         methods: {
@@ -31,9 +39,11 @@
                 this.$emit('save', e.mp.detail.value, e.mp.detail.code)
             }
         },
+        mounted () {
+        }
 
 
-	}
+    }
 </script>
 
 <style scoped>

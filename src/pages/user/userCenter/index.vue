@@ -50,26 +50,31 @@
                 </div>
                 <ul id="merchant-store_orders_list">
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PAY')">
-                        <i class="iconfont">&#xe67a;</i>
+<!--                        <i class="iconfont">&#xe67a;</i>-->
+                        <img src="../../../../static/icons/waitPay.png" alt="">
                         <div class="count" v-if="userInfo['waitPayOrderCount']">{{userInfo['waitPayOrderCount']}}</div>
                         <span>待付款</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PICK')">
-                        <i class="iconfont">&#xe884;</i>
+<!--                        <i class="iconfont">&#xe884;</i>-->
+                        <img src="../../../../static/icons/waitPick.png" alt="">
                         <div class="count" v-if="userInfo['waitPickOrderCount']">{{userInfo['waitPickOrderCount']}}</div>
                         <span>待自提</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_COMPLETED')">
-                        <i class="iconfont" >&#xe60d;</i>
+<!--                        <i class="iconfont" >&#xe60d;</i>-->
+                        <img src="../../../../static/icons/completed.png" alt="">
                         <span>已完成</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_HANDLING')">
-                        <i class="iconfont">&#xe7ea;</i>
+<!--                        <i class="iconfont">&#xe7ea;</i>-->
+                        <img src="../../../../static/icons/handling.png" alt="">
                         <div class="count" v-if="userInfo['handlingOrderCount']">{{userInfo['handlingOrderCount']}}</div>
                         <span>处理中</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_REFUNDED')">
-                        <i class="iconfont">&#xe610;</i>
+<!--                        <i class="iconfont">&#xe610;</i>-->
+                        <img src="../../../../static/icons/refunded.png" alt="">
                         <span>已退款</span>
                     </li>
                 </ul>
@@ -80,23 +85,19 @@
 
         <div class="merchant-store_menu">
             <ul class="mesnus">
-                <!--           <li @click="jump('user.share')">
-                               <img src="../../../../static/images/icon/my_ico_menu2.png" />
-                               <span>邀请享奖励</span>
-                               <i></i>
-                               <em>邀请好友</em>
-                           </li> -->
 
                 <li @click="jump('user.feedBack')">
                     <div class="left">
-                        <i class="iconfont blue">&#xe609;</i>
+                        <img src="../../../../static/icons/feedback.png" alt="">
+<!--                        <i class="iconfont blue">&#xe609;</i>-->
                         <span>意见反馈</span>
                     </div>
                     <i class="iconfont arrow">&#xe6a3;</i>
                 </li>
                 <li @click="connectKf" class="lines">
                     <div class="left">
-                        <i class="iconfont green">&#xe602;</i>
+                        <img src="../../../../static/icons/service.png" alt="">
+<!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>联系客服</span>
                     </div>
                     <i class="iconfont arrow">&#xe6a3;</i>
@@ -109,7 +110,8 @@
 
                 <li @click="jump('user.address')">
                     <div class="left">
-                        <i class="iconfont yellow">&#xe80b;</i>
+<!--                        <i class="iconfont yellow">&#xe80b;</i>-->
+                        <img src="../../../../static/icons/addresses.png" alt="">
                         <span>收货地址</span>
                     </div>
                     <i class="iconfont arrow">&#xe6a3;</i>
@@ -468,6 +470,11 @@
       color: transparent;
     }
 
+    #merchant-store_orders_list li img{
+        width: 48rpx;
+        height: 48rpx;
+    }
+
     #merchant-store_orders_list li span{
       font-size: 24rpx;
       color: #757575;
@@ -561,8 +568,10 @@
         left: 80rpx;
     }
 
-    .merchant-store_menu ul li i{
-        font-size: 36rpx;
+    .merchant-store_menu ul li img{
+        /*font-size: 36rpx;*/
+        width: 38rpx;
+        height: 38rpx;
     }
 
     .merchant-store_menu ul li .arrow{

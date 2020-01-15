@@ -2,8 +2,10 @@
     <div id="footNav">
         <ul>
             <li @click="jump('index')">
-                <i class="iconfont now" v-if="index === 'index_now'">&#xe6bb;</i>
-                <i class="iconfont" v-else>&#xe7d4;</i>
+<!--                <i class="iconfont now" >&#xe6bb;</i>-->
+                <img src="../../static/icons/menuHomeAct.png" alt="" v-if="index === 'index_now'">
+                <img src="../../static/icons/menuHome.png" alt="" v-else>
+<!--                <i class="iconfont" v-else>&#xe7d4;</i>-->
                 <em :class="index === 'index_now'?'active':''">首页</em>
             </li>
             <li @click="jump('user.store')">
@@ -14,13 +16,17 @@
             </li>
 
             <li @click="jump('user.pickup') ">
-                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>
-                <i class="iconfont" v-else>&#xe7e4;</i>
+<!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
+                <img src="../../static/icons/menuPickAct.png" alt="" v-if="pickup === 'pickup_now'">
+                <img src="../../static/icons/menuPick.png" alt="" v-else>
+<!--                <i class="iconfont" v-else>&#xe7e4;</i>-->
                 <em :class="pickup === 'pickup_now'?'active':''">取货</em>
             </li>
             <li @click=" jump('userCenter') ">
-                <i class="iconfont now" v-if="my === 'my_now'">&#xe735;</i>
-                <i class="iconfont" v-else>&#xe7d5;</i>
+<!--                <i class="iconfont now" >&#xe735;</i>-->
+                <img src="../../static/icons/menuMineAct.png" alt="" v-if="my === 'my_now'">
+                <img src="../../static/icons/menuMine.png" alt="" v-else>
+<!--                <i class="iconfont" v-else>&#xe7d5;</i>-->
                 <em :class="my === 'my_now'?'active':''">我的</em>
             </li>
         </ul>
@@ -123,6 +129,10 @@
         font-size: 20rpx;
         font-weight: 200;
         line-height: 24rpx;
+    }
+    #footNav ul li img {
+        width: 48rpx;
+        height: 48rpx;
     }
 
     #footNav ul li .active {

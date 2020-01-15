@@ -1,11 +1,16 @@
 import Command from '../../../../commands/Command';
-export default class LoadIntegralProductsCommand extends Command {
+export default class CreateAddress extends Command {
     async handle (params) {
-        console.log(params, '+++++++++++++++++""""""""""""""""""');
         let responses = await this.service('http.address').createAddress(params);
-        console.log(responses, '|||||||||||||||||||||');
+        let self = this;
         if (responses) {
-
+            wx.showToast({
+                title: '新建成功',
+                icon: 'success'
+            });
+            setTimeout(function () {
+                self.$application.$command('REDIRECT_TO', '', 'back');
+            }, 2000);
         }
     }
     static commandName () {

@@ -245,7 +245,7 @@
         justify-content: center;
         align-items: center;
         border-radius: 50%;
-        background: linear-gradient(to right, #e7e7e7, #cdcdcd);
+        background: linear-gradient(to right, #e5e5e5, #ccc);
         color: #fff;
         margin-left: 0;
         font-size: 30rpx;

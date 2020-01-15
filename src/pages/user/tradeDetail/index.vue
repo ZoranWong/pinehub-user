@@ -39,7 +39,6 @@
             }
         },
         mounted () {
-            console.log('======================');
             this.$command('LOAD_TRADE_ORDER_ITEMS');
         }
     }

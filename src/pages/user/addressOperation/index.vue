@@ -17,6 +17,7 @@
             <li class="forms-item" >
                 <AddressSelector
                     @save="saveRegions"
+                    :regions="regions"
                 />
             </li>
             <li class="forms-item">
@@ -44,8 +45,9 @@
                 <switch class="switch" :checked="switchChecked" color="#FFEDA6" @change="switchChange"/>
             </li>
         </ul>
-        <div class="submit">
-            <button class="save" @click="submitAddress">保存并使用</button>
+        <div class="submit" >
+            <button class="save" @click="submitAddress">保存</button>
+            <button class="delete" @click="deleteAddress" v-if="options.address" >删除</button>
         </div>
 
         <AddressTags
@@ -68,6 +70,7 @@
 		data() {
 			return {
 				title: '添加收货地址',
+                address: {},
 				screenHeight: 0,
 				rpxRate: 1,
 				screenWitdh: 0,
@@ -77,6 +80,7 @@
                 tag: false,
                 tagName: '',
                 isTagCustom: false,
+                addressId: '',
                 forms: {
                     consignee_name: '',   // 收货人姓名
                     consignee_mobile_phone: '', // 收货人手机号
@@ -88,6 +92,7 @@
                     {name: '公司', slug: 'company'}
                 ],
                 switchChecked: false,
+                options: {}
 			};
 		},
 		watch: {
@@ -122,7 +127,7 @@
                 }
             },
             saveRegions (regions, code) {
-                this.regions = regions;
+               // this.regions = regions;
                 this.regionsCode = code;
             },
             chooseTag (slug) {
@@ -131,7 +136,10 @@
             },
             submitAddress () {
                 let tagName = this.tag ? this.tagName : false ;
-                this.$command('CHECK_DATA', this.forms, this.regionsCode, this.switchChecked, tagName)
+                this.$command('CHECK_DATA', this.forms, this.regionsCode, this.switchChecked, tagName, this.addressId)
+            },
+            deleteAddress () {
+                this.$command('DELETE_ADDRESS', this.addressId);
             }
 		},
 		created() {
@@ -140,7 +148,30 @@
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		},
 		mounted() {
-
+            let pages =  getCurrentPages();
+            let options = pages[pages.length - 1]['options'];
+            this.options = options;
+            if (options.address) {
+                let address = JSON.parse(options.address);
+                this.forms = {
+                    consignee_name: address['consignee_name'],   // 收货人姓名
+                    consignee_mobile_phone: address['consignee_mobile_phone'], // 收货人手机号
+                    detail_address: address['detail_address'], // 详细地址
+                };
+                this.switchChecked = address['is_default'];
+                this.tagName = address.tag;
+                this.tag = true;
+                if (address.tag === 'school' || address.tag === 'home' || address.tag === 'company') {
+                    this.isTagCustom = false
+                } else {
+                    this.isTagCustom = true;
+                };
+                this.regions = address.pca;
+                this.regionsCode = address['regionCode']
+                this.addressId = address.id;
+            } else {
+                this.addressId = '';
+            }
         }
 	}
 </script>
