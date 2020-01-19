@@ -12,7 +12,7 @@
             <div id="select_spec_info">
                 <h4>{{item.name}}</h4>
                 <div class="select_spec_info">
-                    <span>{{item['sell_price_format']}}</span>
+                    <span :style="{fontSize: '32rpx',color: '#FFCC00'}">{{item['sell_price_format']}}</span>
                     <span>销量:{{item.sell_num}}</span>
                     <span>库存:{{item.product_entities[0].stock}}</span>
                 </div>
@@ -20,7 +20,7 @@
             <div id="select_spec_choose">
                 <div id="choose_items" v-for="(i,index) in item.specifications" :key="i.id">
                     <div class="left">{{i.name}}:</div>
-                    <div class="right">
+                    <div class="right1">
                         <button
                             :class="k.class"
                             @click="selectSpecItems(i,k)"
@@ -31,18 +31,26 @@
                     </div>
                 </div>
             </div>
-            <div id="select_spec_confirm">
-                <div id="select_spec_amount" v-if="item.specifications.length">
-                    <h4>{{totalPrice}}</h4>
-                    <span>{{selectedDesp}}</span>
+            <div id="number">
+                <div class="left">
+                    购买数量:
                 </div>
-                <div id="select_spec_amount" v-else>
-                    <h4>￥{{item.sell_price}}</h4>
-                    <span>{{item.name}}</span>
+                <div class="right">
+                    <img src="../../../../../static/icons/minus.png" alt="">
+                    <span>3</span>
+                    <img src="../../../../../static/icons/add.png" alt="">
                 </div>
+            </div>
+            <div id="remark">
+                <span>填写备注</span>
+                <input type="text" placeholder="点击填写备注">
+            </div>
+            <div id="select_spec_confirm1">
                 <button @click="addToShoppingCart">
-                    <i class="iconfont">&#xe6af;</i>
                     加入购物车
+                </button>
+                <button @click="addToShoppingCart">
+                    立即结算
                 </button>
             </div>
         </div>
@@ -51,7 +59,7 @@
 
 <script>
     import _ from 'underscore';
-    import {formatMoney} from '../utils';
+    import {formatMoney} from '../../../../utils';
 
 	export default {
         name: 'SelectSpecification',
@@ -202,12 +210,11 @@
 
     #select_spec_container #select_spec_banner{
         width: 100%;
-        height: 338rpx;
     }
 
     #select_spec_container #select_spec_banner img{
         width: 100%;
-        height: 100%;
+        height: 338rpx;
     }
 
     #select_spec_container #select_spec_info{
@@ -217,6 +224,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
+        margin-bottom: 30rpx;
     }
 
     #select_spec_container #select_spec_info h4{
@@ -234,57 +242,59 @@
     }
 
     #select_spec_container #select_spec_info .select_spec_info span{
-        font-size: 28rpx;
+        font-size: 22rpx;
         color: #757575;
     }
 
+    .select_spec_info .price{
+        font-size: 32rpx;
+        color: #FFCC00;
+    }
+
     #select_spec_container #select_spec_choose{
-        margin: 0 32rpx;
         height: 170rpx;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        border-top: 1rpx solid #f2f2f2;
-        border-bottom: 1rpx solid #f2f2f2;
+        padding: 30rpx 0;
     }
 
     #select_spec_container #select_spec_choose #choose_items {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        font-size: 28rpx;
-        color: #757575;
+        flex-direction: column;
         width: 100%;
     }
 
     #select_spec_container #select_spec_choose #choose_items .left{
-        width: 115rpx;
+        font-size: 30rpx;
+        color: #111111;
     }
 
-    #select_spec_container #select_spec_choose #choose_items .right{
-        width: 476rpx;
+    #select_spec_container #select_spec_choose #choose_items .right1{
         display: flex;
         justify-content: flex-start;
         align-items: center;
         flex-wrap: wrap;
-        margin-left: 20rpx;
+        margin-top: 30rpx;
     }
 
 
-    #select_spec_container #select_spec_choose #choose_items .right button{
+    #select_spec_container #select_spec_choose #choose_items .right1 button{
         border-radius: 10rpx;
         padding: 0 21rpx;
         height: 48rpx;
         line-height: 50rpx;
-        color: #757575;
+        color: #111;
         font-size: 28rpx;
         margin: 0 10rpx 10rpx 0 !important;
-        border: 2rpx solid #ccc;
+        border: 2rpx solid #757575;
         background: #fff;
     }
 
-    #select_spec_container #select_spec_choose #choose_items .right .active{
+    #select_spec_container #select_spec_choose #choose_items .right1 .active{
         background: linear-gradient(to right,#FDE068,#FFCC00);
         border: 2rpx solid #ffcc00;
         color: #fff;
@@ -294,39 +304,20 @@
         margin-left: 20rpx;
     }
 
-    #select_spec_container #select_spec_confirm{
+    #select_spec_container #select_spec_confirm1{
         height: 130rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #f2f2f2;
         padding: 0 32rpx;
     }
 
-    #select_spec_container #select_spec_confirm #select_spec_amount{
-        padding: 30rpx 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    #select_spec_container #select_spec_confirm #select_spec_amount h4{
-        font-size: 36rpx;
-        color: #ffcc00;
-    }
-
-    #select_spec_container #select_spec_confirm #select_spec_amount span {
-        font-size: 22rpx;
-        color: #757575;
-    }
-
-    #select_spec_container #select_spec_confirm button{
+    #select_spec_container #select_spec_confirm1 button{
         width: 273rpx;
         height: 80rpx;
         padding: 0 20rpx;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         color: #fff;
         font-size: 32rpx;
         background: linear-gradient(to right,#FDE068,#FFCC00);
@@ -335,9 +326,56 @@
         line-height: 90rpx!important;
     }
 
-    #select_spec_container #select_spec_confirm button i {
-        color: #fff;
-        font-size: 48rpx;
+    #number{
+        border-bottom: 1rpx solid #f2f2f2;
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 32rpx;
+        box-sizing: border-box;
+    }
+
+    #number .left{
+        font-size: 30rpx;
+        color: #111111;
+    }
+
+    #number .right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #number .right img{
+        width: 48rpx;
+        height: 48rpx;
+    }
+
+    #number .right span{
+        font-size: 30rpx;
+        color: #111111;
+        margin: 0 20rpx;
+    }
+
+    #remark {
+        border-bottom: 1rpx solid #f2f2f2;
+        height: 50px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 0 32rpx;
+        box-sizing: border-box;
+    }
+
+    #remark span{
+        font-size: 30rpx;
+        color: #111111;
+        margin-right: 30rpx;
+    }
+
+    #remark input{
+        font-size: 28rpx;
     }
 
 </style>

@@ -125,7 +125,7 @@
       },
       computed: {
           categories(){
-			  let categories = this.model.user.store.categories;
+            let categories = this.model.user.store.categories;
             if(categories && categories.length){
                 this.activeTab = categories[0].id
             }
@@ -165,7 +165,6 @@
           },
           tabSelect(id){
               this.activeTab = id;
-			  console.log(this.activeTab);
 			  this.$command('LOAD_STORE_COMMAND',id, 1)
           },
           setData(data){

@@ -47,9 +47,9 @@
                 <dt>积分商城</dt>
             </dl>
         </div>
-        <div class="newActivity" @click="redirectTo('user.QingSongKungfu')">
+        <div class="newActivity" v-for="item in activities" @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})">
             <div>
-                轻松功夫
+                <img :src="item.image" alt="">
             </div>
         </div>
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
@@ -118,7 +118,10 @@
 			},
 			navHeight () {
 				return this.model.global.barHeight.navHeight
-			}
+			},
+            activities () {
+                return this.model.activity.activities
+            }
         },
         watch: {
             accessToken (value) {
@@ -164,6 +167,7 @@
         },
         onShow () {
 			this.initAccount();
+			this.$command('ACTIVITIES')
             if (this.$route.query['needRefresh']) {
                 this.initAccount();
             }
@@ -375,6 +379,11 @@
         justify-content: center;
         align-items: center;
         color: #fff;
+    }
+
+    .newActivity img {
+        width: 66px;
+        height: 66px;
     }
 
     #index_menu dl {

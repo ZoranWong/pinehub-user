@@ -174,8 +174,9 @@
 				},
 				{
 					"id": -1,
-					"name": "1",
+					"name": "2222222222222",
 					"pathName": "pages/user/QingSongKungfu/main",
+					"query": "id=1",
 					"scene": null
 				}
 			]

@@ -103,8 +103,10 @@
 			goodInShoppingCart () {
 				if (this.type === 'mall') {
 					return this.model.user.store.goodInShoppingCart
-                } else {
+                } else if (this.type === 'breakfast')  {
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
+                } else if (this.type === '活动') {
+
                 }
 
             },

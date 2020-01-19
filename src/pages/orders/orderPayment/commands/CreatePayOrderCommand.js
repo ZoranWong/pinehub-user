@@ -6,8 +6,10 @@ export default class CreatePayOrderCommand extends Command {
         console.log(type, '---------------------------type--------------------------------');
         if (type === 'mall') {
             response = await this.service('http.orders').createPaymentOrder(params);
-        } else {
+        } else if (this.type === 'breakfast') {
             response = await this.service('http.orders').createBreakfastPaymentOrder(params);
+        } else if (this.type === '活动') {
+
         }
         if (!_.isEmpty(response)) {
             this.model.user.order.payment.dispatch('saveCreatedOrderInfo', {
@@ -20,12 +22,14 @@ export default class CreatePayOrderCommand extends Command {
                     boolean: false,
                     type: type
                 })
-            } else {
+            } else if (this.type === 'breakfast') {
                 this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart');
                 this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
                     boolean: false,
                     type: type
                 })
+            } else if (this.type === '活动') {
+
             }
         }
 

@@ -6,6 +6,7 @@ import SetUserMobileCommand from './commands/SetUserMobileCommand';
 import LoadTicketsCommand from './commands/LoadTicketsCommand';
 import ReceiveTicketCommand from './commands/ReceiveTicketCommand';
 import '../../../styles/iconfont.css'
+import LoadActivitiesCommand from './commands/LoadActivitiesCommand';
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -14,6 +15,7 @@ if (application) {
         this.registerCommand(LoadTicketsCommand.commandName(), LoadTicketsCommand);
         this.registerCommand(ReceiveTicketCommand.commandName(), ReceiveTicketCommand);
         this.registerCommand(SetUserMobileCommand.commandName(), SetUserMobileCommand);
+        this.registerCommand(LoadActivitiesCommand.commandName(), LoadActivitiesCommand);
         this.route = 'index';
     }, function () {
         this.currentPage = new Vue(this.mountComponent);

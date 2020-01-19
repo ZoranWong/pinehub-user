@@ -56,8 +56,10 @@
 				let products = [];
 				if(this.type === 'mall') {
 					products = this.model.user.store.goodInShoppingCart
-                } else {
+                } else if (this.type === 'breakfast') {
 					products = this.model.newEvents.shoppingCarts.goodInShoppingCart
+                } else if (this.type === '活动') {
+
                 }
 				if(products){
 					this.showMask = products.length ? true : false;
@@ -67,8 +69,10 @@
             totalPrice () {
 				if (this.type === 'mall') {
 					return this.model.user.store.totalPrice;
-                } else {
+                } else if (this.type === 'breakfast') {
 					return this.model.newEvents.shoppingCarts.totalPrice
+                } else if (this.type === '活动') {
+
                 }
             },
 			registered () {
@@ -80,18 +84,21 @@
 		},
 		methods: {
 			settle(){
-				console.log(this.type, '111111111111111111');
 				if (this.type === 'mall') {
 					this.model.user.store.dispatch('selectPoints', {
 						boolean: true,
                         type: this.type
 					})
-                } else {
+                } else if (this.type === 'breakfast') {
 					console.log('这是早餐车的购物车');
 					this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
 						boolean: true,
 						type: this.type
 					})
+                } else if (this.type === '活动') {
+                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                        query: {type: this.type}
+                    });
                 }
 
             },
@@ -103,8 +110,10 @@
 				this.showGoodsList = false;
 				if (this.type === 'mall') {
 					this.$command('CLEAR_CART_COMMAND');
-                } else {
+                } else if (this.type === 'breakfast') {
 					this.$command('CLEAR_BREAKFAST_CART_COMMAND')
+                } else if (this.type === '活动') {
+                    // 这是活动所需要的逻辑代码
                 }
 
             },
@@ -112,9 +121,11 @@
 				let newNum = item['buy_num'] + num;
 				if (this.type === 'mall') {
 					this.$command('CHANGE_BUY_NUM_COMMAND',item,newNum)
-				} else {
+				} else if (this.type === 'breakfast') {
 					this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, newNum)
-				}
+				} else if (this.type === '活动') {
+
+                }
             }
         },
         mounted () {

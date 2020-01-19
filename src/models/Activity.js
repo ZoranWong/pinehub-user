@@ -10,6 +10,15 @@ export default class Activity extends Model {
         return _.extend(super.computed(), {
             id (state) {
                 return state.id;
+            },
+            activities () {
+                return this.state.activities
+            },
+            banners () {
+                return this.state.banners
+            },
+            products () {
+                return this.state.products
             }
         });
     }
@@ -17,7 +26,10 @@ export default class Activity extends Model {
     data () {
         // let userInfo = this.service();
         return {
-            id: null
+            id: null,
+            activities: [],
+            banners: [],
+            products: []
         };
     }
 
@@ -27,6 +39,15 @@ export default class Activity extends Model {
             _.extend(this.state, userInfo);
             // this.service('mp.storage').set('token', userInfo.token);
             // this.service('mp.storage').set('userInfo', userInfo);
+        });
+        this.addEventListener('saveActivities', function ({activities}) {
+            this.state.activities = activities;
+        });
+        this.addEventListener('saveActBanners', function ({banners}) {
+            this.state.banners = banners;
+        });
+        this.addEventListener('saveProducts', function ({products}) {
+            this.state.products = products;
         });
     }
 }

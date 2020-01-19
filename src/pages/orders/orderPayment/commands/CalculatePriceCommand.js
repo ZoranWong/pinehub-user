@@ -8,8 +8,10 @@ export default class CalculatePrice extends Command {
             let respones;
             if (type === 'mall') {
                 respones = await this.service('http.orders').calculateMallPrice(params);
-            } else {
+            } else if (this.type === 'breakfast') {
                 respones = await this.service('http.orders').calculateBreakfastPrice(params);
+            } else if (this.type === '活动') {
+
             }
             if (_.isEmpty(respones)) {
                 wx.showToast({

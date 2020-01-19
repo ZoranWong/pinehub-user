@@ -26,6 +26,6 @@ export default class LoadCartCommand extends Command {
     }
 
     static commandName () {
-        return 'LOAD_CART_COMMAND';
+        return 'LOAD_ACTIVITY_CART_COMMAND';
     }
 }

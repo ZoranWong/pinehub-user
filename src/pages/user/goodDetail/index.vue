@@ -149,7 +149,7 @@
 								} else {
 									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
 								}
-							} else {
+							} else if (this.options['type'] === 'breakfast') {
 								let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
 								if (goods.length) {
 									_.map(goods, (product) => {
@@ -162,8 +162,9 @@
 								} else {
 									this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
 								}
-							}
-
+							} else if (this.options['type'] === 'activity') {
+                                console.log(';:::::::::::::::::::::');
+                            }
 						}
 					}
                 }
