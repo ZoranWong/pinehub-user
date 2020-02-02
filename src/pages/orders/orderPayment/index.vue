@@ -234,6 +234,7 @@
     #pay_pick_up_info{
         justify-content: flex-start;
         border-top: 2rpx solid #f2f2f2;
+        margin-left: 40rpx;
     }
 
     #pay_pick_up_info .location{

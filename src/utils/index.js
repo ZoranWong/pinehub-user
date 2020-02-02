@@ -20,12 +20,12 @@ function getFormatDate (arg) {
     if (arg === undefined || arg === '') {
         return '';
     }
-    
-    var re = arg + '';
+
+    let re = arg + '';
     if (re.length < 2) {
         re = '0' + re;
     }
-    
+
     return re;
 }
 export function addDate (date, days) {
@@ -41,18 +41,18 @@ export function addDate (date, days) {
 
 // 对比时间
 export function checkAuditTime (beginTime, endTime) {
-    var nowDate = new Date();
-    var beginDate = new Date(nowDate);
-    var endDate = new Date(nowDate);
-    
-    var beginIndex = beginTime.lastIndexOf("\:");
-    var beginHour = beginTime.substring(0, beginIndex);
-    var beginMinue = beginTime.substring(beginIndex + 1, beginTime.length);
+    let nowDate = new Date();
+    let beginDate = new Date(nowDate);
+    let endDate = new Date(nowDate);
+
+    let beginIndex = beginTime.lastIndexOf("\:");
+    let beginHour = beginTime.substring(0, beginIndex);
+    let beginMinue = beginTime.substring(beginIndex + 1, beginTime.length);
     beginDate.setHours(beginHour, beginMinue, 0, 0);
-    
-    var endIndex = endTime.lastIndexOf(" \: ");
-    var endHour = endTime.substring(0, endIndex);
-    var endMinue = endTime.substring(endIndex + 1, endTime.length);
+
+    let endIndex = endTime.lastIndexOf(" \: ");
+    let endHour = endTime.substring(0, endIndex);
+    let endMinue = endTime.substring(endIndex + 1, endTime.length);
     endDate.setHours(endHour, endMinue, 0, 0);
     if (nowDate.getTime() - beginDate.getTime() >= 0 && nowDate.getTime() <= endDate.getTime()) {
         return false;
@@ -63,15 +63,15 @@ export function checkAuditTime (beginTime, endTime) {
 
 export function formatMoney (number, cent = 2, isThousand = 1) {
     number = number.toString().replace(/\$|\,/g, '');
-    
+
     // 1、检查传入数值为数值类型
     if (isNaN(number)) {
         number = '0';
     }
-    
+
     // 2、获取符号(正/负数)
     let sign = (number === (number = Math.abs(number)));// Math.abs(number)取出number的绝对值
-    
+
     // 3、把指定的小数位先转换成整数.多余的小数位四舍五入，Math.pow(10, cent)为10的cent次方
     number = Math.floor(number * Math.pow(10, cent) + 0.5);
     // 4、求出小数位数值
@@ -80,14 +80,14 @@ export function formatMoney (number, cent = 2, isThousand = 1) {
     number = Math.floor(number / Math.pow(10, cent)).toString();
     // 6、把小数位转换成字符串,以便求小数位长度
     cents = cents.toString();
-    
+
     // 7、补足小数位到指定的位数
     while (cents.length < cent) {
         cents = '0' + cents;
     }
     // 8、对整数部分进行千分位格式化.
     if (isThousand) {
-        for (var i = 0; i < Math.floor((number.length - (1 + i)) / 3); i++) {
+        for (let i = 0; i < Math.floor((number.length - (1 + i)) / 3); i++) {
             number = number.substring(0, number.length - (4 * i + 3)) + ',' + number.substring(number.length - (4 * i + 3));
         }
     }
@@ -101,8 +101,38 @@ export function formatMoney (number, cent = 2, isThousand = 1) {
 
 export function getPrevUrl () {
     let pages = getCurrentPages();
-    var prevPage = pages[pages.length - 2];
+    let prevPage = pages[pages.length - 2];
     return prevPage
+}
+
+export function getTomorrowDate () {
+    let tomorrow = new Date();
+    tomorrow.setTime(tomorrow.getTime() + 24 * 60 * 60 * 1000);
+    let tomorrowStr = tomorrow.getFullYear() + '-' + (tomorrow.getMonth() + 1) + '-' + tomorrow.getDate();
+    return tomorrowStr
+}
+
+function doHandleMonth (month) {
+    let m = month;
+    if (month.toString().length === 1) {
+        m = '0' + month;
+    }
+    return m;
+}
+
+export function getfutureSevenDate (day = 1) {
+    let today = new Date();
+
+    let targetDayMilliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+
+    today.setTime(targetDayMilliseconds);
+
+    let tYear = today.getFullYear();
+    let tMonth = today.getMonth();
+    let tDate = today.getDate();
+    tMonth = doHandleMonth(tMonth + 1);
+    tDate = doHandleMonth(tDate);
+    return tYear + '-' + tMonth + '-' + tDate;
 }
 
 export default {

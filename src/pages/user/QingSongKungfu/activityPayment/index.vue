@@ -4,7 +4,6 @@
         <CustomHeader :title="title" :needReturn="true" />
 
         <div id="pay_shop_info" @click="selectPoint">
-<!--            <i class="iconfont location">&#xe80b;</i>-->
             <img class="locationImg" src="../../../../../static/icons/location.png" alt="">
             <div class="pay_shop_info" v-if="address.id"  >
                 <div class="pay_shop_info_name">
@@ -23,9 +22,8 @@
             <i class="iconfont arrow">&#xe6a3;</i>
         </div>
         <div id="pay_pick_up_info">
-<!--            <i class="iconfont location">&#xe80b;</i>-->
             <img class="locationImg" src="../../../../../static/icons/time.png" alt="">
-            <div class="order_info">
+            <div class="order_info" v-if="time">
                 <div class="order_info_name">
                     <h4>
                         预约送货日期
@@ -33,11 +31,14 @@
                     </h4>
                     <h4>
                         预约送货时间
-<!--                        <span>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>-->
                         <span>09:00 - 18:00</span>
                     </h4>
                 </div>
             </div>
+            <div class="order_info" v-else>
+                <TimeSelector ref="timeSelector" />
+            </div>
+            <i class="iconfont arrow">&#xe6a3;</i>
         </div>
         <ul id="good_list">
             <li v-for="(good,index) in goodInShoppingCart" :key="index">
@@ -84,19 +85,20 @@
 </template>
 <script>
 	import CustomHeader from '../../../../components/CustomHeader';
-
-	import {formatMoney} from '../../../../utils';
+    import TimeSelector from '../../../../components/TimeSelector';
+	import {formatMoney,getDate} from '../../../../utils';
 
 	export default {
 		components: {
-			CustomHeader
+			CustomHeader,TimeSelector
 		},
 		data() {
 			return {
 				title: '支付',
 				tomorrowStr: '',
                 type: '',
-                actId: ''
+                actId: '',
+                time: ''
 			};
 		},
 		watch: {
@@ -136,9 +138,16 @@
                 });
             },
 			createOrder(){
-				if (!this.address.id) {
+                if (!this.address.id) {
                     wx.showToast({
                         title: '请先选择收货地址',
+                        icon: 'none'
+                    });
+                    return;
+                }
+                if (!this.$refs.timeSelector.date || !this.$refs.timeSelector.time) {
+                    wx.showToast({
+                        title: '请选择送货时间',
                         icon: 'none'
                     });
                     return;
@@ -146,12 +155,6 @@
 				this.$command('CREATE_ACTIVITY_PAY_ORDER', this.actId, this.address.id, this.actCouponIds);
 
             },
-            getDate () {
-				var tomorrow = new Date();
-				tomorrow.setTime(tomorrow.getTime() + 24*60*60*1000);
-				var tomorrowStr = tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate();
-				this.tomorrowStr = tomorrowStr
-			},
 			jump (router) {
 				if (this.actAvailableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'replace',{
@@ -163,7 +166,6 @@
 
 		},
 		mounted() {
-            this.getDate();
 			let type = this.$route.query.type;
 			let id = this.$route.query.id;
 			let actId = this.$route.query.actId || '';
@@ -247,8 +249,13 @@
     }
 
     #pay_pick_up_info{
-        justify-content: flex-start;
+        justify-content: space-between;
         border-top: 2rpx solid #f2f2f2;
+    }
+
+    #pay_pick_up_info .arrow{
+        font-size: 22rpx;
+        color: #757575;
     }
 
     #pay_pick_up_info .location{
@@ -259,9 +266,9 @@
     }
 
     #pay_pick_up_info .order_info{
+        width: 507rpx;
         font-size: 28rpx;
         color:#111;
-        margin-left: 40rpx;
     }
 
     #pay_pick_up_info .order_info h4{
