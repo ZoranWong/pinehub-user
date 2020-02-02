@@ -18,6 +18,7 @@
     "user.recharge": "/pages/user/recharge/main",
     "user.pickup": "/pages/user/pickup/main",
     "user.QingSongKungfu": "/pages/user/QingSongKungfu/main",
+    "user.activity.payment": "/pages/user/QingSongKungfu/activityPayment/main",
     "user.integral": "/pages/integral/integral/main",
     "user.integral.detail": "/pages/integral/integralDetail/main",
     "user.integral.records": "/pages/integral/integralRecords/main",

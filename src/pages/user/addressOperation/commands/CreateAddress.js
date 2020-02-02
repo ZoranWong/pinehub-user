@@ -1,6 +1,7 @@
 import Command from '../../../../commands/Command';
 export default class CreateAddress extends Command {
-    async handle (params) {
+    async handle (params, isPayment) {
+        console.log(isPayment, 'isPayment');
         let responses = await this.service('http.address').createAddress(params);
         let self = this;
         if (responses) {
@@ -8,9 +9,20 @@ export default class CreateAddress extends Command {
                 title: '新建成功',
                 icon: 'success'
             });
-            setTimeout(function () {
-                self.$application.$command('REDIRECT_TO', '', 'back');
-            }, 2000);
+            if (isPayment) {
+                this.model.activity.dispatch('saveAddress', {
+                    address: params
+                });
+                setTimeout(function () {
+                    self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
+                        query: {type: 'activity', actId: 1}
+                    });
+                }, 2000);
+            } else {
+                setTimeout(function () {
+                    self.$application.$command('REDIRECT_TO', '', 'back');
+                }, 2000);
+            }
         }
     }
     static commandName () {

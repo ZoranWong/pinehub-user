@@ -1,6 +1,5 @@
 import App from './index';
 import Vue from 'vue';
-import OrderPayment from '@/models/OrderPayment';
 import '../../../styles/iconfont.css'
 import CreatePayOrderCommand from './commands/CreatePayOrderCommand';
 import CalculatePriceCommand from './commands/CalculatePriceCommand';
@@ -9,7 +8,7 @@ import OrderCouponIdsCommand from './commands/OrderCouponIdsCommand';
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
-        this.registerModel('model.user.order.payment', OrderPayment);
+
         this.registerCommand(CreatePayOrderCommand.commandName(), CreatePayOrderCommand);
         this.registerCommand(CalculatePriceCommand.commandName(), CalculatePriceCommand);
         this.registerCommand(OrderCouponIdsCommand.commandName(), OrderCouponIdsCommand);

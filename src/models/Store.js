@@ -116,7 +116,6 @@ export default class Orders extends Model {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
-
             });
 
             this.state.goods = goods;

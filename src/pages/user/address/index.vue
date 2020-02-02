@@ -52,7 +52,8 @@
 				title: '收货地址管理',
 				screenHeight: 0,
 				rpxRate: 1,
-				screenWitdh: 0
+				screenWitdh: 0,
+                isSelect: false
 			};
 		},
 		watch: {
@@ -71,14 +72,24 @@
 		},
 		methods: {
             jump (path) {
-                this.$command('REDIRECT_TO', path, 'push');
-            },
-            editAddress (address) {
-                this.$command('REDIRECT_TO', 'user.addressOperation', 'push', {
+                this.$command('REDIRECT_TO', path, 'push', {
                     query: {
-                        address: JSON.stringify(address)
+                        needReturn: this.isSelect
                     }
                 });
+            },
+            editAddress (address) {
+                if (this.isSelect) {
+                    this.$command('SELECT_ADDRESS_COMMAND', address);
+                    this.$command('REDIRECT_TO','','back')
+                } else {
+                    this.$command('REDIRECT_TO', 'user.addressOperation', 'push', {
+                        query: {
+                            address: JSON.stringify(address)
+                        }
+                    });
+                }
+
             }
 		},
 		created() {
@@ -87,10 +98,11 @@
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		},
         onShow(){
-            this.$command('LOAD_USER_ADDRESS')
+            this.$command('LOAD_USER_ADDRESS');
+            this.isSelect = false;
         },
 		mounted() {
-
+            this.isSelect = this.$route.query.needReturn ? true : false
         }
 	}
 </script>
@@ -98,7 +110,7 @@
 <style>
 	page {
 		height: 100%;
-		background: #f2f2f2;
+		background: #fff;
 	}
 
     .address-list{
@@ -147,7 +159,10 @@
     }
 
     .address-list{
-        margin-top: 20rpx;
+        border-top: 20rpx solid #f2f2f2;
+        margin-bottom: 120rpx;
+        height: 1260rpx;
+        overflow: auto;
     }
     .address-list li {
         width: 100%;

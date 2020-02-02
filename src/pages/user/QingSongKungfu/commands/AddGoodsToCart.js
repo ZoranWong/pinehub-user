@@ -1,22 +1,12 @@
 import Command from '@/commands/Command';
 
-export default class LoadStoreGoodsCommand extends Command {
-    async handle (id, num = 1, type) {
-        let response = await this.service('http.store').addMallGoodToCart(id, num);
-            this.model.user.store.dispatch('addToShoppingCart', {
-                goods: response
-            });
-
-            this.model.user.order.payment.dispatch('clearIds');
-
-
-
-
-        console.log(response, 'saassaassaasa --------');
-
-        // console.log('----- request -----', Date.now());
-
-        // console.log('----- set data -----', Date.now());
+export default class AddGoodsToCartCommand extends Command {
+    async handle (id, num = 1, type, actId) {
+        let response = await this.service('http.activities').addActGoodToCart(id, num, actId);
+        this.model.activity.dispatch('addToShoppingCart', {
+            goods: response
+        });
+        this.model.activity.dispatch('clearIds');
     }
 
     static commandName () {

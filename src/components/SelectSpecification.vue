@@ -144,8 +144,6 @@
                     } else {
                         this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
                     }
-                } else if (this.type == '活动') {
-                    // 当选择规格为活动时
                 }
 
 				this.$emit('close')

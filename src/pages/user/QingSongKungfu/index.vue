@@ -4,7 +4,7 @@
         <CustomHeader :title="title" :needReturn="true" />
         <div class="cakes" :style="{'height': height}">
             <div class="header">
-                青松功夫
+                <img class="images" src="./img/22305823.jpg" alt="">
             </div>
             <div class="banners">
                 <swiper
@@ -26,11 +26,11 @@
                 </swiper>
             </div>
 
-            <div class="middleImage">
-                经典推荐
+            <div class="middle">
+                <img class="middleImage" src="./img/964024279.jpg" alt="">
             </div>
 
-            <ul class="products">
+            <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
                 <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id}})">
                     <img :src="item.banners[0]" alt="" class="productImg">
                     <h3 class="name">{{item.name}}</h3>
@@ -56,10 +56,12 @@
                 :selectSpec="selectSpec"
                 :item="selectItem"
                 :type="'activity'"
+                :actId="actId"
                 @close="closeSelectSpec" />
-<!--            <ShoppingCart-->
-<!--                :type="'activity'"-->
-<!--            />-->
+            <ShoppingCart
+                :type="'activity'"
+                :actId="actId"
+            />
         </div>
 
     </div>
@@ -108,6 +110,9 @@
             },
             activityProducts () {
 			    return this.model.activity.products
+            },
+            goodInShoppingCart () {
+			    return this.model.activity.goodInShoppingCart
             }
 		},
 		methods: {
@@ -155,21 +160,20 @@
                 this.selectSpec = false
             },
             addToShoppingCart(item){
-                console.log(item, '?????????????????');
                 if (item.specifications.length) {
                     this.selectItem = item;
                     this.selectSpec = true
                 } else {
-                    let goods = this.model.user.store.goodInShoppingCart;
+                    let goods = this.model.activity.goodInShoppingCart;
                     if (goods.length) {
                         _.map(goods, (product) => {
                             product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
                                 this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
                                 :
-                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity')
+                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
                         })
                     } else {
-                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity')
+                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
                     }
 
                 }
@@ -187,9 +191,10 @@
 		mounted() {
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            this.actId = options.id;
+            this.actId = parseInt(options.id);
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
             this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
+            this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
             this.height = this.screenHeight - this.navHeight - this.statusBarHeight - 40 + 'rpx';
         }
 	}
@@ -201,6 +206,12 @@
 		background: #f2f2f2;
         overflow: hidden;
 	}
+
+    #shopping_cart{
+        position: fixed;
+        width: 100%;
+        transition: 1s;
+    }
 
     #select_spec{
         width: 100%;

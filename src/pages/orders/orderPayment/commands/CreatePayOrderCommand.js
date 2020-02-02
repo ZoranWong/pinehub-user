@@ -8,14 +8,13 @@ export default class CreatePayOrderCommand extends Command {
             response = await this.service('http.orders').createPaymentOrder(params);
         } else if (this.type === 'breakfast') {
             response = await this.service('http.orders').createBreakfastPaymentOrder(params);
-        } else if (this.type === '活动') {
-
         }
         if (!_.isEmpty(response)) {
             this.model.user.order.payment.dispatch('saveCreatedOrderInfo', {
                 orderInfo: response
             });
             this.model.user.order.payment.dispatch('clearIds');
+
             if (type === 'mall') {
                 this.model.user.store.dispatch('clearShoppingCart');
                 this.model.user.store.dispatch('selectPoints', {
@@ -28,9 +27,13 @@ export default class CreatePayOrderCommand extends Command {
                     boolean: false,
                     type: type
                 })
-            } else if (this.type === '活动') {
-
             }
+
+            this.$command('REDIRECT_TO', 'selectPay', 'replace', {
+                query: {
+                    type: type
+                }
+            })
         }
 
 

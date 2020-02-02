@@ -45,7 +45,12 @@
 		},
 		computed: {
 			couponIds () {
-				return this.model.user.order.payment.couponIds
+                console.log(this.model.user, 'this.model.userthis.model.user');
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.couponIds
+                } else {
+                    return this.model.user.order.payment.couponIds
+                }
 			},
             isSelected(){
 				if(this.ticket){
@@ -62,13 +67,24 @@
                 });
             },
 			selectTicket (coupon) {
+			    let type = this.$route.query.type;
 				if (this.$route.query.needReturn) {
-					this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-						query: {
-							type: this.$route.query.type,
-                            id: coupon['record_id'],
-						}
-					});
+				    if (type === 'activity') {
+                        this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                            query: {
+                                type: type,
+                                id: coupon['record_id'],
+                            }
+                        });
+                    } else {
+                        this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                            query: {
+                                type: type,
+                                id: coupon['record_id'],
+                            }
+                        });
+                    }
+
                 }
 			}
 		},

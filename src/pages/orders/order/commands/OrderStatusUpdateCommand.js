@@ -10,33 +10,37 @@ export default class OrderStatusUpdateCommand extends Command {
             })
         }
     }
-    
+
     // 再来一单
     onemore () {
         this.$application.$command('REDIRECT_TO', 'user.store', 'replace');
     }
     // 去取货
     pickup (order) {
-        console.log(order, '+++++++++++++++++++++');
         this.$application.$command('REDIRECT_TO', 'user.pickup', 'replace', {
             query: {
                 order: JSON.stringify(order)
             }
         });
     }
-    
+
     // 申请售后
     async feedback (id) {
         this.$application.$command('REDIRECT_TO', 'order.feedback', 'push', {
             query: {orderId: id}
         });
     }
-    
+
     // 继续充值
     recharge = () => {
         this.$application.$command('REDIRECT_TO', 'user.recharge', 'push');
     };
-    
+
+    // 确认收货
+    confirmGot = order => {
+        // 确认收货
+    };
+
     // 重新支付订单
     payOrder (order) {
         this.$application.$command('REDIRECT_TO', 'selectPay', 'push', {
@@ -84,6 +88,18 @@ export default class OrderStatusUpdateCommand extends Command {
             self.pickup(order)
         } else if (type === 'recharge') {
             self.recharge()
+        } else if (type === 'alreadyGetIt') {
+            wx.showModal({
+                title: '温馨提示',
+                content: '确认收货吗？',
+                async success (res) {
+                    if (res.confirm) {
+                        await self.confirmGot(order.id);
+                        self.refresh();
+                    }
+                }
+            })
+
         }
     }
     static commandName () {

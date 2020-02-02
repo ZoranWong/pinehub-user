@@ -3,34 +3,38 @@
 	<div id="order_payment">
         <CustomHeader :title="title" :needReturn="true" />
 
-        <div id="pay_shop_info">
+        <div id="pay_shop_info" @click="selectPoint">
 <!--            <i class="iconfont location">&#xe80b;</i>-->
-            <img class="locationImg" src="../../../../static/icons/location.png" alt="">
-            <div class="pay_shop_info">
-                <div class="pay_shop_info_name" @click="selectPoint">
+            <img class="locationImg" src="../../../../../static/icons/location.png" alt="">
+            <div class="pay_shop_info" v-if="address.id"  >
+                <div class="pay_shop_info_name">
                     <h4>
-                        {{selectedPoint.name}}
-                        <span>{{selectedPoint.mobile}}</span>
+                        {{address['consignee_name']}}
+                        <span>{{address['consignee_mobile_phone']}}</span>
                     </h4>
                 </div>
                 <div class="pay_shop_info_address">
-                    {{selectedPoint.address}}
+                    {{address.rangeAddress}}{{address['detail_address']}}
                 </div>
+            </div>
+            <div class="pay_shop_info" v-else>
+                请选择收货地址
             </div>
             <i class="iconfont arrow">&#xe6a3;</i>
         </div>
         <div id="pay_pick_up_info">
 <!--            <i class="iconfont location">&#xe80b;</i>-->
-            <img class="locationImg" src="../../../../static/icons/time.png" alt="">
+            <img class="locationImg" src="../../../../../static/icons/time.png" alt="">
             <div class="order_info">
                 <div class="order_info_name">
                     <h4>
-                        预约取货日期
+                        预约送货日期
                         <span>{{tomorrowStr}}</span>
                     </h4>
                     <h4>
-                        预约取货时间
-                        <span>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
+                        预约送货时间
+<!--                        <span>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>-->
+                        <span>09:00 - 18:00</span>
                     </h4>
                 </div>
             </div>
@@ -51,37 +55,37 @@
         <ul id="total">
             <li>
                 <h3>商品总价</h3>
-                <span>{{orderInfo['total_fee_format'] || 0}}</span>
+                <span>{{actOrderInfo['total_fee_format'] || 0}}</span>
             </li>
             <li>
                 <h3>优惠金额</h3>
-                <span>{{orderInfo['total_preferential_fee_format'] || 0}}</span>
+                <span>{{actOrderInfo['total_preferential_fee_format'] || 0}}</span>
             </li>
             <li @click="jump('couponCenter')">
                 <h3>优惠券</h3>
-                <em>{{availableCoupons.length - couponIds.length}}张可用</em>
-                <span class="use_coupon" v-if="availableCoupons.length > 0">
-                    {{couponIds.length || 0}}张已使用
+                <em>{{actAvailableCoupons.length - actCouponIds.length}}张可用</em>
+                <span class="use_coupon" v-if="actAvailableCoupons.length > 0">
+                    {{actCouponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
             </li>
             <li>
                 <h4>实付款</h4>
-                <h5>{{orderInfo['settlement_total_fee_format'] || 0}}</h5>
+                <h5>{{actOrderInfo['settlement_total_fee_format'] || 0}}</h5>
             </li>
         </ul>
         <div id="do_payment">
             <span>
-                预付款 {{orderInfo['settlement_total_fee_format'] || 0}}
+                预付款 {{actOrderInfo['settlement_total_fee_format'] || 0}}
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
 	</div>
 </template>
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
+	import CustomHeader from '../../../../components/CustomHeader';
 
-	import {formatMoney} from '../../../utils';
+	import {formatMoney} from '../../../../utils';
 
 	export default {
 		components: {
@@ -90,52 +94,57 @@
 		data() {
 			return {
 				title: '支付',
-                pointInfo:{},
 				tomorrowStr: '',
-                type: ''
+                type: '',
+                actId: ''
 			};
 		},
 		watch: {
 
 		},
 		computed: {
-			selectedPoint () {
-				return this.model.user.map.selectedMapPoint
-            },
 			goodInShoppingCart () {
 				if (this.type === 'mall') {
 					return this.model.user.store.goodInShoppingCart
                 } else if (this.type === 'breakfast')  {
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
-                } else if (this.type === '活动') {
-
+                } else if (this.type === 'activity') {
+                    return this.model.activity.goodInShoppingCart
                 }
 
             },
-			orderInfo () {
-				return this.model.user.order.payment.orderInfo
+			actOrderInfo () {
+				return this.model.activity.orderInfo
             },
-			availableCoupons () {
-				return this.model.user.tickets.availableCoupons
+			actAvailableCoupons () {
+                return this.model.activity.availableCoupons
             },
-            couponIds () {
-				return this.model.user.order.payment.couponIds
+            actCouponIds () {
+				return this.model.activity.couponIds
+            },
+            address () {
+                console.log(this.model.activity.address, 'address');
+                return this.model.activity.address
             }
 		},
 		methods: {
 			selectPoint () {
-                this.$command('REDIRECT_TO', 'storesMap', 'replace' , {
+                this.$command('REDIRECT_TO', 'user.address', 'push' , {
                 	query: {
-                		type: this.type
+                		needReturn: true
                     }
                 });
             },
 			createOrder(){
-				console.log(this.couponIds, 'before create order');
-				this.$command('CREATE_PAY_ORDER',{
-					shop_id: this.selectedPoint.id,
-					coupon_records: this.couponIds,
-                },this.type);
+				if (!this.address.id) {
+                    wx.showToast({
+                        title: '请先选择收货地址',
+                        icon: 'none'
+                    });
+                    return;
+                }
+				this.$command('CREATE_ACTIVITY_PAY_ORDER', this.actId, this.address.id, this.actCouponIds);
+
             },
             getDate () {
 				var tomorrow = new Date();
@@ -144,7 +153,7 @@
 				this.tomorrowStr = tomorrowStr
 			},
 			jump (router) {
-				if (this.availableCoupons.length === 0) return;
+				if (this.actAvailableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'replace',{
 					query: {needReturn: true, type: this.type}
                 });
@@ -157,14 +166,20 @@
             this.getDate();
 			let type = this.$route.query.type;
 			let id = this.$route.query.id;
+			let actId = this.$route.query.actId || '';
 			this.type = type;
+			this.actId = actId;
 			if (id) {
 				this.$command('ORDER_COUPON_IDS', id)
             }
-			this.$command('CALCULATE_PRICE_COMMAND',type,{
-				coupon_records: this.couponIds
+            this.$command('CALCULATE_ACTIVITY_PRICE_COMMAND',type,{
+				coupon_records: this.actCouponIds,
+                carts: [],
+                remark: '',
+                activity_id: actId
             });
-			this.$command('AVAILABLE_COUPONS', type)
+            this.$command('ACTIVITY_AVAILABLE_COUPONS', actId);
+            this.$command('LOAD_DEFAULT_USER_ADDRESS')
 		}
 	}
 </script>

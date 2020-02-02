@@ -1,13 +1,13 @@
 import Command from '@/commands/Command';
 
 export default class ClearCartCommand extends Command {
-    async handle (type) {
-        let response = await this.service('http.store').clearMallCart();
+    async handle (actId) {
+        let response = await this.service('http.activities').clearMallCart(actId);
 
 
         // console.log('----- request -----', Date.now());
-        this.model.user.store.dispatch('clearShoppingCart');
-        this.model.user.order.payment.dispatch('clearIds')
+        this.model.activity.dispatch('clearShoppingCart');
+        this.model.activity.dispatch('clearIds')
         // console.log('----- set data -----', Date.now());
     }
 

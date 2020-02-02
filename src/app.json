@@ -16,7 +16,8 @@
         "pages/user/balance/main",
         "pages/user/address/main",
         "pages/user/addressOperation/main",
-        "pages/user/QingSongKungfu/main"
+        "pages/user/QingSongKungfu/main",
+        "pages/user/QingSongKungfu/activityPayment/main"
     ],
     "subpackages": [
         {

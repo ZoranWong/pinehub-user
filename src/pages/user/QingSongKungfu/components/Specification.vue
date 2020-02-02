@@ -36,20 +36,20 @@
                     购买数量:
                 </div>
                 <div class="right">
-                    <img src="../../../../../static/icons/minus.png" alt="">
-                    <span>3</span>
-                    <img src="../../../../../static/icons/add.png" alt="">
+                    <img src="../../../../../static/icons/minus.png" alt="" @click="add(-1)">
+                    <span>{{buyNum}}</span>
+                    <img src="../../../../../static/icons/add.png" alt="" @click="add(1)">
                 </div>
             </div>
             <div id="remark">
                 <span>填写备注</span>
-                <input type="text" placeholder="点击填写备注">
+                <input type="text" placeholder="点击填写备注" v-model="remark">
             </div>
             <div id="select_spec_confirm1">
                 <button @click="addToShoppingCart">
                     加入购物车
                 </button>
-                <button @click="addToShoppingCart">
+                <button @click="settlement">
                     立即结算
                 </button>
             </div>
@@ -63,13 +63,15 @@
 
 	export default {
         name: 'SelectSpecification',
-        props: ['selectSpec', 'item','type'],
+        props: ['selectSpec', 'item', 'type', 'actId'],
         data () {
             return {
                 selectedSpec: {},
                 totalPrice: 0,
 				selectedDesp:'',
-                confirmSelected:{}
+                confirmSelected:{},
+                remark: '',
+                buyNum: 1
             }
         },
         computed () {
@@ -87,7 +89,6 @@
 				this.isEqual()
 			},
 			isEqual(){
-                console.log(this._props.item, '====');
                 let selectedSpec = {};
 				let selectedDesp = [];
 				for (let key in this.selectedSpec){
@@ -98,14 +99,15 @@
 				for ( let key in selectedSpec){
 					selectedDesp.push(selectedSpec[key])
                 }
-				this.selectedDesp = selectedDesp.join(',')
+                console.log(selectedSpec, 'selectedSpec');
+                this.selectedDesp = selectedDesp.join(',')
 				let isEqual = false
 				return _.map(this._props.item['product_entities'], (item) => {
 					if(isEqual) return;
 					isEqual = _.isEqual(selectedSpec,item.specs);
-					this.confirmSelected = isEqual ? item : {}
+                    this.confirmSelected = isEqual ? item : {}
 					this.totalPrice =  formatMoney(isEqual ? item['retail_price'] : 0);
-				})
+                })
 			},
             handleClass (i, k) {
 				_.map(i.values, (value) => {
@@ -115,48 +117,59 @@
                     }
 				})
 			},
-			addToShoppingCart(){
-				let selectedSpec = {};
-				for (let key in this.selectedSpec){
-					if (!_.isNaN(parseInt(key))) {
-						selectedSpec[key] = this.selectedSpec[key]
-					}
-				};
+            commonLogic () {
+                let selectedSpec = {};
 
-				let keys = _.keys(selectedSpec);
-				if (keys.length < this.item.specifications.length) {
-					return;
-                }
-                if (this.type == 'mall') {
-                    let goods = this.model.user.store.goodInShoppingCart;
+                for (let key in this.selectedSpec){
+                    if (!_.isNaN(parseInt(key))) {
+                        selectedSpec[key] = this.selectedSpec[key]
+                    }
+                };
+                let keys = _.keys(selectedSpec);
+                if (keys.length < this.item.specifications.length) {
+                    return false;
+                } else {
+                    let goods = this.model.activity.goodInShoppingCart;
                     if (goods.length) {
                         _.map(goods, (product) => {
                             product['product_stock_id'] === this.confirmSelected['product_stock_id']?
-                                this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
+                                this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + this.buyNum, 'activity')
                                 :
-                                this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
                         })
                     } else {
-                        this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
-                    }
-                } else if (this.type == 'breakfast') {
-                    let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
-                    if (goods.length) {
-                        _.map(goods, (product) => {
-                            if (product['product_stock_id'] === this.confirmSelected['product_stock_id']) {
-                                this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
-                            } else {
-                                this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
-                            }
-                        })
-                    } else {
-                        this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
-                    }
-                } else if (this.type == '活动') {
-                    // 当选择规格为活动时
+                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
+                    };
+                    return true
                 }
 
-				this.$emit('close')
+            },
+			addToShoppingCart(){
+                if (this.commonLogic()) {
+                    this.$emit('close')
+                } else {
+                    wx.showToast({
+                        title: '请先选择规格',
+                        icon: 'none'
+                    });
+                }
+            },
+            settlement () {
+                if (this.commonLogic()) {
+                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        query: {type: this.type, actId: this.actId}
+                    });
+                } else {
+                    wx.showToast({
+                        title: '请先选择规格',
+                        icon: 'none'
+                    });
+                }
+            },
+            add (number) {
+                if (this.buyNum + number < 0) return;
+                console.log(this._props.item);
+                this.buyNum += number;
             }
         }
 	}

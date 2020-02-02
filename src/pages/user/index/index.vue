@@ -48,6 +48,10 @@
             </dl>
         </div>
         <div class="newActivity" v-for="item in activities" @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})">
+            <div class="left">
+                <h4>{{item.name}}</h4>
+                <h5>进入专场 <span>></span></h5>
+            </div>
             <div>
                 <img :src="item.image" alt="">
             </div>
@@ -271,6 +275,7 @@
         overflow: hidden;
         width: 750rpx;
         background: #FAFAFA;
+        box-sizing: border-box;
     }
 
     #index_header {
@@ -371,15 +376,47 @@
     .newActivity{
         margin-top: 40rpx;
         padding: 0 40rpx;
-        width: 100%;
-        height: 100rpx;
-        background: #FFCC00;
+        width: calc(100% - 80rpx);
+        height: 198rpx;
+        background: #fff;
         box-sizing: border-box;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         color: #fff;
+        margin: 0 40rpx;
+        box-sizing: border-box;
+        border-radius: 16rpx;
+        margin-top: 15rpx;
+        padding: 5rpx 80rpx;
     }
+
+    .newActivity .left{
+
+    }
+    .newActivity .left h4{
+        color: #111;
+        margin: 0;
+        font-size: 36rpx;
+        margin-bottom: 10rpx;
+        font-weight: bold;
+    }
+    .newActivity .left h5{
+        width: 160rpx;
+        margin: 0;
+        color: #fff;
+        font-size: 28rpx;
+        padding:  4rpx 30rpx;
+        border-radius: 24rpx;
+        margin-top: 10rpx;
+        background: linear-gradient(to right, #FDE068, #FFCC00);
+    }
+
+    .newActivity .left h5 span{
+        font-weight: 1000;
+        margin-left: 20rpx;
+    }
+
 
     .newActivity img {
         width: 66px;

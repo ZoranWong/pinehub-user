@@ -1,10 +1,10 @@
 import Command from '@/commands/Command';
 
 export default class ChangeBuyNumCommand extends Command {
-    async handle (item, num) {
+    async handle (item, num, actId) {
         if (num <= 0) {
-            let response = await this.service('http.store').deleteItem(item.id);
-            this.model.user.store.dispatch('removeGoodsFromCart', {
+            let response = await this.service('http.activities').deleteItem(item.id, actId);
+            this.model.activity.dispatch('removeGoodsFromCart', {
                 goods: item
             });
             return
@@ -17,16 +17,16 @@ export default class ChangeBuyNumCommand extends Command {
 
 
 
-        let response = await this.service('http.store').changeBuyNum(item.id, num);
+        let response = await this.service('http.activities').changeBuyNum(item.id, num);
 
 
         // console.log('----- request -----', Date.now());
         if (response) {
-            this.model.user.store.dispatch('changeBuyNum', {
+            this.model.activity.dispatch('changeBuyNum', {
                 id: item.id,
                 num: num
             });
-            this.model.user.order.payment.dispatch('clearIds')
+            this.model.activity.dispatch('clearIds')
         }
 
         // console.log('----- set data -----', Date.now());

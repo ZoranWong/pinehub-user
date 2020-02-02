@@ -6,8 +6,8 @@ export default class AvailableCouponsCommand extends Command {
             response = await this.service('http.store').availableCoupons();
         } else if (this.type === 'breakfast') {
             response = await this.service('http.merchandises').availableCoupons();
-        } else if (this.type === '活动') {
-
+        } else if (this.type === 'activity') {
+            response = await this.service('http.activities').availableCoupons();
         }
         this.model.user.tickets.dispatch('saveAvailableCoupons', {
            coupons: response

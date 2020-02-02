@@ -72,7 +72,7 @@
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
 			orders() {
-				return this.model.user.orders.list;
+                return this.model.user.orders.list;
 			},
 			totalNum() {
 				return this.$store.getters['model.user.orders/totalNum'];

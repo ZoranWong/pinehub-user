@@ -1,7 +1,6 @@
 <!--suppress ALL -->
 <template>
     <div>
-
         <div class="ticket-page body">
             <CustomHeader :title="title" :needReturn="true" />
             <div class="empty_img" v-if="!coupons.length">
@@ -50,12 +49,17 @@
 		},
 		computed: {
 			tickets() {
-				this.coupons = this.model.user.tickets.ticketsList
-				return this.model.user.tickets.ticketsList;
+				this.coupons = this.model.user.tickets.ticketsList;
+                return this.model.user.tickets.ticketsList;
 			},
 			availableCoupons () {
-				this.coupons = this.model.user.tickets.availableCoupons
-				return this.model.user.tickets.availableCoupons
+			    if (this.$route.query.type === 'activity') {
+                    this.coupons = this.model.user.tickets.availableCoupons
+                    return this.model.user.tickets.availableCoupons
+                } else {
+                    this.coupons = this.model.activity.availableCoupons
+                    return this.model.activity.availableCoupons
+                }
 			},
 			totalNum() {
 				return this.model.user.tickets.totalNum

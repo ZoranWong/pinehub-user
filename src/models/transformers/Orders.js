@@ -62,6 +62,7 @@ export default class Order {
                 this.status = '';
                 break;
         }
+
         this.quantity = order['quantity'];
         this.receiverName = (typeof order['receiver_name'] !== 'undefined' && order['receiver_name'] !== '' && order['receiver_name'] !== null) ? order['receiver_name'] : '无';
         this.receiverMobile = (typeof order['receiver_mobile'] !== 'undefined' && order['receiver_mobile'] !== '' && order['receiver_mobile'] !== null) ? order['receiver_mobile'] : '无';

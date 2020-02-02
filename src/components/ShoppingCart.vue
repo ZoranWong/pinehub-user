@@ -43,7 +43,7 @@
     import {formatMoney} from '../utils';
 	export default {
 		name: 'ShoppingCart',
-        props: ['type'],
+        props: ['type', 'actId'],
 		data () {
 			return {
                 showMask: false,
@@ -51,6 +51,13 @@
 				cartGoodsList:[]
             }
 		},
+        watch: {
+		    actId (val) {
+                if (this.registered) {
+                    this.$command('LOAD_ACTIVITY_CART_COMMAND', this.type, val)
+                }
+            }
+        },
         computed : {
 			goodInShoppingCart(){
 				let products = [];
@@ -58,10 +65,11 @@
 					products = this.model.user.store.goodInShoppingCart
                 } else if (this.type === 'breakfast') {
 					products = this.model.newEvents.shoppingCarts.goodInShoppingCart
-                } else if (this.type === '活动') {
-
+                } else if (this.type === 'activity') {
+                    products = this.model.activity.goodInShoppingCart
                 }
-				if(products){
+                console.log(products, '----------- products ----------');
+                if(products){
 					this.showMask = products.length ? true : false;
                 }
 				return products
@@ -71,8 +79,8 @@
 					return this.model.user.store.totalPrice;
                 } else if (this.type === 'breakfast') {
 					return this.model.newEvents.shoppingCarts.totalPrice
-                } else if (this.type === '活动') {
-
+                } else if (this.type === 'activity') {
+                    return this.model.activity.totalPrice;
                 }
             },
 			registered () {
@@ -95,9 +103,9 @@
 						boolean: true,
 						type: this.type
 					})
-                } else if (this.type === '活动') {
-                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                        query: {type: this.type}
+                } else if (this.type === 'activity') {
+                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        query: {type: this.type, actId: this.actId}
                     });
                 }
 
@@ -112,25 +120,25 @@
 					this.$command('CLEAR_CART_COMMAND');
                 } else if (this.type === 'breakfast') {
 					this.$command('CLEAR_BREAKFAST_CART_COMMAND')
-                } else if (this.type === '活动') {
-                    // 这是活动所需要的逻辑代码
+                } else if (this.type === 'activity') {
+                    this.$command('CLEAR_ACTIVITY_CART_COMMAND', this.actId)
                 }
 
             },
 			changeBuyNum (item,num) {
 				let newNum = item['buy_num'] + num;
 				if (this.type === 'mall') {
-					this.$command('CHANGE_BUY_NUM_COMMAND',item,newNum)
+					this.$command('CHANGE_BUY_NUM_COMMAND',item, newNum)
 				} else if (this.type === 'breakfast') {
 					this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, newNum)
-				} else if (this.type === '活动') {
-
+				} else if (this.type === 'activity') {
+                    this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',item, newNum, this.actId)
                 }
             }
         },
         mounted () {
-			if (this.registered) {
-				this.$command('LOAD_CART_COMMAND', this.type)
+            if (this.registered && this.type !== 'activity') {
+                this.$command('LOAD_CART_COMMAND', this.type)
             }
 		}
 	}

@@ -12,6 +12,7 @@ import ChargeCards from '@/models/ChargeCards';
 import TradeOrderItems from '@/models/TradeOrderItems';
 import BarHeight from '../models/BarHeight';
 import Store from '@/models/Store';
+import OrderPayment from '../models/OrderPayment';
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
@@ -34,6 +35,7 @@ export default class ModelServiceProvider extends ServiceProvider {
         // this.app.registerModel('model.bookingMall.tickets', Tickets);
         this.app.registerModel('model.newEvents.tickets', Tickets);
         this.app.registerModel('model.user.tickets', Tickets);
+        this.app.registerModel('model.user.order.payment', OrderPayment);
 
         this.app.registerModel('model.cards', Cards);
 
@@ -42,7 +44,6 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.nearestStore', NearestStore);
         this.app.registerModel('model.chargeCards', ChargeCards);
         this.app.registerModel('model.tradeOrderItems', TradeOrderItems);
-
     }
 
     boot () {

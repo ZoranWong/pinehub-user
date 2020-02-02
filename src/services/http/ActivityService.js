@@ -54,7 +54,7 @@ export default class ActivityService extends ApiService {
     }
 
     // 删除活动购物车某一项
-    async deleteItem (activityId, id) {
+    async deleteItem (id, activityId) {
         let response = await this.httpDelete(`api/mp/activity/${activityId}/carts/${id}`);
         return response.data
     }
@@ -80,13 +80,33 @@ export default class ActivityService extends ApiService {
     }
 
     // 活动可用优惠券
+    async actAvailableCoupons (id) {
+        let response = await this.httpGet(`api/mp/activity/${id}/coupons`);
+        return response.data
+    }
+
+    // 创建活动订单
+    async createActOrder (actId, addId, coupons = []) {
+        let response = await this.httpPost('/api/mp/activity/orders', {
+            activity_id: actId,
+            address_id: addId,
+            carts: [],
+            remark: '',
+            coupon_records: coupons,
+            expect_receive_date: '2020-01-20',
+            expect_receive_time_start: '09:00:00',
+            expect_receive_time_end: '18:00:00'
+        });
+        return response.data
+    }
 
     // 购物车金额结算
-    async calculateActCart (coupons, id, remark) {
+    async calculateActCart (params) {
         let response = await this.httpGet('api/mp/activity/calculate/carts', {
-            coupon_records: coupons,
-            carts: id,
-            remark: remark
+            coupon_records: params.coupon_records,
+            carts: params.carts,
+            remark: params.remark,
+            activity_id: params.activity_id
         });
         return response.data
     }
