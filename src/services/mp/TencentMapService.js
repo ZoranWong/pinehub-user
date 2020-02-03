@@ -63,6 +63,24 @@ export default class TencentMapService extends Service {
         })
     }
 
+    // 地图拖拽
+    getCenterLocation () {
+        console.log('xxxxxxxxxxxxxxx');
+        let map = wx.createMapContext('checkedMap');
+        return new Promise((resolve, reject) => {
+            map.getCenterLocation({
+                type: 'gcj02',
+                success: function (res) {
+                    let result = [res.longitude, res.latitude];
+                    resolve(result)
+                },
+                fail: function () {
+                    resolve(false);
+                }
+            })
+        })
+    }
+
     // 移动位置
     moveToLocation () {
         this.mapCtx = wx.createMapContext('map');

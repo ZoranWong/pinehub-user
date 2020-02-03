@@ -14,8 +14,7 @@
                     <em>订单编号:{{order.code}}</em>
                     <i class="iconfont detailIcon">&#xe6a3;</i>
                 </div>
-                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' && order.type !== 'ACTIVITY_PRODUCT_ORDER' " >{{order['stateDesc']}}</span>
-                <span class="order_info_status" v-if="order.type === 'ACTIVITY_PRODUCT_ORDER' && order['state'] === 'WAIT_TO_PICK' " >待确认收货</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING'  " >{{order['stateDesc']}}</span>
                 <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>
                 <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 2">售后处理中</span>
             </div>
@@ -56,11 +55,10 @@
                 </form>
 
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 1 && order.type === 'ACTIVITY_PRODUCT_ORDER' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
+            <div class="order_info_btn" v-if="order.btnStatus === 4 && order.type === 'ACTIVITY_PRODUCT_ORDER' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" @click="btnClick('alreadyGetIt', order)" class="yellow">确认收货</button>
                 </form>
-
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
                 <form report-submit="true" @submit="uploadFormId">

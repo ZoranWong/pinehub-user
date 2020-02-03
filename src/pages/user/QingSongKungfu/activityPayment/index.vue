@@ -71,7 +71,7 @@
         </div>
         <div id="do_payment">
             <span>
-                预付款 {{actOrderInfo['settlement_total_fee_format'] || 0}}
+                金额 {{actOrderInfo['settlement_total_fee_format'] || 0}}
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>

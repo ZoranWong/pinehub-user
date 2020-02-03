@@ -72,7 +72,7 @@
         </ul>
         <div id="do_payment">
             <span>
-                预付款 {{orderInfo['settlement_total_fee_format'] || 0}}
+                金额 {{orderInfo['settlement_total_fee_format'] || 0}}
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
@@ -193,10 +193,6 @@
         margin-top: 20rpx;
     }
 
-    #pay_pick_up_info {
-        margin-bottom: 20rpx;
-    }
-
     #pay_shop_info .location{
         background: linear-gradient(to right,#FDE068,#FFCC00);
         -webkit-background-clip: text;
@@ -234,7 +230,7 @@
     #pay_pick_up_info{
         justify-content: flex-start;
         border-top: 2rpx solid #f2f2f2;
-        margin-left: 40rpx;
+        margin-bottom: 20rpx;
     }
 
     #pay_pick_up_info .location{

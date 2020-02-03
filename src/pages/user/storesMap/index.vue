@@ -7,8 +7,18 @@
             <i class="iconfont search">&#xe65c;</i>
         </div>
         <div id="location_map">
-            <map :id="checkId? 'map':'checkedMap'" scale="14" :latitude="latitude" :longitude="longitude" :markers="markers"
-                 @markertap="bindmarkertap" show-location>
+            <map
+                :id="checkId? 'map':'checkedMap'"
+                scale="14"
+                @regionchange="regionchange"
+                @begin="regionchangebegin"
+                @end="regionchangeend"
+                :enable-scroll="true"
+                :latitude="latitude"
+                :longitude="longitude"
+                :markers="markers"
+                @markertap="bindmarkertap"
+                show-location>
 <!--                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >-->
 <!--                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >-->
 <!--                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >-->
@@ -154,6 +164,18 @@
 			back(){
 				this.$command('REDIRECT_TO','','back')
 			},
+            regionchange (e) {
+            },
+            regionchangebegin (e) {
+
+            },
+            async regionchangeend (e) {
+                let result = await this.map.getCenterLocation();
+                this.latitude = result[1];
+                this.longitude = result[0];
+                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
+                this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
+            },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -164,7 +186,6 @@
 			},
 			checkPoint (item) {
 			    let id = item.id;
-                console.log(item, '++++++++++++');
                 this.isOpen = item['open_preorder'];
                 this.checkId = id;
 				let data = this.points.filter(item => item.id === id)[0];
@@ -240,7 +261,7 @@
                 this.map.moveToLocation();
             },
             async bindmarkertap (e) {
-				let id = e.mp.markerId;
+                let id = e.mp.markerId;
 				this.checkId = id;
 				this.nearPoints.forEach(item=>{
 					if(item.id === id){
@@ -546,6 +567,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
+        max-width: 540rpx;
     }
 
     #location_points #location_points_list li .left .top{
