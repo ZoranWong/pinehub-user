@@ -14,7 +14,6 @@
                     <em>订单编号:{{order.code}}</em>
                     <i class="iconfont detailIcon">&#xe6a3;</i>
                 </div>
-                4
                 <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' && order.type !== 'ACTIVITY_PRODUCT_ORDER' " >{{order['stateDesc']}}</span>
                 <span class="order_info_status" v-if="order.type === 'ACTIVITY_PRODUCT_ORDER' && order['state'] === 'WAIT_TO_PICK' " >待确认收货</span>
                 <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>

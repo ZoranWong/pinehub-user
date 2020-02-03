@@ -2,79 +2,73 @@
 <template>
 	<div id="order_payment">
         <CustomHeader :title="title" :needReturn="true" />
-
-        <div id="pay_shop_info" @click="selectPoint">
-            <img class="locationImg" src="../../../../../static/icons/location.png" alt="">
-            <div class="pay_shop_info" v-if="address.id"  >
-                <div class="pay_shop_info_name">
-                    <h4>
-                        {{address['consignee_name']}}
-                        <span>{{address['consignee_mobile_phone']}}</span>
-                    </h4>
-                </div>
-                <div class="pay_shop_info_address">
-                    {{address.rangeAddress}}{{address['detail_address']}}
-                </div>
-            </div>
-            <div class="pay_shop_info" v-else>
-                请选择收货地址
-            </div>
-            <i class="iconfont arrow">&#xe6a3;</i>
-        </div>
-        <div id="pay_pick_up_info">
-            <img class="locationImg" src="../../../../../static/icons/time.png" alt="">
-            <div class="order_info" v-if="time">
-                <div class="order_info_name">
-                    <h4>
-                        预约送货日期
-                        <span>{{tomorrowStr}}</span>
-                    </h4>
-                    <h4>
-                        预约送货时间
-                        <span>09:00 - 18:00</span>
-                    </h4>
-                </div>
-            </div>
-            <div class="order_info" v-else>
-                <TimeSelector ref="timeSelector" />
-            </div>
-            <i class="iconfont arrow">&#xe6a3;</i>
-        </div>
-        <ul id="good_list">
-            <li v-for="(good,index) in goodInShoppingCart" :key="index">
-                <img :src="good.image" alt="">
-                <div id="good_info">
-                    <h3>{{good['name']}}</h3>
-                    <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
-                    <div id="good_info_price">
-                        <h3>{{good['price_format']}}</h3>
-                        <em>X {{good['buy_num']}}</em>
+        <div class="payment_window" :style="{'height' : (screenHeight - statusBarHeight - navHeight) + 'px'}">
+            <div id="pay_shop_info" @click="selectPoint">
+                <img class="locationImg" src="../../../../../static/icons/location.png" alt="">
+                <div class="pay_shop_info" v-if="address.id"  >
+                    <div class="pay_shop_info_name">
+                        <h4>
+                            {{address['consignee_name']}}
+                            <span>{{address['consignee_mobile_phone']}}</span>
+                        </h4>
+                    </div>
+                    <div class="pay_shop_info_address">
+                        {{address.rangeAddress}}{{address['detail_address']}}
                     </div>
                 </div>
-            </li>
-        </ul>
-        <ul id="total">
-            <li>
-                <h3>商品总价</h3>
-                <span>{{actOrderInfo['total_fee_format'] || 0}}</span>
-            </li>
-            <li>
-                <h3>优惠金额</h3>
-                <span>{{actOrderInfo['total_preferential_fee_format'] || 0}}</span>
-            </li>
-            <li @click="jump('couponCenter')">
-                <h3>优惠券</h3>
-                <em>{{actAvailableCoupons.length - actCouponIds.length}}张可用</em>
-                <span class="use_coupon" v-if="actAvailableCoupons.length > 0">
+                <div class="pay_shop_info" v-else>
+                    请选择收货地址
+                </div>
+                <i class="iconfont arrow">&#xe6a3;</i>
+            </div>
+            <div id="pay_pick_up_info">
+                <img class="locationImg" src="../../../../../static/icons/time.png" alt="">
+                <div class="order_info">
+                    <TimeSelector ref="timeSelector" />
+                </div>
+                <i class="iconfont arrow">&#xe6a3;</i>
+            </div>
+            <ul id="good_list">
+                <li v-for="(good,index) in goodInShoppingCart" :key="index">
+                    <div class="top">
+                        <img :src="good.image" alt="">
+                        <div id="good_info">
+                            <h3>{{good['name']}}</h3>
+                            <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
+                            <div id="good_info_price">
+                                <h3>{{good['price_format']}}</h3>
+                                <em>X {{good['buy_num']}}</em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <input type="text" placeholder="请填写备注" @blur="(e) => saveRemark(e,good)" />
+                    </div>
+                </li>
+            </ul>
+            <ul id="total">
+                <li>
+                    <h3>商品总价</h3>
+                    <span>{{actOrderInfo['total_fee_format'] || 0}}</span>
+                </li>
+                <li>
+                    <h3>优惠金额</h3>
+                    <span>{{actOrderInfo['total_preferential_fee_format'] || 0}}</span>
+                </li>
+                <li @click="jump('couponCenter')">
+                    <h3>优惠券</h3>
+                    <em>{{actAvailableCoupons.length - actCouponIds.length}}张可用</em>
+                    <span class="use_coupon" v-if="actAvailableCoupons.length > 0">
                     {{actCouponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
-            </li>
-            <li>
-                <h4>实付款</h4>
-                <h5>{{actOrderInfo['settlement_total_fee_format'] || 0}}</h5>
-            </li>
-        </ul>
+                </li>
+                <li>
+                    <h4>实付款</h4>
+                    <h5>{{actOrderInfo['settlement_total_fee_format'] || 0}}</h5>
+                </li>
+            </ul>
+        </div>
         <div id="do_payment">
             <span>
                 预付款 {{actOrderInfo['settlement_total_fee_format'] || 0}}
@@ -87,7 +81,7 @@
 	import CustomHeader from '../../../../components/CustomHeader';
     import TimeSelector from '../../../../components/TimeSelector';
 	import {formatMoney,getDate} from '../../../../utils';
-
+    import _ from 'underscore'
 	export default {
 		components: {
 			CustomHeader,TimeSelector
@@ -98,7 +92,8 @@
 				tomorrowStr: '',
                 type: '',
                 actId: '',
-                time: ''
+                time: '',
+                screenHeight: 0
 			};
 		},
 		watch: {
@@ -125,11 +120,19 @@
 				return this.model.activity.couponIds
             },
             address () {
-                console.log(this.model.activity.address, 'address');
                 return this.model.activity.address
-            }
+            },
+            statusBarHeight () {
+                return this.model.global.barHeight.statusBarHeight
+            },
+            navHeight () {
+                return this.model.global.barHeight.navHeight
+            },
 		},
 		methods: {
+            saveRemark (e, product) {
+                product.remark = e.target.value
+            },
 			selectPoint () {
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                 	query: {
@@ -138,6 +141,7 @@
                 });
             },
 			createOrder(){
+                let carts = [];
                 if (!this.address.id) {
                     wx.showToast({
                         title: '请先选择收货地址',
@@ -152,7 +156,21 @@
                     });
                     return;
                 }
-				this.$command('CREATE_ACTIVITY_PAY_ORDER', this.actId, this.address.id, this.actCouponIds);
+                let hasRemark = true
+                _.map(this.goodInShoppingCart, (product)=>{
+                    if (!product.remark) {
+                        hasRemark = false;
+                    }
+                })
+                if (!hasRemark) {
+                    wx.showToast({
+                        title: `请填写商品备注`,
+                        icon: 'none'
+                    });
+                    return
+                };
+                carts = this.goodInShoppingCart;
+				this.$command('CREATE_ACTIVITY_PAY_ORDER', this.actId, this.address.id, this.actCouponIds,this.$refs.timeSelector.date, this.$refs.timeSelector.time, carts);
 
             },
 			jump (router) {
@@ -169,6 +187,9 @@
 			let type = this.$route.query.type;
 			let id = this.$route.query.id;
 			let actId = this.$route.query.actId || '';
+            let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+            let screenWitdh = wx.getSystemInfoSync().windowHeight;
+            this.screenHeight = (rpxRate * screenWitdh)/ 2;
 			this.type = type;
 			this.actId = actId;
 			if (id) {
@@ -190,7 +211,12 @@
 	page {
 		height: 100%;
 		background: #f2f2f2;
+        overflow: hidden;
 	}
+
+    .payment_window{
+        overflow: auto;
+    }
 
     #pay_shop_info,#pay_pick_up_info{
         display: flex;
@@ -251,6 +277,7 @@
     #pay_pick_up_info{
         justify-content: space-between;
         border-top: 2rpx solid #f2f2f2;
+        overflow: hidden;
     }
 
     #pay_pick_up_info .arrow{
@@ -290,13 +317,34 @@
         padding: 10rpx;
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         border-bottom: 2rpx solid #f2f2f2;
         padding-bottom: 20rpx;
+        box-sizing: border-box;
     }
 
     #good_list li:last-child{
         border: none;
+    }
+
+    #good_list li .top{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #good_list li .bottom {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    #good_list li .bottom input{
+        width: 100%;
+        border: 1rpx solid #f2f2f2;
+        margin-top: 15rpx;
+        font-size: 28rpx;
+        box-sizing: border-box;
+        padding: 0 20rpx;
     }
 
     #good_list li img{
@@ -334,6 +382,13 @@
 
     #good_list li #good_info #good_info_price h3{
         margin: 0;
+        font-size: 28rpx;
+        color: #FFCC00;
+    }
+
+    #good_list li #good_info #good_info_price em{
+        font-size: 24rpx;
+        color: #757575;
     }
 
     #order_payment #total {
@@ -414,6 +469,7 @@
         background: #ffcc00;
         position: fixed;
         bottom: 0;
+        z-index: 999999;
     }
 
     #order_payment #do_payment span{

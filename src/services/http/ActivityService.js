@@ -86,16 +86,16 @@ export default class ActivityService extends ApiService {
     }
 
     // 创建活动订单
-    async createActOrder (actId, addId, coupons = []) {
+    async createActOrder (actId, addId, coupons = [], date, start, end, carts) {
         let response = await this.httpPost('/api/mp/activity/orders', {
             activity_id: actId,
             address_id: addId,
-            carts: [],
+            carts: carts,
             remark: '',
             coupon_records: coupons,
-            expect_receive_date: '2020-01-20',
-            expect_receive_time_start: '09:00:00',
-            expect_receive_time_end: '18:00:00'
+            expect_receive_date: date,
+            expect_receive_time_start: start,
+            expect_receive_time_end: end
         });
         return response.data
     }

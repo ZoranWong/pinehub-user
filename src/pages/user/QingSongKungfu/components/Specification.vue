@@ -12,12 +12,13 @@
             <div id="select_spec_info">
                 <h4>{{item.name}}</h4>
                 <div class="select_spec_info">
-                    <span :style="{fontSize: '32rpx',color: '#FFCC00'}">{{item['sell_price_format']}}</span>
+                    <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-if="!price">{{item['sell_price_format']}}</span>
+                    <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-else>{{price}}</span>
                     <span>销量:{{item.sell_num}}</span>
                     <span>库存:{{item.product_entities[0].stock}}</span>
                 </div>
             </div>
-            <div id="select_spec_choose">
+            <div id="select_spec_choose_act">
                 <div id="choose_items" v-for="(i,index) in item.specifications" :key="i.id">
                     <div class="left">{{i.name}}:</div>
                     <div class="right1">
@@ -41,10 +42,10 @@
                     <img src="../../../../../static/icons/add.png" alt="" @click="add(1)">
                 </div>
             </div>
-            <div id="remark">
-                <span>填写备注</span>
-                <input type="text" placeholder="点击填写备注" v-model="remark">
-            </div>
+<!--            <div id="remark">-->
+<!--                <span>填写备注</span>-->
+<!--                <input type="text" placeholder="点击填写备注" v-model="remark">-->
+<!--            </div>-->
             <div id="select_spec_confirm1">
                 <button @click="addToShoppingCart">
                     加入购物车
@@ -71,7 +72,8 @@
 				selectedDesp:'',
                 confirmSelected:{},
                 remark: '',
-                buyNum: 1
+                buyNum: 1,
+                price: ''
             }
         },
         computed () {
@@ -84,7 +86,14 @@
                 this.$emit('close')
             },
             selectSpecItems (parent, item) {
-				this.selectedSpec[parent.id] = item.value;
+                let product = this._props.item;
+                console.log(product);
+                _.map(product['product_entities'], (entity) => {
+                    if (entity.specifications[0].value.id === item.id) {
+                        this.price = entity['sell_price_format']
+                    }
+                })
+                this.selectedSpec[parent.id] = item.value;
 				this.handleClass(parent, item);
 				this.isEqual()
 			},
@@ -99,7 +108,6 @@
 				for ( let key in selectedSpec){
 					selectedDesp.push(selectedSpec[key])
                 }
-                console.log(selectedSpec, 'selectedSpec');
                 this.selectedDesp = selectedDesp.join(',')
 				let isEqual = false
 				return _.map(this._props.item['product_entities'], (item) => {
@@ -154,11 +162,14 @@
                     });
                 }
             },
-            settlement () {
-                if (this.commonLogic()) {
-                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                        query: {type: this.type, actId: this.actId}
-                    });
+            async settlement () {
+                if (await this.commonLogic()) {
+                    setTimeout(()=>{
+                        this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                            query: {type: this.type, actId: this.actId}
+                        });
+                    }, 500)
+
                 } else {
                     wx.showToast({
                         title: '请先选择规格',
@@ -264,16 +275,18 @@
         color: #FFCC00;
     }
 
-    #select_spec_container #select_spec_choose{
-        height: 170rpx;
+    #select_spec_container #select_spec_choose_act{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
         padding: 30rpx 0;
+        margin: 0 30rpx;
+        border-top: 1rpx solid #f2f2f2;
+        border-bottom: 1rpx solid #f2f2f2;
     }
 
-    #select_spec_container #select_spec_choose #choose_items {
+    #select_spec_container #select_spec_choose_act #choose_items {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -281,12 +294,12 @@
         width: 100%;
     }
 
-    #select_spec_container #select_spec_choose #choose_items .left{
+    #select_spec_container #select_spec_choose_act #choose_items .left{
         font-size: 30rpx;
         color: #111111;
     }
 
-    #select_spec_container #select_spec_choose #choose_items .right1{
+    #select_spec_container #select_spec_choose_act #choose_items .right1{
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -295,7 +308,7 @@
     }
 
 
-    #select_spec_container #select_spec_choose #choose_items .right1 button{
+    #select_spec_container #select_spec_choose_act #choose_items .right1 button{
         border-radius: 10rpx;
         padding: 0 21rpx;
         height: 48rpx;
@@ -307,13 +320,13 @@
         background: #fff;
     }
 
-    #select_spec_container #select_spec_choose #choose_items .right1 .active{
+    #select_spec_container #select_spec_choose_act #choose_items .right1 .active{
         background: linear-gradient(to right,#FDE068,#FFCC00);
         border: 2rpx solid #ffcc00;
         color: #fff;
     }
 
-    #select_spec_container #select_spec_choose #choose_items button:first-child{
+    #select_spec_container #select_spec_choose_act #choose_items button:first-child{
         margin-left: 20rpx;
     }
 

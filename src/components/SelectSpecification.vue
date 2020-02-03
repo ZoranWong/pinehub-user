@@ -243,8 +243,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        border-top: 1rpx solid #f2f2f2;
-        border-bottom: 1rpx solid #f2f2f2;
     }
 
     #select_spec_container #select_spec_choose #choose_items {

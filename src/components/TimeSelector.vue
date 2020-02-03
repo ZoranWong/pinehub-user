@@ -5,14 +5,14 @@
             class='picker'
             mode="multiSelector"
             @change="bindStartMultiPickerChange"
-            @columnchange="bindMultiPickerColumnChange"
-            :value="multiIndex"
+            @columnchange="bindStartPickerColumnChange"
+            :value="multiStart"
             :range="ranges"
         >
-            <span v-if="!time" class="pickerTime">
+            <span  class="pickerTime" v-if="!time">
                 请选择送货时间
             </span>
-            <span v-else class="pickerTime">
+            <span v-else class="pickerTime" >
                 <span class="pickerTime">
                     预计送货日期: {{date}}
                 </span>
@@ -20,8 +20,6 @@
                     预计送货时间: {{time}}
                 </span>
             </span>
-
-
         </picker>
     </div>
 </template>
@@ -38,19 +36,15 @@
                 tomorrowStr: getTomorrowDate(),
                 date: '',
                 time: '',
-                multiIndex: [],
+                multiStart: [],
                 dateRangeAry: [],
                 hoursRangeAry: [],
-                minutesRangeAry: ['00', '30'],
-                ranges: []
+                ranges: [],
             }
         },
         watch: {
             hoursRangeAry (val) {
-                this.ranges = [this.dateRangeAry, val, this.minutesRangeAry]
-            },
-            minutesRangeAry (val) {
-                this.ranges = [this.dateRangeAry, this.hoursRangeAry, val]
+                this.ranges = [this.dateRangeAry, val]
             }
         },
         methods: {
@@ -63,35 +57,29 @@
             },
             bindStartMultiPickerChange (e) {
                 let value = e.mp.detail.value;
-                this.multiIndex = value;
+                this.multiStart = value;
                 this.date = this.dateRangeAry[value[0] || 0];
-                this.time = this.hoursRangeAry[value[1] || 0] + ':' + this.minutesRangeAry[value[2] || 0]
+                this.time = this.hoursRangeAry[value[1] || 0];
             },
-            bindMultiPickerColumnChange (e) {
+            bindStartPickerColumnChange (e) {
                 let event = e.mp.detail;
-                this.multiIndex[event.column] = event.value
+                this.multiStart[event.column] = event.value;
                 let today = new Date();
                 if (today.getHours() > 14) {
-                    this.hoursRangeAry = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+                    this.hoursRangeAry = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00']
                 } else {
-                    if (event.column === 0 && event.value === 0) {
-                        let hours = today.getHours() + 4;
+                    if (!this.multiStart[0]) {
+                        let hours = today.getHours() + 5;
                         // 下单后选择四小时后的时间开始配送
                         let hoursRangeAry = [];
-                        while (hours < 19) {
-                            hoursRangeAry.push(hours);
+                        while (hours < 18) {
+                            hoursRangeAry.push(`${hours}:00-${hours+1}:00`);
                             hours ++
                         }
                         this.hoursRangeAry = hoursRangeAry;
                     } else {
-                        this.hoursRangeAry = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+                        this.hoursRangeAry = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00']
                     }
-                }
-
-                if (event.column === 1 && event.value === this.hoursRangeAry.length - 1) {
-                    this.minutesRangeAry = ['00']
-                } else {
-                    this.minutesRangeAry = ['00', '30']
                 }
             }
         },
@@ -99,13 +87,13 @@
             let today = new Date();
             if (today.getHours() > 14) {
                 this.getDateRangeAry(1);
-                this.hoursRangeAry = ['09', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+                this.hoursRangeAry = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00']
             } else {
                 this.getDateRangeAry(0);
-                let hours = today.getHours();
+                let hours = today.getHours() + 5;
                 let hoursRangeAry = [];
-                while (hours < 19) {
-                    hoursRangeAry.push(hours);
+                while (hours < 18) {
+                    hoursRangeAry.push(`${hours}:00-${hours+1}:00`);
                     hours ++
                 }
                 this.hoursRangeAry = hoursRangeAry;
