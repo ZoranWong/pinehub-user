@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div id="select_spec" v-if="selectSpec">
+    <div id="select_spec_act" v-if="selectSpec">
         <div id="select_spec_container" >
             <div id="closeIcon">
                 <i class="iconfont closeIcon"  @click="close">&#xe658;</i>
@@ -187,7 +187,7 @@
 </script>
 
 <style>
-    #select_spec {
+    #select_spec_act {
         background: rgba(17, 17, 17, 0.3);
         display: flex;
         justify-content: center;

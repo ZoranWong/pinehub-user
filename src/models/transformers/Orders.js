@@ -34,6 +34,8 @@ export default class Order {
             this.btnStatus = 2;  // 申请售后 再来一单
         } else if (this.stateDesc === '已支付') {
             this.btnStatus = 4   // 再来一单
+        } else if (this.stateDesc === '配送中') {
+            this.btnStatus = 5   // 再来一单
         } else {
             this.btnStatus = 3   // 再来一单
         }

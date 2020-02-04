@@ -183,7 +183,12 @@ export default class Orders extends Model {
 
         this.addEventListener('saveCommonlyUsedPoint', function ({points, type}) {
             _.map(points, (point) => {
-                point.formatDistance = Math.round(point.distance);
+                let dis = Math.round(point.distance);
+                if (dis > 1000) {
+                    point.formatDistance = (dis / 1000).toFixed(1) + '千米'
+                } else {
+                    point.formatDistance = dis + '米'
+                }
             });
             this.state.commonlyPoints = points;
             this.state.type = type;
@@ -191,7 +196,12 @@ export default class Orders extends Model {
 
         this.addEventListener('saveNearbyPoints', function ({points, type}) {
             _.map(points, (point) => {
-                point.formatDistance = Math.round(point.distance);
+                let dis = Math.round(point.distance);
+                if (dis > 1000) {
+                    point.formatDistance = (dis / 1000).toFixed(1) + '千米'
+                } else {
+                    point.formatDistance = dis + '米'
+                }
             });
             this.state.nearbyPoints = points;
             this.state.type = type;

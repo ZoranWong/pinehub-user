@@ -31,7 +31,7 @@
             </div>
 
             <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
-                <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id}})">
+                <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
                     <img :src="item.banners[0]" alt="" class="productImg">
                     <h3 class="name">{{item.name}}</h3>
                     <div class="statictics">

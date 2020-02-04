@@ -65,7 +65,6 @@ export default class TencentMapService extends Service {
 
     // 地图拖拽
     getCenterLocation () {
-        console.log('xxxxxxxxxxxxxxx');
         let map = wx.createMapContext('checkedMap');
         return new Promise((resolve, reject) => {
             map.getCenterLocation({

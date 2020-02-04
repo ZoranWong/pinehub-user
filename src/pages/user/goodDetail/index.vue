@@ -38,12 +38,18 @@
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
 
-            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" />
+            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :actId="actId" />
             <SelectSpecification
                 :selectSpec="selectSpec"
                 :item="selectItem"
                 :type="'mall'"
                 @close="closeSelectSpec" />
+            <Specification
+                :selectSpec="selectActSpec"
+                :item="selectActItem"
+                :type="'activity'"
+                :actId="actId"
+                @close="closeSelectActSpec" />
             <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
         </div>
     </div>
@@ -59,13 +65,15 @@
 	import Banner from '../../../components/Banner';
 	import wxParse from 'mpvue-wxparse'
     import Auth from '../../../components/Auth';
-	import _ from 'underscore'
+	import _ from 'underscore';
+	import Specification from '../QingSongKungfu/components/Specification';
 	export default {
         name: 'goodDetail',
 		components: {
 			CustomHeader,
 			ShoppingCart,
 			SelectSpecification,
+            Specification,
 			ChooseSelfRaisingPoint,
 			Swiper,
 			Banner,
@@ -81,7 +89,10 @@
                 options: {},
 				screenWitdh: 0,
 				screenHeight: 0,
-				getAuth: false
+				getAuth: false,
+                actId: '',
+                selectActItem: {},
+                selectActSpec: false
             }
         },
         onShareAppMessage: function (res) {
@@ -129,14 +140,21 @@
                 if (!this.registered) {
 					this.getUserAuth()
 				} else {
-					if (!this.isMember) {
+                    if (!this.isMember) {
 						this.showBindMobile = true
 					} else {
 						this.showBindMobile = false
 						if (item.specifications.length) {
-							this.selectItem = item;
-							this.selectSpec = true
-						} else {
+                            console.log('xxxxxxxxxxxxx');
+                            if (this.options['type'] === 'activity') {
+                                console.log('xxcccccccccccccccccc');
+                                this.selectActItem = item;
+                                this.selectActSpec = true
+                            } else {
+                                this.selectItem = item;
+                                this.selectSpec = true
+                            }
+                        } else {
 							if (this.options['type'] === 'mall') {
 								let goods = this.model.user.store.goodInShoppingCart
 								if (goods.length) {
@@ -163,7 +181,17 @@
 									this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
 								}
 							} else if (this.options['type'] === 'activity') {
-                                console.log(';:::::::::::::::::::::');
+                                let goods = this.model.activity.goodInShoppingCart;
+                                if (goods.length) {
+                                    _.map(goods, (product) => {
+                                        product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+                                            this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
+                                            :
+                                            this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                                    })
+                                } else {
+                                    this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                                }
                             }
 						}
 					}
@@ -172,6 +200,9 @@
 			},
 			closeSelectSpec(){
 				this.selectSpec = false
+			},
+            closeSelectActSpec(){
+				this.selectActSpec = false
 			},
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
@@ -266,6 +297,7 @@
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+			this.actId = options['actId'] ? options['actId'] : '';
 			this.options = options;
 			if (this.storeId) {
 				this.initAccount();
@@ -299,7 +331,16 @@
         right: 0;
         top: 0;
         bottom: 0;
+    }
 
+    #select_spec_act{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
     }
 
     #shopping_cart{

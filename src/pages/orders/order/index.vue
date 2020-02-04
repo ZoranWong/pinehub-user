@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-	<div id="userOrders" class="body">
+	<div id="userOrders" class="body" :style="{'overflow': totalNum === 0 ? 'hidden': 'auto'}">
         <CustomHeader :title="title" :needReturn="true" />
 
         <div id="tab_select" :style="{'top': (statusBarHeight + navHeight) + 'px'}" >
@@ -46,6 +46,9 @@
 				tabs: [
 				    {name: '全部', key: ''},
 				    {name: '待付款', key: 'WAIT_TO_PAY'},
+				    {name: '已支付', key: 'ORDER_PAY_COMPLETED'},
+				    {name: '制作中', key: 'ORDER_WAIT_MANUFACTURE'},
+				    {name: '配送中', key: 'ORDER_CUSTOMER_VERIFY'},
 				    {name: '待自提', key: 'WAIT_TO_PICK'},
                     {name: '已完成', key: 'ORDER_COMPLETED'},
                     {name: '处理中', key: 'ORDER_HANDLING'},
@@ -181,11 +184,14 @@
 	}
     .empty_img{
         width: 100%;
-        height: 600px;
+        height: 700px;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        background: #fff;
+        overflow: hidden;
+        border-top: 20rpx solid #f2f2f2;
     }
     .empty_img img{
         width: 350rpx;

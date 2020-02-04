@@ -30,11 +30,11 @@
                 <div class="order_info">
                     <div class="order_info_name">
                         <h4>
-                            预约取货日期
+                            预约{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '送货' :'取货'}}日期
                             <span>{{orderDetail['plan_pickup_date']}}</span>
                         </h4>
                         <h4>
-                            预约取货时间
+                            预约{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '送货' :'取货'}}时间
                             <span>{{orderDetail['plan_pickup_time']}}</span>
                         </h4>
                     </div>
@@ -87,12 +87,12 @@
                 <div>
                    付款时间：{{orderDetail['paid_at'] || '暂无'}}
                 </div>
-                <div>支付方式：{{orderDetail['payment_type'] === 'BANANCE' ? '余额支付':'微信支付'}}  </div>
+                <div>支付方式：{{orderDetail['payment_type'] === 'BALANCE' ? '余额支付':'微信支付'}}  </div>
 
-                <div>实际取货时间：{{orderDetail['verified_at'] || '暂无'}}  </div>
+                <div>实际{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '收货' :'取货'}}时间：{{orderDetail['verified_at'] || '暂无'}}  </div>
             </div>
             <div id="order_total_price">
-                <span>预付款 ￥{{orderDetail['settlement_total_fee']}}</span>
+                <span>实付款 ￥{{orderDetail['settlement_total_fee']}}</span>
                 <h3 v-if="orderDetail['state_desc'] === '待自提'" @click="btnClick('pickup', orderDetail)" >去取货</h3>
                 <h3 v-if="orderDetail['state_desc'] === '待付款'" @click="btnClick('pay', orderDetail)" >去支付</h3>
             </div>

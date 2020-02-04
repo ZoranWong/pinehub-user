@@ -209,4 +209,10 @@ export default class OrdersService extends ApiService {
         let response = await this.httpPost(`api/mp/orders/${order}/after/service`, {reason});
         return response.data;
     }
+
+    // 确认订单
+    async confirmMpOrder (order) {
+        let response = await this.httpPut(`api/mp/orders/${order}/confirm`, {});
+        return response;
+    }
 }

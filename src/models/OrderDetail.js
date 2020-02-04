@@ -34,10 +34,10 @@ export default class Orders extends Model {
                     item.specDesp = specDesp.join(',')
                 }
             });
-            
+
             // 处理订单号
             orderDetail['order_no'] = orderDetail['order_no'].slice(-12);
-            
+
             // 处理预约日期时间
             if (orderDetail['shop']) {
                 let openTime = orderDetail['shop']['business_hours_start'] || '';
@@ -55,8 +55,14 @@ export default class Orders extends Model {
             } else {
                 orderDetail['plan_pickup_date'] = addDate(orderDetail['paid_at'], 1) || '暂无';
                 orderDetail['plan_pickup_time'] = '暂无';
-                orderDetail['plan_pickup_time'] = '暂无';
             }
+
+            if (orderDetail.order_type === 'ACTIVITY_PRODUCT_ORDER') {
+                orderDetail['plan_pickup_date'] = orderDetail['expect_receive_date'];
+                orderDetail['plan_pickup_time'] = orderDetail['expect_receive_time_start'] + '-' + orderDetail['expect_receive_time_end'];
+            }
+
+
             this.state.orderDetail = orderDetail
         })
     }

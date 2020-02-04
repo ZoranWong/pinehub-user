@@ -55,12 +55,12 @@
                 </form>
 
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 4 && order.type === 'ACTIVITY_PRODUCT_ORDER' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
+            <div class="order_info_btn" v-if=" order.btnStatus === 5 ">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" @click="btnClick('alreadyGetIt', order)" class="yellow">确认收货</button>
                 </form>
             </div>
-            <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
+            <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order.type !== 'ACTIVITY_PRODUCT_ORDER' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</button>
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>

@@ -64,7 +64,7 @@
                         <div class="left">
                             <div class="top">
                                 <h4>{{item.name}}</h4>
-                                <span>距您当前位置{{item.formatDistance}}米</span>
+                                <span>距您当前位置{{item.formatDistance}}</span>
                             </div>
                             <div class="bottom">
                                 {{item.address}}
@@ -171,9 +171,8 @@
             },
             async regionchangeend (e) {
                 let result = await this.map.getCenterLocation();
-                this.latitude = result[1];
-                this.longitude = result[0];
-                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
+
+                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type, this.longitude, this.latitude);
                 this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
             },
 			async uploadFormId (e) {

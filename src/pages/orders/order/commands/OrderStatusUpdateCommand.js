@@ -37,8 +37,15 @@ export default class OrderStatusUpdateCommand extends Command {
     };
 
     // 确认收货
-    confirmGot = order => {
+    async confirmGot (order) {
         // 确认收货
+        let response = await this.service('http.orders').confirmMpOrder(order);
+        if (response.message === '订单已确认') {
+            wx.showToast({
+                title: '订单已确认收货',
+                icon: 'none'
+            })
+        }
     };
 
     // 重新支付订单
