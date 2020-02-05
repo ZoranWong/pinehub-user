@@ -74,6 +74,7 @@
                             query: {
                                 type: type,
                                 id: coupon['record_id'],
+                                actId: this.$route.query.actId
                             }
                         });
                     } else {

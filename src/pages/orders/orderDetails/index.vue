@@ -75,6 +75,15 @@
             </div>
             <div id="order_info">
                 <h3>订单信息</h3>
+                <div v-if="orderDetail['shipping_info']">
+                    收货人姓名：{{orderDetail['shipping_info']['consignee_name'] || '暂无'}}
+                </div>
+                <div v-if="orderDetail['shipping_info']">
+                    收货人电话号码：{{orderDetail['shipping_info']['consignee_mobile_phone']  || '暂无'}}
+                </div>
+                <div v-if="orderDetail['shipping_info']">
+                    收货人地址：{{orderDetail['shipping_info']['province'] + orderDetail['shipping_info']['city'] + orderDetail['shipping_info']['area'] + orderDetail['shipping_info']['detail_address'] || '暂无'}}
+                </div>
                 <div>
                     <span> 订单编号：{{orderDetail['order_no']}}</span>
                     <em @click="cpoy(orderDetail['order_no'])">复制</em>
@@ -365,7 +374,6 @@
 
     #order_info{
       margin: 20rpx 0;
-      height: 450rpx;
       background: #fff;
       padding: 30rpx 40rpx;
       display: flex;

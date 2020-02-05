@@ -54,11 +54,11 @@
 			},
 			availableCoupons () {
 			    if (this.$route.query.type === 'activity') {
-                    this.coupons = this.model.user.tickets.availableCoupons
-                    return this.model.user.tickets.availableCoupons
-                } else {
                     this.coupons = this.model.activity.availableCoupons
                     return this.model.activity.availableCoupons
+                } else {
+                    this.coupons = this.model.user.tickets.availableCoupons
+                    return this.model.user.tickets.availableCoupons
                 }
 			},
 			totalNum() {

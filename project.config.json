@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 22,
+			"current": 20,
 			"list": [
 				{
 					"id": 0,
@@ -170,20 +170,6 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/orders/order/main",
-					"pathName": "pages/orders/order/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/user/storesMap/main",
-					"pathName": "pages/user/storesMap/main",
-					"query": "type=mall",
 					"scene": null
 				}
 			]

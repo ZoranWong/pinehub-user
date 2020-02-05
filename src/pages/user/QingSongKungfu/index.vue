@@ -160,6 +160,7 @@
                 this.selectSpec = false
             },
             addToShoppingCart(item){
+                console.log(item, '++++++++++++++++++++++');
                 if (item.specifications.length) {
                     this.selectItem = item;
                     this.selectSpec = true
@@ -213,7 +214,7 @@
         transition: 1s;
     }
 
-    #select_spec{
+    #select_spec_act{
         width: 100%;
         height: 100%;
         position: fixed;

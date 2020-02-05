@@ -1,6 +1,6 @@
 import Command from '../../../../commands/Command';
 export default class CreateAddress extends Command {
-    async handle (params, isPayment) {
+    async handle (params, isPayment, isActivity) {
         console.log(isPayment, 'isPayment');
         let responses = await this.service('http.address').createAddress(params);
         let self = this;
@@ -10,14 +10,28 @@ export default class CreateAddress extends Command {
                 icon: 'success'
             });
             if (isPayment) {
-                this.model.activity.dispatch('saveAddress', {
-                    address: params
-                });
-                setTimeout(function () {
-                    self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
-                        query: {type: 'activity', actId: 1}
+                if (isActivity) {
+                    this.model.activity.dispatch('saveAddress', {
+                        address: params
                     });
-                }, 2000);
+                    setTimeout(function () {
+                        self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
+                            query: {type: 'activity', actId: 1}
+                        });
+                    }, 2000);
+                } else {
+                    this.model.user.order.payment.dispatch('saveMallAddress', {
+                        address: params
+                    });
+                    setTimeout(function () {
+                        self.$command('REDIRECT_TO', 'user.order.payment', 'push', {
+                            query: {type: 'mall'}
+                        });
+                    }, 2000);
+                }
+
+
+
             } else {
                 setTimeout(function () {
                     self.$application.$command('REDIRECT_TO', '', 'back');

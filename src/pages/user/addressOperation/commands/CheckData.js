@@ -1,6 +1,6 @@
 import Command from '../../../../commands/Command';
 export default class LoadIntegralProductsCommand extends Command {
-    async handle (forms, code, isDefault, tag, id, isPayment) {
+    async handle (forms, code, isDefault, tag, id, isPayment, isActivity) {
         if (!forms['consignee_name']) {
             wx.showToast({
                 title: '请填写收货人姓名',
@@ -60,7 +60,7 @@ export default class LoadIntegralProductsCommand extends Command {
         if (id) {
             this.$command('EDIT_ADDRESS', forms, id)
         } else {
-            this.$command('CREATE_ADDRESS', forms, isPayment)
+            this.$command('CREATE_ADDRESS', forms, isPayment, isActivity)
         }
     }
     static commandName () {

@@ -10,13 +10,12 @@ export default class TicketsService extends ApiService {
             // 服务器交互代码
             try {
                 response = await this.httpGet('api/mp/self/coupon/received/records', parameters);
-                console.log(response, 'UIUIUIUUIIUUIUIUUUIUIUUUUIIU');
             } catch (e) {
                 console.log('抛出异常', e);
                 throw (e);
             }
         }
-    
+
         let tickets = response.data;
         let pagination = response.meta.pagination;
         let totalNum = pagination.total;
@@ -83,7 +82,7 @@ export default class TicketsService extends ApiService {
         let result = await this.list(status, parameters);
         return result;
     }
-    
+
     // 优惠券详情
     async ticketDetail (id) {
         let response = await this.httpGet(`api/mp/coupons/${id}`);

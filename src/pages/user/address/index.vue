@@ -74,13 +74,14 @@
             jump (path) {
                 this.$command('REDIRECT_TO', path, 'push', {
                     query: {
-                        needReturn: this.isSelect
+                        needReturn: this.isSelect,
+                        type : this.$route.query.type
                     }
                 });
             },
             editAddress (address) {
                 if (this.isSelect) {
-                    this.$command('SELECT_ADDRESS_COMMAND', address);
+                    this.$command('SELECT_ADDRESS_COMMAND', address, this.$route.query.type);
                     this.$command('REDIRECT_TO','','back')
                 } else {
                     this.$command('REDIRECT_TO', 'user.addressOperation', 'push', {

@@ -19,6 +19,24 @@
             </div>
             <i class="iconfont arrow">&#xe6a3;</i>
         </div>
+        <div id="pay_shop_info_act" @click="selectAddressPoint" v-if="type === 'mall' ">
+            <img class="locationImg" src="../../../../static/icons/location.png" alt="">
+            <div class="pay_shop_info" v-if="addresses.id"  >
+                <div class="pay_shop_info_name">
+                    <h4>
+                        {{addresses['consignee_name']}}
+                        <span>{{addresses['consignee_mobile_phone']}}</span>
+                    </h4>
+                </div>
+                <div class="pay_shop_info_address">
+                    {{addresses.rangeAddress}}{{addresses['detail_address']}}
+                </div>
+            </div>
+            <div class="pay_shop_info" v-else>
+                请选择收货地址
+            </div>
+            <i class="iconfont arrow">&#xe6a3;</i>
+        </div>
         <div id="pay_pick_up_info">
 <!--            <i class="iconfont location">&#xe80b;</i>-->
             <img class="locationImg" src="../../../../static/icons/time.png" alt="">
@@ -92,7 +110,7 @@
 				title: '支付',
                 pointInfo:{},
 				tomorrowStr: '',
-                type: ''
+                type: '',
 			};
 		},
 		watch: {
@@ -120,9 +138,20 @@
             },
             couponIds () {
 				return this.model.user.order.payment.couponIds
-            }
+            },
+            addresses () {
+                return this.model.user.order.payment.addresses
+            },
 		},
 		methods: {
+            selectAddressPoint () {
+                this.$command('REDIRECT_TO', 'user.address', 'push' , {
+                    query: {
+                        needReturn: true,
+                        type: 'mall'
+                    }
+                });
+            },
 			selectPoint () {
                 this.$command('REDIRECT_TO', 'storesMap', 'replace' , {
                 	query: {
@@ -131,10 +160,17 @@
                 });
             },
 			createOrder(){
-				console.log(this.couponIds, 'before create order');
+                if (this.type === 'mall' && !this.addresses.id) {
+                    wx.showToast({
+                        title: '请选择收货地址',
+                        icon: 'none'
+                    });
+                    return
+                }
 				this.$command('CREATE_PAY_ORDER',{
 					shop_id: this.selectedPoint.id,
 					coupon_records: this.couponIds,
+                    address_id: this.addresses.id || ''
                 },this.type);
             },
             getDate () {
@@ -164,7 +200,8 @@
 			this.$command('CALCULATE_PRICE_COMMAND',type,{
 				coupon_records: this.couponIds
             });
-			this.$command('AVAILABLE_COUPONS', type)
+			this.$command('AVAILABLE_COUPONS', type);
+            this.$command('LOAD_DEFAULT_USER_ADDRESS', 'mall')
 		}
 	}
 </script>
@@ -223,6 +260,51 @@
     }
 
     #pay_shop_info .arrow{
+        color: #757575;
+        font-size: 22rpx;
+    }
+
+    #pay_shop_info_act {
+        margin-top: 20rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 0 40rpx;
+        height: 180rpx;
+        margin-bottom: 20rpx;
+    }
+
+    #pay_shop_info_act .locationImg{
+        background: linear-gradient(to right,#FDE068,#FFCC00);
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 60rpx;
+    }
+
+    #pay_shop_info_act .pay_shop_info{
+        width: 507rpx;
+        font-size: 28rpx;
+        color: #111111;
+    }
+
+    #pay_shop_info_act .pay_shop_info .pay_shop_info_name{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #pay_shop_info_act .pay_shop_info .pay_shop_info_name h4 {
+        font-weight: normal;
+        margin: 0;
+    }
+
+    #pay_shop_info_act .pay_shop_info .pay_shop_info_name span{
+        color: #757575;
+        margin-left: 23rpx;
+    }
+
+    #pay_shop_info_act .arrow{
         color: #757575;
         font-size: 22rpx;
     }

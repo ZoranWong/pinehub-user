@@ -136,7 +136,8 @@
 			selectPoint () {
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                 	query: {
-                		needReturn: true
+                		needReturn: true,
+                        type: 'activity'
                     }
                 });
             },
@@ -176,7 +177,7 @@
 			jump (router) {
 				if (this.actAvailableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'replace',{
-					query: {needReturn: true, type: this.type}
+					query: {needReturn: true, type: this.type, actId: this.actId}
                 });
 			}
 		},

@@ -19,6 +19,9 @@ export default class Orders extends Model {
             },
             shopInfo () {
                 return this.state.shopInfo
+            },
+            addresses () {
+                return this.state.addresses
             }
         });
     }
@@ -28,7 +31,8 @@ export default class Orders extends Model {
             orderInfo: {},
             createdOrderInfo: {},
             ids: [],
-            shopInfo: {}
+            shopInfo: {},
+            addresses: {}
         });
     }
 
@@ -44,11 +48,11 @@ export default class Orders extends Model {
             });
             this.state.orderInfo = orderInfo;
         });
-        
+
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
             this.state.createdOrderInfo = orderInfo
         });
-    
+
         this.addEventListener('handleIds', function ({id}) {
             console.log(id, '准备处理couponid');
             let ids = this.state.ids;
@@ -60,20 +64,24 @@ export default class Orders extends Model {
             }
             this.state.ids = ids;
         });
-        
+
         this.addEventListener('deleteId', function () {
             let ids = this.state.ids;
             ids.pop();
             this.state.ids = ids;
         });
-        
+
         this.addEventListener('clearIds', function () {
             this.state.ids = [];
         });
-        
+
         this.addEventListener('saveShopInfo', function ({info}) {
-            console.log(info, '+++++++++++++++++++++');
             this.state.shopInfo = info;
+        })
+
+        this.addEventListener('saveMallAddress', function ({address}) {
+            console.log(address, '++++++++++++++++++++++++++');
+            this.state.addresses = address;
         })
     }
 }

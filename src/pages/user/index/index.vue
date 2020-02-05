@@ -65,6 +65,8 @@
     import FooterNav from '@/components/FooterNav';
     import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
+    import {getUpdateMange} from '../../../utils/getUpdateManage';
+
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -146,7 +148,7 @@
 			}
         },
         mounted () {
-
+            getUpdateMange()
 		},
         onShareAppMessage: function (res) {
             console.log(res);

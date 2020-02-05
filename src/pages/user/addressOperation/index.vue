@@ -136,8 +136,9 @@
             },
             submitAddress () {
                 let tagName = this.tag ? this.tagName : false ;
-                let isPayment = this.$route.query.needReturn ? true : false
-                this.$command('CHECK_DATA', this.forms, this.regionsCode, this.switchChecked, tagName, this.addressId, isPayment)
+                let isPayment = this.$route.query.needReturn ? true : false;
+                let isActivity = this.$route.query.type === 'mall' ? false :true
+                this.$command('CHECK_DATA', this.forms, this.regionsCode, this.switchChecked, tagName, this.addressId, isPayment,isActivity)
             },
             deleteAddress () {
                 this.$command('DELETE_ADDRESS', this.addressId);
