@@ -177,6 +177,9 @@
             if (this.$route.query['needRefresh']) {
                 this.initAccount();
             }
+            let pages =  getCurrentPages();
+            let options = pages[pages.length - 1]['options']
+            this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
         },
         onLoad (options) {
 			if (options.q) {

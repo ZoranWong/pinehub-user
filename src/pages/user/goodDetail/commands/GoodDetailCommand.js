@@ -1,7 +1,7 @@
 import Command from '@/commands/Command';
 
 export default class LoadStoreGoodsCommand extends Command {
-    async handle (type, id) {
+    async handle (type, id, actId) {
         console.log(type, '!!!!!!!!!!1');
         console.log('id', id);
         let result;
@@ -10,8 +10,7 @@ export default class LoadStoreGoodsCommand extends Command {
         } else if (type === 'breakfast') {
             result = await this.service('http.store').breakfastGoodDetail(id);
         } else if (type === 'activity') {
-            console.log('111111111111111111');
-            result = await this.service('http.activities').activityProductDetails(id);
+            result = await this.service('http.activities').activityProductDetails(id, actId);
         }
         this.model.user.goodDetail.dispatch('setGoodDetail', {
             good: result

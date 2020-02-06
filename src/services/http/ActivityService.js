@@ -38,8 +38,8 @@ export default class ActivityService extends ApiService {
     }
 
     // 活动商品详情
-    async activityProductDetails (id) {
-        let response = await this.httpGet(`/api/mp/activity/product/${id}`);
+    async activityProductDetails (id, actId) {
+        let response = await this.httpGet(`/api/mp/activity/product/${id}?activity_id=${actId}`);
         return response.data;
     }
 

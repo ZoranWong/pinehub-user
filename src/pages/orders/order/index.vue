@@ -11,7 +11,7 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
-                    :style="{width: '1328rpx' }">
+                    :style="{width: '1826rpx' }">
                     <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>

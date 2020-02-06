@@ -14,6 +14,7 @@
                 <div class="select_spec_info">
                     <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-if="!price">{{item['sell_price_format']}}</span>
                     <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-else>{{price}}</span>
+                    <span :style="{fontSize: '22rpx',color: '#757575', textDecoration: 'line-through'}" v-if="originPrice">{{originPrice}}</span>
                     <span>销量:{{item.sell_num}}</span>
                     <span>库存:{{item.product_entities[0].stock}}</span>
                 </div>
@@ -54,6 +55,9 @@
                     立即结算
                 </button>
             </div>
+            <div class="act_tips">
+                * 配送时间为9:00-18:00，请提前至少四小时下单
+            </div>
         </div>
     </div>
 </template>
@@ -73,13 +77,19 @@
                 confirmSelected:{},
                 remark: '',
                 buyNum: 1,
-                price: ''
+                price: '',
+                originPrice: ''
             }
         },
         computed () {
 
         },
         watch: {
+            item (val) {
+            	if (val) {
+            		this.originPrice = ''
+                }
+            }
         },
         methods: {
             close () {
@@ -94,6 +104,7 @@
                     }
                 })
                 this.selectedSpec[parent.id] = item.value;
+                this.originPrice = product['origin_price_format'];
 				this.handleClass(parent, item);
 				this.isEqual()
 			},
@@ -402,6 +413,12 @@
 
     #remark input{
         font-size: 28rpx;
+    }
+
+    .act_tips{
+        font-size: 24rpx;
+        color: #757575;
+        padding: 20rpx 40rpx;
     }
 
 </style>

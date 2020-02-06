@@ -3,20 +3,20 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
         <Auth v-if="getAuth" @close="closeAuth" @pay="pay" :slug="slug" />
-<!--        <div v-if="showBindMobile" class="bgff user-mobile-box">-->
-<!--            <div class="user_mobile_box_container">-->
-<!--                <form report-submit="true" @submit="uploadFormId">-->
-<!--                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">-->
-<!--                        手机号授权-->
-<!--                    </button>-->
-<!--                </form>-->
+        <div v-if="!isMember && registered" class="bgff user-mobile-box">
+            <div class="user_mobile_box_container">
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
+                </form>
 
-<!--                <em class="mobile_box_tips">-->
-<!--                    我们需要您的手机号来创建账号，累计积分-->
-<!--                </em>-->
-<!--            </div>-->
+                <em class="mobile_box_tips">
+                    我们需要您的手机号来创建账号，累计积分
+                </em>
+            </div>
 
-<!--        </div>-->
+        </div>
         <div class="payment-box">
             <div class="header">
                 <div class="left">
@@ -59,7 +59,6 @@
             paymentPopupShow: false,
             title: '快乐松扫码付',
 			getAuth: false,
-			showBindMobile: false,
 			slug: 'payment'
         },
         components: {
@@ -78,11 +77,10 @@
             accessToken () {
                 return this.$store.getters['model.app/accessToken'];
             },
-			// isMember () {
-			// 	return this.model.account.isMember;
-			// },
+			isMember () {
+				return this.model.account.isMember;
+			},
 			shopInfo () {
-				console.log(this.model.user.order.payment.shopInfo, '+++++++++++++');
 				return this.model.user.order.payment.shopInfo
             },
 			registered () {
@@ -120,12 +118,6 @@
                 this.address = store['address'];
             },
             async paymentPopup () {
-				// if (!this.isMember) {
-				// 	this.showBindMobile = true
-				// } else {
-				// 	this.showBindMobile = false
-
-                // }
                 if (!this.registered) {
                     this.getUserAuth()
                 } else {

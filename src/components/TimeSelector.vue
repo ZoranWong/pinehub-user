@@ -65,11 +65,11 @@
                 let event = e.mp.detail;
                 this.multiStart[event.column] = event.value;
                 let today = new Date();
-                if (today.getHours() > 14) {
+                if (today.getHours() > 13) {
                     this.hoursRangeAry = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00']
                 } else {
                     if (!this.multiStart[0]) {
-                        let hours = today.getHours() + 5;
+                        let hours = today.getHours() + 4;
                         // 下单后选择四小时后的时间开始配送
                         let hoursRangeAry = [];
                         while (hours < 18) {
@@ -85,12 +85,12 @@
         },
         mounted () {
             let today = new Date();
-            if (today.getHours() > 14) {
+            if (today.getHours() > 13) {
                 this.getDateRangeAry(1);
                 this.hoursRangeAry = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00']
             } else {
                 this.getDateRangeAry(0);
-                let hours = today.getHours() + 5;
+                let hours = today.getHours() + 4;
                 let hoursRangeAry = [];
                 while (hours < 18) {
                     hoursRangeAry.push(`${hours}:00-${hours+1}:00`);

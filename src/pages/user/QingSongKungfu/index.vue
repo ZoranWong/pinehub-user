@@ -18,9 +18,9 @@
                     indicator-color="#fff"
                     indicator-active-color="#ffcc00"
                     afterColor="coral">
-                    <block v-for="(item, index) in activityBanners" :index="index" :key="key">
-                        <swiper-item>
-                            <image :src="item.image" class="slide-image" mode="aspectFill"/>
+                    <block v-for="(item, index) in activityBanners" :index="index" :key="key" >
+                        <swiper-item >
+                            <image :src="item.image" class="slide-image" mode="aspectFill" @click="bannerJump(item)"/>
                         </swiper-item>
                     </block>
                 </swiper>
@@ -32,11 +32,12 @@
 
             <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
                 <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
-                    <img :src="item.banners[0]" alt="" class="productImg">
+                    <img :src="item['main_image']" alt="" class="productImg">
                     <h3 class="name">{{item.name}}</h3>
                     <div class="statictics">
                         <span class="data">销量  {{item['sell_num']}}</span>
                         <span class="data">库存  {{item.stock}}</span>
+                        <span class="data origin" v-if="!item['specifications'] || !item['specifications'].length">{{item['origin_price_format']}}</span>
                     </div>
                     <div class="bottom">
                         <h4 class="price">{{item['sell_price_format']}}</h4>
@@ -119,6 +120,13 @@
             start(e){
                 this.startPoint = e.touches[0];
             },
+            bannerJump (banner) {
+                console.log(banner);
+                if (!banner['can_jump']) return;
+                if (banner['action_type'] === 'PRODUCT_DETAIL') {
+                    this.redirectTo('user.goodDetail', {query: {type:'activity', good_id: banner.link, actId: this.actId}})
+                }
+            },
             connectKf () {
                 wx.makePhoneCall({
                     phoneNumber: this.phone,
@@ -160,8 +168,7 @@
                 this.selectSpec = false
             },
             addToShoppingCart(item){
-                console.log(item, '++++++++++++++++++++++');
-                if (item.specifications.length) {
+                if (item.specifications && item.specifications.length) {
                     this.selectItem = item;
                     this.selectSpec = true
                 } else {

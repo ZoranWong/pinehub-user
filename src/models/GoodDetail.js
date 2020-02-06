@@ -32,7 +32,7 @@ export default class Orders extends Model {
             let maxPrice = _.max(productEntities, (value) => {
                 return value['market_price']
             });
-            let specifications = good['specifications'];
+            let specifications = good['specifications'] || [];
             let spec = [];
             _.map(specifications, function (value) {
                 spec.push(value.name)

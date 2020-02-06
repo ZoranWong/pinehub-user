@@ -112,6 +112,10 @@
     font-size: 11px;
     color: #757575;
 }
+.product .statictics .origin{
+    text-decoration: line-through;
+    margin-left: 25px;
+}
 .product .statictics .data:first-child{
     margin-right: 25px;
 }

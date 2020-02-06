@@ -8,11 +8,11 @@
                 class="selected"
                 v-if="isSelected"
             >
-            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" v-if="ticket.status === '已使用'">
+            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" v-if="ticket.status === '已使用' || ticket.status === '已过期'" >
             <div class="left">
                 <img :src="ticket['coupon_image']" alt="">
             </div>
-            <div :class="ticket.status === '已使用' ? 'right disabledText' : 'right'">
+            <div :class="ticket.status === '已使用' || ticket.status === '已过期' ? 'right disabledText' : 'right'">
                 <div class="name">
                     <h4>【{{ticket.typeDesc}}】</h4>
                     <span>{{ticket.title}}</span>

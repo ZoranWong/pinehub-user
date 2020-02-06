@@ -27,7 +27,10 @@
                 <div class="intro">
                     <div class="name">{{goodDetail.name}}</div>
                 </div>
-                <i class="iconfont" @click="addToShoppingCart(goodDetail)" v-if="goodDetail['product_entities'][0].stock">&#xe6d8;</i>
+                <i class="iconfont" @click="addToShoppingCart(goodDetail)" v-if="goodDetail['product_entities'] && goodDetail['product_entities'][0].stock">&#xe6d8;</i>
+            </div>
+            <div id="good_synopsis">
+                {{goodDetail['intro']}}
             </div>
             <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
             <div id="good_detail_statictics">
@@ -144,7 +147,7 @@
 						this.showBindMobile = true
 					} else {
 						this.showBindMobile = false
-						if (item.specifications.length) {
+						if (item.specifications && item.specifications.length) {
                             console.log('xxxxxxxxxxxxx');
                             if (this.options['type'] === 'activity') {
                                 console.log('xxcccccccccccccccccc');
@@ -220,7 +223,7 @@
 				this.$command('SET_USER_MOBILE', e);
 			},
             loadPageData () {
-				this.$command('GOOD_DETAIL_COMMAND', this.options['type'], this.options['good_id'])
+				this.$command('GOOD_DETAIL_COMMAND', this.options['type'], this.options['good_id'], this.options.actId || '')
             },
             bindConsumer () {
 				this.$command('BIND_CONSUMER', this.storeId);
@@ -311,6 +314,9 @@
 				//提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
 				this.storeId = scan_url.match(/\d+/)[0];
 			}
+            this.model.user.goodDetail.dispatch('setGoodDetail', {
+                good: {}
+            })
 		}
 	}
 </script>
@@ -321,6 +327,12 @@
         width: 750rpx;
         box-sizing: border-box;
         overflow: auto;
+    }
+
+    #good_synopsis {
+        padding: 0 40rpx;
+        color: #757575;
+        font-size: 28rpx;
     }
 
     #select_spec{
