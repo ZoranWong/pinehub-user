@@ -1,0 +1,219 @@
+
+#virusTopic{
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: hidden;
+}
+
+.virusTopicContainer{
+    width: 100%;
+    overflow: auto;
+}
+
+.vBanner{
+    width: 100%;
+    height: 386rpx;
+    background: #01CF95;
+}
+
+.vContent{
+    width: 100%;
+    box-sizing: border-box;
+    background: #C7EFE4;
+    border-top-left-radius: 20rpx;
+    border-top-right-radius: 20rpx;
+    transform: translateY(-31rpx);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20rpx;
+}
+
+.vGuide{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10rpx;
+    background: #fff;
+    padding: 0 30rpx;
+    margin: 50rpx 0;
+}
+
+.guideTitle{
+    font-size: 40rpx;
+    color: #076858;
+    font-weight: bold;
+    margin: 38rpx 0;
+}
+
+.guideList{
+    width: 100%;
+}
+
+.guideList .guideListItem{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40rpx;
+}
+
+.guideCircle{
+    width: 20rpx;
+    height: 20rpx;
+    margin-right: 11rpx;
+}
+
+.hot{
+    width: 48rpx;
+    height: 18rpx;
+    margin-left: 9rpx;
+}
+
+.guideListTitle{
+    font-size: 28rpx;
+    color: #111;
+}
+
+.titleHeavy{
+    font-weight: bold;
+}
+
+.guideArrow{
+    width: 11rpx;
+    height: 21rpx;
+}
+
+.sendHome{
+    width: 100%;
+    margin-bottom: 30rpx;
+}
+
+.sendHomeTitle{
+    font-size: 40rpx;
+    color: #076858;
+    position: relative;
+    margin-left: 10rpx;
+    font-weight: bold;
+}
+
+.sendHomeTitle:before{
+    content: '';
+    width: 8rpx;
+    height: 42rpx;
+    background: #076858;
+    position: absolute;
+    left: -32rpx;
+    bottom: 9rpx;
+}
+
+.orderMainProduct{
+    width: 100%;
+    border-radius: 10rpx;
+    background: #fff;
+    overflow: hidden;
+}
+
+.mainProductBanner{
+    width: 100%;
+    height: 336rpx;
+    background: #076858;
+}
+
+.mainProductTitle{
+    width: 100%;
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    font-size: 32rpx;
+    color: #111;
+    font-weight: bold;
+    margin-top: 40rpx;
+}
+
+.products{
+    padding: 0 30rpx;
+    margin-top: 30rpx;
+    margin-bottom: 40rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product{
+    display: flex;
+    flex-direction: column;
+    margin-right: 25rpx;
+}
+
+.product:last-child{
+    margin-right: 0;
+}
+
+.product .productImg{
+    width: 200rpx;
+    height: 200rpx;
+    border: 2rpx solid #f5f5f5;
+    margin-bottom: 20rpx;
+}
+
+.product .productName{
+    font-weight: bold;
+    font-size: 26rpx;
+    color: #757575;
+    width: 100%;
+    text-align: center;
+}
+
+.orderOtherProduct{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10rpx;
+    padding: 30rpx;
+    background: #fff;
+    margin-top: 20rpx;
+    padding-bottom: 0;
+}
+
+.orderOtherProductTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.orderOtherProductTop .left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.otherProductTitle{
+    font-size: 34rpx;
+    color: #111;
+    font-weight: bold;
+}
+
+.otherProductDesc {
+    margin-left: 20rpx;
+    font-size: 24rpx;
+    color: #757575;
+    font-weight: bold;
+}
+
+.orderOtherProductTop .more{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f98158;
+    border-radius: 20rpx;
+    font-size: 24rpx;
+    color: #fff;
+    padding: 4rpx 14rpx;
+}
+
+.whiteArrow{
+    width: 12rpx;
+    height: 22rpx;
+    margin-left: 6rpx;
+}

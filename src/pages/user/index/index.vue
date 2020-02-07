@@ -1,14 +1,67 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <CustomHeader :title="title" :needReturn="false" />
+        <CustomHeader :title="title" :needReturn="false" :backColor="'#049473'"/>
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div id="index_header">
-            <div id="index_logo"></div>
-            <div id="bear" :style="{'top': (statusBarHeight + navHeight + 61) + 'px'}">
-                <img :src="headerAnimate"/>
+<!--        <div id="index_header">-->
+<!--            <div id="index_logo" @click="redirectTo('special.virusTopic')"></div>-->
+<!--            <div id="bear" :style="{'top': (statusBarHeight + navHeight + 61) + 'px'}">-->
+<!--                <img :src="headerAnimate"/>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
+            <div id="index_header">
+                <div id="products_search" >
+                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>
+                    <i class="iconfont search">&#xe65c;</i>
+                </div>
+                <div class="banners">
+                    <swiper
+                        class="index-swiper"
+                        circular="true"
+                        indicator-dots="true"
+                        autoplay="true"
+                        interval="2000"
+                        duration="1000"
+                        beforeColor="red"
+                        indicator-color="#fff"
+                        indicator-active-color="#ffcc00"
+                        afterColor="coral">
+                        <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
+                            <swiper-item >
+                                <image :src="item.image" class="index-slide-image" mode="aspectFill" @click="bannerJump(item)"/>
+                            </swiper-item>
+                        </block>
+                    </swiper>
+                    <div class="customDots">
+                        <span class="dots" v-for="(item,index) in indexBanners"></span>
+                    </div>
+                </div>
             </div>
+            <ul class="classifications">
+                <li v-for="(item,index) in categories" class="cates" @click="goStoreCates(item.id)">
+                    <img :src="item.icon" v-if="item.icon" alt="">
+<!--                    <img :src="'./img/'+index+'.png'"  alt="">-->
+                    <span>{{item.name}}</span>
+                </li>
+                <li class="cates">
+                    <img src="./img/More.png" alt="" @click="goStoreCates('more')">
+                    <span>查看更多</span>
+                </li>
+            </ul>
+
+            <img src="./img/Activity-01.png" alt="" class="activities" @click="redirectTo('user.store')">
+
+            <img
+                src="./img/Activity-02.png"
+                alt=""
+                class="activities"
+                v-for="item in activities"
+                @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})"
+            >
         </div>
+
+
         <div v-if="!registered" class="bgff user-mobile-box">
             <form report-submit="true" @submit="uploadFormId">
                 <button form-type="submit" class="user-mobile-get-btn" @click="this.getUserAuth">
@@ -27,35 +80,39 @@
                 我们需要您的手机号来创建账号，累计积分
             </em>
         </div>
-        <div v-if="registered && isMember" class="bgff user-score-box">
-            <div class="score">{{availableScore || 0 }}<i>积分</i></div>
-            <em class="tips">
-                商城购买即可获得积分哦~
-            </em>
-        </div>
-        <div id="index_menu">
-            <dl @click="redirectTo('newEvents')" class="booking">
-                <dd>
-                    <img src="./img/car.jpg" />
-                </dd>
-                <dt>新品预定</dt>
-            </dl>
-            <dl  @click="redirectTo('user.integral')" class="booking">
-                <dd>
-                    <img src="./img/mall.jpg" />
-                </dd>
-                <dt>积分商城</dt>
-            </dl>
-        </div>
-        <div class="newActivity" v-for="item in activities" @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})">
-            <div class="left">
-                <h4>{{item.name}}</h4>
-                <h5>进入专场 <span>></span></h5>
-            </div>
-            <div>
-                <img :src="item.image" alt="">
-            </div>
-        </div>
+<!--        <div v-if="registered && isMember" class="bgff user-score-box">-->
+<!--            <div class="score">{{availableScore || 0 }}<i>积分</i></div>-->
+<!--            <em class="tips">-->
+<!--                商城购买即可获得积分哦~-->
+<!--            </em>-->
+<!--        </div>-->
+<!--        <div id="index_menu">-->
+<!--            <dl @click="redirectTo('newEvents')" class="booking">-->
+<!--                <dd>-->
+<!--                    <img src="./img/car.jpg" />-->
+<!--                </dd>-->
+<!--                <dt>新品预定</dt>-->
+<!--            </dl>-->
+<!--            <dl  @click="redirectTo('user.integral')" class="booking">-->
+<!--                <dd>-->
+<!--                    <img src="./img/mall.jpg" />-->
+<!--                </dd>-->
+<!--                <dt>积分商城</dt>-->
+<!--            </dl>-->
+<!--        </div>-->
+<!--        <div class="newActivity" v-for="item in activities" @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})">-->
+<!--            <div class="left">-->
+<!--                <h4>{{item.name}}</h4>-->
+<!--                <h5>进入专场 <span>></span></h5>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <img :src="item.image" alt="">-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+
+
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
@@ -66,6 +123,7 @@
     import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
     import {getUpdateMange} from '../../../utils/getUpdateManage';
+    import _ from 'underscore'
 
     export default {
         components: {
@@ -80,10 +138,25 @@
                 ticketShow: true,
                 title: '首页',
 				options: [],
-				getAuth: false
+				getAuth: false,
+                name: '',
+                screenHeight: 0
             };
         },
         computed: {
+            indexBanners () {
+                return this.model.user.newIndex.indexBanners
+            },
+            categories(){
+                let categories = this.model.user.store.categories;
+                let cates = [];
+                _.map(categories, (cate, index)=> {
+                    if(index < 4) {
+                        cates.push(cate)
+                    }
+                })
+                return cates;
+            },
             headerAnimate () {
                 return this.$imageUrl('bear01.gif');
             },
@@ -148,7 +221,12 @@
 			}
         },
         mounted () {
-            getUpdateMange()
+            getUpdateMange();
+            this.$command('LOAD_INDEX_BANNER')
+            this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+            let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+            let screenWitdh = wx.getSystemInfoSync().windowHeight;
+            this.screenHeight = (rpxRate * screenWitdh)/ 2;
 		},
         onShareAppMessage: function (res) {
             console.log(res);
@@ -192,6 +270,18 @@
             });
         },
         methods: {
+            bannerJump (item) {
+                if (item['can_jump']) {
+                    this.redirectTo(item['action_link'])
+                }
+            },
+            goStoreCates (arg) {
+                if (arg === 'more') {
+                    this.redirectTo('user.store')
+                } else {
+                    this.redirectTo('user.store', {query: {cateId: arg}})
+                }
+            },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -272,25 +362,135 @@
 </script>
 
 <style scoped>
-    #footNav_height {
-        height: 109rpx;
+    /*#footNav_height {*/
+    /*    height: 109rpx;*/
+    /*}*/
+
+    page{
+        overflow-y: auto;
     }
 
     .body {
-        overflow: hidden;
         width: 750rpx;
-        background: #FAFAFA;
+        background: #F6F5F8;
         box-sizing: border-box;
+        overflow: hidden;
     }
 
     #index_header {
-        background: #FFD000;
-        height: 402rpx;
+        background: #049473;
+        height: 319rpx;
         width: 1228rpx;
         margin-left: -239rpx;
         border-radius: 0 0 100% 100%;
+
+        /*新增代码*/
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    /*新增代码*/
+    .mainContainer{
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    #products_search{
+        width: 710rpx;
+        height: 60rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        box-sizing: border-box;
+        position: relative;
+        border-radius: 30rpx;
+        opacity: 0.8;
+        overflow: hidden;
+        margin-top: 43rpx;
+    }
+    #products_search .search{
+        position: absolute;
+        left: 30rpx;
+    }
+
+    #product_search_input{
+        width: 100%;
+        padding: 0 80rpx;
+        background:rgba(255,255,255,1);
+        font-size: 28rpx;
+        color: #999;
+    }
+    #index_header .banners{
+        width: 710rpx;
+        height: 330rpx;
+        position: absolute;
+        top: 120rpx;
+        border-radius: 20rpx;
         overflow: hidden;
     }
+
+    .customDots{
+        position: absolute;
+        left: 30rpx;
+        bottom: 10rpx;
+        width: 50px;
+        height: 15px;
+        background: red;
+    }
+
+    #index_header .banners .index-swiper{
+        width: 100%;
+        height: 100%;
+    }
+
+    #index_header .index-swiper .index-slide-image{
+        width: 710rpx!important;
+        height: 330rpx!important;
+    }
+
+    .classifications{
+        width: 710rpx;
+        height: 230rpx;
+        background: #fff;
+        box-sizing: border-box;
+        border-radius: 20rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 158rpx;
+        margin-left: 20rpx;
+    }
+
+    .classifications .cates{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .classifications .cates img{
+        width: 90rpx;
+        height: 90rpx;
+        margin-bottom: 20rpx;
+    }
+    .classifications .cates span{
+        font-size: 24rpx;
+        color: #111;
+    }
+
+    .activities{
+        width: 710rpx;
+        height: 180rpx;
+        margin-left: 20rpx;
+        border-radius: 20rpx;
+        margin-top: 20rpx;
+    }
+
+
+    /*新增代码截止*/
 
     #index_logo {
         background: url(../../../../static/images/icon/logo.png) no-repeat top center;

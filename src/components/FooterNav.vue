@@ -8,12 +8,12 @@
 <!--                <i class="iconfont" v-else>&#xe7d4;</i>-->
                 <em :class="index === 'index_now'?'active':''">首页</em>
             </li>
-            <li @click="jump('user.store')">
+<!--            <li @click="jump('user.store')">-->
 
-                <i class="iconfont now" v-if="scanning === 'scanning_now'">&#xe6b9;</i>
-                <i class="iconfont" v-else>&#xe7d6;</i>
-                <em :class="scanning === 'scanning_now'?'active':''">商城</em>
-            </li>
+<!--                <i class="iconfont now" v-if="scanning === 'scanning_now'">&#xe6b9;</i>-->
+<!--                <i class="iconfont" v-else>&#xe7d6;</i>-->
+<!--                <em :class="scanning === 'scanning_now'?'active':''">商城</em>-->
+<!--            </li>-->
 
             <li @click="jump('user.pickup') ">
 <!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
@@ -113,7 +113,7 @@
     }
 
     #footNav ul li {
-        width: 25%;
+        width: 33.3333%;
         float: left;
         height: 88rpx;
         padding: 10rpx 0;

@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: (screenHeight  - (statusBarHeight + navHeight) - 90) + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
+    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: (screenHeight  - (statusBarHeight + navHeight) - 86) + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
         <div
             class="order_info"
             :id = "'order-item-' + order.id"
@@ -190,6 +190,7 @@
         },
         mounted () {
 			this.loadOrders(this.status);
+            console.log(this._props, '===========================>');
         }
     }
 </script>

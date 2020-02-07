@@ -47,6 +47,12 @@
                 "ticket/main",
                 "ticketDetail/main"
             ]
+        },
+        {
+            "root": "pages/specialEvents",
+            "pages": [
+                "VirusTopic/main"
+            ]
         }
     ],
     "permission": {

@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div>
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true"/>
         <div class="cakes" :style="{'height': height}">
             <div class="header">
                 <img class="images" src="./img/22305823.jpg" alt="">
@@ -12,7 +12,7 @@
                     circular="true"
                     indicator-dots="true"
                     autoplay="true"
-                    interval="5000"
+                    interval="2000"
                     duration="1000"
                     beforeColor="red"
                     indicator-color="#fff"

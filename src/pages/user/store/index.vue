@@ -90,7 +90,8 @@
 			  selectItem:{},
 			  getAuth: false,
 			  showBindMobile: false,
-              screenHeight: 0
+              screenHeight: 0,
+              queryCateId: ''
           };
       },
       onShareAppMessage: function (res) {
@@ -121,12 +122,17 @@
 			  if (value) {
 				  this.showBindMobile = false
 			  }
-		  }
+		  },
+          queryCateId (val) {
+		      if (val) {
+		          this.tabSelect(val)
+              }
+          }
       },
       computed: {
           categories(){
             let categories = this.model.user.store.categories;
-            if(categories && categories.length){
+            if(categories && categories.length && !this.queryCateId){
                 this.activeTab = categories[0].id
             }
           	 return categories;
@@ -207,13 +213,20 @@
 		  },
       },
       created() {
+
+      },
+      onShow () {
+          this.queryCateId = ''
       },
       mounted() {
           let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
           let screenWitdh = wx.getSystemInfoSync().windowHeight;
           this.screenHeight = (rpxRate * screenWitdh)/ 2;
-          console.log(this.screenHeight);
-          this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+          this.$command('LOAD_STORE_CATEGORIES_COMMAND');
+          console.log(this.$route.query);
+          if (this.$route.query && this.$route.query.cateId) {
+            this.queryCateId = this.$route.query.cateId
+          }
 	  }
 	}
 </script>

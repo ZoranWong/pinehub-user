@@ -124,11 +124,12 @@
 	page {
 		height: 100%;
 		background: #f2f2f2;
+        overflow: hidden;
 	}
 
-	#footNavHeight {
-		height: 109rpx;
-	}
+	/*#footNavHeight {*/
+	/*	height: 109rpx;*/
+	/*}*/
 
 	#userOrders {
 		position: relative;
