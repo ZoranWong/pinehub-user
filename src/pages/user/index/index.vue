@@ -12,19 +12,21 @@
         <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
             <div id="index_header">
                 <div id="products_search" >
-                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>
-                    <i class="iconfont search">&#xe65c;</i>
+<!--                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>-->
+<!--                    <i class="iconfont search">&#xe65c;</i>-->
+                    <div class="welcome">欢迎,{{userNickname}}!</div>
                 </div>
                 <div class="banners">
                     <swiper
                         class="index-swiper"
                         circular="true"
-                        indicator-dots="true"
+                        :indicator-dots="false"
                         autoplay="true"
                         interval="2000"
                         duration="1000"
                         beforeColor="red"
                         indicator-color="#fff"
+                        @animationfinish="bannerChange"
                         indicator-active-color="#ffcc00"
                         afterColor="coral">
                         <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
@@ -34,14 +36,14 @@
                         </block>
                     </swiper>
                     <div class="customDots">
-                        <span class="dots" v-for="(item,index) in indexBanners"></span>
+                        <span v-for="(item,index) in indexBanners" :class="index === currentIndex ? 'dots activeDots':'dots'" ></span>
                     </div>
                 </div>
             </div>
             <ul class="classifications">
-                <li v-for="(item,index) in categories" class="cates" @click="goStoreCates(item.id)">
+                <li v-for="(item,index) in categories" :key="index" class="cates" @click="goStoreCates(item.id)">
                     <img :src="item.icon" v-if="item.icon" alt="">
-<!--                    <img :src="'./img/'+index+'.png'"  alt="">-->
+                    <img :src="'./img/'+index+'.png'" v-else alt="">
                     <span>{{item.name}}</span>
                 </li>
                 <li class="cates">
@@ -140,7 +142,8 @@
 				options: [],
 				getAuth: false,
                 name: '',
-                screenHeight: 0
+                screenHeight: 0,
+                currentIndex: 0
             };
         },
         computed: {
@@ -174,7 +177,10 @@
 				return this.model.account.isMember;
             },
             availableScore () {
-				return this.model.account.availableScore;
+                return this.model.account.availableScore;
+            },
+            userNickname () {
+                return this.model.account.userInfo.nickname;
             },
             isLogin () {
                 let overDate = this.model.account.overDate;
@@ -270,6 +276,10 @@
             });
         },
         methods: {
+            bannerChange (e) {
+                let event = e.mp.detail;
+                this.currentIndex = event.current;
+            },
             bannerJump (item) {
                 if (item['can_jump']) {
                     this.redirectTo(item['action_link'])
@@ -401,7 +411,7 @@
         width: 710rpx;
         height: 60rpx;
         display: flex;
-        justify-content: flex-start;
+        justify-content: flex-end;
         align-items: center;
         box-sizing: border-box;
         position: relative;
@@ -410,18 +420,24 @@
         overflow: hidden;
         margin-top: 43rpx;
     }
-    #products_search .search{
-        position: absolute;
-        left: 30rpx;
-    }
-
-    #product_search_input{
-        width: 100%;
-        padding: 0 80rpx;
-        background:rgba(255,255,255,1);
+    .welcome{
         font-size: 28rpx;
-        color: #999;
+        color: #fff;
     }
+    /*#products_search .search{*/
+    /*    position: absolute;*/
+    /*    left: 30rpx;*/
+    /*}*/
+
+    /*#product_search_input{*/
+    /*    width: 100%;*/
+    /*    padding: 0 80rpx;*/
+    /*    background:rgba(255,255,255,1);*/
+    /*    font-size: 28rpx;*/
+    /*    color: #999;*/
+    /*}*/
+
+
     #index_header .banners{
         width: 710rpx;
         height: 330rpx;
@@ -437,7 +453,37 @@
         bottom: 10rpx;
         width: 50px;
         height: 15px;
-        background: red;
+        z-index: 9999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dots{
+        display: inline-block;
+        width: 15rpx;
+        height: 5rpx;
+        background: rgba(255,255,255,0.5);
+        border-radius: 3rpx;
+        margin-right: 10rpx;
+    }
+
+    .activeDots{
+        width: 16rpx;
+        height: 16rpx;
+        border-radius: 50%;
+        background: #fff;
+        position: relative;
+    }
+    .activeDots:after{
+        content: "";
+        width: 8rpx;
+        height: 8rpx;
+        background: #24C494;
+        border-radius: 50%;
+        position: absolute;
+        left: calc(50% - 4rpx);
+        top: calc(50% - 4rpx);
     }
 
     #index_header .banners .index-swiper{

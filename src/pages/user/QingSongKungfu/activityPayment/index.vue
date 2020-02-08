@@ -129,6 +129,7 @@
                 return this.model.global.barHeight.navHeight
             },
 		},
+
 		methods: {
             saveRemark (e, product) {
                 product.remark = e.target.value

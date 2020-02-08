@@ -104,7 +104,7 @@
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}`,
+                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId || ''}`,
 
                 success: function (res) {
                     // 转发成功
