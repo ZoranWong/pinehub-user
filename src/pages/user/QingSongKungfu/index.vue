@@ -64,7 +64,21 @@
                 :actId="actId"
             />
         </div>
+        <Auth v-if="getAuth" @close="closeAuth" />
+        <div v-if="!isMember && registered" class="bgff user-mobile-box">
+            <div class="user_mobile_box_container">
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                        手机号授权
+                    </button>
+                </form>
 
+                <em class="mobile_box_tips">
+                    我们需要您的手机号来创建账号，累计积分
+                </em>
+            </div>
+
+        </div>
     </div>
 
 </template>
@@ -72,12 +86,14 @@
 	import CustomHeader from '../../../components/CustomHeader';
 	import Specification from './components/Specification';
 	import ShoppingCart from '../../../components/ShoppingCart';
+	import Auth from '../../../components/Auth';
     import _ from 'underscore';
 	export default {
 		components: {
 			CustomHeader,
             Specification,
-            ShoppingCart
+            ShoppingCart,
+            Auth
 		},
 		data() {
 			return {
@@ -94,11 +110,52 @@
                 top: 450,
                 selectItem:{},
                 selectSpec: false,
+                getAuth: false,
 			};
 		},
 		watch: {
-
+            accessToken (value) {
+                if (this.storeId && value) {
+                    this.$command('SIGN_IN', this.accessToken);
+                }
+            },
+            hasToken (value) {
+                if (this.storeId && this.hasToken) {
+                    this.loadPageData()
+                }
+            },
+            registered (value) {
+                if (value) {
+                    this.getAuth = false;
+                }
+                if (this.storeId&& this.registered) {
+                    this.bindConsumer()
+                }
+            },
+            isMember (value) {
+                if (value) {
+                    this.actId && this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
+                }
+            }
 		},
+        onShareAppMessage: function (res) {
+            let options = this.options;
+            return {
+                title: "青松易购预定商城商品",
+                desc: "青松易购小程序",
+                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=true`,
+
+                success: function (res) {
+                    // 转发成功
+                    console.log("转发成功:" + JSON.stringify(res));
+                },
+                fail: function (res) {
+                    // 转发失败
+                    console.log("转发失败:" + JSON.stringify(res));
+                }
+            }
+        },
 		computed: {
 			statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
@@ -114,7 +171,23 @@
             },
             goodInShoppingCart () {
 			    return this.model.activity.goodInShoppingCart
-            }
+            },
+            accessToken () {
+                return this.$store.getters['model.app/accessToken'];
+            },
+            hasToken () {
+                let overDate = this.$store.getters['model.account/overDate'];
+                return overDate ? overDate > Date.now() : false;
+            },
+            accessTokenTTL () {
+                return this.$store.getters['model.app/overDate'];
+            },
+            isMember () {
+                return this.model.account.isMember;
+            },
+            registered () {
+                return this.model.account.registered;
+            },
 		},
 		methods: {
             start(e){
@@ -168,27 +241,64 @@
                 this.selectSpec = false
             },
             addToShoppingCart(item){
-                if (item.specifications && item.specifications.length) {
-                    this.selectItem = item;
-                    this.selectSpec = true
+                if (!this.registered) {
+                    this.getUserAuth()
                 } else {
-                    let goods = this.model.activity.goodInShoppingCart;
-                    if (goods.length) {
-                        _.map(goods, (product) => {
-                            product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-                                this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
-                                :
-                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
-                        })
+                    if (!this.isMember) {
                     } else {
-                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
-                    }
+                        if (item.specifications && item.specifications.length) {
+                            this.selectItem = item;
+                            this.selectSpec = true
+                        } else {
+                            let goods = this.model.activity.goodInShoppingCart;
+                            if (goods.length) {
+                                _.map(goods, (product) => {
+                                    product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
+                                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
+                                        :
+                                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                                })
+                            } else {
+                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                            }
 
+                        }
+                    }
                 }
+
             },
             redirectTo (router, options = {}) {
                 this.$command('REDIRECT_TO', router, 'push', options);
-            }
+            },
+            getPhoneNumber (e) {
+                this.$command('SET_USER_MOBILE', e);
+            },
+            async initAccount () {
+                let result = await this.map.getLocation();
+                await this.$store.dispatch('model.account/resetFromCache', {
+                    initAccount: async () => {
+                        if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
+                            this.$command('APP_ACCESS');
+                        } else {
+                            this.$command('SIGN_IN', this.accessToken);
+                        }
+                    }
+                });
+            },
+            getUserAuth () {
+                this.getAuth = true
+            },
+            closeAuth () {
+                this.getAuth = false
+            },
+            async uploadFormId (e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== "the formId is a mock one"){
+                    await this.http.account.saveFormId(formId);
+                } else {
+                    console.log('form id 不合法')
+                }
+            },
         },
 		created() {
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
@@ -202,8 +312,9 @@
             this.actId = parseInt(options.id);
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
             this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
-            this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
+            if (this.isMember)  this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
             this.height = this.screenHeight - this.navHeight - this.statusBarHeight - 40 + 'rpx';
+            this.initAccount();
         }
 	}
 </script>
@@ -234,6 +345,57 @@
 
     @import "index.css";
 
+    .user-mobile-box{
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
+    .user-mobile-box .user_mobile_box_container{
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .user-mobile-get-btn {
+        height: 80rpx;
+        width: 320rpx;
+        text-align: center;
+        line-height: 80rpx;
+        background: #FECE00;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        display: block;
+        font-size: 32rpx;
+        font-weight: 200;
+        border: 0;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
+    }
+
+    .mobile_box_tips {
+        text-align: center;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
+        font-weight: 400;
+    }
 
 </style>

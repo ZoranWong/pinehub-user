@@ -44,18 +44,18 @@ export default class LoadIntegralProductsCommand extends Command {
             });
             return
         }
-        if (tag === false) {
-            wx.showToast({
-                title: '请选择地址标签',
-                icon: 'none'
-            });
-            return
-        }
+        // if (tag === false) {
+        //     wx.showToast({
+        //         title: '请选择地址标签',
+        //         icon: 'none'
+        //     });
+        //     return
+        // }
         forms['province_code'] = code[0];
         forms['city_code'] = code[1];
         forms['area_code'] = code[2];
         forms['is_default'] = isDefault;
-        forms['tag'] = tag;
+        forms['tag'] = tag || '';
 
         if (id) {
             this.$command('EDIT_ADDRESS', forms, id)

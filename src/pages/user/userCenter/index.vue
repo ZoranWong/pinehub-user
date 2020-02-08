@@ -166,6 +166,13 @@
 				return this.model.account.registered;
 			}
         },
+        watch: {
+            registered (value) {
+                if (value) {
+                    this.getAuth = false;
+                }
+            }
+        },
         methods: {
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;

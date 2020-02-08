@@ -3,7 +3,7 @@
 	<div class="body">
         <CustomHeader :title="title" :needReturn="true" />
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div v-if="showBindMobile" class="bgff user-mobile-box">
+        <div v-if="!isMember && registered" class="bgff user-mobile-box">
             <div class="user_mobile_box_container">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
@@ -21,7 +21,7 @@
 		<pop-location v-if="isShow" @hdlHidePopup="hdlHidePopup" :activity-id="activityId">
 		</pop-location>
 		<div id="shopping_cart_height" v-if="totalCount>0"></div>
-        <ShoppingCart :type="'breakfast'"/>
+        <ShoppingCart v-if="registered && isMember" :type="'breakfast'"/>
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
@@ -53,7 +53,6 @@
 				selectItem:{},
 				merchandisesList: [],
                 getAuth: false,
-				showBindMobile: false
 			}
 		},
 		components: {
@@ -103,9 +102,13 @@
 		watch: {
 			isMember (value) {
 				if (value) {
-					this.showBindMobile = false
 				}
-			}
+			},
+            registered (value) {
+                if (value) {
+                    this.getAuth = false;
+                }
+            }
         },
         onShareAppMessage: function (res) {
             //可以先看看页面数据都有什么，得到你想要的数据
@@ -113,7 +116,7 @@
                 title: "青松易购早餐预定",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: '/pages/user/mall/newEvents/main',
+                path: '/pages/user/mall/newEvents/main?backHome=true',
 
                 success: function (res) {
                     // 转发成功
@@ -206,9 +209,7 @@
 					this.getUserAuth();
                 } else {
 					if (!this.isMember) {
-						this.showBindMobile = true
 					} else {
-						this.showBindMobile = false
 						if (item.specifications.length) {
 							this.selectItem = item;
 							this.selectSpec = true

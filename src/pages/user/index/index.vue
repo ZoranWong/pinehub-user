@@ -157,7 +157,7 @@
                 title: "青松易购首页",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: '/pages/user/index/main',
+                path: '/pages/user/index/main?backHome=true',
 
                 success: function (res) {
                     console.log(res);

@@ -135,6 +135,7 @@ export default class Account extends Model {
 
 
         this.addEventListener('setAccount', function (userInfo) {
+            console.log(userInfo, '++++++++++++++++++++++++++++++++');
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }
@@ -201,7 +202,7 @@ export default class Account extends Model {
                 return false;
             }
         });
-        
+
         this.addEventListener('changeIntegral', function ({integral}) {
             this.state.availableScore = this.state.availableScore - integral;
         })

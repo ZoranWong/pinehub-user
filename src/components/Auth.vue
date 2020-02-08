@@ -61,7 +61,13 @@
 					if (this.slug === 'payment') {
 						this.$emit('pay')
                     }
-                }
+                } else {
+					console.log(e, '++++++++++++++++++++++++++++++++++++++');
+					let mpUserInfoDetail = e.mp.detail;
+					let userInfo = mpUserInfoDetail.userInfo;
+					userInfo.nickname = userInfo.nickName
+                    this.model.account.dispatch('setAccount', userInfo);
+				}
 			}
         }
 	}

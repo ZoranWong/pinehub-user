@@ -3,7 +3,7 @@
     <div id="user_store" class="body">
         <CustomHeader :title="title" :needReturn="true" />
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div v-if="showBindMobile" class="bgff user-mobile-box">
+        <div v-if="!isMember && registered" class="bgff user-mobile-box">
             <div class="user_mobile_box_container">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
@@ -56,7 +56,7 @@
                 </li>
             </ul>
         </div>
-        <ShoppingCart :type="'mall'"/>
+        <ShoppingCart v-if="registered && isMember" :type="'mall'"/>
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
@@ -89,7 +89,6 @@
 			  selectSpec:false,
 			  selectItem:{},
 			  getAuth: false,
-			  showBindMobile: false,
               screenHeight: 0
           };
       },
@@ -99,7 +98,7 @@
               title: "青松易购预定商城",
               desc: "青松易购小程序",
               imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-              path: '/pages/user/store/main',
+              path: '/pages/user/store/main?backHome=true',
 
               success: function (res) {
                   // 转发成功
@@ -119,9 +118,13 @@
           },
 		  isMember (value) {
 			  if (value) {
-				  this.showBindMobile = false
 			  }
-		  }
+		  },
+          registered (val) {
+              if (val) {
+                  this.getAuth = false;
+              }
+          }
       },
       computed: {
           categories(){
@@ -175,9 +178,7 @@
 		  		this.getUserAuth()
             } else {
 				if (!this.isMember) {
-					this.showBindMobile = true
 				} else {
-					this.showBindMobile = false
 					if (item.specifications.length) {
 						this.selectItem = item;
 						this.selectSpec = true

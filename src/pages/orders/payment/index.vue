@@ -88,6 +88,13 @@
 			}
 
         },
+        watch: {
+            registered (value) {
+                if (value) {
+                    this.getAuth = false;
+                }
+            }
+        },
         methods: {
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);

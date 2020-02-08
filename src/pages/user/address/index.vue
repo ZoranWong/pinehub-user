@@ -20,7 +20,7 @@
                         <span class="tag" v-if="item.tag === 'home'">家</span>
                         <span class="tag" v-if="item.tag === 'school'">学校</span>
                         <span class="tag" v-if="item.tag === 'company'">公司</span>
-                        <span class="tag" v-if="!item.isDefaultTag">{{item.tag}}</span>
+                        <span class="tag" v-if="!item.isDefaultTag && item.tag">{{item.tag}}</span>
                         <span class="address">{{item.rangeAddress}}{{item['detail_address']}}</span>
                     </div>
                 </div>

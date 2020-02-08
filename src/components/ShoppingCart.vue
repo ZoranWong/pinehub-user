@@ -43,7 +43,7 @@
     import {formatMoney} from '../utils';
 	export default {
 		name: 'ShoppingCart',
-        props: ['type', 'actId'],
+        props: ['type', 'actId', 'isDetail'],
 		data () {
 			return {
                 showMask: false,
@@ -137,8 +137,13 @@
             }
         },
         mounted () {
-            if (this.registered && this.type !== 'activity') {
-                this.$command('LOAD_CART_COMMAND', this.type)
+            if (this.registered) {
+                if (this.type !== 'activity') {
+                    this.$command('LOAD_CART_COMMAND', this.type)
+                }
+                if (this.isDetail) {
+                    this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
+                }
             }
 		}
 	}

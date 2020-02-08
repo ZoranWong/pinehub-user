@@ -5,7 +5,7 @@
         <Auth v-if="getAuth" @close="closeAuth" />
         <div id="good_detail" v-if="goodDetail"  :style="{height: screenHeight - (navHeight + statusBarHeight) -100 + 'rpx'}">
 
-            <div v-if="showBindMobile" class="bgff user-mobile-box">
+            <div v-if="!isMember && registered" class="bgff user-mobile-box">
                 <div class="user_mobile_box_container">
                     <form report-submit="true" @submit="uploadFormId">
                         <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
@@ -41,7 +41,7 @@
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
 
-            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :actId="actId" />
+            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :isDetail="actId? true : false" :actId="actId" />
             <SelectSpecification
                 :selectSpec="selectSpec"
                 :item="selectItem"
@@ -88,7 +88,6 @@
 				title: '商品详情',
 				selectSpec:false,
 				selectItem:{},
-				showBindMobile: false,
                 options: {},
 				screenWitdh: 0,
 				screenHeight: 0,
@@ -104,7 +103,7 @@
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}`,
+                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=true`,
 
                 success: function (res) {
                     // 转发成功
@@ -128,13 +127,11 @@
 				}
 			},
 			registered (value) {
-				if (this.storeId&& this.registered) {
-					this.bindConsumer()
+                if (value) {
+                    this.getAuth = false;
                 }
-            },
-            isMember (value) {
-				if (value) {
-				    this.showBindMobile = false
+                if (this.storeId&& this.registered) {
+					this.bindConsumer()
                 }
             }
         },
@@ -142,11 +139,10 @@
 			addToShoppingCart (item) {
                 if (!this.registered) {
 					this.getUserAuth()
-				} else {
+                } else {
                     if (!this.isMember) {
-						this.showBindMobile = true
-					} else {
-						this.showBindMobile = false
+                        console.log('xxxxxxxxxxxxxxxxx');
+                    } else {
 						if (item.specifications && item.specifications.length) {
                             console.log('xxxxxxxxxxxxx');
                             if (this.options['type'] === 'activity') {
