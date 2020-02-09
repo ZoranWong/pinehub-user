@@ -268,6 +268,10 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+            if (this.storeId && this.registered ) {
+                console.log('进来了吗');
+                this.bindConsumer()
+            }
         },
         onLoad (options) {
             if (options.q) {
