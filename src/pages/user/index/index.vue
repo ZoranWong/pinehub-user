@@ -145,6 +145,9 @@
 					console.log('进来了吗');
 					this.bindConsumer()
 				}
+				if (value) {
+				    this.closeAuth()
+                }
 			}
         },
         mounted () {
@@ -210,7 +213,8 @@
 			    this.getAuth = false
             },
 			bindConsumer () {
-				this.$command('BIND_CONSUMER', this.storeId);
+                console.log('马上要绑定店铺啦');
+                this.$command('BIND_CONSUMER', this.storeId);
 			},
             neighborShop () {
                 wx.showToast({
