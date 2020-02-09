@@ -226,6 +226,9 @@
                     console.log('进来了吗');
                     this.bindConsumer()
                 }
+                if (value) {
+                    this.closeAuth()
+                }
             }
         },
         mounted () {

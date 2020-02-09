@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 22,
+			"current": 23,
 			"list": [
 				{
 					"id": 0,
@@ -184,6 +184,13 @@
 					"name": "pages/user/storesMap/main",
 					"pathName": "pages/user/storesMap/main",
 					"query": "type=mall",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/index/main",
+					"pathName": "pages/user/index/main",
+					"query": "shop_code=1000000",
 					"scene": null
 				}
 			]
