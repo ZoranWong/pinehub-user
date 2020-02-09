@@ -183,13 +183,18 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+            if (this.storeId && this.registered ) {
+                console.log('进来了吗');
+                console.log('开始绑定店铺啦');
+                this.bindConsumer()
+            }
         },
         onLoad (options) {
-			if (options.q) {
+            if (options.q) {
 				let scan_url = decodeURIComponent(options.q);
 				//提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
 				this.storeId = scan_url.match(/\d+/)[0];
-			}
+            }
 			wx.onAppShow(() => {
                 this.ticketShow = true;
             });
