@@ -1,3 +1,5 @@
+
+import {Base64} from './beSecret';
 function formatNumber (n) {
     const str = n.toString()
     return str[1] ? str : `0${str}`
@@ -133,6 +135,12 @@ export function getfutureSevenDate (day = 1) {
     tMonth = doHandleMonth(tMonth + 1);
     tDate = doHandleMonth(tDate);
     return tYear + '-' + tMonth + '-' + tDate;
+}
+
+export function searchJson (data) {
+    console.log(data, '----------data------------');
+    let params = encodeURIComponent(Base64.encode(JSON.stringify(data)));
+    return params
 }
 
 export default {

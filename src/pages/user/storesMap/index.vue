@@ -188,8 +188,8 @@
                 this.isOpen = item['open_preorder'];
                 this.checkId = id;
 				let data = this.points.filter(item => item.id === id)[0];
-				this.latitude = data.position.coordinates[1];
-				this.longitude = data.position.coordinates[0];
+				// this.latitude = data.position.coordinates[1];
+				// this.longitude = data.position.coordinates[0];
 				this.markers = this.points.map((point) => {
 					let showCallout = false
 					if (point.id === id) {

@@ -89,7 +89,8 @@
 			  selectSpec:false,
 			  selectItem:{},
 			  getAuth: false,
-              screenHeight: 0
+              screenHeight: 0,
+              queryCateId: ''
           };
       },
       onShareAppMessage: function (res) {
@@ -124,12 +125,17 @@
               if (val) {
                   this.getAuth = false;
               }
+          },
+          queryCateId (val) {
+              if (val) {
+                  this.tabSelect(val)
+              }
           }
       },
       computed: {
           categories(){
             let categories = this.model.user.store.categories;
-            if(categories && categories.length){
+            if(categories && categories.length && !this.queryCateId){
                 this.activeTab = categories[0].id
             }
           	 return categories;
@@ -152,6 +158,9 @@
 		  isMember () {
 			  return this.model.account.isMember;
 		  },
+      },
+      onShow () {
+          this.queryCateId = ''
       },
       methods: {
 		  getPhoneNumber (e) {
@@ -215,6 +224,9 @@
           this.screenHeight = (rpxRate * screenWitdh)/ 2;
           console.log(this.screenHeight);
           this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+          if (this.$route.query && this.$route.query.cateId) {
+              this.queryCateId = this.$route.query.cateId
+          }
 	  }
 	}
 </script>

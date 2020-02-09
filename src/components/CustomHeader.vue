@@ -19,12 +19,17 @@
 <script>
 	export default {
 		name: 'CustomHeader',
-        props: ['title','needReturn'],
+        props: ['title','needReturn', 'backColor'],
         data () {
 		    return {
 		    	barHeight: 0,
                 background: '',
                 needBackHome: false
+            }
+        },
+        watch: {
+		    backColor () {
+                this.background = this.backColor
             }
         },
         methods:{
@@ -47,7 +52,11 @@
 		    let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.needBackHome = options.backHome ? true : false;
-            this.background = this.title === '首页'? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
+            if (this.backColor) {
+                this.background = this.backColor
+            } else {
+                this.background = this.title === '首页'? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
+            }
 			this.$command('GET_BAR_HEIGHT')
 		}
 	}
