@@ -15,7 +15,7 @@
                     <!--                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>-->
                     <!--                    <i class="iconfont search">&#xe65c;</i>-->
                     <div class="welcome">
-                        <i class="iconfont">&#xe7f4;</i>
+                        <i class="iconfont">&#xe652;</i>
                         {{userNickname}},快乐松欢迎您!
                     </div>
                 </div>
@@ -458,7 +458,7 @@
     .welcome .iconfont{
         display: inline-block;
         margin-right: 20rpx;
-        font-size: 36rpx;
+        font-size: 32rpx;
         color: #999;
     }
     /*#products_search .search{*/
@@ -482,7 +482,7 @@
     }
     .customDots{
         position: absolute;
-        left: 30rpx;
+        left: 10rpx;
         bottom: 10rpx;
         width: 50px;
         height: 15px;
