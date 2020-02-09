@@ -297,21 +297,21 @@
                 if (event.current === 0) {
                     this.backColor = '#049473'
                 } else {
-                    this.backColor = '#EC8B68'
+                    this.backColor = '#a85231'
                 }
             },
-            changeBgOpacity (target) {
-                clearInterval(this.timer);
-                this.timer = setInterval(()=>{
-                    this.alpha -= 0.1
-                    console.log(this.alpha, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
-                    if (this.alpha < 0.5) {
-                        clearInterval(this.timer);
-                        this.alpha = 1
-                    }
-                }, 100);
-                console.log(this.alpha, '================>');
-            },
+            // changeBgOpacity (target) {
+            //     clearInterval(this.timer);
+            //     this.timer = setInterval(()=>{
+            //         this.alpha -= 0.1
+            //         console.log(this.alpha, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
+            //         if (this.alpha < 0.5) {
+            //             clearInterval(this.timer);
+            //             this.alpha = 1
+            //         }
+            //     }, 100);
+            //     console.log(this.alpha, '================>');
+            // },
             bannerJump (item) {
                 if (item['can_jump']) {
                     this.redirectTo(item['action_link'])
@@ -499,12 +499,12 @@
         margin-right: 10rpx;
     }
     .activeDots{
-        width: 8rpx;
-        height: 8rpx;
+        width: 10rpx;
+        height: 10rpx;
         border-radius: 50%;
         background: transparent;
         position: relative;
-        border: 4rpx solid #fff;
+        border: 5rpx solid #fff;
     }
     /*.activeDots:after{*/
     /*    content: "";*/
@@ -520,10 +520,13 @@
     #index_header .banners .index-swiper{
         width: 100%;
         height: 100%;
+        border-radius: 20rpx;
     }
     #index_header .index-swiper .index-slide-image{
         width: 710rpx!important;
         height: 330rpx!important;
+        border-radius: 20rpx;
+        overflow: hidden;
     }
     .classifications{
         width: 710rpx;
