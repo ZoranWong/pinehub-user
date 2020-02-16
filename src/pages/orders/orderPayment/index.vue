@@ -43,12 +43,11 @@
             <div class="order_info">
                 <div class="order_info_name">
                     <h4>
-                        预约取货日期
-                        <span>{{tomorrowStr}}</span>
+                        <span>21时前下单次日取，21时后下单后日取</span>
                     </h4>
                     <h4>
                         预约取货时间
-                        <span>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
+                        <span class="order_info_time">{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
                     </h4>
                 </div>
             </div>
@@ -92,8 +91,24 @@
             <span>
                 金额 {{orderInfo['settlement_total_fee_format'] || 0}}
             </span>
-            <h4 @click="createOrder">去支付</h4>
+            <h4 @click="check">去支付</h4>
         </div>
+
+        <div class="pickupTips" v-if="showTips">
+            <div class="pickupTipsContainer">
+                <div class="header">提示</div>
+                <div class="tips">
+                    您的宝贝将在
+                    <span class="pickupTipsImportant">后天</span>
+                    送达到您的手上！
+                </div>
+                <div class="operation">
+                    <button @click="showTips = false">取消</button>
+                    <button @click="createOrder">我知道了</button>
+                </div>
+            </div>
+        </div>
+
 	</div>
 </template>
 <script>
@@ -111,6 +126,7 @@
                 pointInfo:{},
 				tomorrowStr: '',
                 type: '',
+                showTips: false
 			};
 		},
 		watch: {
@@ -159,14 +175,26 @@
                     }
                 });
             },
-			createOrder(){
+            check () {
                 if (this.type === 'mall' && !this.addresses.id) {
                     wx.showToast({
                         title: '请选择收货地址',
                         icon: 'none'
                     });
                     return
+                };
+                let now = new Date();
+                let hour = now.getHours();
+                console.log(hour);
+                console.log(hour > 14);
+                if (hour > 20) {
+                    this.showTips = true;
+                } else {
+                    this.createOrder()
                 }
+            },
+			createOrder(){
+                this.showTips = false;
 				this.$command('CREATE_PAY_ORDER',{
 					shop_id: this.selectedPoint.id,
 					coupon_records: this.couponIds,
@@ -334,6 +362,9 @@
 
     #pay_pick_up_info .order_info span{
         color: #757575;
+    }
+
+    .order_info_time{
         margin-left: 23rpx;
     }
 
@@ -481,6 +512,75 @@
     #order_payment #do_payment h4{
         font-size: 32rpx;
         color: #111111;
+    }
+
+    .pickupTips {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pickupTips .pickupTipsContainer{
+        width: 630rpx;
+        background: #fff;
+        border-radius: 10rpx;
+        padding: 0 50rpx;
+        box-sizing: border-box;
+    }
+
+    .pickupTips .header{
+        width: 100%;
+        height: 80rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32rpx;
+        color: #111;
+    }
+
+    .pickupTips .tips{
+        font-size: 28rpx;
+        color: #111111;
+        margin-top: 20rpx;
+        text-align: center;
+        height: 80rpx;
+    }
+
+    .pickupTips .tips span {
+        color: red;
+        font-weight: bold;
+    }
+
+    .pickupTips .operation{
+        width: 100%;
+        margin-bottom: 20rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pickupTips .operation button {
+        flex: 1;
+        margin-right: 10rpx;
+        color: #FFCC00;
+        border-radius: 10rpx;
+        background: #fff;
+        border:1px solid #ffcc00;
+        font-size: 32rpx;
+    }
+    .pickupTips .operation button:last-child{
+        margin-right: 0;
+        background: #FFCC00;
+        color: #fff;
+
     }
 
 

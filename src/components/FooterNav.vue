@@ -3,10 +3,10 @@
         <ul>
             <li @click="jump('index')">
 <!--                <i class="iconfont now" >&#xe6bb;</i>-->
-                <img src="../../static/icons/menuHomeAct.png" alt="" v-if="index === 'index_now'">
-                <img src="../../static/icons/menuHome.png" alt="" v-else>
+                <img src="../../static/icons/aHome.jpg" class="newIndexIcon" alt="" v-if="index === 'index_now'">
+                <img src="../../static/icons/aHome.jpg" alt="" v-else>
 <!--                <i class="iconfont" v-else>&#xe7d4;</i>-->
-                <em :class="index === 'index_now'?'active':''">首页</em>
+                <em :class="index === 'index_now'?'active':''">主页</em>
             </li>
 <!--            <li @click="jump('user.store')">-->
 
@@ -133,6 +133,11 @@
     #footNav ul li img {
         width: 48rpx;
         height: 48rpx;
+    }
+
+    .newIndexIcon{
+        width: 54rpx;
+        height: 54rpx;
     }
 
     #footNav ul li .active {

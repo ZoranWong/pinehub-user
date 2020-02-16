@@ -37,6 +37,9 @@
                     <div class="thumb_img">
                         <img :src="item.main_image" alt="">
                     </div>
+                    <div class="selledout" v-if="!item.stock">
+                        <span class="selloutConent">已抢光</span>
+                    </div>
                     <div id="store_good_info">
                         <div class="store_good_info_title">
                             <h3>{{item.name}}</h3>
@@ -50,7 +53,8 @@
                         <div id="store_good_info_price">
                             <span>{{item.sell_price_format}}</span>
                             <em>{{item.origin_price_format}}</em>
-                            <i class="iconfont" v-if="item.stock" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
+                            <i class="iconfont add" v-if="item.stock" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
+                            <i class="iconfont disabledAdd" v-else>&#xe670;</i>
                         </div>
                     </div>
                 </li>
@@ -95,11 +99,12 @@
       },
       onShareAppMessage: function (res) {
           //可以先看看页面数据都有什么，得到你想要的数据
+          console.log(this.shopCode, '==========>');
           return {
               title: "青松易购预定商城",
               desc: "青松易购小程序",
               imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-              path: '/pages/user/store/main?backHome=true',
+              path: `/pages/user/store/main?backHome=true&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {
                   // 转发成功
@@ -133,6 +138,9 @@
           }
       },
       computed: {
+          shopCode () {
+              return this.model.account.shopCode
+          },
           categories(){
             let categories = this.model.user.store.categories;
             if(categories && categories.length && !this.queryCateId){
@@ -163,8 +171,17 @@
           this.queryCateId = ''
       },
       methods: {
+          async uploadFormId (e) {
+              let formId = e.mp.detail.formId;
+              if (formId !== "the formId is a mock one"){
+                  await this.http.account.saveFormId(formId);
+              } else {
+                  console.log('form id 不合法')
+              }
+          },
 		  getPhoneNumber (e) {
-			  this.$command('SET_USER_MOBILE', e);
+              console.log(e, '----------------store---------------');
+              this.$command('SET_USER_MOBILE', e);
 		  },
 		  getUserAuth () {
 			  this.getAuth = true
@@ -217,6 +234,20 @@
 		  },
       },
       created() {
+      },
+      onShow () {
+          let pages =  getCurrentPages();
+          let options = pages[pages.length - 1]['options'];
+          this.storeId = options['shop_code'] ? options['shop_code'] : '';
+          if (this.storeId) {
+              this.model.account.dispatch('saveShopCode', {
+                  code: this.storeId
+              })
+          }
+          if (this.storeId && this.registered ) {
+              console.log('进来了吗');
+              this.$command('BIND_CONSUMER', this.storeId)
+          }
       },
       mounted() {
           let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
@@ -348,6 +379,7 @@
     justify-content: flex-start;
     align-items: center;
     border-bottom: 2rpx solid #f2f2f2;
+      position: relative;
   }
 
     #store_goods #store_goods_items .thumb_img{
@@ -364,6 +396,30 @@
         height: 100%;
     }
 
+    .selledout{
+        position: absolute;
+        width: 190rpx;
+        height: 190rpx;
+        top: 20rpx;
+        left: 20rpx;
+        background: rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .selloutConent{
+        width: 50%;
+        height: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 30px;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        font-size: 24rpx;
+        margin-top: 70rpx;
+    }
 
   #store_goods #store_goods_items #store_good_info{
       flex: 1;
@@ -424,7 +480,7 @@
       text-decoration: line-through;
   }
 
-  #store_goods #store_goods_items #store_good_info #store_good_info_price i{
+  #store_goods #store_goods_items #store_good_info #store_good_info_price .add{
       background: linear-gradient(to right,#FDE068,#FFCC00);
       -webkit-background-clip: text;
       color: transparent;
@@ -432,6 +488,14 @@
       margin-right: 20rpx;
       margin-left: 70rpx;
   }
+
+  .disabledAdd{
+      color: #e5e5e5;
+        font-size: 48rpx;
+      margin-right: 20rpx;
+      margin-left: 70rpx;
+  }
+
     .user-mobile-box{
         position: fixed;
         height: 100%;

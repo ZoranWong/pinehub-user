@@ -80,6 +80,45 @@ export default class TencentMapService extends Service {
         })
     }
 
+    // 搜索地图建议
+    getSuggestion (e) {
+        console.log(e, '_____________________--');
+        return new Promise((resolve, reject) => {
+            this.map.getSuggestion({
+                keyword: e,
+                region: '合肥',
+                page_size: 8,
+                success: function (res) {
+                    resolve(res)
+                },
+                fail: function (error) {
+                    console.error(error + '失败');
+                },
+                complete: function (res) {
+                    console.log(res);
+                }
+            })
+        })
+    }
+
+    // 搜索
+    search (keyword) {
+        return new Promise((resolve, reject) => {
+            this.map.search({
+                keyword: keyword,
+                success: function (res) {
+                    console.log(res.status, res.message);
+                },
+                fail: function (res) {
+                    console.log(res.status, res.message);
+                },
+                complete: function (res) {
+                    console.log(res.status, res.message);
+                }
+            })
+        })
+    }
+
     // 移动位置
     moveToLocation () {
         this.mapCtx = wx.createMapContext('map');

@@ -5,7 +5,7 @@
         <CustomHeader :title="title" :needReturn="false" />
 
         <div id="pickup_container">
-            <div id="pickup_header" v-if="background" :style="{'backgroundImage':'url(' + background + ')'}">
+            <div id="pickup_header" :style="{'backgroundImage':'url(' + background + ')'}">
                 <span @click="changeBackground('left')">自提点自提</span>
                 <span @click="changeBackground('right')">早餐自提</span>
             </div>
@@ -19,7 +19,7 @@
                 <block v-for="(item, index) in shop_order" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
-                        <img  style="width: 400rpx;height: 400rpx" v-if="gateway" :src="gateway + '/qrcode?content=' + item.params.content + '&size=' + item.params.size + '&margin=' + item.params.margin " alt="">
+                        <canvas style="width: 200px; height: 200px;margin: 50rpx 0" :canvas-id="'qrcode_'+item['id']+'_'+drawTime"></canvas>
                         <div class="order_info">
                             <span>订单编号: {{item['order_no']}}</span>
                             <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
@@ -66,21 +66,18 @@
         <div class="total_amount" v-if="breakfast_order.length && position === 'right'">
             <span>{{current}}/{{total}}</span>
         </div>
-
-
         <FooterNav :navName="navName" />
     </div>
 </template>
 
 <script>
-    import {drawQrcode} from '../../../utils/qrcode_index';
 	import CustomHeader from '../../../components/CustomHeader';
-    import {Base64} from '../../../utils/beSecret';
-    import FooterNav from '@/components/FooterNav';
+
+	import FooterNav from '@/components/FooterNav';
 	import _ from 'underscore'
 	let bg1 = require('./img/aaa.jpg');
 	let bg2 = require('./img/bbb.jpg');
-
+	import {drawQrcode} from '../../../utils/qrcode_index';
 
 	export default {
         components: {
@@ -101,13 +98,20 @@
 				shop_order: [],
 				breakfast_order: [],
 				total: 0,
-                totalOrders: [],
-                code: '',
-                params: {},
-                gateway: ''
+                totalOrders: []
             };
         },
         watch: {
+			currentOrderId: function(value) {
+                if(value)
+					this.Qrcode(value);
+            },
+			drawTime(value){
+                console.log('change drawtime', value);
+                if(value && this.currentOrderId){
+					this.Qrcode(this.currentOrderId);
+				}
+			},
 			position (value) {
                 this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
 			}
@@ -117,10 +121,21 @@
                 this.totalOrders = this.model.user.pickup.pickupOrders;
                 this.handleOrders( this.model.user.pickup.pickupOrders)
 				return this.model.user.pickup.pickupOrders
-            },
+            }
         },
         methods: {
             handleOrders (orders) {
+                console.log(orders, 'TTTTTTTTTTTTTTTTTTTTTT');
+                this.drawTime = (new Date).getTime();
+                let isEqual =  orders.every(item=>{
+                    return this.orders.includes(item)
+                })
+                let isEmptyModel = _.isEmpty(orders);
+                if (isEqual && !isEmptyModel) {
+
+                } else {
+
+                }
                 this.shop_order = [];
                 this.breakfast_order = [];
 
@@ -138,20 +153,45 @@
                 })
 
                 this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
+                if(this.position === 'left' && this.orders && this.orders.length) {
+                    //this.currentOrderId = this.shop_order[0]['id'];
+                    //this.drawTime = (new Date).getTime();
+                    this.currentOrderId = this.shop_order[0].id;
+                    _.map(this.shop_order, (order)=>{
+                        this.Qrcode(order['id'])
+                    })
+                }
             },
 			changeBackground(position){
                 this.position = position;
 				this.current = 1;
 				this.background = position === 'left'? bg1 : bg2;
+                if(position === 'left'){
+                    this.currentOrderId = this.shop_order[0]['id']
+					this.drawTime = (new Date).getTime();
+                    _.map(this.shop_order, (order)=>{
+                        this.Qrcode(order['id'])
+                    })
+                } else {
+					this.currentOrderId = null
+                }
 			},
-            bannerChange (e) {
+			bannerChange (e) {
                 this.current = e.mp.detail.current + 1;
-            },
+				this.currentOrderId = e.mp.detail.currentItemId;
+			},
+            Qrcode (id) {
+                let time = (new Date()).getTime();
+                drawQrcode({
+					width: 200,
+					height: 200,
+					canvasId: `qrcode_${id}_${this.drawTime}`,
+					text: `{"order_id": ${id}, "time": ${time}}`
+				})
+            }
         },
         mounted () {
-            // 获取基础url
-            this.gateway = this.config.app.http.gateway;
-            // this.qrcode = drawQrcode({
+			// this.qrcode = drawQrcode({
 			// 	width: 200,
 			// 	height: 200,
 			// 	canvasId: 'myQrcode',
@@ -163,14 +203,7 @@
 				let order = JSON.parse(this.$route.query.order)
 				order['order_no'] = order.code || order['order_no']
 				order['subOrderNo'] = order['order_no'].slice(-4)
-                let time = new Date().getTime();
-                let content = {
-                    "order_id": order.id, 'time': time
-                };
-                let params = {
-                    content: Base64.encode(JSON.stringify(content)), margin: 0, size: 200
-                };
-                order.params = params;
+                this.currentOrderId = order.id
                 this.orders.push(order);
 				if (order.channel.slug === 'BREAKFAST_CAR') {
 					this.breakfast_order.push(order)
@@ -184,6 +217,7 @@
                     this.total = this.shop_order.length;
                     // this.currentOrderId = this.shop_order[0].id;
                     // this.drawTime = (new Date).getTime();
+                    this.Qrcode(this.shop_order[0].id)
 				}
             } else {
                 if (_.isEmpty(this.orders)) {

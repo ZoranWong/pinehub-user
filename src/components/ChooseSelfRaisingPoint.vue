@@ -225,6 +225,8 @@
 
     #points_wrapper #points_container #points_container_list{
         width: 100%;
+        max-height: 250px;
+        overflow: auto;
     }
 
     #points_wrapper #points_container #points_container_list li{

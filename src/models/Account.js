@@ -56,6 +56,9 @@ export default class Account extends Model {
             },
             balanceRecord () {
                 return this.state.balanceRecord
+            },
+            shopCode () {
+                return this.state.shopCode
             }
         });
     }
@@ -89,7 +92,8 @@ export default class Account extends Model {
             handlingOrderCount: null,
             waitPickOrderCount: null,
             waitPayOrderCount: null,
-            balanceRecord: []
+            balanceRecord: [],
+            shopCode: ''
         };
     }
 
@@ -133,9 +137,17 @@ export default class Account extends Model {
             }
         });
 
+        this.addEventListener('saveShopCode', function ({code}) {
+            console.log(code, 'savvvvvvvvvvvvvvvvvvvvvvvvve');
+            this.state.shopCode = code
+        });
+
 
         this.addEventListener('setAccount', function (userInfo) {
             console.log(userInfo, '++++++++++++++++++++++++++++++++');
+            if (typeof userInfo['superior_shop_code'] !== 'undefined') {
+                this.state.shopCode = userInfo['superior_shop_code']
+            }
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
             }

@@ -189,6 +189,13 @@ export default class Orders extends Model {
                 } else {
                     point.formatDistance = dis + '米'
                 }
+                let addr = point.address;
+                if (addr.length > 15) {
+                    point.addrFormat = addr.slice(0, 15) + '...'
+                } else {
+                    point.addrFormat = point.address
+                }
+                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `
             });
             this.state.commonlyPoints = points;
             this.state.type = type;
@@ -202,6 +209,13 @@ export default class Orders extends Model {
                 } else {
                     point.formatDistance = dis + '米'
                 }
+                let addr = point.address;
+                if (addr.length > 15) {
+                    point.addrFormat = addr.slice(0, 15) + '...'
+                } else {
+                    point.addrFormat = point.address
+                }
+                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `
             });
             this.state.nearbyPoints = points;
             this.state.type = type;

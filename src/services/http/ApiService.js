@@ -3,7 +3,7 @@ import _ from 'underscore';
 /* eslint-disable */
 export default class ApiService extends Service {
     isLoadingPopupShow = false;
-    
+
     constructor (app) {
         super(app);
         Object.defineProperty(this, 'axios', {
@@ -17,17 +17,17 @@ export default class ApiService extends Service {
         // this.isLoadingPopupShow = true;
         this.errorShow = true;
     }
-    
+
     showLoading (showLoading = true) {
         this.isLoadingPopupShow = showLoading;
         return this;
     }
-    
+
     showError (error = true) {
         this.errorShow = error;
         return this;
     }
-    
+
     request (headers) {
         let axios = this.axios;
         axios.interceptors.request.use((request) => {
@@ -37,7 +37,7 @@ export default class ApiService extends Service {
         });
         return axios
     }
-    
+
     async auth (need) {
         let headers = {};
         if (need) {
@@ -50,7 +50,7 @@ export default class ApiService extends Service {
         }
         return headers;
     }
-    
+
     // eslint-disable-next-line
     async httpGet (route, params = [], auth = true) {
         try {
@@ -88,7 +88,7 @@ export default class ApiService extends Service {
             throw e;
         }
     }
-    
+
     async httpPost (route, params = [], auth = true) {
         try {
             if (this.isLoadingPopupShow) {
@@ -110,7 +110,7 @@ export default class ApiService extends Service {
             throw e;
         }
     }
-    
+
     async httpPut (route, params = [], id = null, auth = true) {
         try {
             if (this.isLoadingPopupShow) {
@@ -133,7 +133,7 @@ export default class ApiService extends Service {
             throw e;
         }
     }
-    
+
     async httpDelete (route, params = [], id = null, auth = true) {
         try {
             if (id) {
@@ -158,14 +158,14 @@ export default class ApiService extends Service {
             throw e;
         }
     }
-    
+
     //组装搜索参数
     searchBuilder (searchFields) {
         let search = {};
         search = this.service('json').encode(searchFields);
         return 'searchJson=' + this.service('base64').encode(search);
     }
-    
+
     //参数处理
     buildSearchStr (searchFields) {
         return '';

@@ -33,6 +33,9 @@
             <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
                 <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
                     <img :src="item['main_image']" alt="" class="productImg">
+                    <div class="selledout" v-if="!item.stock">
+                        <span class="selloutConent">已抢光</span>
+                    </div>
                     <h3 class="name">{{item.name}}</h3>
                     <div class="statictics">
                         <span class="data">销量  {{item['sell_num']}}</span>
@@ -41,7 +44,8 @@
                     </div>
                     <div class="bottom">
                         <h4 class="price">{{item['sell_price_format']}}</h4>
-                        <img class="add" src="../../../../static/icons/add.png" alt="" @click.stop="addToShoppingCart(item)">
+                        <img class="add" src="../../../../static/icons/add.png" v-if="item.stock" alt="" @click.stop="addToShoppingCart(item)">
+                        <i class="iconfont disabledAdd" v-else>&#xe670;</i>
                     </div>
                 </li>
             </ul>
@@ -103,14 +107,14 @@
 				rpxRate: 1,
                 actId: '',
                 banners: [],
-                phone: '15357903187',
+                phone: '15038476134',
 				screenWitdh: 0,
                 startPoint: {},
                 right: 0,
                 top: 450,
                 selectItem:{},
                 selectSpec: false,
-                getAuth: false,
+                getAuth: true,
 			};
 		},
 		watch: {
@@ -140,11 +144,12 @@
 		},
         onShareAppMessage: function (res) {
             let options = this.options;
+            console.log(this.shopCode, '==========>');
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=true`,
+                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=true&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功
@@ -157,6 +162,9 @@
             }
         },
 		computed: {
+            shopCode () {
+                return this.model.account.shopCode
+            },
 			statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
@@ -310,6 +318,17 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             this.actId = parseInt(options.id);
+            this.storeId = options['shop_code'] ? options['shop_code'] : '';
+            if (this.storeId) {
+                this.model.account.dispatch('saveShopCode', {
+                    code: this.storeId
+                })
+            }
+
+            if (this.storeId && this.registered ) {
+                console.log('进来了吗');
+                this.$command('BIND_CONSUMER', this.storeId)
+            }
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
             this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
             if (this.isMember)  this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);

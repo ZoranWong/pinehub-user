@@ -65,6 +65,9 @@
 			Auth
 		},
 		computed: {
+            shopCode () {
+                return this.model.account.shopCode
+            },
 			merchandises() {
 				let merchandises = this.model.newEvents.merchandises.list;
 				this.handleMerchandises(merchandises)
@@ -112,11 +115,12 @@
         },
         onShareAppMessage: function (res) {
             //可以先看看页面数据都有什么，得到你想要的数据
+            console.log(this.shopCode, '==========>');
             return {
                 title: "青松易购早餐预定",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: '/pages/user/mall/newEvents/main?backHome=true',
+                path: `/pages/user/mall/newEvents/main?backHome=true&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功
@@ -247,6 +251,18 @@
 			}
 		},
 		onShow() {
+            let pages =  getCurrentPages();
+            let options = pages[pages.length - 1]['options'];
+            this.storeId = options['shop_code'] ? options['shop_code'] : '';
+            if (this.storeId) {
+                this.model.account.dispatch('saveShopCode', {
+                    code: this.storeId
+                })
+            }
+            if (this.storeId && this.registered ) {
+                console.log('进来了吗');
+                this.$command('BIND_CONSUMER', this.storeId)
+            }
 			this.isShow = false;
 			this.activityId = this.$route.query['activity_id'];
 			if(this.activityId) {

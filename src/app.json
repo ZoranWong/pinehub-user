@@ -45,7 +45,8 @@
             "pages": [
                 "coupon/main",
                 "ticket/main",
-                "ticketDetail/main"
+                "ticketDetail/main",
+                "couponReceiveCenter/main"
             ]
         }
     ],

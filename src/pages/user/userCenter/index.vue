@@ -139,7 +139,7 @@
             return {
                 title: '个人中心',
                 navName: 'my',
-                phone: '15357903187',
+                phone: '19965256219',
                 getAuth: false
             };
         },

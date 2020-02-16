@@ -99,11 +99,12 @@
         },
         onShareAppMessage: function (res) {
             let options = this.options;
+            console.log(this.shopCode, '==========>');
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=true`,
+                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=true&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功
@@ -250,6 +251,9 @@
 
 		},
         computed : {
+            shopCode () {
+                return this.model.account.shopCode
+            },
 			accessToken () {
 				return this.$store.getters['model.app/accessToken'];
 			},
@@ -296,9 +300,18 @@
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+            if (this.storeId) {
+                this.model.account.dispatch('saveShopCode', {
+                    code: this.storeId
+                })
+            }
+            if (this.storeId && this.registered ) {
+                console.log('进来了吗');
+                this.$command('BIND_CONSUMER', this.storeId)
+            }
 			this.actId = options['actId'] ? options['actId'] : '';
 			this.options = options;
-			if (this.storeId) {
+			if (!this.registered) {
 				this.initAccount();
 			} else {
 				this.loadPageData()

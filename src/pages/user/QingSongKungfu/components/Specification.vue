@@ -39,7 +39,7 @@
                 </div>
                 <div class="right">
                     <img src="../../../../../static/icons/minus.png" alt="" @click="add(-1)">
-                    <span>{{buyNum}}</span>
+                    <input class="buynum" v-model="buyNum" />
                     <img src="../../../../../static/icons/add.png" alt="" @click="add(1)">
                 </div>
             </div>
@@ -78,7 +78,8 @@
                 remark: '',
                 buyNum: 1,
                 price: '',
-                originPrice: ''
+                originPrice: '',
+                entityStock: 0
             }
         },
         computed () {
@@ -89,6 +90,9 @@
             	if (val) {
             		this.originPrice = ''
                 }
+            },
+            item () {
+                this.buyNum = 1
             }
         },
         methods: {
@@ -100,7 +104,8 @@
                 console.log(product);
                 _.map(product['product_entities'], (entity) => {
                     if (entity.specifications[0].value.id === item.id) {
-                        this.price = entity['sell_price_format']
+                        this.price = entity['sell_price_format'];
+                        this.entityStock = entity.stock;
                     }
                 })
                 this.selectedSpec[parent.id] = item.value;
@@ -165,7 +170,14 @@
             },
 			addToShoppingCart(){
                 if (this.commonLogic()) {
-                    this.$emit('close')
+                    if (this.buyNum > this.entityStock) {
+                        wx.showToast({
+                            title: '库存不足',
+                            icon: 'none'
+                        });
+                    } else{
+                        this.$emit('close')
+                    }
                 } else {
                     wx.showToast({
                         title: '请先选择规格',
@@ -175,12 +187,18 @@
             },
             async settlement () {
                 if (await this.commonLogic()) {
-                    setTimeout(()=>{
-                        this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                            query: {type: this.type, actId: this.actId}
+                    if (this.buyNum > this.entityStock) {
+                        wx.showToast({
+                            title: '库存不足',
+                            icon: 'none'
                         });
-                    }, 500)
-
+                    } else {
+                        setTimeout(()=>{
+                            this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                                query: {type: this.type, actId: this.actId}
+                            });
+                        }, 500)
+                    }
                 } else {
                     wx.showToast({
                         title: '请先选择规格',
@@ -191,7 +209,7 @@
             add (number) {
                 if (this.buyNum + number < 0) return;
                 console.log(this._props.item);
-                this.buyNum += number;
+                this.buyNum = number + Number(this.buyNum);
             }
         }
 	}
@@ -393,6 +411,14 @@
         font-size: 30rpx;
         color: #111111;
         margin: 0 20rpx;
+    }
+
+    #number .right .buynum{
+        font-size: 30rpx;
+        color: #111;
+        margin: 0 20rpx;
+        width: 60rpx;
+        text-align: center;
     }
 
     #remark {

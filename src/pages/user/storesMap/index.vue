@@ -1,10 +1,17 @@
 <!--suppress ALL -->
 <template>
-    <div id="location">
+    <div id="location" @click.stop="closeView">
         <CustomHeader :title="title" :needReturn="true" />
         <div id="location_search" >
-            <input id="location_search_input" v-model.trim="addressName" placeholder="请输入地点名称"/>
-            <i class="iconfont search">&#xe65c;</i>
+            <input @click.stop="showView" id="location_search_input" v-model.trim="backfillValue" placeholder="请输入地点名称" @input="getSuggestion" />
+            <i class="iconfont search" >&#xe65c;</i>
+            <ul :class="!showview?'hidden research_suggests':'view-center research_suggests'">
+                <li v-for="addr in suggestions" :key="addr.id" :id="addr.id" class="suggestion" @click="(e)=>backfill(e,addr)">
+                    <h3 class="item-title">{{addr.title}}</h3>
+                    <h3 class="item-addr">{{addr.addr}}</h3>
+                </li>
+            </ul>
+
         </div>
         <div id="location_map">
             <map
@@ -40,7 +47,7 @@
                     <span @click="changeBackground('right')">常用自提点</span>
                 </div>
                 <ul id="location_points_list" v-if="position === 'right'">
-                    <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item.id)" >
+                    <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item)" >
                         <div class="left">
                             <div class="top">
                                 <h4>{{item.name}}</h4>
@@ -90,14 +97,14 @@
 
             </div>
         </div>
-
+<!--        :class="showView? 'hidden':'viewcenter'"-->
     </div>
 </template>
 
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
-
 	import _ from 'underscore';
+
 	var amapFile = require('amap-wx');
 	var markersData = [];
 	let bg1 = require('./imgs/longBanner.jpg');
@@ -113,7 +120,7 @@
                 title: '附近店铺/自提点',
                 latitude: 0,
                 longitude: 0,
-                addressName: null,
+                backfillValue: null,
                 city: null,
                 self: {},
                 selectStoreId: null,
@@ -125,7 +132,9 @@
 				commonPoints:[],
                 checkId: '',
 				barHeight: 0,
-                isOpen: true
+                isOpen: true,
+                showview: false,
+                suggestions: []
             }
         },
         watch: {
@@ -161,6 +170,50 @@
         },
         // 普通方法
         methods: {
+            showView () {
+                this.showview = true
+            },
+            closeView () {
+                this.showview = false
+            },
+            // 地图搜索
+            async getSuggestion (e) {
+                var _this = this;
+                //调用关键词提示接口
+                let result = await this.map.getSuggestion(this.backfillValue);
+                let svg = [];
+                _.map(result.data, (item) => {
+                    svg.push({
+                        title: item.title,
+                        id: item.id,
+                        addr: item.address,
+                        city: item.city,
+                        district: item.district,
+                        latitude: item.location.lat,
+                        longitude: item.location.lng
+                    })
+                });
+                this.showview = true;
+                this.suggestions = svg;
+            },
+            backfill (e,addr) {
+                this.showview = false;
+                var id = e.currentTarget.id;
+                for (var i = 0; i < this.suggestions.length; i++) {
+                    if (this.suggestions[i].id == id) {
+                        this.backfillValue = this.suggestions[i].title,
+                        this.latitude = this.suggestions[i].latitude,
+                        this.longitude = this.suggestions[i].longitude
+                        this.nearby_search();
+                        return;
+                    }
+                }
+            },
+            async nearby_search () {
+                var self = this;
+                let result = await this.map.search(this.backfillValue);
+                // 调用接口
+            },
 			back(){
 				this.$command('REDIRECT_TO','','back')
 			},
@@ -171,8 +224,7 @@
             },
             async regionchangeend (e) {
                 let result = await this.map.getCenterLocation();
-
-                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type, this.longitude, this.latitude);
+                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type, this.myLongitude, this.myLatitude);
                 this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
             },
 			async uploadFormId (e) {
@@ -188,8 +240,8 @@
                 this.isOpen = item['open_preorder'];
                 this.checkId = id;
 				let data = this.points.filter(item => item.id === id)[0];
-				// this.latitude = data.position.coordinates[1];
-				// this.longitude = data.position.coordinates[0];
+				this.latitude = data.position.coordinates[1];
+				this.longitude = data.position.coordinates[0];
 				this.markers = this.points.map((point) => {
 					let showCallout = false
 					if (point.id === id) {
@@ -202,7 +254,7 @@
 				if (position === 'left') {
 					this.background = bg1;
 					this.position = 'left';
-					this.$command('LOAD_NEARBY',result[0],result[1])
+					this.$command('LOAD_NEARBY',result[0],result[1], this.myLongitude, this.myLatitude)
 				} else {
 					let result = await this.map.getLocation();
 					this.background = bg2;
@@ -224,6 +276,8 @@
                 let result = await this.map.getLocation();
                 this.latitude = result[1];
                 this.longitude = result[0];
+                this.myLatitude = result[1];
+                this.myLongitude = result[0];
                 this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
 				this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
             },
@@ -244,7 +298,7 @@
                 };
                 if (callout) {
                     marker['callout'] = {
-                        content: `${store.name}  距您当前${Math.round(store.distance)}米 \n 营业时间 : ${store.time || '暂无'} \n 地址 :${store.address}`,
+                        content: `${store.name}  距您当前${store.formatDistance} \n 营业时间 : ${store.time || '暂无'} \n 地址 :${store.addrFormat}`,
                         color: '#111',
                         fontSize: '11',
                         borderRadius: '5',
@@ -338,13 +392,46 @@
 
     #location_search {
         width: 100%;
-        height: 110rpx;
         z-index: 1;
         position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
+        padding: 0 20rpx;
+        margin-top: 40rpx;
+    }
+
+    .research_suggests{
+        width: 710rpx;
+        box-sizing: border-box;
+        position: absolute;
+        left: 20rpx;
+        top: 70rpx;
+        background: #fff;
+    }
+
+    .suggestion{
+        border-bottom: 1rpx solid #f2f2f2;
+        padding: 5rpx 40rpx;
+    }
+
+    /*.suggestion:hover{*/
+    /*    background: #FFCC00;*/
+    /*}*/
+
+    .suggestion:first-child{
+        border-top: 1rpx solid #f2f2f2;
+    }
+
+    .research_suggests .item-title{
+        font-size: 22rpx;
+        color: #111111;
+    }
+
+    .research_suggests .item-addr{
+        font-size: 18rpx;
+        color: #757575;
     }
 
     #location_search_input {
@@ -366,6 +453,10 @@
         font-size: 36rpx;
     }
 
+    .hidden{ display: none;}
+
+    .view-center{ display: block }
+
     #location_map {
         /*position: absolute;*/
         /*top: 0;*/
@@ -374,7 +465,7 @@
         /*height: 100%;*/
         width: 100%;
         height: 500px;
-        margin-top: -109rpx;
+        margin-top: -110rpx;
     }
 
     #map {
