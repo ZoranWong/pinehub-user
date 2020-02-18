@@ -39,7 +39,7 @@
                     <h3 class="name">{{item.name}}</h3>
                     <div class="statictics">
                         <span class="data">销量  {{item['sell_num']}}</span>
-                        <span class="data">库存  {{item.stock}}</span>
+                        <span v-if="item.stock < 6" class="data">仅剩{{item.stock}}件</span>
                         <span class="data origin" v-if="!item['specifications'] || !item['specifications'].length">{{item['origin_price_format']}}</span>
                     </div>
                     <div class="bottom">

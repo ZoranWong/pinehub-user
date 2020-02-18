@@ -94,21 +94,13 @@ export default class Orders extends Model {
                     itemEntities.specs = specObj
                 });
 
-                // let minPrice = _.min(productEntities, (value) => {
-                //     return value['market_price']
-                // });
+                let minPrice = _.min(productEntities, (value) => {
+                    return value['market_price']
+                });
                 // let maxPrice = _.max(productEntities, (value) => {
                 //     return value['market_price']
                 // });
-                // if (product['specifications'].length) {
-                //     if (minPrice['market_price'] === maxPrice['market_price']) {
-                //         product['range'] = `￥${minPrice['market_price']}`
-                //     } else {
-                //         product['range'] = `￥${minPrice['market_price']}~￥${maxPrice['market_price']}`
-                //     }
-                // } else {
-                //     product['range'] = `￥${minPrice['market_price']}`
-                // }
+                product['min_price'] = `￥${minPrice['retail_price']}起`;
 
                 let specifications = product['specifications'];
                 let spec = [];
@@ -117,7 +109,7 @@ export default class Orders extends Model {
                 });
                 product['spec'] = spec.join(',');
             });
-
+            console.log(goods, '||||||||||||||||S');
             this.state.goods = goods;
         });
 

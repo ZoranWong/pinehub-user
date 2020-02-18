@@ -91,24 +91,60 @@
 
 		},
 		methods: {
-			settle(){
-				if (this.type === 'mall') {
-					this.model.user.store.dispatch('selectPoints', {
-						boolean: true,
+            settle(){
+			    let self = this;
+			    wx.getSetting({
+                    async success (res) {
+                        if (res.authSetting && res.authSetting['scope.userLocation']) {
+                            self.goPayment();
+                        } else {
+                            wx.showModal({
+                                title: '是否授权当前位置',
+                                content: '需要获取您的地理位置，请确认授权，否则将无法下单',
+                                success: function (tip) {
+                                    if (tip.confirm) {
+                                        wx.openSetting({
+                                            success: function (data) {
+                                                if (data.authSetting["scope.userLocation"] === true) {
+                                                    wx.showToast({
+                                                        title: '授权成功',
+                                                        icon: 'success',
+                                                        duration: 1000
+                                                    })
+                                                    self.goPayment();
+                                                } else {
+                                                    wx.showToast({
+                                                        title: '授权失败',
+                                                        icon: 'success',
+                                                        duration: 1000
+                                                    })
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            },
+            goPayment () {
+                if (this.type === 'mall') {
+                	this.model.user.store.dispatch('selectPoints', {
+                		boolean: true,
                         type: this.type
-					})
+                	})
                 } else if (this.type === 'breakfast') {
-					console.log('这是早餐车的购物车');
-					this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
-						boolean: true,
-						type: this.type
-					})
+                	console.log('这是早餐车的购物车');
+                	this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
+                		boolean: true,
+                		type: this.type
+                	})
                 } else if (this.type === 'activity') {
                     this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
                         query: {type: this.type, actId: this.actId}
                     });
                 }
-
             },
 			closeMask(){
 				this.showGoodsList = false;

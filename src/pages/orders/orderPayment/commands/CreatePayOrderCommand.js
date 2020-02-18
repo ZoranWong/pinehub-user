@@ -3,7 +3,6 @@ import _ from 'underscore'
 export default class CreatePayOrderCommand extends Command {
     async handle (params, type) {
         let response;
-        console.log(type, '---------------------------type--------------------------------');
         if (type === 'mall') {
             response = await this.service('http.orders').createPaymentOrder(params);
         } else if (this.type === 'breakfast') {

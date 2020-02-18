@@ -4,9 +4,11 @@
             <li @click="jump('index')">
 <!--                <i class="iconfont now" >&#xe6bb;</i>-->
                 <img src="../../static/icons/aHome.jpg" class="newIndexIcon" alt="" v-if="index === 'index_now'">
-                <img src="../../static/icons/aHome.jpg" alt="" v-else>
-<!--                <i class="iconfont" v-else>&#xe7d4;</i>-->
-                <em :class="index === 'index_now'?'active':''">主页</em>
+                <div v-else>
+                    <img src="../../static/icons/menuHome.png" alt="" >
+                    <em :class="index === 'index_now'?'active':''">主页</em>
+                </div>
+
             </li>
 <!--            <li @click="jump('user.store')">-->
 
@@ -135,10 +137,7 @@
         height: 48rpx;
     }
 
-    .newIndexIcon{
-        width: 54rpx;
-        height: 54rpx;
-    }
+
 
     #footNav ul li .active {
         text-align: center;
@@ -158,6 +157,11 @@
         background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
+    }
+
+    .newIndexIcon{
+        width: 80rpx!important;
+        height: 80rpx!important;
     }
 
 

@@ -239,6 +239,11 @@
             }
         },
         mounted () {
+            wx.getSetting({
+                success (res) {
+                    console.log(res, 'wx.getSetting');
+                }
+            })
             getUpdateMange();
             this.$command('LOAD_INDEX_BANNER')
             this.$command('LOAD_STORE_CATEGORIES_COMMAND')
@@ -254,9 +259,7 @@
                     code: this.storeId
                 })
             }
-            console.log(this.storeId, '验证 store id')
-            console.log(this.registered, '验证 是否登录')
-            if (this.storeId && this.registered ) {
+            if (this.storeId && this.registered && this.isMember ) {
                 console.log('进来了吗');
                 this.bindConsumer()
             }
@@ -332,18 +335,6 @@
                     this.backColor = '#a85231'
                 }
             },
-            // changeBgOpacity (target) {
-            //     clearInterval(this.timer);
-            //     this.timer = setInterval(()=>{
-            //         this.alpha -= 0.1
-            //         console.log(this.alpha, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
-            //         if (this.alpha < 0.5) {
-            //             clearInterval(this.timer);
-            //             this.alpha = 1
-            //         }
-            //     }, 100);
-            //     console.log(this.alpha, '================>');
-            // },
             bannerJump (item) {
                 if (item['can_jump']) {
                     this.redirectTo(item['action_link'])
@@ -401,25 +392,6 @@
                         this.showAuth = true
                     }
                 }
-            },
-            bookingMall () {
-                wx.navigateToMiniProgram({
-                    appId: 'wx2bee13173fa2ca54',
-                    path: 'pages/index/index',
-                    extraData: {
-                        from: 'booking_mall'
-                    },
-                    envVersion: 'trial',
-                    success (res) {
-                        // 打开成功
-                    },
-                    fail (res) {
-                        console.log(res);
-                    },
-                    complete (res) {
-                        console.log(res);
-                    }
-                });
             },
             getPhoneNumber (e) {
                 this.$command('SET_USER_MOBILE', e);

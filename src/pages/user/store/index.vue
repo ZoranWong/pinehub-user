@@ -45,15 +45,18 @@
                             <h3>{{item.name}}</h3>
                             <span>{{item.unit}}</span>
                         </div>
+                        <div class="intro">
+                            {{item.intro}}
+                        </div>
                         <div id="store_good_info_entities">
                             <span>销量:{{item.sell_num}}</span>
-                            <span>库存:{{item.stock}}</span>
+                            <span v-if="item.stock < 6" class="stock">仅剩{{item.stock}}件</span>
                         </div>
                         <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
                         <div id="store_good_info_price">
                             <span>{{item.sell_price_format}}</span>
-                            <em>{{item.origin_price_format}}</em>
-                            <i class="iconfont add" v-if="item.stock" @click.stop="addToShoppingCart(item)">&#xe6d8;</i>
+                            <em v-if="item['show_market_price'] && !item.specifications.length" >{{item.origin_price_format}}</em>
+                            <i class="iconfont add" v-if="item.stock" @click.stop="addToShoppingCart(item)" :style="{marginLeft: item.specifications.length ? '0rpx' : '70rpx'}">&#xe6d8;</i>
                             <i class="iconfont disabledAdd" v-else>&#xe670;</i>
                         </div>
                     </div>
@@ -437,10 +440,19 @@
         margin-right: 40rpx;
     }
 
+    #store_goods #store_goods_items .intro{
+        font-size: 24rpx;
+        color: #757575;
+        width: 310rpx;
+        overflow:hidden; /*超出宽度部分的隐藏*/
+        white-space:nowrap; /*文字不换行*/
+        text-overflow:ellipsis; /*超出则...代替*/
+
+    }
+
   #store_goods #store_goods_items #store_good_info h3{
       font-size: 28rpx;
       color: #111111;
-      margin: 10rpx 0;
       width: 200rpx;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -452,13 +464,13 @@
       color: #757575;
   }
 
-  #store_goods #store_goods_items #store_good_info #store_good_info_entities span:last-child{
+  #store_goods #store_goods_items #store_good_info #store_good_info_entities .stock{
       margin-left: 30rpx;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_price{
       width: 100%;
-      margin-top: 26rpx;
+      margin-top: 6rpx;
       display: flex;
       justify-content: space-between;
       padding-right: 20rpx;

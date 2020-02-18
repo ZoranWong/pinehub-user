@@ -14,6 +14,8 @@ export default class Order {
         this.stateDesc = order['state_desc'];
         this['settlement_total_fee'] = order['settlement_total_fee'];
         this.show = true;
+        this['can_cancel'] = order['can_cancel'];
+        this['can_pay'] = order['can_pay'];
         this.top = 0;
         // 卡券使用
         this.cardId = (typeof order['card_id'] !== 'undefined' && order['card_id'] !== null) ? order['card_id'] : '无';

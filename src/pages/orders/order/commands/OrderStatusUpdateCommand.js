@@ -3,11 +3,19 @@ export default class OrderStatusUpdateCommand extends Command {
     // 取消订单
     async cancel (id) {
         let response = await this.service('http.orders').cancelOrder(id);
+        console.log(response, '____');
         if (response.data) {
             wx.showToast({
                 title: '订单已取消',
                 icon: 'none'
             })
+        } else {
+            if (response['status_code'] === 400) {
+                wx.showToast({
+                    title: response.message,
+                    icon: 'none'
+                })
+            }
         }
     }
 

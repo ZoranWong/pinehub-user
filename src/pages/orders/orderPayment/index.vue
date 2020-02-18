@@ -183,6 +183,13 @@
                     });
                     return
                 };
+                if (!this.orderInfo['settlement_total_fee_format']) {
+                    wx.showToast({
+                        title: '订单信息有误，请稍后再提交',
+                        icon: 'none'
+                    });
+                    return
+                }
                 let now = new Date();
                 let hour = now.getHours();
                 console.log(hour);

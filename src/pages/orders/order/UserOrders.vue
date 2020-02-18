@@ -42,13 +42,13 @@
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
                     <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
-                    <button form-type="submit" @click="btnClick('pay', order)" class="yellow">去支付</button>
+                    <button form-type="submit" v-if="order['can_pay']" @click="btnClick('pay', order)" class="yellow">去支付</button>
                 </form>
 
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 1 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2 && order.type !== 'ACTIVITY_PRODUCT_ORDER'">
                 <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" @click="btnClick('cancel', order)" class="white">取消订单</button>
+                    <button form-type="submit" v-if="order['can_cancel']" @click="btnClick('cancel', order)" class="white">取消订单</button>
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
                     <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
                     <button form-type="submit" @click="btnClick('pickup', order)" class="yellow">去取货</button>
