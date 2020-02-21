@@ -13,7 +13,6 @@ export default class StoreMap extends Model {
                 return this.state.commonlyMapPoints
             },
             nearbyMapPoints () {
-                console.log(this.state.nearbyMapPoints, 'computed ___________________________');
                 return this.state.nearbyMapPoints
             },
             selectedMapPoint () {
@@ -36,23 +35,34 @@ export default class StoreMap extends Model {
 
     listeners () {
         super.listeners();
-       
+
         this.addEventListener('saveMapCommonlyUsedPoint', function ({points}) {
-            this.state.commonlyMapPoints = points
+            _.map(points, (point, key) => {
+                if (!_.find(this.state.commonlyMapPoints, function (commonlyMapPoint) {
+                    return commonlyMapPoint.id === point.id
+                })) {
+                    this.state.commonlyMapPoints.push(point)
+                }
+            })
         });
-    
+
         this.addEventListener('saveMapNearbyPoints', function ({points}) {
             console.log(points, '---------------------------------------');
-            _.map(points, function (point, key) {
+            _.map(points, (point, key) => {
+                if (_.find(this.state.nearbyPoints, function (nearbyPoint) {
+                    return nearbyPoint.id === point.id
+                })) {
+                    return
+                }
                 point['start_at'] = point['start_at'] ? point['start_at'] : '9:00';
                 point['end_at'] = point['end_at'] ? point['end_at'] : '9:00';
                 point['time'] = `${point['start_at']} - ${point['end_at']}`;
                 point.distance = Math.round(point.distance);
                 point['is_open'] = checkAuditTime(point['start_at'], point['end_at'])
+                this.state.nearbyPoints.push(point)
             });
-            this.state.nearbyMapPoints = points;
         });
-        
+
         this.addEventListener('saveSelectedMapPoint', function ({point}) {
             this.state.selectedMapPoint = point;
         });

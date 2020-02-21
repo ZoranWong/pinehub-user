@@ -1,4 +1,5 @@
 import ApiService from './ApiService';
+import {Base64} from '../../utils/beSecret';
 
 export default class AccountService extends ApiService {
     async signIn (username, password) {
@@ -38,9 +39,11 @@ export default class AccountService extends ApiService {
         });
         return [response.data, response.meta['total_pages'], limit, response.meta['total']];
     }
-    
-    async superior (code) {
-        let response = await this.httpPut(`api/mp/user/superior/shop/${code}`);
+
+    async superior (code, reset) {
+        console.log(code, '======= code =============', reset);
+        let api = reset ? `api/mp/user/superior/shop/${Base64.encode(code)}/reset` : `api/mp/user/superior/shop/${Base64.encode(code)}`;
+        let response = await this.httpPut(api);
         return response.data;
     }
 }

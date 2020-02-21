@@ -16,5 +16,6 @@ export default class UserInfo {
 		this.totalScore = userInfo['total_score'];
 		this.type = userInfo['type'];
 		this.vipLevel = userInfo['vip_level'];
+		this['superior_shop_id'] = userInfo['superior_shop_id']
 	}
 }

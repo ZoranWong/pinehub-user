@@ -45,7 +45,7 @@
                     <h3>我的订单</h3>
                     <span>
                         全部订单
-                        <i class="iconfont">&#xe6a3;</i>
+                        <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                     </span>
                 </div>
                 <ul id="merchant-store_orders_list">
@@ -82,7 +82,6 @@
         </div>
 
 
-
         <div class="merchant-store_menu">
             <ul class="mesnus">
 
@@ -92,7 +91,7 @@
 <!--                        <i class="iconfont blue">&#xe609;</i>-->
                         <span>意见反馈</span>
                     </div>
-                    <i class="iconfont arrow">&#xe6a3;</i>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="connectKf" class="lines">
                     <div class="left">
@@ -100,7 +99,7 @@
 <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>联系客服</span>
                     </div>
-                    <i class="iconfont arrow">&#xe6a3;</i>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
             </ul>
         </div>
@@ -114,13 +113,28 @@
                         <img src="../../../../static/icons/addresses.png" alt="">
                         <span>收货地址</span>
                     </div>
-                    <i class="iconfont arrow">&#xe6a3;</i>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
             </ul>
         </div>
+        <div class="merchant-store_menu">
+            <ul class="mesnus">
+                <li @click="showBind" class="showBind">
+                    <div class="left">
+                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
+                        <img src="../../../../static/icons/addresses.png" alt="">
+                        <span>来源</span>
 
+                    </div>
+                    <div class="id">ID: {{shopCode}}</div>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </li>
+            </ul>
+        </div>
+        <BindShop v-if="bindVisible" @close="bindVisible = false" @submit="submitBind" />
         <div id="footNavHeight"></div>
         <footer-nav :navName="navName" @getUserAuth="getUserAuth">></footer-nav>
+
     </div>
 </template>
 
@@ -128,19 +142,21 @@
 	import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
     import FooterNav from '@/components/FooterNav';
-
+    import BindShop from './components/BindShop';
 	export default {
         components: {
 			CustomHeader,
             'footer-nav': FooterNav,
-			Auth
+			Auth,
+            BindShop
         },
         data () {
             return {
                 title: '个人中心',
                 navName: 'my',
                 phone: '19965256219',
-                getAuth: false
+                getAuth: false,
+                bindVisible: false
             };
         },
         computed: {
@@ -149,6 +165,9 @@
             },
             userInfo () {
 				return this.model.account.userInfo;
+            },
+            shopCode () {
+                return this.model.account.shopCode
             },
             hasStore () {
                 return this.$store.getters['model.account/isShopManager'];
@@ -174,6 +193,12 @@
             }
         },
         methods: {
+            showBind () {
+                this.bindVisible = true;
+            },
+            submitBind (code) {
+                this.$command('BIND_CONSUMER', code, true)
+            },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
 				if (formId !== "the formId is a mock one"){
@@ -247,6 +272,18 @@
 <style scoped>
     #footNavHeight {
         height: 109rpx;
+    }
+
+    #bindShop{
+        position: fixed;
+        width: 100vw;
+        height: 100%;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 1000;
     }
 
     #merchant-store {
@@ -408,7 +445,7 @@
     }
 
     #merchant-store_orders_header{
-        width: 710rpx;
+        width: 700rpx;
         height: 110rpx;
         display: flex;
         justify-content: space-between;
@@ -586,6 +623,7 @@
         color: #757575;
     }
 
+
     .merchant-store_menu ul li .blue{
         background: linear-gradient(to right,#5EC4F9,#34B5F8);
         -webkit-background-clip: text;
@@ -657,4 +695,25 @@
         right: 113rpx;
         bottom: 60rpx;
     }
+
+    .showBind{
+        position: relative;
+    }
+
+    .showBind .id{
+        position: relative;
+        right: -75px;
+        font-size: 28rpx;
+        color: #757575;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .rightArrow_imp{
+        width: 12rpx!important;
+        height: 20rpx!important;
+        margin-left: 21rpx;
+    }
+
 </style>

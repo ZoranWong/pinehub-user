@@ -26,23 +26,31 @@ export default class Tickets extends Model {
             },
             availableCoupons () {
                 return this.state.availableCoupons
+            },
+            canReceiveTickets () {
+                return this.state.canReceiveTickets
+            },
+            codeTicket () {
+                return this.state.codeTicket
             }
         });
     }
-    
+
     data () {
         return _.extend(super.data(), {
             ticketDetail: {},
-            availableCoupons:[]
+            availableCoupons:[],
+            canReceiveTickets: [],
+            codeTicket: {}
         });
     }
-    
+
     listeners () {
         super.listeners();
         this.addEventListener('saveTicketDetail', function ({detail}) {
             this.state.ticketDetail = detail
         });
-        
+
         this.addEventListener('saveAvailableCoupons', function ({coupons}) {
             _.map(coupons, (coupon)=>{
                 coupon['title'] = coupon['coupon_name'];
@@ -56,6 +64,14 @@ export default class Tickets extends Model {
                 coupon.validTime = coupon['valid_term_desc']
             });
             this.state.availableCoupons = coupons
+        });
+
+        this.addEventListener('canReceiveTicketsList', function ({tickets}) {
+            this.state.canReceiveTickets = tickets;
+        });
+
+        this.addEventListener('codeScanReceiveTicket', function ({ticket}) {
+            this.state.codeTicket = ticket;
         })
     }
 }

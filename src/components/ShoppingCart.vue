@@ -4,18 +4,19 @@
         <div id="mask" v-if="showGoodsList" @click="closeMask"></div>
         <div id="shopping_cart" :style="{bottom: showMask?'0':'-1000rpx'}">
             <div id="shopping_cart_icon">
-                <i class="iconfont" @click="showGoodsList = !showGoodsList">&#xeba9;</i>
+                <i class="iconfont" @click="showGoodsList = !showGoodsList">&#xe613;</i>
+                <span  :class="amountClass">{{amount}}</span>
             </div>
             <h4><span>{{totalPrice}}</span></h4>
             <button id="shopping_cart_button" @click="settle">去结算</button>
             <div id="shopping_cart_goods" v-if="showGoodsList">
                 <div id="shopping_cart_goods_header">
                     <h3>
-                        <i class="iconfont">&#xe7c5;</i>
+                        <img src="../../static/icons/menu.png" alt="">
                         已选商品
                     </h3>
                     <h3 @click="clearCart">
-                        <i class="iconfont">&#xe6b4;</i>
+                        <img src="../../static/icons/rubbish.png" alt="">
                         清空
                     </h3>
                 </div>
@@ -27,9 +28,9 @@
                         </h4>
                         <div class="entities">
                             <span>￥{{item['price']}}</span>
-                            <i class="iconfont minus" @click="changeBuyNum(item,-1)">&#xe61a;</i>
-                            <span>{{item['buy_num']}}</span>
-                            <i class="iconfont add" @click="changeBuyNum(item,1)">&#xe6d8;</i>
+                            <img src="../../static/icons/minus.png" alt=""  @click="changeBuyNum(item,-1)">
+                            <input v-model="item['buy_num']" class="cartInput" type="number" @blur="(e)=>changeInputBuyNum(e,item)" />
+                            <img src="../../static/icons/add.png" alt="" @click="changeBuyNum(item,1)">
                         </div>
                     </li>
                 </ul>
@@ -59,6 +60,13 @@
             }
         },
         computed : {
+            amountClass () {
+                if (String(this.amount).length > 2) {
+                    return 'overWidthAmount'
+                } else {
+                    return 'amount'
+                }
+            },
 			goodInShoppingCart(){
 				let products = [];
 				if(this.type === 'mall') {
@@ -74,6 +82,13 @@
                 }
 				return products
 			},
+            amount () {
+			    let amount = 0;
+			    _.map(this.goodInShoppingCart, (items)=>{
+			        amount += Number(items['buy_num'])
+                })
+                return amount
+            },
             totalPrice () {
 				if (this.type === 'mall') {
 					return this.model.user.store.totalPrice;
@@ -91,6 +106,19 @@
 
 		},
 		methods: {
+            changeInputBuyNum (e, item) {
+                let value = e.target.value;
+                let stock = item['stock_num'] || item.stock;
+                if (value <= 0) value = 0;
+                if (value > stock) value = stock;
+                if (this.type === 'mall') {
+                    this.$command('CHANGE_BUY_NUM_COMMAND',item, Number(value))
+                } else if (this.type === 'breakfast') {
+                    this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, Number(value))
+                } else if (this.type === 'activity') {
+                    this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',item, Number(value), this.actId)
+                }
+            },
             settle(){
 			    let self = this;
 			    wx.getSetting({
@@ -115,7 +143,7 @@
                                                 } else {
                                                     wx.showToast({
                                                         title: '授权失败',
-                                                        icon: 'success',
+                                                        icon: 'none',
                                                         duration: 1000
                                                     })
                                                 }
@@ -208,7 +236,7 @@
         bottom: 99rpx;
         width: 100%;
         background: transparent;
-        z-index: 10;
+        z-index: 10000;
     }
 
     #shopping_cart #shopping_cart_goods_header{
@@ -220,6 +248,17 @@
         justify-content: space-between;
         align-items: center;
         background: #f2f2f2;
+    }
+
+    #shopping_cart_goods_list{
+        max-height: calc(100vh - 300rpx);
+        overflow: auto;
+    }
+
+    #shopping_cart_goods_header img{
+        width: 25rpx;
+        height: 30rpx;
+        margin-right: 14rpx;
     }
 
     #shopping_cart #shopping_cart_goods_list li{
@@ -255,9 +294,24 @@
         align-items: center;
     }
 
+    #shopping_cart #shopping_cart_goods_list .entities img{
+        width: 24px;
+        height: 24px;
+    }
+
     #shopping_cart #shopping_cart_goods_list .entities span{
         font-size: 32rpx;
         color: #111111;
+        margin-right: 50rpx;
+    }
+
+    .cartInput{
+        width: 70rpx;
+        text-align: center;
+        border: 1px solid #f2f2f2;
+        font-size: 32rpx;
+        color: #111;
+        margin: 0 20rpx;
     }
 
     #shopping_cart #shopping_cart_goods_list .entities .minus{
@@ -298,12 +352,64 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 10002;
     }
 
     #shopping_cart #shopping_cart_icon i {
-        font-size: 48rpx;
+        font-size: 52rpx;
         color: #333333;
+    }
+
+    #shopping_cart .amount{
+        width: 40rpx;
+        height: 40rpx;
+        background: #fe4a2c;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 32rpx;
+        position: absolute;
+        right: -14rpx;
+        top: -6rpx;
+        z-index: 10001;
+    }
+
+    #shopping_cart .overWidthAmount{
+        width: 60rpx;
+        height: 40rpx;
+        background: #fe4a2c;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 32rpx;
+        position: absolute;
+        right: -26rpx;
+        top: -13rpx;
+        z-index: 10001;
+    }
+
+    #shopping_cart .overWidthAmount:before{
+        content: '';
+        width: 10px;
+        height: 20px;
+        background: #fe4a2c;
+        border-radius: 50%;
+        position: absolute;
+        left: -20rpx;
+        border-radius:  10px 0 0 10px ;
+    }
+
+    #shopping_cart .overWidthAmount:after{
+        content: '';
+        width: 10px;
+        height: 20px;
+        background: #fe4a2c;
+        position: absolute;
+        right: -20rpx;
+        border-radius: 0 10px 10px 0;
     }
 
 

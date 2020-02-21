@@ -10,9 +10,9 @@
         >
             <div class="order_info_sn" @click="orderDetail(order.id)">
                 <div class="left">
-                    <i class="iconfont orderIcon">&#xe7e6;</i>
+                    <img src="../../../../static/icons/orderMenu.png" class="orderMenu" alt="">
                     <em>订单编号:{{order.code}}</em>
-                    <i class="iconfont detailIcon">&#xe6a3;</i>
+                    <img src="../../../../static/icons/rightArrow.png" class="arrow" alt="">
                 </div>
                 <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING'  " >{{order['stateDesc']}}</span>
                 <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>
@@ -40,6 +40,7 @@
             </ul>
             <div class="order_info_btn" v-if="order.btnStatus === 0 && order.type !== 'CODE_SCAN' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2 " >
                 <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" v-if="order['can_cancel']" @click="btnClick('cancel', order)" class="white">取消订单</button>
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
                     <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
                     <button form-type="submit" v-if="order['can_pay']" @click="btnClick('pay', order)" class="yellow">去支付</button>
@@ -225,6 +226,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .order_info_sn .left .orderMenu{
+        width: 30rpx;
+        height: 36rpx;
+        margin-right: 20rpx;
+    }
+
+    .order_info .left .arrow{
+        width: 12rpx;
+        height: 20rpx;
+        margin-left: 30rpx;
     }
 
     .order_info_sn .left .orderIcon {

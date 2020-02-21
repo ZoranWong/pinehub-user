@@ -2,101 +2,89 @@
 <template>
     <div id="location" @click.stop="closeView">
         <CustomHeader :title="title" :needReturn="true" />
-        <div id="location_search" >
-            <input @click.stop="showView" id="location_search_input" v-model.trim="backfillValue" placeholder="请输入地点名称" @input="getSuggestion" />
-            <i class="iconfont search" >&#xe65c;</i>
-            <ul :class="!showview?'hidden research_suggests':'view-center research_suggests'">
-                <li v-for="addr in suggestions" :key="addr.id" :id="addr.id" class="suggestion" @click="(e)=>backfill(e,addr)">
-                    <h3 class="item-title">{{addr.title}}</h3>
-                    <h3 class="item-addr">{{addr.addr}}</h3>
-                </li>
-            </ul>
-
-        </div>
-        <div id="location_map">
-            <map
-                :id="checkId? 'map':'checkedMap'"
-                scale="14"
-                @regionchange="regionchange"
-                @begin="regionchangebegin"
-                @end="regionchangeend"
-                :enable-scroll="true"
-                :latitude="latitude"
-                :longitude="longitude"
-                :markers="markers"
-                @markertap="bindmarkertap"
-                show-location>
-<!--                <cover-view id="custom_header" :style="{'background': 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'}" >-->
-<!--                    <cover-view  id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></cover-view >-->
-<!--                    <cover-view  id="nav_bar" :style="{'height': navHeight + 'px'}" >-->
-<!--                        <cover-view  id="back_icon" @click="back">-->
-<!--                            <i class="iconfont">&#xe679;</i>-->
-<!--                        </cover-view >-->
-<!--                        <cover-view  id="nav_title">-->
-<!--                            {{title}}-->
-<!--                        </cover-view >-->
-<!--                    </cover-view >-->
-<!--                </cover-view>-->
-                <cover-view id="locatePosition" @click="nowLocation">
-                    <!-- <cover-image style = "position: absolute;top: 0;left: 0;width: 100%;height: 100%;" ></cover-image> -->
-                </cover-view>
-            </map>
-            <div id="location_points">
-                <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
-                    <span @click="changeBackground('left')">附近自提点</span>
-                    <span @click="changeBackground('right')">常用自提点</span>
-                </div>
-                <ul id="location_points_list" v-if="position === 'right'">
-                    <li v-for="item in commonlyMapPoints" :key="item.id" @click="checkPoint(item)" >
-                        <div class="left">
-                            <div class="top">
-                                <h4>{{item.name}}</h4>
-                                <span>距您当前位置{{item.distance}}米</span>
-                            </div>
-                            <div class="bottom">
-                                {{item.address}}
-                            </div>
-                        </div>
-                        <i class="iconfont right" v-if="checkId === item.id && isOpen">&#xe656;</i>
-                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>
-                    </li>
-                    <div class="empty_img" v-if="!commonPoints.length">
-                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                        <span>暂无自提点哦～</span>
+        <div class="mainContainer" :style="{'height':  mainHeight + 'px' }">
+            <div id="location_search" >
+                <input @click.stop="showView" id="location_search_input" v-model.trim="backfillValue" placeholder="请输入地点名称"  />
+                <i class="iconfont search" >&#xe65c;</i>
+            </div>
+            <div id="location_map">
+                <map
+                    :id="checkId? 'map':'checkedMap'"
+                    scale="14"
+                    @regionchange="regionchange"
+                    @begin="regionchangebegin"
+                    @end="regionchangeend"
+                    :enable-scroll="true"
+                    :latitude="latitude"
+                    :longitude="longitude"
+                    :markers="markers"
+                    @markertap="bindmarkertap"
+                    show-location>
+                    <cover-view id="locatePosition" @click="nowLocation">
+                    </cover-view>
+                </map>
+                <div id="location_points">
+                    <div id="location_points_header" :style="{'backgroundImage':'url(' + background + ')'}">
+                        <span @click="changeBackground('left')">{{text}}</span>
+                        <span @click="changeBackground('right')">常用自提点</span>
                     </div>
-                </ul>
-
-                <ul id="location_points_list" v-if="position === 'left'">
-                    <li v-for="item in nearbyMapPoints" :key="item.id" @click="checkPoint(item)">
-                        <div class="left">
-                            <div class="top">
-                                <h4>{{item.name}}</h4>
-                                <span>距您当前位置{{item.formatDistance}}</span>
+                    <ul id="location_points_list" :class="btnShow? 'threePartHeight' : 'twoPartHeight'" v-if="position === 'right'">
+                        <li v-for="item in commonPoints" :key="item.id" @click="checkPoint(item)" >
+                            <div class="left">
+                                <div class="top">
+                                    <h4>{{item.name}}</h4>
+                                    <span>距您当前位置{{item.distance}}米</span>
+                                </div>
+                                <div class="bottom">
+                                    {{item.address}}
+                                </div>
                             </div>
-                            <div class="bottom">
-                                {{item.address}}
-                            </div>
-                        </div>
-<!--                        <i class="iconfont right" v-if="checkId === item.id && isOpen">&#xe656;</i>-->
-<!--                        <i class="iconfont right disSelected" v-else>&#xe6d7;</i>-->
-                        <i class="customIcon" v-if="checkId === item.id && isOpen">
-                            <i class="son">
-                                <div class="sonson"></div>
+                            <i class="customIcon" v-if="checkId === item.id && isOpen">
+                                <i class="son">
+                                    <div class="sonson"></div>
+                                </i>
                             </i>
-                        </i>
-                        <i class="customIcon disSelected" v-else> </i>
-                    </li>
-                    <div class="empty_img" v-if="!nearPoints.length">
-                        <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                        <span>暂无自提点哦～</span>
-                    </div>
-                </ul>
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="confirmBtn" @click="payment" v-if="checkId && isOpen">确定</button>
-                </form>
+                            <i class="customIcon disSelected" v-else> </i>
+                        </li>
+                        <div class="empty_img" v-if="!commonPoints.length">
+                            <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                            <span>暂无自提点哦～</span>
+                        </div>
+                    </ul>
 
+                    <ul id="location_points_list" v-if="position === 'left'" :class="btnShow? 'threePartHeight' : 'twoPartHeight'" >
+                        <li v-for="item in nearPoints" :key="item.id" @click="checkPoint(item)">
+                            <div class="left">
+                                <div class="top">
+                                    <h4>{{item.name}}</h4>
+                                    <span>距您当前位置{{item.formatDistance}}</span>
+                                </div>
+                                <div class="bottom">
+                                    {{item.address}}
+                                </div>
+                            </div>
+                            <i class="customIcon" v-if="checkId === item.id && isOpen">
+                                <i class="son">
+                                    <div class="sonson"></div>
+                                </i>
+                            </i>
+                            <i class="customIcon disSelected" v-else> </i>
+                        </li>
+                        <div class="empty_img" v-if="!nearPoints.length">
+                            <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                            <span>暂无自提点哦～</span>
+                        </div>
+                    </ul>
+                    <div class="btnContainer">
+                        <form report-submit="true" @submit="uploadFormId">
+                            <button form-type="submit" class="confirmBtn" @click="payment" v-if="btnShow">确定</button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
+
 <!--        :class="showView? 'hidden':'viewcenter'"-->
     </div>
 </template>
@@ -134,7 +122,9 @@
 				barHeight: 0,
                 isOpen: true,
                 showview: false,
-                suggestions: []
+                suggestions: [],
+                timer: null,
+                text: '附近自提点'
             }
         },
         watch: {
@@ -145,12 +135,30 @@
 						return this.marker(point);
                     });
                 }
+            },
+            backfillValue (val) {
+			    clearTimeout(this.timer)
+                if (val) {
+                    this.timer = setTimeout(()=>{
+                        this.handleSearch(val)
+                        this.text = '搜索结果'
+                    }, 1000)
+                } else {
+                    this.timer = setTimeout(()=>{
+                        this.handleSearch('')
+                        this.text = '附近自提点'
+                    }, 1000)
+                }
+
             }
         },
         // 算术方法
         computed: {
+            btnShow () {
+                return this.checkId && this.isOpen
+            },
 			commonlyMapPoints () {
-				let points = this.model.user.map.commonlyMapPoints
+				let points = this.model.user.store.commonlyPoints
 				this.points = points;
 				this.commonPoints = points;
 				return points
@@ -166,7 +174,16 @@
 			},
 			navHeight () {
 				return this.model.global.barHeight.navHeight
-			}
+			},
+            superiorShopId () {
+                return this.model.account.superiorShopId
+            },
+            mainHeight () {
+                let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+                let screenWitdh = wx.getSystemInfoSync().windowHeight;
+                let screenHeight = (rpxRate * screenWitdh)/ 2;
+                return screenHeight - this.statusBarHeight - this.navHeight
+            }
         },
         // 普通方法
         methods: {
@@ -176,43 +193,10 @@
             closeView () {
                 this.showview = false
             },
-            // 地图搜索
-            async getSuggestion (e) {
-                var _this = this;
-                //调用关键词提示接口
-                let result = await this.map.getSuggestion(this.backfillValue);
-                let svg = [];
-                _.map(result.data, (item) => {
-                    svg.push({
-                        title: item.title,
-                        id: item.id,
-                        addr: item.address,
-                        city: item.city,
-                        district: item.district,
-                        latitude: item.location.lat,
-                        longitude: item.location.lng
-                    })
-                });
-                this.showview = true;
-                this.suggestions = svg;
-            },
-            backfill (e,addr) {
-                this.showview = false;
-                var id = e.currentTarget.id;
-                for (var i = 0; i < this.suggestions.length; i++) {
-                    if (this.suggestions[i].id == id) {
-                        this.backfillValue = this.suggestions[i].title,
-                        this.latitude = this.suggestions[i].latitude,
-                        this.longitude = this.suggestions[i].longitude
-                        this.nearby_search();
-                        return;
-                    }
-                }
-            },
-            async nearby_search () {
-                var self = this;
-                let result = await this.map.search(this.backfillValue);
-                // 调用接口
+            async handleSearch (value) {
+                let result = await this.map.getCenterLocation();
+                this.$command('SEARCH_POINTS', this.myLatitude,this.myLongitude,this.$route.query.type, 1, value);
+                this.changeBackground('left', true)
             },
 			back(){
 				this.$command('REDIRECT_TO','','back')
@@ -225,7 +209,7 @@
             async regionchangeend (e) {
                 let result = await this.map.getCenterLocation();
                 this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type, this.myLongitude, this.myLatitude);
-                this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
+                // this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.$route.query.type)
             },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
@@ -239,8 +223,18 @@
 			    let id = item.id;
                 this.isOpen = item['open_preorder'];
                 this.checkId = id;
-				let data = this.points.filter(item => item.id === id)[0];
-				this.latitude = data.position.coordinates[1];
+                let data ;
+                if (this.position === 'left') {
+                    data = this.nearPoints.filter(items => items.id === id)[0];
+                    this.model.user.store.dispatch('saveFirstNearShop', {shop: data})
+
+                } else {
+                    data = this.commonPoints.filter(item => item.id === id)[0];
+                    this.model.user.store.dispatch('saveFirstCommonShop', {shop: data})
+                    // this.commonPoints = this.commonPoints.filter(item => item.id === id);
+                    // this.commonPoints.unshift(data)
+                }
+                this.latitude = data.position.coordinates[1];
 				this.longitude = data.position.coordinates[0];
 				this.markers = this.points.map((point) => {
 					let showCallout = false
@@ -250,16 +244,20 @@
 					return this.marker(point, showCallout);
 				});
             },
-			async changeBackground(position){
+			async changeBackground(position, isSearch = false){
 				if (position === 'left') {
+                    let result = await this.map.getLocation();
 					this.background = bg1;
 					this.position = 'left';
-					this.$command('LOAD_NEARBY',result[0],result[1], this.myLongitude, this.myLatitude)
+					if (!isSearch) {
+                        this.$command('LOAD_NEARBY',result[0],result[1],this.$route.query.type, this.myLongitude, this.myLatitude)
+                    }
+
 				} else {
 					let result = await this.map.getLocation();
 					this.background = bg2;
 					this.position = 'right';
-					this.$command('LOAD_COMMONLY_USED', 'map')
+					this.$command('LOAD_COMMONLY_USED',result[0],result[1], 'map')
 				}
 			},
 			payment(){
@@ -278,8 +276,9 @@
                 this.longitude = result[0];
                 this.myLatitude = result[1];
                 this.myLongitude = result[0];
+                console.log('1111');
                 this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
-				this.$command('LOAD_COMMONLY_USED', this.$route.query.type)
+				this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.$route.query.type)
             },
             changeSendDate (e) {
                 this.sendDate = e.target.value;
@@ -358,7 +357,7 @@
         },
         mounted () {
             this.flashLocation();
-			this.$command('GET_BAR_HEIGHT')
+			this.$command('GET_BAR_HEIGHT');
         }
 	}
 </script>
@@ -377,6 +376,7 @@
         position: relative;
         height: 100%;
         width: 100%;
+        overflow: hidden;
     }
 
     .bottom-part {
@@ -464,17 +464,17 @@
         /*width: 100%;*/
         /*height: 100%;*/
         width: 100%;
-        height: 500px;
+        height: 100%;
         margin-top: -110rpx;
     }
 
     #map {
-        height: 1014rpx;
+        height: 50%;
         width: 100%;
     }
 
     #checkedMap {
-        height: 1124rpx;
+        height: 50%;
         width: 100%;
     }
 
@@ -547,13 +547,14 @@
 
     #location_points{
         width: 100%;
-        position: fixed;
-        bottom: 0;
+        height: 50%;
+        /*position: fixed;*/
+        /*bottom: 0;*/
     }
 
     #location_points #location_points_header {
         width: 100%;
-        height: 80rpx;
+        height: 13%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -572,7 +573,7 @@
     #location_points #location_points_list{
         background: #fff;
         padding: 0 40rpx;
-        height: 400rpx;
+        height: 65%;
         padding-bottom: 30rpx;
         max-height: 484rpx;
         overflow-y: auto;
@@ -702,9 +703,12 @@
     /*    align-items: center;*/
     /*}*/
 
+    .btnContainer{
+        height: 20%;
+    }
+
     #location_points .confirmBtn{
         width: 100%;
-        height: 110rpx;
         border-radius: 10rpx;
         background: #ffcc00;
         font-size: 36rpx;
@@ -712,6 +716,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .threePartHeight{
+        height: 65%!important;
+    }
+
+    .twoPartHeight{
+        height: 85%!important;
     }
 
 

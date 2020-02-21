@@ -74,7 +74,7 @@
 </script>
 <style>
     .body{
-        background-color: #f2f2f2;
+        background-color: #fff;
     }
 
     button:after{
@@ -122,6 +122,7 @@
     .recharge-details{
         width: 100%;
         margin-top: 340rpx;
+        background: #fff;
     }
 
     .recharge-details h3{
@@ -177,7 +178,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin-top: 40rpx;
+        margin-top: 300rpx;
     }
 
     .empty_list img{

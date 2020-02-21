@@ -88,4 +88,10 @@ export default class TicketsService extends ApiService {
         let response = await this.httpGet(`api/mp/coupons/${id}`);
         return response.data
     }
+
+    // 可以领取的优惠券列表
+    async canReceiveTickets () {
+        let response = await this.httpGet('/api/mp/coupons/center/list');
+        return response.data
+    }
 }

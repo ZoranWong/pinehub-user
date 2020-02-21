@@ -3,10 +3,9 @@
     <div id="custom_header" :style="{'background': background}" >
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div id="back_icon" v-if="needReturn" >
-
-                <span  class="backHome" @click="backHome" v-if="needBackHome"><i class="iconfont"  >&#xe664;</i>回到首页</span>
-                <i class="iconfont" @click="back" v-else>&#xe679;</i>
+            <div id="back_icon" v-if="needReturn" @click="back" >
+                <span  class="backHome"  v-if="needBackHome"><i class="iconfont"  >&#xe664;</i>回到首页</span>
+                <img class="leftArrow" src="../../static/icons/leftArrow.png" v-else alt="">
             </div>
             <div id="nav_title">
                 {{title}}
@@ -34,10 +33,11 @@
         },
         methods:{
 		    back(){
-		    	this.$command('REDIRECT_TO','','back')
-            },
-            backHome () {
-                this.$command('REDIRECT_TO','index','replace')
+		        if (this.needBackHome) {
+                    this.$command('REDIRECT_TO','index','replace')
+                } else {
+                    this.$command('REDIRECT_TO','','back')
+                }
             }
         },
         computed : {
@@ -81,6 +81,11 @@
         position: absolute;
         left: 20rpx;
         z-index: 999999;
+        min-width: 44px;
+        height: 44px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .backHome{
@@ -102,6 +107,11 @@
     #nav_bar #nav_title{
         font-size: 32rpx;
         color: #111;
+    }
+
+    .leftArrow{
+        width: 22rpx;
+        height: 41rpx;
     }
 
 </style>

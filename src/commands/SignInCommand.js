@@ -13,6 +13,12 @@ export default class SignInCommand extends Command {
             console.log('---------- before ------', [code, accessToken]);
             // 请求登录接口
             let loginInfo = await this.service('http.auth').login(code, accessToken);
+            if (loginInfo['session_key']) {
+                console.log('ssuccess login');
+                this.model.account.dispatch('setSessionKey', {
+                    key: loginInfo['session_key']
+                });
+            }
             console.log('------ login info ------', loginInfo);
             if (!loginInfo.token) {
                 console.log('到这里来就不登录了')

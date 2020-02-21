@@ -155,15 +155,26 @@
                 } else {
                     let goods = this.model.activity.goodInShoppingCart;
                     if (goods.length) {
-                        _.map(goods, (product) => {
-                            product['product_stock_id'] === this.confirmSelected['product_stock_id']?
-                                this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + this.buyNum, 'activity')
-                                :
-                                this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
-                        })
+                        let isInCart = false;
+                        let inCartProduct = {}
+                        for (let i = 0; i < goods.length; i++) {
+                            let product = goods[i];
+                            if (product['product_stock_id'] === this.confirmSelected['product_stock_id']) {
+                                isInCart = true
+                                inCartProduct = product;
+                                break
+                            } else {
+                                isInCart = false
+                            }
+                        }
+                        if (isInCart) {
+                            this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + this.buyNum, 'activity')
+                        } else {
+                            this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
+                        }
                     } else {
                         this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
-                    };
+                    }
                     return true
                 }
 

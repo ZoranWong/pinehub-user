@@ -38,6 +38,21 @@ export default class ApiService extends Service {
         return axios
     }
 
+    showErrorToast (response) {
+        let message = response.message;
+        if (response.errors) {
+            for ( let error in response.errors) {
+                message = response['errors'][error][0];
+                break
+            }
+        }
+        wx.showToast({
+            title: message,
+            icon: 'none',
+            duration: 2000
+        })
+    }
+
     async auth (need) {
         let headers = {};
         if (need) {
@@ -85,6 +100,7 @@ export default class ApiService extends Service {
             }
             this.errorShow = true;
             console.log(' throw ');
+            this.showErrorToast(e.response.data);
             throw e;
         }
     }
@@ -107,6 +123,7 @@ export default class ApiService extends Service {
             return result.data;
         } catch (e) {
             wx.hideLoading();
+            this.showErrorToast(e.response.data);
             throw e;
         }
     }
@@ -130,6 +147,7 @@ export default class ApiService extends Service {
             return result.data;
         } catch (e) {
             wx.hideLoading();
+            this.showErrorToast(e.response.data);
             throw e;
         }
     }
@@ -155,6 +173,7 @@ export default class ApiService extends Service {
             return result.data;
         } catch (e) {
             wx.hideLoading();
+            this.showErrorToast(e.response.data);
             throw e;
         }
     }

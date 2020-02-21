@@ -39,7 +39,7 @@
                 <span>{{userInfo.availableScore}} 积分</span>
                 <h3 @click="jump('user.integral.records')">
                     积分记录
-                    <i class="iconfont">&#xe6a3;</i>
+                    <img src="../../../../static/icons/yellowArrow.png" alt="">
                 </h3>
             </div>
         </div>
@@ -142,6 +142,8 @@
 
     #integral #integral_list {
         width: 100%;
+        padding: 20rpx;
+        box-sizing: border-box;
     }
 
     #integral #integral_list .integral_list_item{
@@ -151,7 +153,6 @@
         width: 100%;
         height: 326rpx;
         box-sizing: border-box;
-        padding: 20rpx;
         margin-bottom: 20rpx;
     }
 
@@ -284,6 +285,12 @@
         justify-content: center;
         align-items: center;
     }
+
+     #my_integral img{
+         width: 18rpx;
+         height: 32rpx;
+         margin-left: 13rpx;
+     }
 
     #my_integral h3 i{
         font-size: 32rpx;

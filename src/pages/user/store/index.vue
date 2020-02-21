@@ -18,8 +18,8 @@
 
         </div>
         <div id="store_header" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
-            <input type="text" placeholder="请输入商品名称" id="store_search">
-            <i class="iconfont">&#xe65c;</i>
+            <input type="text" placeholder="请输入商品名称" id="store_search" v-model="search">
+            <i class="iconfont" @click="handleSearch">&#xe65c;</i>
         </div>
         <div id="store_goods" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 120) + 'px'}">
             <ul id="store_goods_type">
@@ -43,21 +43,25 @@
                     <div id="store_good_info">
                         <div class="store_good_info_title">
                             <h3>{{item.name}}</h3>
-                            <span>{{item.unit}}</span>
                         </div>
                         <div class="intro">
-                            {{item.intro}}
+                            {{item.intro || ''}}
                         </div>
                         <div id="store_good_info_entities">
                             <span>销量:{{item.sell_num}}</span>
-                            <span v-if="item.stock < 6" class="stock">仅剩{{item.stock}}件</span>
+                            <span v-if="item.stock < 6  && item.stock > 0" class="stock">仅剩{{item.stock}}件</span>
                         </div>
                         <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
+                        <div v-if="showOperation(item)"></div>
                         <div id="store_good_info_price">
                             <span>{{item.sell_price_format}}</span>
                             <em v-if="item['show_market_price'] && !item.specifications.length" >{{item.origin_price_format}}</em>
-                            <i class="iconfont add" v-if="item.stock" @click.stop="addToShoppingCart(item)" :style="{marginLeft: item.specifications.length ? '0rpx' : '70rpx'}">&#xe6d8;</i>
-                            <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                            <div class="operation">
+                                <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">
+                                <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >
+                                <img src="../../../../static/icons/add.png" alt="" v-if="item.stock" @click.stop="addToShoppingCart(item, 1)">
+                                <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -97,7 +101,8 @@
 			  selectItem:{},
 			  getAuth: false,
               screenHeight: 0,
-              queryCateId: ''
+              queryCateId: '',
+              search: ''
           };
       },
       onShareAppMessage: function (res) {
@@ -107,7 +112,7 @@
               title: "青松易购预定商城",
               desc: "青松易购小程序",
               imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-              path: `/pages/user/store/main?backHome=true&shop_code=${this.storeId || this.shopCode}`,
+              path: `/pages/user/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {
                   // 转发成功
@@ -138,9 +143,39 @@
               if (val) {
                   this.tabSelect(val)
               }
-          }
+          },
       },
       computed: {
+          showOperation(item){
+              if (this.model.user.store.goodInShoppingCart && !this.model.user.store.goodInShoppingCart.length) {
+                 return function (item) {
+                     item.inputNum = 0
+                     item.isInCart = false
+                     item.isInCartProduct = {}
+                 }
+              }
+              return function (item) {
+                  let products = this.model.user.store.goodInShoppingCart;
+                  let isInCart = false
+                  if (item['product_entities']) {
+                      for (let i = 0; i < item['product_entities'].length; i++) {
+                          for (let k = 0; k < products.length; k++) {
+                              let product = products[k];
+                              let entity = item['product_entities'][i];
+                              if (product['product_entity_id'] === entity.id) {
+                                  item.inputNum = product['buy_num']
+                                  item.isInCart = true
+                                  item.isInCartProduct = product
+                                  break;
+                              } else {
+                                  item.isInCart = false
+                              }
+                          }
+                      }
+                  }
+
+              }
+          },
           shopCode () {
               return this.model.account.shopCode
           },
@@ -174,6 +209,24 @@
           this.queryCateId = ''
       },
       methods: {
+          async handleSearch () {
+              console.log(this.search, '---');
+              let result = await this.http.store.productsSearch(this.search)
+              console.log(result, 'xxxx');
+          },
+          changeBuyNum (e) {
+              console.log(e, '==========>');
+          },
+          changeItemBuyNum (e, item) {
+              let value = e.target.value;
+              if (value <= 0 || !value) {
+                  value = 0;
+              };
+              if (value > item.isInCartProduct['stock_num']) {
+                  value = item.isInCartProduct['stock_num']
+              }
+              this.$command('CHANGE_BUY_NUM_COMMAND',item['isInCartProduct'],  Number(value),'mall');
+          },
           async uploadFormId (e) {
               let formId = e.mp.detail.formId;
               if (formId !== "the formId is a mock one"){
@@ -202,8 +255,8 @@
           setData(data){
               this.data = data
           },
-        addToShoppingCart(item){
-		  	if (!this.registered) {
+        addToShoppingCart(item, num){
+            if (!this.registered) {
 		  		this.getUserAuth()
             } else {
 				if (!this.isMember) {
@@ -214,12 +267,23 @@
 					} else {
 						let goods = this.model.user.store.goodInShoppingCart;
 						if (goods.length) {
-							_.map(goods, (product) => {
-								product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-									this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
-									:
-									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
-							})
+						    let isInCart = false;
+						    let inCartProduct = {}
+                            for (let i = 0; i < goods.length; i++) {
+                                let product = goods[i];
+                                if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+                                    isInCart = true
+                                    inCartProduct = product;
+                                    break
+                                } else {
+                                    isInCart = false
+                                }
+                            }
+                            if (isInCart) {
+                                this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + num,'mall');
+                            } else {
+                                this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+                            }
 						} else {
 							this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
 						}
@@ -235,6 +299,17 @@
 		  redirectTo (router, options = {}) {
 			  this.$command('REDIRECT_TO', router, 'push', options);
 		  },
+          async initAccount () {
+              await this.$store.dispatch('model.account/resetFromCache', {
+                  initAccount: async () => {
+                      if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
+                          await this.$command('APP_ACCESS');
+                      } else {
+                          this.$command('SIGN_IN', this.accessToken);
+                      }
+                  }
+              });
+          }
       },
       created() {
       },
@@ -247,7 +322,7 @@
                   code: this.storeId
               })
           }
-          if (this.storeId && this.registered ) {
+          if (this.storeId && this.registered && this.isMember ) {
               console.log('进来了吗');
               this.$command('BIND_CONSUMER', this.storeId)
           }
@@ -256,7 +331,7 @@
           let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
           let screenWitdh = wx.getSystemInfoSync().windowHeight;
           this.screenHeight = (rpxRate * screenWitdh)/ 2;
-          console.log(this.screenHeight);
+          this.initAccount()
           this.$command('LOAD_STORE_CATEGORIES_COMMAND')
           if (this.$route.query && this.$route.query.cateId) {
               this.queryCateId = this.$route.query.cateId
@@ -296,6 +371,7 @@
       position: fixed;
       width: 100%;
       transition: 1s;
+      z-index: 9999;
   }
 
   #store_header{
@@ -326,6 +402,7 @@
       top: 34rpx;
       font-size: 40rpx;
       color: #757575;
+      z-index: 1000;
   }
 
   #store_goods {
@@ -430,7 +507,7 @@
 
     #store_goods #store_goods_items .store_good_info_title{
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -441,6 +518,7 @@
     }
 
     #store_goods #store_goods_items .intro{
+        height: 36rpx;
         font-size: 24rpx;
         color: #757575;
         width: 310rpx;
@@ -453,10 +531,6 @@
   #store_goods #store_goods_items #store_good_info h3{
       font-size: 28rpx;
       color: #111111;
-      width: 200rpx;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_entities span{
@@ -477,11 +551,30 @@
       align-items: center;
   }
 
+  .operation{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .operation img{
+      width: 24px;
+      height: 24px;
+  }
+
+  .operation .input {
+      width: 44rpx;
+      margin: 0 3rpx;
+      border: none;
+      text-align: center;
+      z-index: 1;
+  }
+
   #store_goods #store_goods_items #store_good_info #store_good_info_price span{
       font-size: 32rpx;
       display: inline-block;
       height: 100%;
-      color: #ffcc00;
+      color: #fe4a2c;
   }
 
   #store_goods #store_goods_items #store_good_info #store_good_info_price em {
@@ -497,9 +590,11 @@
       -webkit-background-clip: text;
       color: transparent;
       font-size: 48rpx;
-      margin-right: 20rpx;
-      margin-left: 70rpx;
   }
+
+    #store_goods #store_goods_items #store_good_info #store_good_info_price .minus{
+        font-size: 48rpx;
+    }
 
   .disabledAdd{
       color: #e5e5e5;

@@ -136,7 +136,7 @@
                 name: '',
                 screenHeight: 0,
                 currentIndex: 0,
-                backColor: '#049473',
+                backColor: '#a85231',
                 alpha: 1,
                 timer: null,
                 showAuth: false,
@@ -221,20 +221,20 @@
                 }
             },
             registered (value) {
-                if (this.storeId && this.registered ) {
-                    console.log('进来了吗');
-                    this.bindConsumer()
-                }
                 if (value) {
                     this.closeAuth()
                 }
                 if (value && !this.isMember) {
+                    console.log('是否注册', value);
                     this.showBindMobile = true
                 }
             },
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
+                }
+                if (this.storeId && this.registered && this.isMember ) {
+                    this.bindConsumer()
                 }
             }
         },
@@ -302,7 +302,7 @@
             }
             console.log(this.storeId, '验证 store id')
             console.log(this.registered, '验证 是否登录')
-            if (this.storeId && this.registered ) {
+            if (this.storeId && this.registered && this.isMember ) {
                 console.log('进来了吗');
                 this.bindConsumer()
             }
@@ -330,9 +330,11 @@
                 let event = e.mp.detail;
                 this.currentIndex = event.current;
                 if (event.current === 0) {
-                    this.backColor = '#049473'
-                } else {
                     this.backColor = '#a85231'
+                } else if(event.current === 1) {
+                    this.backColor = '#0368b6'
+                } else if (event.current === 2) {
+                    this.backColor = '#049473'
                 }
             },
             bannerJump (item) {

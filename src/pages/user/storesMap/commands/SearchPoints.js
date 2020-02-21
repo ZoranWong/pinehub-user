@@ -1,13 +1,13 @@
 import Command from '@/commands/Command';
 
-export default class LoadNearbyPoints extends Command {
-    async handle (lng, lat, type, sLng = lng, sLat = lat, page = 1) {
+export default class SearchPoints extends Command {
+    async handle (sLat, sLng, type, page = 1, search = '') {
         if (page === 1) {
             this.model.user.store.dispatch('clearNearbyPoints')
         }
-        let response;
         let channel = type === 'mall' ? 'SHOP_KEEPER' : 'BREAKFAST_CAR';
-        response = await this.service('http.store').nearbyPoints(lng, lat, channel, sLng, sLat, page);
+        let response = await this.service('http.store').searchPoints(sLng, sLat, channel, page, search);
+        console.log(response);
         if (type === 'mall') {
             this.model.user.store.dispatch('saveNearbyPoints', {
                 points: response.data
@@ -19,11 +19,11 @@ export default class LoadNearbyPoints extends Command {
         };
 
         if (response.meta['pagination']['total_pages'] > page) {
-            await this.$command('LOAD_NEARBY', lng, lat, type, sLng, sLat, page + 1)
+            await this.$command('SEARCH_POINTS', sLat, sLng, type, page + 1, search)
         }
     }
 
     static commandName () {
-        return 'LOAD_NEARBY';
+        return 'SEARCH_POINTS';
     }
 }

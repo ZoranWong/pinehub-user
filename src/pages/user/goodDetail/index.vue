@@ -1,10 +1,13 @@
 <!--suppress ALL -->
 <template>
     <div :style="{height: '100%'}">
-        <CustomHeader :title="title" :needReturn="true" />
+<!--        <CustomHeader :title="title" :needReturn="true" />-->
+        <div class="tranHeader" @click="back">
+            <span  class="circle"  v-if="needBackHome"><i class="iconfont"  >&#xe664;</i></span>
+            <span  class="circle"  v-else><i class="iconfont"  >&#xe679;</i></span>
+        </div>
         <Auth v-if="getAuth" @close="closeAuth" />
         <div id="good_detail" v-if="goodDetail"  :style="{height: screenHeight - (navHeight + statusBarHeight) -100 + 'rpx'}">
-
             <div v-if="!isMember && registered" class="bgff user-mobile-box">
                 <div class="user_mobile_box_container">
                     <form report-submit="true" @submit="uploadFormId">
@@ -27,16 +30,22 @@
                 <div class="intro">
                     <div class="name">{{goodDetail.name}}</div>
                 </div>
-                <i class="iconfont" @click="addToShoppingCart(goodDetail)" v-if="goodDetail['product_entities'] && goodDetail['product_entities'][0].stock">&#xe6d8;</i>
+                <div v-if="showOperation(goodDetail)"></div>
+                <div class="operation">
+                    <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />
+                    <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >
+                    <img src="../../../../static/icons/add.png" class="add" alt="" v-if="goodDetail.stock" @click.stop="addToShoppingCart(goodDetail, 1)" />
+                    <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                </div>
             </div>
             <div id="good_synopsis">
-                {{goodDetail['intro']}}
+                {{goodDetail['intro'] || ''}}
             </div>
             <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
             <div id="good_detail_statictics">
                 <span class="is-underline">{{goodDetail['origin_price_format']}}</span>
                 <span>销量{{goodDetail['sell_num']}}</span>
-                <span v-if="goodDetail['product_entities']">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
+                <span v-if="goodDetail['product_entities'] && goodDetail['product_entities'][0].stock < 6  && goodDetail['product_entities'][0].stock > 0">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
             </div>
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
@@ -99,12 +108,11 @@
         },
         onShareAppMessage: function (res) {
             let options = this.options;
-            console.log(this.shopCode, '==========>');
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=true&shop_code=${this.storeId || this.shopCode}`,
+                path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功
@@ -131,13 +139,32 @@
                 if (value) {
                     this.getAuth = false;
                 }
-                if (this.storeId&& this.registered) {
-					this.bindConsumer()
+            },
+            isMember () {
+                if (this.storeId&& this.registered && this.isMember) {
+                    this.bindConsumer()
                 }
             }
         },
         methods:{
-			addToShoppingCart (item) {
+            back(){
+                if (this.needBackHome) {
+                    this.$command('REDIRECT_TO','index','replace')
+                } else {
+                    this.$command('REDIRECT_TO','','back')
+                }
+            },
+            changeItemBuyNum (e, item) {
+                let value = e.target.value;
+                if (value <= 0 || !value) {
+                    value = 0;
+                };
+                if (value > item.isInCartProduct['stock_num']) {
+                    value = item.isInCartProduct['stock_num']
+                }
+                this.$command('CHANGE_BUY_NUM_COMMAND',item['isInCartProduct'],  Number(value),'mall');
+            },
+			addToShoppingCart (item, num) {
                 if (!this.registered) {
 					this.getUserAuth()
                 } else {
@@ -145,9 +172,7 @@
                         console.log('xxxxxxxxxxxxxxxxx');
                     } else {
 						if (item.specifications && item.specifications.length) {
-                            console.log('xxxxxxxxxxxxx');
                             if (this.options['type'] === 'activity') {
-                                console.log('xxcccccccccccccccccc');
                                 this.selectActItem = item;
                                 this.selectActSpec = true
                             } else {
@@ -156,39 +181,71 @@
                             }
                         } else {
 							if (this.options['type'] === 'mall') {
-								let goods = this.model.user.store.goodInShoppingCart
-								if (goods.length) {
-									_.map(goods, (product) => {
-										product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-											this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,this.options['type'])
-											:
-											this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
-									})
-								} else {
-									this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,this.options['type'])
-								}
+                                let goods = this.model.user.store.goodInShoppingCart;
+                                if (goods.length) {
+                                    let isInCart = false;
+                                    let inCartProduct = {}
+                                    for (let i = 0; i < goods.length; i++) {
+                                        let product = goods[i];
+                                        if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+                                            isInCart = true
+                                            inCartProduct = product;
+                                            break
+                                        } else {
+                                            isInCart = false
+                                        }
+                                    }
+                                    if (isInCart) {
+                                        this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + num,'mall');
+                                    } else {
+                                        this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],num,'mall')
+                                    }
+                                } else {
+                                    this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],num,'mall')
+                                }
 							} else if (this.options['type'] === 'breakfast') {
 								let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
-								if (goods.length) {
-									_.map(goods, (product) => {
-										if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
-											this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
-										} else {
-											this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-										}
-									})
-								} else {
-									this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
-								}
+                                if (goods.length) {
+                                    let isInCart = false;
+                                    let inCartProduct = {}
+                                    for (let i = 0; i < goods.length; i++) {
+                                        let product = goods[i];
+                                        if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+                                            isInCart = true
+                                            inCartProduct = product;
+                                            break
+                                        } else {
+                                            isInCart = false
+                                        }
+                                    }
+                                    if (isInCart) {
+                                        this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1)
+                                    } else {
+                                        this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+                                    }
+                                } else {
+                                    this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1)
+                                }
 							} else if (this.options['type'] === 'activity') {
                                 let goods = this.model.activity.goodInShoppingCart;
                                 if (goods.length) {
-                                    _.map(goods, (product) => {
-                                        product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-                                            this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
-                                            :
-                                            this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
-                                    })
+                                    let isInCart = false;
+                                    let inCartProduct = {}
+                                    for (let i = 0; i < goods.length; i++) {
+                                        let product = goods[i];
+                                        if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+                                            isInCart = true
+                                            inCartProduct = product;
+                                            break
+                                        } else {
+                                            isInCart = false
+                                        }
+                                    }
+                                    if (isInCart) {
+                                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'activity')
+                                    } else {
+                                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                                    }
                                 } else {
                                     this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
                                 }
@@ -251,6 +308,41 @@
 
 		},
         computed : {
+            needBackHome () {
+                let pages =  getCurrentPages();
+                let options = pages[pages.length - 1]['options'];
+                let need = options.backHome ? true : false;
+                return need
+            },
+            showOperation(item){
+                if (this.model.user.store.goodInShoppingCart && !this.model.user.store.goodInShoppingCart.length) {
+                    return function (item) {
+                        item.inputNum = 0
+                        item.isInCart = false
+                        item.isInCartProduct = {}
+                    }
+                }
+                return function (item) {
+                    let products = this.model.user.store.goodInShoppingCart;
+                    let isInCart = false
+                    if (item['product_entities']) {
+                        for (let i = 0; i < item['product_entities'].length; i++) {
+                            for (let k = 0; k < products.length; k++) {
+                                let product = products[k];
+                                let entity = item['product_entities'][i];
+                                if (product['product_entity_id'] === entity.id) {
+                                    item.inputNum = product['buy_num']
+                                    item.isInCart = true
+                                    item.isInCartProduct = product
+                                    break;
+                                } else {
+                                    item.isInCart = false
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             shopCode () {
                 return this.model.account.shopCode
             },
@@ -305,7 +397,7 @@
                     code: this.storeId
                 })
             }
-            if (this.storeId && this.registered ) {
+            if (this.storeId && this.registered && this.isMember ) {
                 console.log('进来了吗');
                 this.$command('BIND_CONSUMER', this.storeId)
             }
@@ -313,9 +405,9 @@
 			this.options = options;
 			if (!this.registered) {
 				this.initAccount();
-			} else {
-				this.loadPageData()
-            }
+			}
+            this.loadPageData()
+
 		},
 		onLoad (options) {
 			if (options.q) {
@@ -377,7 +469,7 @@
 
     #good_detail .good_detail_banner{
         width: 100%;
-        height: 400rpx;
+        height: 750rpx;
     }
 
     #good_detail .good_detail_banner img{
@@ -391,6 +483,20 @@
         width: 670rpx;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .operation{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .operation .input {
+        width: 44rpx;
+        margin: 0 3rpx;
+        border: none;
+        text-align: center;
+        z-index: 1;
     }
 
     #good_detail #good_detail_info .intro{
@@ -444,7 +550,7 @@
     #good_detail .good_detail_price{
         font-size: 36rpx;
         width: 670rpx;
-        color: #ffcc00;
+        color: #fe4a2c;
         padding: 0 40rpx;
         margin-top: 40rpx;
         display: flex;
@@ -500,6 +606,11 @@
     }
 
     .toast_content {
+    }
+
+    .add,.minus{
+        width: 24px;
+        height: 24px;
     }
 
     .toast_content_info {
@@ -579,4 +690,25 @@
         box-shadow: 0 10rpx 10rpx #fff6bd;
     }
 
+    .tranHeader{
+        position: fixed;
+        left: 20rpx;
+        top: 100rpx;
+        z-index: 10000;
+    }
+
+    .tranHeader .circle{
+        width: 60rpx;
+        height: 60rpx;
+        border-radius: 50%;
+        background: rgba(17,17,17,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tranHeader .circle i{
+        font-size: 40rpx;
+        color: #fff;
+    }
 </style>

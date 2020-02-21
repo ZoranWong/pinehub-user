@@ -7,6 +7,7 @@ export default class MyInfoCommand extends Command {
         try {
             if (this.model.account.isMember) {
                 let userInfo = await this.service('http.auth').showLoading(isShowLoadingPopup).getUserInfo();
+                console.log(userInfo, ' user info');
                 this.store().dispatch('model.account/setAccount', userInfo);
             }
         } catch (e) {

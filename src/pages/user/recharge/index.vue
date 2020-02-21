@@ -7,13 +7,16 @@
             <div class="title">
                 选择充值金额
             </div>
-            <ul class="cards">
+            <ul class="cards" v-if="cards.length">
                 <li v-for="item in cards" @click="selectedCard(item.id)" :key ="item.id" :class="item.id === checked ? 'active-card' : ''">
                     <h3>{{item.price}}元</h3>
                     <span>送{{item['gift_amount']}}元</span>
                     <img src="./img/payIcon.jpg" alt="" v-if="item.id === checked">
                 </li>
             </ul>
+            <div class="no-cards" v-else>
+                当前暂无储值卡
+            </div>
         </div>
         <div class="pay_type">
             <div class="header">请选择支付方式</div>
@@ -112,6 +115,11 @@
         justify-content: flex-start;
         align-items: center;
         flex-wrap: wrap;
+    }
+
+    .no-cards{
+        font-size: 28rpx;
+        padding: 20rpx 20rpx;
     }
 
     .charge-cards .cards li{

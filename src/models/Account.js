@@ -59,6 +59,12 @@ export default class Account extends Model {
             },
             shopCode () {
                 return this.state.shopCode
+            },
+            sessionKey () {
+                return this.state.sessionKey
+            },
+            superiorShopId () {
+                return this.state.superiorShopId
             }
         });
     }
@@ -93,7 +99,9 @@ export default class Account extends Model {
             waitPickOrderCount: null,
             waitPayOrderCount: null,
             balanceRecord: [],
-            shopCode: ''
+            shopCode: '',
+            sessionKey: '',
+            superiorShopId: ''
         };
     }
 
@@ -144,9 +152,11 @@ export default class Account extends Model {
 
 
         this.addEventListener('setAccount', function (userInfo) {
-            console.log(userInfo, '++++++++++++++++++++++++++++++++');
             if (typeof userInfo['superior_shop_code'] !== 'undefined') {
                 this.state.shopCode = userInfo['superior_shop_code']
+            }
+            if (typeof userInfo['superior_shop_id'] !== 'undefined') {
+                this.state.superiorShopId = userInfo['superior_shop_id']
             }
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
@@ -217,6 +227,11 @@ export default class Account extends Model {
 
         this.addEventListener('changeIntegral', function ({integral}) {
             this.state.availableScore = this.state.availableScore - integral;
+        })
+
+        this.addEventListener('setSessionKey', function ({key}) {
+            console.log('登陆成功存session', key);
+            this.state.sessionKey = key;
         })
     }
 }

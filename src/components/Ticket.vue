@@ -8,7 +8,11 @@
                 class="selected"
                 v-if="isSelected"
             >
-            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" v-if="ticket.status === '已使用' || ticket.status === '已过期'" >
+<!--&lt;!&ndash;            &ndash;&gt;-->
+<!--            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" >-->
+            <div class="selledout"  v-if="ticket.status === '已使用' || ticket.status === '已过期'">
+                <span class="selloutConent">已失效</span>
+            </div>
             <div class="left">
                 <img :src="ticket['coupon_image']" alt="">
             </div>
@@ -97,7 +101,30 @@
 </script>
 
 <style>
+    .selledout{
+        position: absolute;
+        width: 266rpx;
+        height: 266rpx;
+        top: 20rpx;
+        left: 20rpx;
+        background: rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
+    .selloutConent{
+        width: 50%;
+        height: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 30px;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        font-size: 24rpx;
+        margin-top: 70rpx;
+    }
     .coupon-wrapper{
         box-sizing: border-box;
         background: #f2f2f2;
@@ -106,7 +133,7 @@
 
     .coupon-wrapper .coupons_item{
         width: 100%;
-        border-radius: 30rpx;
+        border-radius: 10rpx;
         box-sizing: border-box;
     }
 
@@ -115,7 +142,7 @@
         background: #fff;
         margin-bottom: 20rpx;
         box-sizing: border-box;
-        padding: 30rpx;
+        padding: 20rpx;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -140,7 +167,7 @@
 
     .coupon-wrapper .coupons_item .left{
         width: 266rpx;
-        height: 180rpx;
+        height: 266rpx;
         margin-right: 35rpx;
     }
 
@@ -202,11 +229,15 @@
     .coupon-wrapper .coupons_item .coupon_info{
         font-size: 24rpx;
         color: #757575;
-        margin-top: 20rpx;
+        margin-top: 5rpx;
         width: 350rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .coupon-wrapper .coupons_item .coupon_info:first-child{
+        margin-top: 10rpx;
     }
 
     .disabledText .name h4{

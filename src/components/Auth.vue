@@ -54,20 +54,23 @@
 				this.$command('SET_USER_MOBILE', e);
 			},
 			async getUserInfo (e) {
-				let result = await this.$command('USER_REGISTER', e);
-				console.log(result, '&&&&&&');
-				if (result) {
-					this.$emit('close');
-					if (this.slug === 'payment') {
-						this.$emit('pay')
+                let sessionKey = this.model.account.sessionKey;
+                if (sessionKey) {
+                    let result = await this.$command('USER_REGISTER', e);
+                    if (result) {
+                        this.$emit('close');
+                        if (this.slug === 'payment') {
+                            this.$emit('pay')
+                        }
                     }
                 } else {
-					console.log(e, '++++++++++++++++++++++++++++++++++++++');
-					let mpUserInfoDetail = e.mp.detail;
-					let userInfo = mpUserInfoDetail.userInfo;
-					userInfo.nickname = userInfo.nickName
-                    this.model.account.dispatch('setAccount', userInfo);
-				}
+                    wx.showToast({
+                        title: '服务器忙，请稍后重试',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+
 			}
         }
 	}

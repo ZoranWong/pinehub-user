@@ -13,7 +13,7 @@ export default class AuthService extends ApiService {
 
         this.handling = true;
         // 服务器交互代码
-       
+
         let response = await this.httpPost(`/api/mp/login`, {
             auth_code: code,
             access_token: accessToken
@@ -41,7 +41,7 @@ export default class AuthService extends ApiService {
     }
 
     // 提交用户信息并保存
-    async mpRegister (accessToken, userInfo, signature, rawData, iv, encryptedData) {
+    async mpRegister (accessToken, userInfo, signature, rawData, iv, encryptedData, sessionKey) {
         console.log('------ register ------');
         let response = await this.httpPost(`/api/mp/register`, {
             access_token: accessToken,
@@ -49,18 +49,20 @@ export default class AuthService extends ApiService {
             // raw_data: rawData,
             // signature: signature,
             encrypted_data: encryptedData,
-            iv: iv
+            iv: iv,
+            session_key: sessionKey
         }, false);
-        console.log(response, 'mpRegister');
-        return response.data;
+        console.log(response, 'register response');
+        return response.data
     }
 
     // 提交手机号
-    async setMobile (encryptedData, iv, token) {
+    async setMobile (encryptedData, iv, token, sessionKey) {
         let response = await this.httpPut(`/api/mp/bind/mobile`, {
             encrypted_data: encryptedData,
             iv: iv,
-            token
+            token,
+            session_key: sessionKey
         });
         return response.data;
     }
@@ -84,7 +86,7 @@ export default class AuthService extends ApiService {
         this.handling = false;
         return response.data;
     }
-    
+
     // 用户余额变动明细
     async balanceRecord () {
         let response = await this.httpGet('api/mp/user/balance/logs', {page: 1, limit: 100000});

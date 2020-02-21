@@ -39,7 +39,7 @@
             </ul>
 
             <button id="points_more" @click="nearbyStores">查看更多</button>
-            <h5 id="points_notice">注：请您务必在规定时间前领取您的早餐</h5>
+            <h5 id="points_notice">注：21时前下单次日达，21时后下单隔日达</h5>
         </div>
         <div id="points_wrapper_clone" @click="closeWrapper"></div>
     </div>
@@ -101,7 +101,8 @@
 					this.$command('LOAD_NEARBY',result[0],result[1],this.type)
                 } else {
 					this.background = bg2;
-					this.$command('LOAD_COMMONLY_USED', this.type)
+                    let result = await this.map.getLocation();
+					this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.type)
 					//this.$command('LOAD_NEARBY',-73.9878441,40.7484404, this.type)
                 }
             },
@@ -125,6 +126,7 @@
         mounted () {
 			let type = this.model.user.store.mallType || this.model.newEvents.shoppingCarts.breakfastType;
 			this.type = type
+            this.changeBackground('right')
 			this.loadMap()
 		}
 	}
@@ -148,6 +150,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 10000;
     }
 
     #points_wrapper_clone{

@@ -4,7 +4,7 @@
         <div class="merchandise-item clearfix bgff" v-for="(item, index) in list" :key="index">
             <img class="merchandises-pic" :src="item.thumbImage">
             <div class="merchandise-item-right fr">
-                <h4 class="merchandises-name">{{item.name}}</h4>
+                <h4 class="merchandises-name">{{ item.name}}</h4>
                 <p class="sell-count">剩余
                     <span class="color00">{{item.stockNum}}</span>份
                 </p>

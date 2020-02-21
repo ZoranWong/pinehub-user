@@ -88,27 +88,52 @@ export default class StoreService extends ApiService {
     }
 
     // 常用自提车
-    async commonlyUsedPoints () {
-        let response = await this.httpGet('api/mp/pick_up/shops');
-        return response.data
-    }
-
-    // 附近自提车
-    async nearbyPoints (lng, lat, channel, sLng, sLat) {
-        let response = await this.httpGet('api/mp/around/shops', {
-            lng,
-            lat,
-            channel,
-            distance: 10000,
+    async commonlyUsedPoints (sLng, sLat) {
+        let response = await this.httpGet('api/mp/pick_up/shops', {
             self_lat: sLat,
             self_lng: sLng
         });
         return response.data
     }
 
+    // 附近自提车
+    async nearbyPoints (lng, lat, channel, sLng, sLat, page, search = '') {
+        let response = await this.httpGet('api/mp/around/shops', {
+            lng,
+            lat,
+            channel,
+            distance: 10000,
+            self_lat: sLat,
+            self_lng: sLng,
+            page,
+            search
+        });
+        return response
+    }
+
+    // 搜索自提点
+    async searchPoints (self_lng, self_lat, channel, page = 1, search = '') {
+        let response = await this.httpGet('api/mp/pick_up/shops/search', {
+            channel,
+            self_lat,
+            self_lng,
+            search,
+            page
+        });
+        return response
+    }
+
     // 商城购物车可用优惠券
     async availableCoupons () {
         let response = await this.httpGet('api/mp/mall/coupons');
+        return response.data
+    }
+
+    // 商城商品搜索
+    async productsSearch (search) {
+        let response = await this.httpGet('/api/mp/mall/products/search', {
+            search
+        });
         return response.data
     }
 }

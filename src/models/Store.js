@@ -55,7 +55,8 @@ export default class Orders extends Model {
             selectedPoint: {},
             totalPrice: '',
             mallType: '',
-            cartTotalFeeFormat: ''
+            cartTotalFeeFormat: '',
+            firstShop: {}
         });
     }
 
@@ -109,7 +110,6 @@ export default class Orders extends Model {
                 });
                 product['spec'] = spec.join(',');
             });
-            console.log(goods, '||||||||||||||||S');
             this.state.goods = goods;
         });
 
@@ -174,7 +174,17 @@ export default class Orders extends Model {
         });
 
         this.addEventListener('saveCommonlyUsedPoint', function ({points, type}) {
+            if (this.state.firstCommon && this.state.firstCommon.id) {
+                this.state.commonlyPoints = [];
+                this.state.commonlyPoints.push(this.state.firstCommon)
+            }
+            console.log(points, '|||||||||||||||||');
             _.map(points, (point) => {
+                if (_.find(this.state.commonlyPoints, function (commonlyPoint) {
+                    return commonlyPoint.id === point.id
+                })) {
+                    return
+                }
                 let dis = Math.round(point.distance);
                 if (dis > 1000) {
                     point.formatDistance = (dis / 1000).toFixed(1) + '千米'
@@ -187,14 +197,24 @@ export default class Orders extends Model {
                 } else {
                     point.addrFormat = point.address
                 }
-                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `
+                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `;
+                if (this.state.firstCommon && point.id === this.state.firstCommon.id) return;
+                this.state.commonlyPoints.push(point)
             });
-            this.state.commonlyPoints = points;
             this.state.type = type;
         });
 
         this.addEventListener('saveNearbyPoints', function ({points, type}) {
+            if (this.state.firstShop && this.state.firstShop.id) {
+                this.state.nearbyPoints = [];
+                this.state.nearbyPoints.push(this.state.firstShop)
+            }
             _.map(points, (point) => {
+                if (_.find(this.state.nearbyPoints, function (nearbyPoint) {
+                    return nearbyPoint.id === point.id
+                })) {
+                   return
+                }
                 let dis = Math.round(point.distance);
                 if (dis > 1000) {
                     point.formatDistance = (dis / 1000).toFixed(1) + '千米'
@@ -207,12 +227,24 @@ export default class Orders extends Model {
                 } else {
                     point.addrFormat = point.address
                 }
-                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `
+                point.time = `${point['start_at'] || '暂无'}-${point['end_at'] || '暂无'} `;
+                if (this.state.firstShop && point.id === this.state.firstShop.id) return;
+                this.state.nearbyPoints.push(point)
             });
-            this.state.nearbyPoints = points;
+            console.log(this.state.nearbyPoints, '.......................');
             this.state.type = type;
         });
 
+        this.addEventListener('clearNearbyPoints', function () {
+            this.state.nearbyPoints = [];
+        });
 
+        this.addEventListener('saveFirstNearShop', function ({shop}) {
+            this.state.firstShop = shop;
+        });
+
+        this.addEventListener('saveFirstCommonShop', function ({shop}) {
+            this.state.firstCommon = shop;
+        })
     }
 }

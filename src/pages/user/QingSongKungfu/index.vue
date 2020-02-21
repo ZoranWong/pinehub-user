@@ -10,13 +10,14 @@
                 <swiper
                     class="swiper"
                     circular="true"
-                    indicator-dots="true"
+                    :indicator-dots="false"
                     autoplay="true"
                     interval="5000"
                     duration="1000"
                     beforeColor="red"
                     indicator-color="#fff"
                     indicator-active-color="#ffcc00"
+                    @animationfinish="bannerChange"
                     afterColor="coral">
                     <block v-for="(item, index) in activityBanners" :index="index" :key="key" >
                         <swiper-item >
@@ -24,6 +25,9 @@
                         </swiper-item>
                     </block>
                 </swiper>
+                <div class="dots">
+                    <span class="dotsnum">{{current}}</span> / {{activityBanners.length}}
+                </div>
             </div>
 
             <div class="middle">
@@ -39,7 +43,7 @@
                     <h3 class="name">{{item.name}}</h3>
                     <div class="statictics">
                         <span class="data">销量  {{item['sell_num']}}</span>
-                        <span v-if="item.stock < 6" class="data">仅剩{{item.stock}}件</span>
+                        <span v-if="item.stock < 6  && item.stock > 0" class="data">仅剩{{item.stock}}件</span>
                         <span class="data origin" v-if="!item['specifications'] || !item['specifications'].length">{{item['origin_price_format']}}</span>
                     </div>
                     <div class="bottom">
@@ -114,7 +118,8 @@
                 top: 450,
                 selectItem:{},
                 selectSpec: false,
-                getAuth: true,
+                getAuth: false,
+                current: 1
 			};
 		},
 		watch: {
@@ -124,21 +129,23 @@
                 }
             },
             hasToken (value) {
-                if (this.storeId && this.hasToken) {
-                    this.loadPageData()
-                }
+                // if (this.storeId && this.hasToken) {
+                //     this.loadPageData()
+                // }
             },
             registered (value) {
                 if (value) {
+                    console.log(value, 'xxxxx');
                     this.getAuth = false;
                 }
-                if (this.storeId&& this.registered) {
-                    this.bindConsumer()
-                }
+
             },
             isMember (value) {
                 if (value) {
                     this.actId && this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
+                }
+                if (this.storeId&& this.registered && this.isMember) {
+                    this.bindConsumer()
                 }
             }
 		},
@@ -149,7 +156,7 @@
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
-                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=true&shop_code=${this.storeId || this.shopCode}`,
+                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功
@@ -198,6 +205,13 @@
             },
 		},
 		methods: {
+            bannerChange (e) {
+                let event = e.mp.detail;
+                this.current = event.current + 1;
+            },
+            bindConsumer () {
+                this.$command('BIND_CONSUMER', this.storeId);
+            },
             start(e){
                 this.startPoint = e.touches[0];
             },
@@ -260,16 +274,26 @@
                         } else {
                             let goods = this.model.activity.goodInShoppingCart;
                             if (goods.length) {
-                                _.map(goods, (product) => {
-                                    product['product_stock_id'] === item['product_entities'][0]['product_stock_id']?
-                                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'activity')
-                                        :
-                                        this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
-                                })
+                                let isInCart = false;
+                                let inCartProduct = {}
+                                for (let i = 0; i < goods.length; i++) {
+                                    let product = goods[i];
+                                    if (product['product_stock_id'] === item['product_entities'][0]['product_stock_id']) {
+                                        isInCart = true
+                                        inCartProduct = product;
+                                        break
+                                    } else {
+                                        isInCart = false
+                                    }
+                                }
+                                if (isInCart) {
+                                    this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'activity')
+                                } else {
+                                    this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
+                                }
                             } else {
                                 this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'activity',this.actId)
                             }
-
                         }
                     }
                 }
@@ -325,7 +349,7 @@
                 })
             }
 
-            if (this.storeId && this.registered ) {
+            if (this.storeId && this.registered && this.isMember ) {
                 console.log('进来了吗');
                 this.$command('BIND_CONSUMER', this.storeId)
             }
@@ -415,6 +439,44 @@
         border-radius: 10rpx 10rpx 0 0;
         font-size: 29rpx;
         font-weight: 400;
+    }
+    #toast_area {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, .3);
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+    #toast {
+        position: absolute;
+        background: #FFFFFF;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
+    }
+    #toast_title {
+        background: #FECE00;
+        text-align: center;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 34rpx;
+        font-weight: 400;
+    }
+    #toast_content {
+    }
+    #toast_content_info {
+        padding: 20rpx 40rpx;
+    }
+    #input_change_info {
+        font-size: 32rpx;
+        font-weight: 300;
+        color: #111111;
+        margin-bottom: 20rpx;
     }
 
 </style>

@@ -122,25 +122,46 @@
                 if (this.type == 'mall') {
                     let goods = this.model.user.store.goodInShoppingCart;
                     if (goods.length) {
-                        _.map(goods, (product) => {
-                            product['product_stock_id'] === this.confirmSelected['product_stock_id']?
-                                this.$command('CHANGE_BUY_NUM_COMMAND',product,product['buy_num'] + 1,'mall')
-                                :
-                                this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
-                        })
+                        let isInCart = false;
+                        let inCartProduct = {}
+                        for (let i = 0; i < goods.length; i++) {
+                            let product = goods[i];
+                            if (product['product_stock_id'] === this.confirmSelected['product_stock_id']) {
+                                isInCart = true
+                                inCartProduct = product;
+                                break
+                            } else {
+                                isInCart = false
+                            }
+                        }
+                        if (isInCart) {
+                            this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'mall');
+                        } else {
+                            this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1,'mall')
+                        }
                     } else {
-                        this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                        this.$command('ADD_GOODS_TO_CART_COMMAND',this.confirmSelected['product_stock_id'],1,'mall')
                     }
                 } else if (this.type == 'breakfast') {
                     let goods = this.model.newEvents.shoppingCarts.goodInShoppingCart;
                     if (goods.length) {
-                        _.map(goods, (product) => {
+                        let isInCart = false;
+                        let inCartProduct = {}
+                        for (let i = 0; i < goods.length; i++) {
+                            let product = goods[i];
                             if (product['product_stock_id'] === this.confirmSelected['product_stock_id']) {
-                                this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',product,product['buy_num'] + 1)
+                                isInCart = true
+                                inCartProduct = product;
+                                break
                             } else {
-                                this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                                isInCart = false
                             }
-                        })
+                        }
+                        if (isInCart) {
+                            this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1)
+                        } else {
+                            this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
+                        }
                     } else {
                         this.$command('ADD_GOODS_TO_BREAKFAST_CART_COMMAND',this.confirmSelected['product_stock_id'],1)
                     }

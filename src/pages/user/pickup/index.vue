@@ -265,7 +265,7 @@
         height: 740rpx;
         font-size: 32rpx;
         box-sizing: border-box;
-        padding-top: 50rpx;
+        padding-top: 20rpx;
         background: #fff;
         overflow: hidden;
         display: flex;

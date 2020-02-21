@@ -24,8 +24,8 @@
             </div>
 			<orders :rpxRate="rpxRate" :screenHeight="screenHeight - 182" :load-orders="loadOrders" :status="statusType" :orders="orders" :next="next" :navHeight="navHeight" :statusBarHeight="statusBarHeight"></orders>
 		</div>
-		<div id="footNavHeight"></div>
-		<footer-nav :navName="navName"></footer-nav>
+<!--		<div id="footNavHeight"></div>-->
+<!--		<footer-nav :navName="navName"></footer-nav>-->
 	</div>
 </template>
 <script>
@@ -189,7 +189,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background: #fff;
+        background: #f2f2f2;
         overflow: hidden;
         border-top: 20rpx solid #f2f2f2;
     }
