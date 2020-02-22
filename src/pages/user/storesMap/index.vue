@@ -1,11 +1,12 @@
 <!--suppress ALL -->
 <template>
     <div id="location" @click.stop="closeView">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true"/>
         <div class="mainContainer" :style="{'height':  mainHeight + 'px' }">
-            <div id="location_search" >
-                <input @click.stop="showView" id="location_search_input" v-model.trim="backfillValue" placeholder="请输入地点名称"  />
-                <i class="iconfont search" >&#xe65c;</i>
+            <div id="location_search">
+                <input @click.stop="showView" id="location_search_input" v-model.trim="backfillValue"
+                       placeholder="请输入地点名称"/>
+                <i class="iconfont search">&#xe65c;</i>
             </div>
             <div id="location_map">
                 <map
@@ -28,56 +29,59 @@
                         <span @click="changeBackground('left')">{{text}}</span>
                         <span @click="changeBackground('right')">常用自提点</span>
                     </div>
-                    <ul id="location_points_list" :class="btnShow? 'threePartHeight' : 'twoPartHeight'" v-if="position === 'right'">
-                        <li v-for="item in commonPoints" :key="item.id" @click="checkPoint(item)" >
-                            <div class="left">
-                                <div class="top">
-                                    <h4>{{item.name}}</h4>
-                                    <span>距您当前位置{{item.distance}}米</span>
+                    <div :style="{'height': listHeight + 'px'}">
+                        <ul id="location_points_list" v-if="position === 'right'">
+                            <li v-for="item in commonPoints" :key="item.id" @click="checkPoint(item)">
+                                <div class="left">
+                                    <div class="top">
+                                        <h4>{{item.name}}</h4>
+                                        <span>距您当前位置{{item.distance}}米</span>
+                                    </div>
+                                    <div class="bottom">
+                                        {{item.address}}
+                                    </div>
                                 </div>
-                                <div class="bottom">
-                                    {{item.address}}
-                                </div>
-                            </div>
-                            <i class="customIcon" v-if="checkId === item.id && isOpen">
-                                <i class="son">
-                                    <div class="sonson"></div>
+                                <i class="customIcon" v-if="checkId === item.id && isOpen">
+                                    <i class="son">
+                                        <div class="sonson"></div>
+                                    </i>
                                 </i>
-                            </i>
-                            <i class="customIcon disSelected" v-else> </i>
-                        </li>
-                        <div class="empty_img" v-if="!commonPoints.length">
-                            <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                            <span>暂无自提点哦～</span>
-                        </div>
-                    </ul>
+                                <i class="customIcon disSelected" v-else> </i>
+                            </li>
+                            <div class="empty_img" v-if="!commonPoints.length">
+                                <img src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                                <span>暂无自提点哦～</span>
+                            </div>
+                        </ul>
 
-                    <ul id="location_points_list" v-if="position === 'left'" :class="btnShow? 'threePartHeight' : 'twoPartHeight'" >
-                        <li v-for="item in nearPoints" :key="item.id" @click="checkPoint(item)">
-                            <div class="left">
-                                <div class="top">
-                                    <h4>{{item.name}}</h4>
-                                    <span>距您当前位置{{item.formatDistance}}</span>
+                        <ul id="location_points_list" v-if="position === 'left'">
+                            <li v-for="item in nearPoints" :key="item.id" @click="checkPoint(item)">
+                                <div class="left">
+                                    <div class="top">
+                                        <h4>{{item.name}}</h4>
+                                        <span>距您当前位置{{item.formatDistance}}</span>
+                                    </div>
+                                    <div class="bottom">
+                                        {{item.address}}
+                                    </div>
                                 </div>
-                                <div class="bottom">
-                                    {{item.address}}
-                                </div>
-                            </div>
-                            <i class="customIcon" v-if="checkId === item.id && isOpen">
-                                <i class="son">
-                                    <div class="sonson"></div>
+                                <i class="customIcon" v-if="checkId === item.id && isOpen">
+                                    <i class="son">
+                                        <div class="sonson"></div>
+                                    </i>
                                 </i>
-                            </i>
-                            <i class="customIcon disSelected" v-else> </i>
-                        </li>
-                        <div class="empty_img" v-if="!nearPoints.length">
-                            <img  src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
-                            <span>暂无自提点哦～</span>
-                        </div>
-                    </ul>
-                    <div class="btnContainer">
+                                <i class="customIcon disSelected" v-else> </i>
+                            </li>
+                            <div class="empty_img" v-if="!nearPoints.length">
+                                <img src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                                <span>暂无自提点哦～</span>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <div class="btnContainer" v-if="btnShow">
                         <form report-submit="true" @submit="uploadFormId">
-                            <button form-type="submit" class="confirmBtn" @click="payment" v-if="btnShow">确定</button>
+                            <button form-type="submit" class="confirmBtn" @click="payment">确定</button>
                         </form>
                     </div>
 
@@ -85,26 +89,26 @@
             </div>
         </div>
 
-<!--        :class="showView? 'hidden':'viewcenter'"-->
+        <!--        :class="showView? 'hidden':'viewcenter'"-->
     </div>
 </template>
 
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
-	import _ from 'underscore';
+    import CustomHeader from '../../../components/CustomHeader';
+    import _ from 'underscore';
 
-	var amapFile = require('amap-wx');
-	var markersData = [];
-	let bg1 = require('./imgs/longBanner.jpg');
-	let bg2 = require('./imgs/longBanner1.jpg');
-	export default {
+    var amapFile = require('amap-wx');
+    var markersData = [];
+    let bg1 = require('./imgs/longBanner.jpg');
+    let bg2 = require('./imgs/longBanner1.jpg');
+    export default {
         components: {
-			CustomHeader
+            CustomHeader
         },
         // 数据
-        data () {
+        data() {
             return {
-				background: bg1,
+                background: bg1,
                 title: '附近店铺/自提点',
                 latitude: 0,
                 longitude: 0,
@@ -113,13 +117,13 @@
                 self: {},
                 selectStoreId: null,
                 markers: null,
-				position: 'left',
-				points: [],
-				textData: {},
-				nearPoints: [],
-				commonPoints:[],
+                position: 'left',
+                points: [],
+                textData: {},
+                nearPoints: [],
+                commonPoints: [],
                 checkId: '',
-				barHeight: 0,
+                barHeight: 0,
                 isOpen: true,
                 showview: false,
                 suggestions: [],
@@ -128,23 +132,23 @@
             }
         },
         watch: {
-			nearPoints: {
+            nearPoints: {
                 deep: true,
-                handler (points) {
+                handler(points) {
                     this.markers = points.map((point) => {
-						return this.marker(point);
+                        return this.marker(point);
                     });
                 }
             },
-            backfillValue (val) {
-			    clearTimeout(this.timer)
+            backfillValue(val) {
+                clearTimeout(this.timer)
                 if (val) {
-                    this.timer = setTimeout(()=>{
+                    this.timer = setTimeout(() => {
                         this.handleSearch(val)
                         this.text = '搜索结果'
                     }, 1000)
                 } else {
-                    this.timer = setTimeout(()=>{
+                    this.timer = setTimeout(() => {
                         this.handleSearch('')
                         this.text = '附近自提点'
                     }, 1000)
@@ -154,76 +158,86 @@
         },
         // 算术方法
         computed: {
-            btnShow () {
+            btnShow() {
                 return this.checkId && this.isOpen
             },
-			commonlyMapPoints () {
-				let points = this.model.user.store.commonlyPoints
-				this.points = points;
-				this.commonPoints = points;
-				return points
-			},
-			nearbyMapPoints () {
+            commonlyMapPoints() {
+                let points = this.model.user.store.commonlyPoints
+                this.points = points;
+                this.commonPoints = points;
+                return points
+            },
+            nearbyMapPoints() {
                 let points = this.model.user.store.nearbyPoints;
                 this.points = points;
-				this.nearPoints = points;
-				return points
-			},
-			statusBarHeight () {
-				return this.model.global.barHeight.statusBarHeight
-			},
-			navHeight () {
-				return this.model.global.barHeight.navHeight
-			},
-            superiorShopId () {
+                this.nearPoints = points;
+                return points
+            },
+            statusBarHeight() {
+                return this.model.global.barHeight.statusBarHeight
+            },
+            navHeight() {
+                return this.model.global.barHeight.navHeight
+            },
+            headerHeight() {
+                return this.statusBarHeight + this.navHeight;
+            },
+            superiorShopId() {
                 return this.model.account.superiorShopId
             },
-            mainHeight () {
-                let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
-                let screenWitdh = wx.getSystemInfoSync().windowHeight;
-                let screenHeight = (rpxRate * screenWitdh)/ 2;
-                return screenHeight - this.statusBarHeight - this.navHeight
+            mainHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight;
+            },
+            btnHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                return 90 * systemInfo.windowWidth / 750;
+            },
+            listHeight() {
+                console.log(this.mainHeight, '-------- list height -------', this.mainHeight * 0.5, this.mainHeight * 0.5 * (1 - 0.13));
+                return this.mainHeight * 0.5 * (1 - 0.13) - (this.btnShow ? this.btnHeight : 0);
             }
         },
         // 普通方法
         methods: {
-            showView () {
+            showView() {
                 this.showview = true
             },
-            closeView () {
+            closeView() {
                 this.showview = false
             },
-            async handleSearch (value) {
+            async handleSearch(value) {
                 let result = await this.map.getCenterLocation();
-                this.$command('SEARCH_POINTS', this.myLatitude,this.myLongitude,this.$route.query.type, 1, value);
+                this.$command('SEARCH_POINTS', this.myLatitude, this.myLongitude, this.$route.query.type, 1, value);
                 this.changeBackground('left', true)
             },
-			back(){
-				this.$command('REDIRECT_TO','','back')
-			},
-            regionchange (e) {
+            back() {
+                this.$command('REDIRECT_TO', '', 'back')
             },
-            regionchangebegin (e) {
+            regionchange(e) {
+            },
+            regionchangebegin(e) {
 
             },
-            async regionchangeend (e) {
+            async regionchangeend(e) {
                 let result = await this.map.getCenterLocation();
-                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type, this.myLongitude, this.myLatitude);
+                this.$command('LOAD_NEARBY', result[0], result[1], this.$route.query.type, this.myLongitude, this.myLatitude);
                 // this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.$route.query.type)
             },
-			async uploadFormId (e) {
-				let formId = e.mp.detail.formId;
-				if (formId !== "the formId is a mock one"){
-					await this.http.account.saveFormId(formId);
-				} else {
-					console.log('form id 不合法')
-				}
-			},
-			checkPoint (item) {
-			    let id = item.id;
+            async uploadFormId(e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== "the formId is a mock one") {
+                    await this.http.account.saveFormId(formId);
+                } else {
+                    console.log('form id 不合法')
+                }
+            },
+            checkPoint(item) {
+                let id = item.id;
                 this.isOpen = item['open_preorder'];
                 this.checkId = id;
-                let data ;
+                let data;
                 if (this.position === 'left') {
                     data = this.nearPoints.filter(items => items.id === id)[0];
                     this.model.user.store.dispatch('saveFirstNearShop', {shop: data})
@@ -235,57 +249,57 @@
                     // this.commonPoints.unshift(data)
                 }
                 this.latitude = data.position.coordinates[1];
-				this.longitude = data.position.coordinates[0];
-				this.markers = this.points.map((point) => {
-					let showCallout = false
-					if (point.id === id) {
-						showCallout = true
-					}
-					return this.marker(point, showCallout);
-				});
+                this.longitude = data.position.coordinates[0];
+                this.markers = this.points.map((point) => {
+                    let showCallout = false
+                    if (point.id === id) {
+                        showCallout = true
+                    }
+                    return this.marker(point, showCallout);
+                });
             },
-			async changeBackground(position, isSearch = false){
-				if (position === 'left') {
+            async changeBackground(position, isSearch = false) {
+                if (position === 'left') {
                     let result = await this.map.getLocation();
-					this.background = bg1;
-					this.position = 'left';
-					if (!isSearch) {
-                        this.$command('LOAD_NEARBY',result[0],result[1],this.$route.query.type, this.myLongitude, this.myLatitude)
+                    this.background = bg1;
+                    this.position = 'left';
+                    if (!isSearch) {
+                        this.$command('LOAD_NEARBY', result[0], result[1], this.$route.query.type, this.myLongitude, this.myLatitude)
                     }
 
-				} else {
-					let result = await this.map.getLocation();
-					this.background = bg2;
-					this.position = 'right';
-					this.$command('LOAD_COMMONLY_USED',result[0],result[1], 'map')
-				}
-			},
-			payment(){
-				let data = this.points.filter(item => item.id === this.checkId)[0];
-				console.log(data);
-				this.$command('SELECTED_POINT_COMMAND', data)
-				this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
-					query : {
-						type : this.$route.query.type
+                } else {
+                    let result = await this.map.getLocation();
+                    this.background = bg2;
+                    this.position = 'right';
+                    this.$command('LOAD_COMMONLY_USED', result[0], result[1], 'map')
+                }
+            },
+            payment() {
+                let data = this.points.filter(item => item.id === this.checkId)[0];
+                console.log(data);
+                this.$command('SELECTED_POINT_COMMAND', data)
+                this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
+                    query: {
+                        type: this.$route.query.type
                     }
                 });
             },
-            async flashLocation () {
+            async flashLocation() {
                 let result = await this.map.getLocation();
                 this.latitude = result[1];
                 this.longitude = result[0];
                 this.myLatitude = result[1];
                 this.myLongitude = result[0];
                 console.log('1111');
-                this.$command('LOAD_NEARBY',result[0],result[1], this.$route.query.type);
-				this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.$route.query.type)
+                this.$command('LOAD_NEARBY', result[0], result[1], this.$route.query.type);
+                this.$command('LOAD_COMMONLY_USED', result[0], result[1], this.$route.query.type)
             },
-            changeSendDate (e) {
+            changeSendDate(e) {
                 this.sendDate = e.target.value;
             },
-            marker (store, callout = false) {
-				let iconPath = store['open_preorder'] ? '/static/images/icon.jpg' : '/static/images/disabledIcon.jpg'
-				let marker = {
+            marker(store, callout = false) {
+                let iconPath = store['open_preorder'] ? '/static/images/icon.jpg' : '/static/images/disabledIcon.jpg'
+                let marker = {
                     iconPath: iconPath,
                     width: 42,
                     height: 50,
@@ -304,34 +318,34 @@
                         bgColor: '#ffffff',
                         padding: '10',
                         display: 'ALWAYS',
-                        textAlign : 'left'
+                        textAlign: 'left'
                     };
                 }
                 return marker;
             },
-            nowLocation () {
+            nowLocation() {
                 this.map.moveToLocation();
             },
-            async bindmarkertap (e) {
+            async bindmarkertap(e) {
                 let id = e.mp.markerId;
-				this.checkId = id;
-				this.nearPoints.forEach(item=>{
-					if(item.id === id){
-					    this.changeBackground('left')
-					}
-				})
-				this.markers = this.points.map((point) => {
-					let showCallout = false
-					if (point.id === id) {
-						showCallout = true
+                this.checkId = id;
+                this.nearPoints.forEach(item => {
+                    if (item.id === id) {
+                        this.changeBackground('left')
                     }
-					return this.marker(point, showCallout);
-				});
-				let data = this.points.filter(item => item.id === id)[0];
+                })
+                this.markers = this.points.map((point) => {
+                    let showCallout = false
+                    if (point.id === id) {
+                        showCallout = true
+                    }
+                    return this.marker(point, showCallout);
+                });
+                let data = this.points.filter(item => item.id === id)[0];
                 this.latitude = data.position.coordinates[1];
                 this.longitude = data.position.coordinates[0];
             },
-            onSubmit () {
+            onSubmit() {
                 let storeInfo = this.storeInfo;
                 let route = this.$route.query['next_route'];
                 this.$command('REDIRECT_TO', route, 'push', {
@@ -341,25 +355,25 @@
                     }
                 });
             },
-			changeMarkerColor: function(data,i){
-				var that = this;
-				var markers = [];
-				for(var j = 0; j < data.length; j++){
-					if(j==i){
-						data[j].iconPath = "/static/image/position.png"; //如：..­/..­/img/marker_checked.png
-					}else{
-						data[j].iconPath = "/static/image/nowposition.png"; //如：..­/..­/img/marker.png
-					}
-					markers.push(data[j]);
-				}
-				that.markers =  markers
-			}
+            changeMarkerColor: function (data, i) {
+                var that = this;
+                var markers = [];
+                for (var j = 0; j < data.length; j++) {
+                    if (j == i) {
+                        data[j].iconPath = "/static/image/position.png"; //如：..­/..­/img/marker_checked.png
+                    } else {
+                        data[j].iconPath = "/static/image/nowposition.png"; //如：..­/..­/img/marker.png
+                    }
+                    markers.push(data[j]);
+                }
+                that.markers = markers
+            }
         },
-        mounted () {
+        mounted() {
             this.flashLocation();
-			this.$command('GET_BAR_HEIGHT');
+            this.$command('GET_BAR_HEIGHT');
         }
-	}
+    }
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -368,7 +382,7 @@
         height: 100%;
     }
 
-    button:after{
+    button:after {
         border: none;
     }
 
@@ -393,16 +407,16 @@
     #location_search {
         width: 100%;
         z-index: 1;
-        position: relative;
+        position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
         padding: 0 20rpx;
-        margin-top: 40rpx;
+        /*margin-top: 40rpx;*/
     }
 
-    .research_suggests{
+    .research_suggests {
         width: 710rpx;
         box-sizing: border-box;
         position: absolute;
@@ -411,7 +425,7 @@
         background: #fff;
     }
 
-    .suggestion{
+    .suggestion {
         border-bottom: 1rpx solid #f2f2f2;
         padding: 5rpx 40rpx;
     }
@@ -420,23 +434,23 @@
     /*    background: #FFCC00;*/
     /*}*/
 
-    .suggestion:first-child{
+    .suggestion:first-child {
         border-top: 1rpx solid #f2f2f2;
     }
 
-    .research_suggests .item-title{
+    .research_suggests .item-title {
         font-size: 22rpx;
         color: #111111;
     }
 
-    .research_suggests .item-addr{
+    .research_suggests .item-addr {
         font-size: 18rpx;
         color: #757575;
     }
 
     #location_search_input {
         width: 710rpx;
-        background: rgba(255,255,255,0.7);
+        background: rgba(255, 255, 255, 0.7);
         font-size: 28rpx;
         font-weight: 200;
         border-radius: 10rpx;
@@ -453,9 +467,13 @@
         font-size: 36rpx;
     }
 
-    .hidden{ display: none;}
+    .hidden {
+        display: none;
+    }
 
-    .view-center{ display: block }
+    .view-center {
+        display: block
+    }
 
     #location_map {
         /*position: absolute;*/
@@ -465,7 +483,7 @@
         /*height: 100%;*/
         width: 100%;
         height: 100%;
-        margin-top: -110rpx;
+        /*margin-top: -110rpx;*/
     }
 
     #map {
@@ -545,7 +563,7 @@
         z-index: 99999999;
     }
 
-    #location_points{
+    #location_points {
         width: 100%;
         height: 50%;
         /*position: fixed;*/
@@ -561,7 +579,7 @@
         background-size: 100%;
     }
 
-    #location_points #location_points_header span{
+    #location_points #location_points_header span {
         flex: 1;
         display: flex;
         justify-content: center;
@@ -570,13 +588,14 @@
         color: #111111;
     }
 
-    #location_points #location_points_list{
+    #location_points #location_points_list {
         background: #fff;
         padding: 0 40rpx;
-        height: 65%;
+        /*height: 65%;*/
         padding-bottom: 30rpx;
-        max-height: 484rpx;
+        /*max-height: 484rpx;*/
         overflow-y: auto;
+        height: 100%;
     }
 
     #empty_list {
@@ -589,7 +608,7 @@
         align-items: center;
     }
 
-    #location_points #location_points_list li{
+    #location_points #location_points_list li {
         width: 100%;
         box-sizing: border-box;
         display: flex;
@@ -611,7 +630,7 @@
     /*}*/
 
 
-    #location_points #location_points_list li .customIcon{
+    #location_points #location_points_list li .customIcon {
         width: 40rpx;
         height: 40rpx;
         margin: 0 10rpx;
@@ -620,9 +639,10 @@
         align-items: center;
         border-radius: 50%;
         color: #fff;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
     }
-    .son{
+
+    .son {
         width: 36rpx;
         height: 36rpx;
         display: flex;
@@ -631,14 +651,15 @@
         border-radius: 50%;
         background: #fff;
     }
-    .sonson{
+
+    .sonson {
         width: 20rpx;
         height: 20rpx;
-        background:linear-gradient(to right,#FDE068,#FFCC00) ;
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         border-radius: 50%;
     }
 
-    #location_points #location_points_list li .customIcon.disSelected{
+    #location_points #location_points_list li .customIcon.disSelected {
         width: 36rpx;
         height: 36rpx;
         border: 2rpx solid #ccc;
@@ -646,14 +667,14 @@
     }
 
 
-    #location_points #location_points_list li span{
+    #location_points #location_points_list li span {
         display: inline-block;
         font-size: 24rpx;
         color: #757575;
         margin: 0 10rpx;
     }
 
-    #location_points #location_points_list li .left{
+    #location_points #location_points_list li .left {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -661,13 +682,13 @@
         max-width: 540rpx;
     }
 
-    #location_points #location_points_list li .left .top{
+    #location_points #location_points_list li .left .top {
         display: flex;
         justify-content: flex-start;
         align-items: center;
     }
 
-    #location_points #location_points_list li .left .top h4{
+    #location_points #location_points_list li .left .top h4 {
         font-size: 28rpx;
         color: #111111;
     }
@@ -677,7 +698,7 @@
         color: #111111;
     }
 
-    #location_points #location_points_list li .right{
+    #location_points #location_points_list li .right {
         position: absolute;
         width: 108rpx;
         height: 108rpx;
@@ -685,7 +706,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
     }
@@ -703,11 +724,11 @@
     /*    align-items: center;*/
     /*}*/
 
-    .btnContainer{
+    .btnContainer {
         height: 20%;
     }
 
-    #location_points .confirmBtn{
+    #location_points .confirmBtn {
         width: 100%;
         border-radius: 10rpx;
         background: #ffcc00;
@@ -718,16 +739,16 @@
         align-items: center;
     }
 
-    .threePartHeight{
-        height: 65%!important;
+    .threePartHeight {
+        height: 75% !important;
     }
 
-    .twoPartHeight{
-        height: 85%!important;
+    .twoPartHeight {
+        height: 85% !important;
     }
 
 
-    .empty_img{
+    .empty_img {
         width: 100%;
         height: 200px;
         display: flex;
@@ -736,12 +757,13 @@
         background: #fff;
         flex-direction: column;
     }
-    .empty_img img{
+
+    .empty_img img {
         width: 350rpx;
         height: 240rpx;
     }
 
-    .empty_img span{
+    .empty_img span {
         color: #999;
         font-size: 32rpx;
         margin-bottom: 50rpx;
