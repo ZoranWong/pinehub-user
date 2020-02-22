@@ -7,7 +7,7 @@
             <span  class="circle"  v-else><i class="iconfont"  >&#xe679;</i></span>
         </div>
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div id="good_detail" v-if="goodDetail"  :style="{height: screenHeight - (navHeight + statusBarHeight) -100 + 'rpx'}">
+        <div id="good_detail" v-if="goodDetail" >
             <div v-if="!isMember && registered" class="bgff user-mobile-box">
                 <div class="user_mobile_box_container">
                     <form report-submit="true" @submit="uploadFormId">
@@ -308,6 +308,16 @@
 
 		},
         computed : {
+            isCartEmpty () {
+                let type = this.options['type'];
+                let isCartEmpty = false
+                if (type === 'mall') {
+                    isCartEmpty = !!(this.model.user.store.goodInShoppingCart.length)
+                } else {
+                    isCartEmpty = !!(this.model.newEvents.shoppingCarts.goodInShoppingCart.length)
+                }
+                return isCartEmpty
+            },
             needBackHome () {
                 let pages =  getCurrentPages();
                 let options = pages[pages.length - 1]['options'];

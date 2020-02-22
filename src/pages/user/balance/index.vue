@@ -12,7 +12,7 @@
         </div>
         <div class="recharge-details">
             <h3>余额明细</h3>
-            <ul class="recharge-details-list" v-if="balanceRecord.length">
+            <ul class="recharge-details-list" v-if="balanceRecord.length" :style="{height: mainHeight - 210 + 'px'}">
                 <li v-for="item in balanceRecord" :key="item.id">
                     <div class="left">
                         <h4>{{item['type_desc']}}</h4>
@@ -52,7 +52,15 @@
 			},
 			navHeight () {
 				return this.model.global.barHeight.navHeight
-			}
+			},
+            headerHeight () {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight () {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight;
+            }
         },
         methods: {
             jump (router) {
@@ -75,6 +83,7 @@
 <style>
     .body{
         background-color: #fff;
+        overflow: hidden;
     }
 
     button:after{

@@ -8,9 +8,10 @@
                        placeholder="请输入地点名称"/>
                 <i class="iconfont search">&#xe65c;</i>
             </div>
+            <img hidden="true" src="../../../../static/images/icon/nowposition.png"></img>
             <div id="location_map">
                 <map
-                    :id="checkId? 'map':'checkedMap'"
+                    :id="'checkedMap'"
                     scale="14"
                     @regionchange="regionchange"
                     @begin="regionchangebegin"
@@ -22,8 +23,8 @@
                     @markertap="bindmarkertap"
                     show-location>
                     <cover-view id="locatePosition" @click="nowLocation">
-                        <img hidden="true" src="../../../../static/images/icon/nowposition.png"></img>
-                        <cover-image src="/static/images/icon/nowposition.png" style="   position: absolute;top: 0;left: 0;height: 50rpx;width: 50rpx"></cover-image>
+
+                        <cover-image src="/static/images/icon/nowposition.png" style="position: absolute;top: 0;left: 0;height: 50rpx;width: 50rpx;pointer-events: none"></cover-image>
                     </cover-view>
                 </map>
                 <div id="location_points">
@@ -287,6 +288,7 @@
                 });
             },
             async flashLocation() {
+                console.log('flashLocation');
                 let result = await this.map.getLocation();
                 this.latitude = result[1];
                 this.longitude = result[0];
@@ -331,11 +333,20 @@
             async bindmarkertap(e) {
                 let id = e.mp.markerId;
                 this.checkId = id;
-                this.nearPoints.forEach(item => {
-                    if (item.id === id) {
-                        this.changeBackground('left')
-                    }
-                })
+                let data;
+                if (this.position === 'left') {
+                    data = this.nearPoints.filter(items => items.id === id)[0];
+                    this.model.user.store.dispatch('saveFirstNearShop', {shop: data})
+
+                } else {
+                    data = this.commonPoints.filter(item => item.id === id)[0];
+                    this.model.user.store.dispatch('saveFirstCommonShop', {shop: data})
+                }
+                // this.nearPoints.forEach(item => {
+                //     if (item.id === id) {
+                //         this.changeBackground('left')
+                //     }
+                // })
                 this.markers = this.points.map((point) => {
                     let showCallout = false
                     if (point.id === id) {
@@ -343,7 +354,6 @@
                     }
                     return this.marker(point, showCallout);
                 });
-                let data = this.points.filter(item => item.id === id)[0];
                 this.latitude = data.position.coordinates[1];
                 this.longitude = data.position.coordinates[0];
             },

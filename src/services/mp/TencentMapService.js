@@ -121,7 +121,7 @@ export default class TencentMapService extends Service {
 
     // 移动位置
     moveToLocation () {
-        this.mapCtx = wx.createMapContext('map');
+        this.mapCtx = wx.createMapContext('checkedMap');
         this.mapCtx.moveToLocation();
     }
 }

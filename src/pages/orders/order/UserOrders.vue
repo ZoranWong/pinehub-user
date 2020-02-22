@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: (screenHeight  - (statusBarHeight + navHeight) - 90) + 'rpx'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
+    <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :style ="{height: mainHeight - 30 + 'px'}" :scroll-y="true" :scroll-into-view="status" @scrolltolower="scrolltolower">
         <div
             class="order_info"
             :id = "'order-item-' + order.id"
@@ -124,6 +124,14 @@
         computed: {
             isLoadedAll () {
                 return this.$store.getters['model.user.orders/isLoadedAll'];
+            },
+            headerHeight () {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight () {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight;
             }
         },
         methods: {

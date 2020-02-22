@@ -2,7 +2,7 @@
 <template>
 	<div id="order_payment">
         <CustomHeader :title="title" :needReturn="true" />
-        <div class="payment_window" :style="{'height' : (screenHeight - statusBarHeight - navHeight) + 'px'}">
+        <div class="payment_window" :style="{'height' : mainHeight + 'px'}">
             <div id="pay_shop_info" @click="selectPoint">
                 <img class="locationImg" src="../../../../../static/icons/location.png" alt="">
                 <div class="pay_shop_info" v-if="address.id"  >
@@ -127,6 +127,18 @@
             },
             navHeight () {
                 return this.model.global.barHeight.navHeight
+            },
+            headerHeight() {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight - this.btnHeight;
+            },
+            btnHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                return 90 * systemInfo.windowWidth / 750;
             },
 		},
 		methods: {
@@ -398,7 +410,7 @@
         box-sizing: border-box;
         width: 100%;
         margin-top: 20rpx;
-        margin-bottom: 120rpx;
+        margin-bottom: 20rpx;
     }
 
     #order_payment #total li {

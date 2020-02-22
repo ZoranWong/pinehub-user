@@ -262,7 +262,7 @@
                 })
             }
         },
-        mounted () {
+        onShow () {
         	this.$command('LOAD_ACCOUNT');
 		}
 	}

@@ -2,91 +2,93 @@
 <template>
 	<div id="order_payment">
         <CustomHeader :title="title" :needReturn="true" />
-
-        <div id="pay_shop_info">
-<!--            <i class="iconfont location">&#xe80b;</i>-->
-            <img class="locationImg" src="../../../../static/icons/location.png" alt="">
-            <div class="pay_shop_info">
-                <div class="pay_shop_info_name" @click="selectPoint">
-                    <h4>
-                        {{selectedPoint.name}}
-                        <span>{{selectedPoint.mobile}}</span>
-                    </h4>
-                </div>
-                <div class="pay_shop_info_address">
-                    {{selectedPoint.address}}
-                </div>
-            </div>
-            <i class="iconfont arrow">&#xe6a3;</i>
-        </div>
-        <div id="pay_shop_info_act" @click="selectAddressPoint" v-if="type === 'mall' ">
-            <img class="locationImg" src="../../../../static/icons/location.png" alt="">
-            <div class="pay_shop_info" v-if="addresses.id"  >
-                <div class="pay_shop_info_name">
-                    <h4>
-                        {{addresses['consignee_name']}}
-                        <span>{{addresses['consignee_mobile_phone']}}</span>
-                    </h4>
-                </div>
-                <div class="pay_shop_info_address">
-                    {{addresses.rangeAddress}}{{addresses['detail_address']}}
-                </div>
-            </div>
-            <div class="pay_shop_info" v-else>
-                请选择收货地址
-            </div>
-            <i class="iconfont arrow">&#xe6a3;</i>
-        </div>
-        <div id="pay_pick_up_info">
-<!--            <i class="iconfont location">&#xe80b;</i>-->
-            <img class="locationImg" src="../../../../static/icons/time.png" alt="">
-            <div class="order_info">
-                <div class="order_info_name">
-                    <h4>
-                        <span>21时前下单次日取，21时后下单后日取</span>
-                    </h4>
-                    <h4>
-                        预约取货时间
-                        <span class="order_info_time">{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
-                    </h4>
-                </div>
-            </div>
-        </div>
-        <ul id="good_list">
-            <li v-for="(good,index) in goodInShoppingCart" :key="index">
-                <img :src="good.image" alt="">
-                <div id="good_info">
-                    <h3>{{good['name']}}</h3>
-                    <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
-                    <div id="good_info_price">
-                        <h3>{{good['price_format']}}</h3>
-                        <em>X {{good['buy_num']}}</em>
+        <div class="total" :style="{height: mainHeight + 'px', overflow: 'auto'}">
+            <div id="pay_shop_info">
+                <!--            <i class="iconfont location">&#xe80b;</i>-->
+                <img class="locationImg" src="../../../../static/icons/location.png" alt="">
+                <div class="pay_shop_info">
+                    <div class="pay_shop_info_name" @click="selectPoint">
+                        <h4>
+                            {{selectedPoint.name}}
+                            <span>{{selectedPoint.mobile}}</span>
+                        </h4>
+                    </div>
+                    <div class="pay_shop_info_address">
+                        {{selectedPoint.address}}
                     </div>
                 </div>
-            </li>
-        </ul>
-        <ul id="total">
-            <li>
-                <h3>商品总价</h3>
-                <span>{{orderInfo['total_fee_format'] || 0}}</span>
-            </li>
-            <li>
-                <h3>优惠金额</h3>
-                <span>{{orderInfo['total_preferential_fee_format'] || 0}}</span>
-            </li>
-            <li @click="jump('couponCenter')">
-                <h3>优惠券</h3>
-                <em>{{availableCoupons.length - couponIds.length}}张可用</em>
-                <span class="use_coupon" v-if="availableCoupons.length > 0">
+                <i class="iconfont arrow">&#xe6a3;</i>
+            </div>
+            <div id="pay_shop_info_act" @click="selectAddressPoint" v-if="type === 'mall' ">
+                <img class="locationImg" src="../../../../static/icons/location.png" alt="">
+                <div class="pay_shop_info" v-if="addresses.id"  >
+                    <div class="pay_shop_info_name">
+                        <h4>
+                            {{addresses['consignee_name']}}
+                            <span>{{addresses['consignee_mobile_phone']}}</span>
+                        </h4>
+                    </div>
+                    <div class="pay_shop_info_address">
+                        {{addresses.rangeAddress}}{{addresses['detail_address']}}
+                    </div>
+                </div>
+                <div class="pay_shop_info" v-else>
+                    请选择收货地址
+                </div>
+                <i class="iconfont arrow">&#xe6a3;</i>
+            </div>
+            <div id="pay_pick_up_info">
+                <!--            <i class="iconfont location">&#xe80b;</i>-->
+                <img class="locationImg" src="../../../../static/icons/time.png" alt="">
+                <div class="order_info">
+                    <div class="order_info_name">
+                        <h4>
+                            <span>21时前下单次日取，21时后下单后日取</span>
+                        </h4>
+                        <h4>
+                            预约取货时间
+                            <span class="order_info_time">{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <ul id="good_list">
+                <li v-for="(good,index) in goodInShoppingCart" :key="index">
+                    <img :src="good.image" alt="">
+                    <div id="good_info">
+                        <h3>{{good['name']}}</h3>
+                        <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
+                        <div id="good_info_price">
+                            <h3>{{good['price_format']}}</h3>
+                            <em>X {{good['buy_num']}}</em>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul id="total">
+                <li>
+                    <h3>商品总价</h3>
+                    <span>{{orderInfo['total_fee_format'] || 0}}</span>
+                </li>
+                <li>
+                    <h3>优惠金额</h3>
+                    <span>{{orderInfo['total_preferential_fee_format'] || 0}}</span>
+                </li>
+                <li @click="jump('couponCenter')">
+                    <h3>优惠券</h3>
+                    <em>{{availableCoupons.length - couponIds.length}}张可用</em>
+                    <span class="use_coupon" v-if="availableCoupons.length > 0">
                     {{couponIds.length || 0}}张已使用
                     <i class="iconfont">&#xe6a3;</i>
                 </span>
-            </li>
-            <li>
-                <h4>实付款</h4>
-                <h5>{{orderInfo['settlement_total_fee_format'] || 0}}</h5>
-            </li>
-        </ul>
+                </li>
+                <li>
+                    <h4>实付款</h4>
+                    <h5>{{orderInfo['settlement_total_fee_format'] || 0}}</h5>
+                </li>
+            </ul>
+        </div>
+
         <div id="do_payment">
             <span>
                 金额 {{orderInfo['settlement_total_fee_format'] || 0}}
@@ -157,6 +159,24 @@
             },
             addresses () {
                 return this.model.user.order.payment.addresses
+            },
+            statusBarHeight () {
+                return this.model.global.barHeight.statusBarHeight
+            },
+            navHeight () {
+                return this.model.global.barHeight.navHeight
+            },
+            headerHeight() {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight - this.btnHeight;
+            },
+            btnHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                return 90 * systemInfo.windowWidth / 750;
             },
 		},
 		methods: {
@@ -437,7 +457,7 @@
         box-sizing: border-box;
         width: 100%;
         margin-top: 20rpx;
-        margin-bottom: 120rpx;
+        margin-bottom: 20rpx;
     }
 
     #order_payment #total li {

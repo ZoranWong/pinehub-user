@@ -246,5 +246,10 @@ export default class Orders extends Model {
         this.addEventListener('saveFirstCommonShop', function ({shop}) {
             this.state.firstCommon = shop;
         })
+
+        this.addEventListener('clearSelectedPoint', function () {
+            this.state.firstShop = {};
+            this.state.firstCommon = {};
+        })
     }
 }

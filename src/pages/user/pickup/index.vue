@@ -19,6 +19,7 @@
                 <block v-for="(item, index) in shop_order" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
+                        <h4>自提点联系电话:{{item.shop ? item.shop['keeper_mobile'] : '暂无该店铺电话，请联系客服'}}</h4>
                         <img  style="width: 400rpx;height: 400rpx" v-if="gateway" :src="gateway + '/qrcode?content=' + item.params.content + '&size=' + item.params.size + '&margin=' + item.params.margin " alt="">
                         <div class="order_info">
                             <span>订单编号: {{item['order_no']}}</span>
@@ -291,6 +292,11 @@
     #pickup_info h3{
         font-size: 32rpx;
         color: #111111;
+    }
+
+    #pickup_info h4{
+        font-size: 28rpx;
+        color: #111;
     }
 
     .pickupNum{

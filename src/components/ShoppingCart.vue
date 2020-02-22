@@ -4,7 +4,7 @@
         <div id="mask" v-if="showGoodsList" @click="closeMask"></div>
         <div id="shopping_cart" :style="{bottom: showMask?'0':'-1000rpx'}">
             <div id="shopping_cart_icon">
-                <i class="iconfont" @click="showGoodsList = !showGoodsList">&#xe613;</i>
+                <i class="iconfont" @click="showGoodsList = !showGoodsList" :style="{color: '#fe4a2c'}">&#xe613;</i>
                 <span  :class="amountClass">{{amount}}</span>
             </div>
             <h4><span>{{totalPrice}}</span></h4>
@@ -29,7 +29,7 @@
                         <div class="entities">
                             <span>￥{{item['price']}}</span>
                             <img src="../../static/icons/minus.png" alt=""  @click="changeBuyNum(item,-1)">
-                            <input v-model="item['buy_num']" class="cartInput" type="number" @blur="(e)=>changeInputBuyNum(e,item)" />
+                            <input v-model="item['buy_num']" class="cartInput" type="number" @change="(e)=>changeInputBuyNum(e,item)" />
                             <img src="../../static/icons/add.png" alt="" @click="changeBuyNum(item,1)">
                         </div>
                     </li>
@@ -48,14 +48,18 @@
 		data () {
 			return {
                 showMask: false,
-				showGoodsList: false,
-				cartGoodsList:[]
+				showGoodsList: false
             }
 		},
         watch: {
 		    actId (val) {
                 if (this.registered) {
                     this.$command('LOAD_ACTIVITY_CART_COMMAND', this.type, val)
+                }
+            },
+            goodInShoppingCart (val) {
+                if (!val.length) {
+		            this.showGoodsList = false
                 }
             }
         },
@@ -176,6 +180,16 @@
             },
 			closeMask(){
 				this.showGoodsList = false;
+				let carts = this.goodInShoppingCart;
+				_.map(carts, (cart) => {
+                    if (this.type === 'mall') {
+                        this.$command('CHANGE_BUY_NUM_COMMAND',cart, cart['buy_num'])
+                    } else if (this.type === 'breakfast') {
+                        this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', cart, cart['buy_num'])
+                    } else if (this.type === 'activity') {
+                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',cart, cart['buy_num'], this.actId)
+                    }
+                })
             },
 			clearCart () {
 				this.showMask = false;
