@@ -22,6 +22,8 @@
                     @markertap="bindmarkertap"
                     show-location>
                     <cover-view id="locatePosition" @click="nowLocation">
+                        <img hidden="true" src="../../../../static/images/icon/nowposition.png"></img>
+                        <cover-image src="/static/images/icon/nowposition.png" style="   position: absolute;top: 0;left: 0;height: 50rpx;width: 50rpx"></cover-image>
                     </cover-view>
                 </map>
                 <div id="location_points">
@@ -49,7 +51,7 @@
                                 <i class="customIcon disSelected" v-else> </i>
                             </li>
                             <div class="empty_img" v-if="!commonPoints.length">
-                                <img src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                                <img src="/../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
                                 <span>暂无自提点哦～</span>
                             </div>
                         </ul>
@@ -413,7 +415,7 @@
         align-items: center;
         box-sizing: border-box;
         padding: 0 20rpx;
-        /*margin-top: 40rpx;*/
+        margin-top: 40rpx;
     }
 
     .research_suggests {
@@ -551,7 +553,7 @@
     }
 
     #locatePosition {
-        background: url(../../../../static/images/icon/nowposition.png) no-repeat center center;
+        /*background: url(../../../../static/images/icon/nowposition.png) no-repeat center center;*/
         background-color: #FFFFFF;
         border-radius: 50%;
         width: 50rpx;
