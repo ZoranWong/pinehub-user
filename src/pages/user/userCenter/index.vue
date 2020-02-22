@@ -123,7 +123,7 @@
                     <div class="left">
                         <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="../../../../static/icons/addresses.png" alt="">
-                        <span>来源</span>
+                        <span>服务商户</span>
 
                     </div>
                     <div class="id">ID: {{shopCode}}</div>

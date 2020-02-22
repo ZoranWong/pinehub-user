@@ -43,7 +43,7 @@
             </div>
             <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
             <div id="good_detail_statictics">
-                <span class="is-underline">{{goodDetail['origin_price_format']}}</span>
+                <span class="is-underline" v-if="goodDetail['show_market_price'] && !goodDetail.specifications.length">{{goodDetail['origin_price_format']}}</span>
                 <span>销量{{goodDetail['sell_num']}}</span>
                 <span v-if="goodDetail['product_entities'] && goodDetail['product_entities'][0].stock < 6  && goodDetail['product_entities'][0].stock > 0">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
             </div>
