@@ -75,7 +75,8 @@
                 this.$command('REDIRECT_TO', path, 'push', {
                     query: {
                         needReturn: this.isSelect,
-                        type : this.$route.query.type
+                        type : this.$route.query.type,
+                        actId: this.$route.query.actId || ''
                     }
                 });
             },

@@ -51,7 +51,7 @@
                     <span>查看更多</span>
                 </li>
             </ul>
-
+            <div @click="redirectTo('ticketCenter')">领券中心</div>
             <img src="./img/Activity-01.png" alt="" class="activities" @click="redirectTo('user.store')">
 
             <img
@@ -106,7 +106,7 @@
         <!--        </div>-->
 
 
-
+        <ReceivedNewTickets v-if="showNew" @close="showNew = false" />
 
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
@@ -117,13 +117,15 @@
     import FooterNav from '@/components/FooterNav';
     import CustomHeader from './components/CustomHeader';
     import Auth from '../../../components/Auth';
+    import ReceivedNewTickets from '../../../components/ReceivedNewTickets';
     import {getUpdateMange} from '../../../utils/getUpdateManage';
     import _ from 'underscore'
     export default {
         components: {
             'footer-nav': FooterNav,
             CustomHeader,
-            Auth
+            Auth,
+            ReceivedNewTickets
         },
         data () {
             return {
@@ -140,7 +142,8 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
-                showBindMobile: false
+                showBindMobile: false,
+                showNew: true
             };
         },
         computed: {
@@ -421,6 +424,23 @@
     /*#footNav_height {*/
     /*    height: 109rpx;*/
     /*}*/
+
+
+    #receivedNewTickets{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(17,17,17,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+
     page{
         overflow-y: auto;
     }

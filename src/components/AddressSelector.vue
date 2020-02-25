@@ -31,8 +31,7 @@
 </template>
 
 <script>
-    import {regions} from '../utils/region';
-    import {AnHui} from '../utils/Anhui Province';
+    import {CustomRegion} from '../utils/CustomRegion';
     import _ from 'underscore'
     export default {
 		name: 'AddressSelector',
@@ -70,32 +69,42 @@
             bindStartMultiPickerChange (e) {
                 let value = e.mp.detail.value;
                 this.multiStart = value;
-                let province = AnHui[value[0]].code;
-                let city = AnHui[value[0]].children[value[1]].code;
-                let area = AnHui[value[0]].children[value[1]].children[value[2]].code;
+                value[0] = value[0] ? value[0] : 0;
+                value[1] = value[1] ? value[1] : 0;
+                value[2] = value[2] ? value[2] : 0;
+                let province = CustomRegion[value[0]].code;
+                let city = CustomRegion[value[0]].children[value[1]].code;
+                let area = CustomRegion[value[0]].children[value[1]].children[value[2]].code;
                 this.area = this.provinceRange[value[0]] + ',' + this.cityRange[value[1]] + ',' + this.areaRange[value[2]]
                 this.$emit('save', '', [province, city, area])
             },
             bindStartPickerColumnChange (e) {
                 let event = e.mp.detail;
                 this.multiStart[event.column] = event.value;
-                console.log(event);
-                console.log(this.multiStart, '_________--');
-            }
+                if (event.column === 1) {
+                    let areas = [];
+                    _.map(CustomRegion[0].children[event['value']].children, (area) => {
+                        areas.push(area.name)
+                    });
+                    this.areaRange = areas;
+                    this.multiStart[2] = 0
+                }
+            },
         },
         mounted () {
-		    this.provinceRange = [AnHui[0].name]
+		    this.provinceRange = [CustomRegion[0].name]
             let cities = [];
 		    let areas = [];
-		    _.map(AnHui[0].children, (city) => {
+		    _.map(CustomRegion[0].children, (city) => {
                 cities.push(city.name);
             })
-            _.map(AnHui[0].children[0].children, (area) => {
+            _.map(CustomRegion[0].children[0].children, (area) => {
                 areas.push(area.name)
             })
             this.cityRange = cities;
 		    this.areaRange = areas;
-        }
+        },
+
 
 
     }

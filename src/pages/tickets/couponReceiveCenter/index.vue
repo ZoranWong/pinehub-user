@@ -65,7 +65,7 @@
 	export default {
 		data () {
 			return {
-				title: '领券中心',
+				title: '领取优惠券',
                 showAuth: false
 			};
 		},
@@ -77,14 +77,15 @@
                 if (value) {
                     this.closeAuth()
                 }
-                if (value && this.isMember) {
+            },
+            isMember (value) {
+                if (this.registered && value) {
                     this.loadTickets()
                 }
             }
         },
         computed : {
             codeTicket () {
-                console.log(this.model.user.tickets.codeTicket, 'xxxxxxxxxxxxxxxx');
                 return this.model.user.tickets.codeTicket
             },
             isLogin () {

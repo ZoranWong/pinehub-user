@@ -175,10 +175,13 @@ export default class Orders extends Model {
 
         this.addEventListener('saveCommonlyUsedPoint', function ({points, type}) {
             if (this.state.firstCommon && this.state.firstCommon.id) {
-                this.state.commonlyPoints = [];
-                this.state.commonlyPoints.push(this.state.firstCommon)
+                if (!_.find(this.state.commonlyPoints, (commonPoint) => {
+                    return commonPoint.id === this.state.firstCommon.id
+                })) {
+                    this.state.commonlyPoints = [];
+                    this.state.commonlyPoints.push(this.state.firstCommon)
+                }
             }
-            console.log(points, '|||||||||||||||||');
             _.map(points, (point) => {
                 if (_.find(this.state.commonlyPoints, function (commonlyPoint) {
                     return commonlyPoint.id === point.id
@@ -205,9 +208,13 @@ export default class Orders extends Model {
         });
 
         this.addEventListener('saveNearbyPoints', function ({points, type}) {
-            if (this.state.firstShop && this.state.firstShop.id) {
-                this.state.nearbyPoints = [];
-                this.state.nearbyPoints.push(this.state.firstShop)
+            if ((this.state.firstShop && this.state.firstShop.id)) {
+                if (!_.find(this.state.nearbyPoints, (nearbyPoint) => {
+                    return nearbyPoint.id === this.state.firstShop.id
+                })) {
+                    this.state.nearbyPoints = [];
+                    this.state.nearbyPoints.push(this.state.firstShop)
+                }
             }
             _.map(points, (point) => {
                 if (_.find(this.state.nearbyPoints, function (nearbyPoint) {

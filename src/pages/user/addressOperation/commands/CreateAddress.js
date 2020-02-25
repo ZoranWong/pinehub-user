@@ -1,6 +1,6 @@
 import Command from '../../../../commands/Command';
 export default class CreateAddress extends Command {
-    async handle (params, isPayment, isActivity) {
+    async handle (params, isPayment, isActivity, actId) {
         console.log(isPayment, 'isPayment');
         let responses = await this.service('http.address').createAddress(params);
         let self = this;
@@ -16,7 +16,7 @@ export default class CreateAddress extends Command {
                     });
                     setTimeout(function () {
                         self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
-                            query: {type: 'activity', actId: 1}
+                            query: {type: 'activity', actId: actId}
                         });
                     }, 2000);
                 } else {

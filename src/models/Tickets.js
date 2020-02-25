@@ -66,10 +66,14 @@ export default class Tickets extends Model {
             this.state.availableCoupons = coupons
         });
 
+
+        // 领券中心
         this.addEventListener('canReceiveTicketsList', function ({tickets}) {
             this.state.canReceiveTickets = tickets;
         });
 
+
+        // 扫码领券
         this.addEventListener('codeScanReceiveTicket', function ({ticket}) {
             this.state.codeTicket = ticket;
         })

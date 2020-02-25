@@ -149,7 +149,8 @@
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                 	query: {
                 		needReturn: true,
-                        type: 'activity'
+                        type: 'activity',
+                        actId: this.actId
                     }
                 });
             },

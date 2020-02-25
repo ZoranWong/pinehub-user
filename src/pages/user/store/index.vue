@@ -17,12 +17,12 @@
             </div>
 
         </div>
-        <div id="store_header" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
+        <div id="store_header" >
             <input type="text" placeholder="请输入商品名称" id="store_search" v-model="search">
             <i class="iconfont" @click="handleSearch">&#xe65c;</i>
         </div>
-        <div id="store_goods" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 120) + 'px'}">
-            <ul id="store_goods_type">
+        <div id="store_goods" :style="{'height' : listHeight + 'px'}">
+            <ul id="store_goods_type" :style="{'height' : listHeight + 'px'}">
                 <li
                   v-for="item in categories"
                   :key="item.id"
@@ -32,40 +32,43 @@
                     {{item.name}}
                 </li>
             </ul>
-            <ul id="store_goods_items">
-                <li v-for="item in goods" :key="index"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.id}})">
-                    <div class="thumb_img">
-                        <img :src="item.main_image" alt="">
-                    </div>
-                    <div class="selledout" v-if="!item.stock">
-                        <span class="selloutConent">已抢光</span>
-                    </div>
-                    <div id="store_good_info">
-                        <div class="store_good_info_title">
-                            <h3>{{item.name}}</h3>
+            <div class="store_goods_items_box" :style="{'height' : listHeight + 'px'}">
+                <ul id="store_goods_items" >
+                    <li v-for="item in goods" :key="index"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.id}})">
+                        <div class="thumb_img">
+                            <img :src="item.main_image" alt="">
                         </div>
-                        <div class="intro">
-                            {{item.intro || ''}}
+                        <div class="selledout" v-if="!item.stock">
+                            <span class="selloutConent">已抢光</span>
                         </div>
-                        <div id="store_good_info_entities">
-                            <span>销量:{{item.sell_num}}</span>
-                            <span v-if="item.stock < 6  && item.stock > 0" class="stock">仅剩{{item.stock}}件</span>
-                        </div>
-                        <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
-                        <div v-if="showOperation(item)"></div>
-                        <div id="store_good_info_price">
-                            <span>{{item.sell_price_format}}</span>
-                            <em v-if="item['show_market_price'] && !item.specifications.length" >{{item.origin_price_format}}</em>
-                            <div class="operation">
-                                <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">
-                                <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >
-                                <img src="../../../../static/icons/add.png" alt="" v-if="item.stock" @click.stop="addToShoppingCart(item, 1)">
-                                <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                        <div id="store_good_info">
+                            <div class="store_good_info_title">
+                                <h3>{{item.name}}</h3>
+                            </div>
+                            <div class="intro">
+                                {{item.intro || ''}}
+                            </div>
+                            <div id="store_good_info_entities">
+                                <span>销量:{{item.sell_num}}</span>
+                                <span v-if="item.stock < 6  && item.stock > 0" class="stock">仅剩{{item.stock}}件</span>
+                            </div>
+                            <span id="store_good_info_spec" v-if="item.specifications.length">规格：{{item.spec}}</span>
+                            <div v-if="showOperation(item)"></div>
+                            <div id="store_good_info_price">
+                                <span>{{item.sell_price_format}}</span>
+                                <em v-if="item['show_market_price'] && !item.specifications.length" >{{item.origin_price_format}}</em>
+                                <div class="operation">
+                                    <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">
+                                    <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >
+                                    <img src="../../../../static/icons/add.png" alt="" v-if="item.stock" @click.stop="addToShoppingCart(item, 1)">
+                                    <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
+
         </div>
         <ShoppingCart v-if="registered && isMember" :type="'mall'"/>
         <SelectSpecification
@@ -198,12 +201,33 @@
 		  navHeight () {
 			  return this.model.global.barHeight.navHeight
 		  },
+          navHeight() {
+              return this.model.global.barHeight.navHeight
+          },
+          headerHeight() {
+              return this.statusBarHeight + this.navHeight;
+          },
 		  registered () {
 			  return this.model.account.registered;
 		  },
 		  isMember () {
 			  return this.model.account.isMember;
 		  },
+          mainHeight() {
+              let systemInfo = wx.getSystemInfoSync();
+              let height = systemInfo.windowHeight;
+              return height - this.headerHeight;
+          },
+          btnHeight() {
+              let systemInfo = wx.getSystemInfoSync();
+              let isShow = this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length ? 206 : 108
+              return isShow * systemInfo.windowWidth / 750;
+          },
+          listHeight() {
+              console.log(this.mainHeight, '-------- list height -------', this.mainHeight, this.mainHeight  );
+              let isShow = this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length ? true : false
+              return this.mainHeight  - this.btnHeight
+          }
       },
       onShow () {
           this.queryCateId = ''
@@ -364,7 +388,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-
+    z-index: 99999999;
   }
 
   #shopping_cart{
@@ -381,10 +405,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
       background: #fff;
       border-bottom: 2rpx solid #f2f2f2;
-      position: fixed;
+      position: relative;
   }
 
   #store_header #store_search {
@@ -409,16 +432,15 @@
       display: flex;
       justify-content: flex-end;
       align-items: flex-start;
-      margin-top: 108rpx;
       overflow-y: auto;
   }
 
   #store_goods #store_goods_type {
       flex: 1;
-      position: fixed;
-      left: 0;
       height: 1250rpx;
-      overflow: scroll;
+      width: 150rpx;
+      overflow-x: hidden;
+      overflow-y: scroll;
       background: #f2f2f2;
   }
 
@@ -443,17 +465,25 @@
       border-left: 12rpx solid #ffcc00;
   }
 
-  #store_goods #store_goods_items{
+  .store_goods_items_box{
       width: 600rpx;
+      overflow-y: auto;
+      overflow-x: hidden;
+  }
+
+  #store_goods #store_goods_items{
+      width: 100%;
       background: #fff;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       flex-direction: column;
+
   }
 
   #store_goods #store_goods_items li{
     width: 560rpx;
+      height: 232rpx;
     padding: 20rpx;
     display: flex;
     justify-content: flex-start;
@@ -479,7 +509,7 @@
     .selledout{
         position: absolute;
         width: 190rpx;
-        height: 190rpx;
+        height: 85%;
         top: 20rpx;
         left: 20rpx;
         background: rgba(255,255,255,0.6);

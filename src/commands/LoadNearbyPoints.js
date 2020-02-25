@@ -2,7 +2,6 @@ import Command from '@/commands/Command';
 
 export default class LoadNearbyPoints extends Command {
     async handle (lng, lat, type, sLng = lng, sLat = lat, page = 1) {
-        console.log('进来了吗', 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
         if (page === 1) {
             this.model.user.store.dispatch('clearNearbyPoints')
         }

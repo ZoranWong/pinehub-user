@@ -65,7 +65,7 @@
                     }
                 } else {
                     wx.showToast({
-                        title: '服务器忙，请稍后重试',
+                        title: '授权失败,请退出小程序后再试',
                         icon: 'none',
                         duration: 2000
                     })

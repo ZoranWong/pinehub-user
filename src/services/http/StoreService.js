@@ -98,7 +98,7 @@ export default class StoreService extends ApiService {
 
     // 附近自提车
     async nearbyPoints (lng, lat, channel, sLng, sLat, page, search = '') {
-        let response = await this.httpGet('api/mp/around/shops', {
+        let response = await this.httpGetWithNoLoading('api/mp/around/shops', {
             lng,
             lat,
             channel,

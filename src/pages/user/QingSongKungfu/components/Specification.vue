@@ -14,7 +14,6 @@
                 <div class="select_spec_info">
                     <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-if="!price">{{item['sell_price_format']}}</span>
                     <span :style="{fontSize: '32rpx',color: '#FFCC00'}" v-else>{{price}}</span>
-                    <span :style="{fontSize: '22rpx',color: '#757575', textDecoration: 'line-through'}" v-if="originPrice">{{originPrice}}</span>
                     <span>销量:{{item.sell_num}}</span>
                     <span>库存:{{item.product_entities[0].stock}}</span>
                 </div>

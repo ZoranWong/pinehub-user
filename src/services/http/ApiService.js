@@ -105,6 +105,37 @@ export default class ApiService extends Service {
         }
     }
 
+    // 没有loading的get
+    async httpGetWithNoLoading (route, params = [], auth = true) {
+        try {
+            let headerAuth = await this.auth(auth);
+            // if (auth && !headerAuth) {
+            //     console.log(route);
+            //     throw '未登录或者登陆失效 ' + route;
+            // }
+            let request = this.request(headerAuth);
+            let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
+            return result.data;
+        } catch (e) {
+            console.log('get method request error ', e);
+            let message = e.response && e.response.data && e.response.data.message ? e.response.data.message : e;
+            if (message === '422 Unprocessable Entity') {
+                throw e;
+            }
+            console.log('422');
+            if (message !== '没有常用自提点') {
+                console.log('没有常用');
+                if (this.errorShow) {
+                    await this.service('popup').toast(message, 'none', 2000);
+                }
+            }
+            this.errorShow = true;
+            console.log(' throw ');
+            this.showErrorToast(e.response.data);
+            throw e;
+        }
+    }
+
     async httpPost (route, params = [], auth = true) {
         try {
             if (this.isLoadingPopupShow) {
