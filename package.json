@@ -21,6 +21,7 @@
         "flyio": "^0.6.2",
         "js-base64": "^2.4.8",
         "js-md5": "^0.7.3",
+        "laravel-echo": "^1.6.1",
         "md5": "^2.2.1",
         "mpvue": "^1.4.0",
         "mpvue-echarts": "^0.2.7",
@@ -35,7 +36,8 @@
         "underscore.string": "^3.3.4",
         "vue": "^2.5.17",
         "vuex": "^3.0.1",
-        "weapp-qrcode": "^1.0.0"
+        "weapp-qrcode": "^1.0.0",
+        "weapp.socket.io": "^2.0.1"
     },
     "devDependencies": {
         "@babel/plugin-transform-async-to-generator": "^7.1.0",

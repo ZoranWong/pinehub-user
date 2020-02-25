@@ -14,6 +14,7 @@ import IntegralService from '@/services/http/IntegralService';
 import AddressService from '@/services/http/AddressService';
 import ActivityService from '../services/http/ActivityService'
 import NewIndexService from '../services/http/NewIndexService';
+import WebSocketService from "../services/websocket/WebSocketService";
 
 export default class HttpServiceProvider extends ServiceProvider {
     register () {
@@ -36,5 +37,6 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.address', AddressService);
         this.app.register('http.activities', ActivityService);
         this.app.register('http.newIndex', NewIndexService);
+        this.app.register('$socket', WebSocketService);
     }
 }

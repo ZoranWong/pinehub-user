@@ -4,17 +4,29 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
+		"coverView": true,
 		"nodeModules": true,
-		"uglifyFileName": false
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"uglifyFileName": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.0",
-	"appid": "wx2bee13173fa2ca54",
+	"appid": "wx67127c10ce9c598c",
 	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"miniprogramRoot": "dist/",
 	"debugOptions": {
