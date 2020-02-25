@@ -65,6 +65,9 @@ export default class Account extends Model {
             },
             superiorShopId () {
                 return this.state.superiorShopId
+            },
+            userId () {
+                return this.state.userId
             }
         });
     }
@@ -101,7 +104,8 @@ export default class Account extends Model {
             balanceRecord: [],
             shopCode: '',
             sessionKey: '',
-            superiorShopId: ''
+            superiorShopId: '',
+            userId: ''
         };
     }
 
@@ -152,6 +156,9 @@ export default class Account extends Model {
 
 
         this.addEventListener('setAccount', function (userInfo) {
+            if (typeof userInfo['id'] !== 'undefined') {
+                this.state.userId = userInfo['id']
+            }
             if (typeof userInfo['superior_shop_code'] !== 'undefined') {
                 this.state.shopCode = userInfo['superior_shop_code']
             }

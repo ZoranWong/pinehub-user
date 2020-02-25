@@ -210,6 +210,9 @@
             },
             activities () {
                 return this.model.activity.activities
+            },
+            userId () {
+                return this.model.account.userId;
             }
         },
         watch: {
@@ -238,6 +241,14 @@
                 }
                 if (this.storeId && this.registered && this.isMember ) {
                     this.bindConsumer()
+                }
+            },
+            userId (val) {
+                console.log(val, 'iiiiiiiiiiiiiiiiiiiiiuser id');
+                if (val) {
+                    this.$socket.notification(val, (data)=>{
+                        console.log(data, '-------- APP User notification --------');
+                    })
                 }
             }
         },

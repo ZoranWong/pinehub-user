@@ -3,6 +3,12 @@
     /* eslint-disable no-tabs */
 
     export default {
+        watch: {
+
+        },
+        computed : {
+
+        },
         onShow () {
             console.log('show tips');
         },
