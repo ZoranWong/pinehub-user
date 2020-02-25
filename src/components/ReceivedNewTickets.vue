@@ -58,8 +58,8 @@
 
 
     #receivedNewTicketsContainer{
-        width: 592rpx;
-        height: 420rpx;
+        width: 78.9%;
+        height: 31.4%;
         background: #fff;
         border-radius: 20rpx;
         position: relative;
@@ -68,6 +68,8 @@
         align-items: center;
         padding: 0 42rpx;
         flex-direction: column;
+        margin-top: 50rpx;
+        box-sizing: border-box;
     }
 
     .close{
@@ -92,8 +94,8 @@
         align-items: center;
         font-size: 28rpx;
         color: #111;
-        margin-top: 135rpx;
-        margin-bottom: 20rpx;
+        margin-top: 145rpx;
+        margin-bottom: 10rpx;
     }
 
     #receivedNewTicketsContainer h3 span{
