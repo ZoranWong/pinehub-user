@@ -94,7 +94,7 @@ export default class Model {
             console.log(e);
         }
         this.state.totalNum = totalNum || 0;
-        
+
         if (totalPage !== null) {
             this.state.totalPage = totalPage;
             if (pageCount !== null) {
@@ -111,6 +111,8 @@ export default class Model {
      *@param integer startIndex 起始索引
      **/
     transform (data, transformer = null, startIndex = 1) {
+        console.log(data, '>>>>>>>');
+        console.log(transformer);
         transformer = transformer ? transformer : this.transformer;
         if (_.isArray(data)) {
             return _.map(data, function (value, index) {

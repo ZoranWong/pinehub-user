@@ -68,6 +68,12 @@ export default class Account extends Model {
             },
             userId () {
                 return this.state.userId
+            },
+            newUserCoupon () {
+                return this.state.newUserCoupon
+            },
+            newCoupons () {
+                return this.state.newCoupons
             }
         });
     }
@@ -105,7 +111,9 @@ export default class Account extends Model {
             shopCode: '',
             sessionKey: '',
             superiorShopId: '',
-            userId: ''
+            userId: '',
+            newUserCoupon: false,
+            newCoupons: []
         };
     }
 
@@ -234,11 +242,25 @@ export default class Account extends Model {
 
         this.addEventListener('changeIntegral', function ({integral}) {
             this.state.availableScore = this.state.availableScore - integral;
-        })
+        });
 
         this.addEventListener('setSessionKey', function ({key}) {
             console.log('登陆成功存session', key);
             this.state.sessionKey = key;
+        });
+
+        this.addEventListener('hasNewUserCoupon', function (boolean) {
+            this.state.newUserCoupon = boolean;
+        });
+
+        this.addEventListener('saveNewCoupons', function ({coupons}) {
+            console.log(coupons, '++++++++++++++++++++..................>>>>>>>>>>>>>>>>>>>>>>>>');
+            this.state.newCoupons = coupons
+        });
+
+        this.addEventListener('clearNewCoupons', function () {
+            this.state.newCoupons = [];
+            console.log(this.state.newCoupons, '!!!!!!!!!!!!!!!!!!!!!!!!!');
         })
     }
 }

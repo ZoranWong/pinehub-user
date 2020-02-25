@@ -41,9 +41,14 @@ export default class AccountService extends ApiService {
     }
 
     async superior (code, reset) {
-        console.log(code, '======= code =============', reset);
         let api = reset ? `api/mp/user/superior/shop/${Base64.encode(code)}/reset` : `api/mp/user/superior/shop/${Base64.encode(code)}`;
         let response = await this.httpPut(api);
+        return response.data;
+    }
+
+    async popup (mode) {
+        let response = await this.httpGet(`/api/mp/coupons/popup/all?release_mode=${mode}`);
+        console.log(response, '===================>');
         return response.data;
     }
 }

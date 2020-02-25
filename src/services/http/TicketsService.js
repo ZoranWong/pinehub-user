@@ -94,4 +94,11 @@ export default class TicketsService extends ApiService {
         let response = await this.httpGet('/api/mp/coupons/center/list');
         return response.data
     }
+
+    // 领取优惠券
+    async receiveTickets (couponId) {
+        console.log(couponId);
+        let response = await this.httpPost(`/api/mp/coupons/${couponId}/receive`);
+        return response
+    }
 }

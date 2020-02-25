@@ -1,38 +1,41 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <CustomHeader :title="title" :needReturn="true" />
-
+        <coupon-tickets :model="model"  :loadTickets="loadTickets"></coupon-tickets>
 
     </div>
 </template>
 
 <!--suppress ES6ShorthandObjectProperty -->
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
-
+    import CouponTickets from './components/CouponTickets';
 
 	export default {
         components: {
-			CustomHeader
+            'coupon-tickets': CouponTickets
         },
         data () {
             return {
-                title: '领券中心',
+                name: 'Tickets',
+                cur: 0,
+                model: 'model.user.tickets',
+                command: 'LOAD_CAN_RECEIVE_TICKETS'
             };
         },
+
         watch: {
 
 
         },
         computed: {
-
         },
         methods: {
-
+            loadTickets (page) {
+                this.$command('LOAD_CAN_RECEIVE_TICKETS', page);
+            },
         },
-        mounted: function () {
-            this.$command('LOAD_CAN_RECEIVE_TICKETS')
+        mounted () {
+            this.loadTickets(1)
         },
         onLoad (options) {
 

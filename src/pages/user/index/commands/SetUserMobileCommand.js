@@ -34,6 +34,7 @@ export default class SetUserMobileCommand extends Command {
                         mobile: mobile
                     };
                     self.store().dispatch('model.account/setAccount', eventData);
+                    self.$command('LOAD_POP', 'NEW_USER')
                 } else {
                     wx.showToast({
                         title: '手机号获取失败,请稍后再试',

@@ -4,14 +4,12 @@
         <div class="ticket-page body">
             <CustomHeader :title="title" :needReturn="true" />
             <div class="empty_img" v-if="!coupons.length">
-                <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
+                <img  src="../../../../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
                 <span>暂无优惠券哦～</span>
             </div>
             <div class="ticket-list" v-else :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 130) + 'rpx'}">
-                <scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
-                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="list">
-                    </coupon-ticket>
-                </scroll-view>
+                <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="receive" >
+                </coupon-ticket>
             </div>
         </div>
     </div>
@@ -25,7 +23,7 @@
 	export default {
 		data() {
 			return {
-				title: '我的卡券',
+				title: '领券中心',
 				name: 'Coupon',
 				cur: 0,
 				coupons: [],
@@ -49,43 +47,19 @@
 		},
 		computed: {
 			tickets() {
-				this.coupons = this.model.user.tickets.ticketsList;
-                return this.model.user.tickets.ticketsList;
-			},
-			availableCoupons () {
-			    if (this.$route.query.type === 'activity') {
-                    this.coupons = this.model.activity.availableCoupons
-                    return this.model.activity.availableCoupons
-                } else {
-                    this.coupons = this.model.user.tickets.availableCoupons
-                    return this.model.user.tickets.availableCoupons
-                }
-			},
-			totalNum() {
-				return this.model.user.tickets.totalNum
-			},
-			nextPage() {
-				return this.model.user.tickets.currentPage + 1;
-			},
-			isLoadedAll() {
-				return this.model.user.tickets.isLoadedAll
+				this.coupons = this.model.user.tickets.canReceiveTickets
+                return this.model.user.tickets.canReceiveTickets
 			},
             statusBarHeight () {
-				return this.model.global.barHeight.statusBarHeight
-			},
-			navHeight () {
-				return this.model.global.barHeight.navHeight
-			}
+                return this.model.global.barHeight.statusBarHeight
+            },
+            navHeight () {
+                return this.model.global.barHeight.navHeight
+            }
 		},
 		methods: {
 			useTicket(ticket) {
-				this.$emit('useTicket', ticket);
-			},
-			scrolltolower() {
-				if (this.$route.query.needReturn) return;
-				if(!this.isLoadedAll) {
-					this.loadTickets(this.nextPage, this.statusType);
-				}
+
 			},
 		},
 		mounted() {
@@ -120,10 +94,12 @@
 		padding-top: 20rpx;
 		display: flex;
 		width: 100%;
-		overflow: hidden;
+		overflow: auto;
 		box-sizing: border-box;
 		background: #f2f2f2;
 		position: relative;
+        flex-direction: column;
+        padding: 20rpx;
 	}
 
 	#null_ico {

@@ -29,6 +29,7 @@
                 this.$emit('close')
             },
             goStore () {
+                this.$emit('close')
                 this.$command('REDIRECT_TO', 'couponCenter', 'push');
             }
         },

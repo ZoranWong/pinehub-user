@@ -9,6 +9,7 @@ import '../../../styles/iconfont.css'
 import LoadActivitiesCommand from './commands/LoadActivitiesCommand';
 import LoadIndexBannerCommand from './commands/LoadIndexBannerCommand';
 import NewIndex from '../../../models/NewIndex';
+import LoadPop from './commands/LoadPop';
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -20,6 +21,7 @@ if (application) {
         this.registerCommand(SetUserMobileCommand.commandName(), SetUserMobileCommand);
         this.registerCommand(LoadActivitiesCommand.commandName(), LoadActivitiesCommand);
         this.registerCommand(LoadIndexBannerCommand.commandName(), LoadIndexBannerCommand);
+        this.registerCommand(LoadPop.commandName(), LoadPop);
         this.route = 'index';
     }, function () {
         this.currentPage = new Vue(this.mountComponent);

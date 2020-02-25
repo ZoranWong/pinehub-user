@@ -1,6 +1,6 @@
 export default class Ticket {
   constructor (ticket) {
-    this.id = ticket['coupon_id'];
+      this.id = ticket['coupon_id'];
     this.cardCode = ticket['code'];
     this.benefit = ticket['benefit'];
     this.cardId = ticket['id'];
@@ -11,8 +11,8 @@ export default class Ticket {
     this.coupon_image = ticket['coupon_image'];
     this.discount = ticket['discount'] ? (ticket['discount'] * 1) : 1;
     this.floor = ticket['floor'] > 0 ? `满${ticket['floor']}元可用` : '无门槛';
-    this.useCondition = ticket['use_conditions_desc'][ticket['use_conditions'][0]['strategy']];
-    this.status = ticket['state'];
+    this.useCondition = ticket['applicable_desc'][0]['value_display'];
+    this.status = ticket['state_desc'];
     this['is_sharing'] = ticket['is_sharing'] ? '可与其他优惠券共享' : '不可与其他优惠券共享';
     this.statusDesc = ticket['status_desc'];
       this.beginTimestamp = ticket['valid_at'].replace(/-/g, '.');

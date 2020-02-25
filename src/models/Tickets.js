@@ -68,13 +68,56 @@ export default class Tickets extends Model {
 
 
         // 领券中心
-        this.addEventListener('canReceiveTicketsList', function ({tickets}) {
+        this.addEventListener('canReceiveTicketsList',  ({tickets}) => {
+            _.map(tickets, ticket=>{
+                ticket.id = ticket['id'];
+                ticket.cardCode = ticket['code'];
+                ticket.benefit = ticket['benefit'];
+                ticket.cardId = ticket['id'];
+                ticket.title = ticket['name'];
+                ticket.type = ticket['type'];
+                ticket.description = ticket['description'];
+                ticket.remark = ticket['remark'];
+                ticket.coupon_image = ticket['coupon_image'];
+                ticket.discount = ticket['discount'] ? (ticket['discount'] * 1) : 1;
+                ticket.floor = ticket['floor'] > 0 ? `满${ticket['floor']}元可用` : '无门槛';
+                ticket.useCondition = ticket['applicable_desc'] && ticket['applicable_desc'][0]['value_display'];
+                ticket.status = ticket['state'];
+                ticket['is_sharing'] = ticket['is_sharing'] ? '可与其他优惠券共享' : '不可与其他优惠券共享';
+                ticket.statusDesc = ticket['status_desc'];
+                ticket.validTime = ticket['valid_term_desc'];
+                if (ticket.type === 'CASH') {
+                    ticket.typeDesc = '现金券'
+                } else {
+                    ticket.typeDesc = '折扣券'
+                }
+            });
             this.state.canReceiveTickets = tickets;
         });
 
 
         // 扫码领券
         this.addEventListener('codeScanReceiveTicket', function ({ticket}) {
+
+            ticket.benefit = ticket['benefit'];
+            ticket.cardId = ticket['id'];
+            ticket.title = ticket['name'];
+            ticket.type = ticket['type'];
+            ticket.description = ticket['description'];
+            ticket.remark = ticket['remark'];
+            ticket.coupon_image = ticket['coupon_image'];
+            ticket.discount = ticket['discount'] ? (ticket['discount'] * 1) : 1;
+            ticket.floor = ticket['floor'] > 0 ? `满${ticket['floor']}元可用` : '无门槛';
+            ticket.useCondition = ticket['applicable_desc'] && ticket['applicable_desc'][0]['value_display'];
+            ticket.status = ticket['state'];
+            ticket['is_sharing'] = ticket['is_sharing'] ? '可与其他优惠券共享' : '不可与其他优惠券共享';
+            ticket.statusDesc = ticket['status_desc'];
+            ticket.validTime = ticket['valid_term_desc'];
+            if (ticket.type === 'CASH') {
+                ticket.typeDesc = '现金券'
+            } else {
+                ticket.typeDesc = '折扣券'
+            }
             this.state.codeTicket = ticket;
         })
     }

@@ -19,35 +19,41 @@
 
         <div class="coupon" v-if="codeTicket.id">
             <div class="coupon-wrapper">
-                <div class="coupons_item" >
-                    <div class="left">
-                        <img :src="codeTicket['coupon_image']" alt="">
-                    </div>
-                    <div class="right">
-                        <div class="name">
-                            <h4>【{{codeTicket.typeDesc}}】</h4>
-                            <span>{{codeTicket.title}}</span>
+                <div class="new_coupons_item" @click.stop="ticketDetail(codeTicket.id)">
+                    <div class="main_coupon_item" >
+                        <div class="left">
+                            <h4 v-if="codeTicket['typeDesc'] === '现金券'">￥{{codeTicket.benefit}}</h4>
+                            <h4 v-else>{{codeTicket.benefit}}折</h4>
+                            <div class="coupon_info">{{codeTicket.floor}}</div>
                         </div>
-                        <div class="price">
-                            <h4>￥{{codeTicket.benefit}}</h4>
+                        <div class="right">
+                            <div class="title">
+                                <img src="../../../../static/images/tickets/cash.jpg" alt="" v-if="codeTicket['typeDesc'] === '现金券'" >
+                                <img src="../../../../static/images/tickets/discount.jpg" alt="" v-else>
+                                <h3>{{codeTicket.title}}</h3>
+                            </div>
+                            <div class="valid">
+                                {{codeTicket.validTime}}
+                            </div>
+                            <div class="bottom">
+                                <div class="bottomLeft" @click.stop="showMore = !showMore">
+                                    使用说明
+                                    <img src="../../../../static/images/tickets/top.jpg" alt="" v-if="!showMore">
+                                    <img src="../../../../static/images/tickets/bottom.jpg" alt="" v-else>
+                                </div>
+                                <div class="bottomRight" >
+                                    <button v-if="codeTicket['can_receive'] && codeTicket['owned_count'] === 0 && codeTicket['remain_count'] > 0 " >立即领取</button>
+                                    <button @click.stop="receiveIt(codeTicket.id)"  v-if="codeTicket['can_receive'] && codeTicket['owned_count'] > 0  && codeTicket['remain_count'] > 0 " >继续领取</button>
+                                    <button @click.stop="useIt(codeTicket.id)" v-if="!codeTicket['can_receive']" @click="goStore">立即使用</button>
+                                    <button @click.stop="nothing" v-if="codeTicket['owned_count'] === 0 && codeTicket['remain_count'] === 0">已抢光</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="coupon_info">使用门槛：{{codeTicket.floor}}</div>
-                        <div class="coupon_info">{{codeTicket.useCondition}}</div>
-                        <div class="coupon_info">有效期：{{codeTicket.validTime}}</div>
-                        <div class="coupon_info">{{codeTicket['is_sharing']}}</div>
                     </div>
-                </div>
-                <div class="integral_item_info">
-                    <h4>优惠说明</h4>
-                    <span>{{codeTicket.remark}}</span>
-                </div>
-                <div class="integral_item_info">
-                    <h4>使用说明</h4>
-                    <span>{{codeTicket.description}}</span>
-                </div>
-                <div class="integral_item_info">
-                    <h4>适用商品</h4>
-                    <span>{{codeTicket.useCondition}}</span>
+                    <div class="extra_coupon_item" v-if="showMore">
+                        <div class="coupon_info">· 适用范围: {{codeTicket['useCondition']}}</div>
+                        <div class="coupon_info">· {{codeTicket['is_sharing']}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +72,8 @@
 		data () {
 			return {
 				title: '领取优惠券',
-                showAuth: false
+                showAuth: false,
+                showMore: false
 			};
 		},
 		components: {
@@ -106,6 +113,28 @@
             }
         },
 		methods: {
+            nothing () {
+                wx.showToast({
+                    title: '这张优惠券已经抢完啦',
+                    icon: 'none',
+                    duration: 2000
+                })
+            },
+            receiveIt (id) {
+                this.$command('RECEIVE_COUPON', id, 'receive')
+            },
+            useIt () {
+                this.$command('REDIRECT_TO', 'user.store', 'push');
+            },
+            goStore () {
+                this.$command('REDIRECT_TO', 'user.store', 'push');
+            },
+            async ticketDetail (id) {
+                await this.$command('LOAD_TICKET_DETAIL',id);
+                this.$command('REDIRECT_TO', 'user.ticket.detail', 'push', {
+                    query: {detail: this.codeTicket}
+                });
+            },
             getPhoneNumber (e) {
                 this.$command('SET_USER_MOBILE', e);
             },
@@ -223,88 +252,179 @@
 
     }
 
-    .coupon-wrapper .coupons_item{
-        width: 100%;
-        border-radius: 10rpx;
-        box-sizing: border-box;
+
+
+    .new_coupons_item{
+        height: 100%;
+        margin-bottom: 20rpx;
     }
 
-    .coupon-wrapper .coupons_item{
-        width: 100%;
-        background: #fff;
-        margin-bottom: 20rpx;
+    .coupon-wrapper{
         box-sizing: border-box;
-        padding: 30rpx;
+        background: #f2f2f2;
+        width: 100%;
+    }
+
+    .main_coupon_item{
+        width: 100%;
+        height: 220rpx;
+        background-image: url("../../../../static/images/tickets/normalTickets.jpg");
+        background-size: 100% 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
     }
 
-    .coupon-wrapper .coupons_item .left{
-        width: 266rpx;
-        height: 180rpx;
-        margin-right: 35rpx;
-    }
-
-    .coupon-wrapper .coupons_item .left img{
-        width: 100%;
+    .main_coupon_item .left{
+        width: 210rpx;
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 
-    .coupon-wrapper .coupons_item .right{
+    .main_coupon_item .left h4{
+        font-size: 60rpx;
+        color: #fb5642;
+        margin-bottom: 9rpx;
+        font-weight: bold;
+    }
+
+    .main_coupon_item .left .coupon_info{
+        font-size: 24rpx;
+        color: #fb5642;
+        margin-top: 9rpx;
+    }
+
+    .main_coupon_item .right{
+        padding: 26rpx 20rpx 26rpx 30rpx;
         flex: 1;
+        height: 100%;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: flex-start;
     }
 
-    .coupon-wrapper .coupons_item .right .name {
+    .main_coupon_item .right .title{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .main_coupon_item .right .title h3{
+        font-size: 26rpx;
+        color: #111;
+        margin-left: 20rpx;
+    }
+
+    .main_coupon_item .right .title img{
+        width: 101rpx;
+        height: 25rpx;
+    }
+
+    .main_coupon_item .right .valid{
+        font-size: 22rpx;
+        color: #999;
+    }
+
+    .main_coupon_item .right .bottom{
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
     }
 
-    .coupon-wrapper .coupons_item .right .name h4{
-        font-size: 32rpx;
-        font-weight: bold;
-        color: #111111;
-    }
-
-    .coupon-wrapper .coupons_item .right .name span{
-        font-size: 32rpx;
-        color: #111111;
-    }
-
-    .coupon-wrapper .coupons_item .right .price {
-        width: 100%;
+    .main_coupon_item .right .bottom .bottomLeft{
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 22rpx;
+        color: #999;
+    }
+
+    .main_coupon_item .right .bottom .bottomLeft img{
+        width: 15rpx;
+        height: 10rpx;
+        margin-left: 15rpx;
+    }
+
+    .main_coupon_item .right .bottom .bottomRight{
+        display: flex;
+        justify-content: flex-start;
         align-items: center;
     }
 
-    .coupon-wrapper .coupons_item .right .price h4{
-        font-weight: bold;
-        font-size: 36rpx;
-        color: #ffcc00;
+    .main_coupon_item .right .bottom .bottomRight button:last-child{
+        margin-left: 10rpx;
     }
 
-    .coupon-wrapper .coupons_item .right .price span {
-        font-size: 28rpx;
-        color: #ffcc00;
-        text-decoration: underline;
+    .main_coupon_item .right .bottom .diabled img{
+        width: 108rpx;
+        height: 108rpx;
+        position: absolute;
+        right: 0;
+        bottom: 0;
     }
 
-    .coupon-wrapper .coupons_item .coupon_info{
-        font-size: 24rpx;
+    .main_coupon_item .right .bottom .bottomRight button{
+        width: 130rpx;
+        height: 50rpx;
+        border: 2rpx solid #111;
+        border-radius: 25rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22rpx;
+        color: #111;
+        padding: 0;
+        background: #fff;
+    }
+
+    .extra_coupon_item{
+        width: 100%;
+        height: 132rpx;
+        box-sizing: border-box;
+        padding: 30rpx 20rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: #FDFAFE;
+        transform: translateY(-10rpx);
+    }
+
+    .extra_coupon_item .coupon_info{
+        font-size: 22rpx;
         color: #757575;
-        margin-top: 20rpx;
-        width: 350rpx;
+        width: 100%;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow:ellipsis;
         white-space: nowrap;
+    }
+
+    .disabledText{
+        background-image: url("../../../../static/images/tickets/disabledTickets.jpg");
+        background-size: 100% 100%;
+    }
+
+    .disabledText  h4{
+        color: #999!important;
+    }
+    .disabledText  span {
+        color: #999!important;
+    }
+
+    .disabledText h3{
+        color: #999!important;
+    }
+
+    .disabledText div{
+        color: #999!important;
     }
 
     .integral_item_info{
@@ -326,7 +446,6 @@
         font-size: 26rpx;
         color: #757575;
     }
-
 
 
 </style>

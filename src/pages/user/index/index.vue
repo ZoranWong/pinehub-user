@@ -51,8 +51,7 @@
                     <span>查看更多</span>
                 </li>
             </ul>
-            <div @click="redirectTo('ticketCenter')">领券中心</div>
-            <img src="./img/Activity-01.png" alt="" class="activities" @click="redirectTo('user.store')">
+            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="redirectTo('ticketCenter')">
 
             <img
                 src="./img/Activity-02.png"
@@ -106,7 +105,8 @@
         <!--        </div>-->
 
 
-        <ReceivedNewTickets v-if="showNew" @close="showNew = false" />
+        <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
+        <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
 
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
@@ -118,6 +118,7 @@
     import CustomHeader from './components/CustomHeader';
     import Auth from '../../../components/Auth';
     import ReceivedNewTickets from '../../../components/ReceivedNewTickets';
+    import OldUserReceivedNewTickets from '../../../components/OldUserReceivedNewTickets';
     import {getUpdateMange} from '../../../utils/getUpdateManage';
     import _ from 'underscore'
     export default {
@@ -125,7 +126,8 @@
             'footer-nav': FooterNav,
             CustomHeader,
             Auth,
-            ReceivedNewTickets
+            ReceivedNewTickets,
+            OldUserReceivedNewTickets
         },
         data () {
             return {
@@ -143,12 +145,10 @@
                 timer: null,
                 showAuth: false,
                 showBindMobile: false,
-                showNew: true
             };
         },
         computed: {
             shopCode () {
-                console.log(this.model.account.shopCode, '这是从我数据记录里拿到的 shop code');
                 return this.model.account.shopCode
             },
             indexBanners () {
@@ -213,6 +213,13 @@
             },
             userId () {
                 return this.model.account.userId;
+            },
+            newUserCoupon () {
+                return this.model.account.newUserCoupon
+            },
+            newCoupons () {
+                console.log(this.model.account.newCoupons, '%%%%%%%%%%%%%%%%%%%%%%%');
+                return this.model.account.newCoupons
             }
         },
         watch: {
@@ -242,9 +249,11 @@
                 if (this.storeId && this.registered && this.isMember ) {
                     this.bindConsumer()
                 }
+                if (this.registered && this.isMember ) {
+                    this.$command('LOAD_POP', 'PLATFORM_SEND')
+                }
             },
             userId (val) {
-                console.log(val, 'iiiiiiiiiiiiiiiiiiiiiuser id');
                 if (val) {
                     this.$socket.notification(val, (data)=>{
                         console.log(data, '-------- APP User notification --------');
@@ -320,9 +329,12 @@
                 console.log('进来了吗');
                 this.bindConsumer()
             }
+
+            if (this.registered && this.isMember) {
+                this.$command('LOAD_POP', 'PLATFORM_SEND')
+            }
         },
         onLoad (options) {
-            console.log('这是 onload');
             if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
                 //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
@@ -333,6 +345,12 @@
             });
         },
         methods: {
+            closePop () {
+                this.model.account.dispatch('hasNewUserCoupon', false);
+            },
+            closeNewPop () {
+                this.model.account.dispatch('clearNewCoupons')
+            },
             bannerTransition (e) {
                 // let dx = e.mp.detail.dx;
                 // if (dx > 250) {
@@ -607,7 +625,15 @@
         height: 180rpx;
         margin-left: 20rpx;
         border-radius: 20rpx;
-        margin-top: 20rpx;
+        margin-top: 10rpx;
+    }
+
+    .couponBanner{
+        width: 710rpx;
+        height: 150rpx;
+        margin-left: 20rpx;
+        border-radius: 20rpx;
+        margin-top: 10rpx;
     }
     /*新增代码截止*/
     #index_logo {
