@@ -12,9 +12,8 @@ export default class WebSocketService extends Service {
             broadcaster: 'socket.io',
             host: this.gateway,
             disableStats: true,
-            enabledTransports: ['ws', 'wss'], // <-- only use ws and wss as valid transports
+            enabledTransports: ['ws', 'wss']
         });
-        console.log(this.connection, '--------------------');
     }
 
     onOpen () {
