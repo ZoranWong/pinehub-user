@@ -35,7 +35,7 @@
             </div>
 
             <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
-                <li v-for="item in activityProducts" :key="item.id" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
+                <li v-for="(item, key) in activityProducts" :key="key" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
                     <img :src="item['main_image']" alt="" class="productImg">
                     <div class="selledout" v-if="!item.stock">
                         <span class="selloutConent">已抢光</span>

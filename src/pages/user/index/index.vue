@@ -30,13 +30,13 @@
                         @animationfinish="bannerChange"
                         @transition="bannerTransition">
                         <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
-                            <swiper-item >
+                            <swiper-item :key="key">
                                 <image :src="item.image" class="index-slide-image" mode="aspectFill" @click="bannerJump(item)"/>
                             </swiper-item>
                         </block>
                     </swiper>
                     <div class="customDots">
-                        <span v-for="(item,index) in indexBanners" :class="index === currentIndex ? 'dots activeDots':'dots'" ></span>
+                        <span v-for="(item,index) in indexBanners" :key="index" :class="index === currentIndex ? 'dots activeDots':'dots'" ></span>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,8 @@
                 src="./img/Activity-02.png"
                 alt=""
                 class="activities"
-                v-for="item in activities"
+                v-for="(item, index ) in activities"
+                :key="index"
                 @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})"
             >
         </div>
@@ -255,9 +256,13 @@
             },
             userId (val) {
                 if (val) {
+                    this.$socket.userId = val;
                     this.$socket.notification(val, (data)=>{
                         console.log(data, '-------- APP User notification --------');
-                    })
+                    });
+                    this.$socket.eventListener('test', 'TestEvent', (data) => {
+                        console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
+                    });
                 }
             }
         },
