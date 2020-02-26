@@ -49,7 +49,7 @@
                     <div class="bottom">
                         <h4 class="price">{{item['sell_price_format']}}</h4>
                         <img class="add" src="../../../../static/icons/add.png" v-if="item.stock" alt="" @click.stop="addToShoppingCart(item)">
-                        <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                        <img class="add" src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                     </div>
                 </li>
             </ul>

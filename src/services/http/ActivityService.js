@@ -80,9 +80,11 @@ export default class ActivityService extends ApiService {
     }
 
     // 活动可用优惠券
-    async actAvailableCoupons (id) {
-        let response = await this.httpGet(`api/mp/activity/${id}/coupons`);
-        return response.data
+    async actAvailableCoupons (id, page) {
+        let response = await this.httpGet(`api/mp/activity/${id}/coupons`, {
+            page
+        });
+        return response
     }
 
     // 创建活动订单

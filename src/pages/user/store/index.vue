@@ -61,7 +61,7 @@
                                     <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">
                                     <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >
                                     <img src="../../../../static/icons/add.png" alt="" v-if="item.stock" @click.stop="addToShoppingCart(item, 1)">
-                                    <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                                    <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                                 </div>
                             </div>
                         </div>

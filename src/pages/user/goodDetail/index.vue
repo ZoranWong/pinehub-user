@@ -35,7 +35,7 @@
                     <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />
                     <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >
                     <img src="../../../../static/icons/add.png" class="add" alt="" v-if="goodDetail.stock" @click.stop="addToShoppingCart(goodDetail, 1)" />
-                    <i class="iconfont disabledAdd" v-else>&#xe670;</i>
+                    <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                 </div>
             </div>
             <div id="good_synopsis">

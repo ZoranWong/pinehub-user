@@ -38,8 +38,9 @@
                             <div class="bottom">
                                 <div class="bottomLeft" @click.stop="showMore = !showMore">
                                     使用说明
-                                    <img src="../../../../static/images/tickets/top.jpg" alt="" v-if="!showMore">
-                                    <img src="../../../../static/images/tickets/bottom.jpg" alt="" v-else>
+                                    <img src="../../../../static/images/tickets/bottom.jpg" alt="" v-if="!showMore">
+                                    <img src="../../../../static/images/tickets/top.jpg" alt="" v-else>
+
                                 </div>
                                 <div class="bottomRight" >
                                     <button v-if="codeTicket['can_receive'] && codeTicket['owned_count'] === 0 && codeTicket['remain_count'] > 0 " >立即领取</button>

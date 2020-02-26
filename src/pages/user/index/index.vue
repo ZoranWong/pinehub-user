@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <CustomHeader :title="title" :needReturn="false" :backColor="backColor" />
+        <CustomHeader :title="title" :needReturn="false" :backColor="backColor1" />
         <Auth v-if="showAuth" @close="closeAuth" />
         <!--        <div id="index_header">-->
         <!--            <div id="index_logo" @click="redirectTo('special.virusTopic')"></div>-->
@@ -10,7 +10,7 @@
         <!--            </div>-->
         <!--        </div>-->
         <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
-            <div id="index_header" :style="{'background': backColor}">
+            <div id="index_header" >
                 <div id="products_search" >
                     <!--                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>-->
                     <!--                    <i class="iconfont search">&#xe65c;</i>-->
@@ -140,7 +140,7 @@
                 name: '',
                 screenHeight: 0,
                 currentIndex: 0,
-                backColor: '#a85231',
+                backColor1: 'linear-gradient(to right,#fedc56,#ffcf15);',
                 alpha: 1,
                 timer: null,
                 showAuth: false,
@@ -359,15 +359,15 @@
                 // }
             },
             bannerChange (e) {
-                let event = e.mp.detail;
-                this.currentIndex = event.current;
-                if (event.current === 0) {
-                    this.backColor = '#a85231'
-                } else if(event.current === 1) {
-                    this.backColor = '#0368b6'
-                } else if (event.current === 2) {
-                    this.backColor = '#049473'
-                }
+                // let event = e.mp.detail;
+                // this.currentIndex = event.current;
+                // if (event.current === 0) {
+                //     this.backColor = '#a85231'
+                // } else if(event.current === 1) {
+                //     this.backColor = '#0368b6'
+                // } else if (event.current === 2) {
+                //     this.backColor = '#049473'
+                // }
             },
             bannerJump (item) {
                 if (item['can_jump']) {
@@ -480,7 +480,7 @@
         overflow: hidden;
     }
     #index_header {
-        background: #049473;
+        background: linear-gradient(to right,rgba(253,224,104,1),rgba(255,204,0,1));
         height: 319rpx;
         width: 1228rpx;
         margin-left: -239rpx;
@@ -625,7 +625,7 @@
         height: 180rpx;
         margin-left: 20rpx;
         border-radius: 20rpx;
-        margin-top: 10rpx;
+        margin-top: 15rpx;
     }
 
     .couponBanner{
@@ -633,7 +633,7 @@
         height: 150rpx;
         margin-left: 20rpx;
         border-radius: 20rpx;
-        margin-top: 10rpx;
+        margin-top: 20rpx;
     }
     /*新增代码截止*/
     #index_logo {

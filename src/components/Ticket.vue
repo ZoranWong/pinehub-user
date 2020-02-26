@@ -1,8 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div v-if="ticket" class="coupon-wrapper clearfix bgff">
-        <div class="new_coupons_item" @click="selectTicket(ticket)" >
-            <div :class="ticket.status === '已使用' || ticket.status === '已过期' ? 'main_coupon_item disabledText' : 'main_coupon_item'" @click.stop="ticketDetail(ticket.id)">
+        <div class="new_coupons_item" @click="selectTicket(ticket)"  >
+            <div :class="isInvalid ? 'main_coupon_item disabledText' : 'main_coupon_item'">
                 <div class="left">
                     <h4 v-if="ticket['typeDesc'] === '现金券'">￥{{ticket.benefit}}</h4>
                     <h4 v-else>{{ticket.benefit}}折</h4>
@@ -22,14 +22,15 @@
                     <div class="bottom">
                         <div class="bottomLeft" @click.stop="showMore = !showMore">
                             使用说明
-                            <img src="../../static/images/tickets/top.jpg" alt="" v-if="!showMore">
-                            <img src="../../static/images/tickets/bottom.jpg" alt="" v-else>
+                            <img src="../../static/images/tickets/bottom.jpg" alt="" v-if="!showMore">
+                            <img src="../../static/images/tickets/top.jpg" alt="" v-else>
+
                         </div>
                         <div class="diabled" v-if="isInvalid">
                             <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" >
                         </div>
                         <div class="bottomRight" v-if="!isInvalid && type === 'list'">
-                            <button @click="ticketDetail(ticket.id)">查看详情</button>
+                            <button @click.stop="ticketDetail(ticket.id)" v-if="!ticket['record_id']">查看详情</button>
                         </div>
                         <div class="bottomRight" v-if="!isInvalid && type === 'receive'">
                             <button @click.stop="receiveIt(ticket.id)" v-if="ticket['can_receive'] && ticket['remain_count'] > 0 && ticket['owned_count'] === 0">立即领取</button>
@@ -39,9 +40,10 @@
                         </div>
                     </div>
                 </div>
+                <img src="../../static/icons/jiaobiao.jpg" v-if="isSelected" class="jiaobiao" alt="">
             </div>
             <div class="extra_coupon_item" v-if="showMore">
-                <div class="coupon_info">· 适用范围: {{ticket['useCondition']}}</div>
+                <div class="coupon_info" v-if="!ticket['record_id']">· 适用范围: {{ticket['useCondition']}}</div>
                 <div class="coupon_info">· {{ticket['is_sharing']}}</div>
             </div>
         </div>
@@ -66,7 +68,23 @@
                 type: String
             }
 		},
+        watch: {
+            couponIds (val) {
+                if (val.length) {
+                    _.map(this.availableCoupons, (aCoupon)=>{
+
+                    })
+                }
+            }
+        },
 		computed: {
+            availableCoupons () {
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.availableCoupons
+                } else {
+                    return this.model.user.tickets.availableCoupons
+                }
+            },
 			couponIds () {
                 if (this.$route.query.type === 'activity') {
                     return this.model.activity.couponIds
@@ -105,7 +123,32 @@
                 });
             },
 			selectTicket (coupon) {
-			    let type = this.$route.query.type;
+                if (this.isSelected) {
+
+                } else {
+                    for (let i = 0; i< this.couponIds.length ; i++) {
+                        let id = this.couponIds[i];
+                        if (_.find(this.availableCoupons, (c)=>{
+                            return c['record_id'] === id && !c['is_sharing_preferential']
+                        })) {
+                            wx.showToast({
+                                title: '该优惠券不可与已选择优惠券同时使用',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            return
+                        }
+                    }
+                    if (this.couponIds.length && !coupon['is_sharing_preferential']) {
+                        wx.showToast({
+                            title: '该优惠券不可与已选择优惠券同时使用',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return
+                    }
+                }
+                let type = this.$route.query.type;
 				if (this.$route.query.needReturn) {
 				    if (type === 'activity') {
                         this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
@@ -179,6 +222,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
+    }
+
+    .jiaobiao{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 71rpx;
+        height: 71rpx;
     }
 
     .main_coupon_item .left{

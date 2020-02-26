@@ -61,9 +61,16 @@ export default class Tickets extends Model {
                 }
                 coupon.floor = coupon['floor'] > 0 ? `满${coupon['floor']}元可用` : '无门槛';
                 coupon.coupon_image = coupon['banner'];
-                coupon.validTime = coupon['valid_term_desc']
+                coupon.validTime = coupon['valid_term_desc'];
+                coupon['is_sharing'] = coupon['is_sharing_preferential'] ? '可与其他优惠券共享' : '不可与其他优惠券共享';
+                coupon['useCondition'] = coupon['applicable_desc'] && coupon['applicable_desc'][0]['value_display'];
+                this.state.availableCoupons.push(coupon)
             });
-            this.state.availableCoupons = coupons
+
+        });
+
+        this.addEventListener('clearAvailableCoupons', function () {
+            this.state.availableCoupons = [];
         });
 
 

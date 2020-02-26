@@ -4,9 +4,9 @@ export default class MerchandisesService extends ApiService {
     async list (route, query) {
         // 结果
         let response = await this.httpGet(route, query);
-    
+
         console.log(response, '-----------------------------');
-    
+
         let merchandises = response.data;
         let pagination = response.meta.pagination;
         let totalNum = pagination.total;
@@ -67,10 +67,12 @@ export default class MerchandisesService extends ApiService {
         };
         return await this.list(route, query);
     }
-    
+
     // 早餐预定可用优惠券
-    async availableCoupons () {
-        let response = await this.httpGet('api/mp/breakfast/booking/coupons');
-        return response.data
+    async availableCoupons (page) {
+        let response = await this.httpGet('api/mp/breakfast/booking/coupons', {
+            page
+        });
+        return response
     }
 }

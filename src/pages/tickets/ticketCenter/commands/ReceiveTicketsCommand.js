@@ -10,16 +10,17 @@ export default class ReceiveTicketsCommand extends Command {
             async success (res) {
                 if (res.confirm) {
                     response = await self.service('http.tickets').receiveTickets(id);
-                    console.log(response.message, '............................................................');
                     if (response.message) {
                         wx.showToast({
                             title: response.message,
                             icon: 'none',
                             duration: 2000
                         });
-                        if (type === 'list') {
-                            self.refresh()
-                        }
+                        setTimeout(() => {
+                            if (type === 'list') {
+                                self.refresh()
+                            }
+                        }, 1500);
                     }
                 }
             }

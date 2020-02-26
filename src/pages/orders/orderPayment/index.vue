@@ -253,7 +253,8 @@
 				this.$command('ORDER_COUPON_IDS', id)
             }
 			this.$command('CALCULATE_PRICE_COMMAND',type,{
-				coupon_records: this.couponIds
+				coupon_records: this.couponIds,
+                carts: []
             });
 			this.$command('AVAILABLE_COUPONS', type);
             this.$command('LOAD_DEFAULT_USER_ADDRESS', 'mall')

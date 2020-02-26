@@ -5,7 +5,6 @@ export default class LoadPop extends Command {
         console.log(mode, ' ---------- index mode -----------------');
         try {
             let result = await this.service('http.account').popup(mode);
-            console.log(result, '@@@@@@@@@@@@@@@@@@@@@@@@');
             if (mode === 'NEW_USER') {
                 if (result.length) {
                     this.model.account.dispatch('hasNewUserCoupon', true)
@@ -19,7 +18,6 @@ export default class LoadPop extends Command {
                 } else {
                     this.model.account.dispatch('saveNewCoupons', {coupons: result})
                 }
-
             }
         } catch (e) {
             throw e;

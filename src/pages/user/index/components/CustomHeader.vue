@@ -8,7 +8,7 @@
                 <span  class="backHome" @click="backHome" v-if="needBackHome"><i class="iconfont"  >&#xe664;</i>回到首页</span>
                 <i class="iconfont" @click="back" v-else>&#xe679;</i>
             </div>
-            <div id="nav_title" :style="{color: '#fff'}">
+            <div id="nav_title" :style="{color: '#111'}">
                 {{title}}
             </div>
         </div>

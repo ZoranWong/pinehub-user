@@ -82,10 +82,13 @@
 				this.$emit('useTicket', ticket);
 			},
 			scrolltolower() {
-				if (this.$route.query.needReturn) return;
-				if(!this.isLoadedAll) {
-					this.loadTickets(this.nextPage, this.statusType);
-				}
+				if (this.$route.query.needReturn) {
+
+                } else {
+                    if(!this.isLoadedAll) {
+                        this.loadTickets(this.nextPage, this.statusType);
+                    }
+                }
 			},
 		},
 		mounted() {

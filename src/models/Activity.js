@@ -208,6 +208,7 @@ export default class Activity extends Model {
                 coupon.coupon_image = coupon['banner'];
                 coupon.validTime = coupon['valid_term_desc']
             });
+            console.log(coupons, '??????????????????');
             this.state.availableCoupons = coupons
         });
 
