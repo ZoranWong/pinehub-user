@@ -257,7 +257,7 @@
             userId (val) {
                 if (val) {
                     this.$socket.userId = val;
-                    this.$socket.notification(val, (data)=>{
+                    this.$socket.notification((data)=>{
                         console.log(data, '-------- APP User notification --------');
                     });
                     this.$socket.eventListener('test', 'TestEvent', (data) => {

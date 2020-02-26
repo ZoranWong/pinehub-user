@@ -44,7 +44,8 @@ export default class WebSocketService extends Service {
     }
     async privateChannel (type) {
         let connection = await this.connection;
-        return (this._privateChannel = this._privateChannel ? this._privateChannel : connection.private(`${type}.${this._userId}.mp`));
+        this._privateChannel = this._privateChannel ? this._privateChannel : connection.private(`${type}.${this._userId}.mp`);
+        return this._privateChannel;
     }
 
     async channel (channel) {
@@ -54,12 +55,10 @@ export default class WebSocketService extends Service {
     }
 
     async notification (callback) {
-        this.privateChannel('notification').notification(callback);
+        (await this.privateChannel('notification')).notification(callback);
     }
 
     async eventListener (channel, event, callback) {
-        console.log(`channel = ${channel}`, this);
-        this.channel(channel).listen(event, callback);
-        console.log(this._channel)
+        (await this.channel(channel)).listen(event, callback);
     }
 }
