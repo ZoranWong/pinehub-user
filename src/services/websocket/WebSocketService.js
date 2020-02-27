@@ -1,5 +1,6 @@
 import Service from '../Service';
 import Echo from 'laravel-echo'
+import th from "element-ui/src/locale/lang/th";
 
 const io = require('weapp.socket.io');
 
@@ -7,6 +8,9 @@ const io = require('weapp.socket.io');
 export default class WebSocketService extends Service {
     _gateway = null;
     _connection = null;
+    _userId = null;
+    _privateChannel = null;
+    _channel = null;
 
     constructor (application) {
         super(application);
@@ -34,8 +38,27 @@ export default class WebSocketService extends Service {
         })();
     }
 
-    async notification (userId, callback) {
+    set userId (id) {
+        this._userId = id;
+        return id;
+    }
+    async privateChannel (type) {
         let connection = await this.connection;
-        connection.private(`App.Models.User.${userId}`).notification(callback);
+        this._privateChannel = this._privateChannel ? this._privateChannel : connection.private(`${type}.${this._userId}.mp`);
+        return this._privateChannel;
+    }
+
+    async channel (channel) {
+        let connection = await this.connection;
+        this._channel = this._channel ? this._channel : connection.channel(channel);
+        return this._channel;
+    }
+
+    async notification (callback) {
+        (await this.privateChannel('notification')).notification(callback);
+    }
+
+    async eventListener (channel, event, callback) {
+        (await this.channel(channel)).listen(event, callback);
     }
 }
