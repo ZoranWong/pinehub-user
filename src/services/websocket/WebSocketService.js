@@ -24,6 +24,7 @@ export default class WebSocketService extends Service {
                 enabledTransports: ['ws', 'wss'],
                 auth: {
                     headers: {
+                        'AuthGuard': 'mp',
                         'Authorization': 'Bearer ' + token // getToken前端自行实现
                     }
                 }
