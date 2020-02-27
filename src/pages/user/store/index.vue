@@ -20,6 +20,7 @@
         <div id="store_header" >
             <input type="text" placeholder="请输入商品名称" id="store_search" v-model="search">
             <i class="iconfont" @click="handleSearch">&#xe65c;</i>
+<!--            <ProductSearch :products="searchResult" />-->
         </div>
         <div id="store_goods" :style="{'height' : listHeight + 'px'}">
             <ul id="store_goods_type" :style="{'height' : listHeight + 'px'}">
@@ -86,14 +87,15 @@
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
 	import _ from 'underscore'
-
+    import ProductSearch from './components/ProductSearch';
   export default {
       components: {
 		  CustomHeader,
           ShoppingCart,
           SelectSpecification,
 		  ChooseSelfRaisingPoint,
-		  Auth
+		  Auth,
+          ProductSearch
       },
       data() {
           return {
@@ -105,7 +107,8 @@
 			  getAuth: false,
               screenHeight: 0,
               queryCateId: '',
-              search: ''
+              search: '',
+              searchResult: []
           };
       },
       onShareAppMessage: function (res) {
@@ -236,7 +239,9 @@
           async handleSearch () {
               console.log(this.search, '---');
               let result = await this.http.store.productsSearch(this.search)
-              console.log(result, 'xxxx');
+              if (result) {
+                  this.searchResult = result;
+              }
           },
           changeBuyNum (e) {
               console.log(e, '==========>');
@@ -408,6 +413,11 @@
       background: #fff;
       border-bottom: 2rpx solid #f2f2f2;
       position: relative;
+  }
+
+  #store_header #products{
+      position: absolute;
+      top: 108rpx;
   }
 
   #store_header #store_search {

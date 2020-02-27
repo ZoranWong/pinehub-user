@@ -364,8 +364,8 @@
                 // }
             },
             bannerChange (e) {
-                // let event = e.mp.detail;
-                // this.currentIndex = event.current;
+                let event = e.mp.detail;
+                this.currentIndex = event.current;
                 // if (event.current === 0) {
                 //     this.backColor = '#a85231'
                 // } else if(event.current === 1) {
