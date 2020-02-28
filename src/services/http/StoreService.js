@@ -138,4 +138,10 @@ export default class StoreService extends ApiService {
         });
         return response.data
     }
+
+    // 获取起送价
+    async getDeliveryPrice () {
+        let response = await this.httpGet('/api/mp/orders/settings/all');
+        return response.data
+    }
 }

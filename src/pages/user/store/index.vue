@@ -77,7 +77,6 @@
             :item="selectItem"
             :type="'mall'"
             @close="closeSelectSpec" />
-        <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
     </div>
 </template>
 <script>
@@ -195,9 +194,6 @@
           goods(){
 			  return this.model.user.store.goods
           },
-          showPoints () {
-			  return this.model.user.store.showPoints
-          },
 		  statusBarHeight () {
 			  return this.model.global.barHeight.statusBarHeight
 		  },
@@ -274,9 +270,6 @@
 		  closeAuth () {
 			  this.getAuth = false
 		  },
-		  closePoints () {
-             this.showPoints = false
-          },
           tabSelect(id){
               this.activeTab = id;
 			  this.$command('LOAD_STORE_COMMAND',id, 1)

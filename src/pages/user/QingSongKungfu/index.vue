@@ -111,7 +111,7 @@
 				rpxRate: 1,
                 actId: '',
                 banners: [],
-                phone: '15038476134',
+                phone: '0551-68153763',
 				screenWitdh: 0,
                 startPoint: {},
                 right: 0,

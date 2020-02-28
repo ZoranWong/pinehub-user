@@ -278,7 +278,22 @@
             },
             payment() {
                 let data = this.points.filter(item => item.id === this.checkId)[0];
-                console.log(data);
+                if (this.$route.query.type === 'mall') {
+                    this.model.user.store.dispatch('selectPoints', {
+                        boolean: false,
+                        type: this.type
+                    })
+                } else if (this.$route.query.type === 'breakfast') {
+                    console.log('这是早餐车的购物车');
+                    this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
+                        boolean: false,
+                        type: this.type
+                    })
+                } else if (this.$route.query.type === 'activity') {
+                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        query: {type: this.$route.query.type, actId: this.$route.query.type}
+                    });
+                }
                 this.$command('SELECTED_POINT_COMMAND', data)
                 this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
                     query: {

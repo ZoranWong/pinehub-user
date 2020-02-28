@@ -213,7 +213,9 @@
 				coupon_records: this.actCouponIds,
                 carts: [],
                 remark: '',
-                activity_id: actId
+                activity_id: actId,
+                delivery_type: 'HOME_DELIVERY',
+                order_type: 'ACTIVITY_PRODUCT_ORDER',
             });
             this.$command('ACTIVITY_AVAILABLE_COUPONS', actId);
             this.$command('LOAD_DEFAULT_USER_ADDRESS')

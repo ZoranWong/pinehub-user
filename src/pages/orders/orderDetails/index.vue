@@ -97,6 +97,9 @@
                     <em @click="cpoy(orderDetail['order_no'])">复制</em>
                 </div>
                 <div>
+                    <span>订单备注：{{orderDetail['remark']}} </span>
+                </div>
+                <div>
                     <span>创建时间：{{orderDetail['created_at']}} </span>
                     <span> {{orderDetail['state_desc']}}</span>
                 </div>

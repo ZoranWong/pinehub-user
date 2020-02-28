@@ -97,7 +97,9 @@ export default class ActivityService extends ApiService {
             coupon_records: coupons,
             expect_receive_date: date,
             expect_receive_time_start: start,
-            expect_receive_time_end: end
+            expect_receive_time_end: end,
+            delivery_type: 'HOME_DELIVERY',
+            order_type: 'ACTIVITY_PRODUCT_ORDER'
         });
         return response.data
     }

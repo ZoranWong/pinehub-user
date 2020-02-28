@@ -26,6 +26,9 @@ export default class Account extends Model {
             isMember (state) {
                 return !!state.mobile;
             },
+            userMobile (state) {
+                return state.mobile
+            },
             isShopManager (state) {
                 return state.isShopManager;
             },

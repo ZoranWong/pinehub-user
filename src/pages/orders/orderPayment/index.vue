@@ -1,99 +1,215 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-        <CustomHeader :title="title" :needReturn="true" />
-        <div class="total" :style="{height: mainHeight + 'px', overflow: 'auto'}">
-            <div id="pay_shop_info">
-                <!--            <i class="iconfont location">&#xe80b;</i>-->
-                <img class="locationImg" src="../../../../static/icons/location.png" alt="">
-                <div class="pay_shop_info">
-                    <div class="pay_shop_info_name" @click="selectPoint">
-                        <h4>
-                            {{selectedPoint.name}}
-                            <span>{{selectedPoint.mobile}}</span>
-                        </h4>
-                    </div>
-                    <div class="pay_shop_info_address">
-                        {{selectedPoint.address}}
-                    </div>
-                </div>
-                <i class="iconfont arrow">&#xe6a3;</i>
+        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" />
+        <div class="background">
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+
+        <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
+<!--            <div id="pay_shop_info">-->
+<!--                &lt;!&ndash;            <i class="iconfont location">&#xe80b;</i>&ndash;&gt;-->
+<!--                <img class="locationImg" src="../../../../static/icons/location.png" alt="">-->
+<!--                <div class="pay_shop_info">-->
+<!--                    <div class="pay_shop_info_name" >-->
+<!--                        <h4>-->
+<!--                            {{selectedPoint.name}}-->
+<!--                            <span>{{selectedPoint.mobile}}</span>-->
+<!--                        </h4>-->
+<!--                    </div>-->
+<!--                    <div class="pay_shop_info_address">-->
+<!--                        {{selectedPoint.address}}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <i class="iconfont arrow">&#xe6a3;</i>-->
+<!--            </div>-->
+<!--            <div id="pay_shop_info_act"  v-if="type === 'mall' ">-->
+<!--                <img class="locationImg" src="../../../../static/icons/location.png" alt="">-->
+<!--                <div class="pay_shop_info" v-if="addresses.id"  >-->
+<!--                    <div class="pay_shop_info_name">-->
+<!--                        <h4>-->
+<!--                            {{addresses['consignee_name']}}-->
+<!--                            <span>{{addresses['consignee_mobile_phone']}}</span>-->
+<!--                        </h4>-->
+<!--                    </div>-->
+<!--                    <div class="pay_shop_info_address">-->
+<!--                        {{addresses.rangeAddress}}{{addresses['detail_address']}}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="pay_shop_info" v-else>-->
+<!--                    请选择收货地址-->
+<!--                </div>-->
+<!--                <i class="iconfont arrow">&#xe6a3;</i>-->
+<!--            </div>-->
+
+
+
+            <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
+                <div :class="activeTab === 'send'? 'tabItem active':'tabItem'"  @click="changeTab('send')">同城配送</div>
+                <div :class="activeTab === 'pick'? 'tabItem active': 'tabItem'" @click="changeTab('pick')">预定自提</div>
             </div>
-            <div id="pay_shop_info_act" @click="selectAddressPoint" v-if="type === 'mall' ">
-                <img class="locationImg" src="../../../../static/icons/location.png" alt="">
-                <div class="pay_shop_info" v-if="addresses.id"  >
-                    <div class="pay_shop_info_name">
-                        <h4>
-                            {{addresses['consignee_name']}}
-                            <span>{{addresses['consignee_mobile_phone']}}</span>
-                        </h4>
+            <div class="sendContainer" v-if="activeTab === 'send'">
+                <div class="top">
+                    <div class="topLeft " @click="selectAddressPoint" v-if="!addresses.id">
+                        <img src="../../../../static/icons/location.png" alt="">
+                        请选择收货地址
                     </div>
-                    <div class="pay_shop_info_address">
-                        {{addresses.rangeAddress}}{{addresses['detail_address']}}
-                    </div>
-                </div>
-                <div class="pay_shop_info" v-else>
-                    请选择收货地址
-                </div>
-                <i class="iconfont arrow">&#xe6a3;</i>
-            </div>
-            <div id="pay_pick_up_info">
-                <!--            <i class="iconfont location">&#xe80b;</i>-->
-                <img class="locationImg" src="../../../../static/icons/time.png" alt="">
-                <div class="order_info">
-                    <div class="order_info_name">
-                        <h4>
-                            <span>21时前下单次日取，21时后下单后日取</span>
-                        </h4>
-                        <h4>
-                            预约取货时间
-                            <span class="order_info_time">{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</span>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-            <ul id="good_list">
-                <li v-for="(good,index) in goodInShoppingCart" :key="index">
-                    <img :src="good.image" alt="">
-                    <div id="good_info">
-                        <h3>{{good['name']}}</h3>
-                        <em v-if="good['spec_desp']">{{good['spec_desp']}}</em>
-                        <div id="good_info_price">
-                            <h3>{{good['price_format']}}</h3>
-                            <em>X {{good['buy_num']}}</em>
+                    <div class="topLeft1" @click="selectAddressPoint" v-else>
+                        <div class="pay_shop_info_address">
+                            <span class="tag" v-if="addresses.isDefaultTag">{{addresses['tag']}}</span>
+                            <span class="tag" v-else>{{addresses['consignee_name'][0]}}</span>
+                            {{addresses.rangeAddress}}{{addresses['detail_address']}}
+                        </div>
+                        <div class="pay_shop_info_name">
+                            <h4>
+                                {{addresses['consignee_name']}}
+                                <span>{{addresses['consignee_mobile_phone']}}</span>
+                            </h4>
                         </div>
                     </div>
-                </li>
-            </ul>
-            <ul id="total">
+                    <img src="./imgs/right-arrow.png" alt="">
+                </div>
+                <div class="middle"></div>
+                <div class="bottom">
+                    <h4>次日送达</h4>
+                    <span>晚上9点前下单，次日即可送达。疫情期间请戴好口罩哦！</span>
+                </div>
+            </div>
+            <div class="pickContainer" v-if="activeTab === 'pick'" :style="{'backgroundImage': 'url(' + mapBackground + ')' }">
+                <div class="top">
+                    <div class="topLeft">
+                        <div class="topLeftTop" v-if="!selectedPoint.name" @click="selectPoint">
+                            请选择自提店铺
+                        </div>
+                        <div class="topLeftTop" v-else @click="selectPoint">
+                            {{selectedPoint.name}}
+                        </div>
+                        <div class="topLeftBottom">
+                            <div class="left">
+                                <div class="leftTop">自提时间</div>
+                                <div class="leftBottom" v-if="!selectedPoint.name">请选择自提店铺</div>
+                                <div class="leftBottom" v-else>{{selectedPoint['start_at']}} - {{selectedPoint['end_at']}}</div>
+                            </div>
+                            <div class="middle"></div>
+                            <div class="right">
+                                <div class="rightTop">联系电话</div>
+                                <div class="inputs">
+                                    <input class="rightBottom" v-model="mobile" />
+                                    <img src="./imgs/editor.png" alt="">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topRight" @click="selectPoint" v-if="selectedPoint.name">
+                        <span>距您{{selectedPoint['formatDistance']}}</span>
+                    </div>
+                    <div class="topRight" @click="selectPoint" v-else>
+                        <span>点击选择店铺</span>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <img @click="agreement = false" src="./imgs/selected.png" alt="" v-if="agreement">
+                    <img @click="agreement = true" src="./imgs/uncheck.png" alt="" v-else>
+                    <h4>
+                        同意并接受
+                        <span>
+                            《预定自提服务协议》
+                        </span>
+                    </h4>
+                </div>
+            </div>
+
+            <div class="productsContainer">
+                <div class="productHeader">
+                    <h4 v-if="activeTab === 'send'">青松食品（宁西路28号青松集团）</h4>
+                    <h4 v-if="activeTab === 'pick' && !selectedPoint.name">青松食品（宁西路28号青松集团）</h4>
+                    <h4 v-if="activeTab === 'pick' && selectedPoint.name">{{selectedPoint['address']}}</h4>
+                    <img src="./imgs/tag.png" alt="">
+                </div>
+                <ul id="good_list">
+                    <li v-for="(good,index) in products" :key="index">
+                        <div class="left">
+                            <img :src="good.image" alt="">
+                            <div id="good_info">
+                                <h3>{{good['name']}}</h3>
+                                <h4>{{good['intro']}}</h4>
+                                <em>X {{good['buy_num']}}</em>
+                            </div>
+                        </div>
+                        <div id="good_info_price">
+                            <i>￥</i>
+                            <h3>{{good['price']}}</h3>
+                        </div>
+                    </li>
+                    <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
+                        <span v-if="!isLoadAll">展开更多</span>
+                        <span v-else>点击收起</span>
+                        <img  v-if="isLoadAll" src="./imgs/bottom-arrow.png" alt="">
+                        <img v-else src="./imgs/top-arrow.png" alt="">
+                    </div>
+                </ul>
+
+                <ul id="total">
+                    <li>
+                        <h3>商品总价</h3>
+                        <span class="small"> <i>￥</i>{{orderInfo['total_fee'] || 0}}</span>
+                    </li>
+                    <li>
+                        <h3>
+                            <img src="./imgs/minus.png" alt="">
+                            优惠金额
+                        </h3>
+                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>{{orderInfo['total_preferential_fee'] || 0}}</span>
+                    </li>
+                    <li @click="jump('couponCenter')">
+                        <h3>
+                            <img src="./imgs/coupon.png" alt="">
+                            优惠券
+                        </h3>
+                        <div class="couponUse">
+                            <em class="red2">{{availableCoupons.length - couponIds.length}}张可用</em>
+                            <span class="use_coupon" v-if="availableCoupons.length > 0">
+                                <img src="./imgs/right-arrow.png" alt="">
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <h4 class="bigH4">实付款</h4>
+                        <h5 class="big">
+                            <span class="big2">小计</span>
+                            <i>￥</i>
+                            {{orderInfo['settlement_total_fee'] || 0}}
+                        </h5>
+                    </li>
+                </ul>
+
+
+            </div>
+            <ul id="remarkBox">
                 <li>
-                    <h3>商品总价</h3>
-                    <span>{{orderInfo['total_fee_format'] || 0}}</span>
+                    <h3>备注</h3>
+                    <input type="text" v-model="remark">
+                    <em>请输入备注</em>
                 </li>
                 <li>
-                    <h3>优惠金额</h3>
-                    <span>{{orderInfo['total_preferential_fee_format'] || 0}}</span>
-                </li>
-                <li @click="jump('couponCenter')">
-                    <h3>优惠券</h3>
-                    <em>{{availableCoupons.length - couponIds.length}}张可用</em>
-                    <span class="use_coupon" v-if="availableCoupons.length > 0">
-                    {{couponIds.length || 0}}张已使用
-                    <i class="iconfont">&#xe6a3;</i>
-                </span>
-                </li>
-                <li>
-                    <h4>实付款</h4>
-                    <h5>{{orderInfo['settlement_total_fee_format'] || 0}}</h5>
+                    <h3>支付方式</h3>
+                    <span>在线支付</span>
                 </li>
             </ul>
         </div>
 
         <div id="do_payment">
-            <span>
-                金额 {{orderInfo['settlement_total_fee_format'] || 0}}
-            </span>
-            <h4 @click="check">去支付</h4>
+            <div class="do_payment_contain">
+                <span class="price">
+                     <i>￥</i>
+                     {{orderInfo['settlement_total_fee'] || 0}}
+                    <span v-if="activeTab === 'send'">（满{{deliveryPrice}}元可免费配送）</span>
+                </span>
+                <h4 @click="check" :class="!isEnough && activeTab === 'send' ? 'disabledButton': ''">提交订单</h4>
+            </div>
+
         </div>
 
         <div class="pickupTips" v-if="showTips">
@@ -110,46 +226,84 @@
                 </div>
             </div>
         </div>
-
+        <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
 	</div>
 </template>
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
-
+    import ChooseSelfRaisingPoint from '../../../components/ChooseSelfRaisingPoint';
 	import {formatMoney} from '../../../utils';
+
+	let left = require('./imgs/left.png')
+	let right = require('./imgs/right.png')
+    let mapBack = require('./imgs/map.png')
 
 	export default {
 		components: {
-			CustomHeader
+			CustomHeader,ChooseSelfRaisingPoint
 		},
 		data() {
 			return {
-				title: '支付',
+				title: '提交订单',
                 pointInfo:{},
 				tomorrowStr: '',
                 type: '',
-                showTips: false
+                showTips: false,
+                activeTab: 'send',
+                background: left,
+                backgroundPosition: 'left center',
+                products: [],
+                isLoadAll: false,
+                remark: '',
+                deliveryPrice: 0,
+                mapBackground: mapBack,
+                agreement: true,
+                mobile: ''
 			};
 		},
 		watch: {
-
+            products (val) {
+                if (!this.isLoadAll) {
+                    if (val.length > 3) {
+                        this.products = val.slice(0,3)
+                    }
+                }
+            },
+            isLoadAll (val) {
+                if (val) {
+                    this.products = this.goodInShoppingCart;
+                } else {
+                    this.products = this.products.slice(0,3)
+                }
+            }
 		},
 		computed: {
+            showPoints () {
+                return this.model.user.store.showPoints
+            },
+		    isEnough () {
+                return  (this.orderInfo['total_fee'] >= this.deliveryPrice && this.activeTab === 'send')
+            },
 			selectedPoint () {
-				return this.model.user.map.selectedMapPoint
+                return this.model.user.map.selectedMapPoint
             },
 			goodInShoppingCart () {
-				if (this.type === 'mall') {
+                if (this.type === 'mall') {
+                    this.products = this.model.user.store.goodInShoppingCart
 					return this.model.user.store.goodInShoppingCart
                 } else if (this.type === 'breakfast')  {
+                    this.products = this.model.newEvents.shoppingCarts.goodInShoppingCart
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
                 } else if (this.type === '活动') {
 
                 }
 
             },
+            userMobile () {
+                this.mobile = this.model.account.userMobile
+            },
 			orderInfo () {
-				return this.model.user.order.payment.orderInfo
+                return this.model.user.order.payment.orderInfo
             },
 			availableCoupons () {
 				return this.model.user.tickets.availableCoupons
@@ -176,10 +330,30 @@
             },
             btnHeight() {
                 let systemInfo = wx.getSystemInfoSync();
-                return 90 * systemInfo.windowWidth / 750;
+                return 150 * systemInfo.windowWidth / 750;
             },
 		},
 		methods: {
+            closePoints () {
+               this.showPoints = false
+            },
+            async getDeliveryPrice () {
+                let result = await this.http.store.getDeliveryPrice();
+                this.deliveryPrice = result['delivery_threshold']
+            },
+            extraProducts () {
+                this.isLoadAll = !this.isLoadAll;
+            },
+            changeTab (tab) {
+                this.activeTab = tab;
+                if (tab === 'send') {
+                    this.background = left;
+                    this.backgroundPosition = 'left center';
+                } else {
+                    this.background = right;
+                    this.backgroundPosition = 'right center';
+                }
+            },
             selectAddressPoint () {
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                     query: {
@@ -189,21 +363,60 @@
                 });
             },
 			selectPoint () {
-                this.$command('REDIRECT_TO', 'storesMap', 'replace' , {
-                	query: {
+                if (this.type === 'mall') {
+                    this.model.user.store.dispatch('selectPoints', {
+                		boolean: true,
+                        type: this.type
+                	})
+                } else if (this.type === 'breakfast') {
+                	console.log('这是早餐车的购物车');
+                	this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
+                		boolean: true,
                 		type: this.type
-                    }
-                });
+                	})
+                } else if (this.type === 'activity') {
+                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        query: {type: this.type, actId: this.actId}
+                    });
+                }
             },
             check () {
-                if (this.type === 'mall' && !this.addresses.id) {
+                if (this.activeTab === 'send' && !this.isEnough) {
+                    return
+                }
+                if (this.type === 'mall' && !this.addresses.id  && this.activeTab === 'send') {
                     wx.showToast({
                         title: '请选择收货地址',
                         icon: 'none'
                     });
                     return
                 };
-                if (!this.orderInfo['settlement_total_fee_format']) {
+                if (!this.agreement) {
+                    wx.showToast({
+                        title: '请先同意预定自提服务协议',
+                        icon: 'none'
+                    });
+                    return
+                };
+
+                let reg = /^1(3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\d{8}$/;
+                if (this.activeTab === 'pick' ) {
+                    if (!reg.test(this.mobile)) {
+                        wx.showToast({
+                            title: '请填写正确格式的收货人手机号',
+                            icon: 'none'
+                        });
+                        return
+                    }
+                }
+                if (this.type === 'mall' && !this.selectedPoint.name  && this.activeTab === 'pick') {
+                    wx.showToast({
+                        title: '请选择自提店铺地址',
+                        icon: 'none'
+                    });
+                    return
+                };
+                if (!this.orderInfo['settlement_total_fee']) {
                     wx.showToast({
                         title: '订单信息有误，请稍后再提交',
                         icon: 'none'
@@ -212,21 +425,34 @@
                 }
                 let now = new Date();
                 let hour = now.getHours();
-                console.log(hour);
-                console.log(hour > 14);
+                let type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
                 if (hour > 20) {
                     this.showTips = true;
                 } else {
-                    this.createOrder()
+                    this.createOrder(type)
                 }
             },
-			createOrder(){
+			createOrder(type){
                 this.showTips = false;
-				this.$command('CREATE_PAY_ORDER',{
-					shop_id: this.selectedPoint.id,
-					coupon_records: this.couponIds,
-                    address_id: this.addresses.id || ''
-                },this.type);
+                if (type === 'HOME_DELIVERY') {
+                    this.$command('CREATE_PAY_ORDER',{
+                        remark: this.remark,
+                        delivery_type: type,
+                        order_type: 'SELF_PICK',
+                        coupon_records: this.couponIds,
+                        address_id: this.addresses.id
+                    },this.type);
+                } else if( type === 'SELF_PICK') {
+                    this.$command('CREATE_PAY_ORDER',{
+                        remark: this.remark,
+                        delivery_type: type,
+                        order_type: 'SELF_PICK',
+                        shop_id: this.selectedPoint.id,
+                        coupon_records: this.couponIds,
+                        consignee_mobile_phone: this.mobile
+                    },this.type);
+                }
+
             },
             getDate () {
 				var tomorrow = new Date();
@@ -242,7 +468,7 @@
 			}
 		},
 		created() {
-
+            this.getDeliveryPrice()
 		},
 		mounted() {
             this.getDate();
@@ -252,9 +478,12 @@
 			if (id) {
 				this.$command('ORDER_COUPON_IDS', id)
             }
+            let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
 			this.$command('CALCULATE_PRICE_COMMAND',type,{
 				coupon_records: this.couponIds,
-                carts: []
+                carts: [],
+                delivery_type: delivery_type,
+                order_type: 'SELF_PICK',
             });
 			this.$command('AVAILABLE_COUPONS', type);
             this.$command('LOAD_DEFAULT_USER_ADDRESS', 'mall')
@@ -265,8 +494,435 @@
 <style>
 	page {
 		height: 100%;
-		background: #f2f2f2;
+		background: #F4F1F2;
 	}
+
+    .background{
+        width: 100%;
+        height: 400rpx;
+        position: fixed;
+        top: 0;
+        z-index: -10;
+    }
+
+    .background .top{
+        width: 100%;
+        height: 234rpx;
+        background: #FFCC00;
+    }
+
+    .background .bottom{
+        width: 100%;
+        height: 163rpx;
+        background:linear-gradient(180deg,rgba(255,204,0,1),rgba(242,242,242,1));
+    }
+
+    .totalContainer{
+        padding: 20rpx;
+        box-sizing: border-box;
+        z-index: 10000;
+    }
+
+
+    .totalContainer #tabs{
+        width: 100%;
+        height: 80rpx;
+        background-size: 690rpx 100%;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .totalContainer #tabs .tabItem{
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28rpx;
+        color: #111;
+    }
+
+    .totalContainer #tabs .active{
+        font-weight: bold;
+    }
+
+    .sendContainer{
+        width: 100%;
+        background: #fff;
+        border-radius: 25rpx;
+        border-top-left-radius: 0;
+        box-sizing: border-box;
+        padding: 40rpx 0;
+    }
+
+    .sendContainer .top{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 30rpx;
+    }
+
+    .sendContainer .top .topLeft{
+        flex: 1;
+        font-size: 40rpx;
+        color: #111;
+        font-weight: bold;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .topLeft1{
+        flex: 1;
+        font-size: 40rpx;
+        color: #111;
+        font-weight: bold;
+        display: flex;
+        justify-content: center!important;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .sendContainer .top .topLeft1 .pay_shop_info_address{
+        font-size: 40rpx;
+        color: #111;
+        width: 604rpx;
+        word-break: break-all;
+    }
+
+    .topLeft1 .tag{
+        padding: 4rpx 19rpx;
+        background:#FFF6CC;
+        border-radius:3rpx;
+        color: #ffcc00;
+        font-size: 22rpx;
+    }
+
+    .sendContainer .top .topLeft1 .pay_shop_info_name{
+        margin-top: 20rpx;
+    }
+
+    .sendContainer .top .topLeft1 .pay_shop_info_name h4{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: normal;
+    }
+
+    .sendContainer .top .topLeft1 .pay_shop_info_name h4 span{
+        margin-left: 20rpx;
+    }
+
+    .sendContainer .top .topLeft img{
+        width: 56rpx;
+        height: 56rpx;
+        margin-right: 12rpx;
+    }
+
+    .sendContainer .top img{
+        width: 12rpx;
+        height: 22rpx;
+    }
+
+    .sendContainer .middle{
+        width: 630rpx;
+        height: 2rpx;
+        background: #f2f2f2;
+        margin: 40rpx;
+    }
+
+    .sendContainer .bottom{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 0 30rpx;
+    }
+
+    .sendContainer .bottom h4{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    .sendContainer .bottom span{
+        font-size: 24rpx;
+        color: #ef9e21;
+    }
+
+    .pickContainer{
+        width: 100%;
+        background: #fff;
+        border-radius: 25rpx;
+        border-top-right-radius: 0;
+        box-sizing: border-box;
+        padding: 40rpx 0;
+        background-size: 350rpx 280rpx;
+        background-repeat: no-repeat;
+        background-position: right top;
+    }
+
+    .pickContainer .top{
+
+        box-sizing: border-box;
+        padding: 0 30rpx;
+        position: relative;
+    }
+
+    .pickContainer .top .topLeft{
+
+    }
+
+    .pickContainer .top .topLeft .topLeftTop{
+        font-size: 40rpx;
+        font-weight: bold;
+        color: #111;
+        width: 434rpx;
+        word-break: break-all;
+        margin-top: 10rpx;
+        margin-bottom: 50rpx;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .left{
+
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .left .leftTop{
+        font-size: 28rpx;
+        color: #757575;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .left .leftBottom{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: bold;
+        margin-top: 10rpx;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .middle{
+        width: 2rpx;
+        height: 76rpx;
+        background: #e6e6e6;
+        margin: 0 27rpx;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .right{
+
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .right .rightTop{
+        font-size: 28rpx;
+        color: #757575;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .right .rightBottom{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: bold;
+        margin-top: 10rpx;
+    }
+
+
+    .pickContainer .top .topLeft .topLeftBottom .right .inputs{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .right .inputs input{
+        width: 200rpx;
+    }
+
+    .pickContainer .top .topLeft .topLeftBottom .right .inputs img{
+        width: 26rpx;
+        height: 26rpx;
+        margin-top: 3rpx;
+    }
+
+
+    .pickContainer .top .topRight{
+        width: 250rpx;
+        height: 220rpx;
+        background: transparent;
+        position: absolute;
+        right: 0;
+        top: -10rpx;
+    }
+
+    .pickContainer .top .topRight span{
+        font-size: 24rpx;
+        color: #111111;
+        font-weight: bold;
+        position: absolute;
+        right: 50rpx;
+        top: 9rpx;
+    }
+
+    .pickContainer .bottom{
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 15rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 30rpx;
+    }
+
+    .pickContainer .bottom img{
+        width: 32rpx;
+        height: 32rpx;
+    }
+
+    .pickContainer .bottom h4{
+        font-size: 28rpx;
+        color: #4d4d4d;
+        margin-left: 14rpx;
+    }
+
+    .pickContainer .bottom span{
+        font-size: 28rpx;
+        color: #3C517F;
+        margin-left: 10rpx;
+    }
+
+    .productsContainer{
+        width: 100%;
+        box-sizing: border-box;
+        background: #fff;
+        border-radius: 25rpx;
+        margin: 20rpx 0;
+        padding: 0 30rpx;
+    }
+
+    .productHeader{
+        width: 100%;
+        height: 118rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1rpx solid #f2f2f2;
+    }
+
+    .productHeader h4{
+        font-size: 28rpx;
+        color: #333;
+    }
+
+    .productHeader img{
+        width: 100rpx;
+        height: 30rpx;
+    }
+
+    .productsContainer #total{
+        width: 100%;
+        margin-top: 40rpx;
+    }
+
+    .productsContainer #total li{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 82rpx;
+    }
+
+    .productsContainer #total li h3{
+        font-size: 28rpx;
+        color: #333;
+    }
+
+    .productsContainer #total li h3 img{
+        width: 32rpx;
+        height: 32rpx;
+        margin-left: 10rpx;
+    }
+
+    .productsContainer #total li span{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .productsContainer #total i{
+        font-size: 24rpx;
+        color: #111;
+        margin-right: 5rpx;
+    }
+
+    .small{
+        font-size: 32rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    .red{
+        font-size: 32rpx;
+        color: #FC3C2F;
+        font-weight: bold;
+    }
+
+    .red2{
+        font-size: 30rpx;
+        color: #FC3C2F;
+    }
+
+    .couponUse{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bigH4{
+        font-size: 30rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    .use_coupon img {
+        width: 12rpx;
+        height: 22rpx;
+        margin-left: 20rpx;
+    }
+
+    .big{
+        font-size: 50rpx;
+        color: #111;
+        font-weight: bold;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .big2{
+        font-size: 30rpx;
+        color: #111111;
+        margin-right: 15rpx;
+    }
+
+    .productsContainer #total li:first-child{
+        height: 110rpx;
+        border-bottom: 1rpx solid #f2f2f2;
+        border-top: 1rpx solid #f2f2f2;
+    }
+
+    .productsContainer #total li:last-child{
+        height: 120rpx;
+        border-top: 1rpx solid #f2f2f2;
+    }
+
+
+
+
+
+
+
 
     #pay_shop_info,#pay_pick_up_info{
         display: flex;
@@ -397,34 +1053,50 @@
     }
 
     #good_list{
-        padding: 0 20rpx;
-        border-bottom: 2px solid #f2f2f2;
         background: #fff;
     }
 
+    #good_list .extra{
+        width: 100%;
+        margin-top: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24rpx;
+        color: #4d4d4d;
+    }
+
+    #good_list .extra img{
+        width: 19rpx;
+        height: 10rpx;
+        margin-left: 11rpx;
+    }
+
+
+
     #good_list li{
-        padding: 10rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2rpx solid #f2f2f2;
-        padding-bottom: 20rpx;
-    }
-
-    #good_list li:last-child{
-        border: none;
+        margin-top: 50rpx;
     }
 
     #good_list li img{
-        width: 180rpx;
-        height: 180rpx;
+        width: 106rpx;
+        height: 106rpx;
+        margin-right: 20rpx;
+        border: 1rpx solid #f2f2f2;
+    }
+
+    #good_list li .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     #good_list li #good_info{
-        flex: 1;
-        margin-left: 20rpx;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: flex-start;
         flex-direction: column;
     }
@@ -432,7 +1104,11 @@
     #good_list li #good_info h3{
         font-size: 28rpx;
         color: #111111;
-        margin: 10rpx 0 20rpx 0;
+    }
+
+    #good_list li #good_info h4{
+        font-size: 24rpx;
+        color: #757575;
     }
 
     #good_list li #good_info em{
@@ -440,106 +1116,131 @@
         color: #757575;
     }
 
-    #good_list li #good_info #good_info_price{
-        width: 100%;
-        margin-top: 20rpx;
+    #good_list li #good_info_price{
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 
-    #good_list li #good_info #good_info_price h3{
-        margin: 0;
+    #good_list li #good_info_price i{
+        font-size: 24rpx;
+        color: #111;
     }
 
-    #order_payment #total {
+    #good_list li #good_info_price h3{
+        font-size: 32rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    #remarkBox{
+        box-sizing: border-box;
         background: #fff;
-        padding: 0 20rpx;
-        box-sizing: border-box;
-        width: 100%;
-        margin-top: 20rpx;
-        margin-bottom: 20rpx;
+        border-radius: 25rpx;
+        display: flex;
+        flex-direction: column;
     }
 
-    #order_payment #total li {
+    #remarkBox li{
         width: 100%;
-        box-sizing: border-box;
-        height: 80rpx;
-        border-bottom: 2rpx solid #f2f2f2;
-        padding: 0 20rpx;
+        height: 106rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-sizing: border-box;
+        padding: 0 30rpx;
         position: relative;
     }
 
-    #order_payment #total li:last-child{
-        border : none;
-    }
-
-    #order_payment #total li h3{
+    #remarkBox li h3{
         font-size: 28rpx;
         color: #111;
-        font-weight: 200;
+        font-weight: bold;
     }
 
-    #order_payment #total li h4{
-        font-size: 32rpx;
-        color: #111111;
+    #remarkBox li span{
+        font-size: 28rpx;
+        color: #111;
     }
 
-    #order_payment #total li h5{
-        font-size: 32rpx;
-        color: #ffcc00;
+    #remarkBox li input{
+        font-size: 28rpx;
+        color: #999;
+        width: 564rpx;
     }
 
-    #order_payment #total li span {
+    #remarkBox li em{
         font-size: 28rpx;
         color: #757575;
-    }
-
-    #order_payment #total li .use_coupon{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        font-size: 28rpx;
-    }
-
-    #order_payment #total li .use_coupon i{
-        margin-left: 20rpx;
-    }
-
-    #order_payment #total li em {
         position: absolute;
-        left: 120rpx;
-        font-size: 22rpx;
-        color: #fff;
-        padding: 5rpx 20rpx;
-        background: #ffcc00;
-        border-radius: 3rpx;
+        right: 30rpx;
     }
+
 
     #order_payment #do_payment{
         box-sizing: border-box;
-        padding: 0 40rpx;
+        height: 98rpx;
+        width: 100%;
+        padding: 0 20rpx;
+        position: fixed;
+        bottom: 0;
+        margin: 30rpx 0;
+    }
+
+    #order_payment #do_payment .do_payment_contain{
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 98rpx;
-        width: 100%;
-        background: #ffcc00;
-        position: fixed;
-        bottom: 0;
+        border-radius: 53rpx;
+        overflow: hidden;
     }
 
-    #order_payment #do_payment span{
+    #order_payment #do_payment .price{
         font-size: 32rpx;
-        color: #111;
+        padding-left: 30rpx;
+        box-sizing: border-box;
+        background: #111;
+        color: #fff;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 50rpx;
+        font-weight: bold;
+        flex: 1;
+        height: 100%;
+
+    }
+
+    #order_payment #do_payment .price i{
+        font-size: 30rpx;
+        font-weight: normal;
+        margin-right: 5rpx;
+    }
+
+    #order_payment #do_payment .price span{
+        font-size: 22rpx;
+        color: #999;
+        margin-left: 33rpx;
+        font-weight: normal;
     }
 
     #order_payment #do_payment h4{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 180rpx;
+        height: 100%;
         font-size: 32rpx;
         color: #111111;
+        background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));
+    }
+
+    .disabledButton{
+        background: #999!important;
+        color: #fff!important;
     }
 
     .pickupTips {
@@ -608,7 +1309,6 @@
         margin-right: 0;
         background: #FFCC00;
         color: #fff;
-
     }
 
 

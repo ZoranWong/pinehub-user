@@ -112,10 +112,11 @@
                 }});
 			},
             payment (item) {
-				this.$command('SELECTED_POINT_COMMAND', item)
-				this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-					query: {type: this.type}
-                });
+				this.$command('SELECTED_POINT_COMMAND', item);
+				this.close()
+				// this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+				// 	query: {type: this.type}
+                // });
             },
             async loadMap () {
 				let result = await this.map.getLocation();

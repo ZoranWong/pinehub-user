@@ -55,7 +55,7 @@
             if (this.backColor) {
                 this.background = this.backColor
             } else {
-                this.background = this.title === '首页'? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
+                this.background = this.title === '首页' ? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
             }
 			this.$command('GET_BAR_HEIGHT')
 		}
