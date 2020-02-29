@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="user_store" class="body">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="backIndex" />
         <Auth v-if="getAuth" @close="closeAuth" />
         <div v-if="!isMember && registered" class="bgff user-mobile-box">
             <div class="user_mobile_box_container">
@@ -236,6 +236,9 @@
           this.queryCateId = ''
       },
       methods: {
+          backIndex () {
+              this.$command('REDIRECT_TO', 'index', 'replace', {});
+          },
           async handleSearch () {
               console.log(this.search, '---');
               let result = await this.http.store.productsSearch(this.search)
@@ -365,6 +368,10 @@
           if (this.$route.query && this.$route.query.cateId) {
               this.queryCateId = this.$route.query.cateId
           }
+          this.model.user.store.dispatch('selectPoints', {
+              boolean: false,
+              type: 'mall'
+          })
 	  }
 	}
 </script>

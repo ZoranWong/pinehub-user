@@ -30,6 +30,7 @@ export default class Router {
     }
 
     push (route, query = {}) {
+        console.log(this.stack.length, '|||||');
         if (this.stack.length && this.stack.length % 9 === 0) {
             this.reLaunch(route, query);
             return;

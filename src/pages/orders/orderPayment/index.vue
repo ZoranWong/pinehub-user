@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="backStore" />
         <div class="total" :style="{height: mainHeight + 'px', overflow: 'auto'}">
             <div id="pay_shop_info">
                 <!--            <i class="iconfont location">&#xe80b;</i>-->
@@ -180,6 +180,9 @@
             },
 		},
 		methods: {
+            backStore () {
+                this.$command('REDIRECT_TO', 'user.store', 'push');
+            },
             selectAddressPoint () {
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                     query: {

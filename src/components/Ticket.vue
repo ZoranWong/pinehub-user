@@ -148,26 +148,7 @@
                         return
                     }
                 }
-                let type = this.$route.query.type;
-				if (this.$route.query.needReturn) {
-				    if (type === 'activity') {
-                        this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                            query: {
-                                type: type,
-                                id: coupon['record_id'],
-                                actId: this.$route.query.actId
-                            }
-                        });
-                    } else {
-                        this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                            query: {
-                                type: type,
-                                id: coupon['record_id'],
-                            }
-                        });
-                    }
-
-                }
+                this.$command('ORDER_COUPON_IDS', coupon['record_id'])
 			}
 		},
 		mounted () {
