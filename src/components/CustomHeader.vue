@@ -33,10 +33,10 @@
         },
         methods:{
 		    back(){
-		        if (this.backUrl) {
-		            this.$emit('back');
-		            return
-                }
+		        // if (this.backUrl) {
+		        //     this.$emit('back');
+		        //     return
+                // }
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
