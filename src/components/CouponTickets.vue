@@ -31,7 +31,8 @@
 				cur: 0,
 				coupons: [],
 				screenHeight: 0,
-				screenWidth: 0
+				screenWidth: 0,
+                okShow: false
 			}
 		},
 		props: {
@@ -69,9 +70,6 @@
                     return this.model.user.order.payment.couponIds
                 }
             },
-            okShow () {
-			    return this.$route.query.needReturn
-            },
 			totalNum() {
 				return this.model.user.tickets.totalNum
 			},
@@ -107,7 +105,8 @@
                             }
                         });
                     }
-
+                } else {
+                    this.$command('REDIRECT_TO', 'userCenter', 'replace');
                 }
             },
 			useTicket(ticket) {
@@ -123,10 +122,18 @@
                 }
 			},
 		},
+        onShow () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
 		mounted() {
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
+
 		}
 	}
 </script>

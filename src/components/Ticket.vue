@@ -123,14 +123,24 @@
                 });
             },
 			selectTicket (coupon) {
-                if (this.isSelected) {
+                if (coupon['record_id']){
+                    if (this.isSelected) {
 
-                } else {
-                    for (let i = 0; i< this.couponIds.length ; i++) {
-                        let id = this.couponIds[i];
-                        if (_.find(this.availableCoupons, (c)=>{
-                            return c['record_id'] === id && !c['is_sharing_preferential']
-                        })) {
+                    } else {
+                        for (let i = 0; i< this.couponIds.length ; i++) {
+                            let id = this.couponIds[i];
+                            if (_.find(this.availableCoupons, (c)=>{
+                                return c['record_id'] === id && !c['is_sharing_preferential']
+                            })) {
+                                wx.showToast({
+                                    title: '该优惠券不可与已选择优惠券同时使用',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                                return
+                            }
+                        }
+                        if (this.couponIds.length && !coupon['is_sharing_preferential']) {
                             wx.showToast({
                                 title: '该优惠券不可与已选择优惠券同时使用',
                                 icon: 'none',
@@ -139,16 +149,10 @@
                             return
                         }
                     }
-                    if (this.couponIds.length && !coupon['is_sharing_preferential']) {
-                        wx.showToast({
-                            title: '该优惠券不可与已选择优惠券同时使用',
-                            icon: 'none',
-                            duration: 2000
-                        })
-                        return
-                    }
+                    this.$command('ORDER_COUPON_IDS', coupon['record_id'])
+                } else {
+                    this.ticketDetail(coupon.id)
                 }
-                this.$command('ORDER_COUPON_IDS', coupon['record_id'])
 			}
 		},
 		mounted () {

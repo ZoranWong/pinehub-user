@@ -175,42 +175,42 @@
 
     #points_wrapper #points_container {
         box-sizing: border-box;
-        width: 630 rpx;
-        border-radius: 10 rpx;
+        width: 630rpx;
+        border-radius: 10rpx;
         background: #fff;
         position: relative;
-        padding: 50 rpx;
+        padding: 50rpx;
         z-index: 10000;
     }
 
     #points_wrapper #points_container .header_img {
         position: absolute;
-        top: -80 rpx;
-        left: 256 rpx;
+        top: -80rpx;
+        left: 256rpx;
 
     }
 
     #points_wrapper #points_container .header_img img {
-        width: 118 rpx;
-        height: 166 rpx;
+        width: 118rpx;
+        height: 166rpx;
     }
 
     #points_wrapper #points_container #closeIcon {
-        border: 6 rpx solid #fff;
+        border: 6rpx solid #fff;
         background: #fff;
         position: absolute;
-        right: -16 rpx;
-        top: -16 rpx;
+        right: -16rpx;
+        top: -16rpx;
         border-radius: 50%;
-        width: 64 rpx;
-        height: 64 rpx;
+        width: 64rpx;
+        height: 64rpx;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     #points_wrapper #points_container .closeIcon {
-        font-size: 64 rpx;
+        font-size: 64rpx;
         background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
@@ -218,8 +218,8 @@
 
     #points_wrapper #points_container #points_container_header {
         width: 100%;
-        height: 80 rpx;
-        margin-top: 70 rpx;
+        height: 80rpx;
+        margin-top: 70rpx;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -231,7 +231,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 32 rpx;
+        font-size: 32rpx;
         color: #111111;
     }
 
@@ -246,8 +246,8 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: 30 rpx 0;
-        border-bottom: 2 rpx solid #f2f2f2;
+        padding: 30rpx 0;
+        border-bottom: 2rpx solid #f2f2f2;
     }
 
     #points_wrapper #points_container #points_container_list li:last-child {
@@ -255,8 +255,8 @@
     }
 
     #points_wrapper #points_container #points_container_list li i {
-        font-size: 40 rpx;
-        margin: 0 10 rpx;
+        font-size: 40rpx;
+        margin: 0 10rpx;
         background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
@@ -264,29 +264,29 @@
 
     #points_wrapper #points_container #points_container_list li span {
         display: inline-block;
-        font-size: 28 rpx;
+        font-size: 28rpx;
         color: #111111;
-        margin: 0 10 rpx;
+        margin: 0 10rpx;
     }
 
     #points_wrapper #points_container #points_more {
-        margin-top: 30 rpx;
+        margin-top: 30rpx;
         width: 100%;
-        height: 80 rpx;
+        height: 80rpx;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 36 rpx;
+        font-size: 36rpx;
         color: #111111;
         background: linear-gradient(270deg, rgba(255, 204, 0, 1), rgba(253, 224, 104, 1));
         border: 1px solid #fff !important;
     }
 
     #points_wrapper #points_container #points_notice {
-        font-size: 20 rpx;
+        font-size: 20rpx;
         color: #757575;
         font-weight: normal;
-        margin-top: 20 rpx;
+        margin-top: 20rpx;
         margin-bottom: 0;
         display: flex;
         justify-content: center;
@@ -302,13 +302,13 @@
     }
 
     .empty_img img {
-        width: 250 rpx;
-        height: 180 rpx;
+        width: 250rpx;
+        height: 180rpx;
     }
 
     .empty_img span {
         color: #999;
-        font-size: 32 rpx;
+        font-size: 32rpx;
     }
 
 </style>
