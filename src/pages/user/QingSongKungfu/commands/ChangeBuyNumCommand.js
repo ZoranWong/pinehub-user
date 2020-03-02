@@ -26,7 +26,7 @@ export default class ChangeBuyNumCommand extends Command {
                 id: item.id,
                 num: num
             });
-            this.model.activity.dispatch('clearIds')
+            // this.model.activity.dispatch('clearIds')
         }
 
         // console.log('----- set data -----', Date.now());

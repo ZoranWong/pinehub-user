@@ -99,7 +99,7 @@
 				return  false;
             },
             isInvalid () {
-			    return this.ticket.status === '已使用' || this.ticket.status === '已过期'
+			    return this.ticket.status === '已使用' || this.ticket.status === '已过期' || this.ticket.status === '不可用'
             }
 		},
 		methods: {

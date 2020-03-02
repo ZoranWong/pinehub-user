@@ -7,7 +7,7 @@ export default class LoadStoreGoodsCommand extends Command {
                 goods: response
             });
 
-            this.model.user.order.payment.dispatch('clearIds');
+            // this.model.user.order.payment.dispatch('clearIds');
 
 
 

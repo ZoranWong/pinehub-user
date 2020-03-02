@@ -100,6 +100,7 @@
 		position: relative;
         flex-direction: column;
         padding: 20rpx;
+        z-index: 500;
 	}
 
 	#null_ico {

@@ -26,7 +26,7 @@ export default class ChangeBuyNumCommand extends Command {
                 id: item.id,
                 num: num
             });
-            this.model.user.order.payment.dispatch('clearIds')
+            // this.model.user.order.payment.dispatch('clearIds')
         }
 
         // console.log('----- set data -----', Date.now());
