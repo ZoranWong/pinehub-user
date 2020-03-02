@@ -30,6 +30,7 @@ export default class Router {
     }
 
     push (route, query = {}) {
+        if (this.routerAdapter._doing) return;
         if (this.stack.length && this.stack.length % 9 === 0) {
             this.reLaunch(route, query);
             return;
@@ -50,6 +51,7 @@ export default class Router {
     }
 
     reLaunch (route, query = {}) {
+        if (this.routerAdapter._doing) return;
         let r = new Route(this.getRoute(route));
         r.query = query;
         r.queryStr = this.app.uri.query(query);
@@ -66,6 +68,7 @@ export default class Router {
     }
 
     replace (route, query = {}) {
+        if (this.routerAdapter._doing) return;
         let r = new Route(this.getRoute(route));
         r.query = query;
         r.queryStr = this.app.uri.query(query);
@@ -79,6 +82,7 @@ export default class Router {
     }
 
     back (query = {}) {
+        if (this.routerAdapter._doing) return;
         this.stack.pop();
         this.routerAdapter.back()
     }

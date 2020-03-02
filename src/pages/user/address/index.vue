@@ -101,7 +101,7 @@
 		},
         onShow(){
             this.$command('LOAD_USER_ADDRESS');
-            this.isSelect = false;
+            this.isSelect = this.$route.query.needReturn ? true : false
         },
 		mounted() {
             this.isSelect = this.$route.query.needReturn ? true : false

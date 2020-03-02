@@ -132,7 +132,14 @@
 			};
 		},
 		watch: {
-
+            couponIds (val) {
+                if (this.goodInShoppingCart && this.goodInShoppingCart.length > 0) {
+                    this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
+                        coupon_records: val,
+                        carts: []
+                    });
+                }
+            }
 		},
 		computed: {
 			selectedPoint () {
@@ -239,7 +246,7 @@
 			},
 			jump (router) {
 				if (this.availableCoupons.length === 0) return;
-				this.$command('REDIRECT_TO', router, 'replace',{
+				this.$command('REDIRECT_TO', router, 'push',{
 					query: {needReturn: true, type: this.type}
                 });
 			}

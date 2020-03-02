@@ -92,14 +92,14 @@
                 console.log(type, '?????????????????????');
                 if (this.$route.query.needReturn) {
                     if (type === 'activity') {
-                        this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        this.$command('REDIRECT_TO', '', 'back',{
                             query: {
                                 type: type,
                                 actId: this.$route.query.actId
                             }
                         });
                     } else {
-                        this.$command('REDIRECT_TO', 'user.order.payment', 'replace',{
+                        this.$command('REDIRECT_TO', '','back',{
                             query: {
                                 type: type,
                             }
@@ -122,6 +122,13 @@
                 }
 			},
 		},
+        onLoad () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
         onShow () {
             if (this.$route.query.needReturn) {
                 this.okShow = true

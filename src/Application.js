@@ -266,6 +266,7 @@ export default class Application {
                         instance['page'] = this.currentPage;
                     }
                 });
+                console.log(wxRoute, 'wxRoutewxRoute',  this.route);
                 Application.pageContainer[wxRoute] = (this.currentPage);
             }
             return this.currentPage;
@@ -279,6 +280,8 @@ export default class Application {
     }
 
     changePage (route) {
+        console.log(route, '=========>');
+        console.log(Application.pageContainer);
         this.currentPage = Application.pageContainer[route];
     }
 

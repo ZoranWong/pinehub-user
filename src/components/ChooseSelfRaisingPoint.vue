@@ -135,8 +135,11 @@
         mounted () {
             let type = this.model.user.store.mallType || this.model.newEvents.shoppingCarts.breakfastType;
             this.type = type
-            this.changeBackground('right')
+
             this.loadMap()
+            if (this.commonlyPoints.length) {
+                this.changeBackground('right')
+            }
         }
     }
 </script>

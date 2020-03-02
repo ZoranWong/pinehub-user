@@ -8,7 +8,7 @@ if (application) {
     application.setComponent(App).run(function () {
         this.register('http.feedBack', FeedBackService);
         this.registerCommand(SubmitFeedBackDataCommand.commandName(), SubmitFeedBackDataCommand);
-        this.route = 'myFeedback'
+        this.route = 'user.feedBack'
     }, function () {
         this.currentPage = new Vue(this.mountComponent);
     });

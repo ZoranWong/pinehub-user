@@ -15,7 +15,7 @@ export default class RouteServiceProvider extends ServiceProvider {
         this.app.register('$route', $router);
         this.app.register('mp.router', $router);
     }
-    
+
     loadRoutes () {
         let routes = [];
         for (let key in this.app.config.routes) {

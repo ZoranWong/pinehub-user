@@ -73,20 +73,7 @@
             />
         </div>
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div v-if="!isMember && registered" class="bgff user-mobile-box">
-            <div class="user_mobile_box_container">
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                        手机号授权
-                    </button>
-                </form>
-
-                <em class="mobile_box_tips">
-                    我们需要您的手机号来创建账号，累计积分
-                </em>
-            </div>
-
-        </div>
+        <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
     </div>
 
 </template>
@@ -95,13 +82,15 @@
 	import Specification from './components/Specification';
 	import ShoppingCart from '../../../components/ShoppingCart';
 	import Auth from '../../../components/Auth';
+	import GetUserMobile from '../../../components/GetUserMobile';
     import _ from 'underscore';
 	export default {
 		components: {
 			CustomHeader,
             Specification,
             ShoppingCart,
-            Auth
+            Auth,
+            GetUserMobile
 		},
 		data() {
 			return {
@@ -119,7 +108,8 @@
                 selectItem:{},
                 selectSpec: false,
                 getAuth: false,
-                current: 1
+                current: 1,
+                showBindMobile: false
 			};
 		},
 		watch: {
@@ -205,6 +195,9 @@
             },
 		},
 		methods: {
+            closeGetUserMobile () {
+                this.showBindMobile = false
+            },
             bannerChange (e) {
                 let event = e.mp.detail;
                 this.current = event.current + 1;
@@ -267,6 +260,7 @@
                     this.getUserAuth()
                 } else {
                     if (!this.isMember) {
+                        this.showBindMobile = true
                     } else {
                         if (item.specifications && item.specifications.length) {
                             this.selectItem = item;
@@ -388,95 +382,6 @@
 
     @import "index.css";
 
-    .user-mobile-box{
-        position: fixed;
-        height: 100%;
-        width: 100%;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0, 0, 0, .3);
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
 
-    .user-mobile-box .user_mobile_box_container{
-        position: absolute;
-        background: #FFFFFF;
-        width: 620rpx;
-        border-radius: 10rpx;
-        top: 338rpx;
-        left: 65rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .user-mobile-get-btn {
-        height: 80rpx;
-        width: 320rpx;
-        text-align: center;
-        line-height: 80rpx;
-        background: #FECE00;
-        margin-top: 80rpx;
-        margin-bottom: 40rpx;
-        display: block;
-        font-size: 32rpx;
-        font-weight: 200;
-        border: 0;
-        border-radius: 80rpx;
-        box-shadow: 0 10rpx 10rpx #fff6bd;
-    }
-
-    .mobile_box_tips {
-        text-align: center;
-        line-height: 96rpx;
-        border-radius: 10rpx 10rpx 0 0;
-        font-size: 29rpx;
-        font-weight: 400;
-    }
-    #toast_area {
-        position: fixed;
-        height: 100%;
-        width: 100%;
-        background: rgba(0, 0, 0, .3);
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-    }
-    #toast {
-        position: absolute;
-        background: #FFFFFF;
-        width: 620rpx;
-        border-radius: 10rpx;
-        top: 338rpx;
-        left: 65rpx;
-    }
-    #toast_title {
-        background: #FECE00;
-        text-align: center;
-        line-height: 96rpx;
-        border-radius: 10rpx 10rpx 0 0;
-        font-size: 34rpx;
-        font-weight: 400;
-    }
-    #toast_content {
-    }
-    #toast_content_info {
-        padding: 20rpx 40rpx;
-    }
-    #input_change_info {
-        font-size: 32rpx;
-        font-weight: 300;
-        color: #111111;
-        margin-bottom: 20rpx;
-    }
 
 </style>
