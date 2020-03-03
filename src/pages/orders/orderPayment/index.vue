@@ -39,7 +39,8 @@
                     <span>晚上9点前下单，次日即可送达。疫情期间请戴好口罩哦！</span>
                 </div>
             </div>
-            <div class="pickContainer" v-if="activeTab === 'pick'" :style="{'backgroundImage': 'url(' + mapBackground + ')' , 'zIndex': '90000'}">
+            <div class="pickContainer" v-if="activeTab === 'pick'" >
+                <img src="./imgs/map.png" alt="" class="hideImg">
                 <div class="top">
                     <div class="topLeft">
                         <div class="topLeftTop" v-if="!selectedPoint.name" @click="selectPoint">
@@ -58,7 +59,7 @@
                             <div class="right">
                                 <div class="rightTop" @click="focusStatus = !focusStatus">联系电话</div>
                                 <div class="inputs">
-                                    <input class="rightBottom" :focus="focusStatus" v-model="mobile"  />
+                                    <input class="rightBottom" type="number" :focus="focusStatus" v-model="mobile"  />
                                     <img src="./imgs/editor.png" alt="" @click=" focusStatus = !focusStatus">
                                 </div>
 
@@ -635,6 +636,15 @@
         background-size: 350rpx 280rpx;
         background-repeat: no-repeat;
         background-position: right top;
+        position: relative;
+    }
+
+    .hideImg{
+        width: 335rpx;
+        height: 270rpx;
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 
     .pickContainer .top{
@@ -735,14 +745,15 @@
         color: #111111;
         font-weight: bold;
         position: absolute;
-        right: 50rpx;
-        top: 9rpx;
+        right: 45rpx;
+        top: 6rpx;
     }
 
     .pickContainer .bottom{
         width: 100%;
+        z-index: 99999;
         box-sizing: border-box;
-        margin-top: 15rpx;
+        margin-top: 20rpx;
         display: flex;
         justify-content: flex-start;
         align-items: center;
