@@ -8,46 +8,9 @@
         </div>
 
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
-<!--            <div id="pay_shop_info">-->
-<!--                &lt;!&ndash;            <i class="iconfont location">&#xe80b;</i>&ndash;&gt;-->
-<!--                <img class="locationImg" src="../../../../static/icons/location.png" alt="">-->
-<!--                <div class="pay_shop_info">-->
-<!--                    <div class="pay_shop_info_name" >-->
-<!--                        <h4>-->
-<!--                            {{selectedPoint.name}}-->
-<!--                            <span>{{selectedPoint.mobile}}</span>-->
-<!--                        </h4>-->
-<!--                    </div>-->
-<!--                    <div class="pay_shop_info_address">-->
-<!--                        {{selectedPoint.address}}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <i class="iconfont arrow">&#xe6a3;</i>-->
-<!--            </div>-->
-<!--            <div id="pay_shop_info_act"  v-if="type === 'mall' ">-->
-<!--                <img class="locationImg" src="../../../../static/icons/location.png" alt="">-->
-<!--                <div class="pay_shop_info" v-if="addresses.id"  >-->
-<!--                    <div class="pay_shop_info_name">-->
-<!--                        <h4>-->
-<!--                            {{addresses['consignee_name']}}-->
-<!--                            <span>{{addresses['consignee_mobile_phone']}}</span>-->
-<!--                        </h4>-->
-<!--                    </div>-->
-<!--                    <div class="pay_shop_info_address">-->
-<!--                        {{addresses.rangeAddress}}{{addresses['detail_address']}}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="pay_shop_info" v-else>-->
-<!--                    请选择收货地址-->
-<!--                </div>-->
-<!--                <i class="iconfont arrow">&#xe6a3;</i>-->
-<!--            </div>-->
-
-
-
             <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
-                <div :class="activeTab === 'send'? 'tabItem active':'tabItem'"  @click="changeTab('send')">同城配送</div>
                 <div :class="activeTab === 'pick'? 'tabItem active': 'tabItem'" @click="changeTab('pick')">预定自提</div>
+                <div :class="activeTab === 'send'? 'tabItem active':'tabItem'"  @click="changeTab('send')">同城配送</div>
             </div>
             <div class="sendContainer" v-if="activeTab === 'send'">
                 <div class="top">
@@ -57,7 +20,7 @@
                     </div>
                     <div class="topLeft1" @click="selectAddressPoint" v-else>
                         <div class="pay_shop_info_address">
-                            <span class="tag" v-if="addresses.isDefaultTag">{{addresses['tag']}}</span>
+                            <span class="tag" v-if="addresses.isDefaultTag">{{addresses['tagFormat']}}</span>
                             <span class="tag" v-else>{{addresses['consignee_name'][0]}}</span>
                             {{addresses.rangeAddress}}{{addresses['detail_address']}}
                         </div>
@@ -76,7 +39,7 @@
                     <span>晚上9点前下单，次日即可送达。疫情期间请戴好口罩哦！</span>
                 </div>
             </div>
-            <div class="pickContainer" v-if="activeTab === 'pick'" :style="{'backgroundImage': 'url(' + mapBackground + ')' }">
+            <div class="pickContainer" v-if="activeTab === 'pick'" :style="{'backgroundImage': 'url(' + mapBackground + ')' , 'zIndex': '90000'}">
                 <div class="top">
                     <div class="topLeft">
                         <div class="topLeftTop" v-if="!selectedPoint.name" @click="selectPoint">
@@ -93,10 +56,10 @@
                             </div>
                             <div class="middle"></div>
                             <div class="right">
-                                <div class="rightTop">联系电话</div>
+                                <div class="rightTop" @click="focusStatus = !focusStatus">联系电话</div>
                                 <div class="inputs">
-                                    <input class="rightBottom" v-model="mobile" />
-                                    <img src="./imgs/editor.png" alt="">
+                                    <input class="rightBottom" :focus="focusStatus" v-model="mobile"  />
+                                    <img src="./imgs/editor.png" alt="" @click=" focusStatus = !focusStatus">
                                 </div>
 
                             </div>
@@ -189,7 +152,7 @@
             </div>
             <ul id="remarkBox">
                 <li>
-                    <h3>备注</h3>
+                    <h3>备注(选填)</h3>
                     <input type="text" v-model="remark">
                     <em>请输入备注</em>
                 </li>
@@ -206,6 +169,7 @@
                      <i>￥</i>
                      {{orderInfo['settlement_total_fee'] || 0}}
                     <span v-if="activeTab === 'send'">（满{{deliveryPrice}}元可免费配送）</span>
+                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>
                 </span>
                 <h4 @click="check" :class="!isEnough && activeTab === 'send' ? 'disabledButton': ''">提交订单</h4>
             </div>
@@ -249,7 +213,7 @@
 				tomorrowStr: '',
                 type: '',
                 showTips: false,
-                activeTab: 'send',
+                activeTab: 'pick',
                 background: left,
                 backgroundPosition: 'left center',
                 products: [],
@@ -258,7 +222,8 @@
                 deliveryPrice: 0,
                 mapBackground: mapBack,
                 agreement: true,
-                mobile: ''
+                mobile: '',
+                focusStatus: false
 			};
 		},
 		watch: {
@@ -273,7 +238,15 @@
                 if (val) {
                     this.products = this.goodInShoppingCart;
                 } else {
-                    this.products = this.products.slice(0,3)
+                    this.products = this.products.slice(0, 3)
+                }
+            },
+            couponIds (val) {
+                if (this.goodInShoppingCart && this.goodInShoppingCart.length > 0) {
+                    this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
+                        coupon_records: val,
+                        carts: []
+                    });
                 }
             }
 		},
@@ -300,7 +273,7 @@
 
             },
             userMobile () {
-                this.mobile = this.model.account.userMobile
+                return this.model.account.mobile
             },
 			orderInfo () {
                 return this.model.user.order.payment.orderInfo
@@ -330,12 +303,12 @@
             },
             btnHeight() {
                 let systemInfo = wx.getSystemInfoSync();
-                return 150 * systemInfo.windowWidth / 750;
+                return 0 * systemInfo.windowWidth / 750;
             },
 		},
 		methods: {
             closePoints () {
-               this.showPoints = false
+                this.showPoints = false
             },
             async getDeliveryPrice () {
                 let result = await this.http.store.getDeliveryPrice();
@@ -347,11 +320,11 @@
             changeTab (tab) {
                 this.activeTab = tab;
                 if (tab === 'send') {
-                    this.background = left;
-                    this.backgroundPosition = 'left center';
-                } else {
                     this.background = right;
                     this.backgroundPosition = 'right center';
+                } else {
+                    this.background = left;
+                    this.backgroundPosition = 'left center';
                 }
             },
             selectAddressPoint () {
@@ -369,7 +342,6 @@
                         type: this.type
                 	})
                 } else if (this.type === 'breakfast') {
-                	console.log('这是早餐车的购物车');
                 	this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
                 		boolean: true,
                 		type: this.type
@@ -462,7 +434,7 @@
 			},
 			jump (router) {
 				if (this.availableCoupons.length === 0) return;
-				this.$command('REDIRECT_TO', router, 'replace',{
+				this.$command('REDIRECT_TO', router, 'push',{
 					query: {needReturn: true, type: this.type}
                 });
 			}
@@ -472,9 +444,10 @@
 		},
 		mounted() {
             this.getDate();
-			let type = this.$route.query.type;
+            let type = this.$route.query.type;
 			let id = this.$route.query.id;
 			this.type = type;
+            this.mobile = this.userMobile
 			if (id) {
 				this.$command('ORDER_COUPON_IDS', id)
             }
@@ -494,7 +467,7 @@
 <style>
 	page {
 		height: 100%;
-		background: #F4F1F2;
+		background: #f2f2f2;
 	}
 
     .background{
@@ -551,7 +524,7 @@
         width: 100%;
         background: #fff;
         border-radius: 25rpx;
-        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         box-sizing: border-box;
         padding: 40rpx 0;
     }
@@ -656,7 +629,7 @@
         width: 100%;
         background: #fff;
         border-radius: 25rpx;
-        border-top-right-radius: 0;
+        border-top-left-radius: 0;
         box-sizing: border-box;
         padding: 40rpx 0;
         background-size: 350rpx 280rpx;
@@ -836,12 +809,15 @@
     .productsContainer #total li h3{
         font-size: 28rpx;
         color: #333;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .productsContainer #total li h3 img{
         width: 32rpx;
         height: 32rpx;
-        margin-left: 10rpx;
+        margin-right: 10rpx;
     }
 
     .productsContainer #total li span{
@@ -1086,6 +1062,7 @@
         height: 106rpx;
         margin-right: 20rpx;
         border: 1rpx solid #f2f2f2;
+        border-radius: 10rpx;
     }
 
     #good_list li .left{
@@ -1125,6 +1102,7 @@
     #good_list li #good_info_price i{
         font-size: 24rpx;
         color: #111;
+        font-weight: bold;
     }
 
     #good_list li #good_info_price h3{
@@ -1139,6 +1117,7 @@
         border-radius: 25rpx;
         display: flex;
         flex-direction: column;
+        margin-bottom: 150rpx;
     }
 
     #remarkBox li{
@@ -1166,7 +1145,7 @@
     #remarkBox li input{
         font-size: 28rpx;
         color: #999;
-        width: 564rpx;
+        width: 500rpx;
     }
 
     #remarkBox li em{
@@ -1185,6 +1164,7 @@
         position: fixed;
         bottom: 0;
         margin: 30rpx 0;
+        opacity: 0.9;
     }
 
     #order_payment #do_payment .do_payment_contain{

@@ -10,28 +10,26 @@ export default class CreateAddress extends Command {
                 icon: 'success'
             });
             if (isPayment) {
-                if (isActivity) {
-                    this.model.activity.dispatch('saveAddress', {
-                        address: params
-                    });
-                    setTimeout(function () {
-                        self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
-                            query: {type: 'activity', actId: actId}
-                        });
-                    }, 2000);
-                } else {
-                    this.model.user.order.payment.dispatch('saveMallAddress', {
-                        address: params
-                    });
-                    setTimeout(function () {
-                        self.$command('REDIRECT_TO', 'user.order.payment', 'push', {
-                            query: {type: 'mall'}
-                        });
-                    }, 2000);
-                }
-
-
-
+                // if (isActivity) {
+                //     this.model.activity.dispatch('saveAddress', {
+                //         address: params
+                //     });
+                //     setTimeout(function () {
+                //         self.$command('REDIRECT_TO', 'user.activity.payment', 'push', {
+                //             query: {type: 'activity', actId: actId}
+                //         });
+                //     }, 2000);
+                // } else {
+                //     this.model.user.order.payment.dispatch('saveMallAddress', {
+                //         address: params
+                //     });
+                //     setTimeout(function () {
+                //         self.$command('REDIRECT_TO', 'user.order.payment', 'push', {
+                //             query: {type: 'mall'}
+                //         });
+                //     }, 2000);
+                // }
+                self.$command('REDIRECT_TO', '', 'back')
             } else {
                 setTimeout(function () {
                     self.$application.$command('REDIRECT_TO', '', 'back');

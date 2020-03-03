@@ -30,7 +30,6 @@ export default class OrdersService extends ApiService {
 
     // 创建商城订单
     async createPaymentOrder (params) {
-        console.log('----- payment order ---------', params);
         let response = await this.httpPost('api/mp/mall/orders', params);
         return response.data;
     }
@@ -66,14 +65,14 @@ export default class OrdersService extends ApiService {
     async calculateMallPrice (params) {
         console.log('-------calculate mall price-------');
         let response = await this.httpGet('api/mp/mall/calculate/carts', params);
-        return response.data;
+        return response;
     }
 
     // 计算早餐车购物车金额
     async calculateBreakfastPrice (params) {
         console.log('-------calculate breakfast price-------');
         let response = await this.httpGet('api/mp/breakfast/booking/calculate/carts', params);
-        return response.data;
+        return response;
     }
 
     // 获取支付参数　

@@ -4,7 +4,6 @@ export default class LoadCommonlyUsedPoints extends Command {
     async handle (lng, lat, type) {
         try {
             let response = await this.service('http.store').commonlyUsedPoints(lng, lat);
-            console.log(response, '=========>');
             if (type === 'mall') {
                this.model.user.store.dispatch('saveCommonlyUsedPoint', {
                    points: response

@@ -10,17 +10,16 @@ export default class ActivityShoppingCartChangeMerchandiseCommand extends Comman
             });
             return
         }
-        
+
         if (item['stock_num'] < num) {
             this.$application.popup.toast('库存不足', 'none', 2000);
             return
         }
-        console.log('change', 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo');
-    
-    
+
+
         let response = await this.service('http.shoppingCart').activityShoppingCartChangeMerchandise(item.id, num);
-        
-        
+
+
         // console.log('----- request -----', Date.now());
         if (response) {
             this.model.newEvents.shoppingCarts.dispatch('changeBuyNum', {
@@ -28,10 +27,10 @@ export default class ActivityShoppingCartChangeMerchandiseCommand extends Comman
                 num: num
             });
         }
-        
+
         // console.log('----- set data -----', Date.now());
     }
-    
+
     static commandName () {
         return 'CHANGE_BREAKFAST_BUY_NUM_COMMAND';
     }

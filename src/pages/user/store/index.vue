@@ -1,22 +1,9 @@
 <!--suppress ALL -->
 <template>
     <div id="user_store" class="body">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="backIndex" />
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div v-if="!isMember && registered" class="bgff user-mobile-box">
-            <div class="user_mobile_box_container">
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                        手机号授权
-                    </button>
-                </form>
-
-                <em class="mobile_box_tips">
-                    我们需要您的手机号来创建账号，累计积分
-                </em>
-            </div>
-
-        </div>
+        <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <div id="store_header" >
             <input type="text" placeholder="请输入商品名称" id="store_search" v-model="search">
             <i class="iconfont" @click="handleSearch">&#xe65c;</i>
@@ -87,6 +74,7 @@
 	import SelectSpecification from '@/components/SelectSpecification';
 	import _ from 'underscore'
     import ProductSearch from './components/ProductSearch';
+	import GetUserMobile from '../../../components/GetUserMobile';
   export default {
       components: {
 		  CustomHeader,
@@ -94,7 +82,8 @@
           SelectSpecification,
 		  ChooseSelfRaisingPoint,
 		  Auth,
-          ProductSearch
+          ProductSearch,
+          GetUserMobile
       },
       data() {
           return {
@@ -107,7 +96,8 @@
               screenHeight: 0,
               queryCateId: '',
               search: '',
-              searchResult: []
+              searchResult: [],
+              showBindMobile: false
           };
       },
       onShareAppMessage: function (res) {
@@ -232,6 +222,12 @@
           this.queryCateId = ''
       },
       methods: {
+          closeGetUserMobile () {
+              this.showBindMobile = false
+          },
+          backIndex () {
+              this.$command('REDIRECT_TO', 'index', 'replace', {});
+          },
           async handleSearch () {
               console.log(this.search, '---');
               let result = await this.http.store.productsSearch(this.search)
@@ -281,7 +277,8 @@
             if (!this.registered) {
 		  		this.getUserAuth()
             } else {
-				if (!this.isMember) {
+                if (!this.isMember) {
+                    this.showBindMobile = true
 				} else {
 					if (item.specifications.length) {
 						this.selectItem = item;
@@ -358,6 +355,10 @@
           if (this.$route.query && this.$route.query.cateId) {
               this.queryCateId = this.$route.query.cateId
           }
+          this.model.user.store.dispatch('selectPoints', {
+              boolean: false,
+              type: 'mall'
+          })
 	  }
 	}
 </script>

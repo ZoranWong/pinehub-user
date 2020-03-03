@@ -35,7 +35,6 @@ export default class StoreService extends ApiService {
             buy_num: num
         });
 
-        console.log(response, 'oooooooooo');
         return response.data
     }
 
@@ -57,7 +56,6 @@ export default class StoreService extends ApiService {
     // 商城购物车商品列表
     async cartGoodsList () {
         let response = await this.httpGet('api/mp/mall/carts');
-        console.log('^^^^^^^^^^^^', response);
         return response
     }
 

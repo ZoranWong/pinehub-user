@@ -2,7 +2,7 @@
 <template>
     <div>
         <div class="ticket-page body">
-            <CustomHeader :title="title" :needReturn="true" />
+            <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="onOk" />
             <div class="empty_img" v-if="!coupons.length">
                 <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
                 <span>暂无优惠券哦～</span>
@@ -12,6 +12,7 @@
                     <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="list">
                     </coupon-ticket>
                 </scroll-view>
+                <button class="onOk" v-if="okShow" @click="onOk">选好了</button>
             </div>
         </div>
     </div>
@@ -30,7 +31,8 @@
 				cur: 0,
 				coupons: [],
 				screenHeight: 0,
-				screenWidth: 0
+				screenWidth: 0,
+                okShow: false
 			}
 		},
 		props: {
@@ -61,6 +63,13 @@
                     return this.model.user.tickets.availableCoupons
                 }
 			},
+            couponIds () {
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.couponIds
+                } else {
+                    return this.model.user.order.payment.couponIds
+                }
+            },
 			totalNum() {
 				return this.model.user.tickets.totalNum
 			},
@@ -78,6 +87,28 @@
 			}
 		},
 		methods: {
+            onOk () {
+                let type = this.$route.query.type;
+                console.log(type, '?????????????????????');
+                if (this.$route.query.needReturn) {
+                    if (type === 'activity') {
+                        this.$command('REDIRECT_TO', '', 'back',{
+                            query: {
+                                type: type,
+                                actId: this.$route.query.actId
+                            }
+                        });
+                    } else {
+                        this.$command('REDIRECT_TO', '','back',{
+                            query: {
+                                type: type,
+                            }
+                        });
+                    }
+                } else {
+                    this.$command('REDIRECT_TO', 'userCenter', 'replace');
+                }
+            },
 			useTicket(ticket) {
 				this.$emit('useTicket', ticket);
 			},
@@ -91,10 +122,25 @@
                 }
 			},
 		},
+        onLoad () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
+        onShow () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
 		mounted() {
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
+
 		}
 	}
 </script>
@@ -128,6 +174,14 @@
 		background: #f2f2f2;
 		position: relative;
 	}
+
+    .onOk{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 98rpx;
+        background: #ffcc00;
+    }
 
 	#null_ico {
 		width: 390rpx;

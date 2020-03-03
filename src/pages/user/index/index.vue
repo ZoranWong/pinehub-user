@@ -3,17 +3,9 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="false" :backColor="backColor1" />
         <Auth v-if="showAuth" @close="closeAuth" />
-        <!--        <div id="index_header">-->
-        <!--            <div id="index_logo" @click="redirectTo('special.virusTopic')"></div>-->
-        <!--            <div id="bear" :style="{'top': (statusBarHeight + navHeight + 61) + 'px'}">-->
-        <!--                <img :src="headerAnimate"/>-->
-        <!--            </div>-->
-        <!--        </div>-->
         <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
             <div id="index_header" >
                 <div id="products_search" >
-                    <!--                    <input id="product_search_input" v-model.trim="name" placeholder="搜主食/烘焙"/>-->
-                    <!--                    <i class="iconfont search">&#xe65c;</i>-->
                     <div class="welcome">
                         <i class="iconfont">&#xe652;</i>
                         {{userNickname}},青松易购欢迎您!
@@ -51,7 +43,7 @@
                     <span>查看更多</span>
                 </li>
             </ul>
-            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="redirectTo('ticketCenter')">
+            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">
 
             <img
                 src="./img/Activity-02.png"
@@ -62,50 +54,9 @@
                 @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})"
             >
         </div>
-        <div v-if="showBindMobile" class="bgff user-mobile-box">
-            <div class="user_mobile_box_container">
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                        手机号授权
-                    </button>
-                </form>
-
-                <em class="mobile_box_tips">
-                    我们需要您的手机号来创建账号，累计积分
-                </em>
-            </div>
-        </div>
-        <!--        <div v-if="registered && isMember" class="bgff user-score-box">-->
-        <!--            <div class="score">{{availableScore || 0 }}<i>积分</i></div>-->
-        <!--            <em class="tips">-->
-        <!--                商城购买即可获得积分哦~-->
-        <!--            </em>-->
-        <!--        </div>-->
-        <!--        <div id="index_menu">-->
-        <!--            <dl @click="redirectTo('newEvents')" class="booking">-->
-        <!--                <dd>-->
-        <!--                    <img src="./img/car.jpg" />-->
-        <!--                </dd>-->
-        <!--                <dt>新品预定</dt>-->
-        <!--            </dl>-->
-        <!--            <dl  @click="redirectTo('user.integral')" class="booking">-->
-        <!--                <dd>-->
-        <!--                    <img src="./img/mall.jpg" />-->
-        <!--                </dd>-->
-        <!--                <dt>积分商城</dt>-->
-        <!--            </dl>-->
-        <!--        </div>-->
-        <!--        <div class="newActivity" v-for="item in activities" @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})">-->
-        <!--            <div class="left">-->
-        <!--                <h4>{{item.name}}</h4>-->
-        <!--                <h5>进入专场 <span>></span></h5>-->
-        <!--            </div>-->
-        <!--            <div>-->
-        <!--                <img :src="item.image" alt="">-->
-        <!--            </div>-->
-        <!--        </div>-->
 
 
+        <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
 
@@ -121,6 +72,7 @@
     import ReceivedNewTickets from '../../../components/ReceivedNewTickets';
     import OldUserReceivedNewTickets from '../../../components/OldUserReceivedNewTickets';
     import {getUpdateMange} from '../../../utils/getUpdateManage';
+    import GetUserMobile from '../../../components/GetUserMobile';
     import _ from 'underscore'
     export default {
         components: {
@@ -128,7 +80,8 @@
             CustomHeader,
             Auth,
             ReceivedNewTickets,
-            OldUserReceivedNewTickets
+            OldUserReceivedNewTickets,
+            GetUserMobile
         },
         data () {
             return {
@@ -256,17 +209,18 @@
             },
             userId (val) {
                 if (val) {
-                    this.$socket.userId = val;
-                    this.$socket.notification((data)=>{
-                        console.log(data, '-------- APP User notification --------');
-                    });
-                    this.$socket.eventListener('test', 'TestEvent', (data) => {
-                        console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
-                    });
+                    // this.$socket.userId = val;
+                    // this.$socket.notification((data)=>{
+                    //     console.log(data, '-------- APP User notification --------');
+                    // });
+                    // this.$socket.eventListener('test', 'TestEvent', (data) => {
+                    //     console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
+                    // });
                 }
             }
         },
         mounted () {
+
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -350,6 +304,9 @@
             });
         },
         methods: {
+            closeGetUserMobile () {
+                this.showBindMobile = false
+            },
             closePop () {
                 this.model.account.dispatch('hasNewUserCoupon', false);
             },
@@ -389,7 +346,6 @@
                 } else {
                     this.showAuth = true;
                 }
-
             },
             async uploadFormId (e) {
                 let formId = e.mp.detail.formId;
@@ -416,7 +372,17 @@
                     icon: 'none'
                 });
             },
+            AuthRouter (router) {
+                if (!this.registered ) {
+                    this.getUserAuth()
+                } else if ( !this.isMember) {
+                    this.showBindMobile = true
+                } else {
+                    this.$command('REDIRECT_TO', router, 'push');
+                }
+            },
             redirectTo (router, options = {}) {
+
                 if (router === 'user.integral' && !this.registered) {
                     this.getUserAuth()
                 } else if (router === 'user.integral' && !this.isMember){
@@ -425,10 +391,10 @@
                         icon: 'none'
                     })
                 } else {
-                    if (this.registered) {
+                    if (this.registered ) {
                         this.$command('REDIRECT_TO', router, 'push', options);
                     } else {
-                        this.showAuth = true
+                        this.showAuth = true;
                     }
                 }
             },
@@ -863,57 +829,5 @@
         line-height: 68rpx;
     }
 
-    .user-mobile-box{
-        position: fixed;
-        height: 120%;
-        width: 100%;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        background: rgba(0, 0, 0, .3);
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .user-mobile-box .user_mobile_box_container{
-        position: absolute;
-        background: #FFFFFF;
-        width: 620rpx;
-        border-radius: 10rpx;
-        top: 338rpx;
-        left: 65rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .user-mobile-get-btn {
-        height: 80rpx;
-        width: 320rpx;
-        text-align: center;
-        line-height: 80rpx;
-        background: #FECE00;
-        margin-top: 80rpx;
-        margin-bottom: 40rpx;
-        display: block;
-        font-size: 32rpx;
-        font-weight: 200;
-        border: 0;
-        border-radius: 80rpx;
-        box-shadow: 0 10rpx 10rpx #fff6bd;
-    }
-
-    .mobile_box_tips {
-        text-align: center;
-        line-height: 96rpx;
-        border-radius: 10rpx 10rpx 0 0;
-        font-size: 29rpx;
-        font-weight: 400;
-    }
 
 </style>

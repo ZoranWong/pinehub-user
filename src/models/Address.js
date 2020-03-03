@@ -32,7 +32,18 @@ export default class Address extends Model {
                 ary.push(address['area']['region_code']);
                 address.regionCode = ary;
                 if (address.tag === 'school' || address.tag === 'company' || address.tag === 'home') {
-                     address.isDefaultTag = true
+                     address.isDefaultTag = true;
+                     switch (address.tag) {
+                         case 'school' :
+                             address.tagFormat = '学校';
+                             break;
+                         case 'company' :
+                             address.tagFormat = '公司';
+                             break;
+                         case 'home' :
+                             address.tagFormat = '家';
+                             break
+                     }
                  } else {
                      address.isDefaultTag = false
                  }

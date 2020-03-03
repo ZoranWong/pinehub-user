@@ -26,9 +26,6 @@ export default class Account extends Model {
             isMember (state) {
                 return !!state.mobile;
             },
-            userMobile (state) {
-                return state.mobile
-            },
             isShopManager (state) {
                 return state.isShopManager;
             },
@@ -77,6 +74,9 @@ export default class Account extends Model {
             },
             newCoupons () {
                 return this.state.newCoupons
+            },
+            mobile () {
+                return this.state.mobile
             }
         });
     }
@@ -161,7 +161,6 @@ export default class Account extends Model {
         });
 
         this.addEventListener('saveShopCode', function ({code}) {
-            console.log(code, 'savvvvvvvvvvvvvvvvvvvvvvvvve');
             this.state.shopCode = code
         });
 
@@ -257,13 +256,11 @@ export default class Account extends Model {
         });
 
         this.addEventListener('saveNewCoupons', function ({coupons}) {
-            console.log(coupons, '++++++++++++++++++++..................>>>>>>>>>>>>>>>>>>>>>>>>');
             this.state.newCoupons = coupons
         });
 
         this.addEventListener('clearNewCoupons', function () {
             this.state.newCoupons = [];
-            console.log(this.state.newCoupons, '!!!!!!!!!!!!!!!!!!!!!!!!!');
         })
     }
 }

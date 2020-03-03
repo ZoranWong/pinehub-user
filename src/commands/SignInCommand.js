@@ -40,12 +40,6 @@ export default class SignInCommand extends Command {
                 };
                 await this.service('mp.storage').set('token', token);
                 await this.service('mp.storage').set('openId', openId);
-                // let userInfo = {
-                //     open_id: openId,
-                //     mobile: mobile,
-                //     // can_use_score: canUseScore,
-                //     token: token
-                // };
                 loginInfo['token'] = token;
                 this.model.account.dispatch('setAccount', loginInfo);
                 return token['value'];
@@ -53,7 +47,6 @@ export default class SignInCommand extends Command {
             SignInCommand.handling = false;
         } catch (e) {
             SignInCommand.handling = false;
-            console.log(e);
         }
     }
     static commandName () {

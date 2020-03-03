@@ -3,64 +3,47 @@
     <div id="toast_area" >
         <div id="toast">
             <div id="toast_title">
-                用户授权登陆
+                微信手机号授权
             </div>
             <div id="toast_content">
                 <img src="../../static/icons/aHome.jpg" alt="">
-                <h3>青松易购 申请获得以下权限：</h3>
+                <h3>青松易购 申请获得你的手机号：</h3>
                 <span>
-                   获得你的公开信息（昵称、头像等）
+                    我们需要您的手机号来创建账
+号，累计积分
                 </span>
             </div>
             <div id="toast_bottom">
-                <button  @click="closeAuth">
+                <button  @click="closeMobile">
                     取消
                 </button>
-                <button  open-type="getUserInfo" @getuserinfo="getUserInfo">
+                <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                     登录
                 </button>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
 	export default {
-		name: 'Auth',
-        props: {
-		    slug: {
-		    	default: null,
-                type: String
-            }
-        },
-        mounted () {
-		},
+        name: 'GetUserMobile',
         methods: {
-			closeAuth () {
-				this.$emit('close')
-            },
-			getPhoneNumber (e) {
-				this.$command('SET_USER_MOBILE', e);
-			},
-			async getUserInfo (e) {
-                let sessionKey = this.model.account.sessionKey;
-                if (sessionKey) {
-                    let result = await this.$command('USER_REGISTER', e);
-                    if (result) {
-                        this.$emit('close');
-                        if (this.slug === 'payment') {
-                            this.$emit('pay')
-                        }
-                    }
+            async uploadFormId (e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== "the formId is a mock one"){
+                    await this.http.account.saveFormId(formId);
                 } else {
-                    wx.showToast({
-                        title: '授权失败,请退出小程序后再试',
-                        icon: 'none',
-                        duration: 2000
-                    })
+                    console.log('form id 不合法')
                 }
-
-			}
+            },
+            getPhoneNumber (e) {
+                this.$command('SET_USER_MOBILE', e);
+            },
+            closeMobile () {
+                this.$emit('close');
+            },
         }
 	}
 </script>

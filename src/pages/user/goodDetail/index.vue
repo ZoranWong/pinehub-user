@@ -7,21 +7,8 @@
             <span  class="circle"  v-else><i class="iconfont"  >&#xe679;</i></span>
         </div>
         <Auth v-if="getAuth" @close="closeAuth" />
+        <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <div id="good_detail" v-if="goodDetail" >
-            <div v-if="!isMember && registered" class="bgff user-mobile-box">
-                <div class="user_mobile_box_container">
-                    <form report-submit="true" @submit="uploadFormId">
-                        <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                            手机号授权
-                        </button>
-                    </form>
-
-                    <em class="mobile_box_tips">
-                        我们需要您的手机号来创建账号，累计积分
-                    </em>
-                </div>
-
-            </div>
             <div class="good_detail_banner">
                 <!--            <Swiper :images="goodDetail.banners" />-->
                 <Banner :img-urls="goodDetail.banners" ></Banner>
@@ -79,6 +66,7 @@
     import Auth from '../../../components/Auth';
 	import _ from 'underscore';
 	import Specification from '../QingSongKungfu/components/Specification';
+	import GetUserMobile from '../../../components/GetUserMobile';
 	export default {
         name: 'goodDetail',
 		components: {
@@ -90,7 +78,8 @@
 			Swiper,
 			Banner,
 			wxParse,
-			Auth
+			Auth,
+            GetUserMobile
 		},
         data() {
         	return {
@@ -103,7 +92,8 @@
 				getAuth: false,
                 actId: '',
                 selectActItem: {},
-                selectActSpec: false
+                selectActSpec: false,
+                showBindMobile: false
             }
         },
         onShareAppMessage: function (res) {
@@ -147,6 +137,9 @@
             }
         },
         methods:{
+            closeGetUserMobile () {
+                this.showBindMobile = false
+            },
             back(){
                 if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
@@ -169,7 +162,7 @@
 					this.getUserAuth()
                 } else {
                     if (!this.isMember) {
-                        console.log('xxxxxxxxxxxxxxxxx');
+                        this.showBindMobile = true
                     } else {
 						if (item.specifications && item.specifications.length) {
                             if (this.options['type'] === 'activity') {

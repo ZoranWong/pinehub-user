@@ -41,7 +41,6 @@
 		},
 		computed: {
 			integralRecords () {
-				console.log(this.model.integral.records.integralRecords, '90909900990');
 				return this.model.integral.records.integralRecords
             },
 			statusBarHeight () {

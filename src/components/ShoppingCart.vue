@@ -36,6 +36,20 @@
                 </ul>
             </div>
         </div>
+
+        <div class="pickupTips" v-if="showTips">
+            <div class="pickupTipsContainer">
+                <div class="header">提示</div>
+                <div class="tips">
+                    购物车中的以下商品已下架，将为您删除下列商品:
+                    <span v-for="item in invalidProducts" :key="item.id">{{item.name}}</span>
+                </div>
+                <div class="operation">
+                    <button @click="showTips = false">取消</button>
+                    <button @click="deleteProducts">好的</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -48,7 +62,9 @@
 		data () {
 			return {
                 showMask: false,
-				showGoodsList: false
+				showGoodsList: false,
+                showTips: false,
+                invalidProducts: []
             }
 		},
         watch: {
@@ -60,6 +76,13 @@
             goodInShoppingCart (val) {
                 if (!val.length) {
 		            this.showGoodsList = false
+                }
+            },
+            invalidProducts (val) {
+		        if (val.length) {
+		            this.showTips = true
+                } else {
+		            this.showTips = false
                 }
             }
         },
@@ -128,7 +151,7 @@
 			    wx.getSetting({
                     async success (res) {
                         if (res.authSetting && res.authSetting['scope.userLocation']) {
-                            self.goPayment();
+                            self.checkProductStatus();
                         } else {
                             wx.showModal({
                                 title: '是否授权当前位置',
@@ -143,7 +166,7 @@
                                                         icon: 'success',
                                                         duration: 1000
                                                     })
-                                                    self.goPayment();
+                                                    self.checkProductStatus();
                                                 } else {
                                                     wx.showToast({
                                                         title: '授权失败',
@@ -159,6 +182,38 @@
                         }
                     }
                 })
+            },
+            checkProductStatus () {
+                // this.invalidProducts = [];
+                // this.showGoodsList = false;
+                // let products = this.goodInShoppingCart;
+                // _.map(products, product => {
+                //     if (product['product_status'] !== 1) {
+                //         this.invalidProducts.push(product)
+                //     }
+                // })
+                // if (!this.invalidProducts.length) {
+                //     this.goPayment()
+                // }
+                this.goPayment()
+            },
+            deleteProducts () {
+                _.map(this.invalidProducts, async (product) => {
+                    if (this.type === 'mall') {
+                        await this.$command('CHANGE_BUY_NUM_COMMAND',product, 0)
+                    } else if (this.type === 'breakfast') {
+                        await this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', product, 0)
+                    } else if (this.type === 'activity') {
+                        await this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',product, 0, this.actId)
+                    }
+                });
+                if (this.goodInShoppingCart.length) {
+                    setTimeout(()=>{
+                        this.goPayment()
+                    }, 500)
+                } else {
+                    this.showTips = false
+                }
             },
             goPayment () {
                 // if (this.type === 'mall') {
@@ -460,4 +515,77 @@
         border: 0;
         background: linear-gradient(to right, #FDE068, #FFCC00);
     }
+
+    .pickupTips {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pickupTips .pickupTipsContainer{
+        width: 630rpx;
+        background: #fff;
+        border-radius: 10rpx;
+        padding: 0 50rpx;
+        box-sizing: border-box;
+    }
+
+    .pickupTips .header{
+        width: 100%;
+        height: 80rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32rpx;
+        color: #111;
+    }
+
+    .pickupTips .tips{
+        font-size: 28rpx;
+        color: #111111;
+        margin-top: 20rpx;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 20rpx;
+    }
+
+    .pickupTips .tips span {
+        color: red;
+        font-weight: bold;
+    }
+
+    .pickupTips .operation{
+        width: 100%;
+        margin-bottom: 20rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pickupTips .operation button {
+        flex: 1;
+        margin-right: 10rpx;
+        color: #FFCC00;
+        border-radius: 10rpx;
+        background: #fff;
+        border:1px solid #ffcc00;
+        font-size: 32rpx;
+    }
+    .pickupTips .operation button:last-child{
+        margin-right: 0;
+        background: #FFCC00;
+        color: #fff;
+    }
+
 </style>

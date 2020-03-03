@@ -3,7 +3,6 @@ import Command from './Command';
 export default class PaymentByIdCommand extends Command {
     async handle (order, payType = 'wx') {
         try {
-            console.log(order, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
             // await this.service('mp.storage').set('payOrderId', orderId);
             let data = await this.service('http.orders').orderPayById(order.id, payType);
             console.log('---------------------------', data);
@@ -30,8 +29,8 @@ export default class PaymentByIdCommand extends Command {
         } catch (e) {
             console.log(e);
             // 微信支付失败调用接口
-           
-    
+
+
             let response = e['response'];
             if (response && response['data']) {
                 if (response['data']['code'] === 20001) {

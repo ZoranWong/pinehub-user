@@ -5,7 +5,6 @@ export default class CreateOrderCommand extends Command {
     async createOrderSign (params, resetCart = null) {
         try {
             let order = await this.service('http.orders').createPaymentOrder(params);
-            console.log(order, '------------------------------------------------------------------');
             if (order.id && !this.paid) {
                 this.orderId = order.id;
             }

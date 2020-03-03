@@ -18,7 +18,7 @@
 <script>
 	export default {
 		name: 'CustomHeader',
-        props: ['title','needReturn', 'backColor'],
+        props: ['title','needReturn', 'backColor', 'backUrl'],
         data () {
 		    return {
 		    	barHeight: 0,
@@ -33,6 +33,10 @@
         },
         methods:{
 		    back(){
+		        // if (this.backUrl) {
+		        //     this.$emit('back');
+		        //     return
+                // }
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {

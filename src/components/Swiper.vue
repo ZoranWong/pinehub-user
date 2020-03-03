@@ -29,7 +29,6 @@
 			};
 		},
         mounted () {
-			console.log(this.images, '*********************');
 		}
 	}
 </script>

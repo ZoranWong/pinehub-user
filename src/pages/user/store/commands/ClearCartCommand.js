@@ -7,7 +7,7 @@ export default class ClearCartCommand extends Command {
 
         // console.log('----- request -----', Date.now());
         this.model.user.store.dispatch('clearShoppingCart');
-        this.model.user.order.payment.dispatch('clearIds')
+        // this.model.user.order.payment.dispatch('clearIds')
         // console.log('----- set data -----', Date.now());
     }
 

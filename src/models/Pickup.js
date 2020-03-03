@@ -25,7 +25,6 @@ export default class Pickup extends Model {
     listeners () {
         super.listeners();
         this.addEventListener('savePickupOrders', function ({orders}) {
-            console.log(orders, 'pickuporders');
 
             _.map(orders, function (order) {
                 let time = new Date().getTime();

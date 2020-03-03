@@ -6,7 +6,7 @@ export default class AddGoodsToCartCommand extends Command {
         this.model.activity.dispatch('addToShoppingCart', {
             goods: response
         });
-        this.model.activity.dispatch('clearIds');
+        // this.model.activity.dispatch('clearIds');
     }
 
     static commandName () {

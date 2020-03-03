@@ -44,8 +44,8 @@
 
 <style>
     .swiper {
-        width: 750 rpx;
-        height: 400 rpx;
+        width: 750rpx;
+        height: 400rpx;
         /*	border:1rpx solid red;*/
     }
 

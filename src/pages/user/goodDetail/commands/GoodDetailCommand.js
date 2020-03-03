@@ -2,8 +2,6 @@ import Command from '@/commands/Command';
 
 export default class LoadStoreGoodsCommand extends Command {
     async handle (type, id, actId) {
-        console.log(type, '!!!!!!!!!!1');
-        console.log('id', id);
         let result;
         if (type === 'mall') {
             result = await this.service('http.store').mallGoodDetail(id);

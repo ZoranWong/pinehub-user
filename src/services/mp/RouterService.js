@@ -20,7 +20,7 @@ export default class RouterService extends Service {
             return;
         }
         this.$application.currentRoute = route;
-       
+
         this.routeStack.push([route, options]);
         this.currentRouter = route;
         let page = this.routes[route];
@@ -60,7 +60,6 @@ export default class RouterService extends Service {
                 onSuccess: onSuccess
             };
         }
-        console.log(options, onCompleted);
         if (typeof options['query'] !== 'undefined') {
             page += this.service('uri').query(options['query'])
         }

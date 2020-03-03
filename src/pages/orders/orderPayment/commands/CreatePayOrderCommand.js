@@ -28,7 +28,7 @@ export default class CreatePayOrderCommand extends Command {
                 })
             }
 
-            this.$command('REDIRECT_TO', 'selectPay', 'replace', {
+            this.$command('REDIRECT_TO', 'selectPay', 'push', {
                 query: {
                     type: type
                 }

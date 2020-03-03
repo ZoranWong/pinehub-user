@@ -95,7 +95,7 @@ export default class ApiService extends Service {
             if (message !== '没有常用自提点') {
                 console.log('没有常用');
                 if (this.errorShow) {
-                    await this.service('popup').toast(message, 'none', 2000);
+                    await this.service('popup').toast(message, 'none', 2000)
                 }
             }
             this.errorShow = true;

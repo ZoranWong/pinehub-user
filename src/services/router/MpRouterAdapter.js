@@ -1,30 +1,64 @@
 import RouterAdapter from './RouterAdapter';
 
 export default class MpRouterAdapter extends RouterAdapter {
+    _doing = false;
+
+    constructor (props) {
+        super(props);
+        this.random = Math.random();
+    }
+
     /*
     * @param {Route} route
     * */
     go (route) {
+        if (this._doing) return;
+        this._doing = true;
         wx.reLaunch({
-            url: route.url()
+            url: route.url(),
+            complete: (res) => {
+                setTimeout(() => {
+                    this._doing = false;
+                }, 1000);
+            }
         });
     }
 
     push (route) {
-        console.log(route, '{{{{{{{{{{{{{{{');
+        if (this._doing) return;
+        this._doing = true;
         wx.navigateTo({
-            url: route.url()
+            url: route.url(),
+            complete: (res) => {
+                setTimeout(() => {
+                    this._doing = false;
+                }, 1000);
+            }
         })
     }
 
     replace (route) {
+        if (this._doing) return;
+        this._doing = true;
         wx.redirectTo({
-            url: route.url()
+            url: route.url(),
+            complete: (res) => {
+                setTimeout(() => {
+                    this._doing = false;
+                }, 1000);
+            }
         })
     }
 
     back () {
-        console.log('马上就要回去啦');
-        wx.navigateBack()
+        if (this._doing) return;
+        this._doing = true;
+        wx.navigateBack({
+            complete: (res) => {
+                setTimeout(() => {
+                    this._doing = false;
+                }, 1000);
+            }
+        })
     }
 }

@@ -62,7 +62,6 @@ export default class ShoppingCartService extends ApiService {
 
     // 修改预定增加到购物车
     async activityShoppingCartChangeMerchandise (id, quality) {
-        console.log(id, 'YYYYYYYYYYYYYYYYYY');
         let merchandise = {
             buy_num: quality
         };
@@ -89,7 +88,7 @@ export default class ShoppingCartService extends ApiService {
         let response = await this.httpDelete(`api/mp/breakfast/booking/carts/${id}`);
         return response.data
     }
-    
+
     async storeShoppingCartChangeMerchandise (storeId, id, merchandiseId, quality) {
         let merchandise = {
             merchandise_id: merchandiseId,
