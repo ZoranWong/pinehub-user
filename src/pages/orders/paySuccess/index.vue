@@ -1,6 +1,6 @@
 <template>
     <div id="orderpay">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="false" />
 
         <div class="order-success">
             <div id="orderpay_success">

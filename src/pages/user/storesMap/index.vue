@@ -51,7 +51,7 @@
                                 <i class="customIcon disSelected" v-else> </i>
                             </li>
                             <div class="empty_img" v-if="!commonPoints.length">
-                                <img src="/../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
+                                <img src="../../../../static/images/empty/empty_point.jpg" alt="" id="empty">
                                 <span>暂无自提点哦～</span>
                             </div>
                         </ul>
@@ -786,7 +786,7 @@
 
     .empty_img img {
         width: 350rpx;
-        height: 240rpx;
+        height: 270rpx;
     }
 
     .empty_img span {

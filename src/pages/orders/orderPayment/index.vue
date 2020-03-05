@@ -110,8 +110,9 @@
                     <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
                         <span v-if="!isLoadAll">展开更多</span>
                         <span v-else>点击收起</span>
-                        <img  v-if="isLoadAll" src="./imgs/bottom-arrow.png" alt="">
-                        <img v-else src="./imgs/top-arrow.png" alt="">
+                        <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
+                        <img  v-else src="./imgs/bottom-arrow.png" alt="">
+
                     </div>
                 </ul>
 
@@ -133,8 +134,9 @@
                             优惠券
                         </h3>
                         <div class="couponUse">
-                            <em class="red2">{{availableCoupons.length - couponIds.length}}张可用</em>
-                            <span class="use_coupon" v-if="availableCoupons.length > 0">
+                            <em class="red2" v-if="availableCoupons.length">{{availableCoupons.length - couponIds.length}}张可用</em>
+                            <em class="gray" v-else>暂无可用</em>
+                            <span class="use_coupon" >
                                 <img src="./imgs/right-arrow.png" alt="">
                             </span>
                         </div>
@@ -589,8 +591,8 @@
     }
 
     .sendContainer .top .topLeft img{
-        width: 56rpx;
-        height: 56rpx;
+        width: 52rpx;
+        height: 52rpx;
         margin-right: 12rpx;
     }
 
@@ -637,6 +639,7 @@
         background-repeat: no-repeat;
         background-position: right top;
         position: relative;
+        overflow: hidden;
     }
 
     .hideImg{
@@ -858,6 +861,11 @@
     .red2{
         font-size: 30rpx;
         color: #FC3C2F;
+    }
+
+    .gray{
+        font-size: 30rpx;
+        color: #999;
     }
 
     .couponUse{
@@ -1226,6 +1234,7 @@
         height: 100%;
         font-size: 32rpx;
         color: #111111;
+        font-weight: bold;
         background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));
     }
 

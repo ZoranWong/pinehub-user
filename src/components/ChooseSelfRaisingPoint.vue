@@ -3,7 +3,7 @@
     <div id="points_wrapper">
         <div id="points_container">
             <div id="closeIcon" @click="closeWrapper">
-                <i class="iconfont closeIcon" @click="close">&#xe658;</i>
+                <img src="../../static/icons/pointClose.png" @click="close" alt="">
             </div>
             <div class="header_img">
                 <img src="../../static/selfPoints/header.jpg" alt="">
@@ -14,12 +14,12 @@
             </div>
             <ul id="points_container_list" v-if="position === 'right'">
                 <li v-for="item in commonPoints" :key="item.id" @click="payment(item)">
-                    <i class="iconfont">&#xe65a;</i>
+                    <img src="../../static/icons/pointRightArrow.png" class="arrows" alt="">
                     <span>
                            {{item.name}}
                     </span>
                 </li>
-                <div class="empty_img" v-if="!commonPoints.length">
+                <div class="empty_img" v-if="!commonPoints.length" style="margin-top: 60rpx">
                     <img src="../../static/images/empty/empty_point.jpg" alt="" id="empty">
                     <span>暂无自提点哦～</span>
                 </div>
@@ -27,12 +27,12 @@
 
             <ul id="points_container_list" v-if="position === 'left'">
                 <li v-for="item in nearPoints" :key="item.id" @click="payment(item)">
-                    <i class="iconfont">&#xe65a;</i>
+                    <img src="../../static/icons/pointRightArrow.png" class="arrows" alt="">
                     <span>
                            {{item.name}}
                     </span>
                 </li>
-                <div class="empty_img" v-if="!nearPoints.length">
+                <div class="empty_img" v-if="!nearPoints.length" style="margin-top: 60rpx">
                     <img src="../../static/images/empty/empty_point.jpg" alt="" id="empty">
                     <span>暂无自提点哦～</span>
                 </div>
@@ -218,17 +218,21 @@
     }
 
     #points_wrapper #points_container #closeIcon {
-        border: 6rpx solid #fff;
         background: #fff;
         position: absolute;
         right: -16rpx;
         top: -16rpx;
         border-radius: 50%;
-        width: 64rpx;
-        height: 64rpx;
+        width: 76rpx;
+        height: 76rpx;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    #points_wrapper #points_container #closeIcon img {
+        width: 76rpx;
+        height: 76rpx;
     }
 
     #points_wrapper #points_container .closeIcon {
@@ -261,6 +265,11 @@
         width: 100%;
         max-height: 250px;
         overflow: auto;
+    }
+
+    #points_wrapper #points_container #points_container_list .arrows{
+        width: 40rpx;
+        height: 40rpx;
     }
 
     #points_wrapper #points_container #points_container_list li {
@@ -305,7 +314,7 @@
     }
 
     #points_wrapper #points_container #points_notice {
-        font-size: 20rpx;
+        font-size: 22rpx;
         color: #757575;
         font-weight: normal;
         margin-top: 20rpx;
@@ -321,11 +330,12 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        margin-top: 100rpx;
     }
 
     .empty_img img {
         width: 250rpx;
-        height: 180rpx;
+        height: 192rpx;
     }
 
     .empty_img span {

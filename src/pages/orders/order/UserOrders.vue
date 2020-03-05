@@ -15,8 +15,8 @@
                     <img src="../../../../static/icons/rightArrow.png" class="arrow" alt="">
                 </div>
                 <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING'  " >{{order['stateDesc']}}</span>
-                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>
-                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 2">售后处理中</span>
+<!--                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>-->
+<!--                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 2">售后处理中</span>-->
             </div>
             <div v-if = "order['type'] === 'CODE_SCAN'" class="code_scan" @click="orderDetail(order.id)">
                 <div>线下扫码支付</div>
@@ -63,7 +63,7 @@
             </div>
             <div class="order_info_btn" v-if="order.btnStatus === 2 && order.type !== 'CODE_SCAN' && order.type !== 'ACTIVITY_PRODUCT_ORDER' && order['after_service_state'] !== 1 && order['after_service_state'] !== 2">
                 <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</button>
+<!--                    <button form-type="submit" @click="btnClick('feedback', order)" class="white" v-if="order.type !== 'DEPOSIT'">申请售后</button>-->
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
                     <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
                 </form>
