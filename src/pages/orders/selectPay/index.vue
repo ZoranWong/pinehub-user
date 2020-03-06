@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="location">
-        <CustomHeader :title="title" :needReturn="true" />
+        <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="backStore"/>
 
         <div class="checkout_header">
             <div class="left">
@@ -14,7 +14,7 @@
             <div class="select">请选择支付方式</div>
             <div class="balance" @click="payByBalance">
                 <div class="left">
-                    <i class="iconfont yue">&#xe6ec;</i>
+                    <img src="../../../../static/icons/money.png" alt="">
                     <span>余额支付 (￥{{userInfo.balance}})</span>
                 </div>
                 <div class="right">
@@ -24,7 +24,7 @@
             </div>
             <div class="balance" @click="payByWechat">
                 <div class="left">
-                    <i class="iconfont wx">&#xe883;</i>
+                    <img class="wechat" src="../../../../static/icons/wxchat.png" alt="">
                     <span>微信支付</span>
                 </div>
                 <div class="right">
@@ -79,6 +79,9 @@
         },
         // 普通方法
         methods: {
+            backStore () {
+                this.$command('REDIRECT_TO', 'user.store', 'push')
+            },
 			countDownServer(time) {
                 let minutes = Math.floor(time  / 60),
 					seconds = Math.floor(time - minutes * 60);
@@ -219,6 +222,17 @@
         align-items: center;
         font-size: 28rpx;
         color: #111111;
+    }
+
+    .checkout_body .balance .left img{
+        width: 48rpx;
+        height: 48rpx;
+        margin-right: 20rpx;
+    }
+
+    .wechat{
+        width: 48rpx!important;
+        height: 39rpx!important;
     }
 
     .checkout_body .balance .yue{

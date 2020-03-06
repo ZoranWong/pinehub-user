@@ -37,6 +37,6 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.address', AddressService);
         this.app.register('http.activities', ActivityService);
         this.app.register('http.newIndex', NewIndexService);
-        // this.app.register('$socket', WebSocketService);
+        this.app.register('$socket', WebSocketService);
     }
 }

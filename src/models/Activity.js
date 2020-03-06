@@ -107,8 +107,8 @@ export default class Activity extends Model {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
+                this.state.products.push(product)
             });
-            this.state.products = products;
         });
 
         this.addEventListener('saveActivityCartGoodsList', function ({products}) {
@@ -215,6 +215,10 @@ export default class Activity extends Model {
         this.addEventListener('saveAddress', function ({address}) {
             console.log(address, '?????????????????????????????????????????????????');
             this.state.address = address;
+        });
+
+        this.addEventListener('clearProducts', function () {
+            this.state.products = []
         })
     }
 }

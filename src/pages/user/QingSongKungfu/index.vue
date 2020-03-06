@@ -219,10 +219,6 @@
                 wx.makePhoneCall({
                     phoneNumber: this.phone,
                     success: function () {
-                        wx.showToast({
-                            title: '拨打成功',
-                            icon: 'none'
-                        })
                     }
                 })
             },

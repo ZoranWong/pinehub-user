@@ -82,6 +82,7 @@ export default class Order {
         this.shop = order['shop'];
         this.paidTime = order['paid_time'];
         this.state = order['state'];
+        this['delivery_type'] = order['delivery_type'];
         this['auto_cancel_after_seconds'] = order['auto_cancel_after_seconds'];
         this['settlement_total_fee_format'] = order['settlement_total_fee_format'];
         this.orderItems.forEach(item => {

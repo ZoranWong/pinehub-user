@@ -216,26 +216,21 @@
                 }
             },
             goPayment () {
-                // if (this.type === 'mall') {
-                // 	this.model.user.store.dispatch('selectPoints', {
-                // 		boolean: true,
-                //         type: this.type
-                // 	})
-                // } else if (this.type === 'breakfast') {
-                // 	console.log('这是早餐车的购物车');
-                // 	this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
-                // 		boolean: true,
-                // 		type: this.type
-                // 	})
-                // } else if (this.type === 'activity') {
-                //     this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                //         query: {type: this.type, actId: this.actId}
-                //     });
-                // }
+                if (this.type === 'mall') {
+                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                        query: {type: this.type}
+                    });
+                } else if (this.type === 'breakfast') {
+                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                        query: {type: this.type}
+                    });
+                } else if (this.type === 'activity') {
+                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                        query: {type: this.type, actId: this.actId}
+                    });
+                }
 
-                this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                    query: {type: this.type}
-                });
+
             },
 			closeMask(){
 				this.showGoodsList = false;

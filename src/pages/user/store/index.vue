@@ -456,7 +456,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-      font-weight: bold;
+
   }
 
   #store_good_info_spec{
@@ -467,6 +467,7 @@
   #store_goods #store_goods_type .active{
       background: #fff;
       border-left: 12rpx solid #ffcc00;
+      font-weight: 800;
   }
 
   .store_goods_items_box{

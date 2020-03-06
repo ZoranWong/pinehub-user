@@ -22,10 +22,10 @@
             <div class="header">请选择支付方式</div>
             <div class="type" @click="selectType('wx')">
                 <div class="left">
-                    <i class="iconfont wx">&#xe883;</i>
+                    <img src="../../../../static/icons/wxchat.png" alt="">
                     <span>微信支付</span>
                 </div>
-                <i class="iconfont right">&#xe656;</i>
+                <img class="check" src="../../../../static/icons/checkSmall.png" alt="">
             </div>
         </div>
         <form report-submit="true" @submit="uploadFormId">
@@ -188,6 +188,11 @@
         border-top: 2rpx solid #f2f2f2;
     }
 
+    .type .check{
+        width: 48rpx;
+        height: 48rpx;
+    }
+
     .pay_type .type .left {
         display: flex;
         justify-content: flex-start;
@@ -196,6 +201,12 @@
 
     .pay_type .type .left i{
         font-size: 48rpx;
+        margin-right: 20rpx;
+    }
+
+    .pay_type .type .left img{
+        width: 48rpx;
+        height: 39rpx;
         margin-right: 20rpx;
     }
 

@@ -155,9 +155,9 @@
             </div>
             <ul id="remarkBox">
                 <li>
-                    <h3>备注(选填)</h3>
+                    <h3>备注 <span class="xuantian">(选填)</span></h3>
                     <input type="text" v-model="remark">
-                    <em>请输入备注</em>
+                    <em v-if="!remark">请输入备注</em>
                 </li>
                 <li>
                     <h3>支付方式</h3>
@@ -182,7 +182,7 @@
         <div class="pickupTips" v-if="showTips">
             <div class="pickupTipsContainer">
                 <div class="header">提示</div>
-                <div class="tips">
+                <div class="tip1s">
                     您的宝贝将在
                     <span class="pickupTipsImportant">后天</span>
                     送达到您的手上！
@@ -307,7 +307,7 @@
             btnHeight() {
                 let systemInfo = wx.getSystemInfoSync();
                 return 0 * systemInfo.windowWidth / 750;
-            },
+            }
 		},
 		methods: {
             closePoints () {
@@ -407,8 +407,9 @@
                     this.createOrder(type)
                 }
             },
-			createOrder(type){
+			createOrder(){
                 this.showTips = false;
+                let type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
                 if (type === 'HOME_DELIVERY') {
                     this.$command('CREATE_PAY_ORDER',{
                         remark: this.remark,
@@ -1139,6 +1140,10 @@
         margin-bottom: 150rpx;
     }
 
+    #remarkBox .xuantian{
+        color: #999!important;
+    }
+
     #remarkBox li{
         width: 100%;
         height: 106rpx;
@@ -1275,7 +1280,7 @@
         color: #111;
     }
 
-    .pickupTips .tips{
+    .pickupTips .tip1s{
         font-size: 28rpx;
         color: #111111;
         margin-top: 20rpx;
@@ -1283,7 +1288,7 @@
         height: 80rpx;
     }
 
-    .pickupTips .tips span {
+    .pickupTips .tip1s span {
         color: red;
         font-weight: bold;
     }

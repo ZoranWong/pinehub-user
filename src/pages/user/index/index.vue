@@ -209,13 +209,13 @@
             },
             userId (val) {
                 if (val) {
-                    // this.$socket.userId = val;
-                    // this.$socket.notification((data)=>{
-                    //     console.log(data, '-------- APP User notification --------');
-                    // });
-                    // this.$socket.eventListener('test', 'TestEvent', (data) => {
-                    //     console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
-                    // });
+                    this.$socket.userId = val;
+                    this.$socket.notification((data)=>{
+                        console.log(data, '-------- APP User notification --------');
+                    });
+                    this.$socket.eventListener('test', 'TestEvent', (data) => {
+                        console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
+                    });
                 }
             }
         },

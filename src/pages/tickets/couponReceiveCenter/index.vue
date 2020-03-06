@@ -28,8 +28,8 @@
                         </div>
                         <div class="right">
                             <div class="title">
-                                <img src="../../../../static/images/tickets/cash.jpg" alt="" v-if="codeTicket['typeDesc'] === '现金券'" >
-                                <img src="../../../../static/images/tickets/discount.jpg" alt="" v-else>
+                                <img src="../../../../static/images/tickets/Cash_coupon.png" alt="" v-if="codeTicket['typeDesc'] === '现金券'" >
+                                <img src="../../../../static/images/tickets/Discount_coupon.png" alt="" v-else>
                                 <h3>{{codeTicket.title}}</h3>
                             </div>
                             <div class="valid">

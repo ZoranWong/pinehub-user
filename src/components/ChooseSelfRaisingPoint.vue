@@ -270,6 +270,7 @@
     #points_wrapper #points_container #points_container_list .arrows{
         width: 40rpx;
         height: 40rpx;
+        margin-left: 10rpx;
     }
 
     #points_wrapper #points_container #points_container_list li {

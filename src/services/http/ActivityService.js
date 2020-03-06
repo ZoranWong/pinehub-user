@@ -32,9 +32,12 @@ export default class ActivityService extends ApiService {
     }
 
     // 活动产品列表
-    async activityProducts (id) {
-        let response = await this.httpGet(`/api/mp/activity/${id}/products`);
-        return response.data;
+    async activityProducts (id, page, limit) {
+        console.log(page);
+        let response = await this.httpGet(`/api/mp/activity/${id}/products`, {
+            page, limit
+        });
+        return response;
     }
 
     // 活动商品详情

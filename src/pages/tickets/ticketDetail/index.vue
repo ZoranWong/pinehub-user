@@ -12,10 +12,10 @@
                     </div>
                     <div class="right">
                         <div class="title">
-                            <img src="../../../../static/images/tickets/cash.jpg" alt="" v-if="detail['typeDesc'] === '现金券' && !isInvalid">
-                            <img src="../../../../static/images/tickets/disabledCash.jpg" alt="" v-if="detail['typeDesc'] === '现金券' && isInvalid">
-                            <img src="../../../../static/images/tickets/discount.jpg" alt="" v-if="detail['typeDesc'] === '折扣券' && !isInvalid">
-                            <img src="../../../../static/images/tickets/disabledDiscount.jpg" alt="" v-if="detail['typeDesc'] === '折扣券' && isInvalid">
+                            <img src="../../../../static/images/tickets/Cash_coupon.png" alt="" v-if="detail['typeDesc'] === '现金券' && !isInvalid">
+                            <img src="../../../../static/images/tickets/Cash_coupon-02.png" alt="" v-if="detail['typeDesc'] === '现金券' && isInvalid">
+                            <img src="../../../../static/images/tickets/Discount_coupon.png" alt="" v-if="detail['typeDesc'] === '折扣券' && !isInvalid">
+                            <img src="../../../../static/images/tickets/Discount_coupon-02.png" alt="" v-if="detail['typeDesc'] === '折扣券' && isInvalid">
                             <h3>{{detail.title}}</h3>
                         </div>
                         <div class="valid">

@@ -14,7 +14,9 @@
                     <em>订单编号:{{order.code}}</em>
                     <img src="../../../../static/icons/rightArrow.png" class="arrow" alt="">
                 </div>
-                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING'  " >{{order['stateDesc']}}</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' && order['delivery_type'] !== 'HOME_DELIVERY'  " >{{order['stateDesc']}}</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' && order['delivery_type'] === 'HOME_DELIVERY' && order['state'] === 'WAIT_TO_PICK' " >待收货</span>
+                <span class="order_info_status" v-if="order.type !== 'CODE_SCAN' && order['state'] !== 'ORDER_HANDLING' && order['delivery_type'] === 'HOME_DELIVERY' && order['state'] === 'ORDER_COMPLETED' " >已完成</span>
 <!--                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 1">申请售后中</span>-->
 <!--                <span class="order_info_status" v-if=" order.type !== 'CODE_SCAN' && order['state'] === 'ORDER_HANDLING' && order['after_service_state'] === 2">售后处理中</span>-->
             </div>
@@ -52,7 +54,8 @@
                     <button form-type="submit" v-if="order['can_cancel']" @click="btnClick('cancel', order)" class="white">取消订单</button>
                     <button form-type="submit" @click="btnClick('recharge', order)" class="white" v-if="order.type === 'DEPOSIT'">继续充值</button>
                     <button form-type="submit" @click="btnClick('onemore', order)" class="white" v-else>再来一单</button>
-                    <button form-type="submit" @click="btnClick('pickup', order)" class="yellow">去取货</button>
+                    <button form-type="submit" @click="btnClick('alreadyGetIt', order)" class="yellow" v-if="order['delivery_type'] === 'HOME_DELIVERY'">确认收货</button>
+                    <button form-type="submit" @click="btnClick('pickup', order)" class="yellow" v-else>去取货</button>
                 </form>
 
             </div>
@@ -152,7 +155,8 @@
             },
 
             btnClick (type, order) {
-				this.$command('ORDER_STATUS_UPDATE', type, order);
+                console.log(order, '......................');
+                this.$command('ORDER_STATUS_UPDATE', type, order);
             },
             orderItemTop (order, index) {
                 const query = wx.createSelectorQuery()

@@ -21,7 +21,7 @@ export default class OrderStatusUpdateCommand extends Command {
 
     // 再来一单
     onemore () {
-        this.$application.$command('REDIRECT_TO', 'user.store', 'replace');
+        this.$application.$command('REDIRECT_TO', 'user.store', 'push');
     }
     // 去取货
     pickup (order) {
@@ -77,7 +77,7 @@ export default class OrderStatusUpdateCommand extends Command {
     refresh () {
         let self = this;
         setTimeout(function () {
-            self.$application.$command('REDIRECT_TO', 'user.orders', 'replace');
+            self.$application.$command('REDIRECT_TO', 'user.orders', 'push');
         }, 1500);
     }
     async handle (type, order) {
