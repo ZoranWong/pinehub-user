@@ -78,7 +78,7 @@
                     <img @click="agreement = true" src="./imgs/uncheck.png" alt="" v-else>
                     <h4>
                         同意并接受
-                        <span>
+                        <span @click="go('user.pickup.protocol')">
                             《预定自提服务协议》
                         </span>
                     </h4>
@@ -182,6 +182,9 @@
         <div class="pickupTips" v-if="showTips">
             <div class="pickupTipsContainer">
                 <div class="header">提示</div>
+                <div class="tip2s">
+                    支付时间在21:00后的订单
+                </div>
                 <div class="tip1s">
                     您的宝贝将在
                     <span class="pickupTipsImportant">后天</span>
@@ -401,7 +404,7 @@
                 let now = new Date();
                 let hour = now.getHours();
                 let type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
-                if (hour > 20) {
+                if (hour > 8) {
                     this.showTips = true;
                 } else {
                     this.createOrder(type)
@@ -441,7 +444,10 @@
 				this.$command('REDIRECT_TO', router, 'push',{
 					query: {needReturn: true, type: this.type}
                 });
-			}
+			},
+            go (router) {
+                this.$command('REDIRECT_TO', router, 'push');
+            }
 		},
 		created() {
             this.getDeliveryPrice()
@@ -1286,6 +1292,13 @@
         margin-top: 20rpx;
         text-align: center;
         height: 80rpx;
+    }
+
+    .tip2s{
+        font-size: 28rpx;
+        color: #111111;
+        margin-top: 20rpx;
+        text-align: center;
     }
 
     .pickupTips .tip1s span {

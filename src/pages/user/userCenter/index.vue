@@ -101,6 +101,14 @@
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
+                <li @click="jump('user.protocol')" class="lines">
+                    <div class="left">
+                        <img src="../../../../static/icons/protocol.jpg" class="protocol" alt="">
+                        <!--                        <i class="iconfont green">&#xe602;</i>-->
+                        <span>用户协议</span>
+                    </div>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </li>
             </ul>
         </div>
 
@@ -115,14 +123,10 @@
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-            </ul>
-        </div>
-        <div class="merchant-store_menu">
-            <ul class="mesnus">
                 <li @click="showBind" class="showBind">
                     <div class="left">
                         <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
-                        <img src="../../../../static/icons/addresses.png" alt="">
+                        <img src="../../../../static/icons/serviceShop.jpg" alt="">
                         <span>服务商户</span>
 
                     </div>
@@ -714,6 +718,10 @@
         width: 12rpx!important;
         height: 20rpx!important;
         margin-left: 21rpx;
+    }
+
+    .protocol{
+        width: 32rpx!important;
     }
 
 </style>

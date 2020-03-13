@@ -332,7 +332,9 @@
                 // }
             },
             bannerJump (item) {
-                if (item['can_jump']) {
+                if (item['can_jump'] && item['action_type'] === 'PRODUCT_DETAIL') {
+                    this.redirectTo(item['action_link'], {query: {type:'mall', good_id: item['action_args'].id}})
+                } else {
                     this.redirectTo(item['action_link'])
                 }
             },

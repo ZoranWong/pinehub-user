@@ -7,6 +7,8 @@
     "user.order.payment": "/pages/orders/orderPayment/main",
 	"newEvents": "/pages/user/mall/newEvents/main",
 	"userCenter": "/pages/user/userCenter/main",
+	"user.protocol": "/pages/user/userProtocol/main",
+	"user.pickup.protocol": "/pages/user/userPickupProtocol/main",
 	"user.feedBack": "/pages/user/feedBack/main",
 	"user.share": "/pages/user/share/main",
     "user.balance": "/pages/user/balance/main",

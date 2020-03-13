@@ -4,6 +4,8 @@
         "pages/user/storesMap/main",
         "pages/user/mall/newEvents/main",
         "pages/user/userCenter/main",
+        "pages/user/userProtocol/main",
+        "pages/user/userPickupProtocol/main",
         "pages/user/store/main",
         "pages/user/goodDetail/main",
         "pages/user/feedBack/main",
