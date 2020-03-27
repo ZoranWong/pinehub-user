@@ -158,7 +158,7 @@
             return {
                 title: '个人中心',
                 navName: 'my',
-                phone: '19965256219',
+                phone: '17368878588',
                 getAuth: false,
                 bindVisible: false
             };

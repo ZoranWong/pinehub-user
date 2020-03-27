@@ -102,6 +102,10 @@ export default class Activity extends Model {
                     });
                     itemEntities.specs = specObj
                 });
+                let ary = product['sell_price_format'].split('～');
+                if (ary.length > 1) {
+                    product['sell_price_reformat'] = `${ary[0]}`;
+                }
                 let spec = [];
                 _.map(specifications, function (value) {
                     spec.push(value.name)

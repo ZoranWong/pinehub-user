@@ -14,7 +14,7 @@
                 <li
                   v-for="item in categories"
                   :key="item.id"
-                  :class="item.id === activeTab ? 'active': ''"
+                  :class="item.id == activeTab ? 'active': ''"
                   @click="tabSelect(item.id)"
                 >
                     {{item.name}}
@@ -135,6 +135,7 @@
               }
           },
           queryCateId (val) {
+              console.log(val, '-----------------------------------------------------------------');
               if (val) {
                   this.tabSelect(val)
               }
@@ -352,6 +353,7 @@
           this.screenHeight = (rpxRate * screenWitdh)/ 2;
           this.initAccount()
           this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+          console.log(this.$route, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
           if (this.$route.query && this.$route.query.cateId) {
               this.queryCateId = this.$route.query.cateId
           }

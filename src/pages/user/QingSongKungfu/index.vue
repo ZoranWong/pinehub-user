@@ -2,76 +2,92 @@
 <template>
     <div>
         <CustomHeader :title="title" :needReturn="true" />
-        <div class="cakes" :style="{'height': height}">
-            <div class="header">
-                <img class="images" src="./img/22305823.jpg" alt="">
-            </div>
-            <div class="banners">
-                <swiper
-                    class="swiper"
-                    circular="true"
-                    :indicator-dots="false"
-                    autoplay="true"
-                    interval="5000"
-                    duration="1000"
-                    beforeColor="red"
-                    indicator-color="#fff"
-                    indicator-active-color="#ffcc00"
-                    @animationfinish="bannerChange"
-                    afterColor="coral">
-                    <block v-for="(item, index) in activityBanners" :index="index" :key="key" >
-                        <swiper-item >
-                            <image :src="item.image" class="slide-image" mode="aspectFill" @click="bannerJump(item)"/>
-                        </swiper-item>
-                    </block>
-                </swiper>
-                <div class="dots">
-                    <span class="dotsnum">{{current}}</span> / {{activityBanners.length}}
+        <scroll-view
+            :scroll-y="!isForbid"
+            @scroll="bindScroll"
+            enable-back-to-top="true"
+            :style="{'height': mainHeight + 'px'}"
+            class="scroll_wrapper"
+        >
+            <div class="cakes" >
+                <div class="header">
+                    <img class="images" src="./img/22305823.jpg" alt="">
                 </div>
-            </div>
-
-            <div class="middle">
-                <img class="middleImage" src="./img/964024279.jpg" alt="">
-            </div>
-
-            <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
-                <li v-for="(item, key) in activityProducts" :key="key" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
-                    <img :src="item['main_image']" alt="" class="productImg">
-                    <div class="selledout" v-if="!item.stock">
-                        <span class="selloutConent">已抢光</span>
+                <div class="banners">
+                    <swiper
+                        class="swiper"
+                        circular="true"
+                        :indicator-dots="false"
+                        autoplay="true"
+                        interval="5000"
+                        duration="1000"
+                        beforeColor="red"
+                        indicator-color="#fff"
+                        indicator-active-color="#ffcc00"
+                        @animationfinish="bannerChange"
+                        afterColor="coral">
+                        <block v-for="(item, index) in activityBanners" :index="index" :key="index" >
+                            <swiper-item >
+                                <image :src="item.image" class="slide-image" mode="aspectFill" @click="bannerJump(item)"/>
+                            </swiper-item>
+                        </block>
+                    </swiper>
+                    <div class="dots">
+                        <span class="dotsnum">{{current}}</span> / {{activityBanners.length}}
                     </div>
-                    <h3 class="name">{{item.name}}</h3>
-                    <div class="statictics">
-                        <span class="data">销量  {{item['sell_num']}}</span>
-                        <span v-if="item.stock < 6  && item.stock > 0" class="data">仅剩{{item.stock}}件</span>
-                        <span class="data origin" v-if="item['show_market_price'] && !item.specifications.length" >{{item['origin_price_format']}}</span>
-                    </div>
-                    <div class="bottom">
-                        <h4 class="price">{{item['sell_price_format']}}</h4>
-                        <img class="add" src="../../../../static/icons/add.png" v-if="item.stock" alt="" @click.stop="addToShoppingCart(item)">
-                        <img class="add" src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
-                    </div>
-                </li>
-            </ul>
+                </div>
+
+                <div class="middle">
+                        <img class="middleImage" src="./img/964024279.jpg" alt="">
+<!--                    <Classification-->
+<!--                        :top="toTop"-->
+<!--                        @forbidScroll="forbidScroll"-->
+<!--                        :headerHeight="headerHeight"-->
+<!--                    />-->
+                </div>
+
+                <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
+                    <li v-for="(item, key) in activityProducts" :key="key" class="product" @click="redirectTo('user.goodDetail', {query: {type:'activity', good_id: item.id, actId: actId}})">
+                        <img :src="item['main_image']" alt="" class="productImg">
+                        <div class="selledout" v-if="!item.stock">
+                            <span class="selloutConent">已抢光</span>
+                        </div>
+                        <h3 class="name">{{item.name}}</h3>
+                        <div class="statictics">
+                            <span class="data">销量  {{item['sell_num']}}</span>
+                            <span v-if="item.stock < 6  && item.stock > 0" class="data">仅剩{{item.stock}}件</span>
+                            <span class="data origin" v-if="item['show_market_price'] && !item.specifications.length" >{{item['origin_price_format']}}</span>
+                        </div>
+                        <div class="bottom">
+                            <h4 class="price" v-if="item['sell_price_reformat']">{{item['sell_price_reformat']}}
+                            <span class="qi">起</span></h4>
+                            <h4 class="price" v-else>{{item['sell_price_format']}}</h4>
+                            <img class="add" src="../../../../static/icons/add.png" v-if="item.stock" alt="" @click.stop="addToShoppingCart(item)">
+                            <img class="add" src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
+                        </div>
+                    </li>
+                </ul>
 
 
 
-            <div class="cakeService" @touchstart="start" @touchmove="move" @touchend="end" :style="{'right': right +'px', 'top': top+'px'}">
-                <img class="service"  src="../../../../static/icons/cakeService.png" alt="" @click="connectKf">
+                <div class="cakeService" @touchstart="start" @touchmove="move" @touchend="end" :style="{'right': right +'px', 'top': top+'px'}">
+                    <img class="service"  src="../../../../static/icons/cakeService.png" alt="" @click="connectKf">
+                </div>
+
+
+                <Specification
+                    :selectSpec="selectSpec"
+                    :item="selectItem"
+                    :type="'activity'"
+                    :actId="actId"
+                    @close="closeSelectSpec" />
+
             </div>
-
-
-            <Specification
-                :selectSpec="selectSpec"
-                :item="selectItem"
-                :type="'activity'"
-                :actId="actId"
-                @close="closeSelectSpec" />
-            <ShoppingCart
-                :type="'activity'"
-                :actId="actId"
-            />
-        </div>
+        </scroll-view>
+        <ShoppingCart
+            :type="'activity'"
+            :actId="actId"
+        />
         <Auth v-if="getAuth" @close="closeAuth" />
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
     </div>
@@ -83,6 +99,7 @@
 	import ShoppingCart from '../../../components/ShoppingCart';
 	import Auth from '../../../components/Auth';
 	import GetUserMobile from '../../../components/GetUserMobile';
+	import Classification from './components/Classification';
     import _ from 'underscore';
 	export default {
 		components: {
@@ -90,17 +107,17 @@
             Specification,
             ShoppingCart,
             Auth,
-            GetUserMobile
+            GetUserMobile,
+            Classification,
 		},
 		data() {
 			return {
 				title: '生日蛋糕预定',
 				screenHeight: 0,
-                height: 0,
 				rpxRate: 1,
                 actId: '',
                 banners: [],
-                phone: '0551-68153763',
+                phone: '17368878588',
 				screenWitdh: 0,
                 startPoint: {},
                 right: 0,
@@ -109,7 +126,9 @@
                 selectSpec: false,
                 getAuth: false,
                 current: 1,
-                showBindMobile: false
+                showBindMobile: false,
+                toTop: 0,
+                isForbid: false
 			};
 		},
 		watch: {
@@ -168,6 +187,19 @@
 			navHeight () {
                 return this.model.global.barHeight.navHeight
 			},
+            headerHeight () {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight () {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight - this.btnHeight;
+            },
+            btnHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                let isShow = this.goodInShoppingCart && this.goodInShoppingCart.length ? 100 : 0
+                return isShow * systemInfo.windowWidth / 750;
+            },
             activityBanners () {
                 return this.model.activity.banners
             },
@@ -195,6 +227,13 @@
             },
 		},
 		methods: {
+            forbidScroll (isForbid) {
+                this.isForbid = isForbid
+            },
+            bindScroll (e) {
+                let scrollTop = e.target.scrollTop;
+                this.toTop = scrollTop;
+            },
             closeGetUserMobile () {
                 this.showBindMobile = false
             },
@@ -346,7 +385,6 @@
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
             this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
             if (this.isMember)  this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
-            this.height = this.screenHeight - this.navHeight - this.statusBarHeight - 40 + 'rpx';
             this.initAccount();
         }
 	}
@@ -355,9 +393,14 @@
 <style>
 	page {
 		height: 100%;
-		background: #f2f2f2;
+		background: #f7f7f7;
         overflow: hidden;
 	}
+
+    .scroll_wrapper{
+        box-sizing: border-box;
+    }
+
 
     #shopping_cart{
         position: fixed;

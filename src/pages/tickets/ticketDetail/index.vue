@@ -267,7 +267,7 @@
     .extra_coupon_item .coupon_info{
         font-size: 22rpx;
         color: #757575;
-        width: 100%;
+        width: 670rpx;
         overflow: hidden;
         text-overflow:ellipsis;
         white-space: nowrap;

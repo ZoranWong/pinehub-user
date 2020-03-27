@@ -1,7 +1,5 @@
 .cakes{
     width: 100%;
-    height: 100vh;
-    overflow: auto;
     position: relative;
 }
 
@@ -76,13 +74,21 @@
 
 .middle{
     width: 100%;
-    height: 60px;
-    padding: 0 25px;
-    display: flex;
-    align-items: center;
     background: #fff;
-    color: #fff;
     box-sizing: border-box;
+    position: relative;
+}
+
+.middle .allCates{
+    position: absolute;
+    top: 0;
+    z-index: 9998;
+    background: rgba(17,17,17,0.5);
+    height: 100vh;
+}
+
+.middle .allCates .cates{
+
 }
 
 .middle .middleImage{
@@ -176,10 +182,16 @@
 }
 
 .product .bottom .price{
-    font-size: 13px;
+    font-size: 16px;
     color: #fe4a2c;
     margin: 0;
     font-weight: 600;
+}
+
+.product .bottom .price .qi{
+    font-weight: normal!important;
+    color: #999!important;
+    font-size: 11px!important;
 }
 .product .bottom .add{
     width: 24px;
@@ -238,4 +250,20 @@
     border-radius: 10rpx 10rpx 0 0;
     font-size: 29rpx;
     font-weight: 400;
+}
+
+.middle{
+    width: 100%;
+    height: 60px;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.middle .middleImage{
+    width: 132px;
+    height: 30px;
 }

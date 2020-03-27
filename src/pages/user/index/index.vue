@@ -172,7 +172,6 @@
                 return this.model.account.newUserCoupon
             },
             newCoupons () {
-                console.log(this.model.account.newCoupons, '%%%%%%%%%%%%%%%%%%%%%%%');
                 return this.model.account.newCoupons
             }
         },
@@ -332,10 +331,18 @@
                 // }
             },
             bannerJump (item) {
-                if (item['can_jump'] && item['action_type'] === 'PRODUCT_DETAIL') {
+                if (!item['can_jump']) return;
+                if ( item['action_type'] === 'PRODUCT_DETAIL') {
                     this.redirectTo(item['action_link'], {query: {type:'mall', good_id: item['action_args'].id}})
                 } else {
-                    this.redirectTo(item['action_link'])
+                    let link = item['action_link'];
+                    let splitLink = link.split('?');
+                    if (splitLink.length > 1) {
+                        let splitQuery = splitLink[1].split('=');
+                        this.redirectTo(splitLink[0], {query: {[splitQuery[0]]: splitQuery[1]}})
+                    } else {
+                        this.redirectTo(item['action_link']);
+                    }
                 }
             },
             goStoreCates (arg) {

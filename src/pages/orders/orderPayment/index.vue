@@ -172,9 +172,10 @@
                      <i>￥</i>
                      {{orderInfo['settlement_total_fee'] || 0}}
                     <span v-if="activeTab === 'send'">（满{{deliveryPrice}}元可免费配送）</span>
-                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>
+                    <span v-else>（起订金额10元）</span>
+<!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
                 </span>
-                <h4 @click="check" :class="!isEnough && activeTab === 'send' ? 'disabledButton': ''">提交订单</h4>
+                <h4 @click="check" :class="!isEnough  ? 'disabledButton': ''">提交订单</h4>
             </div>
 
         </div>
@@ -261,7 +262,7 @@
                 return this.model.user.store.showPoints
             },
 		    isEnough () {
-                return  (this.orderInfo['total_fee'] >= this.deliveryPrice && this.activeTab === 'send')
+                return  (this.orderInfo['total_fee'] >= this.deliveryPrice && this.activeTab === 'send') || (this.orderInfo['total_fee'] >= 10 && this.activeTab === 'pick')
             },
 			selectedPoint () {
                 return this.model.user.map.selectedMapPoint
@@ -359,7 +360,7 @@
                 }
             },
             check () {
-                if (this.activeTab === 'send' && !this.isEnough) {
+                if ( !this.isEnough) {
                     return
                 }
                 if (this.type === 'mall' && !this.addresses.id  && this.activeTab === 'send') {
@@ -404,7 +405,7 @@
                 let now = new Date();
                 let hour = now.getHours();
                 let type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
-                if (hour > 8) {
+                if (hour > 20) {
                     this.showTips = true;
                 } else {
                     this.createOrder(type)

@@ -139,6 +139,7 @@
                 if (value <= 0) value = 0;
                 if (value > stock) value = stock;
                 if (this.type === 'mall') {
+                    console.log('xxxxxxxxxxxxxxxx');
                     this.$command('CHANGE_BUY_NUM_COMMAND',item, Number(value))
                 } else if (this.type === 'breakfast') {
                     this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, Number(value))
@@ -184,18 +185,18 @@
                 })
             },
             checkProductStatus () {
-                // this.invalidProducts = [];
-                // this.showGoodsList = false;
-                // let products = this.goodInShoppingCart;
-                // _.map(products, product => {
-                //     if (product['product_status'] !== 1) {
-                //         this.invalidProducts.push(product)
-                //     }
-                // })
-                // if (!this.invalidProducts.length) {
-                //     this.goPayment()
-                // }
-                this.goPayment()
+                this.invalidProducts = [];
+                this.showGoodsList = false;
+                let products = this.goodInShoppingCart;
+                _.map(products, product => {
+                    if (product['product_status'] !== 1) {
+                        this.invalidProducts.push(product)
+                    }
+                })
+                if (!this.invalidProducts.length) {
+                    this.goPayment()
+                }
+                // this.goPayment()
             },
             deleteProducts () {
                 _.map(this.invalidProducts, async (product) => {
@@ -235,13 +236,16 @@
 			closeMask(){
 				this.showGoodsList = false;
 				let carts = this.goodInShoppingCart;
-				_.map(carts, (cart) => {
+                _.map(carts, (cart) => {
+                    let stock = cart['stock_num'] || cart.stock;
+                    let num = cart['buy_num'];
+                    if (num > stock) num = stock;
                     if (this.type === 'mall') {
-                        this.$command('CHANGE_BUY_NUM_COMMAND',cart, cart['buy_num'])
+                        this.$command('CHANGE_BUY_NUM_COMMAND',cart, num)
                     } else if (this.type === 'breakfast') {
-                        this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', cart, cart['buy_num'])
+                        this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', cart, num)
                     } else if (this.type === 'activity') {
-                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',cart, cart['buy_num'], this.actId)
+                        this.$command('CHANGE_ACTIVITY_BUY_NUM_COMMAND',cart, num, this.actId)
                     }
                 })
             },

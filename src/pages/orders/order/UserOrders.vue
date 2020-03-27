@@ -179,6 +179,7 @@
                 }
             },
             onScroll (e) {
+                console.log(e, '...............');
                 let minTop = e.target.scrollTop - this.screenHeight;
                 let maxTop = e.target.scrollTop + this.screenHeight * 2;
                 let count = 0;

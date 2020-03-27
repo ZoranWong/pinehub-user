@@ -2,6 +2,7 @@ import Command from '@/commands/Command';
 
 export default class ChangeBuyNumCommand extends Command {
     async handle (item, num) {
+        console.log(num, '================>');
         if (num <= 0) {
             let response = await this.service('http.store').deleteItem(item.id);
             this.model.user.store.dispatch('removeGoodsFromCart', {

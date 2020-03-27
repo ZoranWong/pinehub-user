@@ -72,6 +72,7 @@
         <div id="do_payment">
             <span>
                 金额 {{actOrderInfo['settlement_total_fee_format'] || 0}}
+                <span class="sendPrice">(满{{sendPrice}}元起送)</span>
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
@@ -93,7 +94,8 @@
                 type: '',
                 actId: '',
                 time: '',
-                screenHeight: 0
+                screenHeight: 0,
+                sendPrice: 100
 			};
 		},
 		watch: {
@@ -156,6 +158,13 @@
             },
 			createOrder(){
                 let carts = [];
+                if (this.actOrderInfo['settlement_total_fee'] < this.sendPrice) {
+                    wx.showToast({
+                        title: '起送价不足',
+                        icon: 'none'
+                    });
+                    return;
+                }
                 if (!this.address.id) {
                     wx.showToast({
                         title: '请先选择收货地址',
@@ -486,6 +495,10 @@
         position: fixed;
         bottom: 0;
         z-index: 999999;
+    }
+
+    #order_payment #do_payment .sendPrice{
+        font-size: 24rpx!important;
     }
 
     #order_payment #do_payment span{
