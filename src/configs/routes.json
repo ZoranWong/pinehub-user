@@ -16,6 +16,7 @@
     "user.addressOperation": "/pages/user/addressOperation/main",
     "user.recharge": "/pages/user/recharge/main",
     "user.pickup": "/pages/user/pickup/main",
+    "user.activity": "/pages/user/activities/main",
     "user.QingSongKungfu": "/pages/user/QingSongKungfu/main",
     "user.activity.payment": "/pages/user/QingSongKungfu/activityPayment/main",
     "user.integral": "/pages/integral/integral/main",

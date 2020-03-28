@@ -10,6 +10,8 @@ import ChangeBuyNumCommand from './commands/ChangeBuyNumCommand';
 import ClearCartCommand from './commands/ClearCartCommand';
 import SelectAddressCommand from './commands/SelectAddressCommand';
 import LoadUserAddress from './commands/LoadUserAddress';
+import LoadAllCatesCommand from './commands/LoadAllCatesCommand';
+import LoadProductsInCatesCommand from './commands/LoadProductsInCatesCommand';
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -22,6 +24,8 @@ if (application) {
         this.registerCommand(ClearCartCommand.commandName(), ClearCartCommand);
         this.registerCommand(SelectAddressCommand.commandName(), SelectAddressCommand);
         this.registerCommand(LoadUserAddress.commandName(), LoadUserAddress);
+        this.registerCommand(LoadAllCatesCommand.commandName(), LoadAllCatesCommand);
+        this.registerCommand(LoadProductsInCatesCommand.commandName(), LoadProductsInCatesCommand);
         this.route = 'user.QingSongKungfu';
     }, function () {
         this.currentPage = new Vue(this.mountComponent);

@@ -198,7 +198,7 @@
             },
 			jump (router) {
 				if (this.actAvailableCoupons.length === 0) return;
-				this.$command('REDIRECT_TO', router, 'replace',{
+				this.$command('REDIRECT_TO', router, 'push',{
 					query: {needReturn: true, type: this.type, actId: this.actId}
                 });
 			}

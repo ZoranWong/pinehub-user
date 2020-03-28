@@ -35,6 +35,8 @@ export default class Router {
             this.reLaunch(route, query);
             return;
         }
+        console.log(route, '==============================>');
+        console.log(query, '==============================>');
         this.stack.push([route, query]);
         // _.map(this.stack, (stack) => {
         //     if (stack[0] !== route) {

@@ -41,6 +41,9 @@ export default class Activity extends Model {
             },
             address () {
                 return this.state.address
+            },
+            categories () {
+                return this.state.categories
             }
         });
     }
@@ -58,7 +61,8 @@ export default class Activity extends Model {
             createdOrderInfo: {},
             ids: [],
             address: {},
-            availableCoupons: []
+            availableCoupons: [],
+            categories: []
         };
     }
 
@@ -87,6 +91,10 @@ export default class Activity extends Model {
 
         this.addEventListener('saveActBanners', function ({banners}) {
             this.state.banners = banners;
+        });
+
+        this.addEventListener('saveCategories', function ({categories}) {
+            this.state.categories = categories;
         });
 
         this.addEventListener('saveProducts', function ({products}) {

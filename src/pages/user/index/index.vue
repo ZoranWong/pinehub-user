@@ -1,16 +1,10 @@
 <!--suppress ALL -->
 <template>
     <div class="body">
-        <CustomHeader :title="title" :needReturn="false" :backColor="backColor1" />
+        <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
         <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
             <div id="index_header" >
-                <div id="products_search" >
-                    <div class="welcome">
-                        <i class="iconfont">&#xe652;</i>
-                        {{userNickname}},青松易购欢迎您!
-                    </div>
-                </div>
                 <div class="banners">
                     <swiper
                         class="index-swiper"
@@ -18,7 +12,7 @@
                         :indicator-dots="false"
                         autoplay="true"
                         interval="3000"
-                        duration="1000"
+                        duration="500"
                         @animationfinish="bannerChange"
                         @transition="bannerTransition">
                         <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
@@ -32,27 +26,86 @@
                     </div>
                 </div>
             </div>
-            <ul class="classifications">
-                <li v-for="(item,index) in categories" :key="index" class="cates" @click="goStoreCates(item.id)">
-                    <img :src="item.icon" v-if="item.icon" alt="">
-                    <img :src="'./img/'+index+'.png'" v-else alt="">
-                    <span>{{item.name}}</span>
-                </li>
-                <li class="cates">
-                    <img src="./img/More.png" alt="" @click="goStoreCates('more')">
-                    <span>查看更多</span>
-                </li>
-            </ul>
-            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">
+            <div class="allCates">
+                <div class="catesHeader">
+                    <h3>预定商城</h3>
+                    <span>
+                        更多
+                        <img src="../../../../static/icons/rightArrow.png" alt="">
+                    </span>
+                </div>
+                <ul class="classifications">
+                    <li v-for="(item,index) in categories" :key="index" class="cates" @click="goStoreCates(item.id)">
+                        <img :src="item.icon" v-if="item.icon" alt="">
+                        <img :src="'./img/'+index+'.png'" v-else alt="">
+                        <span>{{item.name}}</span>
+                    </li>
+                    <li class="cates">
+                        <img src="./img/more.png" alt="" @click="goStoreCates('more')">
+                        <span>更多商品</span>
+                    </li>
+                </ul>
+            </div>
 
-            <img
-                src="./img/Activity-02.png"
-                alt=""
-                class="activities"
-                v-for="(item, index ) in activities"
-                :key="index"
-                @click="redirectTo('user.QingSongKungfu', {query: {id:item.id}})"
-            >
+            <div class="extra">
+                <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
+                <img src="./img/homemaking.png" alt="">
+            </div>
+
+            <div class="coupons">
+                <swiper
+                    class="couponSwiper"
+                    circular="true"
+                    :indicator-dots="false"
+                    :autoplay="false"
+                    interval="3000"
+                    duration="1000">
+                    <block v-for="(item, index) in tickets" :index="index" :key="item.id" >
+                        <swiper-item :key="item.id" class="couponItem">
+                            <div class="couponLeft">
+                                <h3 v-if="item.type === 'DISCOUNT' ">
+                                    {{item.benefit}}
+                                    <em>折</em>
+                                </h3>
+                                <h3 v-else>
+                                    <em>￥</em>
+                                    {{item.benefit}}
+                                </h3>
+                                <span>{{item.floor}}</span>
+                            </div>
+                            <div class="couponRight">
+                                <h3>{{item.title}}</h3>
+                                <span class="tag">{{item.type === 'DISCOUNT' ? '折扣券': '现金券'}}</span>
+                                <div class="bottom">
+                                    <span>{{item['valid_term_desc']}}</span>
+                                    <button>立即领取</button>
+                                </div>
+                            </div>
+                        </swiper-item>
+                    </block>
+                </swiper>
+            </div>
+
+<!--            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">-->
+            <div class="activityContainer" v-for="act in activities">
+                <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" />
+                <Module_2 v-if="act['entry_template'][0].name === 'module_2'" :data="act['entry_template'][0].data" :image="act['entry_template'][0].image" />
+            </div>
+
+            <div class="recommend">
+                <div class="recommendHeader">
+                    <div class="left">
+                        <span></span>
+                        <h3>推荐商品</h3>
+                    </div>
+                    <div class="right">
+                        <span>全部商品</span>
+                        <img src="../../../../static/icons/rightArrow.png" alt="">
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
 
@@ -62,6 +115,8 @@
 
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
         <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
+
+
     </div>
 </template>
 
@@ -74,6 +129,8 @@
     import {getUpdateMange} from '../../../utils/getUpdateManage';
     import GetUserMobile from '../../../components/GetUserMobile';
     import _ from 'underscore'
+    import Module_1 from './components/Module_1';
+    import Module_2 from './components/Module_2';
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -81,7 +138,9 @@
             Auth,
             ReceivedNewTickets,
             OldUserReceivedNewTickets,
-            GetUserMobile
+            GetUserMobile,
+            Module_1,
+            Module_2
         },
         data () {
             return {
@@ -94,7 +153,6 @@
                 name: '',
                 screenHeight: 0,
                 currentIndex: 0,
-                backColor1: 'linear-gradient(to right,#fedc56,#ffcf15);',
                 alpha: 1,
                 timer: null,
                 showAuth: false,
@@ -104,6 +162,10 @@
         computed: {
             shopCode () {
                 return this.model.account.shopCode
+            },
+            tickets() {
+                console.log(this.model.user.tickets.canReceiveTickets, '.......优惠优惠优惠.........');
+                return this.model.user.tickets.canReceiveTickets
             },
             indexBanners () {
                 return this.model.user.newIndex.indexBanners
@@ -219,7 +281,6 @@
             }
         },
         mounted () {
-
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -227,7 +288,8 @@
             })
             getUpdateMange();
             this.$command('LOAD_INDEX_BANNER')
-            this.$command('LOAD_STORE_CATEGORIES_COMMAND')
+            this.$command('LOAD_STORE_CATEGORIES_COMMAND');
+            this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
             let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
             let screenWitdh = wx.getSystemInfoSync().windowHeight;
             this.screenHeight = (rpxRate * screenWitdh)/ 2;
@@ -460,11 +522,8 @@
         overflow: hidden;
     }
     #index_header {
-        background: linear-gradient(to right,rgba(253,224,104,1),rgba(255,204,0,1));
-        height: 319rpx;
-        width: 1228rpx;
-        margin-left: -239rpx;
-        border-radius: 0 0 100% 100%;
+        background: #f6f6f6;
+
         /*新增代码*/
         display: flex;
         justify-content: center;
@@ -475,6 +534,8 @@
     .mainContainer{
         overflow-y: auto;
         overflow-x: hidden;
+        box-sizing: border-box;
+        padding:  0 20rpx;
     }
     #products_search{
         width: 710rpx;
@@ -519,15 +580,14 @@
     #index_header .banners{
         width: 710rpx;
         height: 330rpx;
-        position: absolute;
-        top: 120rpx;
         border-radius: 20rpx;
         overflow: hidden;
+        margin: 20rpx 0;
     }
     .customDots{
         position: absolute;
         left: 10rpx;
-        bottom: 10rpx;
+        bottom: 22rpx;
         width: 50px;
         height: 15px;
         display: flex;
@@ -572,17 +632,55 @@
         border-radius: 20rpx;
         overflow: hidden;
     }
-    .classifications{
-        width: 710rpx;
-        height: 230rpx;
-        background: #fff;
-        box-sizing: border-box;
-        border-radius: 20rpx;
+    .allCates{
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 158rpx;
-        margin-left: 20rpx;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20rpx;
+        background: #fff;
+        border-radius: 25rpx;
+        padding-bottom: 50rpx;
+    }
+
+    .allCates .catesHeader{
+        margin: 39rpx 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .allCates .catesHeader h3{
+        font-size: 32rpx;
+        color: #111;
+        margin: 0;
+    }
+
+    .allCates .catesHeader span{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 26rpx;
+        color: #757575;
+    }
+    .allCates .catesHeader span img{
+        width: 8rpx;
+        height: 13rpx;
+        margin-left: 12rpx;
+    }
+
+
+    .classifications{
+        width: 100%;
+        background: #fff;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .classifications .cates{
         display: flex;
@@ -592,20 +690,140 @@
         flex: 1;
     }
     .classifications .cates img{
-        width: 90rpx;
-        height: 90rpx;
+        width: 108rpx;
+        height: 108rpx;
         margin-bottom: 20rpx;
     }
     .classifications .cates span{
         font-size: 24rpx;
-        color: #111;
+        color: #333;
     }
     .activities{
         width: 710rpx;
         height: 180rpx;
-        margin-left: 20rpx;
         border-radius: 20rpx;
         margin-top: 15rpx;
+    }
+
+
+    .extra{
+        width: 100%;
+        height: 180rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20rpx;
+    }
+
+    .extra img{
+        width: 345rpx;
+        height: 100%;
+        border-radius: 25rpx;
+    }
+
+    .coupons{
+        width: 100%;
+        height: 180rpx;
+        border-radius: 25rpx;
+        background: #fff;
+        margin-top: 20rpx;
+    }
+
+    .couponSwiper{
+        height: 180rpx;
+    }
+
+    .coupons .couponItem{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 25rpx 20rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .coupons .couponItem .couponLeft{
+        width: 120rpx;
+        height: 130rpx;
+        background: url("./img/coupon.png") center center no-repeat;
+        background-size: 126rpx 136rpx;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 10rpx;
+        padding: 28rpx 0;
+        box-sizing: border-box;
+    }
+
+    .coupons .couponItem .couponLeft h3{
+        width: 100%;
+        font-size: 50rpx;
+        color: #fff;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+    .coupons .couponItem .couponLeft h3 em{
+        font-size: 22rpx;
+        margin-bottom: 10rpx;
+    }
+
+    .coupons .couponItem .couponLeft span{
+        font-size: 20rpx;
+        color: #fff;
+    }
+
+    .coupons .couponItem .couponRight{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        flex: 1;
+        margin-left: 20rpx;
+    }
+
+    .coupons .couponItem .couponRight h3{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    .coupons .couponItem .couponRight .tag{
+        padding: 0 9rpx;
+        color: #fb5e69;
+        font-size: 22rpx;
+        border: 2rpx solid #fe9aa2;
+        border-radius: 5rpx;
+    }
+
+    .coupons .couponItem .couponRight .bottom{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .coupons .couponItem .couponRight .bottom span{
+        font-size: 22rpx;
+        color: #999;
+    }
+
+    .coupons .couponItem .couponRight .bottom button{
+        width: 130rpx;
+        height: 50rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background: #fb5e69;
+        border-radius: 25rpx;
+        font-size: 22rpx;
+        line-height: 50rpx;
+        padding: 0;
+        margin: 0;
     }
 
     .couponBanner{
@@ -615,6 +833,62 @@
         border-radius: 20rpx;
         margin-top: 20rpx;
     }
+
+    .activityContainer{
+
+    }
+
+
+
+
+
+    .recommend{
+
+    }
+
+    .recommend .recommendHeader{
+        width: 100%;
+        height: 100rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .recommend .recommendHeader .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .recommend .recommendHeader .left span{
+        width: 8rpx;
+        height: 38rpx;
+        background: #ffcc00;
+        border-radius: 4rpx;
+        margin-right: 21rpx;
+        display: inline-block;
+    }
+
+    .recommend .recommendHeader .left h3{
+        font-size: 36rpx;
+        color: #111;
+    }
+
+    .recommend .recommendHeader .right{
+
+    }
+
+    .recommend .recommendHeader .right span{
+        font-size: 24rpx;
+        color: #757575;
+    }
+
+    .recommend .recommendHeader .right img{
+        width: 7rpx;
+        height: 13rpx;
+        margin-left: 10rpx;
+    }
+
     /*新增代码截止*/
     #index_logo {
         background: url(../../../../static/images/icon/logo.png) no-repeat top center;
@@ -622,18 +896,6 @@
         width: 218rpx;
         height: 92rpx;
         margin: 40rpx auto 0;
-    }
-    #bear {
-        position: absolute;
-        width: 429rpx;
-        height: 280rpx;
-        top: 122rpx;
-        left: 168rpx;
-    }
-    #bear img {
-        display: block;
-        width: 100%;
-        height: 100%;
     }
     .user-info-box,
     .user-mobile-box,

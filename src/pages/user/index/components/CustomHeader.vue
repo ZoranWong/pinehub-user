@@ -3,12 +3,7 @@
     <div id="custom_header" :style="{'background': background}" >
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div id="back_icon" v-if="needReturn" >
-
-                <span  class="backHome" @click="backHome" v-if="needBackHome"><i class="iconfont"  >&#xe664;</i>回到首页</span>
-                <i class="iconfont" @click="back" v-else>&#xe679;</i>
-            </div>
-            <div id="nav_title" :style="{color: '#111'}">
+            <div id="nav_title" :style="{color: '#111', fontSize: '36rpx'}">
                 {{title}}
             </div>
         </div>
@@ -19,25 +14,12 @@
 <script>
     export default {
         name: 'CustomHeader',
-        props: ['title','needReturn', 'backColor'],
+        props: ['title','needReturn',],
         data () {
             return {
                 barHeight: 0,
-                background: '',
-                needBackHome: false
-            }
-        },
-        watch: {
-            backColor () {
-                this.background = this.backColor
-            }
-        },
-        methods:{
-            back(){
-                this.$command('REDIRECT_TO','','back')
-            },
-            backHome () {
-                this.$command('REDIRECT_TO','index','replace')
+                needBackHome: false,
+                background: '#f6f6f6'
             }
         },
         computed : {
@@ -52,11 +34,6 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.needBackHome = options.backHome ? true : false;
-            if (this.backColor) {
-                this.background = this.backColor
-            } else {
-                this.background = this.title === '首页'? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
-            }
             this.$command('GET_BAR_HEIGHT')
         }
     }
@@ -71,8 +48,10 @@
     #status_bar {}
 
     #nav_bar{
+        box-sizing: border-box;
+        padding: 0 40rpx;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         position: relative;
     }

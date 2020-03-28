@@ -19,7 +19,7 @@
         },
         data () {
             return {
-                title: '意见反馈',
+                title: '意见反馈12',
                 navName: 'feedback'
             };
         },
@@ -36,7 +36,7 @@
             }
         },
         created () {
-
+            console.log('这是意见反馈啦');
         }
     }
 </script>

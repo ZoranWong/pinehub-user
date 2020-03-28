@@ -38,12 +38,13 @@
                 </div>
 
                 <div class="middle">
-                        <img class="middleImage" src="./img/964024279.jpg" alt="">
-<!--                    <Classification-->
-<!--                        :top="toTop"-->
-<!--                        @forbidScroll="forbidScroll"-->
-<!--                        :headerHeight="headerHeight"-->
-<!--                    />-->
+<!--                        <img class="middleImage" src="./img/964024279.jpg" alt="">-->
+                    <Classification
+                        :actId="actId"
+                        :top="toTop"
+                        @forbidScroll="forbidScroll"
+                        :headerHeight="headerHeight"
+                    />
                 </div>
 
                 <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
@@ -203,6 +204,7 @@
             activityBanners () {
                 return this.model.activity.banners
             },
+
             activityProducts () {
 			    return this.model.activity.products
             },
@@ -383,7 +385,8 @@
                 this.$command('BIND_CONSUMER', this.storeId)
             }
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
-            this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
+            // this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
+            this.$command('LOAD_ALL_CATES_COMMAND', this.actId)
             if (this.isMember)  this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
             this.initAccount();
         }
@@ -416,7 +419,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-
+        z-index: 10000;
     }
 
     @import "index.css";

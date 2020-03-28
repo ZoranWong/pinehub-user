@@ -9,7 +9,7 @@
                 enable-back-to-top="true"
                 :scroll-into-view="scrollTo"
                 :style="{width: '1052rpx' }">
-                <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
+                <view :id="tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType === tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
             </scroll-view>
         </view>
         <div class="imgs">
@@ -23,7 +23,7 @@
                 <img src="../../../../../static/icons/cateClose.jpg" @click="closeCate" alt="">
             </div>
             <ul>
-                <li v-for="items in tabs" :key="items.key" :class="items.key === statusType ? 'active': ''" @click="statusType = items.key">
+                <li v-for="items in categories" :key="items.id" :class="items.id === statusType ? 'active': ''" @click="tabSelect(items)">
                     {{items.name}}
                 </li>
             </ul>
@@ -34,26 +34,34 @@
 <script>
 	export default {
 		name: 'Classification',
-        props: ['top', 'headerHeight'],
+        props: ['top', 'headerHeight','actId'],
         data () {
 		    return {
                 scrollTo: '',
-                statusType: 'cake1',
+                statusType: '',
                 showAllCates: false,
-                tabs: [
-                    {name: '精选蛋糕', key: 'cake1'},
-                    {name: '专属定制', key: 'cake2'},
-                    {name: '慕斯蛋糕', key: 'cake3'},
-                    {name: '水果蛋糕', key: 'cake4'},
-                    {name: '提拉米苏', key: 'cake5'},
-                    {name: '半熟芝士', key: 'cake6'},
-                ]
             }
+        },
+        watch: {
+            categories (val) {
+                if (val && val.length) {
+                    this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', this.actId , 1, 10, val[0].id)
+                    this.statusType = val[0].id
+                }
+            }
+        },
+        computed :{
+            categories () {
+                return this.model.activity.categories
+            },
+        },
+        mounted () {
         },
         methods: {
             tabSelect(tab) {
-                this.statusType = tab.key;
-                this.scrollTo = tab.key
+                this.statusType = tab.id;
+                this.scrollTo = tab.id;
+                this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', this.actId,1, 10, tab.id)
             },
             openCate () {
                 this.showAllCates = true;
@@ -131,6 +139,7 @@
     }
 
     .allCates{
+        width: 100%;
         background: rgba(17,17,17,0.5);
     }
 
@@ -177,6 +186,9 @@
         color: #111;
         margin-right: 20rpx;
         margin-bottom: 20rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .allCates .cates ul li:nth-child(3n){
