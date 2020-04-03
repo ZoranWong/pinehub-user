@@ -24,6 +24,7 @@
     "user.integral.records": "/pages/integral/integralRecords/main",
 	"user.feedBack.success": "/pages/user/feedBack/success/main",
 	"user.ticket": "/pages/tickets/ticket/main",
+	"user.shoppingCart": "/pages/user/ShoppingCart/main",
 	"ticketCenter": "/pages/tickets/ticketCenter/main",
 	"couponReceiveCenter": "/pages/tickets/couponReceiveCenter/main",
 	"user.ticket.detail": "/pages/tickets/ticketDetail/main",

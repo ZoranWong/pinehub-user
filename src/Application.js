@@ -32,6 +32,12 @@ export default class Application {
         this.stores = {};
         this.registeredGlobal = true;
         this.config = [];
+        this.pageShowCallback = () => {
+        };
+    }
+
+    pageShow (callback) {
+        this.pageShowCallback = callback;
     }
 
     setComponent (component) {
@@ -234,6 +240,7 @@ export default class Application {
                 }, this.mountComponent);
                 let componentMounted = this.mountComponent.mounted;
                 let componentCreated = this.mountComponent.created;
+                let componentShow = this.mountComponent.onShow;
                 let applicationCreated = function () {
                     if (this.routeAlias) {
                         app.currentPage = this;
@@ -253,6 +260,10 @@ export default class Application {
                 };
                 this.mountComponent.mounted = function () {
                     applicationMounted.call(this);
+                };
+                this.mountComponent.onShow = function () {
+                    app.pageShowCallback(this);
+                    if (typeof componentShow !== 'undefined') componentShow.apply(this);
                 };
                 if (_.isFunction(created)) {
                     created.call(this, this);

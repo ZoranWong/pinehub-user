@@ -11,6 +11,7 @@ import LoadIndexBannerCommand from './commands/LoadIndexBannerCommand';
 import NewIndex from '../../../models/NewIndex';
 import LoadPop from './commands/LoadPop';
 import LoadCanReceiveTicketsCommand from '../../tickets/ticketCenter/commands/LoadCanReceiveTicketsCommand';
+import ReceiveTicketsCommand from '../../tickets/ticketCenter/commands/ReceiveTicketsCommand';
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -24,6 +25,7 @@ if (application) {
         this.registerCommand(LoadIndexBannerCommand.commandName(), LoadIndexBannerCommand);
         this.registerCommand(LoadCanReceiveTicketsCommand.commandName(), LoadCanReceiveTicketsCommand);
         this.registerCommand(LoadPop.commandName(), LoadPop);
+        this.registerCommand(ReceiveTicketsCommand.commandName(), ReceiveTicketsCommand);
         this.route = 'index';
     }, function () {
         this.currentPage = new Vue(this.mountComponent);

@@ -12,7 +12,7 @@ export default class CreatePayOrderCommand extends Command {
             this.model.user.order.payment.dispatch('saveCreatedOrderInfo', {
                 orderInfo: response
             });
-            this.model.user.order.payment.dispatch('clearIds');
+
 
             if (type === 'mall') {
                 this.model.user.store.dispatch('clearShoppingCart');
@@ -27,6 +27,8 @@ export default class CreatePayOrderCommand extends Command {
                     type: type
                 })
             }
+
+            this.model.user.order.payment.dispatch('clearIds');
 
             this.$command('REDIRECT_TO', 'selectPay', 'push', {
                 query: {

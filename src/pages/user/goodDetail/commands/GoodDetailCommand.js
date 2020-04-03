@@ -10,6 +10,7 @@ export default class LoadStoreGoodsCommand extends Command {
         } else if (type === 'activity') {
             result = await this.service('http.activities').activityProductDetails(id, actId);
         }
+        console.log(result, '?????????????');
         this.model.user.goodDetail.dispatch('setGoodDetail', {
             good: result
         })

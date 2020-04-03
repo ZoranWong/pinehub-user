@@ -1,14 +1,19 @@
 <!--suppress ALL -->
 <template>
     <div>
-        <img :src='image' alt="" class="newUser">
+        <img :src='image' alt="" class="newUser" @click="detail" />
     </div>
 </template>
 
 <script>
 	export default {
 		name: 'Module_1',
-        props: ['image']
+        props: ['image', 'id'],
+        methods: {
+            detail () {
+		        this.$emit('do', this.id)
+            }
+        }
 	}
 </script>
 

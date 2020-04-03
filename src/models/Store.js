@@ -1,7 +1,7 @@
 import Model from './Model';
 import StoreTransformer from './transformers/StoreTransformer';
 import _ from 'underscore';
-import {formatMoney} from '../utils';
+import {formatMoney, returnFloat} from '../utils';
 
 export default class Orders extends Model {
     constructor (app) {
@@ -109,6 +109,7 @@ export default class Orders extends Model {
                     spec.push(value.name)
                 });
                 product['spec'] = spec.join(',');
+                product.price = product['sell_price_format'].split('¥')[1]
             });
             this.state.goods = goods;
         });
@@ -146,8 +147,10 @@ export default class Orders extends Model {
                     _.map(i.specifications, (item) => {
                         specDesp.push(item.value.value)
                     });
-                    i['spec_desp'] = specDesp.join(',')
+                    i['spec_desp'] = specDesp.join(',');
                 }
+                i.checked = true;
+                i.price = returnFloat(i.price)
             });
             this.state.goodInShoppingCart = items;
             this.state.cartTotalFeeFormat = meta['total_fee_format'];

@@ -21,7 +21,7 @@
         },
         data () {
             return {
-                title: '意见反馈',
+                title: '意见反馈x',
                 navName: 'feedback'
             };
         },
