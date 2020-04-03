@@ -17,13 +17,7 @@
 <!--                <em :class="scanning === 'scanning_now'?'active':''">商城</em>-->
 <!--            </li>-->
 
-            <li @click="jump('user.pickup') ">
-<!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
-                <img src="../../static/icons/menuPickAct.png" alt="" v-if="pickup === 'pickup_now'">
-                <img src="../../static/icons/menuPick.png" alt="" v-else>
-<!--                <i class="iconfont" v-else>&#xe7e4;</i>-->
-                <em :class="pickup === 'pickup_now'?'active':''">取货</em>
-            </li>
+
             <li @click="jump('user.store') ">
                 <!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
                 <img src="../../static/icons/cate_active.jpg" alt="" v-if="store === 'store_now'">
@@ -38,6 +32,13 @@
                 <img src="../../static/icons/uncheck_cart.png" alt="" v-else>
                 <!--                <i class="iconfont" v-else>&#xe7e4;</i>-->
                 <em :class="shoppingCart === 'shoppingCart_now'?'active':''">购物车</em>
+            </li>
+            <li @click="jump('user.pickup') ">
+                <!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
+                <img src="../../static/icons/menuPickAct.png" alt="" v-if="pickup === 'pickup_now'">
+                <img src="../../static/icons/menuPick.png" alt="" v-else>
+                <!--                <i class="iconfont" v-else>&#xe7e4;</i>-->
+                <em :class="pickup === 'pickup_now'?'active':''">取货</em>
             </li>
             <li @click=" jump('userCenter') ">
 <!--                <i class="iconfont now" >&#xe735;</i>-->

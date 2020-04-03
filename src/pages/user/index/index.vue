@@ -29,7 +29,7 @@
             <div class="allCates">
                 <div class="catesHeader">
                     <h3>预定商城</h3>
-                    <span>
+                    <span @click="goStoreCates('more')">
                         更多
                         <img src="../../../../static/icons/rightArrow.png" alt="">
                     </span>
@@ -78,7 +78,8 @@
                                 <span class="tag">{{item.type === 'DISCOUNT' ? '折扣券': '现金券'}}</span>
                                 <div class="bottom">
                                     <span>{{item['valid_term_desc']}}</span>
-                                    <button @click="receiveIt(item.id)">立即领取</button>
+                                    <button @click="receiveIt(item.id)" v-if="item['can_receive']">立即领取</button>
+                                    <button @click="goStoreCates('more')" v-else>立即使用</button>
                                 </div>
                             </div>
                         </swiper-item>
@@ -420,12 +421,16 @@
                 }
             },
             goActDetails (act) {
-                this.$command('REDIRECT_TO', 'user.activity', 'push', {
-                    query: {
-                        id: act.id,
-                        data: act
-                    }
-                });
+                if (this.registered) {
+                    this.$command('REDIRECT_TO', 'user.activity', 'push', {
+                        query: {
+                            id: act.id,
+                            data: act
+                        }
+                    });
+                } else {
+                    this.showAuth = true;
+                }
             },
             closeGetUserMobile () {
                 this.showBindMobile = false

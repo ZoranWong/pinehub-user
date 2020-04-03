@@ -324,6 +324,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        border-bottom: 1rpx solid #ebebeb;
     }
 
     .cartHeader img {
@@ -375,6 +376,7 @@
         position: fixed;
         bottom: 108rpx;
         z-index: 9999;
+        box-shadow: 0px -2px 4px 0px rgba(242,242,242,1);;
     }
 
     .settle .left{
@@ -467,7 +469,7 @@
         width: 100%;
         background: #fff;
         border-radius: 25rpx;
-        padding-bottom: 30rpx;
+        padding-bottom: 10rpx;
     }
 
     .fullCart ul {
@@ -508,11 +510,15 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        margin: 20rpx 0;
+        margin-bottom: 40rpx;
+    }
+
+    .fullCart ul li:last-child{
+        margin-bottom: 20rpx;
     }
 
     .fullCart ul li:nth-child(2){
-        margin-top: 30px;
+        margin-top: 30rpx;
     }
 
     .fullCart ul li .product{
