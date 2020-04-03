@@ -317,9 +317,12 @@
                     code: this.storeId
                 })
             }
-            if (this.storeId && this.registered && this.isMember ) {
-                console.log('进来了吗');
-                this.bindConsumer()
+            if ( this.registered && this.isMember ) {
+                // this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
+                // console.log('进来了吗');
+                if (this.storeId) {
+                    this.bindConsumer()
+                }
             }
         },
         onShareAppMessage: function (res) {

@@ -64,7 +64,7 @@
                 }
             })
             let gateway = this.config['app']['http']['gateway'];
-            this.url = `${gateway}/${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}`;
+            this.url = `${gateway}/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}`;
             console.log(this.url, 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             // this.url = `http://activity.node:8091/?activity_id=6`;
         }
