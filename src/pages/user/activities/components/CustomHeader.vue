@@ -2,8 +2,11 @@
 <template>
     <div id="custom_header" :style="{'background': background}" >
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
-        <div id="nav_bar" :style="{'height': navHeight + 'px', display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}" >
-            <div id="nav_title" :style="{color: '#111', fontSize: '36rpx'}">
+        <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
+            <div id="back_icon" v-if="needReturn" @click="back" >
+                <img class="leftArrow" src="../../../../../static/icons/leftArrow.png" alt="">
+            </div>
+            <div id="nav_title" :style="{color: '#111', fontSize: '36rpx', marginLeft: '30rpx'}">
                 {{title}}
             </div>
         </div>
@@ -14,12 +17,17 @@
 <script>
     export default {
         name: 'CustomHeader',
-        props: ['title','needReturn','backColor'],
+        props: ['title','needReturn',],
         data () {
             return {
                 barHeight: 0,
                 needBackHome: false,
-                background: ''
+                background: '#f6f6f6'
+            }
+        },
+        methods : {
+            back () {
+                this.$command('REDIRECT_TO','','back')
             }
         },
         computed : {
@@ -33,8 +41,6 @@
         mounted () {
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
-            this.needBackHome = options.backHome ? true : false;
-            this.background = this.backColor ? this.backColor : '#f6f6f6'
             this.$command('GET_BAR_HEIGHT')
         }
     }
@@ -51,6 +57,9 @@
     #nav_bar{
         box-sizing: border-box;
         padding: 0 40rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         position: relative;
     }
 

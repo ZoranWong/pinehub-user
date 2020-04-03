@@ -204,7 +204,7 @@
 	import CustomHeader from '../../../components/CustomHeader';
     import ChooseSelfRaisingPoint from '../../../components/ChooseSelfRaisingPoint';
 	import {formatMoney} from '../../../utils';
-
+    import _ from 'underscore'
 	let left = require('./imgs/left.png')
 	let right = require('./imgs/right.png')
     let mapBack = require('./imgs/map.png')
@@ -224,20 +224,24 @@
                 background: left,
                 backgroundPosition: 'left center',
                 products: [],
+                allProducts: [],
                 isLoadAll: false,
                 remark: '',
                 deliveryPrice: 0,
                 mapBackground: mapBack,
                 agreement: true,
                 mobile: '',
-                focusStatus: false
+                focusStatus: false,
+                selectedProduct: [],
 			};
 		},
 		watch: {
-            products (val) {
+            allProducts (val) {
                 if (!this.isLoadAll) {
                     if (val.length > 3) {
                         this.products = val.slice(0,3)
+                    } else {
+                        this.products = val
                     }
                 }
             },
@@ -249,10 +253,10 @@
                 }
             },
             couponIds (val) {
-                if (this.goodInShoppingCart && this.goodInShoppingCart.length > 0) {
+                if (this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length > 0) {
                     this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
                         coupon_records: val,
-                        carts: []
+                        carts: this.selectedProduct
                     });
                 }
             }
@@ -269,15 +273,21 @@
             },
 			goodInShoppingCart () {
                 if (this.type === 'mall') {
-                    this.products = this.model.user.store.goodInShoppingCart
-					return this.model.user.store.goodInShoppingCart
+                    let products = this.model.user.store.goodInShoppingCart;
+                    let ary = [];
+                    _.map(products, product => {
+                        _.map(this.selectedProduct, p=>{
+                            if (p['cart_id'] === product.id) {
+                                ary.push(product)
+                            }
+                        })
+                    })
+                    this.allProducts = ary;
+                    return this.allProducts
                 } else if (this.type === 'breakfast')  {
                     this.products = this.model.newEvents.shoppingCarts.goodInShoppingCart
 					return this.model.newEvents.shoppingCarts.goodInShoppingCart
-                } else if (this.type === '活动') {
-
                 }
-
             },
             userMobile () {
                 return this.model.account.mobile
@@ -338,7 +348,8 @@
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                     query: {
                         needReturn: true,
-                        type: 'mall'
+                        type: 'mall',
+                        selectedProduct: this.selectedProduct
                     }
                 });
             },
@@ -420,7 +431,8 @@
                         delivery_type: type,
                         order_type: 'SELF_PICK',
                         coupon_records: this.couponIds,
-                        address_id: this.addresses.id
+                        address_id: this.addresses.id,
+                        carts: this.selectedProduct
                     },this.type);
                 } else if( type === 'SELF_PICK') {
                     this.$command('CREATE_PAY_ORDER',{
@@ -429,10 +441,10 @@
                         order_type: 'SELF_PICK',
                         shop_id: this.selectedPoint.id,
                         coupon_records: this.couponIds,
-                        consignee_mobile_phone: this.mobile
+                        consignee_mobile_phone: this.mobile,
+                        carts: this.selectedProduct
                     },this.type);
                 }
-
             },
             getDate () {
 				var tomorrow = new Date();
@@ -443,7 +455,7 @@
 			jump (router) {
 				if (this.availableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'push',{
-					query: {needReturn: true, type: this.type}
+					query: {needReturn: true, type: this.type, selectedProduct: this.selectedProduct}
                 });
 			},
             go (router) {
@@ -453,10 +465,15 @@
 		created() {
             this.getDeliveryPrice()
 		},
+        onShow () {
+		    this.allProducts = []
+        },
 		mounted() {
             this.getDate();
             let type = this.$route.query.type;
 			let id = this.$route.query.id;
+			let selectedProduct = this.$route.query.selectedProduct;
+			this.selectedProduct = selectedProduct;
 			this.type = type;
             this.mobile = this.userMobile
 			if (id) {
@@ -465,7 +482,7 @@
             let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
 			this.$command('CALCULATE_PRICE_COMMAND',type,{
 				coupon_records: this.couponIds,
-                carts: [],
+                carts: selectedProduct,
                 delivery_type: delivery_type,
                 order_type: 'SELF_PICK',
             });

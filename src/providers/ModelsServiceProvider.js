@@ -13,6 +13,7 @@ import TradeOrderItems from '@/models/TradeOrderItems';
 import BarHeight from '../models/BarHeight';
 import Store from '@/models/Store';
 import OrderPayment from '../models/OrderPayment';
+import GoodDetail from '../models/GoodDetail';
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
@@ -23,7 +24,7 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.activity', Activity);
         this.app.registerModel('model.app', App);
         this.app.registerModel('model.user.store', Store);
-
+        this.app.registerModel('model.user.goodDetail', GoodDetail);
 
         // this.app.registerModel('model.bookingMall.shoppingCarts', ShoppingCarts);
         // this.app.registerModel('model.storeMarket.shoppingCarts', ShoppingCarts);

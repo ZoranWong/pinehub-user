@@ -19,7 +19,7 @@
         },
         data () {
             return {
-                title: '意见反馈12',
+                title: '意见反馈ccc',
                 navName: 'feedback'
             };
         },

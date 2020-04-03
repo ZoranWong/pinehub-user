@@ -139,7 +139,7 @@
 
                 this.orders = orders;
                 _.map(this.orders, (order)=>{
-                    if (order.channel.slug === 'BREAKFAST_CAR') {
+                    if (order.channel && order.channel.slug === 'BREAKFAST_CAR') {
                         this.breakfast_order.push(order);
                     } else {
                         this.shop_order.push(order)

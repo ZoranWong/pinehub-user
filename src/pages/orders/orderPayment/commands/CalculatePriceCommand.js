@@ -4,6 +4,7 @@ export default class CalculatePrice extends Command {
     async handle (type, params) {
         console.log(type, '===========');
         console.log(params, '===========');
+        console.log('计算机呢嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯嗯');
         try {
             let respones;
             if (type === 'mall') {

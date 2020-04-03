@@ -58,7 +58,8 @@
             </div>
 
         </div>
-        <ShoppingCart v-if="registered && isMember" :type="'mall'"/>
+        <FooterNav :navName="navName" />
+<!--        <ShoppingCart v-if="registered && isMember" :type="'mall'"/>-->
         <SelectSpecification
             :selectSpec="selectSpec"
             :item="selectItem"
@@ -75,6 +76,7 @@
 	import _ from 'underscore'
     import ProductSearch from './components/ProductSearch';
 	import GetUserMobile from '../../../components/GetUserMobile';
+	import FooterNav from '../../../components/FooterNav';
   export default {
       components: {
 		  CustomHeader,
@@ -83,7 +85,8 @@
 		  ChooseSelfRaisingPoint,
 		  Auth,
           ProductSearch,
-          GetUserMobile
+          GetUserMobile,
+          FooterNav
       },
       data() {
           return {
@@ -210,12 +213,10 @@
           },
           btnHeight() {
               let systemInfo = wx.getSystemInfoSync();
-              let isShow = this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length ? 206 : 108
-              return isShow * systemInfo.windowWidth / 750;
+              return 216 * systemInfo.windowWidth / 750;
           },
           listHeight() {
               console.log(this.mainHeight, '-------- list height -------', this.mainHeight, this.mainHeight  );
-              let isShow = this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length ? true : false
               return this.mainHeight  - this.btnHeight
           }
       },

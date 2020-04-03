@@ -78,7 +78,7 @@
                                 <span class="tag">{{item.type === 'DISCOUNT' ? '折扣券': '现金券'}}</span>
                                 <div class="bottom">
                                     <span>{{item['valid_term_desc']}}</span>
-                                    <button>立即领取</button>
+                                    <button @click="receiveIt(item.id)">立即领取</button>
                                 </div>
                             </div>
                         </swiper-item>
@@ -87,9 +87,15 @@
             </div>
 
 <!--            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">-->
-            <div class="activityContainer" v-for="act in activities">
-                <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" />
-                <Module_2 v-if="act['entry_template'][0].name === 'module_2'" :data="act['entry_template'][0].data" :image="act['entry_template'][0].image" />
+            <div class="activityContainer" v-for="(act,index) in activities" :key="index">
+                <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
+                <Module_2
+                    v-if="act['entry_template'][0].name === 'module_2'"
+                    :data="act['entry_template'][0].data" :id="act.id"
+                    :image="act['entry_template'][0].image"
+                    @do="goActDetails(act)"
+                    @addToCart="addToCart"
+                />
             </div>
 
             <div class="recommend">
@@ -98,12 +104,12 @@
                         <span></span>
                         <h3>推荐商品</h3>
                     </div>
-                    <div class="right">
+                    <div class="right" @click="goStoreCates('more')">
                         <span>全部商品</span>
                         <img src="../../../../static/icons/rightArrow.png" alt="">
                     </div>
                 </div>
-
+                <RecommendProducts  @addToCart="addToCart" />
             </div>
 
         </div>
@@ -131,6 +137,7 @@
     import _ from 'underscore'
     import Module_1 from './components/Module_1';
     import Module_2 from './components/Module_2';
+    import RecommendProducts from '../../../components/RecommendProducts';
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -140,7 +147,8 @@
             OldUserReceivedNewTickets,
             GetUserMobile,
             Module_1,
-            Module_2
+            Module_2,
+            RecommendProducts
         },
         data () {
             return {
@@ -164,7 +172,6 @@
                 return this.model.account.shopCode
             },
             tickets() {
-                console.log(this.model.user.tickets.canReceiveTickets, '.......优惠优惠优惠.........');
                 return this.model.user.tickets.canReceiveTickets
             },
             indexBanners () {
@@ -238,6 +245,11 @@
             }
         },
         watch: {
+            categories (val) {
+                if (val.length) {
+                    this.$command('LOAD_STORE_COMMAND', val[0].id, 1)
+                }
+            },
             accessToken (value) {
                 if (value) {
                     this.$command('SIGN_IN', this.accessToken);
@@ -265,7 +277,8 @@
                     this.bindConsumer()
                 }
                 if (this.registered && this.isMember ) {
-                    this.$command('LOAD_POP', 'PLATFORM_SEND')
+                    this.$command('LOAD_POP', 'PLATFORM_SEND');
+                    this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
                 }
             },
             userId (val) {
@@ -281,6 +294,7 @@
             }
         },
         mounted () {
+
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -289,7 +303,7 @@
             getUpdateMange();
             this.$command('LOAD_INDEX_BANNER')
             this.$command('LOAD_STORE_CATEGORIES_COMMAND');
-            this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
+
             let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
             let screenWitdh = wx.getSystemInfoSync().windowHeight;
             this.screenHeight = (rpxRate * screenWitdh)/ 2;
@@ -365,6 +379,50 @@
             });
         },
         methods: {
+            receiveIt (id) {
+                this.$command('RECEIVE_COUPON', id, 'list')
+            },
+            addToCart (id) {
+                if (!this.registered) {
+                    this.getUserAuth()
+                } else {
+                    if (!this.isMember) {
+                        this.showBindMobile = true
+                    } else {
+                        let goods = this.model.user.store.goodInShoppingCart;
+                        if (goods.length) {
+                            let isInCart = false;
+                            let inCartProduct = {}
+                            for (let i = 0; i < goods.length; i++) {
+                                let product = goods[i];
+                                if (product['product_stock_id'] === id) {
+                                    isInCart = true
+                                    inCartProduct = product;
+                                    break
+                                } else {
+                                    isInCart = false
+                                }
+                            }
+                            if (isInCart) {
+                                this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'mall');
+                            } else {
+                                this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                            }
+                        } else {
+                            this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                        }
+                    }
+
+                }
+            },
+            goActDetails (act) {
+                this.$command('REDIRECT_TO', 'user.activity', 'push', {
+                    query: {
+                        id: act.id,
+                        data: act
+                    }
+                });
+            },
             closeGetUserMobile () {
                 this.showBindMobile = false
             },
@@ -888,6 +946,10 @@
         height: 13rpx;
         margin-left: 10rpx;
     }
+
+
+
+
 
     /*新增代码截止*/
     #index_logo {

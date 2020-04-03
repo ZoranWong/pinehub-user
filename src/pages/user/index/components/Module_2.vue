@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
     <div class="productsContainer">
-        <img :src='image' alt="" class="preferential">
+        <img :src='image' alt="" class="preferential" @click="doDetail">
         <ul>
-            <li v-for="(product,index) in data" :key="index">
+            <li v-for="(product,index) in data" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id}})">
                 <img :src="product.image" alt="" class="img">
                 <div class="bottom">
                     <div class="left">
@@ -13,7 +13,7 @@
                         </h3>
                         <span>{{product['product_entity']['retail_price']}}</span>
                     </div>
-                    <img src="../../../../../static/icons/qiang.jpg" class="buyIcon" alt="">
+                    <img src="../../../../../static/icons/qiang.jpg" @click.stop="goBuy(product)" class="buyIcon" alt="">
                 </div>
             </li>
         </ul>
@@ -23,7 +23,19 @@
 <script>
 	export default {
 		name: 'Module_2',
-        props: ['data', 'image'],
+        props: ['data', 'image','id'],
+        methods: {
+            doDetail () {
+                this.$emit('do', this.id)
+            },
+            redirectTo (router, options = {}) {
+                this.$command('REDIRECT_TO', router, 'push', options);
+            },
+            goBuy (item) {
+                console.log(item);
+                this.$emit('addToCart', item['product_stock_id'])
+            }
+        },
         mounted () {
             console.log(this.data, ';==============================;;;;;;;;;;;;;;;');
         }
