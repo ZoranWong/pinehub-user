@@ -52,7 +52,7 @@
                 <img src="./img/homemaking.png" alt="">
             </div>
 
-            <div class="coupons">
+            <div class="coupons" v-if="tickets.length">
                 <swiper
                     class="couponSwiper"
                     circular="true"

@@ -53,7 +53,7 @@
             let token = this.model.account.token.value;
             console.log(token, '===>>>>>>>>>>>>>>>>>>');
             wx.setNavigationBarTitle({
-                title: '活动一'
+                title: query.data.name
             });
             wx.setNavigationBarColor({
                 frontColor: '#000000',
