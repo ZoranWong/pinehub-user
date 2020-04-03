@@ -106,7 +106,6 @@
           return {
               title: "青松易购预定商城",
               desc: "青松易购小程序",
-              imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
               path: `/pages/user/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {

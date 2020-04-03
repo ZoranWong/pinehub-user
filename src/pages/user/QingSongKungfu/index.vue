@@ -164,7 +164,7 @@
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
-                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                // imageUrl: "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/54401585878961_.pic_hd.jpg?Expires=1585880329&OSSAccessKeyId=TMP.3KjvjtDCPipDe6DfgJyaZbt8bgQXToaQjwj2okHxNEqdTZKRNxzeHrhsQq366w6MMy5dMZxf28oSgkMS1KNReQL744Vi1k&Signature=yHpl8R6lPtaTifUoWrQEyE9m5C0%3D",
                 path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
