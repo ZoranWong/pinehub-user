@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <ul class="recommendProducts">
-        <li v-for="product in goods" :key="product.id">
+        <li v-for="product in goods" :key="product.id" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.id}})">
             <img class="thumb" :src="product['main_image']" alt="">
             <h3>{{product.name}}</h3>
             <div class="info">
@@ -12,7 +12,7 @@
                 <em>￥</em>
                 <h4>{{product.price}}</h4>
                 <span>￥{{product['origin_price']}}</span>
-                <img src="../../static/icons/add.png" @click="addToCart(product['product_entities'][0]['product_stock_id'])" alt="">
+                <img src="../../static/icons/add.png" @click.stop="addToCart(product['product_entities'][0]['product_stock_id'])" alt="">
             </div>
         </li>
     </ul>
@@ -23,7 +23,6 @@
 		name: 'recommendProducts',
         computed: {
             goods(){
-                console.log(this.model.user.store.goods, 'MMMMMMMMMMMMMMM');
                 return this.model.user.store.goods
             },
         },
@@ -33,6 +32,9 @@
         methods: {
 		    addToCart (id) {
 		        this.$emit('addToCart', id)
+            },
+            redirectTo (router,options) {
+                this.$command('REDIRECT_TO', router, 'push', options);
             }
         }
 	}
@@ -49,13 +51,15 @@
 
     .recommendProducts li{
         width: 348rpx;
-        height: 500rpx;
+        height: 560rpx;
         box-sizing: border-box;
         margin-right: 14rpx;
         border-radius: 25rpx;
         background: #fff;
         padding: 20rpx;
         margin-bottom: 14rpx;
+        position: relative;
+        overflow: hidden;
     }
     .recommendProducts li:nth-child(2n){
         margin-right: 0;
@@ -82,6 +86,8 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        position: absolute;
+        bottom: 90rpx;
     }
 
     .recommendProducts li .info span{
@@ -94,11 +100,13 @@
     }
 
     .recommendProducts li .price{
+        width: 90%;
         margin-top: 10rpx;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
-        position: relative;
+        position: absolute;
+        bottom: 30rpx;
     }
 
     .recommendProducts li .price em{
