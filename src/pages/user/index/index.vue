@@ -272,6 +272,7 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
+                    console.log('xxxx');
                 }
                 if (this.storeId && this.registered && this.isMember ) {
                     this.bindConsumer()
