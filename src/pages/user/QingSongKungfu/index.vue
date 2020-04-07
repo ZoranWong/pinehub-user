@@ -38,12 +38,12 @@
                 </div>
 
                 <div class="middle">
-                        <img class="middleImage" src="./img/964024279.jpg" alt="">
-<!--                    <Classification-->
-<!--                        :top="toTop"-->
-<!--                        @forbidScroll="forbidScroll"-->
-<!--                        :headerHeight="headerHeight"-->
-<!--                    />-->
+<!--                    <img class="middleImage" src="./img/964024279.jpg" alt="">-->
+                    <Classification
+                        :top="toTop"
+                        @forbidScroll="forbidScroll"
+                        :headerHeight="headerHeight"
+                    />
                 </div>
 
                 <ul class="products" :style="{marginBottom: goodInShoppingCart.length ? '150rpx': '30rpx'}">
