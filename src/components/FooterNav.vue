@@ -26,7 +26,7 @@
                 <em :class="store === 'store_now'?'active':''">分类</em>
             </li>
             <li @click="jump('user.shoppingCart') ">
-                <span  :class="amountClass" v-if="amount > 0">{{amount}}</span>
+                <span  :class="amountClass" v-if="amount">{{amount}}</span>
                 <!--                <i class="iconfont now" v-if="pickup === 'pickup_now'">&#xe778;</i>-->
                 <img src="../../static/icons/selected_cart.png" alt="" v-if="shoppingCart === 'shoppingCart_now'">
                 <img src="../../static/icons/uncheck_cart.png" alt="" v-else>
@@ -78,7 +78,7 @@
             },
             amount () {
                 let amount = 0;
-                _.map(this.goodInShoppingCart, (items)=>{
+                _.map(this.goodInShoppingCart, (items) => {
                     amount += Number(items['buy_num'])
                 });
                 amount = amount > 99 ? '99+' : amount;
@@ -190,7 +190,7 @@
     }
 
     #footNav .overWidthAmount{
-        width: 48rpx;
+        width: 55rpx;
         height: 40rpx;
         background: #fe4a2c;
         display: flex;

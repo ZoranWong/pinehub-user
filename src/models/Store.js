@@ -124,6 +124,7 @@ export default class Orders extends Model {
                  });
                 goods['spec_desp'] = specDesp.join(',')
             }
+            goods.checked = true;
             if (cartIndex < 0) {
                 this.state.goodInShoppingCart.push(goods)
             } else {
@@ -157,8 +158,20 @@ export default class Orders extends Model {
             that.calculate(this.state);
         });
 
-        this.addEventListener('clearShoppingCart', function () {
-            this.state.goodInShoppingCart = []
+        this.addEventListener('clearShoppingCart', function (checked) {
+            let products = this.state.goodInShoppingCart;
+            if (checked.length) {
+                _.map(products, (product, index) => {
+                    _.map(checked, item => {
+                        if (product.id === item.id) {
+                            products.splice(index, 1)
+                        }
+                    })
+                })
+                this.state.goodInShoppingCart = products
+            } else {
+                this.state.goodInShoppingCart = []
+            }
         });
 
         this.addEventListener('changeBuyNum', function ({id, num}) {

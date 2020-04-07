@@ -114,11 +114,13 @@
             }
         },
         watch: {
-            selectedAll (val) {
-                _.map(this.products, (good,index) => {
-                    good.checked = val;
-                    this.$set(this.products, index, good)
-                })
+            products (val,old) {
+                if (val.length) {
+                    let index = _.findIndex(val, product => {
+                        return !product.checked
+                    });
+                    this.selectedAll = index > -1 ? false : true
+                }
             },
             invalidProducts (val) {
                 if (val.length) {
@@ -176,8 +178,14 @@
         },
         methods : {
             clearCart () {
-                if (this.model.user.store.goodInShoppingCart.length) {
-                    this.$command('CLEAR_CART_COMMAND');
+                let clear = [];
+                _.map(this.products, product => {
+                    if (product.checked) {
+                        clear.push(product)
+                    }
+                })
+                if ( clear.length ) {
+                    this.$command('CLEAR_CART_COMMAND', clear);
                 }
             },
             checkProductStatus () {
@@ -283,7 +291,11 @@
                 };
             },
             checkAll () {
-                this.selectedAll = !this.selectedAll
+                let products = this.products;
+                _.map(products, (product,index) => {
+                    product.checked = !this.selectedAll
+                    this.$set(products, index, product)
+                })
             },
             addToCart (id) {
                 let goods = this.model.user.store.goodInShoppingCart;
@@ -306,7 +318,7 @@
                         this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
                     }
                 } else {
-                    this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                    this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall');
                 }
             },
         },
@@ -511,6 +523,13 @@
         justify-content: flex-start;
         align-items: center;
         margin-bottom: 40rpx;
+    }
+
+    .fullCart ul li:first-child{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 30rpx;
     }
 
     .fullCart ul li:last-child{

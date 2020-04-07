@@ -59,6 +59,7 @@
                     :indicator-dots="false"
                     :autoplay="false"
                     interval="3000"
+                    @animationfinish="couponChange"
                     duration="1000">
                     <block v-for="(item, index) in tickets" :index="index" :key="item.id" >
                         <swiper-item :key="item.id" class="couponItem">
@@ -85,6 +86,9 @@
                         </swiper-item>
                     </block>
                 </swiper>
+                <div class="couponDots">
+                    <span>{{currentCoupon}}</span> / {{tickets.length}}
+                </div>
             </div>
 
 <!--            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">-->
@@ -162,6 +166,7 @@
                 name: '',
                 screenHeight: 0,
                 currentIndex: 0,
+                currentCoupon: 1,
                 alpha: 1,
                 timer: null,
                 showAuth: false,
@@ -384,6 +389,10 @@
             });
         },
         methods: {
+            couponChange (e) {
+                let event = e.mp.detail;
+                this.currentCoupon = event.current + 1;
+            },
             receiveIt (id) {
                 this.$command('RECEIVE_COUPON', id, 'list')
             },
@@ -794,6 +803,7 @@
         border-radius: 25rpx;
         background: #fff;
         margin-top: 20rpx;
+        position: relative;
     }
 
     .couponSwiper{
@@ -1171,5 +1181,25 @@
         line-height: 68rpx;
     }
 
+    .couponDots{
+        width: 100rpx;
+        height: 42rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 21rpx;
+        position: absolute;
+        right: 20rpx;
+        top: 20rpx;
+        z-index: 10000;
+        background: rgba(17,17,17,0.1);
+        font-size: 22rpx;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .couponDots span{
+        font-size: 28rpx;
+    }
 
 </style>

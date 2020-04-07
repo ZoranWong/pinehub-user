@@ -70,7 +70,6 @@
         bottom: 30rpx;
         z-index: 10000;
         background: rgba(17,17,17,0.2);
-
         font-size: 22rpx;
         color: #fff;
         font-weight: bold;

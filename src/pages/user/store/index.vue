@@ -46,8 +46,8 @@
                                 <span>{{item.sell_price_format}}</span>
                                 <em v-if="item['show_market_price'] && !item.specifications.length" >{{item.origin_price_format}}</em>
                                 <div class="operation">
-                                    <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">
-                                    <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >
+<!--                                    <img src="../../../../static/icons/minus.png" alt="" v-if="item.isInCart" @click.stop="addToShoppingCart(item, -1)">-->
+<!--                                    <input type="number" v-if="item.isInCart" :value="item.inputNum" class="input" @click.stop.native="changeBuyNum" @blur="(e)=>changeItemBuyNum(e, item)"  >-->
                                     <img src="../../../../static/icons/add.png" alt="" v-if="item.stock" @click.stop="addToShoppingCart(item, 1)">
                                     <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                                 </div>

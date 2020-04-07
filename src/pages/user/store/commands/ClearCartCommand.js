@@ -1,14 +1,28 @@
 import Command from '@/commands/Command';
-
+import _ from 'underscore'
 export default class ClearCartCommand extends Command {
-    async handle (type) {
-        let response = await this.service('http.store').clearMallCart();
+    async handle (checkedAry = []) {
+        let self = this;
+        wx.showModal({
+            title: '温馨提示',
+            content: `确定删除这些商品吗？`,
+            async success (res) {
+                if (res.confirm) {
+                    if (!checkedAry.length || checkedAry.length === self.model.user.store.goodInShoppingCart.length) {
+                        let response = await self.service('http.store').clearMallCart();
+                        self.model.user.store.dispatch('clearShoppingCart', []);
+                    } else {
+                        _.map(checkedAry, item => {
+                            self.$command('CHANGE_BUY_NUM_COMMAND', item, 0)
+                        });
+                        self.model.user.store.dispatch('clearShoppingCart', checkedAry);
+                    }
+                }
+            }
+        })
 
 
-        // console.log('----- request -----', Date.now());
-        this.model.user.store.dispatch('clearShoppingCart');
-        // this.model.user.order.payment.dispatch('clearIds')
-        // console.log('----- set data -----', Date.now());
+
     }
 
     static commandName () {
