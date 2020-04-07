@@ -43,6 +43,7 @@
                         :top="toTop"
                         @forbidScroll="forbidScroll"
                         :headerHeight="headerHeight"
+                        @loadProducts="loadProducts"
                     />
                 </div>
 
@@ -227,6 +228,9 @@
             },
 		},
 		methods: {
+            loadProducts (id) {
+                this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId, id);
+            },
             forbidScroll (isForbid) {
                 this.isForbid = isForbid
             },
@@ -383,7 +387,7 @@
                 this.$command('BIND_CONSUMER', this.storeId)
             }
             this.$command('LOAD_ACT_BANNER_COMMAND', this.actId);
-            this.$command('LOAD_ACT_PRODUCTS_COMMAND', this.actId);
+            this.$command('LOAD_ACT_PRODUCT_CATES_COMMAND', this.actId);
             if (this.isMember)  this.$command('LOAD_ACTIVITY_CART_COMMAND','', this.actId);
             this.initAccount();
         }

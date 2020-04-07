@@ -7,10 +7,23 @@
 		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
+		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
+		"coverView": true,
 		"nodeModules": true,
-		"uglifyFileName": false
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"uglifyFileName": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.0",
@@ -37,6 +50,10 @@
 			"list": []
 		},
 		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
@@ -170,6 +187,13 @@
 					"name": "ticket",
 					"pathName": "pages/user/ticket/main",
 					"query": "id=239",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/QingSongKungfu/main",
+					"pathName": "pages/user/QingSongKungfu/main",
+					"query": "id=2",
 					"scene": null
 				}
 			]

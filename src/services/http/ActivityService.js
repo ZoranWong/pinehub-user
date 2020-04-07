@@ -31,11 +31,17 @@ export default class ActivityService extends ApiService {
         return response.data;
     }
 
+    // 活动分类列表
+    async activityCates (id) {
+        let response = await this.httpGet(`/api/mp/activity/${id}/categories/all`);
+        return response;
+    }
+
     // 活动产品列表
-    async activityProducts (id, page, limit) {
-        console.log(page);
-        let response = await this.httpGet(`/api/mp/activity/${id}/products`, {
-            page, limit
+    async activityProducts (actId, page, limit, id) {
+        let response = await this.httpGet(`/api/mp/activity/${actId}/products`, {
+            page, limit, category_id: id
+
         });
         return response;
     }

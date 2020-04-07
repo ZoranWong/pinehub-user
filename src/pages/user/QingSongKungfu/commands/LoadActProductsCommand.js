@@ -1,11 +1,11 @@
 import Command from '@/commands/Command';
 
 export default class LoadActProductsCommand extends Command {
-    async handle (id, page = 1, limit = 15) {
+    async handle (actId,id, page = 1, limit = 15) {
         if (page === 1) {
             this.model.activity.dispatch('clearProducts')
         }
-        let response = await this.service('http.activities').activityProducts(id, page, limit);
+        let response = await this.service('http.activities').activityProducts(actId, page, limit, id);
 
 
 
@@ -16,7 +16,7 @@ export default class LoadActProductsCommand extends Command {
         }
 
         if (response.meta['pagination']['total_pages'] > page) {
-            await this.$command('LOAD_ACT_PRODUCTS_COMMAND', id, page + 1)
+            await this.$command('LOAD_ACT_PRODUCTS_COMMAND', actId, id, page + 1, 15)
         }
 
         // console.log('----- set data -----', Date.now());
