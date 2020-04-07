@@ -6,7 +6,7 @@
             <div class="top"></div>
             <div class="bottom"></div>
         </div>
-
+        
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
             <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
                 <div :class="activeTab === 'pick'? 'tabItem active': 'tabItem'" @click="changeTab('pick')">预定自提</div>
