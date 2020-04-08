@@ -22,7 +22,6 @@
         },
         watch: {
 		    url (val) {
-                console.log(val, 'uuuuuuuuuel');
             }
         },
         computed :{
@@ -43,7 +42,6 @@
         },
         methods: {
             receive (data) {
-                console.log(data, 'OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
             }
         },
         components: {},
@@ -51,7 +49,6 @@
             let query = this.$route.query;
             console.log(this);
             let token = this.model.account.token.value;
-            console.log(token, '===>>>>>>>>>>>>>>>>>>');
             wx.setNavigationBarTitle({
                 title: query.data.name
             });
@@ -64,7 +61,8 @@
                 }
             })
             let gateway = this.config['app']['http']['gateway'];
-            this.url = `${gateway}/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}`;
+            let str = Math.random().toString(36).substr(2)
+            this.url = `${gateway}/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}`;
             console.log(this.url, 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             // this.url = `http://activity.node:8091/?activity_id=6`;
         }

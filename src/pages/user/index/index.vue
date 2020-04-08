@@ -92,7 +92,7 @@
             </div>
 
 <!--            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">-->
-            <div class="activityContainer" v-for="(act,index) in activities" :key="index">
+            <div class="activityContainer" v-for="(act,index) in activities" :key="index" v-if="act['entry_template'].length">
                 <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'][0].name === 'module_2'"
