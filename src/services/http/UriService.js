@@ -18,11 +18,19 @@ export default class UriService extends Service {
                 k = index;
             }
             if (_.isArray(value) || _.isObject(value)) {
-                queryStr += self.buildQuery(value, k);
+                if (_.isArray(value) && value.length === 0) {
+                    // queryStr += `${k}[]=&`;
+                } else {
+                    queryStr += self.buildQuery(value, k);
+                }
             } else {
+                if (_.isBoolean(value)) {
+                    value = value ? 1 : 0
+                }
                 queryStr += `${k}=${value}&`;
             }
         });
+
         if (typeof params === 'string') {
             queryStr = params;
         }

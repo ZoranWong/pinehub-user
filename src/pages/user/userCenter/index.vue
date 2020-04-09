@@ -137,7 +137,7 @@
         </div>
         <BindShop v-if="bindVisible" @close="bindVisible = false" @submit="submitBind" />
         <div id="footNavHeight"></div>
-        <footer-nav :navName="navName" @getUserAuth="getUserAuth">></footer-nav>
+        <footer-nav :navName="navName" @getUserAuth="getUserAuth" >></footer-nav>
 
     </div>
 </template>
@@ -198,7 +198,18 @@
         },
         methods: {
             showBind () {
-                this.bindVisible = true;
+                if (!this.registered) {
+                    this.getUserAuth()
+                } else {
+                    if (!this.isMember) {
+                        wx.showToast({
+                            title: '请先进行手机号授权',
+                            icon: 'none'
+                        })
+                    } else {
+                        this.bindVisible = true;
+                    }
+                }
             },
             submitBind (code) {
                 this.$command('BIND_CONSUMER', code, true)

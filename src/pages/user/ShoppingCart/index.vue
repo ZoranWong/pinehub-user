@@ -22,27 +22,40 @@
                         <h3>青松食品</h3>
                     </li>
                     <li v-for="product in products" :key="product.id">
-                        <div class="icon" @click="check(product)">
-                            <img v-if="product.checked" src="./img/selected.png"  alt="">
-                            <img v-else src="./img/uncheck.png"  alt="">
-                        </div>
-                        <div class="product">
-                            <img :src="product.image" class="image" alt="">
-                            <div class="info">
-                                <h4>{{product.name}}</h4>
-                                <span>{{product.intro}}</span>
-                                <div class="price">
-                                    <div class="left">
-                                        ￥
-                                        <h5>{{product.price}}</h5>
-                                    </div>
-                                    <div class="right">
-                                        <img src="./img/subtract.png" alt=""  @click="changeBuyNum(product,-1)">
-                                        <input v-model="product['buy_num']"  type="number" @change="(e)=>changeInputBuyNum(e,product)" />
-                                        <img src="./img/add.png" alt="" @click="changeBuyNum(product,1)">
+                        <div class="top">
+                            <div class="icon" @click="check(product)">
+                                <img v-if="product.selected > 0" src="./img/selected.png"  alt="">
+                                <img v-else src="./img/uncheck.png"  alt="">
+                            </div>
+                            <div class="product">
+                                <img :src="product.image" class="image" alt="">
+                                <div class="info">
+                                    <h4>{{product.name}}</h4>
+                                    <span>{{product.intro}}</span>
+                                    <div class="price">
+                                        <div class="left">
+                                            ￥
+                                            <h5>{{product.price - product['discount_amount']}}</h5>
+                                            <div class="tags" v-if="product.tags && product.tags.length">
+                                                {{product.tags[0]}}
+                                            </div>
+                                        </div>
+                                        <div class="right">
+                                            <img src="./img/subtract.png" alt=""  @click="changeBuyNum(product,-1)">
+                                            <input v-model="product['buy_num']"  type="number" @change="(e)=>changeInputBuyNum(e,product)" />
+                                            <img src="./img/add.png" alt="" @click="changeBuyNum(product,1)">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="desc" v-if="product.desc">
+                            <div class="descContainer">
+                                <img src="./img/arrow.jpg" alt="">
+                                <span class="icon"> 促销</span>
+                                {{product.desc}}
+                            </div>
+
                         </div>
                     </li>
                 </ul>
@@ -67,7 +80,7 @@
             <div class="right">
                 <span class="total">合计:</span>
                 <em>￥</em>
-                <h4>{{total.price}}</h4>
+                <h4>{{cartTotalFeeFormat}}</h4>
                 <button
                     :class="total.quantity === 0? 'disabled': ''"
                     @click="settle"
@@ -117,7 +130,7 @@
             products (val,old) {
                 if (val.length) {
                     let index = _.findIndex(val, product => {
-                        return !product.checked
+                        return !product.selected
                     });
                     this.selectedAll = index > -1 ? false : true
                 }
@@ -142,7 +155,7 @@
                 let price = 0;
                 let quantity = 0;
                 _.map(products, (product)=>{
-                    if (product.checked) {
+                    if (product.selected > 0) {
                         price += Number(product['price']) * Number(product['buy_num'])
                         quantity += Number(product['buy_num'])
                     }
@@ -152,6 +165,9 @@
             },
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
+            },
+            cartTotalFeeFormat () {
+		        return this.model.user.store.cartTotalFeeFormat
             },
             navHeight () {
                 return this.model.global.barHeight.navHeight
@@ -177,10 +193,10 @@
             },
         },
         methods : {
-            clearCart () {
+             clearCart  () {
                 let clear = [];
                 _.map(this.products, product => {
-                    if (product.checked) {
+                    if (product.selected) {
                         clear.push(product)
                     }
                 })
@@ -204,7 +220,7 @@
             goPayment () {
                 let selectedProduct = [];
                 _.map(this.products, product => {
-                    if (product.checked) {
+                    if (product.selected > 0) {
                         let obj = {};
                         obj['cart_id'] = product.id;
                         obj['remark'] = '123'
@@ -281,21 +297,29 @@
                 this.$command('CHANGE_BUY_NUM_COMMAND',item, Number(value))
             },
             check (product) {
-                let products = this.products;
-                let index = _.findIndex(products, good => {
-                    return good.id === product.id
-                });
-                if (index > -1) {
-                    products[index].checked = !product.checked;
-                    this.$set(products, index, products[index])
-                };
+                let checked = _.map(this.products, (item,index) => {
+                    if(product.id === item.id){
+                        item.selected = !item.selected;
+                    }
+                    return [item.id, item.selected]
+                }).filter(function (item) {
+                    return item[1];
+                }).map(function (item) {
+                    return item[0];
+                })
+                this.$command('LOAD_CART_COMMAND', 'mall', checked, true)
             },
             checkAll () {
+                let checked = [];
                 let products = this.products;
                 _.map(products, (product,index) => {
-                    product.checked = !this.selectedAll
-                    this.$set(products, index, product)
-                })
+                    // product.checked = !this.selectedAll
+                    // this.$set(products, index, product)
+                    checked.push(product.id)
+                });
+                this.selectedAll = !this.selectedAll;
+                let ary = this.selectedAll ? checked : [];
+                this.$command('LOAD_CART_COMMAND', 'mall', ary, true)
             },
             addToCart (id) {
                 let goods = this.model.user.store.goodInShoppingCart;
@@ -493,6 +517,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
     }
 
     .fullCart ul .icon img {
@@ -520,8 +545,9 @@
 
     .fullCart ul li{
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
         margin-bottom: 40rpx;
     }
 
@@ -530,6 +556,7 @@
         justify-content: flex-start;
         align-items: center;
         margin-bottom: 30rpx;
+        flex-direction: row;
     }
 
     .fullCart ul li:last-child{
@@ -538,6 +565,13 @@
 
     .fullCart ul li:nth-child(2){
         margin-top: 30rpx;
+    }
+
+    .fullCart ul li .top{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .fullCart ul li .product{
@@ -600,6 +634,18 @@
         font-weight: bold;
     }
 
+    .fullCart ul li .product .info .price .left .tags{
+        padding: 0 8rpx;
+        color: #FB4E26;
+        border-radius: 5rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1rpx solid #FFB7A9;
+        margin-left: 4rpx;
+        font-weight: normal;
+    }
+
     .fullCart ul li .product .info .price .right {
         display: flex;
         justify-content: flex-end;
@@ -617,5 +663,55 @@
         font-size: 32rpx;
         color: #111;
     }
+
+    .fullCart ul li .desc{
+        color: red;
+    }
+
+    .fullCart .desc{
+        width: 100%;
+        padding-left: 96rpx;
+        box-sizing: border-box;
+        margin-top: 30rpx;
+        padding-right: 30rpx;
+    }
+
+    .fullCart .desc .descContainer{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        background: #F7F8FA;
+        box-sizing: border-box;
+        padding: 14rpx;
+        position: relative;
+        font-size: 22rpx;
+        color: #333;
+        flex-wrap: wrap;
+    }
+
+    .fullCart .desc .descContainer img{
+        position: absolute;
+        top: -10rpx;
+        left: 30rpx;
+        width: 20rpx;
+        height: 10rpx;
+    }
+
+    .fullCart .desc .descContainer span{
+        width:48rpx;
+        height:28rpx;
+        background:rgba(254,219,213,1);
+        border-radius:3rpx;
+        font-size:20rpx;
+        font-weight:500;
+        color:rgba(254,54,12,1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 12rpx;
+    }
+
+
 
 </style>

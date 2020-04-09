@@ -73,6 +73,9 @@
 			registered () {
 				return this.model.account.registered;
 			},
+            isMember () {
+                return this.model.account.isMember;
+            },
             goodInShoppingCart () {
                 return this.model.user.store.goodInShoppingCart
             },
@@ -93,7 +96,7 @@
             },
         },
         mounted () {
-            if (this.registered) {
+            if (this.registered && this.isMember) {
                 this.$command('LOAD_CART_COMMAND', 'mall')
             }
         },
@@ -125,16 +128,18 @@
             },
             jump (router) {
 				console.log(router, '+++++');
-				if (router === 'user.pickup' && !this.registered) {
+				if ((router === 'user.pickup' || router === 'user.shoppingCart') && !this.registered) {
             		this.$emit('getUserAuth')
                 } else {
-					if (router === 'user.store') {
-						this.$command('REDIRECT_TO', router, 'push');
-					} else {
-						this.$command('REDIRECT_TO', router, 'reLaunch');
-					}
+                    if ((router === 'user.pickup' || router === 'user.shoppingCart') && !this.isMember) {
+                        wx.showToast({
+                            title: '请先进行手机号授权',
+                            icon: 'none'
+                        })
+                    } else {
+                        this.$command('REDIRECT_TO', router, 'reLaunch');
+                    }
                 }
-
             },
             notMember () {
                 wx.showToast({

@@ -1,10 +1,11 @@
 import Command from '@/commands/Command';
 
 export default class LoadCartCommand extends Command {
-    async handle (type, id) {
+    async handle (type, unchecked = [], changed = false) {
         let response;
         if (type === 'mall') {
-            response = await this.service('http.store').cartGoodsList();
+            response = await this.service('http.store').cartGoodsList(unchecked, changed);
+            console.log(response, '=======>');
             this.model.user.store.dispatch('saveCartGoodsList', {
                 products: response
             });

@@ -19,8 +19,8 @@
                 </div>
                 <div v-if="showOperation(goodDetail)"></div>
                 <div class="operation">
-                    <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />
-                    <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >
+<!--                    <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />-->
+<!--                    <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >-->
                     <img src="../../../../static/icons/add.png" class="add" alt="" v-if="goodDetail.stock" @click.stop="addToShoppingCart(goodDetail, 1)" />
                     <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                 </div>
@@ -28,7 +28,8 @@
             <div id="good_synopsis">
                 {{goodDetail['intro'] || ''}}
             </div>
-            <h4 class="good_detail_price">{{goodDetail['sell_price_format']}}</h4>
+            <h4 class="good_detail_price" v-if="actPrice === '暂无'">{{goodDetail['sell_price_format']}}</h4>
+            <h4 class="good_detail_price" v-else>¥{{actPrice}}</h4>
             <div id="good_detail_statictics">
                 <span class="is-underline" v-if="goodDetail['show_market_price'] && !goodDetail.specifications.length">{{goodDetail['origin_price_format']}}</span>
                 <span>销量{{goodDetail['sell_num']}}</span>
@@ -37,7 +38,8 @@
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
 
-            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :isDetail="actId? true : false" :actId="actId" />
+
+<!--            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :isDetail="actId? true : false" :actId="actId" />-->
             <SelectSpecification
                 :selectSpec="selectSpec"
                 :item="selectItem"
@@ -50,6 +52,15 @@
                 :actId="actId"
                 @close="closeSelectActSpec" />
             <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
+        </div>
+
+
+        <div class="allCarts" @click="goShopppingCart">
+            <img src="../../../../static/icons/white_cart.png" alt="">
+            <span v-if="total.quantity > 0">
+                   {{total.quantity}}
+                </span>
+
         </div>
     </div>
 
@@ -93,7 +104,8 @@
                 actId: '',
                 selectActItem: {},
                 selectActSpec: false,
-                showBindMobile: false
+                showBindMobile: false,
+                actPrice: '暂无'
             }
         },
         onShareAppMessage: function (res) {
@@ -133,6 +145,9 @@
             isMember () {
                 if (this.storeId&& this.registered && this.isMember) {
                     this.bindConsumer()
+                }
+                if (this.registered && this.isMember) {
+                    this.showBindMobile = false
                 }
             }
         },
@@ -293,6 +308,17 @@
 			closeAuth () {
 				this.getAuth = false
 			},
+            goShopppingCart () {
+                if (!this.registered) {
+                    this.getUserAuth()
+                } else {
+                    if (!this.isMember) {
+                        this.showBindMobile = true
+                    } else {
+                        this.$command('REDIRECT_TO', 'user.shoppingCart', 'reLaunch');
+                    }
+                }
+            }
 		},
         closePoints () {
             this.showPoints = false
@@ -301,6 +327,19 @@
 
 		},
         computed : {
+            goodInShoppingCart () {
+                return this.model.user.store.goodInShoppingCart;
+            },
+            total () {
+                let products = this.goodInShoppingCart;
+                let quantity = 0;
+                _.map(products, (product)=>{
+                    if (product.checked) {
+                        quantity += Number(product['buy_num'])
+                    }
+                });
+                return {quantity}
+            },
             isCartEmpty () {
                 let type = this.options['type'];
                 let isCartEmpty = false
@@ -395,6 +434,7 @@
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+			this.actPrice = (options['price'] || options['price'] === 0) || '暂无'
             if (this.storeId) {
                 this.model.account.dispatch('saveShopCode', {
                     code: this.storeId
@@ -714,4 +754,38 @@
         font-size: 40rpx;
         color: #fff;
     }
+
+    .allCarts{
+        position: fixed;
+        left: 20px;
+        bottom: 125px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(17,17,17,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .allCarts img{
+        width: 24px;
+        height: 24px;
+    }
+
+    .allCarts span{
+        position: absolute;
+        top: 4px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background: #FE3B32;
+        color: #fff;
+        border: 1px solid #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
 </style>

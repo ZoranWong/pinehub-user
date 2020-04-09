@@ -49,7 +49,7 @@
 
             <div class="extra">
                 <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-                <img src="./img/homemaking.png" alt="">
+                <img @click="jumpOtherMiniProgram" src="./img/homemaking.png" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -91,7 +91,6 @@
                 </div>
             </div>
 
-<!--            <img src="../../../../static/gifs/gift-02.gif" alt="" class="couponBanner" @click="AuthRouter('ticketCenter')">-->
             <div class="activityContainer" v-for="(act,index) in activities" :key="index" v-if="act['entry_template'].length">
                 <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
@@ -389,6 +388,16 @@
             });
         },
         methods: {
+            jumpOtherMiniProgram () {
+                wx.navigateToMiniProgram({
+                    appId: '',
+                    path: 'page/index/index?id=123',
+                    envVersion: 'develop',
+                    success(res) {
+                        // 打开成功
+                    }
+                })
+            },
             couponChange (e) {
                 let event = e.mp.detail;
                 this.currentCoupon = event.current + 1;
@@ -431,12 +440,16 @@
             },
             goActDetails (act) {
                 if (this.registered) {
-                    this.$command('REDIRECT_TO', 'user.activity', 'push', {
-                        query: {
-                            id: act.id,
-                            data: act
-                        }
-                    });
+                    if (!this.isMember) {
+                        this.showBindMobile = true
+                    } else {
+                        this.$command('REDIRECT_TO', 'user.activity', 'push', {
+                            query: {
+                                id: act.id,
+                                data: act
+                            }
+                        });
+                    }
                 } else {
                     this.showAuth = true;
                 }
@@ -539,7 +552,11 @@
                     })
                 } else {
                     if (this.registered ) {
-                        this.$command('REDIRECT_TO', router, 'push', options);
+                        if (router === 'user.QingSongKungfu' && !this.isMember) {
+                            this.showBindMobile = true
+                        } else {
+                            this.$command('REDIRECT_TO', router, 'push', options);
+                        }
                     } else {
                         this.showAuth = true;
                     }

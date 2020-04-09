@@ -3,7 +3,7 @@
     <div class="productsContainer">
         <img :src='image' alt="" class="preferential" @click="doDetail">
         <ul>
-            <li v-for="(product,index) in data" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id}})">
+            <li v-for="(product,index) in data" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id, price: product['act_price']}})">
                 <img :src="product.image" alt="" class="img">
                 <div class="bottom">
                     <div class="left">

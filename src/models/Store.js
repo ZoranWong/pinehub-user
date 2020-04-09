@@ -154,7 +154,7 @@ export default class Orders extends Model {
                 i.price = returnFloat(i.price)
             });
             this.state.goodInShoppingCart = items;
-            this.state.cartTotalFeeFormat = meta['total_fee_format'];
+            this.state.cartTotalFeeFormat = meta['total_fee'].toFixed(2);
             that.calculate(this.state);
         });
 
