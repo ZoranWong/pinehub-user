@@ -259,6 +259,17 @@
                         carts: this.selectedProduct
                     });
                 }
+            },
+            selectedProduct (val) {
+                if (val.length) {
+                    let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
+                    this.$command('CALCULATE_PRICE_COMMAND',this.type,{
+                        coupon_records: this.couponIds,
+                        carts: val,
+                        delivery_type: delivery_type,
+                        order_type: 'SELF_PICK',
+                    });
+                }
             }
 		},
 		computed: {
@@ -275,13 +286,22 @@
                 if (this.type === 'mall') {
                     let products = this.model.user.store.goodInShoppingCart;
                     let ary = [];
+                    let selectedProduct = [];
                     _.map(products, product => {
-                        _.map(this.selectedProduct, p=>{
-                            if (p['cart_id'] === product.id) {
-                                ary.push(product)
-                            }
-                        })
+                        // _.map(this.selectedProduct, p=>{
+                        //     if (p['cart_id'] === product.id) {
+                        //         ary.push(product)
+                        //     }
+                        // })
+                        if (product.selected > 0) {
+                            ary.push(product);
+                            selectedProduct.push({
+                                cart_id: product.id,
+                                remark: '123'
+                            })
+                        }
                     })
+                    this.selectedProduct = selectedProduct;
                     this.allProducts = ary;
                     return this.allProducts
                 } else if (this.type === 'breakfast')  {
@@ -472,20 +492,14 @@
             this.getDate();
             let type = this.$route.query.type;
 			let id = this.$route.query.id;
-			let selectedProduct = this.$route.query.selectedProduct;
-			this.selectedProduct = selectedProduct;
-			this.type = type;
+			// let selectedProduct = this.$route.query.selectedProduct;
+			// this.selectedProduct = selectedProduct;
+            this.type = type;
             this.mobile = this.userMobile
 			if (id) {
 				this.$command('ORDER_COUPON_IDS', id)
             }
-            let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
-			this.$command('CALCULATE_PRICE_COMMAND',type,{
-				coupon_records: this.couponIds,
-                carts: selectedProduct,
-                delivery_type: delivery_type,
-                order_type: 'SELF_PICK',
-            });
+
 			this.$command('AVAILABLE_COUPONS', type);
             this.$command('LOAD_DEFAULT_USER_ADDRESS', 'mall')
 		}
