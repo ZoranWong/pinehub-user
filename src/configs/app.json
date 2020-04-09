@@ -12,9 +12,9 @@
         "3": "第三批次"
     },
     "http": {
-        "gateway": "https://neptune.klsfood.cn"
+        "gateway": "https://www.neptune.kingdomcloud.cn/"
     },
     "socket": {
-        "gateway": "https://neptune.klsfood.cn"
+        "gateway": "https://www.neptune.kingdomcloud.cn:6001"
     }
 }
