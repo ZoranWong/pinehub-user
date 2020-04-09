@@ -5,7 +5,6 @@ export default class LoadCartCommand extends Command {
         let response;
         if (type === 'mall') {
             response = await this.service('http.store').cartGoodsList(unchecked, changed);
-            console.log(response, '=======>');
             this.model.user.store.dispatch('saveCartGoodsList', {
                 products: response
             });
@@ -17,7 +16,6 @@ export default class LoadCartCommand extends Command {
         }
 
 
-        console.log(response, 'saassaassaasa --------');
 
         // console.log('----- request -----', Date.now());
 

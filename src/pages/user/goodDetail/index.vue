@@ -35,11 +35,22 @@
                 <span>销量{{goodDetail['sell_num']}}</span>
                 <span v-if="goodDetail['product_entities'] && goodDetail['product_entities'][0].stock < 6  && goodDetail['product_entities'][0].stock > 0">库存{{goodDetail['product_entities'][0].stock || 0}}</span>
             </div>
+
+            <!--  促销信息  -->
+            <div class="activity_info" v-if="options.type !== 'activity'">
+                <span class="title">促销</span>
+                <span class="tags">新人专享</span>
+                <div class="desc">
+                    新人专享一分钱超值购，每人每天购买
+                    不超过1件，享受此优惠
+                </div>
+            </div>
+
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
 
 
-<!--            <ShoppingCart v-if="registered && isMember" :type="this.options['type']" :isDetail="actId? true : false" :actId="actId" />-->
+            <ShoppingCart v-if="registered && isMember && options.type === 'activity'" :type="this.options['type']" :isDetail="actId? true : false" :actId="actId" />
             <SelectSpecification
                 :selectSpec="selectSpec"
                 :item="selectItem"
@@ -55,7 +66,7 @@
         </div>
 
 
-        <div class="allCarts" @click="goShopppingCart">
+        <div class="allCarts" @click="goShopppingCart" v-if="options.type !== 'activity'">
             <img src="../../../../static/icons/white_cart.png" alt="">
             <span v-if="total.quantity > 0">
                    {{total.quantity}}
@@ -328,16 +339,19 @@
 		},
         computed : {
             goodInShoppingCart () {
+                console.log('xxxxxx  this is the product details');
                 return this.model.user.store.goodInShoppingCart;
             },
             total () {
                 let products = this.goodInShoppingCart;
+                console.log(products, '=======================>');
                 let quantity = 0;
                 _.map(products, (product)=>{
                     if (product.checked) {
                         quantity += Number(product['buy_num'])
                     }
                 });
+                console.log(quantity, '----- quantity ------');
                 return {quantity}
             },
             isCartEmpty () {
@@ -434,15 +448,18 @@
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
-			this.actPrice = (options['price'] || options['price'] === 0) || '暂无'
+			this.actPrice = (options['price'] || options['price'] === 0) || '暂无';
+
             if (this.storeId) {
-                this.model.account.dispatch('saveShopCode', {
+                if(this.registered && this.isMember) {
+                    this.$command('BIND_CONSUMER', this.storeId)
+                }
+                 this.model.account.dispatch('saveShopCode', {
                     code: this.storeId
                 })
             }
-            if (this.storeId && this.registered && this.isMember ) {
-                console.log('进来了吗');
-                this.$command('BIND_CONSUMER', this.storeId)
+            if (this.registered && this.isMember ) {
+                this.$command('LOAD_CART_COMMAND', 'mall')
             }
 			this.actId = options['actId'] ? options['actId'] : '';
 			this.options = options;
@@ -609,7 +626,6 @@
         align-items: center;
         margin-top: 22rpx;
         padding-bottom: 30rpx;
-        border-bottom: 6rpx solid #f2f2f2;
     }
 
     #good_detail #good_detail_statictics .is-underline{
@@ -788,4 +804,48 @@
         align-items: center
     }
 
+    .activity_info{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 30rpx 40rpx;
+        box-sizing: border-box;
+        border-top: 10rpx solid #F4F1F4;
+        border-bottom: 10rpx solid #F4F1F4;
+    }
+
+    .activity_info .title{
+        font-size: 28rpx;
+        color: #999;
+        height: 36rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .activity_info .tags{
+        margin-left: 30rpx;
+        margin-right: 20rpx;
+        padding: 0 8rpx;
+        box-sizing: border-box;
+        border: 2rpx solid #FFB7A9;
+        border-radius: 10rpx;
+        font-size: 18rpx;
+        color: #FB4E26;
+        height: 36rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .activity_info .desc{
+        width: 465rpx;
+        font-size: 28rpx;
+        color: #333;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
 </style>

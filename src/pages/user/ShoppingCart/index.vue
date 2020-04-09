@@ -128,6 +128,7 @@
         },
         watch: {
             products (val,old) {
+
                 if (val.length) {
                     let index = _.findIndex(val, product => {
                         return !product.selected

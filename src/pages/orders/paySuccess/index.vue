@@ -105,10 +105,10 @@
             index () {
 				console.log(this.$route.query, '|||||||||||||||');
 				if (this.$route.query.orderType === 'mall') {
-					this.model.user.store.dispatch('clearShoppingCart');
+					this.model.user.store.dispatch('clearShoppingCart', []);
 					this.model.user.store.dispatch('selectPoints', false, 'mall');
                 } else if (this.type === 'breakfast') {
-					this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart');
+					this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart', []);
 					this.model.newEvents.shoppingCarts.dispatch('selectPoints', false, 'breakfast');
                 } else if (this.type === '活动') {
 

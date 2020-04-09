@@ -2,9 +2,9 @@ import Command from '@/commands/Command';
 
 export default class ChangeBuyNumCommand extends Command {
     async handle (item, num) {
-        console.log(num, '================>');
         if (num <= 0) {
             let response = await this.service('http.store').deleteItem(item.id);
+            this.$command('LOAD_CART_COMMAND', 'mall');
             this.model.user.store.dispatch('removeGoodsFromCart', {
                 goods: item
             });
@@ -21,13 +21,14 @@ export default class ChangeBuyNumCommand extends Command {
         let response = await this.service('http.store').changeBuyNum(item.id, num);
 
 
+
         // console.log('----- request -----', Date.now());
         if (response) {
             this.model.user.store.dispatch('changeBuyNum', {
                 id: item.id,
                 num: num
             });
-            // this.model.user.order.payment.dispatch('clearIds')
+            this.$command('LOAD_CART_COMMAND', 'mall');
         }
 
         // console.log('----- set data -----', Date.now());

@@ -13,9 +13,8 @@ export default class CreatePayOrderCommand extends Command {
                 orderInfo: response
             });
 
-
             if (type === 'mall') {
-                this.model.user.store.dispatch('clearShoppingCart');
+                this.model.user.store.dispatch('clearShoppingCart', []);
                 this.model.user.store.dispatch('selectPoints', {
                     boolean: false,
                     type: type
@@ -27,9 +26,7 @@ export default class CreatePayOrderCommand extends Command {
                     type: type
                 })
             }
-
             this.model.user.order.payment.dispatch('clearIds');
-
             this.$command('REDIRECT_TO', 'selectPay', 'push', {
                 query: {
                     type: type
