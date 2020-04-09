@@ -374,7 +374,8 @@
             }
 
             if (this.registered && this.isMember) {
-                this.$command('LOAD_POP', 'PLATFORM_SEND')
+                this.$command('LOAD_POP', 'PLATFORM_SEND');
+                this.$command('LOAD_CART_COMMAND', 'mall')
             }
         },
         onLoad (options) {

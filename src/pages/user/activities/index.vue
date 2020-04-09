@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div>
+    <div v-if="showView">
         <web-view
             :src="url"
             @message="receive"
@@ -15,6 +15,7 @@
         data(){
 		    return {
                 url: '',
+                showView: false
             }
         },
         destroyed () {
@@ -22,7 +23,10 @@
         },
         watch: {
 		    url (val) {
-            }
+		        if (val) {
+		            this.showView = true
+                }
+		    }
         },
         computed :{
             statusBarHeight () {

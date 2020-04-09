@@ -12,7 +12,8 @@
                 <em>￥</em>
                 <h4>{{product.price}}</h4>
                 <span v-if="product['show_market_price'] && !product.specifications.length">￥{{product['origin_price']}}</span>
-                <img src="../../static/icons/add.png" @click.stop="addToCart(product['product_entities'][0]['product_stock_id'])" alt="">
+                <img src="../../static/icons/add.png" v-if="product['product_entities'][0].stock" @click.stop="addToCart(product['product_entities'][0]['product_stock_id'])" alt="">
+                <img src="../../static/icons/disabledAdd.jpg" v-else alt="">
             </div>
         </li>
     </ul>

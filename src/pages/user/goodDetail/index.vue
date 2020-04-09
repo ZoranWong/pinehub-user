@@ -37,12 +37,11 @@
             </div>
 
             <!--  促销信息  -->
-            <div class="activity_info" v-if="options.type !== 'activity'">
+            <div class="activity_info" v-if="options.type !== 'activity' && goodDetail['product_entities'] && goodDetail['product_entities'].length && goodDetail['product_entities'][0].tags && goodDetail['product_entities'][0].tags.length">
                 <span class="title">促销</span>
-                <span class="tags">新人专享</span>
+                <span class="tags">{{goodDetail['product_entities'][0].tags[0]}}</span>
                 <div class="desc">
-                    新人专享一分钱超值购，每人每天购买
-                    不超过1件，享受此优惠
+                    {{goodDetail['product_entities'][0].desc}}
                 </div>
             </div>
 
