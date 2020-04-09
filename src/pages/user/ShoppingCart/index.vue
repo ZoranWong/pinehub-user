@@ -156,6 +156,7 @@
                 let price = 0;
                 let quantity = 0;
                 _.map(products, (product)=>{
+
                     if (product.selected > 0) {
                         price += Number(product['price']) * Number(product['buy_num'])
                         quantity += Number(product['buy_num'])

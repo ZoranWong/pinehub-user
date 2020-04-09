@@ -82,7 +82,9 @@
             amount () {
                 let amount = 0;
                 _.map(this.goodInShoppingCart, (items) => {
-                    amount += Number(items['buy_num'])
+                    if (items.selected > 0) {
+                        amount += Number(items['buy_num'])
+                    }
                 });
                 amount = amount > 99 ? '99+' : amount;
                 return amount
