@@ -86,7 +86,7 @@ export default class StoreService extends ApiService {
         let response = await this.httpPut(`api/mp/mall/carts/${cart}`, {
             buy_num: num
         });
-        return response.data
+        return response
     }
 
     // 常用自提车

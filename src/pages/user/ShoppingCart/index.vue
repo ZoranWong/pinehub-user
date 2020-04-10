@@ -21,42 +21,14 @@
                         </div>
                         <h3>青松食品</h3>
                     </li>
-                    <li v-for="product in products" :key="product.id">
-                        <div class="top">
-                            <div class="icon" @click="check(product)">
-                                <img v-if="product.selected > 0" src="./img/selected.png"  alt="">
-                                <img v-else src="./img/uncheck.png"  alt="">
-                            </div>
-                            <div class="product">
-                                <img :src="product.image" class="image" alt="">
-                                <div class="info">
-                                    <h4>{{product.name}}</h4>
-                                    <span>{{product.intro}}</span>
-                                    <div class="price">
-                                        <div class="left">
-                                            ￥
-                                            <h5>{{product.price - product['discount_amount']}}</h5>
-                                            <div class="tags" v-if="product.tags && product.tags.length">
-                                                {{product.tags[0]}}
-                                            </div>
-                                        </div>
-                                        <div class="right">
-                                            <img src="./img/subtract.png" alt=""  @click="changeBuyNum(product,-1)">
-                                            <input v-model="product['buy_num']"  type="number" @change="(e)=>changeInputBuyNum(e,product)" />
-                                            <img src="./img/add.png" alt="" @click="changeBuyNum(product,1)">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="desc" v-if="product.desc">
-                            <div class="descContainer">
-                                <img src="./img/arrow.jpg" alt="">
-                                <span class="icon"> 促销</span>
-                                {{product.desc}}
-                            </div>
-
-                        </div>
+                    <li >
+                        <ProductComponents
+                            v-for="product in products" :key="product.id"
+                            :product="product"
+                            @changeBuyNum="changeBuyNum"
+                            @changeInputBuyNum="changeInputBuyNum"
+                            @check="check"
+                        />
                     </li>
                 </ul>
             </div>
@@ -114,6 +86,7 @@
     import FooterNav from '../../../components/FooterNav';
     import _ from 'underscore'
     import RecommendProducts from '../../../components/RecommendProducts';
+    import ProductComponents from "./components/ProductComponent";
     export default {
 		name: 'ShoppingCart',
         data() {
@@ -149,7 +122,7 @@
                 }
             },
         },
-        components: {CustomHeader,FooterNav,RecommendProducts},
+        components: {CustomHeader,FooterNav,RecommendProducts,ProductComponents},
         computed: {
 		    total () {
                 let products = this.products;
@@ -195,6 +168,11 @@
             },
         },
         methods : {
+            // handlePrice (total, price) {
+            //     let formatPrice = total - price;
+            //     let result = formatPrice.toFixed(2)
+            //     return formatPrice.toFixed(2);
+            // },
              clearCart  () {
                 let clear = [];
                 _.map(this.products, product => {
@@ -681,7 +659,7 @@
     .fullCart .desc .descContainer{
         display: flex;
         justify-content: flex-start;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         background: #F7F8FA;
         box-sizing: border-box;
@@ -700,9 +678,9 @@
         height: 10rpx;
     }
 
-    .fullCart .desc .descContainer span{
+    .fullCart .desc .descContainer .icon{
         width:48rpx;
-        height:28rpx;
+        height: 100%;
         background:rgba(254,219,213,1);
         border-radius:3rpx;
         font-size:20rpx;
@@ -711,9 +689,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-right: 12rpx;
+        margin: 0 14rpx;
     }
 
+    .fullCart .desc .descContainer .info{
+        flex: 1;
+    }
 
 
 </style>

@@ -80,7 +80,7 @@
         // 普通方法
         methods: {
             backStore () {
-                this.$command('REDIRECT_TO', 'user.store', 'push')
+                this.$command('REDIRECT_TO', 'index', 'reLaunch')
             },
 			countDownServer(time) {
                 let minutes = Math.floor(time  / 60),

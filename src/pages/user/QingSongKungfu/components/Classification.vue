@@ -9,7 +9,7 @@
                 enable-back-to-top="true"
                 :scroll-into-view="scrollTo"
                 :style="{width: '1052rpx' }">
-                <view :id="tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType === tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
+                <view :id="'cate' + tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType === tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
             </scroll-view>
         </view>
         <div class="imgs">
@@ -60,7 +60,7 @@
         methods: {
             tabSelect(tab) {
                 this.statusType = tab.id;
-                this.scrollTo = tab.id;
+                this.scrollTo = 'cate' + tab.id;
                 this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', this.actId,1, 10, tab.id)
             },
             openCate () {

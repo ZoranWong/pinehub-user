@@ -91,10 +91,10 @@
                 </div>
             </div>
 
-            <div class="activityContainer" v-for="(act,index) in activities" :key="index" v-if="act['entry_template'] && act['entry_template'].length">
-                <Module_1 v-if="act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
+            <div class="activityContainer" v-for="(act,index) in activities" :key="index" >
+                <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
-                    v-if="act['entry_template'][0].name === 'module_2'"
+                    v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
                     :data="act['entry_template'][0].data" :id="act.id"
                     :image="act['entry_template'][0].image"
                     @do="goActDetails(act)"

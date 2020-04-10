@@ -28,7 +28,9 @@ export default class ChangeBuyNumCommand extends Command {
                 id: item.id,
                 num: num
             });
-            this.$command('LOAD_CART_COMMAND', 'mall');
+            this.model.user.store.dispatch('saveCartGoodsList', {
+                products: response
+            });
         }
 
         // console.log('----- set data -----', Date.now());
