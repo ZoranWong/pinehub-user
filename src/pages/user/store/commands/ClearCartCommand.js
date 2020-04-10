@@ -8,10 +8,10 @@ export default class ClearCartCommand extends Command {
             content: `确定删除这些商品吗？`,
             async success (res) {
                 if (res.confirm) {
-                    this.model.user.order.payment.dispatch('clearIds');
                     if (!checkedAry.length || checkedAry.length === self.model.user.store.goodInShoppingCart.length) {
                         let response = await self.service('http.store').clearMallCart();
                         self.$command('LOAD_CART_COMMAND', 'mall');
+                        self.model.user.store.dispatch('clearShoppingCart', []);
                     } else {
                         _.map(checkedAry, async (item) => {
                             await self.$command('CHANGE_BUY_NUM_COMMAND', item, 0);
