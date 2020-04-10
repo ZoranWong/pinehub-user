@@ -839,7 +839,6 @@
     }
 
     .activity_info .desc{
-        width: 465rpx;
         font-size: 28rpx;
         color: #333;
         display: flex;
