@@ -1,5 +1,6 @@
 {
     "model": "mp",
+    "env": "dev",
     "mock": false,
     "appId": "kdy5d88c992a30a9",
     "appSecret": "Kw2OEar0aLI8Dyssm1r4zhifSTDDkPuW",
