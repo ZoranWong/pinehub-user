@@ -27,9 +27,9 @@
                 </div>
             </div>
         </div>
-        <div class="desc" v-if="product.desc">
+        <div class="desc" v-if="product.desc && product['discount_amount'] > 0">
             <div class="descContainer">
-                <img src="../img/arrow.jpg" alt="">
+                <img src="../../../../../static/icons/newArrow.jpg" alt="">
                 <span class="icon"> 促销</span>
                 <span class="info">{{product.desc}}</span>
             </div>
@@ -156,8 +156,9 @@
         justify-content: center;
         align-items: center;
         border: 1rpx solid #FFB7A9;
-        margin-left: 4rpx;
+        margin-left: 5rpx;
         font-weight: normal;
+          font-size: 18rpx;
     }
 
       .product .info .price .right {
@@ -193,7 +194,7 @@
         justify-content: flex-start;
         align-items: flex-start;
         width: 100%;
-        background: #F7F8FA;
+        background: #fafafa;
         box-sizing: border-box;
         padding: 14rpx;
         position: relative;
@@ -221,7 +222,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 14rpx;
+        margin-right: 14rpx;
     }
 
      .desc .descContainer .info{

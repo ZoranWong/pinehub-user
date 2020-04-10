@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" />
+        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" :needClear="true" />
         <div class="background">
             <div class="top"></div>
             <div class="bottom"></div>

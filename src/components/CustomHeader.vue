@@ -18,7 +18,7 @@
 <script>
 	export default {
 		name: 'CustomHeader',
-        props: ['title','needReturn', 'backColor', 'backUrl'],
+        props: ['title','needReturn', 'backColor', 'backUrl', 'needClear'],
         data () {
 		    return {
 		    	barHeight: 0,
@@ -40,6 +40,9 @@
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
+		            if (this.needClear) {
+                        this.model.user.order.payment.dispatch('clearIds');
+                    }
                     this.$command('REDIRECT_TO','','back')
                 }
             }

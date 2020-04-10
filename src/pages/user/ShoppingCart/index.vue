@@ -493,7 +493,7 @@
     }
 
     .fullCart ul .icon{
-        width: 96rpx;
+        width: 108rpx;
         display: flex;
         justify-content: center;
         align-items: center;
