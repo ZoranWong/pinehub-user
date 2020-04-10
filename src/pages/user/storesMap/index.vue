@@ -295,11 +295,12 @@
                     });
                 }
                 this.$command('SELECTED_POINT_COMMAND', data)
-                this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
-                    query: {
-                        type: this.$route.query.type
-                    }
-                });
+                this.$command('REDIRECT_TO','','back')
+                // this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
+                //     query: {
+                //         type: this.$route.query.type
+                //     }
+                // });
             },
             async flashLocation() {
                 console.log('flashLocation');

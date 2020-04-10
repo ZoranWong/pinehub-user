@@ -66,12 +66,14 @@ export default class Orders extends Model {
         });
 
         this.addEventListener('deleteId', function () {
+            console.log('deleteId ID', '-------------------21121122121212211221--- log ----------------------');
             let ids = this.state.ids;
             ids.pop();
             this.state.ids = ids;
         });
 
         this.addEventListener('clearIds', function () {
+            console.log('clear ID', '------------1212121212121212---------- log ----------------------');
             this.state.ids = [];
         });
 

@@ -253,6 +253,7 @@
                 }
             },
             couponIds (val) {
+                console.log('couponIds', val);
                 if (this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length > 0) {
                     this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
                         coupon_records: val,
@@ -263,7 +264,7 @@
             selectedProduct (val) {
                 if (val.length) {
                     let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY': 'SELF_PICK';
-                    this.$command('CALCULATE_PRICE_COMMAND',this.type,{
+                    this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
                         coupon_records: this.couponIds,
                         carts: val,
                         delivery_type: delivery_type,
@@ -286,7 +287,7 @@
                 if (this.type === 'mall') {
                     let products = this.model.user.store.goodInShoppingCart;
                     let ary = [];
-                    let selectedProduct = [];
+                    // let selectedProduct = [];
                     _.map(products, product => {
                         // _.map(this.selectedProduct, p=>{
                         //     if (p['cart_id'] === product.id) {
@@ -295,13 +296,13 @@
                         // })
                         if (product.selected > 0) {
                             ary.push(product);
-                            selectedProduct.push({
-                                cart_id: product.id,
-                                remark: '123'
-                            })
+                            // selectedProduct.push({
+                            //     cart_id: product.id,
+                            //     remark: '123'
+                            // })
                         }
                     })
-                    this.selectedProduct = selectedProduct;
+                    // this.selectedProduct = selectedProduct;
                     this.allProducts = ary;
                     return this.allProducts
                 } else if (this.type === 'breakfast')  {
@@ -487,6 +488,17 @@
 		},
         onShow () {
 		    this.allProducts = []
+            let selectedProduct = [];
+		    let products = this.model.user.store.goodInShoppingCart;
+            _.map(products, product => {
+                if (product.selected > 0) {
+                    selectedProduct.push({
+                        cart_id: product.id,
+                        remark: '123'
+                    })
+                }
+            })
+            this.selectedProduct = selectedProduct;
         },
 		mounted() {
             this.getDate();
