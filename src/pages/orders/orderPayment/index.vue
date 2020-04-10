@@ -277,7 +277,7 @@
                 return this.model.user.store.showPoints
             },
 		    isEnough () {
-                return  (this.orderInfo['total_fee'] >= this.deliveryPrice && this.activeTab === 'send') || (this.orderInfo['total_fee'] >= 10 && this.activeTab === 'pick')
+                return  (this.orderInfo['settlement_total_fee'] >= this.deliveryPrice && this.activeTab === 'send') || (this.orderInfo['settlement_total_fee'] >= 10 && this.activeTab === 'pick')
             },
 			selectedPoint () {
                 return this.model.user.map.selectedMapPoint
