@@ -77,7 +77,7 @@
     }
 
     .icon{
-        width: 96rpx;
+        width: 108rpx;
         height: 140rpx;
         display: flex;
         justify-content: center;
@@ -187,7 +187,7 @@
         width: 100%;
         padding-left: 96rpx;
         box-sizing: border-box;
-        margin-top: 30rpx;
+        margin-top: 20rpx;
         padding-right: 30rpx;
     }
 
