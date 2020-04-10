@@ -1,6 +1,7 @@
 {
     "pages": [
         "pages/user/index/main",
+        "pages/user/index/homemaking/main",
         "pages/user/storesMap/main",
         "pages/user/mall/newEvents/main",
         "pages/user/userCenter/main",

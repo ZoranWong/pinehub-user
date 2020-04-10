@@ -1,5 +1,6 @@
 {
 	"index": "/pages/user/index/main",
+	"index.homemaking": "/pages/user/index/homemaking/main",
 	"storesMap": "/pages/user/storesMap/main",
 	"payment.success": "/pages/orders/paySuccess/main",
 	"user.orders": "/pages/orders/order/main",

@@ -49,7 +49,7 @@
 
             <div class="extra">
                 <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-                <img @click="jumpOtherMiniProgram" src="./img/homemaking.png" alt="">
+                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -389,15 +389,8 @@
             });
         },
         methods: {
-            jumpOtherMiniProgram () {
-                wx.navigateToMiniProgram({
-                    appId: '',
-                    path: 'page/index/index?id=123',
-                    envVersion: 'develop',
-                    success(res) {
-                        // 打开成功
-                    }
-                })
+            jumpHomeMaking () {
+                // this.$command('REDIRECT_TO', 'index.homemaking', 'push')
             },
             couponChange (e) {
                 let event = e.mp.detail;

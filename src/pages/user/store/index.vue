@@ -194,9 +194,6 @@
 		  navHeight () {
 			  return this.model.global.barHeight.navHeight
 		  },
-          navHeight() {
-              return this.model.global.barHeight.navHeight
-          },
           headerHeight() {
               return this.statusBarHeight + this.navHeight;
           },

@@ -22,9 +22,6 @@ export default class ClearCartCommand extends Command {
                 }
             }
         })
-
-
-
     }
 
     static commandName () {

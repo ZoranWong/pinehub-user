@@ -10,13 +10,14 @@
                 <div class="info">
                     <h4>{{product.name}}</h4>
                     <span>{{product.intro}}</span>
+                    <div class="tags" v-if="product.tags && product.tags.length">
+                        {{product.tags[0]}}
+                    </div>
                     <div class="price">
                         <div class="left">
                             ￥
                             <h5>{{formatPrice}}</h5>
-                            <div class="tags" v-if="product.tags && product.tags.length">
-                                {{product.tags[0]}}
-                            </div>
+
                         </div>
                         <div class="right">
                             <img src="../img/subtract.png" alt=""  @click="changeBuyNum(product,-1)">
@@ -72,11 +73,12 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .icon{
         width: 96rpx;
+        height: 140rpx;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -91,7 +93,7 @@
       .product{
         display: flex;
         justify-content: flex-start;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         box-sizing: border-box;
         padding-right: 30rpx;
@@ -148,7 +150,7 @@
         font-weight: bold;
     }
 
-      .product .info .price .left .tags{
+      .product .info .tags{
         padding: 0 8rpx;
         color: #FB4E26;
         border-radius: 5rpx;
