@@ -4,8 +4,8 @@
         <div id="mask" v-if="showGoodsList" @click="closeMask"></div>
         <div id="shopping_cart" :style="{bottom: showMask?'0':'-1000rpx'}">
             <div id="shopping_cart_icon">
-<!--                <i class="iconfont" @click="showGoodsList = !showGoodsList" :style="{color: '#fe4a2c'}">&#xe613;</i>-->
-                <i class="iconfont" @click="redirectTo('user.shoppingCart')" :style="{color: '#fe4a2c'}">&#xe613;</i>
+                <i class="iconfont" @click="showGoodsList = !showGoodsList" :style="{color: '#fe4a2c'}">&#xe613;</i>
+<!--                <i class="iconfont" @click="redirectTo('user.shoppingCart')" :style="{color: '#fe4a2c'}">&#xe613;</i>-->
                 <span  :class="amountClass">{{amount}}</span>
             </div>
             <h4><span>{{totalPrice}}</span></h4>
@@ -220,32 +220,32 @@
                 }
             },
             goPayment () {
-                let selectedProduct = [];
-                _.map(this.goodInShoppingCart, product => {
-                    if (product.checked) {
-                        let obj = {};
-                        obj['cart_id'] = product.id;
-                        obj['remark'] = '123'
-                        selectedProduct.push(obj)
-                    }
-                })
-                this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                    query: {type: 'mall', selectedProduct}
+                // let selectedProduct = [];
+                // _.map(this.goodInShoppingCart, product => {
+                //     if (product.checked) {
+                //         let obj = {};
+                //         obj['cart_id'] = product.id;
+                //         obj['remark'] = '123'
+                //         selectedProduct.push(obj)
+                //     }
+                // })
+                // this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                //     query: {type: 'mall', selectedProduct}
+                // });
+                // if (this.type === 'mall') {
+                //     this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                //         query: {type: this.type}
+                //     });
+                // } else if (this.type === 'breakfast') {
+                //     this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                //         query: {type: this.type}
+                //     });
+                // } else if (this.type === 'activity') {
+                //
+                // }
+                this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                    query: {type: this.type, actId: this.actId}
                 });
-                if (this.type === 'mall') {
-                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                        query: {type: this.type}
-                    });
-                } else if (this.type === 'breakfast') {
-                    this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                        query: {type: this.type}
-                    });
-                } else if (this.type === 'activity') {
-                    this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                        query: {type: this.type, actId: this.actId}
-                    });
-                }
-
 
             },
 			closeMask(){
