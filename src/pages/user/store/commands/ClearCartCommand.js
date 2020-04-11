@@ -15,7 +15,7 @@ export default class ClearCartCommand extends Command {
                     } else {
                         _.map(checkedAry, async (item) => {
                             await self.$command('CHANGE_BUY_NUM_COMMAND', item, 0);
-                            self.$command('LOAD_CART_COMMAND', 'mall')
+                            // self.$command('LOAD_CART_COMMAND', 'mall')
                         });
                         self.model.user.store.dispatch('clearShoppingCart', checkedAry);
                     }

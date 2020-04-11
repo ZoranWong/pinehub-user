@@ -68,7 +68,7 @@
             let env = this.config['app']['env'];
 
             let str = Math.random().toString(36).substr(2)
-            this.url = `${gateway}/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
+            this.url = `https://neptune.klsfood.cn/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
             console.log(this.url, 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             // this.url = `http://activity.node:8091/?activity_id=6`;
         }

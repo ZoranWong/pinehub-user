@@ -35,7 +35,7 @@ export default class StoreService extends ApiService {
             buy_num: num
         });
 
-        return response.data
+        return response
     }
 
     // 添加早餐商品到购物车

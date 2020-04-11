@@ -3,7 +3,7 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
-        <div class="mainContainer" :style="{'height' : (screenHeight - statusBarHeight - navHeight - 54) + 'px'}">
+        <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
             <div id="index_header" >
                 <div class="banners">
                     <swiper
@@ -163,7 +163,6 @@
                 options: [],
                 getAuth: false,
                 name: '',
-                screenHeight: 0,
                 currentIndex: 0,
                 currentCoupon: 1,
                 alpha: 1,
@@ -235,6 +234,18 @@
             },
             navHeight () {
                 return this.model.global.barHeight.navHeight
+            },
+            headerHeight() {
+                return this.statusBarHeight + this.navHeight;
+            },
+            mainHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                let height = systemInfo.windowHeight;
+                return height - this.headerHeight - this.footerHeight;
+            },
+            footerHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                return 108 * systemInfo.windowWidth / 750;
             },
             activities () {
                 return this.model.activity.activities
@@ -309,10 +320,6 @@
             getUpdateMange();
             this.$command('LOAD_INDEX_BANNER')
             this.$command('LOAD_STORE_CATEGORIES_COMMAND');
-
-            let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
-            let screenWitdh = wx.getSystemInfoSync().windowHeight;
-            this.screenHeight = (rpxRate * screenWitdh)/ 2;
             let pages =  getCurrentPages();
             console.log('这是mounted');
             let options = pages[pages.length - 1]['options']
