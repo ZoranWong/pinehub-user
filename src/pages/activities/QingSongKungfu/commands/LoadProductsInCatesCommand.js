@@ -2,7 +2,6 @@ import Command from '@/commands/Command';
 
 export default class LoadProductsInCatesCommand extends Command {
     async handle (id, page, limit = 10, cateId) {
-        console.log('22222');
         if (page === 1) {
             this.model.activity.dispatch('clearProducts')
         }

@@ -109,7 +109,7 @@
           return {
               title: "青松易购预定商城",
               desc: "青松易购小程序",
-              imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+              imageUrl: "",
               path: `/pages/user/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {
@@ -138,7 +138,6 @@
               }
           },
           queryCateId (val) {
-              console.log(val, '-----------------------------------------------------------------');
               if (val) {
                   this.tabSelect(val)
               }
@@ -213,7 +212,6 @@
               return 216 * systemInfo.windowWidth / 750;
           },
           listHeight() {
-              console.log(this.mainHeight, '-------- list height -------', this.mainHeight, this.mainHeight  );
               return this.mainHeight  - this.btnHeight
           }
       },
@@ -228,7 +226,6 @@
               this.$command('REDIRECT_TO', 'index', 'replace', {});
           },
           async handleSearch () {
-              console.log(this.search, '---');
               let result = await this.http.store.productsSearch(this.search)
               if (result) {
                   this.searchResult = result;
@@ -341,7 +338,6 @@
               })
           }
           if (this.storeId && this.registered && this.isMember ) {
-              console.log('进来了吗');
               this.$command('BIND_CONSUMER', this.storeId)
           }
       },
@@ -351,7 +347,6 @@
           this.screenHeight = (rpxRate * screenWitdh)/ 2;
           this.initAccount()
           this.$command('LOAD_STORE_CATEGORIES_COMMAND')
-          console.log(this.$route, '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
           if (this.$route.query && this.$route.query.cateId) {
               this.queryCateId = this.$route.query.cateId
           }

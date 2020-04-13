@@ -369,8 +369,7 @@
                 this.$command('REDIRECT_TO', 'user.address', 'push' , {
                     query: {
                         needReturn: true,
-                        type: 'mall',
-                        selectedProduct: this.selectedProduct
+                        type: 'mall'
                     }
                 });
             },
@@ -476,7 +475,7 @@
 			jump (router) {
 				if (this.availableCoupons.length === 0) return;
 				this.$command('REDIRECT_TO', router, 'push',{
-					query: {needReturn: true, type: this.type, selectedProduct: this.selectedProduct}
+					query: {needReturn: true, type: this.type}
                 });
 			},
             go (router) {

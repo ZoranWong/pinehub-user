@@ -57,7 +57,7 @@
                     class="couponSwiper"
                     circular="true"
                     :indicator-dots="false"
-                    :autoplay="false"
+                    :autoplay="true"
                     interval="3000"
                     @animationfinish="couponChange"
                     duration="1000">
@@ -124,7 +124,7 @@
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
 
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
-        <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>
+<!--        <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>-->
 
 
     </div>
@@ -288,7 +288,6 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
-                    console.log('xxxx');
                 }
                 if (this.storeId && this.registered && this.isMember ) {
                     this.bindConsumer()
@@ -296,6 +295,7 @@
                 if (this.registered && this.isMember ) {
                     this.$command('LOAD_POP', 'PLATFORM_SEND');
                     this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
+                    this.$command('LOAD_CART_COMMAND', 'mall')
                 }
             },
             userId (val) {
@@ -321,7 +321,6 @@
             this.$command('LOAD_INDEX_BANNER')
             this.$command('LOAD_STORE_CATEGORIES_COMMAND');
             let pages =  getCurrentPages();
-            console.log('这是mounted');
             let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
             if (this.storeId) {
@@ -332,34 +331,31 @@
             if ( this.registered && this.isMember ) {
                 // this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
                 // console.log('进来了吗');
+                this.$command('LOAD_CART_COMMAND', 'mall')
                 if (this.storeId) {
                     this.bindConsumer()
                 }
             }
         },
         onShareAppMessage: function (res) {
-            console.log(res);
             console.log(this.shopCode, '==========>');
             //可以先看看页面数据都有什么，得到你想要的数据
             return {
                 title: "青松易购首页",
                 desc: "青松易购小程序",
-                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                imageUrl: "",
                 path: `/pages/user/index/main?shop_code=${this.storeId || this.shopCode}`,
                 success: function (res) {
-                    console.log(res);
                     // 转发成功
                     console.log("转发成功:" + JSON.stringify(res));
                 },
                 fail: function (res) {
                     // 转发失败
-                    console.log(res);
                     console.log("转发失败:" + JSON.stringify(res));
                 }
             }
         },
         onShow (option) {
-            console.log('这是 show');
             this.initAccount();
             this.$command('ACTIVITIES')
             if (this.$route.query['needRefresh']) {
@@ -373,16 +369,13 @@
                     code: this.storeId
                 })
             }
-            console.log(this.storeId, '验证 store id')
-            console.log(this.registered, '验证 是否登录')
             if (this.storeId && this.registered && this.isMember ) {
-                console.log('进来了吗');
                 this.bindConsumer()
             }
 
             if (this.registered && this.isMember) {
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
-                this.$command('LOAD_CART_COMMAND', 'mall')
+
             }
         },
         onLoad (options) {

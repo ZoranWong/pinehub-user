@@ -7,7 +7,6 @@ export default class LoadCartCommand extends Command {
             products: response.data
         });
 
-        console.log(response, 'saassaassaasa --------');
 
         // console.log('----- request -----', Date.now());
 

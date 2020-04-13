@@ -10,9 +10,9 @@
             class="scroll_wrapper"
         >
             <div class="cakes" >
-                <div class="header">
-                    <img class="images" src="./img/22305823.jpg" alt="">
-                </div>
+<!--                <div class="header">-->
+<!--                    <img class="images" src="img/22305823.jpg" alt="">-->
+<!--                </div>-->
                 <div class="banners">
                     <swiper
                         class="swiper"
@@ -72,7 +72,7 @@
 
 
                 <div class="cakeService" @touchstart="start" @touchmove="move" @touchend="end" :style="{'right': right +'px', 'top': top+'px'}">
-                    <img class="service"  src="../../../../static/icons/cakeService.png" alt="" @click="connectKf">
+                    <img class="service" src="../../../../static/icons/cakeService.png" alt="" @click="connectKf">
                 </div>
 
 
@@ -145,7 +145,6 @@
             },
             registered (value) {
                 if (value) {
-                    console.log(value, 'xxxxx');
                     this.getAuth = false;
                 }
 
@@ -165,7 +164,7 @@
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
-                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                imageUrl: "",
                 path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {

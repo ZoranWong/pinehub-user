@@ -197,8 +197,9 @@
     }
 
     #footNav .overWidthAmount{
-        width: 55rpx;
+        width: 80rpx;
         height: 40rpx;
+        border-radius: 9999rpx;
         background: #fe4a2c;
         display: flex;
         justify-content: center;
@@ -211,26 +212,28 @@
         z-index: 10001;
     }
 
-    #footNav .overWidthAmount:before{
-        content: '';
-        width: 10px;
-        height: 20px;
-        background: #fe4a2c;
-        border-radius: 50%;
-        position: absolute;
-        left: -20rpx;
-        border-radius:  10px 0 0 10px ;
-    }
+    /*#footNav .overWidthAmount:before{*/
+    /*    content: '';*/
+    /*    width: 10px;*/
+    /*    height: 20px;*/
+    /*    background: #fe4a2c;*/
+    /*    border-radius: 50%;*/
+    /*    position: absolute;*/
+    /*    left: -20rpx;*/
+    /*    border-radius:  10px 0 0 10px ;*/
+    /*    top: 0;*/
+    /*}*/
 
-    #footNav .overWidthAmount:after{
-        content: '';
-        width: 10px;
-        height: 20px;
-        background: #fe4a2c;
-        position: absolute;
-        right: -20rpx;
-        border-radius: 0 10px 10px 0;
-    }
+    /*#footNav .overWidthAmount:after{*/
+    /*    content: '';*/
+    /*    width: 10px;*/
+    /*    height: 20px;*/
+    /*    background: #fe4a2c;*/
+    /*    position: absolute;*/
+    /*    right: -20rpx;*/
+    /*    top: 0;*/
+    /*    border-radius: 0 10px 10px 0;*/
+    /*}*/
 
     #footNav ul li em {
         text-align: center;

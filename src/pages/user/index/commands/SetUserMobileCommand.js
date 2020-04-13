@@ -5,7 +5,6 @@ export default class SetUserMobileCommand extends Command {
         let self = this;
         wx.checkSession({
             async success () {
-                console.log('success');
                 // session_key 未过期，并且在本生命周期一直有效
                 if (detial.errMsg !== 'getPhoneNumber:ok') {
                     wx.showToast({

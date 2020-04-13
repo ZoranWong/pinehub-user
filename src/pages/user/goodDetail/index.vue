@@ -44,6 +44,12 @@
                     {{goodDetail['product_entities'][0].desc}}
                 </div>
             </div>
+            <Specification
+                :selectActSpec="selectActSpec"
+                :item="selectActItem"
+                :type="'activity'"
+                :actId="actId"
+                @close="closeSelectActSpec" />
 
             <!-- 商品详情 -->
             <wxParse no-data="" :content="goodDetail.detail"  />
@@ -55,12 +61,7 @@
                 :item="selectItem"
                 :type="'mall'"
                 @close="closeSelectSpec" />
-            <Specification
-                :selectSpec="selectActSpec"
-                :item="selectActItem"
-                :type="'activity'"
-                :actId="actId"
-                @close="closeSelectActSpec" />
+
             <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
         </div>
 
@@ -86,7 +87,7 @@
 	import wxParse from 'mpvue-wxparse'
     import Auth from '../../../components/Auth';
 	import _ from 'underscore';
-	import Specification from '../QingSongKungfu/components/Specification';
+	import Specification from "./components/Specification";
 	import GetUserMobile from '../../../components/GetUserMobile';
 	export default {
         name: 'goodDetail',
@@ -123,7 +124,7 @@
             return {
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
-                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                imageUrl: "",
                 path: `/pages/user/goodDetail/main?type=${options.type}&good_id=${options['good_id']}&actId=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
@@ -504,7 +505,6 @@
         top: 0;
         bottom: 0;
     }
-
     #select_spec_act{
         width: 100%;
         height: 100%;
@@ -513,6 +513,7 @@
         right: 0;
         top: 0;
         bottom: 0;
+        z-index: 10000;
     }
 
     #shopping_cart{

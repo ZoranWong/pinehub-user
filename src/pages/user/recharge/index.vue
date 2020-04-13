@@ -62,7 +62,6 @@
 				this.type = type
             },
 			createRechargeOrder () {
-				console.log(this.checked, '====');
 				if(!this.checked) return;
                 this.$command('CREATE_RECHARGE_ORDER', this.checked)
             },

@@ -2,8 +2,6 @@ import Command from '@/commands/Command';
 
 export default class SelectAddressCommand extends Command {
     async handle (address, type) {
-        console.log(address);
-        console.log(type, '----address----');
         if (type === 'mall') {
             this.model.user.order.payment.dispatch('saveMallAddress', {
                 address

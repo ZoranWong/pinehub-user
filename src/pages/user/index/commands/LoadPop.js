@@ -12,7 +12,6 @@ export default class LoadPop extends Command {
                     this.model.account.dispatch('hasNewUserCoupon', false)
                 }
             } else {
-                console.log(result, '.....');
                 if (!result.length) {
                     this.model.account.dispatch('clearNewCoupons')
                 } else {

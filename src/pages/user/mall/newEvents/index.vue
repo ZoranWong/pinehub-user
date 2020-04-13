@@ -119,7 +119,7 @@
             return {
                 title: "青松易购早餐预定",
                 desc: "青松易购小程序",
-                imageUrl: "分享要显示的图片，如果不设置就会默认截图当前页面的图片",
+                imageUrl: "",
                 path: `/pages/user/mall/newEvents/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
@@ -260,7 +260,6 @@
                 })
             }
             if (this.storeId && this.registered && this.isMember ) {
-                console.log('进来了吗');
                 this.$command('BIND_CONSUMER', this.storeId)
             }
 			this.isShow = false;

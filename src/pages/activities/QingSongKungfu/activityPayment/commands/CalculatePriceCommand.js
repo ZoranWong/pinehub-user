@@ -2,8 +2,6 @@ import Command from '../../../../../commands/Command';
 import _ from 'underscore'
 export default class CalculatePrice extends Command {
     async handle (type, params) {
-        console.log(type, '===========');
-        console.log(params, '===========');
         try {
             let respones = await this.service('http.activities').calculateActCart(params);
             if (_.isEmpty(respones)) {

@@ -32,7 +32,7 @@
             }
         },
         methods:{
-		    back(){
+		    async back(){
 		        if (this.backUrl) {
 		            this.$emit('back');
 		            return
@@ -40,10 +40,10 @@
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
+                     await this.$command('REDIRECT_TO','','back')
 		            if (this.needClear) {
                         this.model.user.order.payment.dispatch('clearIds');
                     }
-                    this.$command('REDIRECT_TO','','back')
                 }
             }
         },
@@ -56,7 +56,8 @@
             }
         },
         mounted () {
-		    let pages =  getCurrentPages();
+            console.log('----- 头部渲染 -----');
+            let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.needBackHome = options.backHome ? true : false;
             if (this.backColor) {

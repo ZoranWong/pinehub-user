@@ -197,7 +197,6 @@
                 return 90 * systemInfo.windowWidth / 750;
             },
             listHeight() {
-                console.log(this.mainHeight, '-------- list height -------', this.mainHeight * 0.5, this.mainHeight * 0.5 * (1 - 0.13));
                 return this.mainHeight * 0.5 * (1 - 0.13) - (this.btnShow ? this.btnHeight : 0);
             }
         },
@@ -284,7 +283,6 @@
                         type: this.type
                     })
                 } else if (this.$route.query.type === 'breakfast') {
-                    console.log('这是早餐车的购物车');
                     this.model.newEvents.shoppingCarts.dispatch('selectPoints', {
                         boolean: false,
                         type: this.type
@@ -309,7 +307,6 @@
                 this.longitude = result[0];
                 this.myLatitude = result[1];
                 this.myLongitude = result[0];
-                console.log('1111');
                 this.$command('LOAD_NEARBY', result[0], result[1], this.$route.query.type);
                 this.$command('LOAD_COMMONLY_USED', result[0], result[1], this.$route.query.type)
             },

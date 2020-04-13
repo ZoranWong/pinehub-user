@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div id="select_spec_act" v-if="selectSpec">
+    <div id="select_spec_act" v-if="selectActSpec">
         <div id="select_spec_container" >
             <div id="closeIcon">
                 <i class="iconfont closeIcon"  @click="close">&#xe658;</i>
@@ -23,7 +23,7 @@
                     <div class="left">{{i.name}}:</div>
                     <div class="right1">
                         <button
-                            :class="k.class"
+                            :class="selectedClass === k.id ? 'active': ''"
                             @click="selectSpecItems(i,k)"
                             v-for="(k,kIndex) in i.values"
                             :key=" k.id">
@@ -42,10 +42,10 @@
                     <img src="../../../../../static/icons/add.png" alt="" @click="add(1)">
                 </div>
             </div>
-<!--            <div id="remark">-->
-<!--                <span>填写备注</span>-->
-<!--                <input type="text" placeholder="点击填写备注" v-model="remark">-->
-<!--            </div>-->
+            <!--            <div id="remark">-->
+            <!--                <span>填写备注</span>-->
+            <!--                <input type="text" placeholder="点击填写备注" v-model="remark">-->
+            <!--            </div>-->
             <div id="select_spec_confirm1">
                 <button @click="addToShoppingCart">
                     加入购物车
@@ -65,33 +65,35 @@
     import _ from 'underscore';
     import {formatMoney} from '../../../../utils';
 
-	export default {
+    export default {
         name: 'SelectSpecification',
-        props: ['selectSpec', 'item', 'type', 'actId'],
+        props: ['selectActSpec', 'item', 'type', 'actId'],
         data () {
             return {
                 selectedSpec: {},
                 totalPrice: 0,
-				selectedDesp:'',
+                selectedDesp:'',
                 confirmSelected:{},
                 remark: '',
                 buyNum: 1,
                 price: '',
                 originPrice: '',
-                entityStock: 0
+                entityStock: 0,
+                selectedClass: ''
             }
         },
         computed () {
 
         },
         watch: {
-            item (val) {
-            	if (val) {
-            		this.originPrice = ''
-                }
-            },
             item () {
-                this.buyNum = 1
+                this.originPrice = '';
+                this.buyNum = 1;
+                this.price = '';
+            },
+            selectActSpec () {
+                this.selectedClass = '';
+                this.selectedSpec = {};
             }
         },
         methods: {
@@ -109,37 +111,38 @@
                 })
                 this.selectedSpec[parent.id] = item.value;
                 this.originPrice = product['origin_price_format'];
-				this.handleClass(parent, item);
-				this.isEqual()
-			},
-			isEqual(){
+                // this.handleClass(parent, item);
+                this.selectedClass = item.id
+                this.isEqual()
+            },
+            isEqual(){
                 let selectedSpec = {};
-				let selectedDesp = [];
-				for (let key in this.selectedSpec){
-					if (!_.isNaN(parseInt(key))) {
-						selectedSpec[key] = this.selectedSpec[key]
+                let selectedDesp = [];
+                for (let key in this.selectedSpec){
+                    if (!_.isNaN(parseInt(key))) {
+                        selectedSpec[key] = this.selectedSpec[key]
                     }
                 }
-				for ( let key in selectedSpec){
-					selectedDesp.push(selectedSpec[key])
+                for ( let key in selectedSpec){
+                    selectedDesp.push(selectedSpec[key])
                 }
                 this.selectedDesp = selectedDesp.join(',')
-				let isEqual = false
-				return _.map(this._props.item['product_entities'], (item) => {
-					if(isEqual) return;
-					isEqual = _.isEqual(selectedSpec,item.specs);
+                let isEqual = false
+                return _.map(this._props.item['product_entities'], (item) => {
+                    if(isEqual) return;
+                    isEqual = _.isEqual(selectedSpec,item.specs);
                     this.confirmSelected = isEqual ? item : {}
-					this.totalPrice =  formatMoney(isEqual ? item['retail_price'] : 0);
+                    this.totalPrice =  formatMoney(isEqual ? item['retail_price'] : 0);
                 })
-			},
+            },
             handleClass (i, k) {
-				_.map(i.values, (value) => {
+                _.map(i.values, (value) => {
                     value.class = '';
                     if (this.selectedSpec[i.id] === value.value) {
-                    	value.class = 'active'
+                        value.class = 'active'
                     }
-				})
-			},
+                })
+            },
             commonLogic () {
                 let selectedSpec = {};
 
@@ -174,11 +177,19 @@
                     } else {
                         this.$command('ADD_GOODS_TO_ACTIVITY_CART_COMMAND',this.confirmSelected['product_stock_id'],this.buyNum,'activity',this.actId)
                     }
+                    this.selectedClass = ''
                     return true
                 }
 
             },
-			addToShoppingCart(){
+            addToShoppingCart(){
+                if (this.buyNum < 1) {
+                    wx.showToast({
+                        title: '选择商品数量不可小于1',
+                        icon: 'none'
+                    });
+                    return;
+                }
                 if (this.commonLogic()) {
                     if (this.buyNum > this.entityStock) {
                         wx.showToast({
@@ -196,6 +207,14 @@
                 }
             },
             async settlement () {
+                if (this.buyNum < 1) {
+                    wx.showToast({
+                        title: '选择商品数量不可小于1',
+                        icon: 'none'
+                    });
+                    return;
+                }
+
                 if (await this.commonLogic()) {
                     if (this.buyNum > this.entityStock) {
                         wx.showToast({
@@ -221,8 +240,8 @@
                 console.log(this._props.item);
                 this.buyNum = number + Number(this.buyNum);
             }
-        }
-	}
+        },
+    }
 </script>
 
 <style>

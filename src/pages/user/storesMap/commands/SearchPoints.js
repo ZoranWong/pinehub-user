@@ -7,7 +7,6 @@ export default class SearchPoints extends Command {
         }
         let channel = type === 'mall' ? 'SHOP_KEEPER' : 'BREAKFAST_CAR';
         let response = await this.service('http.store').searchPoints(sLng, sLat, channel, page, search);
-        console.log(response);
         if (type === 'mall') {
             this.model.user.store.dispatch('saveNearbyPoints', {
                 points: response.data

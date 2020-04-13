@@ -9,7 +9,6 @@
         "pages/user/userPickupProtocol/main",
         "pages/user/store/main",
         "pages/user/ShoppingCart/main",
-        "pages/user/activities/main",
         "pages/user/goodDetail/main",
         "pages/user/feedBack/main",
         "pages/user/pickup/main",
@@ -17,11 +16,17 @@
         "pages/user/recharge/main",
         "pages/user/balance/main",
         "pages/user/address/main",
-        "pages/user/addressOperation/main",
-        "pages/user/QingSongKungfu/main",
-        "pages/user/QingSongKungfu/activityPayment/main"
+        "pages/user/addressOperation/main"
     ],
     "subpackages": [
+        {
+            "root": "pages/activities",
+            "pages": [
+                "activities/main",
+                "QingSongKungfu/main",
+                "QingSongKungfu/activityPayment/main"
+            ]
+        },
         {
             "root": "pages/integral",
             "pages": [
