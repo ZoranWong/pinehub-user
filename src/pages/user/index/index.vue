@@ -261,7 +261,7 @@
             }
         },
         watch: {
-            categories (val) {
+            cates (val) {
                 if (val.length) {
                     this.$command('LOAD_STORE_COMMAND', val[0].id, 1)
                 }

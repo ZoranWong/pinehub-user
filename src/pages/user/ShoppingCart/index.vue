@@ -116,11 +116,12 @@
                     this.showTips = false
                 }
             },
-            categories (val) {
-                if (val.length) {
-                    this.$command('LOAD_STORE_COMMAND', val[0].id, 1)
-                }
-            },
+            // categories (val) {
+            //     if (val.length) {
+            //         console.log('购物车加载加载加载加载加载');
+            //         this.$command('LOAD_STORE_COMMAND', val[0].id, 1)
+            //     }
+            // },
         },
         components: {CustomHeader,FooterNav,RecommendProducts,ProductComponents},
         computed: {
@@ -182,6 +183,11 @@
                 })
                 if ( clear.length ) {
                     this.$command('CLEAR_CART_COMMAND', clear);
+                } else {
+                    wx.showToast({
+                        title: '您尚未选中商品',
+                        icon: 'none'
+                    });
                 }
             },
             checkProductStatus () {
@@ -261,9 +267,14 @@
                     }
                 })
             },
-		    init () {
+		    async init () {
                 this.$command('LOAD_CART_COMMAND', 'mall')
-                this.$command('LOAD_STORE_CATEGORIES_COMMAND');
+                // if (this.categories.length) {
+                //     this.$command('LOAD_STORE_COMMAND', this.categories[0].id, 1)
+                // } else {
+                //     await this.$command('LOAD_STORE_CATEGORIES_COMMAND');
+                //     this.$command('LOAD_STORE_COMMAND', this.categories[0].id, 1)
+                // }
             },
             changeBuyNum (item,num) {
                 let newNum = item['buy_num'] + num;

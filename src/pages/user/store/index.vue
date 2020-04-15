@@ -124,7 +124,7 @@
       },
       watch: {
 		  activeTab(val) {
-			  if(val){
+              if(val){
                   this.$command('LOAD_STORE_COMMAND',val,1)
               }
           },
@@ -142,6 +142,13 @@
                   this.tabSelect(val)
               }
           },
+          categories (val) {
+              if(val && val.length && !this.queryCateId){
+                  console.log('进来了吗');
+                  this.activeTab = val[0].id
+
+              }
+          }
       },
       computed: {
           showOperation(item){
@@ -178,11 +185,7 @@
               return this.model.account.shopCode
           },
           categories(){
-            let categories = this.model.user.store.categories;
-            if(categories && categories.length && !this.queryCateId){
-                this.activeTab = categories[0].id
-            }
-          	 return categories;
+            return this.model.user.store.categories;
           },
           goods(){
 			  return this.model.user.store.goods
@@ -263,6 +266,7 @@
 			  this.getAuth = false
 		  },
           tabSelect(id){
+              console.log('我变我变我变我变我变我变我变我变我变我变');
               this.activeTab = id;
 			  this.$command('LOAD_STORE_COMMAND',id, 1)
           },

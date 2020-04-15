@@ -11,10 +11,10 @@
                             <em>￥</em>
                             {{product['act_price']}}
                         </h3>
-                        <span>{{product['product_entity']['retail_price']}}</span>
                     </div>
                     <img src="../../../../../static/icons/qiang.jpg" @click.stop="goBuy(product)" class="buyIcon" alt="">
                 </div>
+                <span class="underline">¥ {{product['product_entity']['retail_price']}}</span>
             </li>
         </ul>
     </div>
@@ -72,7 +72,8 @@
         border-radius: 10rpx;
         box-sizing: border-box;
         padding: 10rpx;
-        padding-bottom: 16rpx;
+        padding-bottom: 10rpx;
+        position: relative;
     }
 
     .productsContainer ul li .img{
@@ -84,7 +85,7 @@
     .productsContainer ul li .bottom{
         box-sizing: border-box;
         padding: 0 10rpx;
-        margin-top: 20rpx;
+        margin-top: 10rpx;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -99,6 +100,9 @@
     .productsContainer ul li .bottom .buyIcon{
         width: 48rpx;
         height: 48rpx;
+        position: absolute;
+        bottom: 20rpx;
+        right: 10rpx;
     }
 
     .productsContainer ul li .bottom .left h3{
@@ -115,11 +119,15 @@
         transform: translateY(-2rpx);
     }
 
-    .productsContainer ul li .bottom .left span{
-        font-size: 22rpx;
+
+    .productsContainer ul li .underline{
+        display: block;
         color: #999;
         text-decoration: line-through;
-        margin-left: 8rpx;
-        transform: translateY(-4rpx);
+        transform: translateY(-10rpx);
+        font-size: 24rpx;
+        margin-top: 5rpx;
+        padding: 0 12rpx;
+        box-sizing: border-box;
     }
 </style>
