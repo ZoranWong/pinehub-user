@@ -268,7 +268,7 @@
           tabSelect(id){
               console.log('我变我变我变我变我变我变我变我变我变我变');
               this.activeTab = id;
-			  this.$command('LOAD_STORE_COMMAND',id, 1)
+			  // this.$command('LOAD_STORE_COMMAND',id, 1)
           },
           setData(data){
               this.data = data
