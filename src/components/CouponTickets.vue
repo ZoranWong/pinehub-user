@@ -89,7 +89,6 @@
 		methods: {
             onOk () {
                 let type = this.$route.query.type;
-                console.log(type, '?????????????????????');
                 if (this.$route.query.needReturn) {
                     if (type === 'activity') {
                         this.$command('REDIRECT_TO', '', 'back',{

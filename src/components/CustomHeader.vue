@@ -40,7 +40,7 @@
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                     await this.$command('REDIRECT_TO','','back')
+                    await this.$command('REDIRECT_TO','user.shoppingCart','replace')
 		            if (this.needClear) {
                         this.model.user.order.payment.dispatch('clearIds');
                     }

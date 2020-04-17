@@ -12,7 +12,9 @@
                             {{product['act_price']}}
                         </h3>
                     </div>
-                    <img src="../../../../../static/icons/qiang.jpg" @click.stop="goBuy(product)" class="buyIcon" alt="">
+                    <div class="right" @click.stop="goBuy(product)">
+                        <img src="../../../../../static/icons/qiang.jpg"  class="buyIcon" alt="">
+                    </div>
                 </div>
                 <span class="underline">¥ {{product['product_entity']['retail_price']}}</span>
             </li>
@@ -100,6 +102,15 @@
     .productsContainer ul li .bottom .buyIcon{
         width: 48rpx;
         height: 48rpx;
+
+    }
+
+    .productsContainer ul li .bottom .right{
+        width: 65rpx;
+        height: 65rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
         bottom: 20rpx;
         right: 10rpx;

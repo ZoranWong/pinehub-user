@@ -79,7 +79,6 @@
 				this.isEqual()
 			},
 			isEqual(){
-                console.log(this._props.item, '====');
                 let selectedSpec = {};
 				let selectedDesp = [];
 				for (let key in this.selectedSpec){

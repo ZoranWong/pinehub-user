@@ -129,7 +129,6 @@
                 }
             },
             jump (router) {
-				console.log(router, '+++++');
 				if ((router === 'user.pickup' || router === 'user.shoppingCart') && !this.registered) {
             		this.$emit('getUserAuth')
                 } else {

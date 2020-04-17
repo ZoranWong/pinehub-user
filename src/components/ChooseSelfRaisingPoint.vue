@@ -87,7 +87,6 @@
         },
         watch: {
             commonlyPoints (val) {
-                console.log(val, '----------------');
                 if (val.length) {
                     this.changeBackground('right')
                 }

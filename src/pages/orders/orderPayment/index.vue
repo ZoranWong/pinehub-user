@@ -253,9 +253,8 @@
                 }
             },
             couponIds (val) {
-                console.log('couponIds', val);
                 if (this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length > 0) {
-                    this.$command('CALCULATE_PRICE_COMMAND',this.$route.query.type,{
+                    this.$command('CALCULATE_PRICE_COMMAND', 'mall',{
                         coupon_records: val,
                         carts: this.selectedProduct
                     });

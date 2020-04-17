@@ -124,6 +124,7 @@
       },
       watch: {
 		  activeTab(val) {
+              console.log('11');
               if(val){
                   this.$command('LOAD_STORE_COMMAND',val,1)
               }

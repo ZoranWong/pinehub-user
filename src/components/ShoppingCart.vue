@@ -142,7 +142,6 @@
                 if (value <= 0) value = 0;
                 if (value > stock) value = stock;
                 if (this.type === 'mall') {
-                    console.log('xxxxxxxxxxxxxxxx');
                     this.$command('CHANGE_BUY_NUM_COMMAND',item, Number(value))
                 } else if (this.type === 'breakfast') {
                     this.$command('CHANGE_BREAKFAST_BUY_NUM_COMMAND', item, Number(value))
