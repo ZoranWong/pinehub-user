@@ -268,13 +268,19 @@
                 })
             },
 		    async init () {
-                this.$command('LOAD_CART_COMMAND', 'mall')
+                // this.$command('LOAD_CART_COMMAND', 'mall')
                 // if (this.categories.length) {
                 //     this.$command('LOAD_STORE_COMMAND', this.categories[0].id, 1)
                 // } else {
                 //     await this.$command('LOAD_STORE_CATEGORIES_COMMAND');
                 //     this.$command('LOAD_STORE_COMMAND', this.categories[0].id, 1)
                 // }
+                let checked = [];
+                let products = this.goodInShoppingCart;
+                _.map(products, (product,index) => {
+                    checked.push(product.id)
+                });
+                this.$command('LOAD_CART_COMMAND', 'mall', checked, true)
             },
             changeBuyNum (item,num) {
                 let newNum = item['buy_num'] + num;

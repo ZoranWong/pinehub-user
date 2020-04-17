@@ -488,6 +488,10 @@
 		    this.allProducts = []
             let selectedProduct = [];
 		    let products = this.model.user.store.goodInShoppingCart;
+            if (!products.length) {
+                this.$command('REDIRECT_TO', 'user.shoppingCart', 'reLaunch');
+                return
+            }
             _.map(products, product => {
                 if (product.selected > 0) {
                     selectedProduct.push({
@@ -497,6 +501,7 @@
                 }
             })
             this.selectedProduct = selectedProduct;
+
         },
 		mounted() {
             this.getDate();

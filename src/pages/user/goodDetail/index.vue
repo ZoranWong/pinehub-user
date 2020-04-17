@@ -21,7 +21,10 @@
                 <div class="operation">
 <!--                    <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />-->
 <!--                    <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >-->
-                    <img src="../../../../static/icons/add.png" class="add" alt="" v-if="goodDetail.stock" @click.stop="addToShoppingCart(goodDetail, 1)" />
+                    <div v-if="stockInfo === '尚有库存'">
+                        <img src="../../../../static/icons/add.png" class="add" alt="" v-if="goodDetail.stock" @click.stop="addToShoppingCart(goodDetail, 1)" />
+                        <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
+                    </div>
                     <img src="../../../../static/icons/disabledAdd.jpg" v-else alt="">
                 </div>
             </div>
@@ -62,7 +65,7 @@
                 :type="'mall'"
                 @close="closeSelectSpec" />
 
-            <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />
+<!--            <ChooseSelfRaisingPoint v-if="showPoints" @close="closePoints" />-->
         </div>
 
 
@@ -116,7 +119,8 @@
                 selectActItem: {},
                 selectActSpec: false,
                 showBindMobile: false,
-                actPrice: '暂无'
+                actPrice: '暂无',
+                stockInfo: '尚有库存'
             }
         },
         onShareAppMessage: function (res) {
@@ -428,15 +432,15 @@
                 let detail = this.goodDetail.detail;
                 return detail ? detail.replace(/\<img/gi, '<img style="max-width:100%;height:auto"') : '';
             },
-			showPoints () {
-				let breakfast = this.model.newEvents.shoppingCarts.showPoints;
-				let mall = this.model.user.store.showPoints;
-				if (this.options['type'] === 'mall') {
-					return mall
-                } else {
-					return breakfast
-                }
-			},
+			// showPoints () {
+			// 	let breakfast = this.model.newEvents.shoppingCarts.showPoints;
+			// 	let mall = this.model.user.store.showPoints;
+			// 	if (this.options['type'] === 'mall') {
+			// 		return mall
+            //     } else {
+			// 		return breakfast
+            //     }
+			// },
 			registered () {
 				return this.model.account.registered;
 			},
@@ -449,7 +453,7 @@
 			let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
 			this.actPrice = (options['price'] || options['price'] === 0) || '暂无';
-
+            this.stockInfo = options['stockInfo'] ? options['stockInfo'] : '尚有库存'
             if (this.storeId) {
                 if(this.registered && this.isMember) {
                     this.$command('BIND_CONSUMER', this.storeId)
