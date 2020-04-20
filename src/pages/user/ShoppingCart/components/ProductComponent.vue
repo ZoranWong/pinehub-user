@@ -20,7 +20,7 @@
 
                         </div>
                         <div class="right">
-                            <img src="../img/subtract.png" alt=""  @click="changeBuyNum(product,-1)">
+                            <img src="../img/minus.png" alt=""  @click="changeBuyNum(product,-1)">
                             <input v-model="product['buy_num']"  type="number" @change="(e)=>changeInputBuyNum(e,product)" />
                             <img src="../img/add.png" alt="" @click="changeBuyNum(product,1)">
                         </div>

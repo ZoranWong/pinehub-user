@@ -31,6 +31,50 @@
                         />
                     </li>
                 </ul>
+                <ul class="unenough" v-if="unenoughProducts.length">
+                    <li class="title">
+                        <span>已失效</span>
+                        <h3>商品因库存原因无法购买</h3>
+                        <div class="line"></div>
+                    </li>
+                    <li v-for="product in unenoughProducts" :key="product.id">
+                        <div class="top">
+                            <div class="icon" @click="checkUnenough(product)">
+                                <img v-if="product.checked > 0" src="./img/selected.png"  alt="">
+                                <img v-else src="./img/uncheck.png"  alt="">
+                            </div>
+                            <div class="product">
+                                <img :src="product.image" class="image" alt="">
+                                <div class="info">
+                                    <h4>{{product.name}}</h4>
+                                    <span>{{product.intro}}</span>
+                                    <div class="tags" v-if="product.tags && product.tags.length">
+                                        {{product.tags[0]}}
+                                    </div>
+                                    <div class="price">
+                                        <div class="left">
+                                            ￥
+                                            <h5>{{product.price}}</h5>
+
+                                        </div>
+                                        <div class="right">
+                                            <img src="./img/minus.png" alt=""  >
+                                            <input v-model="product['unenoughNum']"  type="number" :disabled="true" />
+                                            <img src="./img/add.png" alt="" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="desc" v-if="product.desc && product['discount_amount'] > 0">
+                            <div class="descContainer">
+                                <img src="../../../../static/icons/newArrow.jpg" alt="">
+                                <span class="icon"> 促销</span>
+                                <span class="info">{{product.desc}}</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
 
             <div class="recommend">
@@ -115,7 +159,8 @@
                 showTips: false,
                 showDiff: false,
                 invalidProducts: [],
-                differentProduct: []
+                differentProduct: [],
+                unenoughProducts: []
             }
         },
         watch: {
@@ -124,7 +169,7 @@
                     let index = _.findIndex(val, product => {
                         return !product.selected
                     });
-                    this.selectedAll = index > -1 ? false : true
+                    this.selectedAll = index > -1 ? false : true;
                 }
             },
             invalidProducts (val) {
@@ -205,15 +250,27 @@
                     if (product.selected) {
                         clear.push(product)
                     }
-                })
-                if ( clear.length ) {
+                });
+                let checked = [];
+                _.map(this.unenoughProducts, product => {
+                    if (product.checked) {
+                        checked.push(product)
+                    }
+                });
+
+                 if ( clear.length && checked.length) {
                     this.$command('CLEAR_CART_COMMAND', clear);
-                } else {
-                    wx.showToast({
-                        title: '您尚未选中商品',
-                        icon: 'none'
-                    });
-                }
+                     this.unenoughProducts = this.unenoughProducts.filter(product => !product.checked);
+                } else if (clear.length && !checked.length) {
+                     this.$command('CLEAR_CART_COMMAND', clear);
+                } else if (!clear.length && checked.length) {
+                     this.unenoughProducts = this.unenoughProducts.filter(product => !product.checked);
+                 } else {
+                     wx.showToast({
+                         title: '您尚未选中商品',
+                         icon: 'none'
+                     });
+                 }
             },
             checkProductStatus () {
                 this.invalidProducts = [];
@@ -242,23 +299,23 @@
                     checked.push(product.id)
                 });
                 let carts = await this.http.store.cartGoodsList(checked, true);
-                if (carts['meta']['total_fee'] == this.cartTotalFeeFormat) {
-                    this.goPayment()
-                } else {
-                    let prevProducts = this.goodInShoppingCart;
-                    let newProducts = carts.data;
-                    let differentProduct = [];
-                    _.map(prevProducts, pProduct => {
-                        _.map(newProducts, nProduct => {
-                            if (pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
-                                differentProduct.push({
-                                    name: nProduct.name,
-                                    diff: pProduct['act_num'] - nProduct['act_num']
-                                })
-                            }
-                        })
+                let prevProducts = this.goodInShoppingCart;
+                let newProducts = carts.data;
+                let differentProduct = [];
+                _.map(prevProducts, pProduct => {
+                    _.map(newProducts, nProduct => {
+                        if (pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
+                            differentProduct.push({
+                                name: nProduct.name,
+                                diff: pProduct['act_num'] - nProduct['act_num']
+                            })
+                        }
                     })
+                })
+                if (differentProduct.length) {
                     this.differentProduct = differentProduct;
+                } else {
+                    this.goPayment()
                 }
             },
             goPayment () {
@@ -326,7 +383,8 @@
                 })
             },
 		    async init () {
-                // this.$command('LOAD_CART_COMMAND', 'mall')
+                console.log('想休息休息');
+                await this.$command('LOAD_CART_COMMAND', 'mall')
                 // if (this.categories.length) {
                 //     this.$command('LOAD_STORE_COMMAND', this.categories[0].id, 1)
                 // } else {
@@ -400,9 +458,23 @@
                     this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall');
                 }
             },
+            checkUnenough (product) {
+                product.checked = !product.checked;
+                console.log(this.unenoughProducts, '*************************');
+            }
         },
         mounted () {
-            this.init()
+            this.init();
+            let unenoughProducts = [];
+            _.map(this.products, product => {
+                if (product['buy_num'] > product['stock_num']) {
+                    product.unenoughNum = product['buy_num'] - product['stock_num'];
+                    product.checked = false
+                    unenoughProducts.push(product);
+                    this.$command('CHANGE_BUY_NUM_COMMAND',product, product['stock_num'])
+                }
+            })
+            this.unenoughProducts = unenoughProducts;
         }
 	}
 </script>
@@ -560,7 +632,7 @@
         width: 100%;
         background: #fff;
         border-radius: 25rpx;
-        padding-bottom: 10rpx;
+        overflow: hidden;
     }
 
     .fullCart ul {
@@ -606,7 +678,7 @@
         margin-bottom: 40rpx;
     }
 
-    .fullCart ul li:first-child{
+    .fullCart>ul li:first-child{
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -771,5 +843,51 @@
         flex: 1;
     }
 
+    .fullCart .unenough{
+        width: 100%;
+        background: #FCFCFC;
+        box-sizing: border-box;
+        padding: 0 30rpx;
+        padding-bottom: 30rpx;
+    }
+
+    .fullCart .unenough .title{
+        width: 100%;
+        height: 90rpx;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 0!important;
+        position: relative;
+    }
+
+    .fullCart .unenough .line{
+        position: absolute;
+        top: 0;
+        right: -30rpx;
+        width:614rpx;
+        height:2rpx;
+        background: #f2f2f2;
+    }
+
+    .fullCart .unenough .title span{
+        font-size: 18rpx;
+        padding: 5rpx 9rpx;
+        color: #fff;
+        background: #FB4E26;
+        border-radius: 5rpx;
+    }
+
+    .fullCart .unenough .title h3{
+        margin: 0;
+        margin-left: 11rpx;
+        color: #111;
+        font-size: 22rpx;
+    }
+
+    .fullCart .unenough li:nth-child(2){
+        margin-top: 0;
+    }
 
 </style>

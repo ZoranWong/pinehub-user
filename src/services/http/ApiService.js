@@ -154,7 +154,10 @@ export default class ApiService extends Service {
             return result.data;
         } catch (e) {
             wx.hideLoading();
-            this.showErrorToast(e.response.data);
+            console.log(e, '&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+            if (e.response.data !== '购物车里面已存在此商品') {
+                this.showErrorToast(e.response.data);
+            }
             throw e;
         }
     }

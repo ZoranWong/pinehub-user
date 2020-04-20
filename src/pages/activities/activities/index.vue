@@ -77,12 +77,13 @@
                 let env = this.config['app']['env'];
                 let str = Math.random().toString(36).substr(2)
                 console.log(str, '===>');
-                // this.url = `https://neptune.klsfood.cn/activity.html${this.query.data.url}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
+                this.url = `https://neptune.klsfood.cn/activity.html${this.query.data.url}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
             }
         },
         onHide () {
             console.log('on hide');
-            this.url = ''
+            this.url = '';
+            this.showView = false;
         },
         onUnload () {
             console.log('onUnload');
