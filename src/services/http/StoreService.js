@@ -55,7 +55,6 @@ export default class StoreService extends ApiService {
 
     // 商城购物车商品列表
     async cartGoodsList (unchecked, changed) {
-        console.log(unchecked, 'unchecked ====== ');
         let response = await this.httpGet('api/mp/mall/carts', {
             ids: unchecked,
             changed: changed

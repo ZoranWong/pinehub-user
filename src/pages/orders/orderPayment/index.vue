@@ -489,7 +489,11 @@
             let selectedProduct = [];
 		    let products = this.model.user.store.goodInShoppingCart;
             if (!products.length) {
-                this.$command('REDIRECT_TO', 'user.shoppingCart', 'reLaunch');
+                this.$command('REDIRECT_TO', 'user.orders', 'reLaunch', {
+                    query: {
+                        status: 'WAIT_TO_PAY'
+                    }
+                });
                 return
             }
             _.map(products, product => {

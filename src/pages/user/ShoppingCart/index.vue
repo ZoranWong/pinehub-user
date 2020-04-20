@@ -76,6 +76,23 @@
         </div>
 
 
+        <div class="pickupTips" v-if="showDiff">
+            <div class="pickupTipsContainer">
+                <div class="header">提示</div>
+                <div class="tips">
+                    下列活动商品被人捷足先登，您将以原价购买:
+                    <span v-for="item in differentProduct" :key="item.id">
+                        名称：{{item.name}}
+                        数量：{{item.diff}}
+                    </span>
+                </div>
+                <div class="operation">
+                    <button @click="refreshCart">取消</button>
+                    <button @click="diffOnPayment">好的</button>
+                </div>
+            </div>
+        </div>
+
 
         <FooterNav :navName="navName" />
     </div>
@@ -96,12 +113,13 @@
                 selectedAll: true,
                 products: [],
                 showTips: false,
-                invalidProducts: []
+                showDiff: false,
+                invalidProducts: [],
+                differentProduct: []
             }
         },
         watch: {
             products (val,old) {
-
                 if (val.length) {
                     let index = _.findIndex(val, product => {
                         return !product.selected
@@ -116,6 +134,13 @@
                     this.showTips = false
                 }
             },
+            differentProduct (val) {
+                if (val.length) {
+                    this.showDiff = true
+                } else {
+                    this.showDiff = false
+                }
+            }
             // categories (val) {
             //     if (val.length) {
             //         console.log('购物车加载加载加载加载加载');
@@ -199,9 +224,42 @@
                     }
                 })
                 if (!this.invalidProducts.length) {
-                    this.goPayment()
+                    this.checkActProductsIsEnough()
                 }
                 // this.goPayment()
+            },
+            refreshCart () {
+                this.showDiff = false;
+                this.init()
+            },
+            diffOnPayment () {
+                this.goPayment()
+            },
+            async checkActProductsIsEnough () {
+                let checked = [];
+                let products = this.goodInShoppingCart;
+                _.map(products, (product,index) => {
+                    checked.push(product.id)
+                });
+                let carts = await this.http.store.cartGoodsList(checked, true);
+                if (carts['meta']['total_fee'] == this.cartTotalFeeFormat) {
+                    this.goPayment()
+                } else {
+                    let prevProducts = this.goodInShoppingCart;
+                    let newProducts = carts.data;
+                    let differentProduct = [];
+                    _.map(prevProducts, pProduct => {
+                        _.map(newProducts, nProduct => {
+                            if (pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
+                                differentProduct.push({
+                                    name: nProduct.name,
+                                    diff: pProduct['act_num'] - nProduct['act_num']
+                                })
+                            }
+                        })
+                    })
+                    this.differentProduct = differentProduct;
+                }
             },
             goPayment () {
                 let selectedProduct = [];
@@ -223,7 +281,7 @@
                 });
                 if (this.products.length) {
                     setTimeout(()=>{
-                        this.goPayment()
+                        this.checkActProductsIsEnough()
                     }, 500)
                 } else {
                     this.showTips = false
