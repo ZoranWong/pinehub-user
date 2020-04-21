@@ -1,6 +1,6 @@
 {
     "model": "mp",
-    "env": "dev",
+    "env": "prod",
     "mock": false,
     "appId": "kdy5df6e803b3ea6",
     "appSecret": "iy2tgGBhSVnVxC0fTXtN0kddYo5wOzza",
@@ -13,9 +13,9 @@
         "3": "第三批次"
     },
     "http": {
-        "gateway": "https://neptune.klsfood.cn"
+        "gateway": "https://www.neptune.kingdomcloud.cn/"
     },
     "socket": {
-        "gateway": "https://neptune.klsfood.cn"
+        "gateway": "https://www.neptune.kingdomcloud.cn:6001"
     }
 }

@@ -296,7 +296,9 @@
                 let checked = [];
                 let products = this.goodInShoppingCart;
                 _.map(products, (product,index) => {
-                    checked.push(product.id)
+                    if (product.selected) {
+                        checked.push(product.id)
+                    }
                 });
                 let carts = await this.http.store.cartGoodsList(checked, true);
                 let prevProducts = this.goodInShoppingCart;
@@ -304,7 +306,7 @@
                 let differentProduct = [];
                 _.map(prevProducts, pProduct => {
                     _.map(newProducts, nProduct => {
-                        if (pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
+                        if (pProduct.selected && nProduct.selected && pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
                             differentProduct.push({
                                 name: nProduct.name,
                                 diff: pProduct['act_num'] - nProduct['act_num']
@@ -460,7 +462,6 @@
             },
             checkUnenough (product) {
                 product.checked = !product.checked;
-                console.log(this.unenoughProducts, '*************************');
             }
         },
         mounted () {
