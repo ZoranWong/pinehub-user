@@ -23,7 +23,8 @@
 		    return {
 		    	barHeight: 0,
                 background: '',
-                needBackHome: false
+                needBackHome: false,
+                needClear: false
             }
         },
         watch: {
@@ -40,9 +41,11 @@
 		        if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    await this.$command('REDIRECT_TO','user.shoppingCart','replace')
 		            if (this.needClear) {
+                        await this.$command('REDIRECT_TO','user.shoppingCart','replace')
                         this.model.user.order.payment.dispatch('clearIds');
+                    } else {
+                        this.$command('REDIRECT_TO','','back')
                     }
                 }
             }
@@ -60,6 +63,7 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.needBackHome = options.backHome ? true : false;
+            this.needClear = options['needClear'] ? true : false;
             if (this.backColor) {
                 this.background = this.backColor
             } else {
