@@ -24,7 +24,9 @@
             "pages": [
                 "activities/main",
                 "QingSongKungfu/main",
-                "QingSongKungfu/activityPayment/main"
+                "QingSongKungfu/activityPayment/main",
+                "groupon/grouponList/main",
+                "groupon/grouponDetails/main"
             ]
         },
         {

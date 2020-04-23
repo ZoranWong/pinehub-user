@@ -28,6 +28,9 @@ export default class AuthService extends ApiService {
         let timestamp = new Date(); //  '2019-10-02 08:02:23'
         timestamp = formatTime(timestamp);
         let appIdAppSecret = appId + appSecret;
+        console.log(appId, '--- appid ----');
+        console.log(appSecret, '--- appSecret ----');
+        console.log(timestamp, '--- timestamp ----');
         let appIdAppSecretMD5 = this.service('md5').encrypt(appIdAppSecret);
         let appIdAppSecretMD5Timestamp = appIdAppSecretMD5 + timestamp;
         let sign = this.service('md5').encrypt(appIdAppSecretMD5Timestamp);
