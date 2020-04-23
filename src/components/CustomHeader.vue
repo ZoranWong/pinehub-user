@@ -16,43 +16,46 @@
 </template>
 
 <script>
-	export default {
-		name: 'CustomHeader',
+    export default {
+        name: 'CustomHeader',
         props: ['title','needReturn', 'backColor', 'backUrl', 'needClear'],
         data () {
-		    return {
-		    	barHeight: 0,
+            return {
+                barHeight: 0,
                 background: '',
-                needBackHome: false
+                needBackHome: false,
+                needClear: false
             }
         },
         watch: {
-		    backColor () {
+            backColor () {
                 this.background = this.backColor
             }
         },
         methods:{
-		    async back(){
-		        if (this.backUrl) {
-		            this.$emit('back');
-		            return
+            async back(){
+                if (this.backUrl) {
+                    this.$emit('back');
+                    return
                 }
-		        if (this.needBackHome) {
+                if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    await this.$command('REDIRECT_TO','user.shoppingCart','replace')
-		            if (this.needClear) {
+                    if (this.needClear) {
+                        await this.$command('REDIRECT_TO','user.shoppingCart','replace')
                         this.model.user.order.payment.dispatch('clearIds');
+                    } else {
+                        this.$command('REDIRECT_TO','','back')
                     }
                 }
             }
         },
         computed : {
-			statusBarHeight () {
-				return this.model.global.barHeight.statusBarHeight
+            statusBarHeight () {
+                return this.model.global.barHeight.statusBarHeight
             },
-			navHeight () {
-				return this.model.global.barHeight.navHeight
+            navHeight () {
+                return this.model.global.barHeight.navHeight
             }
         },
         mounted () {
@@ -60,14 +63,15 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.needBackHome = options.backHome ? true : false;
+            this.needClear = options['needClear'] ? true : false;
             if (this.backColor) {
                 this.background = this.backColor
             } else {
                 this.background = this.title === '首页' ? '#ffcc00' : 'linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1))'
             }
-			this.$command('GET_BAR_HEIGHT')
-		}
-	}
+            this.$command('GET_BAR_HEIGHT')
+        }
+    }
 </script>
 
 <style>
