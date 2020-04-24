@@ -29,7 +29,8 @@
 
 .function{
     width: 100%;
-    height: 150rpx;
+    height: 168rpx;
+    display: inline-block;
 }
 
 .groupon_shop_info{
@@ -94,6 +95,15 @@
     padding: 30rpx;
     box-sizing: border-box;
     margin-top: 30rpx;
+    position: relative;
+}
+
+.groupon_info .arrow{
+    width: 20rpx;
+    height: 10rpx;
+    position: absolute;
+    left: 40rpx;
+    top: -10rpx
 }
 
 .groupon_info_title{

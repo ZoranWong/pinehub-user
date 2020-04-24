@@ -1,6 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div id="groupon_list">
+        <div class="tranHeader" @click="back">
+            <span  class="circle" ><i class="iconfont">&#xe679;</i></span>
+        </div>
         <div class="groupon_header">
             <img class="groupon_header_image" src="../images/Spell_group_banner.png" alt="">
             <SwiperNotice />
@@ -24,6 +27,7 @@
                     </div>
                 </div>
                 <div class="groupon_info">
+                    <img src="../images/arrow.png" class="arrow" alt="">
                     <div class="groupon_info_title">
                         <h3 class="groupon_name">青松食品主食团购</h3>
                         <h4 class="groupon_status">
@@ -75,7 +79,9 @@
 
 		},
 		methods: {
-
+            back(){
+                this.$command('REDIRECT_TO','','back')
+            },
 		},
 		created() {
 
@@ -93,7 +99,26 @@
         background: #F2F2F2;
 	}
 
+    .tranHeader{
+        position: fixed;
+        left: 20rpx;
+        top: 100rpx;
+        z-index: 10000;
+    }
 
+    .tranHeader .circle{
+        width: 60rpx;
+        height: 60rpx;
+        border-radius: 50%;
+        background: rgba(17,17,17,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tranHeader .circle .iconfont{
+        color: #fff;
+    }
 
 
 </style>
