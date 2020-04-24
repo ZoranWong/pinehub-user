@@ -95,7 +95,7 @@
                 <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
-                    :data="act['entry_template'][0].data" :id="act.id"
+                    :products="act['entry_template'][0].data" :id="act.id"
                     :image="act['entry_template'][0].image"
                     @do="goActDetails(act)"
                     @addToCart="addToCart"

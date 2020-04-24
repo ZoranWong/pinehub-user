@@ -36,9 +36,9 @@
                 let product = this.product;
                 let hasStock = true;
                 if (product['has_sell_limit']) {
-                    hasStock = product['last_num'] > 0 && product['in_stock'] > 0
+                    hasStock = product['last_num'] > 0 && product['product_stock']['in_stock'] > 0
                 } else {
-                    hasStock = product['in_stock'] > 0
+                    hasStock = product['product_stock']['in_stock'] > 0
                 }
                 return hasStock
             }
@@ -81,7 +81,7 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        bottom: 20rpx;
+        bottom: 6rpx;
         right: 10rpx;
     }
 

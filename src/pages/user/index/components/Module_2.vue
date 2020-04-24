@@ -3,7 +3,7 @@
     <div class="productsContainer">
         <img :src='image' alt="" class="preferential" @click="doDetail">
         <ul>
-            <li v-for="(product,index) in data" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id, price: product['act_price']}})">
+            <li v-for="(product,index) in indexProducts" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id, price: product['act_price']}})">
                 <Module_Products
                     :product="product"
                     @goBuy="goBuy"
@@ -17,7 +17,19 @@
     import Module_Products from "./Module_Products";
     export default {
         name: 'Module_2',
-        props: ['data', 'image','id'],
+        props: ['products', 'image','id'],
+        computed: {
+            indexProducts () {
+                return this.model.activity.indexProducts
+            }
+        },
+        watch : {
+            products (val) {
+                if (val.length) {
+                   this.$command('ACTIVITIES_PRODUCTS', val)
+                }
+            }
+        },
         methods: {
             doDetail () {
                 this.$emit('do', this.id)
@@ -34,7 +46,9 @@
             Module_Products
         },
         mounted () {
-
+            if (this.products.length) {
+                this.$command('ACTIVITIES_PRODUCTS', this.products)
+            }
         }
     }
 </script>
