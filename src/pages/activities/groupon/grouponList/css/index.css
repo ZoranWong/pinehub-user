@@ -1,0 +1,183 @@
+
+.groupon_header{
+    position: relative;
+}
+.groupon_header .swiperNotices{
+    position: absolute;
+    left: 128rpx;
+    bottom: 70rpx;
+}
+
+.groupon_header_image{
+    width: 100%;
+    height: 400rpx;
+}
+
+
+.groupon_list{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20rpx;
+}
+
+.groupon_banner{
+    width: 100%;
+    padding: 0 20rpx;
+    box-sizing: border-box;
+    transform: translateY(-50rpx);
+}
+
+.function{
+    width: 100%;
+    height: 150rpx;
+}
+
+.groupon_shop_info{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 20rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 60rpx;
+}
+
+
+.groupon_shop_info .left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.groupon_shop_info .left .shop_image{
+    width: 60rpx;
+    height: 60rpx;
+    margin-right: 10rpx;
+    border-radius: 10rpx;
+}
+
+.groupon_shop_info .left .top{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.groupon_shop_info .left .top .shop_name{
+    font-size: 28rpx;
+    color: #111;
+    font-weight: normal;
+}
+
+.groupon_shop_info .left .top .shop_address{
+    font-size: 22rpx;
+    color: #999;
+}
+
+.groupon_shop_info .right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.groupon_shop_info .groupon_amount{
+    color: #4C4C4C;
+    font-size: 22rpx;
+}
+
+.groupon_info{
+    width: 100%;
+    background: #fff;
+    border-radius: 25rpx;
+    position: relative;
+    padding: 30rpx;
+    box-sizing: border-box;
+    margin-top: 30rpx;
+}
+
+.groupon_info_title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.groupon_name{
+    font-size: 30rpx;
+    color: #111;
+    font-weight: bold;
+}
+
+.groupon_status{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.groupon_status_text{
+    font-size: 28rpx;
+    color: #333;
+}
+
+.groupon_status_arrow{
+    width: 11rpx;
+    height: 22rpx;
+    margin-left: 20rpx;
+}
+
+.groupon_products{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.groupon_product_image{
+    width: 210rpx;
+    height: 210rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #F2F2F2;
+}
+
+.groupon_purchased_info{
+    margin-top: 10rpx;
+}
+
+.groupon_purchased_info_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26rpx;
+}
+
+.groupon_purchased_info_item:first-child{
+    margin-top: 26rpx;
+}
+
+.groupon_purchased_info_item .left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 24rpx;
+    color: #111;
+}
+
+.groupon_purchased_info_item .left .user_ava{
+    width: 34rpx;
+    height: 34rpx;
+    border-radius: 50%;
+    margin: 0 10rpx;
+}
+
+.groupon_purchased_info_item .groupon_purchased_time{
+    font-size: 22rpx;
+    color: #999;
+    margin-left: 10rpx;
+}
+
+.groupon_purchased_info .user_purchased_products{
+    font-size: 24rpx;
+    color: #111;
+    font-weight: normal;
+}

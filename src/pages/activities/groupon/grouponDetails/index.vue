@@ -44,10 +44,10 @@
         overflow: hidden;
 	}
 
-    /*.swiperNotices{*/
-    /*    width: auto;*/
-    /*    height: 100rpx;*/
-    /*}*/
+    .swiperNotices{
+        width: 410rpx;
+        height: 100rpx;
+    }
 
     .backImg{
         width: 100%;

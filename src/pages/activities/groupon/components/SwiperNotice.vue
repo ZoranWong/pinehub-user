@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div class="swiperNotices">
-        <swiper class="swiper" circular="true" :indicator-dots="false" autoplay="true" interval="500000" duration="1000" >
+        <swiper class="swiper" circular="true" :indicator-dots="false" autoplay="true" interval="3000" duration="1000" :vertical="true">
             <block v-for="(item, index) in notices" :index="index" :key="index">
                 <swiper-item class="swiperNoticeItem">
                     <image :src="item.img" class="slide-image" mode="aspectFill"/>
@@ -50,21 +50,21 @@
 
 <style>
     .swiperNotices{
-        max-width: 500rpx;
-        min-width: 200rpx;
+        width: 498rpx;
         height: 50rpx;
         background:linear-gradient(0deg,rgba(252,210,100,1),rgba(252,236,125,1));
         border-radius:25rpx;
     }
 
     .swiperNotices .swiper{
+        width: 498rpx!important;
         height: 50rpx!important;
     }
 
     .swiperNoticeItem{
-        width:fit-content;
-        width:-webkit-fit-content;
-        width:-moz-fit-content;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         /*display:inline-block;*/
         padding: 6rpx;
         box-sizing: border-box;
