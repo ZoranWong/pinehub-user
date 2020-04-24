@@ -3,10 +3,11 @@
     <div class="productsContainer">
         <img :src='image' alt="" class="preferential" @click="doDetail">
         <ul>
-            <li v-for="(product,index) in indexProducts" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id, price: product['act_price']}})">
+            <li v-for="(product,index) in indexProducts" :key="index" >
                 <Module_Products
                     :product="product"
                     @goBuy="goBuy"
+                    @redirectTo="redirectTo"
                 />
             </li>
         </ul>
