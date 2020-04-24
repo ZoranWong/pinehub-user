@@ -4,25 +4,17 @@
         <img :src='image' alt="" class="preferential" @click="doDetail">
         <ul>
             <li v-for="(product,index) in data" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.product.id, price: product['act_price']}})">
-                <img :src="product.image" alt="" class="img">
-                <div class="bottom">
-                    <div class="left">
-                        <h3>
-                            <em>￥</em>
-                            {{product['act_price']}}
-                        </h3>
-                    </div>
-                    <div class="right" @click.stop="goBuy(product)">
-                        <img src="../../../../../static/icons/qiang.jpg"  class="buyIcon" alt="">
-                    </div>
-                </div>
-                <span class="underline">¥ {{product['product_entity']['retail_price']}}</span>
+                <Module_Products
+                    :product="product"
+                    @goBuy="goBuy"
+                />
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+    import Module_Products from "./Module_Products";
 	export default {
 		name: 'Module_2',
         props: ['data', 'image','id'],
@@ -37,6 +29,9 @@
                 console.log(item);
                 this.$emit('addToCart', item['product_stock_id'])
             }
+        },
+        components: {
+            Module_Products
         },
         mounted () {
 
