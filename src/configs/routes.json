@@ -20,6 +20,7 @@
     "user.activity": "/pages/activities/activities/main",
     "user.groupon.list": "/pages/activities/groupon/grouponList/main",
     "user.groupon.details": "/pages/activities/groupon/grouponDetails/main",
+    "user.groupon.order.payment": "/pages/activities/groupon/grouponOrderPayment/main",
     "user.QingSongKungfu": "/pages/activities/QingSongKungfu/main",
     "user.activity.payment": "/pages/activities/QingSongKungfu/activityPayment/main",
     "user.integral": "/pages/integral/integral/main",
