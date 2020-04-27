@@ -38,7 +38,6 @@
 
         </div>
 
-
         <div class="details">
             <div class="top">
                 <h3>青松功夫缤纷蛋糕大血拼</h3>
@@ -62,21 +61,77 @@
             </div>
         </div>
 
+        <div class="rich_text">
+            哈哈哈哈哈哈哈
+        </div>
+
+        <div class="middle">
+            <GrouponClassification
+                :top="toTop"
+                @forbidScroll="forbidScroll"
+                :headerHeight="headerHeight"
+            />
+            <ul class="products">
+                <li v-for="product in products" :key="product">
+                    <Product />
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="groupon_participants">
+            <h3 class="header">
+                参团情况
+                <span>(5人已参团)</span>
+            </h3>
+            <ul class="groupon_participants_list">
+                <li class="groupon_participants_item" v-for="items in 3">
+                    <span class="number">{{items}}.</span>
+                    <div class="right">
+                        <div class="top">
+                            <div class="left">
+                                <img src="./img/background.jpeg" alt="">
+                                <div class="names">
+                                    <h4>豆豆掉了</h4>
+                                    <span>2分钟前</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                <i>¥</i>
+                                <h4>19</h4>
+                            </div>
+                        </div>
+                        <div class="bottom">
+                            <span>博士馒头（荞麦味）x1、玉米刀切馒头x1、白面刀切馒头x2
+                            燕麦馒头x1、鲜肉包x3</span>
+                            <img src="../../../../../static/icons/newArrow.jpg" alt="">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
 	</div>
 </template>
 <script>
     import _ from 'underscore';
     import SwiperNotice from "../components/SwiperNotice";
+    import GrouponClassification from "./components/GrouponClassification";
+    import Product from "./components/Product";
 	export default {
 		components: {
-            SwiperNotice
+            SwiperNotice,GrouponClassification,Product
 		},
 		data() {
 			return {
                 hour: '05',
                 minute: '18',
-                second: '05'
+                second: '05',
+                toTop: 0,
+                isForbid: false,
+                products: [
+                    1,2,3
+                ]
 			};
 		},
 		watch: {
@@ -84,7 +139,6 @@
 		},
 		computed: {
             statusBarHeight () {
-                console.log(this.model.global.barHeight.statusBarHeight, '=========<<<>>>>');
                 return this.model.global.barHeight.statusBarHeight
             },
             navHeight () {
@@ -97,11 +151,17 @@
                 let systemInfo = wx.getSystemInfoSync();
                 return systemInfo.windowHeight;
             },
+            headerHeight () {
+                return this.statusBarHeight + this.navHeight;
+            },
 		},
 		methods: {
             back() {
                 this.$command('REDIRECT_TO', '', 'back')
-            }
+            },
+            forbidScroll (isForbid) {
+                this.isForbid = isForbid
+            },
 		},
 		created() {
 
@@ -115,7 +175,7 @@
 <style>
 	page {
 		height: 100%;
-        overflow: hidden;
+        overflow: auto;
 	}
 
     .swiperNotices{
@@ -332,6 +392,163 @@
         color: #FF442E;
     }
 
+    .rich_text{
+        width: 100%;
+        height: 998rpx;
+        box-sizing: border-box;
+        padding: 20rpx;
+    }
 
+    .middle{
+        width: 100%;
+        background: red;
+        background: #fff;
+        box-sizing: border-box;
+        position: relative;
+        border-bottom: 2rpx solid #F2F2F2;
+        border-top: 2rpx solid #F2F2F2;
+    }
+
+    .middle .allCates{
+        position: absolute;
+        top: 0;
+        z-index: 9998;
+        background: rgba(17,17,17,0.5);
+        height: 100vh;
+    }
+
+    .middle .allCates .cates{
+
+    }
+
+    .middle .middleImage{
+        width: 132px;
+        height: 30px;
+    }
+
+    .products{
+        padding: 0 20rpx;
+    }
+
+    .groupon_participants{
+        margin-top: 10rpx;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30rpx 40rpx;
+    }
+
+    .groupon_participants .header{
+        font-size: 30rpx;
+        color: #111;
+        font-weight: bold;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        margin-bottom: 20rpx;
+    }
+
+    .groupon_participants .header span{
+        font-size: 24rpx;
+        color: #999;
+        font-weight: normal;
+        margin-left: 10rpx;
+    }
+
+    .groupon_participants_item{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 30rpx;
+    }
+
+    .groupon_participants_item .number{
+        font-size: 28rpx;
+        color: #111;
+        margin-top: 15rpx;
+    }
+
+    .groupon_participants_item .right{
+        border-bottom: 2rpx solid #F2F2F2;
+        margin-left: 15rpx;
+    }
+
+    .groupon_participants_item .right .top{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .groupon_participants_item .right .top .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .groupon_participants_item .right .top .left img{
+        width: 50rpx;
+        height: 50rpx;
+        border-radius: 50%;
+        margin-right: 15rpx;
+    }
+
+    .groupon_participants_item .right .top .left .names{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .groupon_participants_item .right .top .left .names h4{
+        font-size: 28rpx;
+        color: #111;
+        font-weight: normal;
+    }
+
+    .groupon_participants_item .right .top .left .names span{
+        font-size: 20rpx;
+        color: #999;
+    }
+
+    .groupon_participants_item .right .top .price{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .groupon_participants_item .right .top .price i{
+        font-size: 24rpx;
+        font-weight: bold;
+        color: #999;
+        margin-right: 5rpx;
+    }
+
+    .groupon_participants_item .right .top .price h4{
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #999;
+    }
+
+    .groupon_participants_item .right .bottom{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 16rpx 30rpx;
+        background:#F5F5F5;
+        position: relative;
+        margin-top: 30rpx;
+    }
+
+    .groupon_participants_item .right .bottom span{
+        font-size: 22rpx;
+        color: #111;
+        line-height: 30rpx;
+    }
+
+    .groupon_participants_item .right .bottom img{
+        position: absolute;
+        top: -10rpx;
+        left: 30rpx;
+        width: 20rpx;
+        height: 10rpx;
+    }
 
 </style>
