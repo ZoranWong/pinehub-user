@@ -27,7 +27,8 @@
                 "QingSongKungfu/activityPayment/main",
                 "groupon/grouponList/main",
                 "groupon/grouponDetails/main",
-                "groupon/grouponOrderPayment/main"
+                "groupon/grouponOrderPayment/main",
+                "groupon/myGroupon/main"
             ]
         },
         {

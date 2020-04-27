@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="groupon_list">
-        <div class="tranHeader" @click="back">
+        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
             <span  class="circle" ><i class="iconfont">&#xe679;</i></span>
         </div>
         <div class="groupon_header">
