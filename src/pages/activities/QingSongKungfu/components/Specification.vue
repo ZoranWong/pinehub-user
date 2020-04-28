@@ -7,7 +7,7 @@
             </div>
             <h3 id="select_spec_header">选择规格</h3>
             <div id="select_spec_banner">
-                <img :src="item.main_image" alt="">
+                <img :src="image" alt="">
             </div>
             <div id="select_spec_info">
                 <h4>{{item.name}}</h4>
@@ -79,17 +79,21 @@
                 price: '',
                 originPrice: '',
                 entityStock: 0,
-                selectedClass: ''
+                selectedClass: '',
+                image: ''
             }
         },
         computed () {
 
         },
         watch: {
-            item () {
+            item (val) {
                 this.originPrice = '';
                 this.buyNum = 1;
                 this.price = '';
+                if (val && val['product_entities'].length) {
+                    this.image = val['product_entities'][0].image
+                }
             },
             selectSpec () {
                 this.selectedClass = '';
@@ -106,6 +110,7 @@
                 _.map(product['product_entities'], (entity) => {
                     if (entity.specifications[0].value.id === item.id) {
                         this.price = entity['sell_price_format'];
+                        this.image = entity.image;
                         this.entityStock = entity.stock;
                     }
                 })
