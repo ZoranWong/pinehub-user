@@ -82,11 +82,16 @@
             back(){
                 this.$command('REDIRECT_TO','','back')
             },
+            async init () {
+                let result = await this.map.getLocation();
+                this.$command('LOAD_GROUPON_LIST',result[0], result[1], 1)
+            }
 		},
 		created() {
 
 		},
 		mounted() {
+		    this.init()
 
 		}
 	}

@@ -179,7 +179,7 @@
 				{
 					"id": -1,
 					"name": "pages/user/index/main",
-					"pathName": "pages/activities/groupon/grouponDetails/main",
+					"pathName": "pages/activities/groupon/grouponList/main",
 					"scene": null
 				}
 			]

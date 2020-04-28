@@ -50,7 +50,7 @@
                         优惠券
                     </h3>
                     <div class="couponUse">
-                        <em class="gray" v-else>暂无可用</em>
+                        <em class="gray">暂无可用</em>
                     </div>
                 </li>
                 <li>

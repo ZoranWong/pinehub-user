@@ -15,6 +15,7 @@ import AddressService from '@/services/http/AddressService';
 import ActivityService from '../services/http/ActivityService'
 import NewIndexService from '../services/http/NewIndexService';
 import WebSocketService from "../services/websocket/WebSocketService";
+import GrouponService from "../services/http/GrouponService";
 
 export default class HttpServiceProvider extends ServiceProvider {
     register () {
@@ -35,6 +36,7 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.chargeCard', ChargeCardService);
         this.app.register('http.integral', IntegralService);
         this.app.register('http.address', AddressService);
+        this.app.register('http.groupon', GrouponService);
         this.app.register('http.activities', ActivityService);
         this.app.register('http.newIndex', NewIndexService);
         this.app.register('$socket', WebSocketService);
