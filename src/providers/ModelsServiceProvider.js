@@ -14,6 +14,7 @@ import BarHeight from '../models/BarHeight';
 import Store from '@/models/Store';
 import OrderPayment from '../models/OrderPayment';
 import GoodDetail from '../models/GoodDetail';
+import Groupon from "../models/Groupon";
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
@@ -45,6 +46,7 @@ export default class ModelServiceProvider extends ServiceProvider {
         this.app.registerModel('model.nearestStore', NearestStore);
         this.app.registerModel('model.chargeCards', ChargeCards);
         this.app.registerModel('model.tradeOrderItems', TradeOrderItems);
+        this.app.registerModel('model.groupon', Groupon);
     }
 
     boot () {

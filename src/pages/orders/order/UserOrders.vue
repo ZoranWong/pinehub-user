@@ -214,6 +214,7 @@
         overflow-y: hidden;
         height: 100%;
         background: #f2f2f2;
+        padding: 20rpx;
     }
     .order_info {
         background: #FFFFFF;
@@ -223,6 +224,7 @@
         overflow: hidden;
         position: relative;
         margin-top: 20rpx;
+        border-radius: 25rpx;
     }
 
     .order_info_sn {
@@ -270,12 +272,11 @@
     .order_info_sn .left em {
         font-size: 32rpx;
         color: #111111;
-        font-weight: bold;
     }
 
     .order_info_status {
         font-weight: 400;
-        color: #FFC000;
+        color: #333;
         font-size: 28rpx;
     }
 
@@ -393,6 +394,7 @@
 
     .order_info_btn form {
         width: 100%;
+        line-height: 36rpx;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -401,15 +403,14 @@
 
     .order_info_btn button {
         display: inline-block;
-        height: 60rpx;
-        line-height: 60rpx;
+        height: 70rpx;
+        line-height: 70rpx;
         font-size: 28rpx;
         background: #fff;
         border: 1rpx solid #757575;
         color: #757575;
-        padding: 0 25rpx;
         margin-right: 20rpx;
-        border-radius: 10rpx;
+        border-radius: 15rpx;
     }
 
     .order_info_btn .yellow{

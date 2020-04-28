@@ -179,6 +179,13 @@
 				{
 					"id": -1,
 					"name": "pages/user/index/main",
+					"pathName": "pages/activities/groupon/myGroupon/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/activities/groupon/myGroupon/main",
 					"pathName": "pages/activities/groupon/grouponList/main",
 					"scene": null
 				}

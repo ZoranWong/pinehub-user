@@ -76,7 +76,10 @@
 
 		},
 		computed: {
-
+            grouponList () {
+                console.log(this.model.groupon.grouponList, '==============>');
+                return this.model.groupon.grouponList
+            }
 		},
 		methods: {
             back(){

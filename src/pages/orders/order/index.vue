@@ -133,12 +133,13 @@
 
 	#userOrders {
 		position: relative;
+
 	}
 
 	#tab_select {
 		overflow: auto;
 		width: 750rpx;
-		height: 74rpx;
+		height: 88rpx;
 		position: fixed;
 		left: 0;
 		z-index: 999;
@@ -148,17 +149,29 @@
     .scroll-view_H .scroll-view-item_H{
         width: 166rpx;
         display: inline-block;
-        height: 70rpx;
+        height: 88rpx;
         background: #FFFFFF;
         text-align: center;
         line-height: 82rpx;
-        font-size: 32rpx;
-        font-weight: 300;
+        font-size: 30rpx;
+        font-weight: 800;
+        color: #757575;
     }
 
-	#tab_select .tab_select_now {
-		color: #FECE00;
-        border-bottom: 4rpx solid #ffcc00;
+    #tab_select .tab_select_now{
+        position: relative;
+        color: #FFCC00;
+    }
+
+	#tab_select .tab_select_now:after {
+        content:  '';
+        position: absolute;
+        width:30rpx;
+        height:6rpx;
+        background:rgba(255,204,0,1);
+        border-radius:3px;
+        bottom: 14rpx;
+        left: 66rpx;
 	}
 
 	#tab_content {

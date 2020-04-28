@@ -54,7 +54,7 @@
                 title: this.query.data.name,
                 desc: "青松易购小程序",
                 imageUrl: "",
-                path: this.url,
+                path: `/pages/activities/activities/main?url=${this.query.data.url}`,
                 success: function (res) {
                     // 转发成功
                     console.log("转发成功:" + JSON.stringify(res));
@@ -106,9 +106,11 @@
                     timingFunc: 'easeIn'
                 }
             })
+            let options = pages[pages.length - 1]['options'];
             let gateway = this.config['app']['http']['gateway'];
             let env = this.config['app']['env'];
-            let str = Math.random().toString(36).substr(2)
+            let str = Math.random().toString(36).substr(2);
+            let url = options.url? options.url : query.data.url
             this.url = `https://neptune.klsfood.cn/activity.html${query.data.url}&token=${token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
             console.log(this.url, 'activity uel');
             // this.url = `http://activity.node:8091/?activity_id=6`;
