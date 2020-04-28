@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-	<div id="groupon_details">
+	<div id="groupon_details" :style="{'overflow': shareBoxVisible ? 'hidden' : 'scroll'}">
         <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
             <span class="circle" ><i class="iconfont">&#xe679;</i></span>
         </div>
@@ -29,7 +29,7 @@
 
             <div class="contact">
                 <img src="../images/Contact_head.png" alt="">
-                <img src="../images/Share_spell_group.png" alt="">
+                <img @click="showShareBox" src="../images/Share_spell_group.png" alt="">
             </div>
 
             <div class="notice">
@@ -85,7 +85,7 @@
                 <span>(5人已参团)</span>
             </h3>
             <ul class="groupon_participants_list">
-                <li class="groupon_participants_item" v-for="items in 3">
+                <li class="groupon_participants_item" v-for="items in 3" :key="items">
                     <span class="number">{{items}}.</span>
                     <div class="right">
                         <div class="top">
@@ -111,6 +111,11 @@
             </ul>
         </div>
 
+<!--        弹窗组件-->
+        <ShareBox
+            :show="shareBoxVisible"
+            @onClose="closeShareBox"
+        />
 	</div>
 </template>
 <script>
@@ -118,9 +123,10 @@
     import SwiperNotice from "../components/SwiperNotice";
     import GrouponClassification from "./components/GrouponClassification";
     import Product from "./components/Product";
+    import ShareBox from "./components/ShareBox";
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product
+            SwiperNotice,GrouponClassification,Product,ShareBox
 		},
 		data() {
 			return {
@@ -129,8 +135,23 @@
                 second: '05',
                 toTop: 0,
                 isForbid: false,
+                shareBoxVisible: false,
                 products: [
                     1,2,3
+                ],
+                buttons: [
+                    {
+                        type: 'default',
+                        className: '',
+                        text: '发送给朋友',
+                        value: 0
+                    },
+                    {
+                        type: 'primary',
+                        className: '',
+                        text: '生成海报',
+                        value: 1
+                    }
                 ]
 			};
 		},
@@ -162,6 +183,12 @@
             forbidScroll (isForbid) {
                 this.isForbid = isForbid
             },
+            showShareBox () {
+                this.shareBoxVisible = true
+            },
+            closeShareBox () {
+                this.shareBoxVisible = false
+            }
 		},
 		created() {
 
@@ -175,7 +202,7 @@
 <style>
 	page {
 		height: 100%;
-        overflow: auto;
+        overflow: hidden;
 	}
 
     .swiperNotices{
@@ -199,7 +226,10 @@
         transform: translateY(-226rpx);
     }
 
-
+    #groupon_details{
+        height: 100%;
+        overflow: auto;
+    }
 
 
     .tranHeader{

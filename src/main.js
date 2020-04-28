@@ -1,5 +1,5 @@
 import Application from './Application';
-
+import '../src/styles/weui.css';
 const application = new Application(null, 'main');
 if (typeof wx !== 'undefined') {
     wx['$app'] = application;
