@@ -142,6 +142,7 @@
     import Module_1 from './components/Module_1';
     import Module_2 from './components/Module_2';
     import RecommendProducts from '../../../components/RecommendProducts';
+    import {Base64} from "../../../utils/beSecret";
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -437,10 +438,11 @@
                     if (!this.isMember) {
                         this.showBindMobile = true
                     } else {
+                        console.log(this, 'xxxxxxccassas');
                         this.$command('REDIRECT_TO', 'user.activity', 'push', {
                             query: {
                                 id: act.id,
-                                data: act
+                                name: encodeURI(act.name)
                             }
                         });
                     }
