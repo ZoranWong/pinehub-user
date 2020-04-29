@@ -2,7 +2,7 @@
     <div>
         <CustomHeader :title="title" :needReturn="true" />
         <div class="homemaking" :style="{'height' : mainHeight + 'px'}">
-<!--            <img mode="widthFix" src="../../../../../static/images/background/homeworking.jpeg" alt="">-->
+            <img mode="widthFix" src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/homemake.jpeg" alt="">
         </div>
     </div>
 </template>

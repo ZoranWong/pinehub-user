@@ -112,24 +112,24 @@
                 return this.model.account.isMember;
             },
         },
-        onShareAppMessage: function (res) {
-            console.log(this.options, '==========>');
-            //可以先看看页面数据都有什么，得到你想要的数据
-            return {
-                title: decodeURI(this.options.name),
-                desc: "青松易购小程序",
-                imageUrl: "",
-                path: `/pages/activities/activities/main?id=${this.options.id}&name=${this.options.name}`,
-                success: function (res) {
-                    // 转发成功
-                    console.log("转发成功:" + JSON.stringify(res));
-                },
-                fail: function (res) {
-                    // 转发失败
-                    console.log("转发失败:" + JSON.stringify(res));
-                }
-            }
-        },
+        // onShareAppMessage: function (res) {
+        //     console.log(this.options, '==========>');
+        //     //可以先看看页面数据都有什么，得到你想要的数据
+        //     return {
+        //         title: decodeURI(this.options.name),
+        //         desc: "青松易购小程序",
+        //         imageUrl: "",
+        //         path: `/pages/activities/activities/main?id=${this.options.id}&name=${this.options.name}`,
+        //         success: function (res) {
+        //             // 转发成功
+        //             console.log("转发成功:" + JSON.stringify(res));
+        //         },
+        //         fail: function (res) {
+        //             // 转发失败
+        //             console.log("转发失败:" + JSON.stringify(res));
+        //         }
+        //     }
+        // },
         methods: {
             receive (data) {
                 console.log(data, 'receive');

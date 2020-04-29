@@ -391,7 +391,7 @@
         },
         methods: {
             jumpHomeMaking () {
-                // this.$command('REDIRECT_TO', 'index.homemaking', 'push')
+                this.$command('REDIRECT_TO', 'index.homemaking', 'push')
             },
             couponChange (e) {
                 let event = e.mp.detail;
