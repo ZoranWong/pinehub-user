@@ -10,46 +10,50 @@
         </div>
         <div class="groupon_banner">
             <img src="../images/function.png" class="function" alt="">
+            <div class="left" @click="redirectTo('user.pickup',{})"></div>
+            <div class="right" @click="redirectTo('user.myGroupon',{})"></div>
         </div>
         <ul class="groupon_list">
-            <li class="groupon_list_item">
+            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" @click="redirectTo('user.groupon.details', {
+                query: {
+                     id: item.id
+                }
+            })">
                 <div class="groupon_shop_info">
                     <div class="left">
                         <img class="shop_image" src="../grouponDetails/img/background.jpeg" alt="">
                         <div class="top">
-                            <h3 class="shop_name">青松合伙人禹洲天玺店</h3>
-                            <span class="shop_address">合肥市高新区禹洲天玺2期北门华联超市</span>
+                            <h3 class="shop_name">{{item['pick_shop_name']}}</h3>
+                            <span class="shop_address">{{item['pick_shop_address']}}</span>
                         </div>
                     </div>
                     <div class="right">
-                        <h4 class="groupon_amount">据您12.3km</h4>
-                        <h4 class="groupon_amount">112人已参团</h4>
+                        <h4 class="groupon_amount">据您{{item['formatDistance']}}</h4>
+                        <h4 class="groupon_amount">{{item['order_placed_users_count']}}人已参团</h4>
                     </div>
                 </div>
                 <div class="groupon_info">
                     <img src="../images/arrow.png" class="arrow" alt="">
                     <div class="groupon_info_title">
-                        <h3 class="groupon_name">青松食品主食团购</h3>
+                        <h3 class="groupon_name">{{item['display_name']}}</h3>
                         <h4 class="groupon_status">
-                            <span class="groupon_status_text">进行中</span>
+                            <span class="groupon_status_text">{{item['state_desc']}}</span>
                             <img class="groupon_status_arrow" src="../../../../../static/icons/rightArrow.png" alt="">
                         </h4>
                     </div>
-                    <div class="groupon_products">
-                        <img class="groupon_product_image" src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/22/1582376604" alt="">
-                        <img class="groupon_product_image" src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/22/1582376604" alt="">
-                        <img class="groupon_product_image" src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/22/1582376604" alt="">
+                    <div class="groupon_products" >
+                        <img v-for="(product,pIndex) in item['display_products']" :key="pIndex" class="groupon_product_image" :src="product.image" alt="">
                     </div>
                     <ul class="groupon_purchased_info">
-                        <li class="groupon_purchased_info_item">
+                        <li class="groupon_purchased_info_item" v-for="(user, uIndex) in item['latest_orders']" :key="uIndex">
                             <div class="left">
-                                112.
-                                <img class="user_ava" src="../grouponDetails/img/background.jpeg" alt="">
-                                豆豆掉了
-                                <span class="groupon_purchased_time">3分钟前</span>
+                                1.
+                                <img class="user_ava" :src="user['user_avatar']" alt="">
+                                {{user['user_nickname']}}
+                                <span class="groupon_purchased_time">{{user['paid_time']}}</span>
                             </div>
-                            <h4 class="user_purchased_products">
-                                博士馒头（荞麦味）x1…
+                            <h4 class="user_purchased_products" v-if="user['items'].length">
+                                {{user['items'][0].name}}...
                             </h4>
                         </li>
                     </ul>
@@ -77,7 +81,6 @@
 		},
 		computed: {
             grouponList () {
-                console.log(this.model.groupon.grouponList, '==============>');
                 return this.model.groupon.grouponList
             }
 		},
@@ -88,7 +91,10 @@
             async init () {
                 let result = await this.map.getLocation();
                 this.$command('LOAD_GROUPON_LIST',result[0], result[1], 1)
-            }
+            },
+            redirectTo (router, options = {}) {
+                this.$command('REDIRECT_TO', router, 'push', options);
+            },
 		},
 		created() {
 
@@ -103,7 +109,8 @@
 <style>
 	page {
 		height: 100%;
-        overflow: hidden;
+        height: 100%;
+        overflow: auto;
         background: #F2F2F2;
 	}
 

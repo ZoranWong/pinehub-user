@@ -12,5 +12,12 @@ export default class ActivityService extends ApiService {
         return response;
     }
 
+    // 获取拼团详情
+    async getGrouponDetails (id) {
+        let response = await this.httpGet('api/mp/getShopShoppingGroupDetail', {
+            id
+        });
+        return response.data;
+    }
 
 }

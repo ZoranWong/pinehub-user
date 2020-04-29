@@ -25,6 +25,22 @@
     padding: 0 20rpx;
     box-sizing: border-box;
     transform: translateY(-50rpx);
+    margin-bottom: -20rpx;
+    position: relative;
+}
+
+.groupon_banner div{
+    position: absolute;
+    width: 340rpx;
+    height: 150rpx;
+    top: 0;
+    z-index: 9999;
+}
+.groupon_banner .left{
+    left: 40rpx;
+}
+.groupon_banner .right{
+    right: 40rpx;
 }
 
 .function{
@@ -40,7 +56,6 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    height: 60rpx;
 }
 
 
@@ -85,6 +100,10 @@
 .groupon_shop_info .groupon_amount{
     color: #4C4C4C;
     font-size: 22rpx;
+}
+
+.groupon_list_item{
+    margin-bottom: 50rpx;
 }
 
 .groupon_info{

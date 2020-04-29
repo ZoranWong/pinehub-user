@@ -10,16 +10,16 @@
 
 <!--        <SwiperNotice />-->
 
-        <div class="detail_header">
+        <div class="detail_header" v-if="grouponDetails['pick_shop_info']">
             <img src="./img/background.jpeg" alt="" class="image">
 
-            <h3>青松合伙人琥珀五环城店</h3>
+            <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
             <div class="shop_info">
                 <img src="../images/name.png" alt="">
-                <span>涂鸿宇</span>
+                <span>{{grouponDetails['pick_shop_info']['keeper_name']}}</span>
                 <i></i>
                 <img src="../images/place.png" alt="">
-                <span>合肥市蜀山区琥珀五环城25栋802</span>
+                <span>{{grouponDetails['pick_shop_info']['complete_address']}}</span>
             </div>
 
             <div class="price_info">
@@ -40,13 +40,13 @@
 
         <div class="details">
             <div class="top">
-                <h3>青松功夫缤纷蛋糕大血拼</h3>
+                <h3>{{grouponDetails['group_display_name']}}</h3>
                 <img src="../images/more_shoppinggroup.png" alt="">
             </div>
 
             <div class="bottom">
                 <div class="left">
-                    <span>4小时前发布</span>
+                    <span>{{grouponDetails['created_at']}}发布</span>
                     <i></i>
                     <span>距结束</span>
                     <div class="time">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <h4>
-                    <span>5人</span>已参团
+                    <span>{{grouponDetails['order_placed_users_count']}}人</span>已参团
                 </h4>
             </div>
         </div>
@@ -82,17 +82,17 @@
         <div class="groupon_participants">
             <h3 class="header">
                 参团情况
-                <span>(5人已参团)</span>
+                <span>({{grouponDetails['order_placed_users_count']}}人已参团)</span>
             </h3>
             <ul class="groupon_participants_list">
-                <li class="groupon_participants_item" v-for="items in 3" :key="items">
-                    <span class="number">{{items}}.</span>
+                <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
+                    <span class="number">{{index}}.</span>
                     <div class="right">
                         <div class="top">
                             <div class="left">
-                                <img src="./img/background.jpeg" alt="">
+                                <img :src="user.avatar" alt="">
                                 <div class="names">
-                                    <h4>豆豆掉了</h4>
+                                    <h4>{{user.nickname}}</h4>
                                     <span>2分钟前</span>
                                 </div>
                             </div>
@@ -102,8 +102,7 @@
                             </div>
                         </div>
                         <div class="bottom">
-                            <span>博士馒头（荞麦味）x1、玉米刀切馒头x1、白面刀切馒头x2
-                            燕麦馒头x1、鲜肉包x3</span>
+                            <span>{{user['purchased_products']}}</span>
                             <img src="../../../../../static/icons/newArrow.jpg" alt="">
                         </div>
                     </div>
@@ -133,6 +132,8 @@
                 hour: '05',
                 minute: '18',
                 second: '05',
+                timer: null,
+                deadlineTime: 0,
                 toTop: 0,
                 isForbid: false,
                 shareBoxVisible: false,
@@ -152,11 +153,26 @@
                         text: '生成海报',
                         value: 1
                     }
-                ]
+                ],
+                options: {},
+
 			};
 		},
 		watch: {
-
+            deadlineTime (val) {
+                if (val) {
+                    let t = val;
+                    this.timer = setInterval(()=>{
+                        if (t === 0) {
+                            this.timer = null;
+                        }
+                        t = t - 1;
+                        this.hour = Math.floor(t / 3600 );
+                        this.minute =  Math.floor((t - this.hour * 3600) / 60 );
+                        this.second =  Math.floor((t - this.hour * 3600 - this.minute * 60));
+                    }, 1000)
+                }
+            }
 		},
 		computed: {
             statusBarHeight () {
@@ -175,6 +191,11 @@
             headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
+            grouponDetails () {
+                console.log(this.model.groupon.grouponDetails, '+++++++++');
+                this.deadlineTime = this.model.groupon.grouponDetails.deadlineTime;
+                return this.model.groupon.grouponDetails
+            }
 		},
 		methods: {
             back() {
@@ -194,7 +215,11 @@
 
 		},
 		mounted() {
-            this.$command('GET_BAR_HEIGHT')
+            this.$command('GET_BAR_HEIGHT');
+            let pages =  getCurrentPages();
+            let options = pages[pages.length - 1]['options'];
+            this.options = options;
+            this.$command('LOAD_GROUPON_DETAILS', options.id)
 		}
 	}
 </script>
@@ -500,6 +525,7 @@
     .groupon_participants_item .right{
         border-bottom: 2rpx solid #F2F2F2;
         margin-left: 15rpx;
+        flex: 1;
     }
 
     .groupon_participants_item .right .top{

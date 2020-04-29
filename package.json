@@ -23,6 +23,7 @@
         "js-md5": "^0.7.3",
         "laravel-echo": "^1.6.1",
         "md5": "^2.2.1",
+        "moment": "^2.24.0",
         "mpvue": "^1.4.0",
         "mpvue-echarts": "^0.2.7",
         "mpvue-router-patch": "^0.2.1",
