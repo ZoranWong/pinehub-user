@@ -41,7 +41,7 @@
         <div class="details">
             <div class="top">
                 <h3>{{grouponDetails['group_display_name']}}</h3>
-                <img src="../images/more_shoppinggroup.png" alt="">
+                <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
             </div>
 
             <div class="bottom">
@@ -65,15 +65,17 @@
             哈哈哈哈哈哈哈
         </div>
 
-        <div class="middle">
+        <div class="middle" v-if="grouponDetails['categories'] && grouponDetails['categories'].length">
             <GrouponClassification
                 :top="toTop"
                 @forbidScroll="forbidScroll"
                 :headerHeight="headerHeight"
+                :categories="grouponDetails['categories']"
+                :grouponId="grouponDetails['shopping_group_id']"
             />
             <ul class="products">
-                <li v-for="product in products" :key="product">
-                    <Product />
+                <li v-for="product in cateProducts" :key="product">
+                    <Product :product="product" />
                 </li>
             </ul>
 
@@ -114,6 +116,12 @@
         <ShareBox
             :show="shareBoxVisible"
             @onClose="closeShareBox"
+            :shareText="grouponDetails['share_text']"
+            @showSharePic="showSharePic"
+        />
+        <SharePic
+            :show="sharePicVisible"
+            @onClose="closeSharePic"
         />
 	</div>
 </template>
@@ -123,9 +131,10 @@
     import GrouponClassification from "./components/GrouponClassification";
     import Product from "./components/Product";
     import ShareBox from "./components/ShareBox";
+    import SharePic from "./components/SharePic";
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product,ShareBox
+            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic
 		},
 		data() {
 			return {
@@ -137,6 +146,7 @@
                 toTop: 0,
                 isForbid: false,
                 shareBoxVisible: false,
+                sharePicVisible: false,
                 products: [
                     1,2,3
                 ],
@@ -195,6 +205,9 @@
                 console.log(this.model.groupon.grouponDetails, '+++++++++');
                 this.deadlineTime = this.model.groupon.grouponDetails.deadlineTime;
                 return this.model.groupon.grouponDetails
+            },
+            cateProducts () {
+                return this.model.groupon.cateProducts
             }
 		},
 		methods: {
@@ -209,6 +222,16 @@
             },
             closeShareBox () {
                 this.shareBoxVisible = false
+            },
+            showSharePic () {
+                this.shareBoxVisible = false;
+                this.sharePicVisible = true;
+            },
+            closeSharePic () {
+                this.sharePicVisible = false
+            },
+            goGrouponList () {
+                this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
             }
 		},
 		created() {
@@ -220,7 +243,25 @@
             let options = pages[pages.length - 1]['options'];
             this.options = options;
             this.$command('LOAD_GROUPON_DETAILS', options.id)
-		}
+		},
+        onShareAppMessage: function (res) {
+            console.log(this.shopCode, '==========>');
+            //可以先看看页面数据都有什么，得到你想要的数据
+            return {
+                title: "拼团详情",
+                desc: "青松易购小程序",
+                imageUrl: "",
+                path: ``,
+                success: function (res) {
+                    // 转发成功
+                    console.log("转发成功:" + JSON.stringify(res));
+                },
+                fail: function (res) {
+                    // 转发失败
+                    console.log("转发失败:" + JSON.stringify(res));
+                }
+            }
+        },
 	}
 </script>
 

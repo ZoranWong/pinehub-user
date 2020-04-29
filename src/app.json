@@ -28,7 +28,8 @@
                 "groupon/grouponList/main",
                 "groupon/grouponDetails/main",
                 "groupon/grouponOrderPayment/main",
-                "groupon/myGroupon/main"
+                "groupon/myGroupon/main",
+                "groupon/grouponOrderDetails/main"
             ]
         },
         {

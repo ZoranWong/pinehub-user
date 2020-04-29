@@ -179,15 +179,8 @@
 				{
 					"id": -1,
 					"name": "pages/user/index/main",
-					"pathName": "pages/activities/groupon/grouponList/main",
-					"query": "id=2",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/activities/groupon/grouponDetails/main",
-					"pathName": "pages/activities/groupon/grouponDetails/main",
-					"query": "id=2",
+					"pathName": "pages/activities/groupon/grouponOrderDetails/main",
+					"query": "id=1",
 					"scene": null
 				}
 			]

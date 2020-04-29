@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div>
+    <div :style="{borderBottom: '1rpx solid #f2f2f2'}">
         <div id="tab_select_groupon" v-if="!showAllCates" :style="{position: top > 290 ? 'fixed' : 'relative', top: top > 290 ? headerHeight + 'px' : 0}" >
             <view class="page-section-spacing">
                 <scroll-view
@@ -9,8 +9,8 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
-                    :style="{width: '1052rpx' }">
-                    <view :id="'cate' + tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType === tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
+                    :style="{minWidth: '750rpx' }">
+                    <view :id="'cate' + tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType == tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
             <div class="imgs">
@@ -36,28 +36,18 @@
 <script>
 	export default {
 		name: 'GrouponClassification',
-        props: ['top', 'headerHeight'],
+        props: ['top', 'headerHeight','categories','grouponId'],
         data () {
 		    return {
                 scrollTo: '',
                 statusType: '',
                 showAllCates: false,
-                categories: [
-                    {name: '慕斯蛋糕', id: 0},
-                    {name: '水果蛋糕', id: 1},
-                    {name: '芝士蛋糕', id: 2},
-                    {name: '蛋糕配件', id: 3},
-                    {name: '奶油蛋糕', id: 4},
-                ]
             }
         },
         watch: {
-            // categories (val) {
-            //     if (val && val.length) {
-            //         this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', this.actId , 1, 10, val[0].id)
-            //         this.statusType = val[0].id
-            //     }
-            // }
+            statusType (val) {
+                this.$command('LOAD_GROUPON_CATE_PRODUCTS',this.grouponId, val)
+            }
         },
         computed :{
             // categories () {
@@ -65,12 +55,12 @@
             // },
         },
         mounted () {
+            this.statusType = this.categories[0].id;
         },
         methods: {
             tabSelect(tab) {
                 this.statusType = tab.id;
                 this.scrollTo = 'cate' + tab.id;
-                // this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', this.actId,1, 10, tab.id)
             },
             openCate () {
                 this.showAllCates = true;
@@ -124,8 +114,8 @@
     #tab_select_groupon .scroll-view_H .scroll-view-item_H{
         box-sizing: border-box;
         padding: 0 30rpx;
-        font-size: 28rpx;
-        color: #4d4d4d;
+        font-size: 32rpx;
+        color: #757575;
         display: inline-block;
         line-height: 88rpx;
     }
@@ -133,18 +123,19 @@
     #tab_select_groupon .scroll-view_H .tab_select_now{
         font-size: 32rpx;
         color: #111;
+        font-weight: bold;
         position: relative;
     }
 
     #tab_select_groupon .scroll-view_H .tab_select_now:after{
         content: '';
-        width: 50rpx;
-        height: 4rpx;
+        width: 40rpx;
+        height: 7rpx;
         background: #ffcc00;
-        border-radius: 2rpx;
+        border-radius: 3rpx;
         position: absolute;
-        bottom: 20rpx;
-        left: 70rpx;
+        bottom: 0;
+        left: calc(50% - 20rpx);
     }
 
     .allCates{

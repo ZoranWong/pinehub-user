@@ -14,13 +14,13 @@
 <!--                    <div class="weui-icon-btn weui-icon-btn_more">更多</div>-->
 <!--                </div>-->
             </div>
-<!--            <div class="weui-half-screen-dialog__bd">-->
-<!--                <div class="weui-half-screen-dialog__desc">辅助描述内容，可根据实际需要安排</div>-->
+            <div class="weui-half-screen-dialog__bd">
+                <div class="weui-half-screen-dialog__desc">{{shareText}}</div>
 <!--                <div class="weui-half-screen-dialog__tips">辅助提示内容，可根据实际需要安排</div>-->
-<!--            </div>-->
+            </div>
             <div class="weui-half-screen-dialog__ft">
-                <button type="default" class="weui-btn">发送给朋友</button>
-                <button type="primary" class="weui-btn">生成海报</button>
+                <button type="default" class="weui-btn" open-type="share">发送给朋友</button>
+                <button type="primary" class="weui-btn" @click="showSharePic">生成海报</button>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
 <script>
     export default {
         name: "ShareBox",
-        props: ['show'],
+        props: ['show','shareText'],
         watch: {
             show (val) {
                 console.log(val);
@@ -38,6 +38,9 @@
         methods :{
             closeDialog () {
                 this.$emit('onClose')
+            },
+            showSharePic () {
+                this.$emit('showSharePic')
             }
         },
         mounted() {

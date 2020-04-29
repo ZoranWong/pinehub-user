@@ -13,6 +13,9 @@ export default class Activity extends Model {
             },
             grouponDetails () {
                 return this.state.grouponDetails
+            },
+            cateProducts () {
+                return this.state.cateProducts
             }
         });
     }
@@ -21,7 +24,8 @@ export default class Activity extends Model {
         // let userInfo = this.service();
         return {
             grouponList: [],
-            grouponDetails: {}
+            grouponDetails: {},
+            cateProducts: []
         };
     }
 
@@ -74,6 +78,10 @@ export default class Activity extends Model {
             };
             details.deadlineTime = this.handleTimer(details['orderable_deadline']);
             this.state.grouponDetails = details;
+        });
+
+        this.addEventListener('saveCateProducts', function ({products}) {
+            this.state.cateProducts = products
         })
     }
 }

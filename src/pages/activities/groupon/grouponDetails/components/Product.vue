@@ -1,16 +1,16 @@
 <!--suppress ALL -->
 <template>
     <div class="product">
-        <img src="../img/background.jpeg" alt="" class="product_image">
+        <img :src="product['image']" alt="" class="product_image">
         <div class="product_info">
-            <h4>巧克力慕斯蛋糕</h4>
-            <h5>净含量：108g（3只/袋）</h5>
-            <span>销量1806</span>
+            <h4>{{product.name}}</h4>
+            <h5>{{product.intro}}</h5>
+            <span>销量待对接</span>
             <div class="bottom">
                 <div class="left">
                     <i>¥</i>
-                    <h3>39.8</h3>
-                    <span>￥45</span>
+                    <h3>{{product['retail_price']}}</h3>
+                    <span v-if="product['show_market_price']">￥{{product['market_price']}}</span>
                 </div>
                 <img src="../../../../../../static/icons/add.png" alt="">
             </div>
@@ -20,7 +20,8 @@
 
 <script>
     export default {
-        name: "Product"
+        name: "Product",
+        props: ['product']
     }
 </script>
 
