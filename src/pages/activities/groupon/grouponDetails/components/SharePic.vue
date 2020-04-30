@@ -2,7 +2,7 @@
 <template>
     <div class="share_pic" v-if="show" :style="{'zIndex': 8888}">
         <div class="share_content" :style="{'zIndex': 9999}">
-            <img src="../img/background.jpeg" alt="">
+            <img :src="pic" alt="">
             <h3>{{name}}</h3>
             <h4>
                 {{text}}
@@ -19,7 +19,7 @@
 <script>
     export default {
         name: "SharePic",
-        props: ['show', 'text', 'name', 'id'],
+        props: ['show', 'text', 'name', 'id', 'pic'],
         data() {
             return {
                 code: '',

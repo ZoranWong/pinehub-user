@@ -62,8 +62,8 @@
                 </div>
             </div>
 
-            <div class="rich_text">
-                哈哈哈哈哈哈哈
+            <div class="rich">
+                <wxParse no-data="" :content="grouponDetails.detailInfo"  />
             </div>
 
             <div class="middle" v-if="grouponDetails['categories'] && grouponDetails['categories'].length">
@@ -127,6 +127,7 @@
             :text="grouponDetails['share_text']"
             :name="grouponDetails['group_display_name']"
             :id="grouponDetails['shopping_group_id']"
+            :pic="grouponDetails['fixed_shared_picture']"
         />
 
 <!--        授权-->
@@ -150,9 +151,10 @@
     import Auth from "../../../../components/Auth";
     import GetUserMobile from "../../../../components/GetUserMobile";
     import ShoppingCart from "../components/ShoppingCart";
+    import wxParse from 'mpvue-wxparse'
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile,ShoppingCart
+            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile,ShoppingCart,wxParse
 		},
 		data() {
 			return {
@@ -413,6 +415,7 @@
 </script>
 
 <style>
+    @import url("~mpvue-wxparse/src/wxParse.css");
 	page {
 		height: 100%;
         overflow: hidden;
@@ -641,11 +644,14 @@
         color: #FF442E;
     }
 
-    .rich_text{
+    .rich{
         width: 100%;
-        height: 998rpx;
         box-sizing: border-box;
         padding: 20rpx;
+    }
+
+    rich_text{
+        width: 100%;
     }
 
     .middle{
