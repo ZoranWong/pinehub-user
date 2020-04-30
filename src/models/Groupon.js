@@ -1,6 +1,7 @@
 import Model from './Model';
 import _ from 'underscore';
 import moment from "moment";
+import de from "element-ui/src/locale/lang/de";
 export default class Activity extends Model {
     constructor (app) {
         super(app);
@@ -34,6 +35,15 @@ export default class Activity extends Model {
         let now = moment().format('YYYY-MM-DD HH:mm:ss');
         let deadline = moment(time);
         return deadline.diff(now, 'second')
+    }
+
+    handleGiftProducts (products) {
+        let text = '';
+        _.map(products, product => {
+            text += `${product['product_entity_info'].name}、`
+        });
+        text = text.substring(0, text.length - 1);
+        return '满100元送' + text
     }
 
 
@@ -77,6 +87,8 @@ export default class Activity extends Model {
                 })
             };
             details.deadlineTime = this.handleTimer(details['orderable_deadline']);
+            details.giftProducts = this.handleGiftProducts(details['gift_products']);
+            details.discount = details.discount >= 100 ? '' : details.discount / 10 + '折起';
             this.state.grouponDetails = details;
         });
 

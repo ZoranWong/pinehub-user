@@ -15,9 +15,12 @@
             </view>
         </div>
         <div id="tab_content" :style="{'height': mainHeight + 'px'}">
-            <div class="empty_img" v-if="orders.length">
+            <div class="empty_img" v-if="!orders.length">
                 <img src="../../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
+            </div>
+            <div v-else>
+                <grouponOrder />
             </div>
 
         </div>
@@ -26,11 +29,11 @@
 </template>
 <script>
     import CustomHeader from "../../../../components/CustomHeader";
-
+    import grouponOrder from "./components/grouponOrder";
 
 	export default {
 		components: {
-            CustomHeader
+            CustomHeader,grouponOrder
 		},
 		data() {
 			return {

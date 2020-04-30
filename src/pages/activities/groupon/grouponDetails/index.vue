@@ -23,8 +23,8 @@
             </div>
 
             <div class="price_info">
-                <span class="discount">6折起</span>
-                <span class="gift">满200元赠送红糖馒头</span>
+                <span class="discount" v-if="grouponDetails['discount']">{{grouponDetails.discount}}</span>
+                <span class="gift">{{grouponDetails['giftProducts']}}</span>
             </div>
 
             <div class="contact">
@@ -123,6 +123,11 @@
             :show="sharePicVisible"
             @onClose="closeSharePic"
         />
+
+<!--        授权-->
+        <Auth v-if="getAuth" @close="closeAuth" />
+        <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
+
 	</div>
 </template>
 <script>
@@ -132,9 +137,11 @@
     import Product from "./components/Product";
     import ShareBox from "./components/ShareBox";
     import SharePic from "./components/SharePic";
+    import Auth from "../../../../components/Auth";
+    import GetUserMobile from "../../../../components/GetUserMobile";
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic
+            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile
 		},
 		data() {
 			return {
@@ -147,9 +154,8 @@
                 isForbid: false,
                 shareBoxVisible: false,
                 sharePicVisible: false,
-                products: [
-                    1,2,3
-                ],
+                getAuth: false,
+                showBindMobile: false,
                 buttons: [
                     {
                         type: 'default',
@@ -182,9 +188,35 @@
                         this.second =  Math.floor((t - this.hour * 3600 - this.minute * 60));
                     }, 1000)
                 }
-            }
+            },
+            registered (value) {
+                if (value) {
+                    this.getAuth = false;
+                }
+            },
+            isMember () {
+                if (this.registered && this.isMember) {
+                    this.showBindMobile = false
+                }
+            },
+            accessToken (value) {
+                if ( value) {
+                    this.$command('SIGN_IN', this.accessToken);
+                }
+            },
 		},
 		computed: {
+            isMember () {
+                console.log(this.model.account.isMember, '_______12122112________');
+                return this.model.account.isMember;
+            },
+            registered () {
+                console.log(this.model.account.registered, '_______________');
+                return this.model.account.registered;
+            },
+            accessToken () {
+                return this.$store.getters['model.app/accessToken'];
+            },
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
@@ -232,7 +264,28 @@
             },
             goGrouponList () {
                 this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
-            }
+            },
+            getUserAuth () {
+                this.getAuth = true
+            },
+            closeAuth () {
+                this.getAuth = false
+            },
+            closeGetUserMobile () {
+                this.showBindMobile = false
+            },
+            async initAccount () {
+                let result = await this.map.getLocation();
+                await this.$store.dispatch('model.account/resetFromCache', {
+                    initAccount: async () => {
+                        if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
+                            this.$command('APP_ACCESS');
+                        } else {
+                            this.$command('SIGN_IN', this.accessToken);
+                        }
+                    }
+                });
+            },
 		},
 		created() {
 
@@ -242,7 +295,10 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             this.options = options;
-            this.$command('LOAD_GROUPON_DETAILS', options.id)
+            this.$command('LOAD_GROUPON_DETAILS', options.id);
+            if (!this.registered) {
+                this.initAccount();
+            }
 		},
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');

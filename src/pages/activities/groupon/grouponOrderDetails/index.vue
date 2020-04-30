@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="groupon_order_details">
-        <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'"> </CustomHeader>
+        <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'"> </CustomHeader>
         <div class="content" :style="{height: mainHeight + 'px'}">
             <h2 class="title">订单待发货</h2>
 
@@ -9,29 +9,29 @@
                 <div class="productHeader">
                     订单号:1366879566
                 </div>
-                <!--            <ul id="good_list">-->
-                <!--&lt;!&ndash;                <li v-for="(good,index) in products" :key="index">&ndash;&gt;-->
-                <!--&lt;!&ndash;                    <div class="left">&ndash;&gt;-->
-                <!--&lt;!&ndash;                        <img :src="good.image" alt="">&ndash;&gt;-->
-                <!--&lt;!&ndash;                        <div id="good_info">&ndash;&gt;-->
-                <!--&lt;!&ndash;                            <h3>{{good['name']}}</h3>&ndash;&gt;-->
-                <!--&lt;!&ndash;                            <h4>{{good['intro']}}</h4>&ndash;&gt;-->
-                <!--&lt;!&ndash;                            <em>X {{good['buy_num']}}</em>&ndash;&gt;-->
-                <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-                <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-                <!--&lt;!&ndash;                    <div id="good_info_price">&ndash;&gt;-->
-                <!--&lt;!&ndash;                        <i>￥</i>&ndash;&gt;-->
-                <!--&lt;!&ndash;                        <h3>{{good['price']}}</h3>&ndash;&gt;-->
-                <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-                <!--&lt;!&ndash;                </li>&ndash;&gt;-->
-                <!--                <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">-->
-                <!--                    <span v-if="!isLoadAll">展开更多</span>-->
-                <!--                    <span v-else>点击收起</span>-->
-                <!--                    <img v-if="isLoadAll" src="../../../orders/orderPayment/imgs/top-arrow.png" alt="">-->
-                <!--                    <img  v-else src="../../../orders/orderPayment/imgs/bottom-arrow.png" alt="">-->
+                <ul id="good_list">
+                    <li v-for="(good,index) in products" :key="index">
+                        <div class="left">
+                            <img src="../grouponOrderPayment/imgs/contact_number.png" alt="">
+                            <div id="good_info">
+                                <h3>{{good['name']}}</h3>
+                                <h4>{{good['intro']}}</h4>
+                                <em>X {{good['buy_num']}}</em>
+                            </div>
+                        </div>
+                        <div id="good_info_price">
+                            <i>￥</i>
+                            <h3>{{good['price']}}</h3>
+                        </div>
+                    </li>
+                    <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
+                        <span v-if="!isLoadAll">展开更多</span>
+                        <span v-else>点击收起</span>
+                        <img v-if="isLoadAll" src="../../../orders/orderPayment/imgs/top-arrow.png" alt="">
+                        <img  v-else src="../../../orders/orderPayment/imgs/bottom-arrow.png" alt="">
 
-                <!--                </div>-->
-                <!--            </ul>-->
+                    </div>
+                </ul>
 
                 <ul id="total">
                     <li>
@@ -40,20 +40,11 @@
                     </li>
                     <li>
                         <h3>
-                            <img src="../../../orders/orderPayment/imgs/minus.png" alt="">
+                            <img src="../grouponOrderPayment/imgs/minus.png" alt="">
                             优惠金额
                         </h3>
                         <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>5</span>
                     </li>
-                    <!--                <li>-->
-                    <!--                    <h3>-->
-                    <!--                        <img src="../../../orders/orderPayment/imgs/coupon.png" alt="">-->
-                    <!--                        优惠券-->
-                    <!--                    </h3>-->
-                    <!--                    <div class="couponUse">-->
-                    <!--                        <em class="gray">暂无可用</em>-->
-                    <!--                    </div>-->
-                    <!--                </li>-->
                     <li>
                         <h4 class="bigH4">实付款</h4>
                         <h5 class="big">
@@ -130,7 +121,21 @@
         data() {
             return {
                 title: '',
-                isLoadAll: false
+                isLoadAll: false,
+                products: [
+                    {
+                        name: 'minabao',
+                        intro: 'xxasjiasdiasy',
+                        buy_num: '2',
+                        price: 34,
+
+                    }
+                ],
+                orderInfo: {
+                    total_fee: 34,
+                    total_preferential_fee: 0,
+                    settlement_total_fee: 34
+                }
             };
         },
         watch: {
@@ -317,10 +322,94 @@
         border-top: 1rpx solid #f2f2f2;
     }
 
+    #good_list{
+        background: #fff;
+    }
+
+    #good_list .extra{
+        width: 100%;
+        margin-top: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24rpx;
+        color: #4d4d4d;
+    }
+
+    #good_list .extra img{
+        width: 19rpx;
+        height: 10rpx;
+        margin-left: 11rpx;
+    }
+
+
+
+    #good_list li{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 50rpx;
+    }
+
+    #good_list li img{
+        width: 106rpx;
+        height: 106rpx;
+        margin-right: 20rpx;
+        border: 1rpx solid #f2f2f2;
+        border-radius: 10rpx;
+    }
+
+    #good_list li .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #good_list li #good_info{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #good_list li #good_info h3{
+        font-size: 28rpx;
+        color: #111111;
+    }
+
+    #good_list li #good_info h4{
+        font-size: 24rpx;
+        color: #757575;
+    }
+
+    #good_list li #good_info em{
+        font-size: 24rpx;
+        color: #757575;
+    }
+
+    #good_list li #good_info_price{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #good_list li #good_info_price i{
+        font-size: 24rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    #good_list li #good_info_price h3{
+        font-size: 32rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+
     #groupon_order_details .content{
         width: 100%;
         box-sizing: border-box;
-        padding: 0 30rpx;
+        padding: 0 20rpx;
         overflow: auto;
     }
 
