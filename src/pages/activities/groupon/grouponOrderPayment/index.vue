@@ -57,21 +57,21 @@
                 <ul id="total">
                     <li>
                         <h3>商品总价</h3>
-                        <span class="small"> <i>￥</i>{{orderInfo['total_fee'] || 0}}</span>
+                        <span class="small"> <i>￥</i>{{totalPrice}}</span>
                     </li>
                     <li>
                         <h3>
                             <img src="./imgs/minus.png" alt="">
                             优惠金额
                         </h3>
-                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>{{orderInfo['total_preferential_fee'] || 0}}</span>
+                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
                     </li>
                     <li>
                         <h4 class="bigH4">实付款</h4>
                         <h5 class="big">
                             <span class="big2">小计</span>
                             <i>￥</i>
-                            {{orderInfo['settlement_total_fee'] || 0}}
+                            {{totalPrice}}
                         </h5>
                     </li>
                 </ul>
@@ -95,8 +95,8 @@
             <div class="do_payment_contain">
                 <span class="price">
                      <i>￥</i>
-                     15.8
-                    <span>（起订金额10元）</span>
+                     {{totalPrice}}
+<!--                    <span>（起订金额10元）</span>-->
                     <!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
                 </span>
                 <h4 @click="check" >提交订单</h4>
@@ -121,20 +121,8 @@
                 remark: '',
                 name: '',
                 mobile: '',
-                products: [
-                    {
-                        name: 'minabao',
-                        intro: 'xxasjiasdiasy',
-                        buy_num: '2',
-                        price: 34,
-
-                    }
-                ],
-                orderInfo: {
-                    total_fee: 34,
-                    total_preferential_fee: 0,
-                    settlement_total_fee: 34
-                }
+                products: [],
+                isLoadAll: false
             };
         },
         watch: {
@@ -151,6 +139,11 @@
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
+            goodInShoppingCart(){
+                let products = this.model.groupon.goodInShoppingCart;
+                this.products = products.length > 3 ? products.slice(0, 3) : products
+                return this.model.groupon.goodInShoppingCart
+            },
             navHeight () {
                 return this.model.global.barHeight.navHeight
             },
@@ -165,7 +158,10 @@
             btnHeight() {
                 let systemInfo = wx.getSystemInfoSync();
                 return 0 * systemInfo.windowWidth / 750;
-            }
+            },
+            totalPrice () {
+                return this.model.groupon.totalPrice;
+            },
         },
         methods: {
 
@@ -197,7 +193,10 @@
                 this.createOrder()
             },
             createOrder(){
-
+                console.log(this.$route.query.shoppingGroupId);
+            },
+            extraProducts () {
+                this.isLoadAll = !this.isLoadAll;
             },
             go (router) {
                 this.$command('REDIRECT_TO', router, 'push');

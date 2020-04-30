@@ -123,7 +123,8 @@
 			    wx.getSetting({
                     async success (res) {
                         if (res.authSetting && res.authSetting['scope.userLocation']) {
-                            self.checkProductStatus();
+                            //self.checkProductStatus();
+                            this.goPayment()
                         } else {
                             wx.showModal({
                                 title: '是否授权当前位置',
@@ -138,7 +139,8 @@
                                                         icon: 'success',
                                                         duration: 1000
                                                     })
-                                                    self.checkProductStatus();
+                                                    //self.checkProductStatus();
+                                                    this.goPayment()
                                                 } else {
                                                     wx.showToast({
                                                         title: '授权失败',
@@ -188,33 +190,11 @@
                 }
             },
             goPayment () {
-                // let selectedProduct = [];
-                // _.map(this.goodInShoppingCart, product => {
-                //     if (product.checked) {
-                //         let obj = {};
-                //         obj['cart_id'] = product.id;
-                //         obj['remark'] = '123'
-                //         selectedProduct.push(obj)
-                //     }
-                // })
-                // this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                //     query: {type: 'mall', selectedProduct}
-                // });
-                // if (this.type === 'mall') {
-                //     this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                //         query: {type: this.type}
-                //     });
-                // } else if (this.type === 'breakfast') {
-                //     this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
-                //         query: {type: this.type}
-                //     });
-                // } else if (this.type === 'activity') {
-                //
-                // }
-                // this.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                //     query: {type: this.type, actId: this.actId}
-                // });
-
+                this.$command('REDIRECT_TO', 'user.groupon.order.payment', 'push', {
+                    query: {
+                        shoppingGroupId: this.shoppingGroupId
+                    }
+                });
             },
 			closeMask(){
 				this.showGoodsList = false;
