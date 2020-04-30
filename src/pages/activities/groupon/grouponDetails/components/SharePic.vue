@@ -1,18 +1,17 @@
 <!--suppress ALL -->
 <template>
-    <div class="share_pic" v-if="show">
-        <div class="share_content">
+    <div class="share_pic" v-if="show" :style="{'zIndex': 8888}">
+        <div class="share_content" :style="{'zIndex': 9999}">
             <img src="../img/background.jpeg" alt="">
-            <h3>青松功夫缤纷蛋糕大血拼</h3>
+            <h3>{{name}}</h3>
             <h4>
-                青松功夫超值团购，参团即可享受令人羡
-                慕的优惠哦！
+                {{text}}
             </h4>
             <div class="code">
                 <img class="text" src="../img/txt.png" alt="">
-                <img class="codeImg" src="../img/code.jpg" alt="">
+                <img v-if="show" class="codeImg" :src='image' alt="">
             </div>
-            <button class="save" @click="downloadCodeImg">保存图片</button>
+            <button class="save" @click="downloadCodeImg">完成</button>
         </div>
     </div>
 </template>
@@ -20,32 +19,31 @@
 <script>
     export default {
         name: "SharePic",
-        props: ['show'],
+        props: ['show', 'text', 'name', 'id'],
         data() {
             return {
-
+                code: '',
+                gateway: '',
+                image: '',
+            }
+        },
+        watch: {
+            show (val) {
+                if (val) {
+                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}`
+                }
             }
         },
         methods: {
             downloadCodeImg () {
-                wx.getImageInfo({
-                    src: 'http://img5.imgtn.bdimg.com/it/u=3686777643,1691061762&fm=11&gp=0.jpg',
-                    success: function(data) {
-                        let path = data.path;
-                        wx.saveImageToPhotosAlbum({
-                            filePath: path,
-                            success: () => {
-                                that.showSuccess("保存图片成功！");
-                            },
-                            fail: () => {
-                                that.showModal("保存图片", "保存图片失败！");
-                            }
-                        });
-                    },
-                fail: () => {
-                    that.showModal("获取图片", "获取图片失败！");
-                }
-            })}
+                this.$emit('onClose')
+            },
+            onImgOk () {
+                console.log('ok');
+            }
+        },
+        mounted() {
+            this.gateway = this.config['app']['http']['gateway'];
         }
     }
 </script>

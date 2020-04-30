@@ -1,8 +1,8 @@
 <!--suppress ALL -->
 <template>
     <div v-if="show">
-        <div class="weui-mask" @click="closeDialog"></div>
-        <div class="weui-half-screen-dialog">
+        <div class="weui-mask" @click="closeDialog" :style="{'zIndex': '8888'}"></div>
+        <div class="weui-half-screen-dialog" :style="{'zIndex': '9999'}">
             <div class="weui-half-screen-dialog__hd">
                 <div class="weui-half-screen-dialog__hd__side">
                     <div @click="closeDialog" class="weui-icon-btn weui-icon-btn_close">关闭</div>

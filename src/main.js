@@ -14,6 +14,7 @@ application.pageShow((page) => {
         }
     }
 });
+
 application.run(function () {
     console.log('%c ============================================== \n' +
         ' ||                                          || \n' +

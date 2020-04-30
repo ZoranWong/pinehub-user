@@ -1,115 +1,117 @@
 <!--suppress ALL -->
 <template>
 	<div id="groupon_details" :style="{'overflow': shareBoxVisible ? 'hidden' : 'scroll'}">
-        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
-            <span class="circle" ><i class="iconfont">&#xe679;</i></span>
-        </div>
-        <div class="backImg" :style="{'height': mainHeight * 0.223 + 'px'}">
-            <img src="./img/background.jpeg" mode="widthFix" alt="">
-        </div>
-
-<!--        <SwiperNotice />-->
-
-        <div class="detail_header" v-if="grouponDetails['pick_shop_info']">
-            <img src="./img/background.jpeg" alt="" class="image">
-
-            <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
-            <div class="shop_info">
-                <img src="../images/name.png" alt="">
-                <span>{{grouponDetails['pick_shop_info']['keeper_name']}}</span>
-                <i></i>
-                <img src="../images/place.png" alt="">
-                <span>{{grouponDetails['pick_shop_info']['complete_address']}}</span>
+        <div :style="{'height': mainHeight - cartHeight + 'px', 'overflow': 'auto'}">
+            <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
+                <span class="circle" ><i class="iconfont">&#xe679;</i></span>
+            </div>
+            <div class="backImg" :style="{'height': mainHeight * 0.223 + 'px'}">
+                <img src="./img/background.jpeg" mode="widthFix" alt="">
             </div>
 
-            <div class="price_info">
-                <span class="discount" v-if="grouponDetails['discount']">{{grouponDetails.discount}}</span>
-                <span class="gift">{{grouponDetails['giftProducts']}}</span>
-            </div>
+            <!--        <SwiperNotice />-->
 
-            <div class="contact">
-                <img src="../images/Contact_head.png" alt="">
-                <img @click="showShareBox" src="../images/Share_spell_group.png" alt="">
-            </div>
+            <div class="detail_header" v-if="grouponDetails['pick_shop_info']">
+                <img src="./img/background.jpeg" alt="" class="image">
 
-            <div class="notice">
-                公告：青松主食超值团购，参团即可享受优惠
-            </div>
-
-        </div>
-
-        <div class="details">
-            <div class="top">
-                <h3>{{grouponDetails['group_display_name']}}</h3>
-                <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
-            </div>
-
-            <div class="bottom">
-                <div class="left">
-                    <span>{{grouponDetails['created_at']}}发布</span>
+                <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
+                <div class="shop_info">
+                    <img src="../images/name.png" alt="">
+                    <span>{{grouponDetails['pick_shop_info']['keeper_name']}}</span>
                     <i></i>
-                    <span>距结束</span>
-                    <div class="time">
-                        <em>{{hour}}</em> :
-                        <em>{{minute}}</em> :
-                        <em class="red">{{second}}</em>
-                    </div>
+                    <img src="../images/place.png" alt="">
+                    <span>{{grouponDetails['pick_shop_info']['complete_address']}}</span>
                 </div>
-                <h4>
-                    <span>{{grouponDetails['order_placed_users_count']}}人</span>已参团
-                </h4>
+
+                <div class="price_info">
+                    <span class="discount" v-if="grouponDetails['discount']">{{grouponDetails.discount}}</span>
+                    <span class="gift">{{grouponDetails['giftProducts']}}</span>
+                </div>
+
+                <div class="contact">
+                    <img @click="contact" src="../images/Contact_head.png" alt="">
+                    <img @click="showShareBox" src="../images/Share_spell_group.png" alt="">
+                </div>
+
+                <div class="notice">
+                    公告：青松主食超值团购，参团即可享受优惠
+                </div>
+
             </div>
-        </div>
 
-        <div class="rich_text">
-            哈哈哈哈哈哈哈
-        </div>
+            <div class="details">
+                <div class="top">
+                    <h3>{{grouponDetails['group_display_name']}}</h3>
+                    <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
+                </div>
 
-        <div class="middle" v-if="grouponDetails['categories'] && grouponDetails['categories'].length">
-            <GrouponClassification
-                :top="toTop"
-                @forbidScroll="forbidScroll"
-                :headerHeight="headerHeight"
-                :categories="grouponDetails['categories']"
-                :grouponId="grouponDetails['shopping_group_id']"
-            />
-            <ul class="products">
-                <li v-for="product in cateProducts" :key="product">
-                    <Product :product="product" />
-                </li>
-            </ul>
+                <div class="bottom">
+                    <div class="left">
+                        <span>{{grouponDetails['created_at']}}发布</span>
+                        <i></i>
+                        <span>距结束</span>
+                        <div class="time">
+                            <em>{{hour}}</em> :
+                            <em>{{minute}}</em> :
+                            <em class="red">{{second}}</em>
+                        </div>
+                    </div>
+                    <h4>
+                        <span>{{grouponDetails['order_placed_users_count']}}人</span>已参团
+                    </h4>
+                </div>
+            </div>
 
-        </div>
+            <div class="rich_text">
+                哈哈哈哈哈哈哈
+            </div>
 
-        <div class="groupon_participants">
-            <h3 class="header">
-                参团情况
-                <span>({{grouponDetails['order_placed_users_count']}}人已参团)</span>
-            </h3>
-            <ul class="groupon_participants_list">
-                <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
-                    <span class="number">{{index}}.</span>
-                    <div class="right">
-                        <div class="top">
-                            <div class="left">
-                                <img :src="user.avatar" alt="">
-                                <div class="names">
-                                    <h4>{{user.nickname}}</h4>
-                                    <span>2分钟前</span>
+            <div class="middle" v-if="grouponDetails['categories'] && grouponDetails['categories'].length">
+                <GrouponClassification
+                    :top="toTop"
+                    @forbidScroll="forbidScroll"
+                    :headerHeight="headerHeight"
+                    :categories="grouponDetails['categories']"
+                    :grouponId="grouponDetails['shopping_group_id']"
+                />
+                <ul class="products">
+                    <li v-for="product in cateProducts" :key="product">
+                        <Product :product="product" @addToCart="addToCart" />
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="groupon_participants">
+                <h3 class="header">
+                    参团情况
+                    <span>({{grouponDetails['order_placed_users_count']}}人已参团)</span>
+                </h3>
+                <ul class="groupon_participants_list">
+                    <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
+                        <span class="number">{{index}}.</span>
+                        <div class="right">
+                            <div class="top">
+                                <div class="left">
+                                    <img :src="user.avatar" alt="">
+                                    <div class="names">
+                                        <h4>{{user.nickname}}</h4>
+                                        <span>2分钟前</span>
+                                    </div>
+                                </div>
+                                <div class="price">
+                                    <i>¥</i>
+                                    <h4>19</h4>
                                 </div>
                             </div>
-                            <div class="price">
-                                <i>¥</i>
-                                <h4>19</h4>
+                            <div class="bottom">
+                                <span>{{user['purchased_products']}}</span>
+                                <img src="../../../../../static/icons/newArrow.jpg" alt="">
                             </div>
                         </div>
-                        <div class="bottom">
-                            <span>{{user['purchased_products']}}</span>
-                            <img src="../../../../../static/icons/newArrow.jpg" alt="">
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
 
 <!--        弹窗组件-->
@@ -122,11 +124,19 @@
         <SharePic
             :show="sharePicVisible"
             @onClose="closeSharePic"
+            :text="grouponDetails['share_text']"
+            :name="grouponDetails['group_display_name']"
+            :id="grouponDetails['shopping_group_id']"
         />
 
 <!--        授权-->
         <Auth v-if="getAuth" @close="closeAuth" />
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
+
+        <ShoppingCart
+            :shoppingGroupId="grouponDetails['shopping_group_id']"
+            v-if="goodInShoppingCart"
+        />
 
 	</div>
 </template>
@@ -139,9 +149,10 @@
     import SharePic from "./components/SharePic";
     import Auth from "../../../../components/Auth";
     import GetUserMobile from "../../../../components/GetUserMobile";
+    import ShoppingCart from "../components/ShoppingCart";
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile
+            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile,ShoppingCart
 		},
 		data() {
 			return {
@@ -171,41 +182,65 @@
                     }
                 ],
                 options: {},
+                id: ''
 
 			};
 		},
 		watch: {
-            deadlineTime (val) {
+            deadlineTime(val) {
                 if (val) {
                     let t = val;
-                    this.timer = setInterval(()=>{
+                    this.timer = setInterval(() => {
                         if (t === 0) {
                             this.timer = null;
                         }
                         t = t - 1;
-                        this.hour = Math.floor(t / 3600 );
-                        this.minute =  Math.floor((t - this.hour * 3600) / 60 );
-                        this.second =  Math.floor((t - this.hour * 3600 - this.minute * 60));
+                        this.hour = Math.floor(t / 3600);
+                        this.minute = Math.floor((t - this.hour * 3600) / 60);
+                        this.second = Math.floor((t - this.hour * 3600 - this.minute * 60));
                     }, 1000)
                 }
             },
-            registered (value) {
+            registered(value) {
                 if (value) {
                     this.getAuth = false;
                 }
-            },
-            isMember () {
-                if (this.registered && this.isMember) {
-                    this.showBindMobile = false
+                if (value && !this.isMember) {
+                    this.showBindMobile = true
                 }
             },
-            accessToken (value) {
-                if ( value) {
+            isMember() {
+                if (this.registered && this.isMember) {
+                    this.showBindMobile = false;
+                    this.id && this.$command('LOAD_GROUPON_CART_COMMAND', this.grouponDetails['shopping_group_id'])
+                }
+            },
+            accessToken(value) {
+                if (value) {
                     this.$command('SIGN_IN', this.accessToken);
                 }
             },
-		},
+            id(val) {
+                if (val && this.registered && this.isMember) {
+                    this.$command('LOAD_GROUPON_CART_COMMAND', val)
+                }
+            },
+            userId(val) {
+                if (val) {
+                    this.$socket.userId = val;
+                    this.$socket.notification((data)=>{
+                        console.log(data, '-------- APP User notification --------');
+                    });
+                    this.$socket.eventListener(`groupShopping.${this.id}.orders`, 'TestEvent', (data) => {
+                        console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
+                    });
+                }
+            }
+        },
 		computed: {
+            userId () {
+                return this.model.account.userId;
+            },
             isMember () {
                 console.log(this.model.account.isMember, '_______12122112________');
                 return this.model.account.isMember;
@@ -230,19 +265,44 @@
                 let systemInfo = wx.getSystemInfoSync();
                 return systemInfo.windowHeight;
             },
+            cartHeight() {
+                let systemInfo = wx.getSystemInfoSync();
+                return 98 * systemInfo.windowWidth / 750;
+            },
             headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
             grouponDetails () {
-                console.log(this.model.groupon.grouponDetails, '+++++++++');
                 this.deadlineTime = this.model.groupon.grouponDetails.deadlineTime;
+                this.id = this.model.groupon.grouponDetails['shopping_group_id']
                 return this.model.groupon.grouponDetails
             },
             cateProducts () {
                 return this.model.groupon.cateProducts
+            },
+            goodInShoppingCart() {
+                return this.model.groupon.goodInShoppingCart
             }
 		},
 		methods: {
+            contact () {
+                if (!this.registered) {
+                    this.getUserAuth();
+                } else if (!this.isMember){
+                    this.showBindMobile = true
+                } else {
+                    wx.makePhoneCall({
+                        phoneNumber: this.grouponDetails['pick_shop_info']['keeper_mobile'],
+                        success: function () {
+                            // wx.showToast({
+                            //     title: '拨打成功',
+                            //     icon: 'none'
+                            // })
+                        }
+                    })
+                }
+
+            },
             back() {
                 this.$command('REDIRECT_TO', '', 'back')
             },
@@ -250,7 +310,13 @@
                 this.isForbid = isForbid
             },
             showShareBox () {
-                this.shareBoxVisible = true
+                if (!this.registered) {
+                    this.getUserAuth();
+                } else if (!this.isMember){
+                    this.showBindMobile = true
+                } else {
+                    this.shareBoxVisible = true
+                }
             },
             closeShareBox () {
                 this.shareBoxVisible = false
@@ -263,7 +329,14 @@
                 this.sharePicVisible = false
             },
             goGrouponList () {
-                this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
+                if (!this.registered) {
+                    this.getUserAuth();
+                } else if (!this.isMember){
+                    this.showBindMobile = true
+                } else {
+                    this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
+                }
+
             },
             getUserAuth () {
                 this.getAuth = true
@@ -286,6 +359,25 @@
                     }
                 });
             },
+            addToCart(item) {
+                console.log(item, '=======>');
+                if (!this.registered) {
+                    this.getUserAuth();
+                } else {
+                    if (!this.isMember) {
+                        this.showBindMobile = true;
+                    } else {
+                        let goods = this.model.groupon.goodInShoppingCart;
+                        console.log(goods, '????????????????????????????????');
+                        let cartIndex = _.findIndex(goods, {product_stock_id: item['product_stock_id']});
+                        if (cartIndex < 0) {
+                            this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND',item['product_stock_id'],this.grouponDetails['shopping_group_id'])
+                        } else {
+                            this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.grouponDetails['shopping_group_id'],goods[cartIndex]['buy_num'] + 1)
+                        }
+                    }
+                }
+            },
 		},
 		created() {
 
@@ -300,14 +392,13 @@
                 this.initAccount();
             }
 		},
-        onShareAppMessage: function (res) {
-            console.log(this.shopCode, '==========>');
+        onShareAppMessage (res) {
             //可以先看看页面数据都有什么，得到你想要的数据
             return {
-                title: "拼团详情",
-                desc: "青松易购小程序",
+                title: this.grouponDetails['group_display_name'],
+                desc: this.grouponDetails['share_text'],
                 imageUrl: "",
-                path: ``,
+                path: `/pages/activities/groupon/grouponDetails/main?id=${this.grouponDetails['shopping_group_id']}`,
                 success: function (res) {
                     // 转发成功
                     console.log("转发成功:" + JSON.stringify(res));
@@ -330,6 +421,12 @@
     .swiperNotices{
         width: 410rpx;
         height: 100rpx;
+    }
+
+    #shopping_groupon_cart{
+        position: fixed;
+        width: 100%;
+        transition: 1s;
     }
 
     .backImg{

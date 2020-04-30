@@ -1,8 +1,7 @@
 <template>
     <div id="merchant-store">
-        <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="getAuth" @close="closeAuth" />
-        <div id="merchant-store_header">
+        <div id="merchant-store_header" :style="{'backgroundImage':'url(' + background + ')'}">
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
                 <div id="name_id">
@@ -18,16 +17,16 @@
                     <ul>
                         <li @click="toBalance">
                             <em>{{userInfo.balance || 0}}</em>
-                            <i>余额</i>
+                            <i>账户余额</i>
                         </li>
                         <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
                             <em>{{userInfo.canUseCouponCount || 0}}</em>
-                            <i>卡券</i>
+                            <i>优惠券</i>
                         </li>
                         <li @click="jump('user.integral')">
                             <em>{{userInfo.availableScore || 0}}</em>
-                            <i>积分</i>
+                            <i>我的积分</i>
                         </li>
                     </ul>
                 </div>
@@ -85,48 +84,56 @@
         <div class="merchant-store_menu">
             <ul class="mesnus">
 
-                <li @click="jump('user.feedBack')">
+                <li @click="jump('user.myGroupon')" class="lines">
                     <div class="left">
-                        <img src="../../../../static/icons/feedback.png" alt="">
-<!--                        <i class="iconfont blue">&#xe609;</i>-->
+                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
+                        <img src="./image/my_groupon.png" alt="">
+                        <span>我的拼团</span>
+                    </div>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </li>
+                <li @click="jump('user.address')" class="lines">
+                    <div class="left">
+                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
+                        <img src="./image/shipping_address.png" alt="">
+                        <span>收货地址</span>
+                    </div>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="merchant-store_menu">
+            <ul class="mesnus">
+                <li @click="jump('user.feedBack')" class="lines">
+                    <div class="left">
+                        <img src="./image/feedback.png" alt="">
+                        <!--                        <i class="iconfont blue">&#xe609;</i>-->
                         <span>意见反馈</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="connectKf" class="lines">
                     <div class="left">
-                        <img src="../../../../static/icons/service.png" alt="">
-<!--                        <i class="iconfont green">&#xe602;</i>-->
+                        <img src="./image/customer_service.png" alt="">
+                        <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>联系客服</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="jump('user.protocol')" class="lines">
                     <div class="left">
-                        <img src="../../../../static/icons/protocol.jpg" class="protocol" alt="">
+                        <img src="./image/user_agreement.png" class="protocol" alt="">
                         <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>用户协议</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-            </ul>
-        </div>
-
-        <div class="merchant-store_menu">
-            <ul class="mesnus">
-
-                <li @click="jump('user.address')">
-                    <div class="left">
-<!--                        <i class="iconfont yellow">&#xe80b;</i>-->
-                        <img src="../../../../static/icons/addresses.png" alt="">
-                        <span>收货地址</span>
-                    </div>
-                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
-                </li>
-                <li @click="showBind" class="showBind">
+                <li @click="showBind"  class="lines showBind">
                     <div class="left">
                         <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
-                        <img src="../../../../static/icons/serviceShop.jpg" alt="">
+                        <img src="./image/offline.png" alt="">
                         <span>服务商户</span>
 
                     </div>
@@ -143,13 +150,12 @@
 </template>
 
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
     import FooterNav from '@/components/FooterNav';
     import BindShop from './components/BindShop';
+    import background from './image/background.png'
 	export default {
         components: {
-			CustomHeader,
             'footer-nav': FooterNav,
 			Auth,
             BindShop
@@ -160,7 +166,8 @@
                 navName: 'my',
                 phone: '17368878588',
                 getAuth: false,
-                bindVisible: false
+                bindVisible: false,
+                background: background
             };
         },
         computed: {
@@ -311,13 +318,17 @@
 
     #merchant-store_header {
         position: relative;
-        height: 375rpx;
-        width: 800rpx;
+        height: 358rpx;
+        width: 750rpx;
         /*margin: -1200rpx auto 0;*/
         padding: 0 20rpx;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        padding-top: 100rpx;
+        /*background: linear-gradient(to right,#FDE068,#FFCC00);*/
         /*border-radius: 0 0 100% 100%;*/
         /*overflow: hidden;*/
+        background-size: 100% 358rpx;
+        background-position: center center;
+        box-sizing: border-box;
     }
 
     .user-mobile-get-btn {
@@ -336,9 +347,9 @@
 
     #merchant-store_userinfo {
         width: 710rpx;
-        height: 214rpx;
+        height: 140rpx;
         background: #FFFFFF;
-        border-radius: 10rpx;
+        border-radius: 25rpx;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -370,9 +381,9 @@
     }
 
     #name_id em {
-        font-weight: 400;
-        line-height: 50rpx;
-        font-size: 32rpx;
+        font-size: 40rpx;
+        color: #111;
+        line-height: 90rpx;
     }
 
     #name_id i {
@@ -402,8 +413,25 @@
     }
 
     #merchant-store_userinfo_otherinfo ul li:nth-child(2) {
-        border-left: 1rpx solid #EEEEEE;
-        border-right: 1rpx solid #EEEEEE;
+        position: relative;
+    }
+
+    #merchant-store_userinfo_otherinfo ul li:nth-child(2):after{
+        content: '';
+        position: absolute;
+        width:2rpx;
+        height:50rpx;
+        background:rgba(245,245,245,1);
+        left: 0;
+    }
+
+    #merchant-store_userinfo_otherinfo ul li:nth-child(2):before{
+        content: '';
+        position: absolute;
+        width:2rpx;
+        height:50rpx;
+        background:rgba(245,245,245,1);
+        right: 0;
     }
 
     .my_card {
@@ -426,58 +454,60 @@
         line-height: 48rpx;
         margin: 0 auto;
         text-align: center;
-        font-size: 42rpx;
-        font-weight: 400;
-        color: #111111;
+        font-size: 36rpx;
+        color: #333;
+        font-weight: bold;
     }
 
     #merchant-store_userinfo_otherinfo ul li i {
         text-align: center;
         line-height: 40rpx;
-        font-size: 30rpx;
+        font-size: 22rpx;
         font-weight: 300;
         margin-top: 10rpx;
+        color: #757575;
     }
 
     /*我的订单*/
     #merchant-store_orders_container{
         width: 100%;
-        height: 260rpx;
         background: #f2f2f2;
-        margin-top: 40rpx;
+        margin-top: 82rpx;
         padding: 0 20rpx;
-        border-radius: 10rpx;
+        border-radius: 25rpx;
     }
 
     #merchant-store_orders{
-        width: 670rpx;
+        width: 710rpx;
         height: 100%;
         display: flex;
         flex-direction: column;
-        padding: 0 20rpx;
+        box-sizing: border-box;
         background: #fff;
-        border-radius: 10rpx;
+        border-radius: 25rpx;
     }
 
     #merchant-store_orders_header{
-        width: 700rpx;
-        height: 110rpx;
+        width: 100%;
+        height: 80rpx;
         display: flex;
+        padding: 0 20rpx;
         justify-content: space-between;
         align-items: center;
+        box-sizing: border-box;
+        border-bottom: 2rpx solid #F5F5F5;
     }
 
     #merchant-store_orders_header h3{
-        font-size: 32rpx;
+        font-size: 28rpx;
         color: #111111;
-        font-weight: normal;
+        font-weight: bold;
     }
 
     #merchant-store_orders_header span{
         height: 100%;
         font-size: 24rpx;
-        color: #757575;
-        margin-right: 30rpx;
+        color: #333;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -490,10 +520,12 @@
 
     #merchant-store_orders_list{
       width: 100%;
-      height: 150rpx;
+      height: 158rpx;
       display: flex;
       justify-content: flex-start;
       align-items: center;
+        padding: 0 20rpx;
+        box-sizing: border-box;
     }
 
     #merchant-store_orders_list li{
@@ -521,13 +553,6 @@
       background: #fff;
     }
 
-    #merchant-store_orders_list li i{
-      margin-bottom: 10rpx;
-      font-size: 48rpx;
-      background: linear-gradient(to right,#FDE068,#FFCC00);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
 
     #merchant-store_orders_list li img{
         width: 48rpx;
@@ -546,7 +571,7 @@
         line-height: 130rpx;
         background: #FFFFFF;
         margin: 115rpx auto 0;
-        border-radius: 20rpx;
+        border-radius: 25rpx;
         text-align: center;
         position: relative;
         z-index: 999;
@@ -572,26 +597,8 @@
         color: #111111;
     }
 
-    .my_store_line {
-        height: 86rpx;
-        width: 28rpx;
-        background: url(../../../../static/images/icon/my_ico_line.png) no-repeat center center;
-        background-size: 100%;
-        position: absolute;
-        top: -50rpx;
-    }
-
-    .my_store_line.left_line {
-        left: 180rpx;
-    }
-
-    .my_store_line.right_line {
-        left: none;
-        right: 180rpx;
-    }
-
     .merchant-store_menu {
-        border-radius: 20rpx;
+        border-radius: 25rpx;
         margin: 20rpx;
     }
 
@@ -605,12 +612,12 @@
     }
 
    .merchant-store_menu ul li:first-child{
-        border-top-left-radius: 10rpx;
-        border-top-right-radius: 10rpx
+        border-top-left-radius: 25rpx;
+        border-top-right-radius: 25rpx
     }
     .merchant-store_menu ul li:last-child{
-        border-bottom-left-radius: 10rpx;
-        border-bottom-right-radius: 10rpx
+        border-bottom-left-radius: 25rpx;
+        border-bottom-right-radius: 25rpx
     }
 
     .lines{

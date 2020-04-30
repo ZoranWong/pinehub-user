@@ -15,11 +15,11 @@
             </view>
         </div>
         <div id="tab_content" :style="{'height': mainHeight + 'px'}">
-            <div class="empty_img" v-if="!orders.length">
+            <div class="empty_img_groupon" v-if="orders.length">
                 <img src="../../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
             </div>
-            <div v-else>
+            <div v-else class="order_container">
                 <grouponOrder />
             </div>
 
@@ -91,7 +91,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	page {
 		height: 100%;
         overflow: hidden;
@@ -134,14 +134,15 @@
     }
 
     #tab_content {
+        width: 100%;
         position: relative;
         background: #f2f2f2;
         overflow: auto;
     }
 
-    .empty_img{
+    .empty_img_groupon{
         width: 100%;
-        height: 700px;
+        height: 700rpx;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -150,15 +151,21 @@
         overflow: hidden;
         border-top: 20rpx solid #f2f2f2;
     }
-    .empty_img img{
+    .empty_img_groupon img{
         width: 350rpx;
         height: 240rpx;
     }
 
-    .empty_img span{
+    .empty_img_groupon span{
         color: #999;
         font-size: 32rpx;
         margin-bottom: 100rpx;
+    }
+
+    .order_container{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20rpx;
     }
 
 </style>

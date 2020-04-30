@@ -5,14 +5,14 @@
         <div class="product_info">
             <h4>{{product.name}}</h4>
             <h5>{{product.intro}}</h5>
-            <span>销量待对接</span>
+            <span>销量:{{product['sell_num']}}</span>
             <div class="bottom">
                 <div class="left">
                     <i>¥</i>
                     <h3>{{product['retail_price']}}</h3>
                     <span v-if="product['show_market_price']">￥{{product['market_price']}}</span>
                 </div>
-                <img src="../../../../../../static/icons/add.png" alt="">
+                <img src="../../../../../../static/icons/add.png" @click="addToCart" alt="">
             </div>
         </div>
     </div>
@@ -21,7 +21,12 @@
 <script>
     export default {
         name: "Product",
-        props: ['product']
+        props: ['product'],
+        methods:{
+            addToCart () {
+                this.$emit('addToCart', this.product)
+            }
+        }
     }
 </script>
 

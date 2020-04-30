@@ -282,7 +282,6 @@
 	.warn-icon {
 		width: 26rpx;
 		height: 26rpx;
-		background: url(../../static/images/icon/warn-icon.png) no-repeat bottom;
 		background-size: contain;
 		display: inline-block;
 		margin: 10rpx 10rpx -4rpx 0rpx;

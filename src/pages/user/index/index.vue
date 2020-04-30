@@ -982,13 +982,13 @@
 
 
     /*新增代码截止*/
-    #index_logo {
-        background: url(../../../../static/images/icon/logo.png) no-repeat top center;
-        background-size: 100%;
-        width: 218rpx;
-        height: 92rpx;
-        margin: 40rpx auto 0;
-    }
+    /*#index_logo {*/
+    /*    background: url(../../../../static/images/icon/logo.png) no-repeat top center;*/
+    /*    background-size: 100%;*/
+    /*    width: 218rpx;*/
+    /*    height: 92rpx;*/
+    /*    margin: 40rpx auto 0;*/
+    /*}*/
     .user-info-box,
     .user-mobile-box,
     .user-score-box {

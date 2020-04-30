@@ -11,13 +11,19 @@
         </div>
         <ul class="order_info_glist" >
             <li v-for="(item, idx) in order.orderItems" :key="idx">
-                <img :src="item.mainImage" alt="">
-                <div id="good_info">
-                    <h3>{{item.name}}</h3>
-                    <em>{{item['intro']}}</em>
-                    <div id="good_info_price">
-                        <em>X {{item.quantity}}</em>
+                <div class="left">
+                    <img :src="item.mainImage" alt="">
+                    <div id="good_info">
+                        <h3>{{item.name}}</h3>
+                        <em>{{item['intro']}}</em>
+                        <div id="good_info_price">
+                            <em>X {{item.quantity}}</em>
+                        </div>
                     </div>
+                </div>
+                <div class="price">
+                    <i>¥</i>
+                    <h4>3.54</h4>
                 </div>
             </li>
         </ul>
@@ -70,13 +76,20 @@
 </script>
 
 <style scoped>
+    .group_order{
+        width: 100%;
+        background: #fff;
+        border-radius: 25rpx;
+        box-sizing: border-box;
+        padding: 0 20rpx;
+    }
+
     .order_info_sn {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100% ;
         height: 108rpx;
-        padding: 0 20rpx;
         box-sizing: border-box;
     }
 
@@ -92,8 +105,25 @@
         margin-right: 20rpx;
     }
 
+    .order_info_sn .left em{
+        font-size: 30rpx;
+        color: #111;
+        font-weight: bold;
+    }
+
+    .order_info_sn .left .arrow{
+        width: 12rpx;
+        height: 22rpx;
+        margin-left: 30rpx;
+    }
+
+    .order_info_sn .order_info_status{
+        font-size: 28rpx;
+        color: #333;
+    }
+
     .order_info_glist {
-        padding: 30rpx 20rpx;
+        padding: 30rpx 0;
         box-sizing: border-box;
         border-bottom: 1rpx solid #f2f2f2;
         border-top: 1rpx solid #f2f2f2;
@@ -104,7 +134,33 @@
         padding: 10rpx;
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .order_info_glist li .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .order_info_glist li .price{
+        display: flex;
+        justify-content: flex-end;
         align-items: center;
+    }
+
+    .order_info_glist li .price i{
+        font-weight: bold;
+        font-size: 28rpx;
+        color: #111;
+        margin-right: 10rpx;
+        transform: translateY(5rpx);
+    }
+
+    .order_info_glist li .price h4{
+        font-weight: bold;
+        font-size: 32rpx;
+        color: #111;
     }
 
     .order_info_glist li img {
@@ -164,7 +220,6 @@
         width: 100%;
         height: 108rpx;
         box-sizing: border-box;
-        padding: 0 30rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -185,6 +240,7 @@
     #total .amount span{
         font-size: 26rpx;
         color: #333;
+        transform: translateY(5rpx);
     }
 
     #total .amount i{
@@ -193,6 +249,7 @@
         font-weight: bold;
         margin-left: 15rpx;
         margin-right: 10rpx;
+        transform: translateY(5rpx);
     }
 
     #total .amount h5{

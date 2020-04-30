@@ -2,6 +2,8 @@ import Model from './Model';
 import _ from 'underscore';
 import moment from "moment";
 import de from "element-ui/src/locale/lang/de";
+import {formatMoney, returnFloat} from "../utils";
+import ca from "element-ui/src/locale/lang/ca";
 export default class Activity extends Model {
     constructor (app) {
         super(app);
@@ -17,6 +19,15 @@ export default class Activity extends Model {
             },
             cateProducts () {
                 return this.state.cateProducts
+            },
+            goodInShoppingCart () {
+                return this.state.goodInShoppingCart
+            },
+            cartTotalFeeFormat () {
+                return this.state.cartTotalFeeFormat
+            },
+            totalPrice () {
+                return this.state.totalPrice
             }
         });
     }
@@ -26,7 +37,10 @@ export default class Activity extends Model {
         return {
             grouponList: [],
             grouponDetails: {},
-            cateProducts: []
+            cateProducts: [],
+            goodInShoppingCart: [],
+            cartTotalFeeFormat: '',
+            totalPrice: 0
         };
     }
 
@@ -44,6 +58,16 @@ export default class Activity extends Model {
         });
         text = text.substring(0, text.length - 1);
         return '满100元送' + text
+    }
+
+    calculate (state) {
+        let data = state.goodInShoppingCart;
+        if (_.isEmpty(data)) return;
+        let totalPrice = 0;
+        _.map(data, (item) => {
+            totalPrice += (Number(item['price']) * Number(item['buy_num']))
+        });
+        state.totalPrice = formatMoney(totalPrice);
     }
 
 
@@ -94,6 +118,50 @@ export default class Activity extends Model {
 
         this.addEventListener('saveCateProducts', function ({products}) {
             this.state.cateProducts = products
-        })
+        });
+
+        this.addEventListener('addToShoppingCart', function ({goods}) {
+            console.log(goods, '()())((())()((()()');
+            let carts = this.state.goodInShoppingCart;
+            console.log(carts, '----------');
+            let cartIndex = _.findIndex(carts, {product_stock_id: goods['product_stock_id']});
+            if (cartIndex < 0) {
+                this.state.goodInShoppingCart.push(goods)
+            } else {
+                this.$application.$vm.set(carts, cartIndex, goods)
+            }
+            that.calculate(this.state);
+        });
+
+        this.addEventListener('removeGoodsFromCart', function ({goods}) {
+            let carts = this.state.goodInShoppingCart;
+            this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
+            that.calculate(this.state);
+        });
+
+        this.addEventListener('saveCartGoodsList', function ({products}) {
+            let items = products.data;
+            let meta = products.meta;
+            _.map(items, (i) => {
+                i.price = returnFloat(i.price)
+            });
+            this.state.goodInShoppingCart = items;
+            this.state.cartTotalFeeFormat = meta['total_fee'].toFixed(2);
+            that.calculate(this.state);
+        });
+
+        this.addEventListener('clearShoppingCart', function (checked) {
+            this.state.goodInShoppingCart = []
+        });
+
+        this.addEventListener('changeBuyNum', function ({id, num}) {
+            let carts = this.state.goodInShoppingCart;
+            let cartIndex = _.findIndex(carts, {id: id});
+            if (cartIndex > -1) {
+                carts[cartIndex]['buy_num'] = num;
+                this.$application.$vm.set(carts, cartIndex, carts[cartIndex])
+            };
+            that.calculate(this.state);
+        });
     }
 }

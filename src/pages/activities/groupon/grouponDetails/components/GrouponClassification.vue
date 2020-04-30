@@ -82,7 +82,7 @@
         justify-content: space-between;
         align-items: center;
         background: #fffff;
-        z-index: 9999;
+        z-index: 50;
     }
 
     #tab_select_groupon .page-section-spacing{
