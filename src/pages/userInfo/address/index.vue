@@ -30,7 +30,7 @@
             </li>
         </ul>
         <div v-else class="empty-list">
-            <img src="./empty_point.jpg" alt="">
+            <img src="empty_point.jpg" alt="">
             <span>你还没有收货地址哦~</span>
         </div>
         <div class="addAddress">

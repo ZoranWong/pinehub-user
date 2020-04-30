@@ -4,9 +4,6 @@
         "pages/user/index/homemaking/main",
         "pages/user/storesMap/main",
         "pages/user/mall/newEvents/main",
-        "pages/user/userCenter/main",
-        "pages/user/userProtocol/main",
-        "pages/user/userPickupProtocol/main",
         "pages/user/store/main",
         "pages/user/ShoppingCart/main",
         "pages/user/goodDetail/main",
@@ -14,9 +11,7 @@
         "pages/user/pickup/main",
         "pages/user/feedBack/success/main",
         "pages/user/recharge/main",
-        "pages/user/balance/main",
-        "pages/user/address/main",
-        "pages/user/addressOperation/main"
+        "pages/user/balance/main"
     ],
     "subpackages": [
         {
@@ -38,6 +33,16 @@
                 "integral/main",
                 "integralDetail/main",
                 "integralRecords/main"
+            ]
+        },
+        {
+            "root": "pages/userInfo",
+            "pages": [
+                "address/main",
+                "addressOperation/main",
+                "userCenter/main",
+                "userPickupProtocol/main",
+                "userProtocol/main"
             ]
         },
         {
