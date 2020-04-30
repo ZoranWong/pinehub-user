@@ -440,7 +440,7 @@
                         this.$command('REDIRECT_TO', 'user.activity', 'push', {
                             query: {
                                 id: act.id,
-                                data: act
+                                name: encodeURI(act.name)
                             }
                         });
                     }
