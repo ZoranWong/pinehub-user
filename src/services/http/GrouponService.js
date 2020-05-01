@@ -86,4 +86,19 @@ export default class ActivityService extends ApiService {
         return response.data;
     }
 
+    // 获取拼团订单列表
+    async getGrouponOrders (status) {
+        let response = await this.httpGet('api/mp/group_shopping/getMyGroupList', {
+            status
+        });
+        return response.data[0];
+    }
+
+    // 获取拼团订单详情
+    async getGrouponOrderDetails (order_id) {
+        let response = await this.httpGet('api/mp/group_shopping/getMyGroupOrderDetail', {
+            order_id
+        });
+        return response.data;
+    }
 }

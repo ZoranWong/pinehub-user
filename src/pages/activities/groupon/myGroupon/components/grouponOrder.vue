@@ -1,21 +1,21 @@
 <!--suppress ALL -->
 <template>
-    <div class="group_order">
+    <div class="group_order" v-if="order['order_id']" @click="orderDetails(order['order_id'])">
         <div class="order_info_sn">
             <div class="left">
                 <img src="../../../../../../static/icons/orderMenu.png" class="orderMenu" alt="">
-                <em>订单号:1366879566</em>
+                <em>订单号:{{order['trade_no']}}</em>
                 <img src="../../../../../../static/icons/rightArrow.png" class="arrow" alt="">
             </div>
-            <span class="order_info_status" >已完成</span>
+            <span class="order_info_status" >待对接</span>
         </div>
         <ul class="order_info_glist" >
-            <li v-for="(item, idx) in order.orderItems" :key="idx">
+            <li v-for="(item, idx) in order.products" :key="idx">
                 <div class="left">
-                    <img :src="item.mainImage" alt="">
+                    <img :src="item.thumbnail" alt="">
                     <div id="good_info">
                         <h3>{{item.name}}</h3>
-                        <em>{{item['intro']}}</em>
+                        <em>待对接</em>
                         <div id="good_info_price">
                             <em>X {{item.quantity}}</em>
                         </div>
@@ -23,16 +23,16 @@
                 </div>
                 <div class="price">
                     <i>¥</i>
-                    <h4>3.54</h4>
+                    <h4>{{item.price}}</h4>
                 </div>
             </li>
         </ul>
         <div id="total">
             <h4>实付</h4>
             <div class="amount">
-                <span>共5件</span>
+                <span>共{{order.totalQuantity}}件</span>
                 <i>¥</i>
-                <h5>13.5</h5>
+                <h5>{{order['settlement_total_fee']}}</h5>
             </div>
         </div>
     </div>
@@ -42,34 +42,21 @@
 <script>
     export default {
         name: "grouponOrder",
+        props: ['order'],
         data () {
             return {
-                order: {
-                    orderItems: [
-                        {
-                            name: 'minabao',
-                            intro: 'xxasjiasdiasy',
-                            buy_num: '2',
-                            price: 34,
-                            quantity: 2
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            orderDetails (id) {
+                this.$command('REDIRECT_TO', 'user.groupon.order.details', 'push', {
+                    query: {
+                        id: id
+                    }
+                })
 
-                        },
-                        {
-                            name: 'minab1212ao',
-                            intro: 'xxasjiasdiasy',
-                            buy_num: '2',
-                            price: 34,
-                            quantity: 34
-                        },
-                        {
-                            name: 'minab43443ao',
-                            intro: 'xxasjiasdiasy',
-                            buy_num: '2',
-                            price: 34,
-                            quantity: 6
-                        }
-                    ],
-                },
             }
         }
     }

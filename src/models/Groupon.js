@@ -4,6 +4,7 @@ import moment from "moment";
 import de from "element-ui/src/locale/lang/de";
 import {formatMoney, returnFloat} from "../utils";
 import ca from "element-ui/src/locale/lang/ca";
+import {BAR_MAP} from "element-ui/packages/scrollbar/src/util";
 export default class Activity extends Model {
     constructor (app) {
         super(app);
@@ -31,6 +32,12 @@ export default class Activity extends Model {
             },
             createdOrderInfo () {
                 return this.state.createdOrderInfo
+            },
+            details () {
+                return this.state.details
+            },
+            orders () {
+                return this.state.orders
             }
         });
     }
@@ -44,7 +51,9 @@ export default class Activity extends Model {
             goodInShoppingCart: [],
             cartTotalFeeFormat: '',
             totalPrice: 0,
-            createdOrderInfo: {}
+            createdOrderInfo: {},
+            details: {},
+            orders: []
         };
     }
 
@@ -171,6 +180,23 @@ export default class Activity extends Model {
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
             console.log(orderInfo, ';;;;; order ;;;;;;;');
             this.state.createdOrderInfo = orderInfo
-        })
+        });
+
+        this.addEventListener('saveGrouponOrders', function ({orders}) {
+            _.map(orders, order => {
+                let totalQuantity = 0;
+                _.map(order.products, product => {
+                    totalQuantity += Number(product.quantity)
+                });
+                order.trade_no = order['trade_no'].slice(-12);
+                order.totalQuantity = totalQuantity;
+            });
+            this.state.orders = orders
+        });
+
+        this.addEventListener('saveGrouponOrderDetails', function ({details}) {
+            details.trade_no = details['trade_no'].slice(-12);
+            this.state.details = details
+        });
     }
 }

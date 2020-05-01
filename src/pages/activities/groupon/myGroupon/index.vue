@@ -15,14 +15,17 @@
             </view>
         </div>
         <div id="tab_content" :style="{'height': mainHeight + 'px'}">
-            <div class="empty_img_groupon" v-if="orders.length">
+
+
+            <div class="empty_img_groupon" v-if="!orders.length">
                 <img src="../../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
             </div>
-            <div v-else class="order_container">
-                <grouponOrder />
+            <div v-else>
+                <div class="order_container" v-for="(order,index) in orders" :key="index">
+                    <grouponOrder :order="order" />
+                </div>
             </div>
-
         </div>
 
 	</div>
@@ -41,13 +44,10 @@
                 statusType: 0,
                 tabs: [
                     {name: '待成团', key: 0},
-                    {name: '待发货', key: 1},
-                    {name: '待自提', key: 2},
+                    {name: '待发货', key: 2},
+                    {name: '待自提', key: 4},
                     {name: '已完成', key: 3},
-                    {name: '未成团', key: 4},
-                ],
-                orders: [
-
+                    {name: '未成团', key: 1},
                 ],
                 screenHeight: 0,
                 rpxRate: 1,
@@ -55,7 +55,9 @@
             };
 		},
 		watch: {
-
+            statusType (val) {
+                this.$command('GET_GROUPON_ORDERS', val)
+            }
 		},
 		computed: {
             statusBarHeight () {
@@ -76,6 +78,9 @@
                 let systemInfo = wx.getSystemInfoSync();
                 return 88 * systemInfo.windowWidth / 750;
             },
+            orders () {
+                return this.model.groupon.orders
+            }
 		},
 		methods: {
             selectTab (key) {
@@ -86,7 +91,7 @@
 
 		},
 		mounted() {
-
+            this.$command('GET_GROUPON_ORDERS', this.statusType)
 		}
 	}
 </script>

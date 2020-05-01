@@ -3,20 +3,20 @@
     <div id="groupon_order_details">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'"> </CustomHeader>
         <div class="content" :style="{height: mainHeight + 'px'}">
-            <h2 class="title">订单待发货</h2>
+            <h2 class="title">订单待对接</h2>
 
             <div class="productsContainer">
                 <div class="productHeader">
-                    订单号:1366879566
+                    订单号:{{details['trade_no']}}
                 </div>
                 <ul id="good_list">
                     <li v-for="(good,index) in products" :key="index">
                         <div class="left">
-                            <img src="../grouponOrderPayment/imgs/contact_number.png" alt="">
+                            <img :src="good['thumbnail']" alt="">
                             <div id="good_info">
                                 <h3>{{good['name']}}</h3>
-                                <h4>{{good['intro']}}</h4>
-                                <em>X {{good['buy_num']}}</em>
+                                <h4>待对接</h4>
+                                <em>X {{good['quantity']}}</em>
                             </div>
                         </div>
                         <div id="good_info_price">
@@ -24,7 +24,7 @@
                             <h3>{{good['price']}}</h3>
                         </div>
                     </li>
-                    <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
+                    <div class="extra" v-if="products && products.length > 3" @click="extraProducts">
                         <span v-if="!isLoadAll">展开更多</span>
                         <span v-else>点击收起</span>
                         <img v-if="isLoadAll" src="../../../orders/orderPayment/imgs/top-arrow.png" alt="">
@@ -36,21 +36,21 @@
                 <ul id="total">
                     <li>
                         <h3>商品总价</h3>
-                        <span class="small"> <i>￥</i>120</span>
+                        <span class="small"> <i>￥</i>{{details['settlement_total_fee']}}</span>
                     </li>
                     <li>
                         <h3>
                             <img src="../grouponOrderPayment/imgs/minus.png" alt="">
                             优惠金额
                         </h3>
-                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>5</span>
+                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
                     </li>
                     <li>
                         <h4 class="bigH4">实付款</h4>
                         <h5 class="big">
                             <span class="big2">小计</span>
                             <i>￥</i>
-                            6
+                            {{details['settlement_total_fee']}}
                         </h5>
                     </li>
                 </ul>
@@ -63,17 +63,16 @@
                 <h2>自提信息</h2>
                 <li>
                     <span>自提人</span>
-                    <h4>一切都会好的</h4>
+                    <h4>待对接</h4>
                 </li>
                 <li>
                     <span>预留电话</span>
-                    <h4>18696332921</h4>
+                    <h4>待对接</h4>
                 </li>
                 <li>
                     <span>自提地址</span>
                     <h4>
-                        安徽省 合肥市 蜀山区
-                        琥珀五环城
+                        待对接
                     </h4>
                 </li>
             </ul>
@@ -83,24 +82,24 @@
                 <li>
                     <span>订单编号</span>
                     <div class="copy">
-                        <h4>202003311808</h4>
-                        <button @click="cpoy('1111111')">复制</button>
+                        <h4>{{details['trade_no']}}</h4>
+                        <button @click="cpoy(details['trade_no'])">复制</button>
                     </div>
                 </li>
                 <li>
                     <span>下单时间</span>
-                    <h4>2020-03-01 23:16:08</h4>
+                    <h4>{{details['created_at']}}</h4>
                 </li>
                 <li>
                     <span>备注</span>
                     <h4>
-                        放在小区门卫那
+                        {{details['remark']}}
                     </h4>
                 </li>
                 <li>
                     <span>支付方式</span>
                     <h4>
-                        微信支付
+                        待对接
                     </h4>
                 </li>
             </ul>
@@ -122,24 +121,23 @@
             return {
                 title: '',
                 isLoadAll: false,
-                products: [
-                    {
-                        name: 'minabao',
-                        intro: 'xxasjiasdiasy',
-                        buy_num: '2',
-                        price: 34,
-
-                    }
-                ],
-                orderInfo: {
-                    total_fee: 34,
-                    total_preferential_fee: 0,
-                    settlement_total_fee: 34
-                }
+                products: [],
+                isLoadAll: false
             };
         },
         watch: {
-
+            isLoadAll (val) {
+                if (val) {
+                    this.products = this.details.products;
+                } else {
+                    this.products = this.details.products.slice(0, 3)
+                }
+            },
+            details (val) {
+                if (val && val.products) {
+                    this.products = val.products.length > 3 ? val.products.slice(0, 3) : val.products
+                }
+            }
         },
         computed: {
             statusBarHeight () {
@@ -155,6 +153,11 @@
             headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
+            details () {
+                // let products = this.model.groupon.details && this.model.groupon.details.products;
+
+                return this.model.groupon.details
+            }
         },
         methods: {
             extraProducts () {
@@ -179,7 +182,9 @@
 
         },
         mounted() {
-
+            if (this.$route.query && this.$route.query.id) {
+                this.$command('GET_GROUPON_ORDER_DETAILS',this.$route.query.id)
+            }
         }
     }
 </script>
@@ -206,6 +211,9 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1rpx solid #f2f2f2;
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #111;
     }
 
     .productHeader h4{
