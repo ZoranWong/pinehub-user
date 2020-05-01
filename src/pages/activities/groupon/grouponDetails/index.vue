@@ -75,7 +75,7 @@
                     :grouponId="grouponDetails['shopping_group_id']"
                 />
                 <ul class="products">
-                    <li v-for="product in cateProducts" :key="product">
+                    <li v-for="(product,index) in cateProducts" :key="index">
                         <Product :product="product" @addToCart="addToCart" />
                     </li>
                 </ul>
@@ -197,9 +197,9 @@
                             this.timer = null;
                         }
                         t = t - 1;
-                        this.hour = Math.floor(t / 3600);
-                        this.minute = Math.floor((t - this.hour * 3600) / 60);
-                        this.second = Math.floor((t - this.hour * 3600 - this.minute * 60));
+                        this.hour = Math.floor(t / 3600) < 10 ? '0' + Math.floor(t / 3600) : Math.floor(t / 3600);
+                        this.minute = Math.floor((t - this.hour * 3600) / 60) < 10 ? '0' + Math.floor((t - this.hour * 3600) / 60) : Math.floor((t - this.hour * 3600) / 60);
+                        this.second = Math.floor((t - this.hour * 3600 - this.minute * 60)) < 10 ? '0' + Math.floor((t - this.hour * 3600 - this.minute * 60)) : Math.floor((t - this.hour * 3600 - this.minute * 60));
                     }, 1000)
                 }
             },

@@ -28,6 +28,9 @@ export default class Activity extends Model {
             },
             totalPrice () {
                 return this.state.totalPrice
+            },
+            createdOrderInfo () {
+                return this.state.createdOrderInfo
             }
         });
     }
@@ -40,7 +43,8 @@ export default class Activity extends Model {
             cateProducts: [],
             goodInShoppingCart: [],
             cartTotalFeeFormat: '',
-            totalPrice: 0
+            totalPrice: 0,
+            createdOrderInfo: {}
         };
     }
 
@@ -163,5 +167,10 @@ export default class Activity extends Model {
             };
             that.calculate(this.state);
         });
+
+        this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
+            console.log(orderInfo, ';;;;; order ;;;;;;;');
+            this.state.createdOrderInfo = orderInfo
+        })
     }
 }

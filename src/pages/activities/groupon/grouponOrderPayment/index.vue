@@ -1,108 +1,111 @@
 <!--suppress ALL -->
 <template>
-    <div id="groupon_order_payment">
+    <div id="groupon_order_payment" >
         <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" :needClear="true" />
-        <div class="background">
-            <div class="top"></div>
-            <div class="bottom"></div>
-        </div>
+        <div :style="{height: mainHeight + 'px', overflow: 'auto'}">
 
-        <ul class="user_info">
-            <li>
-                <div class="left">
-                    <img src="./imgs/contact.png" alt="">
-                    <h3>联系人名：</h3>
-                </div>
-                <input type="text" v-model="name" placeholder="请填写姓名或昵称">
-            </li>
-            <li>
-                <div class="left">
-                    <img src="./imgs/contact_number.png" alt="">
-                    <h3>联系电话：</h3>
-                </div>
-                <input type="number" v-model="mobile" placeholder="以便商家与您及时沟通">
-            </li>
-        </ul>
-
-        <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
-            <div class="productsContainer">
-                <div class="productHeader">
-                    <h4 >青松食品（宁西路28号青松集团）</h4>
-                    <img src="./imgs/tag.png" alt="">
-                </div>
-                <ul id="good_list">
-                    <li v-for="(good,index) in products" :key="index">
-                        <div class="left">
-                            <img src="./imgs/contact_number.png" alt="">
-                            <div id="good_info">
-                                <h3>{{good['name']}}</h3>
-                                <h4>{{good['intro']}}</h4>
-                                <em>X {{good['buy_num']}}</em>
-                            </div>
-                        </div>
-                        <div id="good_info_price">
-                            <i>￥</i>
-                            <h3>{{good['price']}}</h3>
-                        </div>
-                    </li>
-                    <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
-                        <span v-if="!isLoadAll">展开更多</span>
-                        <span v-else>点击收起</span>
-                        <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
-                        <img  v-else src="./imgs/bottom-arrow.png" alt="">
-
-                    </div>
-                </ul>
-
-                <ul id="total">
-                    <li>
-                        <h3>商品总价</h3>
-                        <span class="small"> <i>￥</i>{{totalPrice}}</span>
-                    </li>
-                    <li>
-                        <h3>
-                            <img src="./imgs/minus.png" alt="">
-                            优惠金额
-                        </h3>
-                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
-                    </li>
-                    <li>
-                        <h4 class="bigH4">实付款</h4>
-                        <h5 class="big">
-                            <span class="big2">小计</span>
-                            <i>￥</i>
-                            {{totalPrice}}
-                        </h5>
-                    </li>
-                </ul>
-
-
+            <div class="background">
+                <div class="top"></div>
+                <div class="bottom"></div>
             </div>
-            <ul id="remarkBox">
+
+            <ul class="user_info">
                 <li>
-                    <h3>备注</h3>
-                    <input type="text" v-model="remark">
-                    <em v-if="!remark">请输入备注</em>
+                    <div class="left">
+                        <img src="./imgs/contact.png" alt="">
+                        <h3>联系人名：</h3>
+                    </div>
+                    <input type="text" v-model="name" placeholder="请填写姓名或昵称">
                 </li>
                 <li>
-                    <h3>支付方式</h3>
-                    <span>在线支付</span>
+                    <div class="left">
+                        <img src="./imgs/contact_number.png" alt="">
+                        <h3>联系电话：</h3>
+                    </div>
+                    <input type="number" v-model="mobile" placeholder="以便商家与您及时沟通">
                 </li>
             </ul>
-        </div>
 
-        <div id="do_payment">
-            <div class="do_payment_contain">
-                <span class="price">
-                     <i>￥</i>
-                     {{totalPrice}}
-<!--                    <span>（起订金额10元）</span>-->
-                    <!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
-                </span>
-                <h4 @click="check" >提交订单</h4>
+            <div class="totalContainer" >
+                <div class="productsContainer">
+                    <div class="productHeader">
+                        <h4 >青松食品（宁西路28号青松集团）</h4>
+                        <img src="./imgs/tag.png" alt="">
+                    </div>
+                    <ul id="good_list">
+                        <li v-for="(good,index) in products" :key="index">
+                            <div class="left">
+                                <img :src="good.image" alt="">
+                                <div id="good_info">
+                                    <h3>{{good['name']}}</h3>
+                                    <h4>{{good['intro']}}</h4>
+                                    <em>X {{good['buy_num']}}</em>
+                                </div>
+                            </div>
+                            <div id="good_info_price">
+                                <i>￥</i>
+                                <h3>{{good['price']}}</h3>
+                            </div>
+                        </li>
+                        <div class="extra" v-if="goodInShoppingCart && goodInShoppingCart.length > 3" @click="extraProducts">
+                            <span v-if="!isLoadAll">展开更多</span>
+                            <span v-else>点击收起</span>
+                            <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
+                            <img  v-else src="./imgs/bottom-arrow.png" alt="">
+
+                        </div>
+                    </ul>
+
+                    <ul id="total">
+                        <li>
+                            <h3>商品总价</h3>
+                            <span class="small"> {{totalPrice}}</span>
+                        </li>
+                        <li>
+                            <h3>
+                                <img src="./imgs/minus.png" alt="">
+                                优惠金额
+                            </h3>
+                            <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
+                        </li>
+                        <li>
+                            <h4 class="bigH4">实付款</h4>
+                            <h5 class="big">
+                                <span class="big2">小计</span>
+                                {{totalPrice}}
+                            </h5>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <ul id="remarkBox">
+                    <li>
+                        <h3>备注</h3>
+                        <input type="text" v-model="remark">
+                        <em v-if="!remark">请输入备注</em>
+                    </li>
+                    <li>
+                        <h3>支付方式</h3>
+                        <span>在线支付</span>
+                    </li>
+                </ul>
             </div>
 
+            <div id="do_payment">
+                <div class="do_payment_contain">
+                <span class="price">
+<!--                     <i>￥</i>-->
+                     {{totalPrice}}
+                    <!--                    <span>（起订金额10元）</span>-->
+                    <!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
+                </span>
+                    <h4 @click="check" >提交订单</h4>
+                </div>
+
+            </div>
         </div>
+
 
     </div>
 </template>
@@ -166,7 +169,7 @@
         methods: {
 
             check () {
-
+                console.log('name');
                 let reg = /^1(3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\d{8}$/;
                 if (!this.name) {
                     wx.showToast({
@@ -182,7 +185,7 @@
                     });
                     return
                 }
-                if (!this.orderInfo['settlement_total_fee']) {
+                if (!this.totalPrice) {
                     wx.showToast({
                         title: '订单信息有误，请稍后再提交',
                         icon: 'none'
@@ -193,7 +196,12 @@
                 this.createOrder()
             },
             createOrder(){
-                console.log(this.$route.query.shoppingGroupId);
+                this.$command('CREATE_GROUPON_ORDER', {
+                    consignee_name: this.name,
+                    consignee_mobile_phone: this.mobile,
+                    remark: this.remark,
+                    shop_shopping_group_id: this.$route.query.shoppingGroupId
+                })
             },
             extraProducts () {
                 this.isLoadAll = !this.isLoadAll;
@@ -708,6 +716,7 @@
         font-size: 30rpx;
         color: #111111;
         margin-right: 15rpx;
+        font-weight: normal;
     }
 
     .productsContainer #total li:first-child{
@@ -978,6 +987,7 @@
         font-size: 28rpx;
         color: #999;
         width: 500rpx;
+        text-align: right;
     }
 
     #remarkBox li em{
@@ -997,6 +1007,7 @@
         bottom: 0;
         margin: 30rpx 0;
         opacity: 0.9;
+        z-index: 9999;
     }
 
     #groupon_order_payment #do_payment .do_payment_contain{

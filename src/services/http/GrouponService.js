@@ -80,4 +80,10 @@ export default class ActivityService extends ApiService {
         return response;
     }
 
+    // 创建拼团
+    async createGrouponOrder (params) {
+        let response = await this.httpPost('api/mp/group_shopping/ShoppingGroupOrderAdd', params);
+        return response.data;
+    }
+
 }

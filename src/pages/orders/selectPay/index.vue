@@ -64,14 +64,16 @@
         // 算术方法
         computed: {
 			createdOrderInfo () {
-                this.order = this.model.user.order.payment.createdOrderInfo;
-                    if (this.$route.query && this.$route.query.order) {
+                this.order = this.$route.query.type === 'groupon'? this.model.groupon.createdOrderInfo : this.model.user.order.payment.createdOrderInfo;
+                console.log(this.order, '_____()())()())()()()()(');
+                if (this.$route.query && this.$route.query.order) {
+
                     } else {
                         if (this.order['auto_cancel_after_seconds']) {
                             this.countDownServer(this.order['auto_cancel_after_seconds'])
                         }
                 }
-                return this.model.user.order.payment.createdOrderInfo
+                return this.order
             },
 			userInfo () {
 				return this.model.account.userInfo;

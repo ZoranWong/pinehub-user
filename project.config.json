@@ -182,6 +182,13 @@
 					"pathName": "pages/activities/groupon/grouponDetails/main",
 					"query": "id=1",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/activities/groupon/grouponOrderPayment/main",
+					"pathName": "pages/activities/groupon/grouponOrderPayment/main",
+					"query": "shoppingGroupId=12",
+					"scene": null
 				}
 			]
 		}

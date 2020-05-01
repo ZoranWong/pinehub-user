@@ -124,7 +124,7 @@
                     async success (res) {
                         if (res.authSetting && res.authSetting['scope.userLocation']) {
                             //self.checkProductStatus();
-                            this.goPayment()
+                            self.goPayment()
                         } else {
                             wx.showModal({
                                 title: '是否授权当前位置',
@@ -140,7 +140,7 @@
                                                         duration: 1000
                                                     })
                                                     //self.checkProductStatus();
-                                                    this.goPayment()
+                                                    self.goPayment()
                                                 } else {
                                                     wx.showToast({
                                                         title: '授权失败',
@@ -190,6 +190,7 @@
                 }
             },
             goPayment () {
+                console.log('11111');
                 this.$command('REDIRECT_TO', 'user.groupon.order.payment', 'push', {
                     query: {
                         shoppingGroupId: this.shoppingGroupId
