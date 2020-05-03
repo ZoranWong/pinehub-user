@@ -134,7 +134,6 @@ export default class Activity extends Model {
         });
 
         this.addEventListener('addToShoppingCart', function ({goods}) {
-            console.log(goods, '()())((())()((()()');
             let carts = this.state.goodInShoppingCart;
             console.log(carts, '----------');
             let cartIndex = _.findIndex(carts, {product_stock_id: goods['product_stock_id']});
@@ -178,7 +177,6 @@ export default class Activity extends Model {
         });
 
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {
-            console.log(orderInfo, ';;;;; order ;;;;;;;');
             this.state.createdOrderInfo = orderInfo
         });
 

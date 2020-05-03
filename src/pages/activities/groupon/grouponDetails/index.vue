@@ -3,7 +3,8 @@
 	<div id="groupon_details" :style="{'overflow': shareBoxVisible ? 'hidden' : 'scroll'}">
         <div :style="{'height': mainHeight - cartHeight + 'px', 'overflow': 'auto'}">
             <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
-                <span class="circle" ><i class="iconfont">&#xe679;</i></span>
+                <span  class="circle"  v-if="needBackHome"><i class="iconfont"  >&#xe664;</i></span>
+                <span class="circle"  v-else><i class="iconfont">&#xe679;</i></span>
             </div>
             <div class="backImg" :style="{'height': mainHeight * 0.223 + 'px'}">
                 <img src="./img/background.jpeg" mode="widthFix" alt="">
@@ -49,12 +50,15 @@
                     <div class="left">
                         <span>{{grouponDetails['created_at']}}发布</span>
                         <i></i>
-                        <span>距结束</span>
-                        <div class="time">
-                            <em>{{hour}}</em> :
-                            <em>{{minute}}</em> :
-                            <em class="red">{{second}}</em>
+                        <div v-if="deadlineTime > 0" class="timerContainer">
+                            <span>距结束</span>
+                            <div class="time">
+                                <em>{{hour}}</em> :
+                                <em>{{minute}}</em> :
+                                <em class="red">{{second}}</em>
+                            </div>
                         </div>
+                        <span v-else>已结束</span>
                     </div>
                     <h4>
                         <span>{{grouponDetails['order_placed_users_count']}}人</span>已参团
@@ -126,7 +130,7 @@
             @onClose="closeSharePic"
             :text="grouponDetails['share_text']"
             :name="grouponDetails['group_display_name']"
-            :id="grouponDetails['shopping_group_id']"
+            :id="grouponDetails['id']"
             :pic="grouponDetails['fixed_shared_picture']"
         />
 
@@ -135,7 +139,7 @@
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
 
         <ShoppingCart
-            :shoppingGroupId="grouponDetails['shopping_group_id']"
+            :shoppingGroupId="grouponDetails['id']"
             v-if="goodInShoppingCart"
         />
 
@@ -158,9 +162,9 @@
 		},
 		data() {
 			return {
-                hour: '05',
-                minute: '18',
-                second: '05',
+                hour: '00',
+                minute: '00',
+                second: '00',
                 timer: null,
                 deadlineTime: 0,
                 toTop: 0,
@@ -190,18 +194,26 @@
 		},
 		watch: {
             deadlineTime(val) {
-                if (val) {
+                console.log(val, 'ttttttttttimer');
+                clearInterval(this.timer)
+                console.log(this.timer, 'this.timer =========>');
+                if (val > 0) {
                     let t = val;
                     this.timer = setInterval(() => {
-                        if (t === 0) {
-                            this.timer = null;
-                        }
                         t = t - 1;
                         this.hour = Math.floor(t / 3600) < 10 ? '0' + Math.floor(t / 3600) : Math.floor(t / 3600);
                         this.minute = Math.floor((t - this.hour * 3600) / 60) < 10 ? '0' + Math.floor((t - this.hour * 3600) / 60) : Math.floor((t - this.hour * 3600) / 60);
                         this.second = Math.floor((t - this.hour * 3600 - this.minute * 60)) < 10 ? '0' + Math.floor((t - this.hour * 3600 - this.minute * 60)) : Math.floor((t - this.hour * 3600 - this.minute * 60));
                     }, 1000)
                 }
+            },
+            timer (val) {
+                console.log(val, '这才是真的定时器');
+            },
+            minute (val) {
+                console.log(this.deadlineTime, 'minute');
+                console.log(val, 'minute');
+                console.log(this.timer, '===+++++++++++=======.....');
             },
             registered(value) {
                 if (value) {
@@ -214,7 +226,7 @@
             isMember() {
                 if (this.registered && this.isMember) {
                     this.showBindMobile = false;
-                    this.id && this.$command('LOAD_GROUPON_CART_COMMAND', this.grouponDetails['shopping_group_id'])
+                    this.id && this.$command('LOAD_GROUPON_CART_COMMAND', this.grouponDetails['id'])
                 }
             },
             accessToken(value) {
@@ -237,9 +249,19 @@
                         console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
                     });
                 }
+            },
+            grouponDetails (val) {
+                if (val && val.categories) {
+                    this.$command('LOAD_GROUPON_CATE_PRODUCTS',val['shopping_group_id'], val.categories[0].id)
+                }
             }
         },
 		computed: {
+            needBackHome () {
+                let pages =  getCurrentPages();
+                let options = pages[pages.length - 1]['options'];
+                return options.backHome ? true : false;
+            },
             userId () {
                 return this.model.account.userId;
             },
@@ -276,7 +298,7 @@
             },
             grouponDetails () {
                 this.deadlineTime = this.model.groupon.grouponDetails.deadlineTime;
-                this.id = this.model.groupon.grouponDetails['shopping_group_id']
+                this.id = this.model.groupon.grouponDetails['id']
                 return this.model.groupon.grouponDetails
             },
             cateProducts () {
@@ -306,7 +328,11 @@
 
             },
             back() {
-                this.$command('REDIRECT_TO', '', 'back')
+                if (this.needBackHome) {
+                    this.$command('REDIRECT_TO','index','replace')
+                } else {
+                    this.$command('REDIRECT_TO','','back')
+                }
             },
             forbidScroll (isForbid) {
                 this.isForbid = isForbid
@@ -362,7 +388,6 @@
                 });
             },
             addToCart(item) {
-                console.log(item, '=======>');
                 if (!this.registered) {
                     this.getUserAuth();
                 } else {
@@ -373,9 +398,9 @@
                         console.log(goods, '????????????????????????????????');
                         let cartIndex = _.findIndex(goods, {product_stock_id: item['product_stock_id']});
                         if (cartIndex < 0) {
-                            this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND',item['product_stock_id'],this.grouponDetails['shopping_group_id'])
+                            this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND',item['product_stock_id'],this.grouponDetails['id'])
                         } else {
-                            this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.grouponDetails['shopping_group_id'],goods[cartIndex]['buy_num'] + 1)
+                            this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.grouponDetails['id'],goods[cartIndex]['buy_num'] + 1)
                         }
                     }
                 }
@@ -400,7 +425,7 @@
                 title: this.grouponDetails['group_display_name'],
                 desc: this.grouponDetails['share_text'],
                 imageUrl: "",
-                path: `/pages/activities/groupon/grouponDetails/main?id=${this.grouponDetails['shopping_group_id']}`,
+                path: `/pages/activities/groupon/grouponDetails/main?id=${this.grouponDetails['id']}`,
                 success: function (res) {
                     // 转发成功
                     console.log("转发成功:" + JSON.stringify(res));
@@ -597,6 +622,12 @@
         align-items: center;
     }
     .details .bottom .left{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .timerContainer{
         display: flex;
         justify-content: flex-start;
         align-items: center;

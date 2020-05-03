@@ -47,12 +47,20 @@
         watch: {
             statusType (val) {
                 this.$command('LOAD_GROUPON_CATE_PRODUCTS',this.grouponId, val)
+            },
+            categories (val) {
+                if (val.length) {
+                    this.statusType = val[0].id;
+                }
             }
         },
         computed :{
             // categories () {
             //     return this.model.activity.categories
             // },
+        },
+        onShow () {
+            console.log('on cate show');
         },
         mounted () {
             this.statusType = this.categories[0].id;
