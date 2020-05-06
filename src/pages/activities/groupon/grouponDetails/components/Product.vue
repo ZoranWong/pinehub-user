@@ -12,7 +12,7 @@
                     <h3>{{product['retail_price']}}</h3>
                     <span v-if="product['show_market_price']">￥{{product['market_price']}}</span>
                 </div>
-                <img src="../../../../../../static/icons/add.png" @click="addToCart" alt="">
+                <img v-if="deadlineTime > 0" src="../../../../../../static/icons/add.png" @click="addToCart" alt="">
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
 <script>
     export default {
         name: "Product",
-        props: ['product'],
+        props: ['product','deadlineTime'],
         methods:{
             addToCart () {
                 this.$emit('addToCart', this.product)

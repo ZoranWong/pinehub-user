@@ -38,6 +38,9 @@ export default class Activity extends Model {
             },
             orders () {
                 return this.state.orders
+            },
+            products () {
+                return this.state.products
             }
         });
     }
@@ -53,7 +56,8 @@ export default class Activity extends Model {
             totalPrice: 0,
             createdOrderInfo: {},
             details: {},
-            orders: []
+            orders: [],
+            products: []
         };
     }
 
@@ -64,13 +68,13 @@ export default class Activity extends Model {
         return deadline.diff(now, 'second')
     }
 
-    handleGiftProducts (products) {
+    handleGiftProducts (products, floor) {
         let text = '';
         _.map(products, product => {
             text += `${product['product_entity_info'].name}、`
         });
         text = text.substring(0, text.length - 1);
-        return '满100元送' + text
+        return `满${floor}元送` + text
     }
 
     calculate (state) {
@@ -105,6 +109,12 @@ export default class Activity extends Model {
                 } else {
                     item.display_products = item['group_products']
                 }
+                _.map(item['group_products'], product => {
+                    if (_.find(this.state.products, function (p) {
+                        return p.name === product.name
+                    })) return;
+                    this.state.products.push(product)
+                });
 
                 that.state.grouponList.push(item)
             })
@@ -124,7 +134,9 @@ export default class Activity extends Model {
                 })
             };
             details.deadlineTime = this.handleTimer(details['orderable_deadline']);
-            details.giftProducts = this.handleGiftProducts(details['gift_products']);
+            if (details['has_gift']) {
+                details.giftProducts = this.handleGiftProducts(details['gift_products'], details['gift_floor']);
+            }
             details.discount = details.discount >= 100 ? '' : details.discount / 10 + '折起';
             this.state.grouponDetails = details;
         });

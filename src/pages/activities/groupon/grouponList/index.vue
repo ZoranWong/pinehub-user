@@ -67,6 +67,7 @@
     import './css/index.css'
     import SwiperNotice from "../components/SwiperNotice";
 
+
 	export default {
 		components: {
             SwiperNotice
@@ -82,7 +83,8 @@
 		computed: {
             grouponList () {
                 return this.model.groupon.grouponList
-            }
+            },
+
 		},
 		methods: {
             back(){
@@ -95,6 +97,9 @@
             redirectTo (router, options = {}) {
                 this.$command('REDIRECT_TO', router, 'push', options);
             },
+            handleMock () {
+                // 模拟滚动条
+            }
 		},
 		created() {
 
@@ -102,7 +107,7 @@
 		mounted() {
 		    this.init()
 
-		}
+        }
 	}
 </script>
 

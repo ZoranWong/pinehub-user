@@ -30,7 +30,8 @@
         watch: {
             show (val) {
                 if (val) {
-                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}`
+                    let path = 'page/activities/groupon/grouponDetails'
+                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}&page=${path}`
                 }
             }
         },

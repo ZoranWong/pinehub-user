@@ -165,7 +165,7 @@
                 title: "青松易购预定商城商品",
                 desc: "青松易购小程序",
                 imageUrl: "",
-                path: `/pages/user/QingSongKungfu/main?id=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
+                path: `/pages/activities/QingSongKungfu/main?id=${this.actId}&backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
                 success: function (res) {
                     // 转发成功

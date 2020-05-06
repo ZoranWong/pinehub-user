@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="groupon_order_payment" >
-        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" :needClear="true" />
+        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'"  />
         <div :style="{height: mainHeight + 'px', overflow: 'auto'}">
 
             <div class="background">

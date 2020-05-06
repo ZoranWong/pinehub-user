@@ -26,7 +26,7 @@
 
                 <div class="price_info">
                     <span class="discount" v-if="grouponDetails['discount']">{{grouponDetails.discount}}</span>
-                    <span class="gift">{{grouponDetails['giftProducts']}}</span>
+                    <span class="gift" v-if="grouponDetails['has_gift']">{{grouponDetails['giftProducts']}}</span>
                 </div>
 
                 <div class="contact">
@@ -80,7 +80,7 @@
                 />
                 <ul class="products">
                     <li v-for="(product,index) in cateProducts" :key="index">
-                        <Product :product="product" @addToCart="addToCart" />
+                        <Product :product="product" @addToCart="addToCart" :deadlineTime="deadlineTime" />
                     </li>
                 </ul>
 
@@ -140,7 +140,7 @@
 
         <ShoppingCart
             :shoppingGroupId="grouponDetails['id']"
-            v-if="goodInShoppingCart"
+            v-if="goodInShoppingCart && deadlineTime > 0"
         />
 
 	</div>
@@ -189,14 +189,11 @@
                 ],
                 options: {},
                 id: ''
-
 			};
 		},
 		watch: {
             deadlineTime(val) {
-                console.log(val, 'ttttttttttimer');
                 clearInterval(this.timer)
-                console.log(this.timer, 'this.timer =========>');
                 if (val > 0) {
                     let t = val;
                     this.timer = setInterval(() => {
@@ -206,14 +203,6 @@
                         this.second = Math.floor((t - this.hour * 3600 - this.minute * 60)) < 10 ? '0' + Math.floor((t - this.hour * 3600 - this.minute * 60)) : Math.floor((t - this.hour * 3600 - this.minute * 60));
                     }, 1000)
                 }
-            },
-            timer (val) {
-                console.log(val, '这才是真的定时器');
-            },
-            minute (val) {
-                console.log(this.deadlineTime, 'minute');
-                console.log(val, 'minute');
-                console.log(this.timer, '===+++++++++++=======.....');
             },
             registered(value) {
                 if (value) {
@@ -266,11 +255,9 @@
                 return this.model.account.userId;
             },
             isMember () {
-                console.log(this.model.account.isMember, '_______12122112________');
                 return this.model.account.isMember;
             },
             registered () {
-                console.log(this.model.account.registered, '_______________');
                 return this.model.account.registered;
             },
             accessToken () {

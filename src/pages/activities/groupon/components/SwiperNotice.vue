@@ -4,8 +4,8 @@
         <swiper class="swiper" circular="true" :indicator-dots="false" autoplay="true" interval="3000" duration="1000" :vertical="true">
             <block v-for="(item, index) in notices" :index="index" :key="index">
                 <swiper-item class="swiperNoticeItem">
-                    <image :src="item.img" class="slide-image" mode="aspectFill"/>
-                    <h4>{{item.title}}</h4>
+                    <image :src="item.image" class="slide-image" mode="aspectFill"/>
+                    <h4>{{item.name}}刚刚购买了{{item['productDesc']}}</h4>
                 </swiper-item>
             </block>
         </swiper>
@@ -13,37 +13,71 @@
 </template>
 
 <script>
+    import {mocks} from "../grouponList/mock/mock";
+    import _ from 'underscore'
     export default {
         name: "SwiperNotice",
         data () {
             return {
-                notices: [
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '张强刚刚下单购买了面包！'
-                    },
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '王学红刚刚下单购买了面包！'
-                    },
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '曹文君刚刚下单购买了面包！'
-                    },
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '叶长旺刚刚下单购买了面包！'
-                    },
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '余晓东刚刚下单购买了面包！'
-                    },
-                    {
-                        img: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/2020/02/08/生日蛋糕.png',
-                        title: '高罗刚刚下单购买了面包！'
-                    },
-                ]
+                notices: []
             }
+        },
+        watch: {
+            products (val) {
+                if (val.length) {
+                    this.handleMock(val)
+                }
+            },
+            notices (val) {
+                if (val.length) {
+                    _.map(val, mock => {
+                        let text = '';
+                        _.map(mock.products, product => {
+                            text += `${product.name}、`
+                        })
+                        text = text.substring(0, text.length - 1);
+                        mock.productDesc = text;
+                    })
+                }
+            }
+        },
+        computed :{
+            products () {
+                return this.model.groupon.products
+            }
+        },
+        methods: {
+            getRandom (min, max) {
+                switch(arguments.length){
+                    case 1:
+                        return parseInt(Math.random()*min+1,10);
+                        break;
+                    case 2:
+                        return parseInt(Math.random()*(max-min+1)+min,10);
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
+            },
+            handleMock (products) {
+
+                _.map(mocks, mock => {
+                    let random = this.getRandom(2,5)
+                    let p = [];
+                    for (let i = 0; i < random; i++) {
+                        p.push(products[Math.floor(Math.random() * (products.length - 1))])
+                        if (!p.length) {
+
+                        }
+                    }
+                    mock.products = p;
+                })
+                this.notices = mocks;
+            }
+        },
+        mounted() {
+
         }
     }
 </script>
@@ -77,6 +111,10 @@
     }
 
     .swiperNoticeItem h4{
+        width: 400rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         display: inline;
         font-size: 22rpx;
         color: #111;
