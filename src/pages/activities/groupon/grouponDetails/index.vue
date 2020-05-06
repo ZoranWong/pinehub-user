@@ -12,7 +12,7 @@
 
             <!--        <SwiperNotice />-->
 
-            <div class="detail_header" v-if="grouponDetails['pick_shop_info']">
+            <div class="detail_header" v-if="grouponDetails['pick_shop_info']" @click="goShopDetails">
                 <img src="./img/background.jpeg" alt="" class="image">
 
                 <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
@@ -30,8 +30,8 @@
                 </div>
 
                 <div class="contact">
-                    <img @click="contact" src="../images/Contact_head.png" alt="">
-                    <img @click="showShareBox" src="../images/Share_spell_group.png" alt="">
+                    <img @click.stop="contact" src="../images/Contact_head.png" alt="">
+                    <img @click.stop="showShareBox" src="../images/Share_spell_group.png" alt="">
                 </div>
 
                 <div class="notice">
@@ -320,6 +320,9 @@
                 } else {
                     this.$command('REDIRECT_TO','','back')
                 }
+            },
+            goShopDetails () {
+                this.$command('REDIRECT_TO','user.groupon.shopDetails','push')
             },
             forbidScroll (isForbid) {
                 this.isForbid = isForbid

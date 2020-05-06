@@ -20,6 +20,7 @@
     "user.activity": "/pages/activities/activities/main",
     "user.groupon.list": "/pages/activities/groupon/grouponList/main",
     "user.groupon.details": "/pages/activities/groupon/grouponDetails/main",
+    "user.groupon.shopDetails": "/pages/activities/groupon/grouponShopDetails/main",
     "user.groupon.order.payment": "/pages/activities/groupon/grouponOrderPayment/main",
     "user.myGroupon": "/pages/activities/groupon/myGroupon/main",
     "user.groupon.order.details": "/pages/activities/groupon/grouponOrderDetails/main",

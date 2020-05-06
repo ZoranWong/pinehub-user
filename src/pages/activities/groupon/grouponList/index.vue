@@ -14,12 +14,8 @@
             <div class="right" @click="redirectTo('user.myGroupon',{})"></div>
         </div>
         <ul class="groupon_list">
-            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" @click="redirectTo('user.groupon.details', {
-                query: {
-                     id: item.id
-                }
-            })">
-                <div class="groupon_shop_info">
+            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >
+                <div class="groupon_shop_info" @click="goShopDetails">
                     <div class="left">
                         <img class="shop_image" src="../grouponDetails/img/background.jpeg" alt="">
                         <div class="top">
@@ -32,7 +28,11 @@
                         <h4 class="groupon_amount">{{item['order_placed_users_count']}}人已参团</h4>
                     </div>
                 </div>
-                <div class="groupon_info">
+                <div class="groupon_info" @click="redirectTo('user.groupon.details', {
+                    query: {
+                         id: item.id
+                    }
+                })">
                     <img src="../images/arrow.png" class="arrow" alt="">
                     <div class="groupon_info_title">
                         <h3 class="groupon_name">{{item['display_name']}}</h3>
@@ -99,6 +99,9 @@
             },
             handleMock () {
                 // 模拟滚动条
+            },
+            goShopDetails () {
+                this.$command('REDIRECT_TO','user.groupon.shopDetails','push')
             }
 		},
 		created() {
