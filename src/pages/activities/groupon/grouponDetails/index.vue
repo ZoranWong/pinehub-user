@@ -100,12 +100,12 @@
                                     <img :src="user.avatar" alt="">
                                     <div class="names">
                                         <h4>{{user.nickname}}</h4>
-                                        <span>2分钟前</span>
+                                        <span>{{user['created_at']}}</span>
                                     </div>
                                 </div>
                                 <div class="price">
                                     <i>¥</i>
-                                    <h4>19</h4>
+                                    <h4>{{user['total_fee']}}</h4>
                                 </div>
                             </div>
                             <div class="bottom">
@@ -170,7 +170,7 @@
                 toTop: 0,
                 isForbid: false,
                 shareBoxVisible: false,
-                sharePicVisible: true,
+                sharePicVisible: false,
                 getAuth: false,
                 showBindMobile: false,
                 buttons: [
@@ -247,9 +247,7 @@
         },
 		computed: {
             needBackHome () {
-                let pages =  getCurrentPages();
-                let options = pages[pages.length - 1]['options'];
-                return options.backHome ? true : false;
+                return this.options.backHome ? true : false;
             },
             userId () {
                 return this.model.account.userId;
@@ -385,7 +383,6 @@
                         this.showBindMobile = true;
                     } else {
                         let goods = this.model.groupon.goodInShoppingCart;
-                        console.log(goods, '????????????????????????????????');
                         let cartIndex = _.findIndex(goods, {product_stock_id: item['product_stock_id']});
                         if (cartIndex < 0) {
                             this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND',item['product_stock_id'],this.grouponDetails['id'])
@@ -404,6 +401,11 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             this.options = options;
+            console.log(options, '=======<><<><><>><<<<<><>><><');
+            if (options.scene) {
+                options.id = options.scene.split('3D')[1];
+                options.backHome = true
+            }
             this.$command('LOAD_GROUPON_DETAILS', options.id);
             if (!this.registered) {
                 this.initAccount();

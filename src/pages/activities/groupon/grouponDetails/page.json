@@ -1,8 +1,5 @@
 {
     "window": {
         "enablePullDownRefresh": "false"
-    },
-    "usingComponents" : {
-        "painter": "/components/painter/painter"
     }
 }

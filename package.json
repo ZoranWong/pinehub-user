@@ -35,6 +35,7 @@
         "strip-ansi": "^4.0.0",
         "underscore": "^1.9.1",
         "underscore.string": "^3.3.4",
+        "vnode2canvas": "^0.2.1",
         "vue": "^2.5.17",
         "vuex": "^3.0.1",
         "weapp-qrcode": "^1.0.0",

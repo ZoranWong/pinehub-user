@@ -1,26 +1,14 @@
 <!--suppress ALL -->
 <template>
     <div class="share_pic" v-if="show" :style="{'zIndex': 8888}">
-<!--        <div class="share_content" :style="{'zIndex': 9999}">-->
-<!--            <img :src="pic" alt="">-->
-<!--            <h3>{{name}}</h3>-->
-<!--            <h4>-->
-<!--                {{text}}-->
-<!--            </h4>-->
-<!--            <div class="code">-->
-<!--                <img class="text" src="../img/txt.png" alt="">-->
-<!--                <img v-if="show" class="codeImg" :src='image' alt="">-->
-<!--            </div>-->
-<!--            <button class="save" @click="downloadCodeImg">完成</button>-->
-<!--        </div>-->
 
-        <paint :palette="data" @imgOK="onImgOk"></paint>
 
+        <canvas canvas-id="canvas" :style="{width: width + 'px', height: height+'px',background: '#fff', borderRadius: '25rpx'}"></canvas>
+        <button class="save" @click="onImgOk">保存图片</button>
     </div>
 </template>
 
 <script>
-
     export default {
         name: "SharePic",
         props: ['show', 'text', 'name', 'id', 'pic'],
@@ -29,39 +17,124 @@
                 code: '',
                 gateway: '',
                 image: '',
-                data () {
-                    return {
-                        data: {
-                            width:'540rpx',
-                            height:'890rpx',
-                            background:'#fff',
-                            borderRadius:'25rpx'
-                        }
-                    }
-                }
+                width: 270,
+                height: 445
             }
         },
-        components: {paint},
+        canvasOptions: {
+            canvasId: 'canvas'
+        },
+        renderCanvas (h) {
+            console.log(h, '(((((((((');
+            if (!this.name) {
+                return h('view', [])
+            };
+            return h('view', {
+                style: {
+                    width: 270,
+                    height: 445,
+                    fill: '#ffffff',
+                }
+            }, [
+                h('image', {
+                    props: {
+                        src: this.pic
+                    },
+                    style: {
+                        left: 15,
+                        top: 15,
+                        width: 240,
+                        height: 240
+                    }
+                }),
+                h('text', {
+                    style: {
+                        left: 15,
+                        top: 270,
+                        fill: '#111',
+                        fontSize: 20,
+                        ellipse: true,
+                        zIndex: 999999
+                    }
+                }, this.name),
+                h('text', {
+                    style: {
+                        left: 15,
+                        top: 298,
+                        fill: '#757575',
+                        fontSize: 12,
+                        width: '430rpx',
+                        wordBreak: 'break-all'
+                    }
+                }, this.text),
+                h('image', {
+                    props: {
+                        src: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/txt.png'
+                    },
+                    style: {
+                        left: 15,
+                        top: 375,
+                        width: 140,
+                        height: 35
+                    }
+                }),
+                h('image', {
+                    props: {
+                        src: this.image
+                    },
+                    style: {
+                        left: 180,
+                        top: 357,
+                        width: 75,
+                        height: 75
+                    }
+                }),
+            ])
+        },
         watch: {
             show (val) {
                 if (val) {
                     let path = 'pages/activities/groupon/grouponDetails/main';
-
-                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}&page=${path}`
+                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}&page=${path}`;
                 }
             }
         },
         methods: {
-            downloadCodeImg () {
-                this.$emit('onClose')
-            },
+
             onImgOk () {
-                console.log('ok');
-            }
+                let self= this;
+                wx.canvasToTempFilePath({
+                    x: 0,
+                    y: 0,
+                    width: 270,
+                    height: 445,
+                    canvasId: 'canvas',
+                    success: function(res) {
+                        console.log(res, '==========>>>>>>>');
+                        wx.saveImageToPhotosAlbum({
+                            filePath: res.tempFilePath,
+                            success (res) {
+                                wx.showToast({
+                                    title: '保存图片成功',
+                                    icon: 'success',
+                                    duration: 2000
+                                });
+                                self.$emit('onClose')
+                            }
+
+                        })
+                    }
+                })
+
+            },
         },
         mounted() {
             this.gateway = this.config['app']['http']['gateway'];
-
+            // let ctx = wx.createCanvasContext('canvas');
+            // ctx.rect(0, 0, 270, 445);
+            // ctx.setFillStyle('white')
+            // ctx.fill();
+            // ctx.draw();
         }
     }
 </script>
@@ -81,56 +154,6 @@
         align-items: center;
     }
 
-    .share_content{
-        width:540rpx;
-        height:890rpx;
-        background:rgba(255,255,255,1);
-        border-radius:25rpx;
-        padding: 30rpx;
-        box-sizing: border-box;
-        position: relative;
-    }
-
-    .share_content>img{
-        width: 480rpx;
-        height: 480rpx;
-        margin-bottom: 20rpx;
-    }
-
-    .share_content h3{
-        font-size: 40rpx;
-        color: #111;
-        font-weight: normal;
-    }
-
-    .share_content h4{
-        font-size: 24rpx;
-        color: #757575;
-        font-weight: normal;
-        margin-top: 19rpx;
-    }
-
-    .share_content .code{
-        padding: 26rpx 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 30rpx;
-        border-top: 1rpx dashed #F2F2F2;
-        margin-bottom: 26rpx;
-    }
-
-    .share_content .code .text{
-        width: 280rpx;
-        height: 71rpx;
-    }
-
-    .share_content .code .codeImg{
-        width: 150rpx;
-        height: 150rpx;
-    }
-
     .share_pic .save{
         width:330rpx;
         height:80rpx;
@@ -143,7 +166,7 @@
         border-color: #fff;
         color: #fff;
         position: absolute;
-        bottom: -110rpx;
-        left: 100rpx;
+        bottom: 110rpx;
+        left: 210rpx;
     }
 </style>

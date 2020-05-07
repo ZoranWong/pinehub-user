@@ -7,6 +7,9 @@ import AddGrouponGoodsToCartCommand from './commands/AddGoodsToCart';
 import ChangeGrouponBuyNumCommand from './commands/ChangeBuyNumCommand';
 import ClearGrouponCartCommand from './commands/ClearCartCommand';
 import LoadGrouponCartCommand from './commands/LoadCartCommand';
+import RenderCanvas from 'vnode2canvas';
+
+Vue.use(RenderCanvas);
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
