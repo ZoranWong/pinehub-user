@@ -68,5 +68,19 @@
 </script>
 
 <style scoped>
+    .weui-half-screen-dialog__ft {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
+    .weui-half-screen-dialog__ft button{
+        font-size: 24rpx;
+        margin: 0;
+        height: 80rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 80rpx;
+    }
 </style>

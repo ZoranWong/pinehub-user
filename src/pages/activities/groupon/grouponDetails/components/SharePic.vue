@@ -1,10 +1,10 @@
 <!--suppress ALL -->
 <template>
-    <div class="share_pic" v-if="show" :style="{'zIndex': 8888}">
+    <div class="share_pic" v-if="show" :style="{'zIndex': 8888}" @click="close">
 
 
-        <canvas canvas-id="canvas" :style="{width: width + 'px', height: height+'px',background: '#fff', borderRadius: '25rpx'}"></canvas>
-        <button class="save" @click="onImgOk">保存图片</button>
+        <canvas @click.stop="stop" canvas-id="canvas" :style="{width: width + 'rpx', height: height+'rpx',background: '#fff', borderRadius: '25rpx'}"></canvas>
+        <button class="save" @click.stop="onImgOk">保存图片</button>
     </div>
 </template>
 
@@ -17,79 +17,152 @@
                 code: '',
                 gateway: '',
                 image: '',
-                width: 270,
-                height: 445
+                width: 540,
+                height: 890
             }
         },
         canvasOptions: {
             canvasId: 'canvas'
         },
         renderCanvas (h) {
-            console.log(h, '(((((((((');
             if (!this.name) {
                 return h('view', [])
             };
-            return h('view', {
-                style: {
-                    width: 270,
-                    height: 445,
-                    fill: '#ffffff',
-                }
-            }, [
-                h('image', {
-                    props: {
-                        src: this.pic
-                    },
+            let text = this.text;
+            if (text.length > 20) {
+                let text_front = text.substring(0,20);
+                let text_behind = text.substring(20);
+                return h('view', {
                     style: {
-                        left: 15,
-                        top: 15,
-                        width: 240,
-                        height: 240
+                        width: 270,
+                        height: 445,
+                        fill: '#ffffff',
                     }
-                }),
-                h('text', {
+                }, [
+                    h('image', {
+                        props: {
+                            src: this.pic
+                        },
+                        style: {
+                            left: 15,
+                            top: 15,
+                            width: 240,
+                            height: 240
+                        }
+                    }),
+                    h('text', {
+                        style: {
+                            left: 15,
+                            top: 270,
+                            fill: '#111',
+                            fontSize: 20,
+                            ellipse: true,
+                            zIndex: 999999
+                        }
+                    }, this.name),
+                    h('text', {
+                        style: {
+                            left: 15,
+                            top: 298,
+                            fill: '#757575',
+                            fontSize: 12,
+                        }
+                    }, text_front),
+                    h('text', {
+                        style: {
+                            left: 15,
+                            top: 315,
+                            fill: '#757575',
+                            fontSize: 12,
+                        }
+                    }, text_behind),
+                    h('image', {
+                        props: {
+                            src: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/txt.png'
+                        },
+                        style: {
+                            left: 15,
+                            top: 375,
+                            width: 140,
+                            height: 35
+                        }
+                    }),
+                    h('image', {
+                        props: {
+                            src: this.image
+                        },
+                        style: {
+                            left: 180,
+                            top: 357,
+                            width: 75,
+                            height: 75
+                        }
+                    }),
+                ])
+            } else {
+                return h('view', {
                     style: {
-                        left: 15,
-                        top: 270,
-                        fill: '#111',
-                        fontSize: 20,
-                        ellipse: true,
-                        zIndex: 999999
+                        width: 270,
+                        height: 445,
+                        fill: '#ffffff',
                     }
-                }, this.name),
-                h('text', {
-                    style: {
-                        left: 15,
-                        top: 298,
-                        fill: '#757575',
-                        fontSize: 12,
-                        width: '430rpx',
-                        wordBreak: 'break-all'
-                    }
-                }, this.text),
-                h('image', {
-                    props: {
-                        src: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/txt.png'
-                    },
-                    style: {
-                        left: 15,
-                        top: 375,
-                        width: 140,
-                        height: 35
-                    }
-                }),
-                h('image', {
-                    props: {
-                        src: this.image
-                    },
-                    style: {
-                        left: 180,
-                        top: 357,
-                        width: 75,
-                        height: 75
-                    }
-                }),
-            ])
+                }, [
+                    h('image', {
+                        props: {
+                            src: this.pic
+                        },
+                        style: {
+                            left: 15,
+                            top: 15,
+                            width: 240,
+                            height: 240
+                        }
+                    }),
+                    h('text', {
+                        style: {
+                            left: 15,
+                            top: 270,
+                            fill: '#111',
+                            fontSize: 20,
+                            ellipse: true,
+                            zIndex: 999999
+                        }
+                    }, this.name),
+                    h('text', {
+                        style: {
+                            left: 15,
+                            top: 298,
+                            fill: '#757575',
+                            fontSize: 12,
+                            width: '430rpx',
+                            wordBreak: 'break-all'
+                        }
+                    }, this.text),
+                    h('image', {
+                        props: {
+                            src: 'https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/txt.png'
+                        },
+                        style: {
+                            left: 15,
+                            top: 375,
+                            width: 140,
+                            height: 35
+                        }
+                    }),
+                    h('image', {
+                        props: {
+                            src: this.image
+                        },
+                        style: {
+                            left: 180,
+                            top: 357,
+                            width: 75,
+                            height: 75
+                        }
+                    }),
+                ])
+            }
+
         },
         watch: {
             show (val) {
@@ -100,7 +173,12 @@
             }
         },
         methods: {
+            close () {
+                this.$emit('onClose')
+            },
+            stop () {
 
+            },
             onImgOk () {
                 let self= this;
                 wx.canvasToTempFilePath({
