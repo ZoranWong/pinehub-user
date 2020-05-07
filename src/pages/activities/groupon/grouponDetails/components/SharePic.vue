@@ -1,22 +1,26 @@
 <!--suppress ALL -->
 <template>
     <div class="share_pic" v-if="show" :style="{'zIndex': 8888}">
-        <div class="share_content" :style="{'zIndex': 9999}">
-            <img :src="pic" alt="">
-            <h3>{{name}}</h3>
-            <h4>
-                {{text}}
-            </h4>
-            <div class="code">
-                <img class="text" src="../img/txt.png" alt="">
-                <img v-if="show" class="codeImg" :src='image' alt="">
-            </div>
-            <button class="save" @click="downloadCodeImg">完成</button>
-        </div>
+<!--        <div class="share_content" :style="{'zIndex': 9999}">-->
+<!--            <img :src="pic" alt="">-->
+<!--            <h3>{{name}}</h3>-->
+<!--            <h4>-->
+<!--                {{text}}-->
+<!--            </h4>-->
+<!--            <div class="code">-->
+<!--                <img class="text" src="../img/txt.png" alt="">-->
+<!--                <img v-if="show" class="codeImg" :src='image' alt="">-->
+<!--            </div>-->
+<!--            <button class="save" @click="downloadCodeImg">完成</button>-->
+<!--        </div>-->
+
+        <paint :palette="data" @imgOK="onImgOk"></paint>
+
     </div>
 </template>
 
 <script>
+
     export default {
         name: "SharePic",
         props: ['show', 'text', 'name', 'id', 'pic'],
@@ -25,8 +29,19 @@
                 code: '',
                 gateway: '',
                 image: '',
+                data () {
+                    return {
+                        data: {
+                            width:'540rpx',
+                            height:'890rpx',
+                            background:'#fff',
+                            borderRadius:'25rpx'
+                        }
+                    }
+                }
             }
         },
+        components: {paint},
         watch: {
             show (val) {
                 if (val) {
@@ -46,6 +61,7 @@
         },
         mounted() {
             this.gateway = this.config['app']['http']['gateway'];
+
         }
     }
 </script>

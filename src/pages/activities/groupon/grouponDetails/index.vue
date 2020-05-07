@@ -170,7 +170,7 @@
                 toTop: 0,
                 isForbid: false,
                 shareBoxVisible: false,
-                sharePicVisible: false,
+                sharePicVisible: true,
                 getAuth: false,
                 showBindMobile: false,
                 buttons: [
