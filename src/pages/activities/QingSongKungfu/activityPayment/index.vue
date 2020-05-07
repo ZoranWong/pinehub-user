@@ -95,7 +95,7 @@
                 actId: '',
                 time: '',
                 screenHeight: 0,
-                sendPrice: 100
+                sendPrice: 88
 			};
 		},
 		watch: {

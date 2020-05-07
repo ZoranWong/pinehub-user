@@ -16,6 +16,6 @@
         "gateway": "https://neptune.klsfood.cn"
     },
     "socket": {
-        "gateway": "https://neptune.klsfood.cn:6001"
+        "gateway": "https://neptune.klsfood.cn"
     }
 }
