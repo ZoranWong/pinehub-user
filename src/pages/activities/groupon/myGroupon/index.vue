@@ -10,7 +10,7 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :style="{width: '750rpx' }">
-                    <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="selectTab(tab.key)">{{tab.name}}</view>
+                    <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="selectTab(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
         </div>
@@ -23,7 +23,7 @@
             </div>
             <div v-else>
                 <div class="order_container" v-for="(order,index) in orders" :key="index">
-                    <grouponOrder :order="order" />
+                    <grouponOrder :order="order" :status="statusDesc" />
                 </div>
             </div>
         </div>
@@ -52,6 +52,7 @@
                 screenHeight: 0,
                 rpxRate: 1,
                 screenWitdh: 0,
+                statusDesc: '待成团'
             };
 		},
 		watch: {
@@ -83,8 +84,9 @@
             }
 		},
 		methods: {
-            selectTab (key) {
-                this.statusType = key
+            selectTab (item) {
+                this.statusType = item.key;
+                this.statusDesc = item.name
             }
 		},
 		created() {

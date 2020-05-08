@@ -81,6 +81,8 @@
             availableCoupons () {
                 if (this.$route.query.type === 'activity') {
                     return this.model.activity.availableCoupons
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.availableCoupons
                 } else {
                     return this.model.user.tickets.availableCoupons
                 }
@@ -88,6 +90,8 @@
 			couponIds () {
                 if (this.$route.query.type === 'activity') {
                     return this.model.activity.couponIds
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.grouponCouponIds
                 } else {
                     return this.model.user.order.payment.couponIds
                 }
@@ -149,7 +153,12 @@
                             return
                         }
                     }
-                    this.$command('ORDER_COUPON_IDS', coupon['record_id'])
+                    if (this.$route.query.type === 'groupon') {
+                        this.$command('GROUPON_ORDER_COUPON_IDS', coupon['record_id'])
+                    } else {
+                        this.$command('ORDER_COUPON_IDS', coupon['record_id'])
+                    }
+
                 } else {
                     this.ticketDetail(coupon.id)
                 }

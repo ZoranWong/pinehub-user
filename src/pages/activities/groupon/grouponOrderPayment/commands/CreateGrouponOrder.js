@@ -9,6 +9,7 @@ export default class CreateGrouponOrder extends Command {
                 orderInfo: response
             });
             this.model.groupon.dispatch('clearShoppingCart');
+            this.model.groupon.dispatch('clearIds');
             this.$command('REDIRECT_TO', 'selectPay', 'push', {
                 query: {
                     type: 'groupon'

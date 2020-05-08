@@ -7,7 +7,7 @@
                 <em>订单号:{{order['trade_no']}}</em>
                 <img src="../../../../../../static/icons/rightArrow.png" class="arrow" alt="">
             </div>
-            <span class="order_info_status" >待对接</span>
+            <span class="order_info_status" >{{status}}</span>
         </div>
         <ul class="order_info_glist" >
             <li v-for="(item, idx) in order.products" :key="idx">
@@ -42,7 +42,7 @@
 <script>
     export default {
         name: "grouponOrder",
-        props: ['order'],
+        props: ['order','status'],
         data () {
             return {
             }

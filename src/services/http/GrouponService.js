@@ -86,6 +86,20 @@ export default class ActivityService extends ApiService {
         return response.data;
     }
 
+    // 获取拼团可用优惠券列表
+    async availableCoupons (id) {
+        let response = await this.httpGet('api/mp/group_shopping/getCouponList', {
+            shop_shopping_group_id: id
+        });
+        return response;
+    }
+
+    // 计算拼团金额
+    async calculateGrouponPrice (params) {
+        let response = await this.httpGet('api/mp/group_shopping/groupOrderCalculate', params);
+        return response;
+    }
+
     // 获取拼团订单列表
     async getGrouponOrders (status) {
         let response = await this.httpGet('api/mp/group_shopping/getMyGroupList', {
@@ -98,6 +112,14 @@ export default class ActivityService extends ApiService {
     async getGrouponOrderDetails (order_id) {
         let response = await this.httpGet('api/mp/group_shopping/getMyGroupOrderDetail', {
             order_id
+        });
+        return response.data;
+    }
+
+    // 点击拼团
+    async clickGroupon (id) {
+        let response = await this.httpPut('api/mp/group_shopping/clickShopShoppingGroup', {
+            shop_shopping_group_id: id
         });
         return response.data;
     }

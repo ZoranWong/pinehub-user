@@ -179,8 +179,8 @@
 				{
 					"id": -1,
 					"name": "pages/user/index/main",
-					"pathName": "pages/activities/groupon/grouponList/main",
-					"query": "",
+					"pathName": "pages/activities/groupon/grouponDetails/main",
+					"query": "id=36",
 					"scene": null
 				}
 			]

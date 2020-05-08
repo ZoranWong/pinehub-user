@@ -38,6 +38,18 @@ export default class Activity extends Model {
             },
             products () {
                 return this.state.products
+            },
+            orderInfo () {
+                return this.state.orderInfo
+            },
+            couponIds () {
+                return this.state.ids
+            },
+            availableCoupons () {
+                return this.state.availableCoupons
+            },
+            grouponCouponIds () {
+                return this.state.ids
             }
         });
     }
@@ -54,7 +66,10 @@ export default class Activity extends Model {
             createdOrderInfo: {},
             details: {},
             orders: [],
-            products: []
+            products: [],
+            orderInfo: {},
+            availableCoupons: [],
+            ids: []
         };
     }
 
@@ -138,6 +153,11 @@ export default class Activity extends Model {
             this.state.grouponDetails = details;
         });
 
+        this.addEventListener('clearGrouponDetails', function () {
+            console.log('清除页面数据');
+            this.state.grouponDetails = {};
+        });
+
         this.addEventListener('saveCateProducts', function ({products}) {
             this.state.cateProducts = products
         });
@@ -204,6 +224,48 @@ export default class Activity extends Model {
         this.addEventListener('saveGrouponOrderDetails', function ({details}) {
             details.trade_no = details['trade_no'].slice(-12);
             this.state.details = details
+        });
+
+        this.addEventListener('saveOrderInfo', function ({orderInfo}) {
+            this.state.orderInfo = orderInfo
+        });
+
+        this.addEventListener('saveAvailableCoupons', function ({coupons}) {
+            _.map(coupons, (coupon) => {
+                coupon['title'] = coupon['coupon_name'];
+                if (coupon['coupon_type'] === 'CASH') {
+                    coupon.typeDesc = '现金券'
+                } else {
+                    coupon.typeDesc = '折扣券'
+                }
+                coupon.floor = coupon['floor'] > 0 ? `满${coupon['floor']}元可用` : '无门槛';
+                coupon.coupon_image = coupon['banner'];
+                coupon.validTime = coupon['valid_term_desc']
+            });
+            console.log(coupons, '??????????????????');
+            this.state.availableCoupons = coupons
+        });
+
+        this.addEventListener('handleIds', function ({id}) {
+            console.log(id, '准备处理couponid');
+            let ids = this.state.ids;
+            let index = _.indexOf(ids, id);
+            if (index < 0) {
+                ids.push(id)
+            } else {
+                ids.splice(index, 1)
+            }
+            this.state.ids = ids;
+        });
+
+        this.addEventListener('deleteId', function () {
+            let ids = this.state.ids;
+            ids.pop();
+            this.state.ids = ids;
+        });
+
+        this.addEventListener('clearIds', function () {
+            this.state.ids = [];
         });
     }
 }

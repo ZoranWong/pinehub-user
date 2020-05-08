@@ -59,20 +59,34 @@
                     <ul id="total">
                         <li>
                             <h3>商品总价</h3>
-                            <span class="small"> {{totalPrice}}</span>
+                            <span class="small"><i>￥</i> {{orderInfo['total_fee'] || 0}}</span>
                         </li>
                         <li>
                             <h3>
                                 <img src="./imgs/minus.png" alt="">
                                 优惠金额
                             </h3>
-                            <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
+                            <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>{{orderInfo['total_preferential_fee'] || 0}}</span>
+                        </li>
+                        <li @click="jump('couponCenter')">
+                            <h3>
+                                <img src="./imgs/coupon.png" alt="">
+                                优惠券
+                            </h3>
+                            <div class="couponUse">
+                                <em class="red2" v-if="availableCoupons.length">{{availableCoupons.length - grouponCouponIds.length}}张可用</em>
+                                <em class="gray" v-else>暂无可用</em>
+                                <span class="use_coupon" >
+                                <img src="./imgs/right-arrow.png" alt="">
+                            </span>
+                            </div>
                         </li>
                         <li>
                             <h4 class="bigH4">实付款</h4>
                             <h5 class="big">
                                 <span class="big2">小计</span>
-                                {{totalPrice}}
+                                <i>￥</i>
+                                {{orderInfo['settlement_total_fee'] || 0}}
                             </h5>
                         </li>
                     </ul>
@@ -165,6 +179,15 @@
             totalPrice () {
                 return this.model.groupon.totalPrice;
             },
+            availableCoupons () {
+                return this.model.user.tickets.availableCoupons
+            },
+            grouponCouponIds () {
+                return this.model.groupon.grouponCouponIds
+            },
+            orderInfo () {
+                return this.model.groupon.orderInfo
+            }
         },
         methods: {
 
@@ -208,6 +231,12 @@
             },
             go (router) {
                 this.$command('REDIRECT_TO', router, 'push');
+            },
+            jump (router) {
+                if (this.availableCoupons.length === 0) return;
+                this.$command('REDIRECT_TO', router, 'push',{
+                    query: {needReturn: true, type: 'groupon',shoppingGroupId: this.$route.query.shoppingGroupId}
+                });
             }
         },
         created() {
@@ -215,10 +244,14 @@
         },
         onShow () {
 
-
         },
         mounted() {
-
+            let id = this.$route.query.shoppingGroupId;
+            this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
+                coupon_records: this.grouponCouponIds,
+                shop_shopping_group_id: id
+            });
+            this.$command('GROUPON_AVAILABLE_COUPONS',this.$route.query.shoppingGroupId)
         }
     }
 </script>

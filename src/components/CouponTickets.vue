@@ -58,6 +58,9 @@
 			    if (this.$route.query.type === 'activity') {
                     this.coupons = this.model.activity.availableCoupons
                     return this.model.activity.availableCoupons
+                } else if (this.$route.query.type === 'groupon') {
+                    this.coupons = this.model.groupon.availableCoupons
+                    return this.model.groupon.availableCoupons
                 } else {
                     this.coupons = this.model.user.tickets.availableCoupons
                     return this.model.user.tickets.availableCoupons
@@ -66,6 +69,8 @@
             couponIds () {
                 if (this.$route.query.type === 'activity') {
                     return this.model.activity.couponIds
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.grouponCouponIds
                 } else {
                     return this.model.user.order.payment.couponIds
                 }
@@ -95,6 +100,13 @@
                             query: {
                                 type: type,
                                 actId: this.$route.query.actId
+                            }
+                        });
+                    } else if (type === 'groupon') {
+                        this.$command('REDIRECT_TO', '','back',{
+                            query: {
+                                type: type,
+                                shoppingGroupId: this.$route.query.shoppingGroupId
                             }
                         });
                     } else {

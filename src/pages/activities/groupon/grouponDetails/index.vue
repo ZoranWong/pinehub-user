@@ -393,6 +393,12 @@
                 }
             },
 		},
+        // onShow () {
+		//     this.model.groupon.dispatch('clearGrouponDetails')
+        // },
+        onHide (){
+            clearInterval(this.timer)
+        },
 		created() {
 
 		},

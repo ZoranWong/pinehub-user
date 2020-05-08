@@ -28,11 +28,7 @@
                         <h4 class="groupon_amount">{{item['order_placed_users_count']}}人已参团</h4>
                     </div>
                 </div>
-                <div class="groupon_info" @click="redirectTo('user.groupon.details', {
-                    query: {
-                         id: item.id
-                    }
-                })">
+                <div class="groupon_info" @click="goGrouponDetails(item)">
                     <img src="../images/arrow.png" class="arrow" alt="">
                     <div class="groupon_info_title">
                         <h3 class="groupon_name">{{item['display_name']}}</h3>
@@ -102,6 +98,14 @@
             },
             goShopDetails () {
                 this.$command('REDIRECT_TO','user.groupon.shopDetails','push')
+            },
+            goGrouponDetails (item) {
+                this.$command('CLICK_GROUPON', item.id)
+                this.redirectTo('user.groupon.details', {
+                    query: {
+                        id: item.id
+                    }
+                })
             }
 		},
 		created() {
