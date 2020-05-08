@@ -316,7 +316,7 @@
                 if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    this.$command('REDIRECT_TO','','back')
+                    this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
             },
             goShopDetails () {
