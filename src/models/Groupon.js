@@ -1,10 +1,7 @@
 import Model from './Model';
 import _ from 'underscore';
 import moment from "moment";
-import de from "element-ui/src/locale/lang/de";
 import {formatMoney, returnFloat} from "../utils";
-import ca from "element-ui/src/locale/lang/ca";
-import {BAR_MAP} from "element-ui/packages/scrollbar/src/util";
 export default class Activity extends Model {
     constructor (app) {
         super(app);
