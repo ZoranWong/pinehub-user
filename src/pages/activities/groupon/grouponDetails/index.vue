@@ -50,7 +50,7 @@
                     <div class="left">
                         <span>{{grouponDetails['created_at']}}发布</span>
                         <i></i>
-                        <div v-if="deadlineTime > 0" class="timerContainer">
+                        <div v-if="deadline > 0" class="timerContainer">
                             <span>距结束</span>
                             <div class="time">
                                 <em>{{hour}}</em> :
@@ -80,7 +80,7 @@
                 />
                 <ul class="products">
                     <li v-for="(product,index) in cateProducts" :key="index">
-                        <Product :product="product" @addToCart="addToCart" :deadlineTime="deadlineTime" />
+                        <Product :product="product" @addToCart="addToCart" :deadlineTime="deadline" />
                     </li>
                 </ul>
 
@@ -140,7 +140,7 @@
 
         <ShoppingCart
             :shoppingGroupId="grouponDetails['id']"
-            v-if="goodInShoppingCart && deadlineTime > 0"
+            v-if="goodInShoppingCart && deadline > 0"
         />
 
 	</div>
@@ -156,6 +156,7 @@
     import GetUserMobile from "../../../../components/GetUserMobile";
     import ShoppingCart from "../components/ShoppingCart";
     import wxParse from 'mpvue-wxparse'
+    import moment from 'moment'
 	export default {
 		components: {
             SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile,ShoppingCart,wxParse
@@ -166,7 +167,6 @@
                 minute: '00',
                 second: '00',
                 timer: null,
-                deadlineTime: 0,
                 toTop: 0,
                 isForbid: false,
                 shareBoxVisible: false,
@@ -188,11 +188,12 @@
                     }
                 ],
                 options: {},
-                id: ''
+                id: '',
+                now: ''
 			};
 		},
 		watch: {
-            deadlineTime(val) {
+            deadline(val) {
                 clearInterval(this.timer)
                 if (val > 0) {
                     let t = val;
@@ -282,7 +283,6 @@
                 return this.statusBarHeight + this.navHeight;
             },
             grouponDetails () {
-                this.deadlineTime = this.model.groupon.grouponDetails.deadlineTime;
                 this.id = this.model.groupon.grouponDetails['id']
                 return this.model.groupon.grouponDetails
             },
@@ -291,6 +291,10 @@
             },
             goodInShoppingCart() {
                 return this.model.groupon.goodInShoppingCart
+            },
+            deadline () {
+                let deadline = moment(this.grouponDetails['orderable_deadline']);
+                return deadline.diff(this.now, 'second')
             }
 		},
 		methods: {
@@ -316,7 +320,8 @@
                 if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
+                    this.$command('REDIRECT_TO','','back')
+                    //this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
             },
             goShopDetails () {
@@ -393,9 +398,9 @@
                 }
             },
 		},
-        // onShow () {
-		//     this.model.groupon.dispatch('clearGrouponDetails')
-        // },
+        onShow () {
+            this.now = moment().format('YYYY-MM-DD HH:mm:ss');
+        },
         onHide (){
             clearInterval(this.timer)
         },

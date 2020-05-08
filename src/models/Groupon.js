@@ -145,7 +145,7 @@ export default class Activity extends Model {
                     }
                 })
             };
-            details.deadlineTime = this.handleTimer(details['orderable_deadline']);
+            // details.deadlineTime = this.handleTimer(details['orderable_deadline']);
             if (details['has_gift']) {
                 details.giftProducts = this.handleGiftProducts(details['gift_products'], details['gift_floor']);
             }
