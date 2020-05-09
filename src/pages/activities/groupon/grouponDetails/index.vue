@@ -191,7 +191,8 @@
                 ],
                 options: {},
                 id: '',
-                now: ''
+                now: '',
+                grouponDetails: {}
 			};
 		},
 		watch: {
@@ -284,11 +285,12 @@
             headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            grouponDetails () {
-                this.id = this.model.groupon.grouponDetails['id']
-                return this.model.groupon.grouponDetails
-            },
+            // grouponDetails () {
+            //     this.id = this.model.groupon.grouponDetails['id']
+            //     return this.model.groupon.grouponDetails
+            // },
             group(){
+                this.grouponDetails = this.model.groupon.grouponDetails
                 return this.model.groupon
             },
             cateProducts () {

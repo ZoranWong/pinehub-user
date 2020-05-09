@@ -212,7 +212,7 @@
                 return this.model.groupon.grouponCouponIds
             },
             orderInfo () {
-                return this.model.groupon.payment.createdOrderInfo
+                return this.model.groupon.orderInfo
             }
         },
         methods: {
