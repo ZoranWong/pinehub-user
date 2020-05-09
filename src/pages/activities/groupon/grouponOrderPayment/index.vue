@@ -109,8 +109,8 @@
             <div id="do_payment">
                 <div class="do_payment_contain">
                 <span class="price">
-<!--                     <i>￥</i>-->
-                     {{totalPrice}}
+                     <i>￥</i>
+                    {{orderInfo['settlement_total_fee'] || 0}}
                     <!--                    <span>（起订金额10元）</span>-->
                     <!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
                 </span>
