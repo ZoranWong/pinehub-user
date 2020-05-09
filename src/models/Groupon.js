@@ -1,7 +1,7 @@
 import Model from './Model';
 import _ from 'underscore';
-import moment from "moment";
-import {formatMoney, returnFloat} from "../utils";
+import moment from 'moment';
+import {formatMoney, returnFloat} from '../utils';
 export default class Activity extends Model {
     constructor (app) {
         super(app);
@@ -102,7 +102,7 @@ export default class Activity extends Model {
 
     // 监听数据
     listeners () {
-        let that = this;
+        super.listeners();
         this.addEventListener('saveGrouponList', function ({list}) {
             _.map(list, item => {
                 if (_.find(this.state.grouponList, function (listItem) {
@@ -128,7 +128,7 @@ export default class Activity extends Model {
                     this.state.products.push(product)
                 });
 
-                that.state.grouponList.push(item)
+                this.state.grouponList.push(item)
             })
         });
 
@@ -171,13 +171,13 @@ export default class Activity extends Model {
             } else {
                 this.$application.$vm.set(carts, cartIndex, goods)
             }
-            that.calculate(this.state);
+            this.calculate(this.state);
         });
 
         this.addEventListener('removeGoodsFromCart', function ({goods}) {
             let carts = this.state.goodInShoppingCart;
             this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
-            that.calculate(this.state);
+            this.calculate(this.state);
         });
 
         this.addEventListener('saveCartGoodsList', function ({products}) {
@@ -188,7 +188,7 @@ export default class Activity extends Model {
             });
             this.state.goodInShoppingCart = items;
             this.state.cartTotalFeeFormat = meta['total_fee'].toFixed(2);
-            that.calculate(this.state);
+            this.calculate(this.state);
         });
 
         this.addEventListener('clearShoppingCart', function (checked) {
@@ -202,7 +202,7 @@ export default class Activity extends Model {
                 carts[cartIndex]['buy_num'] = num;
                 this.$application.$vm.set(carts, cartIndex, carts[cartIndex])
             };
-            that.calculate(this.state);
+            this.calculate(this.state);
         });
 
         this.addEventListener('saveCreatedOrderInfo', function ({orderInfo}) {

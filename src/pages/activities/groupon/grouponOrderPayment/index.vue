@@ -68,6 +68,14 @@
                             </h3>
                             <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>{{orderInfo['total_preferential_fee'] || 0}}</span>
                         </li>
+                        <li>
+                            <h3>
+                                <img src="./imgs/send.png" alt="">
+                                赠品
+                                <span class="gift">({{giftProducts}})</span>
+                            </h3>
+                            <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
+                        </li>
                         <li @click="jump('couponCenter')">
                             <h3>
                                 <img src="./imgs/coupon.png" alt="">
@@ -157,9 +165,27 @@
                 return this.model.global.barHeight.statusBarHeight
             },
             goodInShoppingCart(){
-                let products = this.model.groupon.goodInShoppingCart;
+                let products = this.model.groupon.goodInShoppingCart.filter(item => item.total_fee);
                 this.products = products.length > 3 ? products.slice(0, 3) : products
                 return this.model.groupon.goodInShoppingCart
+            },
+            giftProducts() {
+                let products = this.goodInShoppingCart;
+                let giftProducts = [];
+                _.map(products, product => {
+                    if (!product.total_fee) {
+                        giftProducts.push(product)
+                    }
+                });
+                if (giftProducts.length) {
+                    let text = '';
+                    _.map(giftProducts, product => {
+                        text += `${product.name}、`
+                    })
+                    return text.substring(0, text.length - 1);
+                } else {
+                    return '无'
+                }
             },
             navHeight () {
                 return this.model.global.barHeight.navHeight
@@ -186,7 +212,7 @@
                 return this.model.groupon.grouponCouponIds
             },
             orderInfo () {
-                return this.model.groupon.orderInfo
+                return this.model.groupon.payment.createdOrderInfo
             }
         },
         methods: {
@@ -247,6 +273,7 @@
         },
         mounted() {
             let id = this.$route.query.shoppingGroupId;
+            this.$command('LOAD_GROUPON_CART_COMMAND', id)
             this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
                 coupon_records: this.grouponCouponIds,
                 shop_shopping_group_id: id
@@ -1173,6 +1200,11 @@
         margin-right: 0;
         background: #FFCC00;
         color: #fff;
+    }
+
+    .gift {
+        font-size: 28rpx;
+        color: #999;
     }
 
 

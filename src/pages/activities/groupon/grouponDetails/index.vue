@@ -11,7 +11,9 @@
             </div>
 
             <!--        <SwiperNotice />-->
-
+            {{group.grouponDetails.id}}
+            {{group.grouponDetails.id}}
+            {{group.grouponDetails.id}}
             <div class="detail_header" v-if="grouponDetails['pick_shop_info']" @click="goShopDetails">
                 <img src="./img/background.jpeg" alt="" class="image">
 
@@ -286,6 +288,9 @@
                 this.id = this.model.groupon.grouponDetails['id']
                 return this.model.groupon.grouponDetails
             },
+            group(){
+                return this.model.groupon
+            },
             cateProducts () {
                 return this.model.groupon.cateProducts
             },
@@ -320,8 +325,8 @@
                 if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    //this.$command('REDIRECT_TO','','back')
-                    this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
+                    this.$command('REDIRECT_TO','','back')
+                    //this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
             },
             goShopDetails () {

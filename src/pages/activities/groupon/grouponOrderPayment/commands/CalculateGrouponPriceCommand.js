@@ -10,7 +10,8 @@ export default class CalculateGrouponPrice extends Command {
                     icon: 'none'
                 });
             } else {
-                this.model.groupon.dispatch('saveOrderInfo', {
+                console.log(respones.data, ' ----- groupon payment details ------- ');
+                this.model.groupon.payment.dispatch('setGrouponOrderInfo', {
                     orderInfo: respones.data
                 })
             }
