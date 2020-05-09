@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
     <div id="groupon_order_details">
-        <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'"> </CustomHeader>
+        <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'" :backUrl="true" @back="back"> </CustomHeader>
         <div class="content" :style="{height: mainHeight + 'px'}">
-            <h2 class="title">订单待对接</h2>
+            <h2 class="title">{{status}}</h2>
 
             <div class="productsContainer">
                 <div class="productHeader">
@@ -15,7 +15,7 @@
                             <img :src="good['thumbnail']" alt="">
                             <div id="good_info">
                                 <h3>{{good['name']}}</h3>
-                                <h4>待对接</h4>
+                                <h4>{{good['intro']}}</h4>
                                 <em>X {{good['quantity']}}</em>
                             </div>
                         </div>
@@ -36,14 +36,14 @@
                 <ul id="total">
                     <li>
                         <h3>商品总价</h3>
-                        <span class="small"> <i>￥</i>{{details['settlement_total_fee']}}</span>
+                        <span class="small"> <i>￥</i>{{details['total_fee']}}</span>
                     </li>
                     <li>
                         <h3>
                             <img src="../grouponOrderPayment/imgs/minus.png" alt="">
                             优惠金额
                         </h3>
-                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>0</span>
+                        <span class="red"> <i :style="{color: '#FC3C2F'}">￥</i>{{details['total_preferential_fee']}}</span>
                     </li>
                     <li>
                         <h4 class="bigH4">实付款</h4>
@@ -59,20 +59,23 @@
 
             </div>
 
-            <ul class="info">
+            <ul class="info" v-if="details['shipping_info']">
                 <h2>自提信息</h2>
                 <li>
                     <span>自提人</span>
-                    <h4>待对接</h4>
+                    <h4>{{details['shipping_info']['consignee_name']}}</h4>
                 </li>
                 <li>
                     <span>预留电话</span>
-                    <h4>待对接</h4>
+                    <h4>{{details['shipping_info']['consignee_mobile_phone']}}</h4>
                 </li>
                 <li>
                     <span>自提地址</span>
                     <h4>
-                        待对接
+                        {{details['shipping_info']['province']}}
+                        {{details['shipping_info']['city']}}
+                        {{details['shipping_info']['area']}}
+                        {{details['shipping_info']['detail_address']}}
                     </h4>
                 </li>
             </ul>
@@ -99,7 +102,7 @@
                 <li>
                     <span>支付方式</span>
                     <h4>
-                        待对接
+                        {{details['payment_type']}}
                     </h4>
                 </li>
             </ul>
@@ -122,7 +125,8 @@
                 title: '',
                 isLoadAll: false,
                 products: [],
-                isLoadAll: false
+                isLoadAll: false,
+                status: '暂无'
             };
         },
         watch: {
@@ -177,11 +181,20 @@
                     }
                 })
             },
+            back () {
+                this.$command('REDIRECT_TO','user.myGroupon','push', {
+                    query: {
+                        status: this.$route.query.status,
+                        route: this.$route.query.route
+                    }
+                })
+            }
         },
         created() {
 
         },
         mounted() {
+            this.status = this.$route.query.statusDesc
             if (this.$route.query && this.$route.query.id) {
                 this.$command('GET_GROUPON_ORDER_DETAILS',this.$route.query.id)
             }

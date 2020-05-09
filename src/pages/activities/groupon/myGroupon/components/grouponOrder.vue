@@ -15,7 +15,7 @@
                     <img :src="item.thumbnail" alt="">
                     <div id="good_info">
                         <h3>{{item.name}}</h3>
-                        <em>待对接</em>
+                        <em>{{item.intro}}</em>
                         <div id="good_info_price">
                             <em>X {{item.quantity}}</em>
                         </div>
@@ -42,7 +42,7 @@
 <script>
     export default {
         name: "grouponOrder",
-        props: ['order','status'],
+        props: ['order','status', 'statusType', 'route'],
         data () {
             return {
             }
@@ -53,7 +53,10 @@
             orderDetails (id) {
                 this.$command('REDIRECT_TO', 'user.groupon.order.details', 'push', {
                     query: {
-                        id: id
+                        id: id,
+                        status: this.statusType,
+                        statusDesc: this.status,
+                        route: this.route
                     }
                 })
 

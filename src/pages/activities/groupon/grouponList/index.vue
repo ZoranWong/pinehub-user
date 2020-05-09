@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div id="groupon_list">
-        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
-            <span  class="circle" ><i class="iconfont">&#xe679;</i></span>
-        </div>
+<!--        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">-->
+<!--            <span  class="circle" ><i class="iconfont">&#xe679;</i></span>-->
+<!--        </div>-->
         <div class="groupon_header">
             <img class="groupon_header_image" src="../images/Spell_group_banner.png" alt="">
             <SwiperNotice />
@@ -11,7 +11,11 @@
         <div class="groupon_banner">
             <img src="../images/function.png" class="function" alt="">
             <div class="left" @click="redirectTo('user.pickup',{})"></div>
-            <div class="right" @click="redirectTo('user.myGroupon',{})"></div>
+            <div class="right" @click="redirectTo('user.myGroupon',{
+                query: {
+                    route: 'user.groupon.list',
+                }
+            })"></div>
         </div>
         <ul class="groupon_list">
             <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >

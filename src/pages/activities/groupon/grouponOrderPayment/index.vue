@@ -151,7 +151,14 @@
             };
         },
         watch: {
-
+            grouponCouponIds (val) {
+                if (this.model.groupon.goodInShoppingCart && this.model.groupon.goodInShoppingCart.length > 0) {
+                    this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
+                        coupon_records: val,
+                        shop_shopping_group_id: this.$route.query.shoppingGroupId
+                    });
+                }
+            },
             isLoadAll (val) {
                 if (val) {
                     this.products = this.goodInShoppingCart;
@@ -167,10 +174,10 @@
             goodInShoppingCart(){
                 let products = this.model.groupon.goodInShoppingCart.filter(item => item.total_fee);
                 this.products = products.length > 3 ? products.slice(0, 3) : products
-                return this.model.groupon.goodInShoppingCart
+                return products
             },
             giftProducts() {
-                let products = this.goodInShoppingCart;
+                let products = this.model.groupon.goodInShoppingCart;
                 let giftProducts = [];
                 _.map(products, product => {
                     if (!product.total_fee) {
@@ -206,7 +213,7 @@
                 return this.model.groupon.totalPrice;
             },
             availableCoupons () {
-                return this.model.user.tickets.availableCoupons
+                return this.model.groupon.availableCoupons
             },
             grouponCouponIds () {
                 return this.model.groupon.grouponCouponIds

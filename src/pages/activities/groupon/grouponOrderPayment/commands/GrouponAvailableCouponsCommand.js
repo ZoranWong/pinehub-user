@@ -6,7 +6,7 @@ export default class GroupAvailableCouponsCommand extends Command {
         }
         let response = await this.service('http.groupon').availableCoupons(id);
         console.log(response, '***********');
-        this.model.user.tickets.dispatch('saveAvailableCoupons', {
+        this.model.groupon.dispatch('saveAvailableCoupons', {
             coupons: response.data
         });
 

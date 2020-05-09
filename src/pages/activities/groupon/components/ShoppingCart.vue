@@ -28,9 +28,10 @@
                         </h4>
                         <div class="entities">
                             <span>￥{{item['price']}}</span>
-                            <img src="../../../../../static/icons/minus.png" alt=""  @click="changeBuyNum(item,-1)">
-                            <input v-model="item['buy_num']" class="cartInput" type="number" @change="(e)=>changeInputBuyNum(e,item)" />
-                            <img src="../../../../../static/icons/add.png" alt="" @click="changeBuyNum(item,1)">
+                            <img v-if="item['total_fee']" src="../../../../../static/icons/minus.png" alt=""  @click="changeBuyNum(item,-1)">
+                            <input v-if="item['total_fee']" v-model="item['buy_num']" class="cartInput" type="number" @change="(e)=>changeInputBuyNum(e,item)" />
+                            <span v-else class="gift">{{item['buy_num']}}</span>
+                            <img v-if="item['total_fee']" src="../../../../../static/icons/add.png" alt="" @click="changeBuyNum(item,1)">
                         </div>
                     </li>
                 </ul>
@@ -315,6 +316,14 @@
         font-size: 32rpx;
         color: #111111;
         margin-right: 50rpx;
+    }
+
+    #shopping_groupon_cart #shopping_cart_goods_list .entities .gift{
+        width: 210rpx;
+        margin-right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .cartInput{

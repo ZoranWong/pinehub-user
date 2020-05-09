@@ -11,9 +11,9 @@
             </div>
 
             <!--        <SwiperNotice />-->
-            {{group.grouponDetails.id}}
-            {{group.grouponDetails.id}}
-            {{group.grouponDetails.id}}
+<!--            {{group.grouponDetails.id}}-->
+<!--            {{group.grouponDetails.id}}-->
+<!--            {{group.grouponDetails.id}}-->
             <div class="detail_header" v-if="grouponDetails['pick_shop_info']" @click="goShopDetails">
                 <img src="./img/background.jpeg" alt="" class="image">
 
@@ -247,6 +247,9 @@
                 if (val && val.categories) {
                     this.$command('LOAD_GROUPON_CATE_PRODUCTS',val['shopping_group_id'], val.categories[0].id)
                 }
+            },
+            'group.grouponDetails.id': function (val) {
+                console.log(val, '!!! id !!!');
             }
         },
 		computed: {
@@ -291,6 +294,7 @@
             // },
             group(){
                 this.grouponDetails = this.model.groupon.grouponDetails
+                this.id = this.model.groupon.grouponDetails['id']
                 return this.model.groupon
             },
             cateProducts () {
@@ -434,7 +438,7 @@
             return {
                 title: this.grouponDetails['group_display_name'],
                 desc: this.grouponDetails['share_text'],
-                imageUrl: "",
+                imageUrl: this.grouponDetails['fixed_shared_picture'],
                 path: `/pages/activities/groupon/grouponDetails/main?id=${this.grouponDetails['id']}`,
                 success: function (res) {
                     // 转发成功

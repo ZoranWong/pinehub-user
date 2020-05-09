@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="my_groupon">
-        <CustomHeader :title="title" :needReturn="true" :backColor="'#fff'"> </CustomHeader>
+        <CustomHeader :title="title" :needReturn="true" :backColor="'#fff'" :backUrl="true" @back="back" a> </CustomHeader>
         <div id="tab_select" >
             <view class="page-section-spacing">
                 <scroll-view
@@ -23,7 +23,7 @@
             </div>
             <div v-else>
                 <div class="order_container" v-for="(order,index) in orders" :key="index">
-                    <grouponOrder :order="order" :status="statusDesc" />
+                    <grouponOrder :order="order" :status="statusDesc" :statusType="statusType" :route="route" />
                 </div>
             </div>
         </div>
@@ -52,7 +52,8 @@
                 screenHeight: 0,
                 rpxRate: 1,
                 screenWitdh: 0,
-                statusDesc: '待成团'
+                statusDesc: '待成团',
+                route: ''
             };
 		},
 		watch: {
@@ -87,12 +88,20 @@
             selectTab (item) {
                 this.statusType = item.key;
                 this.statusDesc = item.name
+            },
+            back () {
+                let route = this.$route.query.route;
+                console.log(route, '+++++++++++>>>>>>>>.');
+                this.$command('REDIRECT_TO', route, 'push')
             }
 		},
 		created() {
 
 		},
 		mounted() {
+		    let status = this.$route.query.status;
+		    this.route = this.$route.query.route;
+		    this.statusType = status || 0;
             this.$command('GET_GROUPON_ORDERS', this.statusType)
 		}
 	}
