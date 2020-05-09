@@ -5,41 +5,43 @@ import Vuex from 'vuex';
 export default class MixinMethodsServiceProvider extends ServiceProvider {
     static applications = [];
 
-    constructor (app) {
+    constructor(app) {
         super(app);
         MixinMethodsServiceProvider.applications[app['hashKey']] = app;
         this.app.use(Vuex);
     }
 
-    register () {
+    register() {
         let methods = (function (self) {
             return self.methods(self)
         })(this);
         this.app.mixin(methods);
     }
 
-    methods (self) {
+    methods(self) {
         return {
-            $uploadFailed () {
+            $uploadFailed() {
                 this.$notify.error({
                     title: '上传失败',
                     message: '图片上传失败'
                 });
             },
-            $models (models) {
-                return new Vuex.Store(models);
+            $models(models) {
+                let store = new Vuex.Store(models);
+                console.log(store, '------------------');
+                return store;
             },
-            $setCurrentPage () {
+            $setCurrentPage() {
                 self.app.currentPage = this;
             },
-            async $command (...params) {
+            async $command(...params) {
                 params.push(this.$root);
                 return await self.app.command.apply(self.app, params);
             },
-            $error (exception, params = null) {
+            $error(exception, params = null) {
                 self.app.$error(exception, params);
             },
-            $imageUrl (name, path = 'mp_images') {
+            $imageUrl(name, path = 'mp_images') {
                 return self.app.config.app.staticHost.trim('/') + '/' + path.trim('/') + '/' + name;
             }
         };
