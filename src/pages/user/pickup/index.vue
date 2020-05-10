@@ -6,8 +6,8 @@
 
         <div id="pickup_container">
             <div id="pickup_header" v-if="background" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">自提点自提</span>
-                <span @click="changeBackground('right')">早餐自提</span>
+                <span @click="changeBackground('left')">常规订单</span>
+                <span @click="changeBackground('right')">拼团订单</span>
             </div>
         </div>
         <ul id="pickup_info">
@@ -35,28 +35,26 @@
                 </li>
             </ul>
             <swiper
-                v-if="position === 'right' && breakfast_order.length"
+                v-if="position === 'right' && all.length"
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
-                <block v-for="(item, index) in breakfast_order" :key="index">
-                    <swiper-item class="swiperItem" :id="'id'+item.id">
+                <block v-for="(item, index) in all" :key="index">
+                    <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
-                        <div class="pickupNum">
-                            <span>提货码</span>
-                            <h2>{{item['subOrderNo']}}</h2>
-                        </div>
+                        <h4>自提点联系电话: <span class="connentShop" @click="connectShop(item)"> {{item.shop ? item.shop['keeper_mobile'] : '暂无该店铺电话，请联系客服'}}</span></h4>
+                        <img  style="width: 400rpx;height: 400rpx" v-if="gateway" :src="gateway + '/qrcode?content=' + item.params.content + '&size=' + item.params.size + '&margin=' + item.params.margin " alt="">
                         <div class="order_info">
-                            <span>订单编号: {{item['order_no'] || '暂无'}}</span>
-                            <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
+                            <span>订单编号: {{item['order_no']}}</span>
+                            <span>取货时间: {{item['expect_receive_date']}}  {{ item['expect_receive_time_start'] + '-' + item['expect_receive_time_end']}}</span>
                         </div>
                     </swiper-item>
                 </block>
             </swiper>
-            <ul id="empty_pickup_info" v-if="position === 'right' && !breakfast_order.length">
+            <ul id="empty_pickup_info" v-if="position === 'right' && !all.length">
                 <li>
                     <img src="../../../../static/images/empty/empty_point.jpg" alt="">
-                    <span>您还没有早餐需要自提哦 快去预定早餐吧</span>
+                    <span>您还没有拼团订单需要自提哦 快去参加拼团吧</span>
                 </li>
             </ul>
         </ul>
@@ -64,7 +62,7 @@
         <div class="total_amount" v-if="shop_order.length && position === 'left'" >
             <span>{{current}}/{{total}}</span>
         </div>
-        <div class="total_amount" v-if="breakfast_order.length && position === 'right'">
+        <div class="total_amount" v-if="all.length && position === 'right'">
             <span>{{current}}/{{total}}</span>
         </div>
 
@@ -101,19 +99,36 @@
                 drawTime: null,
 				shop_order: [],
 				breakfast_order: [],
-				total: 0,
                 totalOrders: [],
                 code: '',
                 params: {},
-                gateway: ''
+                gateway: '',
+                grouponOrders: [],
+                all: []
             };
         },
         watch: {
-			position (value) {
-                this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
-			}
+            grouponOrders (val) {
+			    if (val.length) {
+                    _.map(val, order => {
+                        order['order_no'] = order['trade_no'].slice(-12);
+                        let time = new Date().getTime();
+                        let content = {
+                            "order_id": order['order_id'], 'time': time
+                        };
+                        let params = {
+                            content: Base64.encode(JSON.stringify(content)), margin: 0, size: 200
+                        };
+                        order.params = params;
+                        this.all.push(order);
+                    })
+                }
+            }
         },
         computed: {
+            total () {
+                return this.position === 'left' ? this.shop_order.length : this.all.length
+            },
 			pickupOrders () {
                 this.totalOrders = this.model.user.pickup.pickupOrders;
                 this.handleOrders( this.model.user.pickup.pickupOrders)
@@ -150,12 +165,14 @@
                     return order.id
                 })
 
-                this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
             },
 			changeBackground(position){
                 this.position = position;
 				this.current = 1;
 				this.background = position === 'left'? bg1 : bg2;
+                if (position === 'right') {
+                    this.grouponOrders = this.model.groupon.orders
+                }
 			},
             bannerChange (e) {
                 this.current = e.mp.detail.current + 1;
@@ -164,6 +181,7 @@
         mounted () {
             // 获取基础url
             this.gateway = this.config.app.http.gateway;
+            this.$command('GET_GROUPON_ORDERS', 4);
             // this.qrcode = drawQrcode({
 			// 	width: 200,
 			// 	height: 200,
@@ -189,12 +207,10 @@
 					this.breakfast_order.push(order)
                     this.position = 'right'
                     this.background = bg2;
-					this.total = this.breakfast_order.length;
 				} else {
 					this.shop_order.push(order)
                     this.position = 'left'
                     this.background = bg1;
-                    this.total = this.shop_order.length;
                     // this.currentOrderId = this.shop_order[0].id;
                     // this.drawTime = (new Date).getTime();
 				}
