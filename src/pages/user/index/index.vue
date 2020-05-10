@@ -95,7 +95,7 @@
                 <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
-                    :data="act['entry_template'][0].data" :id="act.id"
+                    :products="act['entry_template'][0].data" :id="act.id"
                     :image="act['entry_template'][0].image"
                     @do="goActDetails(act)"
                     @addToCart="addToCart"
@@ -142,6 +142,7 @@
     import Module_1 from './components/Module_1';
     import Module_2 from './components/Module_2';
     import RecommendProducts from '../../../components/RecommendProducts';
+    import {Base64} from "../../../utils/beSecret";
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -390,7 +391,7 @@
         },
         methods: {
             jumpHomeMaking () {
-                // this.$command('REDIRECT_TO', 'index.homemaking', 'push')
+                this.$command('REDIRECT_TO', 'index.homemaking', 'push')
             },
             couponChange (e) {
                 let event = e.mp.detail;
@@ -437,6 +438,7 @@
                     if (!this.isMember) {
                         this.showBindMobile = true
                     } else {
+                        console.log(this, 'xxxxxxccassas');
                         this.$command('REDIRECT_TO', 'user.activity', 'push', {
                             query: {
                                 id: act.id,

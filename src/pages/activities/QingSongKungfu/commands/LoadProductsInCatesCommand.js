@@ -14,7 +14,7 @@ export default class LoadProductsInCatesCommand extends Command {
         }
 
         if (response.meta['pagination']['total_pages'] > page) {
-            await this.$command('LOAD_ALL_CATES_COMMAND', id, page + 1, 10, cateId)
+            await this.$command('LOAD_PRODUCTS_IN_CATES_COMMAND', id, page + 1, 10, cateId)
         }
     }
 

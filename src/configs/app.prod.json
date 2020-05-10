@@ -16,6 +16,6 @@
         "gateway": "https://www.neptune.kingdomcloud.cn/"
     },
     "socket": {
-        "gateway": "https://www.neptune.kingdomcloud.cn:6001"
+        "gateway": "https://www.neptune.kingdomcloud.cn/"
     }
 }

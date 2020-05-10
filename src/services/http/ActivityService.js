@@ -126,4 +126,12 @@ export default class ActivityService extends ApiService {
         });
         return response.data
     }
+
+    // 获取活动商品
+    async getProductsInfo (ids) {
+        let response = await this.httpGet(`/api/mp/activity/products`, {
+            ids: ids
+        });
+        return response.data
+    }
 }

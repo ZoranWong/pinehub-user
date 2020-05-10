@@ -40,7 +40,7 @@
                     console.log(val, '&&&&&&');
                     this.showView = true
                 }
-            },
+		    },
             token (val) {
                 console.log(val, '(((((((((((((((((((((((((((((((((((((');
                 if (val) {
@@ -62,7 +62,7 @@
                     console.log(this.url, 'activity uel');
                     // this.url = `http://activity.node:8091/?activity_id=6`;
                 } else {
-                    this.getUserAuth()
+		            this.getUserAuth()
                 }
             },
             registered (value) {
@@ -150,24 +150,23 @@
             console.log(pages, 'xxxxxxx');
             let options = pages[pages.length - 1]['options'];
             this.options = options;
-            console.log(options, '========>>>>>>>>>');
             if (this.token) {
                 wx.setNavigationBarTitle({
-                    title: decodeURI(this.options.name)
-                });
-                wx.setNavigationBarColor({
-                    frontColor: '#000000',
-                    backgroundColor: '#f2f2f2',
-                    animation: {
-                        duration: 400,
-                        timingFunc: 'easeIn'
-                    }
-                })
-                let gateway = this.config['app']['http']['gateway'];
-                let env = this.config['app']['env'];
-                let str = Math.random().toString(36).substr(2)
-                console.log(str, '===>');
-                this.url = `https://neptune.klsfood.cn/activity.html?activity_id=${options.id}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
+                        title: decodeURI(this.options.name)
+                    });
+                    wx.setNavigationBarColor({
+                        frontColor: '#000000',
+                        backgroundColor: '#f2f2f2',
+                        animation: {
+                            duration: 400,
+                            timingFunc: 'easeIn'
+                        }
+                    })
+                    let gateway = this.config['app']['http']['gateway'];
+                    let env = this.config['app']['env'];
+                    let str = Math.random().toString(36).substr(2)
+                    console.log(str, '===>');
+                    this.url = `https://neptune.klsfood.cn/activity.html?activity_id=${options.id}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
             } else {
                 this.getUserAuth()
             }

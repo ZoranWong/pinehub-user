@@ -19,7 +19,7 @@
         },
         data () {
             return {
-                title: '意见反馈ccc',
+                title: '活动',
                 navName: 'feedback'
             };
         },

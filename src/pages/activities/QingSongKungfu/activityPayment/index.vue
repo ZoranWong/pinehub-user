@@ -72,7 +72,7 @@
         <div id="do_payment">
             <span>
                 金额 {{actOrderInfo['settlement_total_fee_format'] || 0}}
-                <span class="sendPrice">(满{{sendPrice}}元起送)</span>
+                <span class="sendPrice">(二环内满{{sendPrice}}元起送)</span>
             </span>
             <h4 @click="createOrder">去支付</h4>
         </div>
@@ -95,7 +95,7 @@
                 actId: '',
                 time: '',
                 screenHeight: 0,
-                sendPrice: 100
+                sendPrice: 88
 			};
 		},
 		watch: {

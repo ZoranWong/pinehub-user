@@ -41,7 +41,7 @@
                 if (this.needBackHome) {
                     this.$command('REDIRECT_TO','index','replace')
                 } else {
-                    if (this.needClear) {
+		            if (this.needClear) {
                         await this.$command('REDIRECT_TO','user.shoppingCart','replace')
                         this.model.user.order.payment.dispatch('clearIds');
                     } else {

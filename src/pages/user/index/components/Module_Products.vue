@@ -1,6 +1,6 @@
 <template>
-    <div class="moduleProducts">
-        <img :src="product.image" alt="" class="img">
+    <div class="moduleProducts" @click="redirectTo(product)">
+        <img :src="product.image" alt="" class="img" >
         <div class="bottom">
             <div class="left">
                 <h3>
@@ -29,6 +29,23 @@
             },
             noStock () {
                 console.log('no stock');
+            },
+            redirectTo (product) {
+                let hasStock = true;
+                if (product['has_sell_limit']) {
+                    hasStock = product['last_num'] > 0 && product['product_stock']['in_stock'] > 0
+                } else {
+                    hasStock = product['product_stock']['in_stock'] > 0
+                }
+                let stockInfo = hasStock ? '尚有库存' : '暂无库存';
+                let options = {
+                    query: {
+                        type: 'mall',
+                        good_id: product['product_id'],
+                        price: product['act_price'],
+                        stockInfo
+                    }};
+                this.$emit('redirectTo', 'user.goodDetail', options)
             }
         },
         computed: {
@@ -36,9 +53,9 @@
                 let product = this.product;
                 let hasStock = true;
                 if (product['has_sell_limit']) {
-                    hasStock = product['last_num'] > 0 && product['in_stock'] > 0
+                    hasStock = product['last_num'] > 0 && product['product_stock']['in_stock'] > 0
                 } else {
-                    hasStock = product['in_stock'] > 0
+                    hasStock = product['product_stock']['in_stock'] > 0
                 }
                 return hasStock
             }
@@ -81,7 +98,7 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        bottom: 20rpx;
+        bottom: 6rpx;
         right: 10rpx;
     }
 

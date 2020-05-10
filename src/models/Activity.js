@@ -44,6 +44,9 @@ export default class Activity extends Model {
             },
             categories () {
                 return this.state.categories
+            },
+            indexProducts () {
+                return this.state.indexProducts
             }
         });
     }
@@ -62,7 +65,8 @@ export default class Activity extends Model {
             ids: [],
             address: {},
             availableCoupons: [],
-            categories: []
+            categories: [],
+            indexProducts: []
         };
     }
 
@@ -231,6 +235,10 @@ export default class Activity extends Model {
 
         this.addEventListener('clearProducts', function () {
             this.state.products = []
+        });
+
+        this.addEventListener('saveActivitiesProducts', function ({products}) {
+            this.state.indexProducts = products
         })
     }
 }
