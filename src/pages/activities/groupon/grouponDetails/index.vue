@@ -412,12 +412,12 @@
             this.$command('GET_BAR_HEIGHT');
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            this.options = options;
             console.log(options, '=======<><<><><>><<<<<><>><><');
             if (options.scene) {
                 options.id = options.scene.split('3D')[1];
                 options.backHome = true
             }
+            this.options = options;
             this.$command('LOAD_GROUPON_DETAILS', options.id);
             if (!this.registered) {
                 this.initAccount();
