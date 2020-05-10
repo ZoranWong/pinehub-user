@@ -10,8 +10,8 @@ export default class ChangeGrouponBuyNumCommand extends Command {
             });
             return
         }
-
-        if (item['stock'] < num) {
+        console.log(item, '=======');
+        if (item['stock_num'] < num) {
             this.$application.popup.toast('库存不足', 'none', 2000);
             return
         }

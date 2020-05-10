@@ -110,6 +110,7 @@
         watch: {
             grouponOrders (val) {
 			    if (val.length) {
+			        this.all = [];
                     _.map(val, order => {
                         order['order_no'] = order['trade_no'].slice(-12);
                         let time = new Date().getTime();
@@ -180,6 +181,7 @@
         },
         mounted () {
             // 获取基础url
+            this.changeBackground('left')
             this.gateway = this.config.app.http.gateway;
             this.$command('GET_GROUPON_ORDERS', 4);
             // this.qrcode = drawQrcode({
@@ -222,7 +224,11 @@
                 }
             }
         },
+        onShow () {
+            this.all = [];
+        },
         onUnload: function () {
+            this.all = [];
             this.orders = [];
             this.shop_order = [];
             this.breakfast_order = [];
