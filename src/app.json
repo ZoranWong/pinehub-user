@@ -22,10 +22,10 @@
                 "QingSongKungfu/activityPayment/main",
                 "groupon/grouponList/main",
                 "groupon/grouponDetails/main",
+                "groupon/grouponShopDetails/main",
                 "groupon/grouponOrderPayment/main",
                 "groupon/myGroupon/main",
-                "groupon/grouponOrderDetails/main",
-                "groupon/grouponShopDetails/main"
+                "groupon/grouponOrderDetails/main"
             ]
         },
         {

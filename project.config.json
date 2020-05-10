@@ -180,21 +180,21 @@
 					"id": -1,
 					"name": "pages/user/index/main",
 					"pathName": "pages/activities/groupon/grouponList/main",
-					"query": "id=36",
+					"query": "id=57",
 					"scene": null
 				},
 				{
 					"id": -1,
 					"name": "pages/activities/groupon/grouponDetails/main",
 					"pathName": "pages/activities/groupon/grouponDetails/main",
-					"query": "id=57",
+					"query": "id=36",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/activities/groupon/myGroupon/main",
-					"pathName": "pages/activities/groupon/myGroupon/main",
-					"query": "id=57",
+					"name": "pages/activities/groupon/grouponDetails/main",
+					"pathName": "pages/activities/groupon/grouponList/main",
+					"query": "id=36",
 					"scene": null
 				}
 			]

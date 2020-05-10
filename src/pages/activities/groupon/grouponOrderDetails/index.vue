@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <div id="groupon_order_details">
-        <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'" :backUrl="true" @back="back"> </CustomHeader>
+        <CustomHeader :title="title" :needReturn="true" :back-color="'#f2f2f2'" > </CustomHeader>
         <div class="content" :style="{height: mainHeight + 'px'}">
             <h2 class="title">{{status}}</h2>
 
@@ -181,14 +181,6 @@
                     }
                 })
             },
-            back () {
-                this.$command('REDIRECT_TO','user.myGroupon','push', {
-                    query: {
-                        status: this.$route.query.status,
-                        route: this.$route.query.route
-                    }
-                })
-            }
         },
         created() {
 

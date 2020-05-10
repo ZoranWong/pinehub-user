@@ -411,6 +411,7 @@
 		},
         onShow () {
             this.now = moment().format('YYYY-MM-DD HH:mm:ss');
+
         },
         onHide (){
             clearInterval(this.timer)

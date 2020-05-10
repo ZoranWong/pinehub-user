@@ -40,7 +40,8 @@
         "vuex": "^3.0.1",
         "weapp-qrcode": "^1.0.0",
         "weapp.socket.io": "^2.0.1",
-        "weui-miniprogram": "^1.0.3"
+        "weui-miniprogram": "^1.0.3",
+        "wxa-plugin-canvas": "^1.1.12"
     },
     "devDependencies": {
         "@babel/plugin-transform-async-to-generator": "^7.1.0",

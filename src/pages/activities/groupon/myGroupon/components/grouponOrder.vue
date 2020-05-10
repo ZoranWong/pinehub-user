@@ -42,7 +42,7 @@
 <script>
     export default {
         name: "grouponOrder",
-        props: ['order','status', 'statusType', 'route'],
+        props: ['order','status', 'statusType'],
         data () {
             return {
             }
@@ -55,8 +55,7 @@
                     query: {
                         id: id,
                         status: this.statusType,
-                        statusDesc: this.status,
-                        route: this.route
+                        statusDesc: this.status
                     }
                 })
 

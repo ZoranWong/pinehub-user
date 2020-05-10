@@ -1,5 +1,8 @@
 {
     "window": {
         "enablePullDownRefresh": "false"
+    },
+    "usingComponents" : {
+        "poster": "wxa-plugin-canvas/poster"
     }
 }

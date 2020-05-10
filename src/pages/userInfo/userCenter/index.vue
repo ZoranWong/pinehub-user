@@ -84,11 +84,7 @@
         <div class="merchant-store_menu">
             <ul class="mesnus">
 
-                <li @click="jump('user.myGroupon', {
-                    query: {
-                        route: 'userCenter',
-                    }
-                })" class="lines">
+                <li @click="jump('user.myGroupon')" class="lines">
                     <div class="left">
                         <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/my_groupon.png" alt="">
@@ -252,16 +248,11 @@
 							icon: 'none'
 						})
 					} else {
-					    if (router === 'user.myGroupon') {
-                            this.$command('REDIRECT_TO', router, 'push', params);
-                        } else {
-                            this.$command('REDIRECT_TO', router, 'push', {
-                                query: {
-                                    status: params
-                                }
-                            });
-                        }
-
+						this.$command('REDIRECT_TO', router, 'push', {
+							query: {
+								status: params
+							}
+						});
                     }
 
                 }

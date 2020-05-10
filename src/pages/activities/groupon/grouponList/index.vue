@@ -1,9 +1,9 @@
 <!--suppress ALL -->
 <template>
 	<div id="groupon_list">
-<!--        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">-->
-<!--            <span  class="circle" ><i class="iconfont">&#xe679;</i></span>-->
-<!--        </div>-->
+        <div class="tranHeader" @click="back" :style="{'top': (statusBarHeight ) + 'px'}">
+            <span  class="circle" ><i class="iconfont">&#xe679;</i></span>
+        </div>
         <div class="groupon_header">
             <img class="groupon_header_image" src="../images/Spell_group_banner.png" alt="">
             <SwiperNotice />
