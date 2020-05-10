@@ -411,15 +411,6 @@
 		},
         onShow () {
             this.now = moment().format('YYYY-MM-DD HH:mm:ss');
-
-        },
-        onHide (){
-            clearInterval(this.timer)
-        },
-		created() {
-
-		},
-		mounted() {
             this.$command('GET_BAR_HEIGHT');
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
@@ -433,6 +424,15 @@
             if (!this.registered) {
                 this.initAccount();
             }
+        },
+        onHide (){
+            clearInterval(this.timer)
+        },
+		created() {
+
+		},
+		mounted() {
+
 		},
         onShareAppMessage (res) {
             //可以先看看页面数据都有什么，得到你想要的数据

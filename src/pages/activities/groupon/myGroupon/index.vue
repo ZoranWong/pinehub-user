@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
 	<div id="my_groupon">
-        <CustomHeader :title="title" :needReturn="true" :backColor="'#fff'"> </CustomHeader>
+        <CustomHeader :title="title" :needReturn="true" :backColor="'#fff'" :backUrl="true" @back="back"> </CustomHeader>
         <div id="tab_select" >
             <view class="page-section-spacing">
                 <scroll-view
@@ -9,7 +9,7 @@
                     scroll-x="true"
                     bindscroll="scroll"
                     enable-back-to-top="true"
-                    :style="{width: '750rpx' }">
+                    :style="{width: '900rpx' }">
                     <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="selectTab(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
@@ -44,6 +44,7 @@
                 statusType: 0,
                 tabs: [
                     {name: '待成团', key: 0},
+                    {name: '待付款', key: 5},
                     {name: '待发货', key: 2},
                     {name: '待自提', key: 4},
                     {name: '已完成', key: 3},
@@ -88,6 +89,13 @@
                 this.statusType = item.key;
                 this.statusDesc = item.name
             },
+            back () {
+                if (this.$route.query.backCenter) {
+                    this.$command('REDIRECT_TO', 'userCenter', 'reLaunch', {})
+                } else {
+                    this.$command('REDIRECT_TO', '', 'back')
+                }
+            }
 		},
 		created() {
 

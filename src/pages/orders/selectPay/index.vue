@@ -82,7 +82,16 @@
         // 普通方法
         methods: {
             backStore () {
-                this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                if (this.$route.query.type === 'groupon') {
+                    this.$command('REDIRECT_TO', 'user.myGroupon', 'reLaunch', {
+                        query: {
+                            status: 5,
+                            backCenter: true
+                        }
+                    });
+                } else {
+                    this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                }
             },
 			countDownServer(time) {
                 let minutes = Math.floor(time  / 60),

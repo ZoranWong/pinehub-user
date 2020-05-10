@@ -220,7 +220,10 @@
             },
             orderInfo () {
                 return this.model.groupon.orderInfo
-            }
+            },
+            userMobile () {
+                return this.model.account.mobile
+            },
         },
         methods: {
 
@@ -256,7 +259,8 @@
                     consignee_name: this.name,
                     consignee_mobile_phone: this.mobile,
                     remark: this.remark,
-                    shop_shopping_group_id: this.$route.query.shoppingGroupId
+                    shop_shopping_group_id: this.$route.query.shoppingGroupId,
+                    coupon_records: this.grouponCouponIds
                 })
             },
             extraProducts () {
@@ -276,7 +280,15 @@
 
         },
         onShow () {
-
+            let products = this.model.groupon.goodInShoppingCart;
+            if (!products.length) {
+                this.$command('REDIRECT_TO', 'user.myGroupon', 'reLaunch', {
+                    query: {
+                        status: 5,
+                        backCenter: true
+                    }
+                });
+            }
         },
         mounted() {
             let id = this.$route.query.shoppingGroupId;
@@ -285,6 +297,7 @@
                 coupon_records: this.grouponCouponIds,
                 shop_shopping_group_id: id
             });
+            this.mobile = this.userMobile
             this.$command('GROUPON_AVAILABLE_COUPONS',this.$route.query.shoppingGroupId)
         }
     }
