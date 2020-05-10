@@ -25,7 +25,8 @@
                 "groupon/grouponShopDetails/main",
                 "groupon/grouponOrderPayment/main",
                 "groupon/myGroupon/main",
-                "groupon/grouponOrderDetails/main"
+                "groupon/grouponOrderDetails/main",
+                "groupon/grouponPickup/main"
             ]
         },
         {

@@ -139,6 +139,7 @@
 
         <ShoppingCart
             :shoppingGroupId="grouponDetails['id']"
+            :floor="grouponDetails['group_order_fee_floor']"
             v-if="goodInShoppingCart && deadline > 0"
         />
 

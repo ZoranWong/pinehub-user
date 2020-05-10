@@ -7,8 +7,11 @@
                 <i class="iconfont" @click="showGoodsList = !showGoodsList" :style="{color: '#fe4a2c'}">&#xe613;</i>
                 <span  :class="amountClass">{{amount}}</span>
             </div>
-            <h4><span>{{totalPrice}}</span></h4>
-            <button id="shopping_cart_button" @click="settle">去结算</button>
+            <h4>
+                <span>{{totalPrice}}</span>
+                <span class="sendPrice" v-if="floor > 0">(满{{floor}}元起订)</span>
+            </h4>
+            <button id="shopping_cart_button" :class="!isEnough  ? 'disabledButton': ''" @click="settle" >去结算</button>
             <div id="shopping_cart_goods" v-if="showGoodsList">
                 <div id="shopping_cart_goods_header">
                     <h3>
@@ -59,7 +62,7 @@
     import {formatMoney} from '../../../../utils';
 	export default {
 		name: 'ShoppingCart',
-        props: ['shoppingGroupId'],
+        props: ['shoppingGroupId', 'floor'],
 		data () {
 			return {
                 showMask: false,
@@ -104,6 +107,12 @@
 			registered () {
 				return this.model.account.registered;
 			},
+            cartTotalFeeFormat () {
+                return this.model.groupon.cartTotalFeeFormat
+            },
+            isEnough () {
+                return this.cartTotalFeeFormat > this.floor
+            }
         },
 		created () {
 
@@ -120,6 +129,7 @@
                 this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.shoppingGroupId, Number(value))
             },
             settle(){
+                if (!this.isEnough) return ;
 			    let self = this;
 			    wx.getSetting({
                     async success (res) {
@@ -191,7 +201,6 @@
                 }
             },
             goPayment () {
-                console.log('11111');
                 this.$command('REDIRECT_TO', 'user.groupon.order.payment', 'push', {
                     query: {
                         shoppingGroupId: this.shoppingGroupId
@@ -447,7 +456,15 @@
 
     #shopping_groupon_cart h4 span {
         display: inline-block;
-        margin-right: 100rpx;
+
+    }
+
+    .sendPrice{
+        font-size: 22rpx;
+        color: #999;
+        font-style: normal;
+        margin-left: 20rpx;
+        transform: translateY(5rpx);
     }
 
     #shopping_groupon_cart #shopping_cart_button {
@@ -536,5 +553,13 @@
         background: #FFCC00;
         color: #fff;
     }
+
+
+    .disabledButton{
+        background: #999!important;
+        color: #fff!important;
+    }
+
+
 
 </style>

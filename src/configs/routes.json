@@ -23,6 +23,7 @@
     "user.groupon.shopDetails": "/pages/activities/groupon/grouponShopDetails/main",
     "user.groupon.order.payment": "/pages/activities/groupon/grouponOrderPayment/main",
     "user.myGroupon": "/pages/activities/groupon/myGroupon/main",
+    "user.groupon.pickup": "/pages/activities/groupon/grouponPickup/main",
     "user.groupon.order.details": "/pages/activities/groupon/grouponOrderDetails/main",
     "user.QingSongKungfu": "/pages/activities/QingSongKungfu/main",
     "user.activity.payment": "/pages/activities/QingSongKungfu/activityPayment/main",

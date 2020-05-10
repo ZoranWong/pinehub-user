@@ -2,21 +2,14 @@
 <template>
     <div id="pickup">
 
-        <CustomHeader :title="title" :needReturn="false" />
-
-        <div id="pickup_container">
-            <div id="pickup_header" v-if="background" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">自提点自提</span>
-                <span @click="changeBackground('right')">早餐自提</span>
-            </div>
-        </div>
+        <CustomHeader :title="title" :needReturn="true" />
         <ul id="pickup_info">
             <swiper
-                v-if="position === 'left' && shop_order.length"
+                v-if="orders.length"
                 class="swiper"
                 @change="bannerChange"
                 :circular="true">
-                <block v-for="(item, index) in shop_order" :key="index">
+                <block v-for="(item, index) in all" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
                         <h4>自提点联系电话: <span class="connentShop" @click="connectShop(item)"> {{item.shop ? item.shop['keeper_mobile'] : '暂无该店铺电话，请联系客服'}}</span></h4>
@@ -28,97 +21,71 @@
                     </swiper-item>
                 </block>
             </swiper>
-            <ul id="empty_pickup_info" v-if="position === 'left' && !shop_order.length">
+            <ul id="empty_pickup_info" v-else>
                 <li >
-                    <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                    <img src="../../../../../static/images/empty/empty_point.jpg" alt="">
                     <span>您还没有订单需要自提哦 快到商城下单吧</span>
-                </li>
-            </ul>
-            <swiper
-                v-if="position === 'right' && breakfast_order.length"
-                class="swiper"
-                @change="bannerChange"
-                :circular="true">
-                <block v-for="(item, index) in breakfast_order" :key="index">
-                    <swiper-item class="swiperItem" :id="'id'+item.id">
-                        <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
-                        <div class="pickupNum">
-                            <span>提货码</span>
-                            <h2>{{item['subOrderNo']}}</h2>
-                        </div>
-                        <div class="order_info">
-                            <span>订单编号: {{item['order_no'] || '暂无'}}</span>
-                            <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
-                        </div>
-                    </swiper-item>
-                </block>
-            </swiper>
-            <ul id="empty_pickup_info" v-if="position === 'right' && !breakfast_order.length">
-                <li>
-                    <img src="../../../../static/images/empty/empty_point.jpg" alt="">
-                    <span>您还没有早餐需要自提哦 快去预定早餐吧</span>
                 </li>
             </ul>
         </ul>
 
-        <div class="total_amount" v-if="shop_order.length && position === 'left'" >
-            <span>{{current}}/{{total}}</span>
-        </div>
-        <div class="total_amount" v-if="breakfast_order.length && position === 'right'">
+        <div class="total_amount" v-if="all.length" >
             <span>{{current}}/{{total}}</span>
         </div>
 
 
-        <FooterNav :navName="navName" />
     </div>
 </template>
 
 <script>
-    import {drawQrcode} from '../../../utils/qrcode_index';
-	import CustomHeader from '../../../components/CustomHeader';
-    import {Base64} from '../../../utils/beSecret';
-    import FooterNav from '@/components/FooterNav';
+    import {drawQrcode} from '../../../../utils/qrcode_index';
+	import CustomHeader from '@/components/CustomHeader';
+    import {Base64} from '../../../../utils/beSecret';
 	import _ from 'underscore'
-	let bg1 = require('./img/aaa.jpg');
-	let bg2 = require('./img/bbb.jpg');
 
 
 	export default {
         components: {
-			CustomHeader,
-			FooterNav
+			CustomHeader
         },
         data () {
             return {
                 title: '取货',
-				navName:'pickup',
-				background: bg1,
-                position: 'left',
                 current: 1,
-                currentOrderId: null,
                 orders: [],
+                all: [],
 				qrcode :null,
                 drawTime: null,
-				shop_order: [],
-				breakfast_order: [],
 				total: 0,
-                totalOrders: [],
                 code: '',
                 params: {},
                 gateway: ''
             };
         },
-        watch: {
-			position (value) {
-                this.total = value == 'left' ? this.shop_order.length : this.breakfast_order.length;
-			}
-        },
         computed: {
 			pickupOrders () {
-                this.totalOrders = this.model.user.pickup.pickupOrders;
-                this.handleOrders( this.model.user.pickup.pickupOrders)
-				return this.model.user.pickup.pickupOrders
+                this.orders = this.model.groupon.orders;
+                return this.model.groupon.orders;
             },
+        },
+        watch: {
+            orders (val) {
+                if (val.length) {
+                    this.total = val.length
+                    _.map(val, order => {
+                        order['subOrderNo'] = order['trade_no'];
+                        let time = new Date().getTime();
+                        let content = {
+                            "order_id": order['order_id'], 'time': time
+                        };
+                        let params = {
+                            content: Base64.encode(JSON.stringify(content)), margin: 0, size: 200
+                        };
+                        order.params = params;
+                        this.all.push(order);
+                    })
+                }
+            }
         },
         methods: {
             connectShop (item) {
@@ -133,30 +100,6 @@
                     }
                 })
             },
-            handleOrders (orders) {
-                this.shop_order = [];
-                this.breakfast_order = [];
-
-                this.orders = orders;
-                _.map(this.orders, (order)=>{
-                    if (order.channel && order.channel.slug === 'BREAKFAST_CAR') {
-                        this.breakfast_order.push(order);
-                    } else {
-                        this.shop_order.push(order)
-                    }
-                });
-
-                this.shop_order = _.uniq(this.shop_order, (order)=>{
-                    return order.id
-                })
-
-                this.total = this.position == 'left' ? this.shop_order.length : this.breakfast_order.length;
-            },
-			changeBackground(position){
-                this.position = position;
-				this.current = 1;
-				this.background = position === 'left'? bg1 : bg2;
-			},
             bannerChange (e) {
                 this.current = e.mp.detail.current + 1;
             },
@@ -164,59 +107,14 @@
         mounted () {
             // 获取基础url
             this.gateway = this.config.app.http.gateway;
-            // this.qrcode = drawQrcode({
-			// 	width: 200,
-			// 	height: 200,
-			// 	canvasId: 'myQrcode',
-			// 	text: `{"order_id": 0}`
-			// })
-            if (this.$route.query.order) {
-                this.breakfast_order = [];
-                this.shop_order = [];
-				let order = JSON.parse(this.$route.query.order)
-				order['order_no'] = order.code || order['order_no']
-				order['subOrderNo'] = order['order_no'].slice(-4)
-                let time = new Date().getTime();
-                let content = {
-                    "order_id": order.id, 'time': time
-                };
-                let params = {
-                    content: Base64.encode(JSON.stringify(content)), margin: 0, size: 200
-                };
-                order.params = params;
-                this.orders.push(order);
-				if (order.channel.slug === 'BREAKFAST_CAR') {
-					this.breakfast_order.push(order)
-                    this.position = 'right'
-                    this.background = bg2;
-					this.total = this.breakfast_order.length;
-				} else {
-					this.shop_order.push(order)
-                    this.position = 'left'
-                    this.background = bg1;
-                    this.total = this.shop_order.length;
-                    // this.currentOrderId = this.shop_order[0].id;
-                    // this.drawTime = (new Date).getTime();
-				}
-            } else {
-                if (_.isEmpty(this.orders)) {
-                    this.$command('LOAD_USER_ORDERS', 'WAIT_TO_PICK', 1, 100, 'pickup');
-                } else {
-                    this.handleOrders(this.orders)
-                }
-            }
+            this.$command('GET_GROUPON_ORDERS', 4);
+
         },
         onUnload: function () {
             this.orders = [];
-            this.shop_order = [];
-            this.breakfast_order = [];
         },
         beforeMount () {
             this.current = 1;
-			this.currentOrderId = null;
-			this.model.user.pickup.dispatch('savePickupOrders', {
-				orders: []
-            })
 		}
 	}
 </script>

@@ -10,11 +10,7 @@
         </div>
         <div class="groupon_banner">
             <img src="../images/function.png" class="function" alt="">
-            <div class="left" @click="redirectTo('user.pickup',{
-                query: {
-                    type: 'groupon'
-                }
-            })"></div>
+            <div class="left" @click="redirectTo('user.groupon.pickup')"></div>
             <div class="right" @click="redirectTo('user.myGroupon',{
                 query: {
                     route: 'user.groupon.list',
