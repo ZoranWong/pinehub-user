@@ -14,7 +14,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.0",
-	"appid": "wx67127c10ce9c598c",
+	"appid": "wx2bee13173fa2ca54",
 	"projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
 	"miniprogramRoot": "dist/",
 	"debugOptions": {
@@ -179,8 +179,15 @@
 				{
 					"id": -1,
 					"name": "pages/user/index/main",
+					"pathName": "pages/activitie/groupon/grouponDetails/main",
+					"query": "id=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/activitie/groupon/grouponDetails/main",
 					"pathName": "pages/activities/groupon/grouponDetails/main",
-					"query": "id=114&backHome=true",
+					"query": "id=1",
 					"scene": null
 				}
 			]

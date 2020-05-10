@@ -247,7 +247,6 @@ export default class Activity extends Model {
         });
 
         this.addEventListener('handleIds', function ({id}) {
-            console.log(id, '准备处理couponid');
             let ids = this.state.ids;
             let index = _.indexOf(ids, id);
             if (index < 0) {
@@ -259,14 +258,12 @@ export default class Activity extends Model {
         });
 
         this.addEventListener('deleteId', function () {
-            console.log(id, '准备处理couponid++++++');
             let ids = this.state.ids;
             ids.pop();
             this.state.ids = ids;
         });
 
         this.addEventListener('clearIds', function () {
-            console.log(id, '准备处理couponid--------');
             this.state.ids = [];
         });
     }
