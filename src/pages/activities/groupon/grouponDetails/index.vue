@@ -11,11 +11,8 @@
             </div>
 
             <!--        <SwiperNotice />-->
-<!--            {{group.grouponDetails.id}}-->
-<!--            {{group.grouponDetails.id}}-->
-<!--            {{group.grouponDetails.id}}-->
-            <div class="detail_header" v-if="grouponDetails['pick_shop_info']" @click="goShopDetails">
-                <img src="./img/background.jpeg" alt="" class="image">
+            <div class="detail_header" v-if="grouponDetails['pick_shop_info']" >
+<!--                <img src="./img/background.jpeg" alt="" class="image">-->
 
                 <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
                 <div class="shop_info">
@@ -95,7 +92,7 @@
                 </h3>
                 <ul class="groupon_participants_list">
                     <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
-                        <span class="number">{{index}}.</span>
+                        <span class="number">{{index + 1}}.</span>
                         <div class="right">
                             <div class="top">
                                 <div class="left">

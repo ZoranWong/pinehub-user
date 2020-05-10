@@ -10,7 +10,11 @@
         </div>
         <div class="groupon_banner">
             <img src="../images/function.png" class="function" alt="">
-            <div class="left" @click="redirectTo('user.pickup',{})"></div>
+            <div class="left" @click="redirectTo('user.pickup',{
+                query: {
+                    type: 'groupon'
+                }
+            })"></div>
             <div class="right" @click="redirectTo('user.myGroupon',{
                 query: {
                     route: 'user.groupon.list',
@@ -19,7 +23,7 @@
         </div>
         <ul class="groupon_list">
             <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >
-                <div class="groupon_shop_info" @click="goShopDetails">
+                <div class="groupon_shop_info" @click="goGrouponDetails(item)">
                     <div class="left">
                         <img class="shop_image" src="../grouponDetails/img/background.jpeg" alt="">
                         <div class="top">

@@ -115,9 +115,15 @@
         },
         computed: {
 			pickupOrders () {
-                this.totalOrders = this.model.user.pickup.pickupOrders;
-                this.handleOrders( this.model.user.pickup.pickupOrders)
-				return this.model.user.pickup.pickupOrders
+                if (this.$route.query.type === 'groupon') {
+                    this.totalOrders = this.model.groupon.orders
+                    this.handleOrders( this.model.groupon.orders)
+                    return this.model.groupon.orders;
+                } else {
+                    this.totalOrders = this.model.user.pickup.pickupOrders;
+                    this.handleOrders( this.model.user.pickup.pickupOrders)
+                    return this.model.user.pickup.pickupOrders;
+                }
             },
         },
         methods: {
@@ -170,6 +176,12 @@
 			// 	canvasId: 'myQrcode',
 			// 	text: `{"order_id": 0}`
 			// })
+
+            if (this.$route.query.type === 'groupon') {
+                this.$command('GET_GROUPON_ORDERS', 4)
+                return
+            }
+
             if (this.$route.query.order) {
                 this.breakfast_order = [];
                 this.shop_order = [];

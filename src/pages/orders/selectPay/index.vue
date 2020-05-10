@@ -146,6 +146,10 @@
 			this.type = this.$route.query.type;
             if (this.$route.query && this.$route.query.order) {
 				this.order = JSON.parse(this.$route.query.order);
+                if (this.order['order_id']) {
+                    this.order.id = this.order['order_id'];
+                    this.order['settlement_total_fee_format'] = `¥${this.order['settlement_total_fee']}`
+                }
                 this.orderNew = this.order;
                 this['settlement_total_fee_format'] = this.order['settlement_total_fee_format'];
                 if (this.order['auto_cancel_after_seconds']) {

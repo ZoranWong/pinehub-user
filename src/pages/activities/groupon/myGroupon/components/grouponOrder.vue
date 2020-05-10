@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div class="group_order" v-if="order['order_id']" @click="orderDetails(order['order_id'])">
+    <div class="group_order" v-if="order['order_id']" @click="orderDetails(order)">
         <div class="order_info_sn">
             <div class="left">
                 <img src="../../../../../../static/icons/orderMenu.png" class="orderMenu" alt="">
@@ -35,6 +35,9 @@
                 <h5>{{order['settlement_total_fee']}}</h5>
             </div>
         </div>
+        <div class="operation" v-if="statusType === 5">
+            <button class="pay">去支付</button>
+        </div>
     </div>
 
 </template>
@@ -50,15 +53,22 @@
         mounted() {
         },
         methods: {
-            orderDetails (id) {
-                this.$command('REDIRECT_TO', 'user.groupon.order.details', 'push', {
-                    query: {
-                        id: id,
-                        status: this.statusType,
-                        statusDesc: this.status
-                    }
-                })
-
+            orderDetails (order) {
+                if (this.statusType === 5) {
+                    this.$command('REDIRECT_TO', 'selectPay', 'push', {
+                        query: {
+                            order: JSON.stringify(order)
+                        }
+                    });
+                } else {
+                    this.$command('REDIRECT_TO', 'user.groupon.order.details', 'push', {
+                        query: {
+                            id: order['order_id'],
+                            status: this.statusType,
+                            statusDesc: this.status
+                        }
+                    })
+                }
             }
         }
     }
@@ -245,6 +255,27 @@
         font-size: 32rpx;
         color: #111;
         font-weight: bold;
+    }
+
+    .operation{
+        width: 100%;
+        height: 108rpx;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: 1rpx solid #f2f2f2;
+    }
+
+    .pay{
+        display: inline-block;
+        height: 70rpx;
+        line-height: 70rpx;
+        font-size: 28rpx;
+        border: 1rpx solid #ffcc00;
+        margin-right: 20rpx;
+        border-radius: 15rpx;
+        color: #111111;
+        background: #ffcc00;
     }
 
 </style>
