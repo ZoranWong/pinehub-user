@@ -16,7 +16,7 @@
                         <img  style="width: 400rpx;height: 400rpx" v-if="gateway" :src="gateway + '/qrcode?content=' + item.params.content + '&size=' + item.params.size + '&margin=' + item.params.margin " alt="">
                         <div class="order_info">
                             <span>订单编号: {{item['order_no']}}</span>
-                            <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
+                            <span>取货时间: {{item['expect_receive_date']}}  {{item['expect_receive_time_start'] + '-' + item['expect_receive_time_end'] }}</span>
                         </div>
                     </swiper-item>
                 </block>
@@ -73,7 +73,7 @@
                 if (val.length) {
                     this.total = val.length
                     _.map(val, order => {
-                        order['subOrderNo'] = order['trade_no'];
+                        order['order_no'] = order['trade_no'].slice(-12);
                         let time = new Date().getTime();
                         let content = {
                             "order_id": order['order_id'], 'time': time
