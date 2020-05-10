@@ -151,10 +151,10 @@
             };
         },
         watch: {
-            grouponCouponIds (val) {
-                if (this.model.groupon.goodInShoppingCart && this.model.groupon.goodInShoppingCart.length > 0) {
+            grouponCouponIds (newVal, oldVal) {
+                if (typeof this.$route.query.shoppingGroupId !== 'undefined' && this.model.groupon.goodInShoppingCart && this.model.groupon.goodInShoppingCart.length > 0) {
                     this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
-                        coupon_records: val,
+                        coupon_records: newVal,
                         shop_shopping_group_id: this.$route.query.shoppingGroupId
                     });
                 }
