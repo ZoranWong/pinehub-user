@@ -58,9 +58,8 @@
                     y: 0,
                     width: 270,
                     height: 445,
-                    canvasId: 'canvas',
+                    canvasId: this.canvasId,
                     success: function(res) {
-                        console.log(res, '==========>>>>>>>');
                         wx.saveImageToPhotosAlbum({
                             filePath: res.tempFilePath,
                             success (res) {
