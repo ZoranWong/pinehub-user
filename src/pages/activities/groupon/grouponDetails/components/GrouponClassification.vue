@@ -9,7 +9,7 @@
                     bindscroll="scroll"
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
-                    :style="{minWidth: '750rpx' }">
+                    :style="{width: classWidth }">
                     <view :id="'cate' + tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType == tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
@@ -58,6 +58,9 @@
             // categories () {
             //     return this.model.activity.categories
             // },
+            classWidth () {
+                return 200 * this.categories.length + 'rpx'
+            }
         },
         onShow () {
             console.log('on cate show');
@@ -69,6 +72,8 @@
             tabSelect(tab) {
                 this.statusType = tab.id;
                 this.scrollTo = 'cate' + tab.id;
+                console.log(this.scrollTo, '>>>>>>>>>>>>>');
+                this.showAllCates && this.closeCate()
             },
             openCate () {
                 this.showAllCates = true;
@@ -121,11 +126,13 @@
 
     #tab_select_groupon .scroll-view_H .scroll-view-item_H{
         box-sizing: border-box;
-        padding: 0 30rpx;
+        width: 200rpx;
+        height: 100%;
+        display: inline-block;
         font-size: 32rpx;
         color: #757575;
-        display: inline-block;
         line-height: 88rpx;
+        text-align: center;
     }
 
     #tab_select_groupon .scroll-view_H .tab_select_now{

@@ -70,15 +70,15 @@
             </div>
 
             <div class="middle" v-if="grouponDetails['categories'] && grouponDetails['categories'].length">
-                <GrouponClassification
-                    :top="toTop"
-                    @forbidScroll="forbidScroll"
-                    :headerHeight="headerHeight"
-                    :categories="grouponDetails['categories']"
-                    :grouponId="grouponDetails['shopping_group_id']"
-                />
+<!--                <GrouponClassification-->
+<!--                    :top="toTop"-->
+<!--                    @forbidScroll="forbidScroll"-->
+<!--                    :headerHeight="headerHeight"-->
+<!--                    :categories="grouponDetails['categories']"-->
+<!--                    :grouponId="grouponDetails['shopping_group_id']"-->
+<!--                />-->
                 <ul class="products">
-                    <li v-for="(product,index) in cateProducts" :key="index">
+                    <li v-for="(product,index) in grouponDetails['group_products']" :key="index">
                         <Product :product="product" @addToCart="addToCart" :deadlineTime="deadline" />
                     </li>
                 </ul>
@@ -700,7 +700,6 @@
 
     .middle{
         width: 100%;
-        background: red;
         background: #fff;
         box-sizing: border-box;
         position: relative;
