@@ -7,11 +7,11 @@
                 <span class="circle"  v-else><i class="iconfont">&#xe679;</i></span>
             </div>
             <div class="backImg" :style="{'height': mainHeight * 0.223 + 'px'}">
-                <img src="./img/background.jpeg" mode="widthFix" alt="">
+                <img src="./img/back.jpeg" mode="widthFix" alt="">
             </div>
 
             <!--        <SwiperNotice />-->
-            <div class="detail_header" v-if="grouponDetails['pick_shop_info']" >
+            <div class="detail_header" v-if="grouponDetails['pick_shop_info']"  @click="goShopDetails(grouponDetails['pick_shop_info'])">
 <!--                <img src="./img/background.jpeg" alt="" class="image">-->
 
                 <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
@@ -333,8 +333,12 @@
                     //this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
             },
-            goShopDetails () {
-                this.$command('REDIRECT_TO','user.groupon.shopDetails','push')
+            goShopDetails (shop) {
+                this.$command('REDIRECT_TO','user.groupon.shopDetails','push', {
+                    query: {
+                        id: shop.id
+                    }
+                })
             },
             forbidScroll (isForbid) {
                 this.isForbid = isForbid

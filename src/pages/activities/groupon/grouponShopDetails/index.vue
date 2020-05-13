@@ -5,17 +5,17 @@
             <span class="circle" ><i class="iconfont">&#xe679;</i></span>
         </div>
         <div class="backImg" :style="{'height': mainHeight * 0.223 + 'px'}">
-            <img src="../grouponDetails/img/background.jpeg" mode="widthFix" class="backImage" alt="">
+            <img src="../grouponDetails/img/back.jpeg" mode="widthFix" class="backImage" alt="">
             <div class="shop_info">
-                <img src="../grouponDetails/img/background.jpeg" alt="" class="avater">
+                <img src="../grouponDetails/img/back.jpeg" alt="" class="avater">
                 <div class="shop_info_content">
-                    <h4>青松合伙人琥珀五环城店</h4>
+                    <h4>{{shopInfo.name}}</h4>
                     <div class="shop_info_details">
                         <img src="./image/1.png" alt="">
-                        <span>涂鸿宇</span>
+                        <span>{{shopInfo['keeper_name']}}</span>
                         <i></i>
                         <img src="./image/2.png" alt="">
-                        <span>合肥市蜀山区琥珀五环城25栋802</span>
+                        <span>{{shopInfo['address']}}</span>
                     </div>
                 </div>
             </div>
@@ -23,32 +23,24 @@
 
         <div class="groupon_banner">
             <div>
-                <h4>1822</h4>
+                <h4>{{shopInfo['click_counts']}}</h4>
                 <span>浏览人数</span>
             </div>
             <div>
-                <h4>304</h4>
+                <h4>{{shopInfo['place_order_counts']}}</h4>
                 <span>参团人数</span>
             </div>
         </div>
         <ul class="groupon_list">
-            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >
+            <li class="groupon_list_item" v-for="(item,itemIndex) in shopGrouponList" :key="item.id" >
                 <div class="groupon_shop_info" >
-                    <div class="left">
-                        <img class="shop_image" src="../grouponDetails/img/background.jpeg" alt="">
-                        <div class="top">
-                            <h3 class="shop_name">{{item['pick_shop_name']}}</h3>
-                            <span class="shop_address">{{item['pick_shop_address']}}</span>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <h4 class="groupon_amount">据您{{item['formatDistance']}}</h4>
-                        <h4 class="groupon_amount">{{item['order_placed_users_count']}}人已参团</h4>
-                    </div>
+                    <i></i>
+                    <span>{{item['create_time']}}</span>
+                    <h4>有{{item['click_count']}}人看过{{item['place_order_count']}}人已参团</h4>
                 </div>
                 <div class="groupon_info" @click="redirectTo('user.groupon.details', {
                     query: {
-                         id: item.id
+                         id: item['shop_shopping_group_id']
                     }
                 })">
                     <img src="../images/arrow.png" class="arrow" alt="">
@@ -103,6 +95,14 @@
             },
             grouponList () {
                 return this.model.groupon.grouponList
+            },
+            shopInfo () {
+                console.log(this.model.groupon.shopInfo, 'shopInfo');
+                return this.model.groupon.shopInfo
+            },
+            shopGrouponList () {
+                console.log(this.model.groupon.shopGrouponList, 'shopGrouponList');
+                return this.model.groupon.shopGrouponList
             }
         },
         methods: {
@@ -117,7 +117,7 @@
 
         },
         mounted() {
-
+            this.$command('LOAD_SHOP_DETAILS', this.$route.query.id)
         }
     }
 </script>
@@ -282,55 +282,43 @@
     .groupon_shop_info{
         box-sizing: border-box;
         width: 100%;
-        padding: 0 20rpx;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
-
-
-    .groupon_shop_info .left{
         display: flex;
         justify-content: flex-start;
         align-items: center;
     }
 
-    .groupon_shop_info .left .shop_image{
-        width: 60rpx;
-        height: 60rpx;
-        margin-right: 10rpx;
-        border-radius: 10rpx;
-    }
-
-    .groupon_shop_info .left .top{
+    .groupon_shop_info i{
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 20rpx;
+        height: 20rpx;
+        background: #E6E6E6;
+        position: relative;
     }
 
-    .groupon_shop_info .left .top .shop_name{
-        font-size: 28rpx;
-        color: #111;
+    .groupon_shop_info i:after{
+        content: '';
+        width: 8rpx;
+        height: 8rpx;
+        background: #fff;
+    }
+
+    .groupon_shop_info span{
+        margin: 0 20rpx;
+        font-size: 22rpx;
+        color: #b3b3b3;
+    }
+
+    .groupon_shop_info h4{
+        font-size: 22rpx;
+        color: #808080;
         font-weight: normal;
     }
 
-    .groupon_shop_info .left .top .shop_address{
-        font-size: 22rpx;
-        color: #999;
-    }
 
-    .groupon_shop_info .right{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
 
-    .groupon_shop_info .groupon_amount{
-        color: #4C4C4C;
-        font-size: 22rpx;
-    }
 
     .groupon_list_item{
         margin-bottom: 50rpx;
@@ -343,7 +331,7 @@
         position: relative;
         padding: 30rpx;
         box-sizing: border-box;
-        margin-top: 30rpx;
+        margin-top: 20rpx;
         position: relative;
     }
 

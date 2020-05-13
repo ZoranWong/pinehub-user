@@ -12,6 +12,14 @@ export default class ActivityService extends ApiService {
         return response;
     }
 
+    //  获取自提点拼团列表
+    async getShopGrouponList (id) {
+        let response = await this.httpGet('/api/mp/group_shopping/getPickShopDetail', {
+            shop_id: id
+        });
+        return response.data;
+    }
+
     // 获取小程序码
     async getwxacode (scene) {
         let response = await this.httpGet('/wxa/getwxacode', {

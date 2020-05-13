@@ -50,6 +50,12 @@ export default class Activity extends Model {
             },
             grouponCouponIds () {
                 return this.state.ids
+            },
+            shopGrouponList () {
+                return this.state.shopGrouponList
+            },
+            shopInfo () {
+                return this.state.shopInfo
             }
         });
     }
@@ -69,7 +75,9 @@ export default class Activity extends Model {
             products: [],
             orderInfo: {},
             availableCoupons: [],
-            ids: []
+            ids: [],
+            shopGrouponList: [],
+            shopInfo: {}
         };
     }
 
@@ -266,5 +274,20 @@ export default class Activity extends Model {
         this.addEventListener('clearIds', function () {
             this.state.ids = [];
         });
+
+        this.addEventListener('saveShopGrouponDetails', function ({info}) {
+            let list = info['shop_shopping_groups'];
+            _.map(list, item => {
+                if (item['group_products'].length > 3) {
+                    item.display_products = item['group_products'].slice(0, 3)
+                } else {
+                    item.display_products = item['group_products']
+                }
+            });
+            this.state.shopGrouponList = list;
+            this.state.shopInfo = info['shop_info']
+        })
+
+
     }
 }

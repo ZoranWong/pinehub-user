@@ -19,9 +19,9 @@
         </div>
         <ul class="groupon_list">
             <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >
-                <div class="groupon_shop_info" @click="goGrouponDetails(item)">
+                <div class="groupon_shop_info" @click="goShopDetails(item)">
                     <div class="left">
-                        <img class="shop_image" src="../grouponDetails/img/background.jpeg" alt="">
+                        <img class="shop_image" src="../grouponDetails/img/back.jpeg" alt="">
                         <div class="top">
                             <h3 class="shop_name">{{item['pick_shop_name']}}</h3>
                             <span class="shop_address">{{item['pick_shop_address']}}</span>
@@ -100,8 +100,12 @@
             handleMock () {
                 // 模拟滚动条
             },
-            goShopDetails () {
-                this.$command('REDIRECT_TO','user.groupon.shopDetails','push')
+            goShopDetails (item) {
+                this.$command('REDIRECT_TO','user.groupon.shopDetails','push', {
+                    query: {
+                        id: item['shop_id']
+                    }
+                })
             },
             goGrouponDetails (item) {
                 this.$command('CLICK_GROUPON', item.id)
