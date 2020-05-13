@@ -4,6 +4,7 @@ export default class RegisterCommand extends Command {
     // 获取token值
     async handle (e, options = {}) {
         try {
+            console.log('准备注册');
             let mpUserInfoDetail = e.mp.detail;
             let userInfo = mpUserInfoDetail.userInfo;
             console.log(mpUserInfoDetail, '-------------mpUserInfoDetail--------------');

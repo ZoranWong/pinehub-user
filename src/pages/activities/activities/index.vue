@@ -29,7 +29,7 @@
             }
         },
         components: {
-            Auth
+            Auth,GetUserMobile
         },
         destroyed () {
 
@@ -41,8 +41,17 @@
                     this.showView = true
                 }
 		    },
-            token (val) {
-                console.log(val, '(((((((((((((((((((((((((((((((((((((');
+            registered (value) {
+                if (value) {
+                    this.closeAuth()
+                } else {
+                    this.getUserAuth()
+                }
+                if (value && !this.isMember) {
+                    this.showBindMobile = true
+                }
+            },
+            isMember (val) {
                 if (val) {
                     wx.setNavigationBarTitle({
                         title: decodeURI(this.options.name)
@@ -58,24 +67,11 @@
                     let gateway = this.config['app']['http']['gateway'];
                     let env = this.config['app']['env'];
                     let str = Math.random().toString(36).substr(2)
-                    this.url = `https://neptune.klsfood.cn/activity.html?activity_id=${this.options.id}&token=${val}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
+                    this.url = `https://neptune.klsfood.cn/activity.html?activity_id=${this.options.id}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
                     console.log(this.url, 'activity uel');
-                    // this.url = `http://activity.node:8091/?activity_id=6`;
-                } else {
-		            this.getUserAuth()
-                }
-            },
-            registered (value) {
-                if (value) {
-                    this.closeAuth()
-                }
-                if (value && !this.isMember) {
-                    this.showBindMobile = true
-                }
-            },
-            isMember (val) {
-                if (val) {
                     this.showBindMobile = false;
+                } else {
+                    this.showBindMobile = true
                 }
             },
         },
@@ -93,6 +89,12 @@
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headHeight;
+            },
+            accessToken () {
+                return this.model.app.accessToken;
+            },
+            accessTokenTTL () {
+                return this.model.app.overDate;
             },
             token(){
                 if (this.model.account.token) {
@@ -112,24 +114,25 @@
                 return this.model.account.isMember;
             },
         },
-        // onShareAppMessage: function (res) {
-        //     console.log(this.options, '==========>');
-        //     //可以先看看页面数据都有什么，得到你想要的数据
-        //     return {
-        //         title: decodeURI(this.options.name),
-        //         desc: "青松易购小程序",
-        //         imageUrl: "",
-        //         path: `/pages/activities/activities/main?id=${this.options.id}&name=${this.options.name}`,
-        //         success: function (res) {
-        //             // 转发成功
-        //             console.log("转发成功:" + JSON.stringify(res));
-        //         },
-        //         fail: function (res) {
-        //             // 转发失败
-        //             console.log("转发失败:" + JSON.stringify(res));
-        //         }
-        //     }
-        // },
+        onShareAppMessage: function (res) {
+            console.log(res, ' --------- ----------');
+            console.log(this.options, '==========>');
+            //可以先看看页面数据都有什么，得到你想要的数据
+            return {
+                title: decodeURI(this.options.name),
+                desc: "青松易购小程序",
+                imageUrl: "",
+                path: `/pages/activities/activities/main?id=${this.options.id}&name=${this.options.name}`,
+                success: function (res) {
+                    // 转发成功
+                    console.log("转发成功:" + JSON.stringify(res));
+                },
+                fail: function (res) {
+                    // 转发失败
+                    console.log("转发失败:" + JSON.stringify(res));
+                }
+            }
+        },
         methods: {
             receive (data) {
                 console.log(data, 'receive');
@@ -137,20 +140,36 @@
             getUserAuth () {
                 this.getAuth = true
             },
-            closeAuth () {
-                this.getAuth = false
+            closeAuth (slug){
+                this.getAuth = false;
+                slug === 'index' && this.$command('REDIRECT_TO', 'index', 'reLaunch');
             },
             closeGetUserMobile () {
-                this.showBindMobile = false
+                this.showBindMobile = false;
+                this.$command('REDIRECT_TO', 'index', 'reLaunch');
+            },
+            async initAccount () {
+                let result = await this.map.getLocation();
+                await this.$store.dispatch('model.account/resetFromCache', {
+                    initAccount: async () => {
+                        if (((this.accessTokenTTL - Date.now()) <= 0) || !this.accessToken) {
+                            await this.$command('APP_ACCESS');
+                        } else {
+                            await this.$command('SIGN_IN', this.accessToken);
+                        }
+                        if (!this.registered) {
+                            this.getUserAuth()
+                        }
+                    }
+                });
             }
 
         },
         onShow () {
             let pages =  getCurrentPages();
-            console.log(pages, 'xxxxxxx');
             let options = pages[pages.length - 1]['options'];
             this.options = options;
-            if (this.token) {
+            if (this.registered && this.isMember) {
                 wx.setNavigationBarTitle({
                         title: decodeURI(this.options.name)
                     });
@@ -165,10 +184,9 @@
                     let gateway = this.config['app']['http']['gateway'];
                     let env = this.config['app']['env'];
                     let str = Math.random().toString(36).substr(2)
-                    console.log(str, '===>');
                     this.url = `https://neptune.klsfood.cn/activity.html?activity_id=${options.id}&token=${this.token}&headHeight=${this.headHeight}&mainHeight=${this.mainHeight}&random=${str}&env=${env}`;
             } else {
-                this.getUserAuth()
+                this.initAccount()
             }
 
         },
@@ -180,11 +198,8 @@
         onUnload () {
             console.log('onUnload');
         },
-        components: {},
         mounted () {
-            if (!this.token) {
-                this.getUserAuth()
-            }
+            console.log(this.registered, '-------------');
         }
     }
 </script>

@@ -33,19 +33,24 @@
                 type: String
             }
         },
+        onShow () {
+            console.log('show', '------------');
+        },
         mounted () {
-		},
+            console.log('??????????????????');
+        },
         methods: {
 			closeAuth () {
-				this.$emit('close')
+                console.log('取下xxxxx');
+                this.$emit('close')
             },
-			getPhoneNumber (e) {
-				this.$command('SET_USER_MOBILE', e);
-			},
 			async getUserInfo (e) {
+                console.log('11111111111', this.model);
                 let sessionKey = this.model.account.sessionKey;
+                console.log(sessionKey, 'sessionKey');
                 if (sessionKey) {
                     let result = await this.$command('USER_REGISTER', e);
+                    console.log(result, 'resut');
                     if (result) {
                         this.$emit('close');
                         if (this.slug === 'payment') {
