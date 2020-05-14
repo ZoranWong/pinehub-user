@@ -1,31 +1,34 @@
 <template>
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
-        <div class="balance-detail" :style="{'top': (statusBarHeight + navHeight) + 'px'}">
-            <div class="title">可用余额（元）</div>
-            <div class="balance-number">
-                {{balance}}
+        <div class="container" :style="{height: mainHeight + 'px'}">
+            <div class="balance-detail" >
+                <div class="title">可用余额（元）</div>
+                <div class="balance-number">
+                    {{balance}}
+                </div>
+                <form report-submit="true" @submit="uploadFormId">
+                    <button form-type="submit" class="recharge" @click="jump('user.recharge')">立即充值</button>
+                </form>
             </div>
-            <form report-submit="true" @submit="uploadFormId">
-                <button form-type="submit" class="recharge" @click="jump('user.recharge')">立即充值</button>
-            </form>
-        </div>
-        <div class="recharge-details">
-            <h3>余额明细</h3>
-            <ul class="recharge-details-list" v-if="balanceRecord.length" :style="{height: mainHeight - 230 + 'px'}">
-                <li v-for="item in balanceRecord" :key="item.id">
-                    <div class="left">
-                        <h4>{{item['type_desc']}}</h4>
-                        <span>{{item['change_at']}} </span>
-                    </div>
-                    <div class="right">{{item.amount}}</div>
-                </li>
-            </ul>
-            <div class="empty_list" v-else>
-                <img src="../../../../static/images/empty/empty_order.jpg" alt="">
-                <span>暂无余额变动明细哦</span>
+            <div class="recharge-details">
+                <h3>余额明细</h3>
+                <ul class="recharge-details-list" v-if="balanceRecord.length" :style="{height: mainHeight - 230 + 'px'}">
+                    <li v-for="item in balanceRecord" :key="item.id">
+                        <div class="left">
+                            <h4>{{item['type_desc']}}</h4>
+                            <span>{{item['change_at']}} </span>
+                        </div>
+                        <div class="right">{{item.amount}}</div>
+                    </li>
+                </ul>
+                <div class="empty_list" v-else>
+                    <img src="../../../../static/images/empty/empty_order.jpg" alt="">
+                    <span>暂无余额变动明细哦</span>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 <script>
@@ -99,7 +102,6 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        position: fixed;
     }
     .balance-detail .title{
         font-size: 28rpx;
@@ -130,7 +132,6 @@
 
     .recharge-details{
         width: 100%;
-        margin-top: 374rpx;
         background: #fff;
     }
 
