@@ -180,7 +180,7 @@
 					"id": -1,
 					"name": "pages/user/index/main",
 					"pathName": "pages/activities/groupon/grouponList/main",
-					"query": "",
+					"query": "id=138",
 					"scene": null
 				},
 				{

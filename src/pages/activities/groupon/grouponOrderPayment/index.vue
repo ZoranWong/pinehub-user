@@ -24,6 +24,27 @@
                     </div>
                     <input type="number" v-model="mobile" placeholder="以便商家与您及时沟通">
                 </li>
+                <li v-if="!remarkInfo['isRemarkRequired']">
+                    <div class="left">
+                        <img src="./imgs/remakr.png" alt="">
+                        <h3>备注(选填)：</h3>
+                    </div>
+                    <input type="text" v-model="remark" placeholder="请输入备注">
+                </li>
+                <li v-if="remarkInfo['isRemarkRequired'] && !remarkInfo['remark_name']">
+                    <div class="left">
+                        <img src="./imgs/remakr.png" alt="">
+                        <h3>备注(必填)：</h3>
+                    </div>
+                    <input type="text" v-model="remark" placeholder="请输入备注">
+                </li>
+                <li v-if="!remarkInfo['isRemarkRequired'] && remarkInfo['remark_name']">
+                    <div class="left">
+                        <img src="./imgs/remakr.png" alt="">
+                        <h3>{{remarkInfo['remark_name']}}：</h3>
+                    </div>
+                    <input type="text" v-model="remark" :placeholder=`请输入${remarkInfo['remark_name']}`>
+                </li>
             </ul>
 
             <div class="totalContainer" >
@@ -102,11 +123,6 @@
 
                 </div>
                 <ul id="remarkBox">
-                    <li>
-                        <h3>备注</h3>
-                        <input type="text" v-model="remark">
-                        <em v-if="!remark">请输入备注</em>
-                    </li>
                     <li>
                         <h3>支付方式</h3>
                         <span>在线支付</span>
@@ -224,6 +240,10 @@
             userMobile () {
                 return this.model.account.mobile
             },
+            remarkInfo () {
+                console.log(this.model.groupon.remarkInfo, '--------');
+                return this.model.groupon.remarkInfo
+            }
         },
         methods: {
 
@@ -240,6 +260,20 @@
                 if (!reg.test(this.mobile)) {
                     wx.showToast({
                         title: '请填写正确格式的手机号',
+                        icon: 'none'
+                    });
+                    return
+                }
+                if (this.remarkInfo['isRemarkRequired'] && !this.remarkInfo['remark_name'] && !this.remark) {
+                    wx.showToast({
+                        title: '请填写备注',
+                        icon: 'none'
+                    });
+                    return
+                }
+                if (this.remarkInfo['isRemarkRequired'] && this.remarkInfo['remark_name'] && !this.remark) {
+                    wx.showToast({
+                        title: `请填写${this.remarkInfo['remark_name']}`,
                         icon: 'none'
                     });
                     return
@@ -358,10 +392,11 @@
         justify-content: space-between;
         align-items: center;
         height: 110rpx;
+        border-bottom: 2rpx solid #f2f2f2;
     }
 
-    .user_info li:first-child{
-        border-bottom: 2rpx solid #f2f2f2;
+    .user_info li:last-child{
+        border-bottom: none;
     }
 
     .user_info li .left{

@@ -62,7 +62,7 @@
     import {formatMoney} from '../../../../utils';
 	export default {
 		name: 'ShoppingCart',
-        props: ['shoppingGroupId', 'floor'],
+        props: ['shoppingGroupId', 'floor','isRemarkRequired','remarkName'],
 		data () {
 			return {
                 showMask: false,

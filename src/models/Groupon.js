@@ -56,6 +56,9 @@ export default class Activity extends Model {
             },
             shopInfo () {
                 return this.state.shopInfo
+            },
+            remarkInfo () {
+                return this.state.remarkInfo
             }
         });
     }
@@ -77,7 +80,8 @@ export default class Activity extends Model {
             availableCoupons: [],
             ids: [],
             shopGrouponList: [],
-            shopInfo: {}
+            shopInfo: {},
+            remarkInfo: {}
         };
     }
 
@@ -158,6 +162,8 @@ export default class Activity extends Model {
                 details.giftProducts = this.handleGiftProducts(details['gift_products'], details['gift_floor']);
             }
             details.discount = details.discount >= 100 ? '' : details.discount / 10 + '折起';
+            this.state.remarkInfo.isRemarkRequired = details['is_remark_required'];
+            this.state.remarkInfo.remarkName = details['remark_name'];
             this.state.grouponDetails = details;
         });
 
