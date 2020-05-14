@@ -146,7 +146,7 @@
     #tab_select .scroll-view_H .tab_select_now:after{
         content: '';
         width: 40rpx;
-        height: 5rpx;
+        height: 10rpx;
         background: #ffcc00;
         border-radius: 3rpx;
         position: absolute;
