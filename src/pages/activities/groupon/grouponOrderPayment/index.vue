@@ -31,19 +31,19 @@
                     </div>
                     <input type="text" v-model="remark" placeholder="请输入备注">
                 </li>
-                <li v-if="remarkInfo['isRemarkRequired'] && !remarkInfo['remark_name']">
+                <li v-if="remarkInfo['isRemarkRequired'] && !remarkInfo['remarkName']">
                     <div class="left">
                         <img src="./imgs/remakr.png" alt="">
                         <h3>备注(必填)：</h3>
                     </div>
                     <input type="text" v-model="remark" placeholder="请输入备注">
                 </li>
-                <li v-if="!remarkInfo['isRemarkRequired'] && remarkInfo['remark_name']">
+                <li v-if="remarkInfo['isRemarkRequired'] && remarkInfo['remarkName']">
                     <div class="left">
                         <img src="./imgs/remakr.png" alt="">
-                        <h3>{{remarkInfo['remark_name']}}：</h3>
+                        <h3>{{remarkInfo['remarkName']}}：</h3>
                     </div>
-                    <input type="text" v-model="remark" :placeholder=`请输入${remarkInfo['remark_name']}`>
+                    <input type="text" v-model="remark" :placeholder="'请输入' + remarkInfo['remarkName']">
                 </li>
             </ul>
 
@@ -264,16 +264,16 @@
                     });
                     return
                 }
-                if (this.remarkInfo['isRemarkRequired'] && !this.remarkInfo['remark_name'] && !this.remark) {
+                if (this.remarkInfo['isRemarkRequired'] && !this.remarkInfo['remarkName'] && !this.remark) {
                     wx.showToast({
                         title: '请填写备注',
                         icon: 'none'
                     });
                     return
                 }
-                if (this.remarkInfo['isRemarkRequired'] && this.remarkInfo['remark_name'] && !this.remark) {
+                if (this.remarkInfo['isRemarkRequired'] && this.remarkInfo['remarkName'] && !this.remark) {
                     wx.showToast({
-                        title: `请填写${this.remarkInfo['remark_name']}`,
+                        title: `请填写${this.remarkInfo['remarkName']}`,
                         icon: 'none'
                     });
                     return
