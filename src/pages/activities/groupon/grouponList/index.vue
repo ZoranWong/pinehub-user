@@ -47,7 +47,7 @@
                     <ul class="groupon_purchased_info">
                         <li class="groupon_purchased_info_item" v-for="(user, uIndex) in item['latest_orders']" :key="uIndex">
                             <div class="left">
-                                1.
+                                {{item['latest_orders'].length - uIndex}}.
                                 <img class="user_ava" :src="user['user_avatar']" alt="">
                                 {{user['user_nickname']}}
                                 <span class="groupon_purchased_time">{{user['paid_time']}}</span>

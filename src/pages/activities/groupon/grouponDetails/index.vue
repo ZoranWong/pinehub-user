@@ -92,7 +92,7 @@
                 </h3>
                 <ul class="groupon_participants_list">
                     <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
-                        <span class="number">{{index + 1}}.</span>
+                        <span class="number">{{grouponDetails['regiments'].length - index}}.</span>
                         <div class="right">
                             <div class="top">
                                 <div class="left">
@@ -583,12 +583,13 @@
     }
     .detail_header .price_info .discount{
         color: #FF463C;
-        border-color: #FF463C;
+        border-color: rgba(255,70,60, 0.3);
         margin-right: 10rpx;
+
     }
     .detail_header .price_info .gift{
         color: #CA9938;
-        border-color: rgba(202,153,56,1);
+        border-color: rgba(202,153,56,0.3);
     }
 
     .detail_header .contact{

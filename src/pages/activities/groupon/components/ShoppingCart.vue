@@ -407,8 +407,9 @@
     }
 
     #shopping_groupon_cart .overWidthAmount{
-        width: 60rpx;
+        width: 80rpx;
         height: 40rpx;
+        border-radius: 9999rpx;
         background: #fe4a2c;
         display: flex;
         justify-content: center;
@@ -421,26 +422,26 @@
         z-index: 10001;
     }
 
-    #shopping_groupon_cart .overWidthAmount:before{
-        content: '';
-        width: 10px;
-        height: 20px;
-        background: #fe4a2c;
-        border-radius: 50%;
-        position: absolute;
-        left: -20rpx;
-        border-radius:  10px 0 0 10px ;
-    }
+    /*#shopping_groupon_cart .overWidthAmount:before{*/
+    /*    content: '';*/
+    /*    width: 10px;*/
+    /*    height: 20px;*/
+    /*    background: #fe4a2c;*/
+    /*    border-radius: 50%;*/
+    /*    position: absolute;*/
+    /*    left: -20rpx;*/
+    /*    border-radius:  10px 0 0 10px ;*/
+    /*}*/
 
-    #shopping_groupon_cart .overWidthAmount:after{
-        content: '';
-        width: 10px;
-        height: 20px;
-        background: #fe4a2c;
-        position: absolute;
-        right: -20rpx;
-        border-radius: 0 10px 10px 0;
-    }
+    /*#shopping_groupon_cart .overWidthAmount:after{*/
+    /*    content: '';*/
+    /*    width: 10px;*/
+    /*    height: 20px;*/
+    /*    background: #fe4a2c;*/
+    /*    position: absolute;*/
+    /*    right: -20rpx;*/
+    /*    border-radius: 0 10px 10px 0;*/
+    /*}*/
 
 
     #shopping_groupon_cart h4 {
