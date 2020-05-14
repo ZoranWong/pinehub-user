@@ -8,12 +8,14 @@
                 bindscroll="scroll"
                 enable-back-to-top="true"
                 :scroll-into-view="scrollTo"
-                :style="{width: '1052rpx' }">
+                :style="{width: categories.length * 200 + 'rpx' }">
                 <view :id="'cate' + tab.id" class="scroll-view-item_H" v-for="tab in categories" :class="{tab_select_now:statusType === tab.id}" :key="tab.id" @click="tabSelect(tab)">{{tab.name}}</view>
             </scroll-view>
         </view>
         <div class="imgs">
-            <img src="../../../../../static/icons/classification.jpg" @click="openCate" alt="">
+            <div class="imgBox">
+                <img src="../../../../../static/icons/class.png" @click="openCate" alt="">
+            </div>
         </div>
     </div>
     <div class="allCates" v-else :style="{top: top > 290 ? headerHeight + 'px' : 0, position: top > 290 ? 'fixed': 'absolute'}">
@@ -89,12 +91,11 @@
     #tab_select .page-section-spacing{
         width: 674rpx;
         overflow: auto;
+        z-index: 500;
+        background: #fff;
     }
 
-    #tab_select img{
-        width: 77rpx;
-        height: 52rpx;
-    }
+
 
     #tab_select .imgs{
         height: 88rpx;
@@ -102,6 +103,19 @@
         justify-content: center;
         align-items: center;
         background: #fff;
+    }
+    #tab_select .imgs .imgBox{
+        width: 78rpx;
+        height: 60rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: #ccc -5px 0 5px -5px;
+        z-index: 800;
+    }
+    #tab_select img{
+        width: 32rpx;
+        height: 28rpx;
     }
 
     #tab_select .scroll-view_H{
@@ -113,10 +127,11 @@
     }
 
     #tab_select .scroll-view_H .scroll-view-item_H{
+        width: 200rpx;
         box-sizing: border-box;
-        padding: 0 30rpx;
+        text-align: center;
         font-size: 28rpx;
-        color: #4d4d4d;
+        color: #757575;
         display: inline-block;
         line-height: 88rpx;
     }
@@ -124,18 +139,19 @@
     #tab_select .scroll-view_H .tab_select_now{
         font-size: 32rpx;
         color: #111;
+        font-weight: bold;
         position: relative;
     }
 
     #tab_select .scroll-view_H .tab_select_now:after{
         content: '';
-        width: 50rpx;
-        height: 4rpx;
+        width: 40rpx;
+        height: 5rpx;
         background: #ffcc00;
-        border-radius: 2rpx;
+        border-radius: 3rpx;
         position: absolute;
-        bottom: 20rpx;
-        left: 70rpx;
+        bottom: 0rpx;
+        left: 80rpx;
     }
 
     .allCates{
