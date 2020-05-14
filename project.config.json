@@ -178,23 +178,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/user/index/main",
-					"pathName": "pages/activities/groupon/grouponList/main",
-					"query": "id=19&name=%25E5%2588%2586%25E4%25BA%25AB%25E6%25B4%25BB%25E5%258A%25A8",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/activities/groupon/grouponShopDetails/main",
-					"pathName": "pages/activities/groupon/grouponShopDetails/main",
-					"query": "id=908",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/activities/groupon/grouponDetails/main",
-					"pathName": "pages/activities/groupon/grouponDetails/main",
-					"query": "id=114",
+					"name": "pages/user/balance/main",
+					"pathName": "pages/user/balance/main",
 					"scene": null
 				}
 			]
