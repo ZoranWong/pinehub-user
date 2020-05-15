@@ -124,7 +124,7 @@
                 </li>
                 <li @click="jump('user.protocol')" class="lines">
                     <div class="left">
-                        <img src="./image/user_agreement.png" class="protocol" alt="">
+                        <img src="./image/user_agreement.png"  alt="">
                         <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>用户协议</span>
                     </div>
