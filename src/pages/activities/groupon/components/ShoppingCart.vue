@@ -73,7 +73,6 @@
 		},
         watch: {
             goodInShoppingCart (val) {
-                console.log(val, '++++_+_+_+__++_+_+_+_)_JKJJKHJHHJ');
                 if (!val.length) {
 		            this.showGoodsList = false
                 }
@@ -89,6 +88,7 @@
             },
 			goodInShoppingCart(){
 				let products = this.model.groupon.goodInShoppingCart
+
                 if(products){
 					this.showMask = products.length ? true : false;
                 }
@@ -111,7 +111,7 @@
                 return this.model.groupon.cartTotalFeeFormat
             },
             isEnough () {
-                return this.cartTotalFeeFormat > this.floor
+                return this.cartTotalFeeFormat >= this.floor
             }
         },
 		created () {

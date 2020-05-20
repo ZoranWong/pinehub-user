@@ -7,9 +7,10 @@
                 <div class="balance-number">
                     {{balance}}
                 </div>
-                <form report-submit="true" @submit="uploadFormId">
-                    <button form-type="submit" class="recharge" @click="jump('user.recharge')">立即充值</button>
-                </form>
+                <div class="buttons">
+                    <button  class="recharge" @click="jump('user.recharge')">立即充值</button>
+                    <button  class="recharge" @click="exchange">输入兑换码</button>
+                </div>
             </div>
             <div class="recharge-details">
                 <h3>余额明细</h3>
@@ -28,20 +29,26 @@
                 </div>
             </div>
         </div>
-
+        <Exchange
+            v-if="exchangeVisible"
+            @close="exchangeVisible = false"
+            @submit="exchangeCode"
+        />
     </div>
 </template>
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
+	import Exchange from "./components/Exchange";
     export default {
         name: 'Balance',
         data: function () {
           return {
-              title: '我的余额'
+              title: '我的余额',
+              exchangeVisible: false
           };
         },
         components: {
-			CustomHeader
+			CustomHeader,Exchange
         },
         computed: {
             balance () {
@@ -66,6 +73,15 @@
             }
         },
         methods: {
+            exchange () {
+                this.exchangeVisible = true
+            },
+            exchangeCode (code) {
+                this.$command('EXCHANGE', code)
+                setTimeout(()=>{
+                    this.exchangeVisible = false
+                },1500)
+            },
             jump (router) {
             	this.$command('REDIRECT_TO', router, 'push');
             },
@@ -199,6 +215,15 @@
         font-size: 28rpx;
         color: #999;
         margin-top: 20rpx;
+    }
+
+    .buttons{
+        box-sizing: border-box;
+        padding: 0 40rpx;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
 </style>

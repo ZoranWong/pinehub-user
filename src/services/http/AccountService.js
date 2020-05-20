@@ -30,6 +30,13 @@ export default class AccountService extends ApiService {
         let response = await this.httpGet(`/user/balance`);
         return response.data;
     }
+    async exchange (code) {
+        let response = await this.httpPost(`/api/mp/consume_cards/exchange`, {
+            exchange_code: code
+        });
+        return response;
+    }
+
 
     async orderRecords (page, limit) {
         console.log(`---------------------- order records ----------------`);
