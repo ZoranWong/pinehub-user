@@ -11,7 +11,8 @@
         "pages/user/pickup/main",
         "pages/user/feedBack/success/main",
         "pages/user/recharge/main",
-        "pages/user/balance/main"
+        "pages/user/balance/main",
+        "pages/user/consumeCards/main"
     ],
     "subpackages": [
         {

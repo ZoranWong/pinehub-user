@@ -31,6 +31,15 @@
                     <i class="iconfont">&#xe6a3;</i>
                 </div>
             </div>
+            <div class="balance" @click="payByCard">
+                <div class="left">
+                    <img class="wechat" src="../../../../static/icons/wxchat.png" alt="">
+                    <span>消费卡支付</span>
+                </div>
+                <div class="right">
+                    <i class="iconfont">&#xe6a3;</i>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -137,6 +146,13 @@
                     this.$command('PAYMENT_BY_ID', this.orderNew)
                 } else {
                     this.$command('PAYMENT_BY_ID', this.order)
+                }
+            },
+            payByCard () {
+                if (this.$route.query && this.$route.query.order) {
+                    this.$command('PAYMENT_BY_CARD',this.orderNew)
+                } else {
+                    this.$command('PAYMENT_BY_CARD',this.order)
                 }
 
             }

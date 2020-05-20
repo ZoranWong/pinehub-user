@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
@@ -29,16 +30,10 @@
                 </div>
             </div>
         </div>
-        <Exchange
-            v-if="exchangeVisible"
-            @close="exchangeVisible = false"
-            @submit="exchangeCode"
-        />
     </div>
 </template>
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
-	import Exchange from "./components/Exchange";
     export default {
         name: 'Balance',
         data: function () {
@@ -48,7 +43,7 @@
           };
         },
         components: {
-			CustomHeader,Exchange
+			CustomHeader
         },
         computed: {
             balance () {
@@ -73,15 +68,6 @@
             }
         },
         methods: {
-            exchange () {
-                this.exchangeVisible = true
-            },
-            exchangeCode (code) {
-                this.$command('EXCHANGE', code)
-                setTimeout(()=>{
-                    this.exchangeVisible = false
-                },1500)
-            },
             jump (router) {
             	this.$command('REDIRECT_TO', router, 'push');
             },

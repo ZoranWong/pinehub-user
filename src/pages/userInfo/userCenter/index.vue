@@ -19,6 +19,10 @@
                             <em>{{userInfo.balance || 0}}</em>
                             <i>账户余额</i>
                         </li>
+                        <li @click="toBalance">
+                            <em>1</em>
+                            <i></i>
+                        </li>
                         <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
                             <em>{{userInfo.canUseCouponCount || 0}}</em>

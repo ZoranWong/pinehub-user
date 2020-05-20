@@ -7,6 +7,12 @@ export default class OrdersService extends ApiService {
         return response;
     }
 
+    // 消费卡支付订单
+    async paymentByCard (id) {
+        let response = await this.httpPost(`/api/mp/orders/${id}/consume_card/pay`);
+        return response;
+    }
+
     // 获取订单列表
     async userOrders (status, page = 1, limit = 15) {
         let response = await this.httpGet('api/mp/orders', {
