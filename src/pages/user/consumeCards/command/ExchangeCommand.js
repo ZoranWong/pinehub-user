@@ -6,7 +6,11 @@ export default class ExchangeCommand extends Command {
             wx.showToast({
                 title: response.message,
                 icon: 'success'
-            })
+            });
+            setTimeout(()=>{
+                this.$command('LOAD_EXCHANGE_RECORDS')
+                this.$command('LOAD_MY_CONSUME_CARDS')
+            }, 1500)
         }
     }
 

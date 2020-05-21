@@ -14,6 +14,7 @@
 	"user.share": "/pages/user/share/main",
     "user.balance": "/pages/user/balance/main",
     "user.cards": "/pages/user/consumeCards/main",
+    "user.cardDetails": "/pages/user/consumeCards/cardDetails/main",
     "user.address": "/pages/userInfo/address/main",
     "user.addressOperation": "/pages/userInfo/addressOperation/main",
     "user.recharge": "/pages/user/recharge/main",

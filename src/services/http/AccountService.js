@@ -36,6 +36,18 @@ export default class AccountService extends ApiService {
         });
         return response;
     }
+    async consumerCards () {
+        let response = await this.httpGet(`/api/mp/consume_cards/mine`);
+        return response;
+    }
+    async exchangeRecords () {
+        let response = await this.httpGet(`/api/mp/consume_cards/exchange_records`);
+        return response;
+    }
+    async cardDetails (id) {
+        let response = await this.httpGet(`/api/mp/consume_cards/mine/${id}/amount_change_logs`);
+        return response;
+    }
 
 
     async orderRecords (page, limit) {

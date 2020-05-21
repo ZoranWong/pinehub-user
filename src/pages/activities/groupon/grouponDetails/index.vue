@@ -416,12 +416,16 @@
             this.$command('GET_BAR_HEIGHT');
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            console.log(options, '=======<><<><><>><<<<<><>><><');
             if (options.scene) {
-                options.id = options.scene.split('3D')[1];
+                let idString = options.scene.split('3D')[1];
+                options.id = idString.split('%26')[0];
+                options.shop_code = options.scene.split('3D')[2];
                 options.backHome = true
             }
             this.options = options;
+            if (options['shop_code']) {
+                this.$command('BIND_CONSUMER', options['shop_code'])
+            }
             this.$command('LOAD_GROUPON_DETAILS', options.id);
             if (!this.registered) {
                 this.initAccount();

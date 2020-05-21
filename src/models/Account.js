@@ -77,6 +77,15 @@ export default class Account extends Model {
             },
             mobile () {
                 return this.state.mobile
+            },
+            exchangedRecords () {
+                return this.state.exchangedRecords
+            },
+            myConsumeCards () {
+                return this.state.myConsumeCards
+            },
+            cardDetails () {
+                return this.state.cardDetails
             }
         });
     }
@@ -116,7 +125,10 @@ export default class Account extends Model {
             superiorShopId: '',
             userId: '',
             newUserCoupon: false,
-            newCoupons: []
+            newCoupons: [],
+            exchangedRecords: [],
+            myConsumeCards: [],
+            cardDetails: []
         };
     }
 
@@ -261,6 +273,33 @@ export default class Account extends Model {
 
         this.addEventListener('clearNewCoupons', function () {
             this.state.newCoupons = [];
+        });
+
+        this.addEventListener('saveMyConsumeCards', function ({cards}) {
+           _.map(cards, card => {
+               this.state.myConsumeCards.push(card)
+           })
+        });
+        this.addEventListener('clearMyConsumeCards', function () {
+            this.state.myConsumeCards = []
+        });
+
+        this.addEventListener('saveExchangedRecords', function ({list}) {
+            _.map(list, item => {
+                this.state.exchangedRecords.push(item)
+            })
+        });
+        this.addEventListener('clearExchangedRecords', function () {
+            this.state.exchangedRecords = []
+        })
+
+        this.addEventListener('saveCardDetails', function ({list}) {
+            _.map(list, item => {
+                this.state.cardDetails.push(item)
+            })
+        });
+        this.addEventListener('clearCardDetails', function () {
+            this.state.cardDetails = []
         })
     }
 }

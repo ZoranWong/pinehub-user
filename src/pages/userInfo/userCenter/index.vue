@@ -19,7 +19,7 @@
                             <em>{{userInfo.balance || 0}}</em>
                             <i>账户余额</i>
                         </li>
-                        <li @click="toBalance">
+                        <li @click="toConsumeCards">
                             <em>1</em>
                             <i></i>
                         </li>
@@ -275,6 +275,20 @@
 						this.$command('LOAD_CHARGE_CARDS', 0);
 					}
 				}
+            },
+            toConsumeCards () {
+                if (!this.registered) {
+                    this.getUserAuth()
+                } else {
+                    if (!this.isMember) {
+                        wx.showToast({
+                            title: '请先进行手机号授权',
+                            icon: 'none'
+                        })
+                    } else {
+                        this.$command('REDIRECT_TO', 'user.cards', 'push');
+                    }
+                }
             },
             connectKf () {
                 wx.makePhoneCall({
