@@ -20,8 +20,8 @@
                             <i>账户余额</i>
                         </li>
                         <li @click="toConsumeCards">
-                            <em>1</em>
-                            <i></i>
+                            <em>{{totalCardCount || 0}}</em>
+                            <i>消费卡</i>
                         </li>
                         <li @click="jump('couponCenter')" class="my_card">
                             <s class="my_card_new"></s>
@@ -198,7 +198,10 @@
 			},
 			registered () {
 				return this.model.account.registered;
-			}
+			},
+            totalCardCount () {
+                return this.model.account.totalCardCount
+            }
         },
         watch: {
             registered (value) {

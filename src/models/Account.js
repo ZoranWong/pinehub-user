@@ -86,6 +86,9 @@ export default class Account extends Model {
             },
             cardDetails () {
                 return this.state.cardDetails
+            },
+            totalCardCount () {
+                return this.state.totalCardCount
             }
         });
     }
@@ -128,7 +131,8 @@ export default class Account extends Model {
             newCoupons: [],
             exchangedRecords: [],
             myConsumeCards: [],
-            cardDetails: []
+            cardDetails: [],
+            totalCardCount: 0
         };
     }
 
@@ -180,6 +184,9 @@ export default class Account extends Model {
         this.addEventListener('setAccount', function (userInfo) {
             if (typeof userInfo['id'] !== 'undefined') {
                 this.state.userId = userInfo['id']
+            }
+            if (typeof userInfo['consume_card_count'] !== 'undefined') {
+                this.state.totalCardCount = userInfo['consume_card_count']
             }
             if (typeof userInfo['superior_shop_code'] !== 'undefined') {
                 this.state.shopCode = userInfo['superior_shop_code']

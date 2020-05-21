@@ -3,8 +3,8 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'" />
         <div class="container" :style="{height: mainHeight + 'px'}">
-            <ul>
-                <li v-for="item in cardDetails">
+            <ul v-if="cardDetails.length">
+                <li v-for="(item,index) in cardDetails" :key="index">
                     <div class="left">
                         <h3>{{item.remark}}</h3>
                         <span>{{item['log_time']}}</span>
@@ -12,6 +12,10 @@
                     <h4>{{item['amount_desc']}}</h4>
                 </li>
             </ul>
+            <div class="empty" v-else>
+                <span>暂无消费明细~</span>
+                <img src="../../../../../static/images/empty/empty_order.jpg" alt="">
+            </div>
         </div>
 
     </div>
@@ -102,6 +106,25 @@
         font-weight: bold;
         color: #FC3C2F;
         font-size: 32rpx;
+    }
+
+    .empty{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 150rpx;
+    }
+
+    .empty span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 50rpx;
+    }
+
+    .empty img{
+        width: 374rpx;
+        height: 288rpx;
     }
 
 

@@ -3,7 +3,7 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'" />
         <div class="container" :style="{height: mainHeight + 'px'}">
-            <view class="page-section-spacing">
+            <view class="page-section-spacing" v-if="myConsumeCards.length">
                 <scroll-view
                     class="scroll-view_H"
                     :scroll-x="true"
@@ -28,7 +28,7 @@
 
             <div class="exchangeRecords">
                 <h3>兑换明细</h3>
-                <ul :style="{'height': listHeight + 'px', overflow: 'auto'}">
+                <ul :style="{'height': listHeight + 'px', overflow: 'auto'}" v-if="exchangedRecords.length">
                     <li v-for="(item, index) in exchangedRecords" :key="index">
                         <div class="left">
                             <h4>{{item['card_name']}}</h4>
@@ -37,6 +37,10 @@
                         <h5>兑换成功</h5>
                     </li>
                 </ul>
+                <div class="empty" v-else>
+                    <img src="../../../../static/images/empty/empty_order.jpg" alt="">
+                    <span>暂无兑换明细</span>
+                </div>
             </div>
 
 
@@ -249,6 +253,25 @@
         font-weight: normal;
         font-size: #111;
         font-size: 28rpx;
+    }
+
+    .empty{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 150rpx;
+    }
+
+    .empty span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 50rpx;
+    }
+
+    .empty img{
+        width: 374rpx;
+        height: 288rpx;
     }
 
 
