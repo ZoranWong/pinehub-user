@@ -152,6 +152,7 @@
 
     .scroll-view_H{
         overflow-x: auto;
+        overflow-y: hidden;
         display: flex;
         white-space: nowrap;
         display: flex;
@@ -165,6 +166,7 @@
         height: 380rpx;
         margin-right: 40rpx;
         position: relative;
+        overflow-y: hidden;
     }
 
     .scroll-view-item_H image{
