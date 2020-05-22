@@ -107,7 +107,7 @@
                 <div>
                    付款时间：{{orderDetail['paid_at'] || '暂无'}}
                 </div>
-                <div>支付方式：{{orderDetail['payment_type'] === 'BALANCE' ? '余额支付':'微信支付'}}  </div>
+                <div>支付方式：{{paymentType}}  </div>
 
                 <div>实际{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '收货' :'取货'}}时间：{{orderDetail['verified_at'] || '暂无'}}  </div>
             </div>
@@ -146,7 +146,18 @@
 			},
 			navHeight () {
 				return this.model.global.barHeight.navHeight
-			}
+			},
+            paymentType () {
+			    let type = this.orderDetail['payment_type'];
+			    switch (type) {
+                    case 'BALANCE':
+                        return '余额支付';
+                    case 'CONSUME_CARD':
+                        return '消费卡支付';
+                    default:
+                        return '微信支付'
+                }
+            }
         },
         methods: {
 			cpoy (text) {
