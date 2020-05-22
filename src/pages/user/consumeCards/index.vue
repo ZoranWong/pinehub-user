@@ -3,23 +3,35 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'" />
         <div class="container" :style="{height: mainHeight + 'px'}">
-            <view class="page-section-spacing" v-if="myConsumeCards.length">
-                <scroll-view
-                    class="scroll-view_H"
-                    :scroll-x="true"
-                    bindscroll="scroll"
-                    :enable-flex="true"
-                    :style="{width: myConsumeCards.length * 670 + 'rpx' }">
-                    <view  class="scroll-view-item_H" v-for="tab in myConsumeCards" @click="cardDetails(tab['record_id'])"  >
-                        <image src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png"></image>
-                        <view class="price">
-                            <view class="amount">{{tab['card_remain_amount']}}</view>
-                            <view class="desc">现金抵用</view>
-                        </view>
+<!--            <view class="page-section-spacing" v-if="myConsumeCards.length">-->
+<!--                <scroll-view-->
+<!--                    class="scroll-view_H"-->
+<!--                    :scroll-x="true"-->
+<!--                    @scroll="scroll"-->
+<!--                    :enable-flex="true"-->
+<!--                    :style="{width: myConsumeCards.length * 670 + 'rpx' }">-->
+<!--                    <view  class="scroll-view-item_H" v-for="tab in myConsumeCards" @click="cardDetails(tab['record_id'])"  >-->
+<!--                        <image src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png"></image>-->
+<!--                        <view class="price">-->
+<!--                            <view class="amount">{{tab['card_remain_amount']}}</view>-->
+<!--                            <view class="desc">现金抵用</view>-->
+<!--                        </view>-->
 
-                    </view>
-                </scroll-view>
-            </view>
+<!--                    </view>-->
+<!--                </scroll-view>-->
+<!--            </view>-->
+
+            <div class="page-section-spacing">
+                <ul class="scroll-view_H" :style="{width: myConsumeCards.length * 670 + 'rpx' }">
+                    <li v-for="(tab,index) in myConsumeCards" class="scroll-view-item_H" :key="index" @click="cardDetails(tab['record_id'])" >
+                        <img src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png" alt="">
+                        <div class="price">
+                            <div class="amount">{{tab['card_remain_amount']}}</div>
+                            <div class="desc">现金抵用</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
             <div class="exchange">
                 <input type="text" v-model="code" placeholder="请输入兑换码">
@@ -100,6 +112,9 @@
                         id: id
                     }
                 });
+            },
+            scroll () {
+
             }
         },
         mounted () {
@@ -121,22 +136,27 @@
     .page-section-spacing {
         width: 100%;
         height: 440rpx;
-        overflow: auto;
+        overflow-x: auto;
         border-bottom: 2rpx solid #F2F2F2;
         box-sizing: border-box;
         padding-left: 40rpx;
         padding-top: 20rpx;
     }
+
     .page-section-spacing::-webkit-scrollbar{
         width: 0;
         height: 0;
         color: transparent;
     }
 
+
     .scroll-view_H{
         overflow-x: auto;
         display: flex;
-
+        white-space: nowrap;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .scroll-view-item_H{
