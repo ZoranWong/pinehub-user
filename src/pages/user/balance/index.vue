@@ -10,7 +10,7 @@
                 </div>
                 <div class="buttons">
                     <button  class="recharge" @click="jump('user.recharge')">立即充值</button>
-                    <button  class="recharge" @click="exchange">输入兑换码</button>
+<!--                    <button  class="recharge" @click="exchange">输入兑换码</button>-->
                 </div>
             </div>
             <div class="recharge-details">
