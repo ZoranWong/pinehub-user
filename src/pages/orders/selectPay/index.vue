@@ -33,7 +33,7 @@
             </div>
             <div class="balance" @click="payByCard">
                 <div class="left">
-                    <img class="wechat" src="../../../../static/icons/wxchat.png" alt="">
+                    <img src="../../../../static/icons/cardPay.png" alt="">
                     <span>消费卡支付</span>
                 </div>
                 <div class="right">

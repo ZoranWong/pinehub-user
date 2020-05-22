@@ -23,12 +23,15 @@
 
             <div class="page-section-spacing">
                 <ul class="scroll-view_H" :style="{width: myConsumeCards.length * 670 + 'rpx' }">
-                    <li v-for="(tab,index) in myConsumeCards" class="scroll-view-item_H" :key="index" @click="cardDetails(tab['record_id'])" >
-                        <img src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png" alt="">
-                        <div class="price">
-                            <div class="amount">{{tab['card_remain_amount']}}</div>
-                            <div class="desc">现金抵用</div>
+                    <li v-for="(tab,index) in myConsumeCards" class="scroll-view-item_H" :key="index" @click="cardDetails(tab['record_id'])">
+                        <div  v-if="tab['card_remain_amount']" >
+                            <img src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png" alt="">
+                            <div class="price">
+                                <div class="amount">{{tab['card_remain_amount']}}</div>
+                                <div class="desc">现金抵用</div>
+                            </div>
                         </div>
+                        <img v-else src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/meiqian.png" alt="">
                     </li>
                 </ul>
             </div>
@@ -170,8 +173,8 @@
     }
 
     .scroll-view-item_H image{
-        width: 100%;
-        height: 100%;
+        width: 630rpx;
+        height: 380rpx;
     }
 
     .scroll-view-item_H .price{

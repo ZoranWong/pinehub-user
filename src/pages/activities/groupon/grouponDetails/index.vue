@@ -417,9 +417,14 @@
             let pages =  getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             if (options.scene) {
-                let idString = options.scene.split('3D')[1];
-                options.id = idString.split('%26')[0];
-                options.shop_code = options.scene.split('3D')[2];
+                if (options.scene.split('3D').length > 2) {
+                    let idString = options.scene.split('3D')[1];
+                    options.id = idString.split('%26')[0];
+                    options.shop_code = options.scene.split('3D')[2];
+                } else {
+                    options.id = idString.split('3D')[1];
+                }
+
                 options.backHome = true
             }
             this.options = options;
