@@ -3,25 +3,7 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'" />
         <div class="container" :style="{height: mainHeight + 'px'}">
-<!--            <view class="page-section-spacing" v-if="myConsumeCards.length">-->
-<!--                <scroll-view-->
-<!--                    class="scroll-view_H"-->
-<!--                    :scroll-x="true"-->
-<!--                    @scroll="scroll"-->
-<!--                    :enable-flex="true"-->
-<!--                    :style="{width: myConsumeCards.length * 670 + 'rpx' }">-->
-<!--                    <view  class="scroll-view-item_H" v-for="tab in myConsumeCards" @click="cardDetails(tab['record_id'])"  >-->
-<!--                        <image src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/card.png"></image>-->
-<!--                        <view class="price">-->
-<!--                            <view class="amount">{{tab['card_remain_amount']}}</view>-->
-<!--                            <view class="desc">现金抵用</view>-->
-<!--                        </view>-->
-
-<!--                    </view>-->
-<!--                </scroll-view>-->
-<!--            </view>-->
-
-            <div class="page-section-spacing">
+            <div class="page-section-spacing" v-if="myConsumeCards.length">
                 <ul class="scroll-view_H" :style="{width: myConsumeCards.length * 670 + 'rpx' }">
                     <li v-for="(tab,index) in myConsumeCards" class="scroll-view-item_H" :key="index" @click="cardDetails(tab['record_id'])">
                         <div  v-if="tab['card_remain_amount']" >
@@ -53,7 +35,7 @@
                     </li>
                 </ul>
                 <div class="empty" v-else>
-                    <img src="../../../../static/images/empty/empty_order.jpg" alt="">
+                    <img src="../../../../static/images/empty/empty_coupon.jpg" alt="">
                     <span>暂无兑换明细</span>
                 </div>
             </div>

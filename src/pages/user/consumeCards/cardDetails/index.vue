@@ -14,7 +14,7 @@
             </ul>
             <div class="empty" v-else>
                 <span>暂无消费明细~</span>
-                <img src="../../../../../static/images/empty/empty_order.jpg" alt="">
+                <img src="../../../../../static/images/empty/empty_coupon.jpg" alt="">
             </div>
         </div>
 
