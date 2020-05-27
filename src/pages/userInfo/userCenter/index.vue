@@ -5,9 +5,9 @@
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
                 <div id="name_id">
-                    <em v-if="registered">{{userInfo.nickname}}</em>
-                    <button v-else class="user-mobile-get-btn" @click="getUserAuth">授权登录</button>
-                    <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn-getMobile" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                    <em v-if="registered && isMember">{{userInfo.nickname}}</em>
+                    <button v-if="!registered" class="user-mobile-get-btn" @click="getUserAuth">授权登录</button>
+                    <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                         手机号授权
                     </button>
                 </div>

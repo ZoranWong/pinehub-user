@@ -62,7 +62,7 @@
                     @animationfinish="couponChange"
                     duration="1000">
                     <block v-for="(item, index) in tickets" :index="index" :key="item.id" >
-                        <swiper-item :key="item.id" class="couponItem">
+                        <swiper-item :key="item.id" class="couponItem" @click="goCouponCenter">
                             <div class="couponLeft">
                                 <h3 v-if="item.type === 'DISCOUNT' ">
                                     {{item.benefit}}
@@ -79,8 +79,8 @@
                                 <span class="tag">{{item.type === 'DISCOUNT' ? '折扣券': '现金券'}}</span>
                                 <div class="bottom">
                                     <span>{{item['valid_term_desc']}}</span>
-                                    <button @click="receiveIt(item.id)" v-if="item['can_receive']">立即领取</button>
-                                    <button @click="goStoreCates('more')" v-else>立即使用</button>
+                                    <button @click.stop="receiveIt(item.id)" v-if="item['can_receive']">立即领取</button>
+                                    <button @click.stop="goStoreCates('more')" v-else>立即使用</button>
                                 </div>
                             </div>
                         </swiper-item>
@@ -390,6 +390,9 @@
             });
         },
         methods: {
+            goCouponCenter () {
+                this.$command('REDIRECT_TO', 'ticketCenter', 'push')
+            },
             jumpHomeMaking () {
                 this.$command('REDIRECT_TO', 'index.homemaking', 'push')
             },
