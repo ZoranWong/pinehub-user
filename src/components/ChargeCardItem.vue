@@ -47,7 +47,6 @@
         methods: {
             selectedCard () {
                 if (this.selectedIndex === this.index) {
-                    console.log(this.selectedIndex, this.index);
                     this.$emit('selectCard', null, null);
                 } else {
                     this.$emit('selectCard', this.index, this.card);

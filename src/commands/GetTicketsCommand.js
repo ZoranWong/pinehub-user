@@ -31,7 +31,6 @@ export default class GetTicketsCommand extends Command {
 
     // 活动
     async activity (status, activityId, page) {
-        console.log('优惠券进来了<<<<A', status, activityId, page);
         try {
             return await this.service('http.tickets').activityCouponsList(status, activityId, page);
         } catch (e) {

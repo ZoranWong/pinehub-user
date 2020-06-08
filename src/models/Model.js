@@ -38,7 +38,7 @@ export default class Model {
     }
 
     list () {
-       // console.log('----- list data -------', Date.now(), this.state.list);
+        // console.log('----- list data -------', Date.now(), this.state.list);
         return this.state.currentPage ? _.flatten(this.state.list) : [];
     }
 
@@ -93,9 +93,8 @@ export default class Model {
             //TODO handle the exception
             console.log(e);
         }
-        if (totalNum !== null) {
-            this.state.totalNum = totalNum;
-        }
+        this.state.totalNum = totalNum || 0;
+
         if (totalPage !== null) {
             this.state.totalPage = totalPage;
             if (pageCount !== null) {
@@ -111,7 +110,10 @@ export default class Model {
      *@param Transformer transformer 数据转换器
      *@param integer startIndex 起始索引
      **/
-    transform (data, transformer, startIndex = 1) {
+    transform (data, transformer = null, startIndex = 1) {
+        console.log(data, '>>>>>>>');
+        console.log(transformer);
+        transformer = transformer ? transformer : this.transformer;
         if (_.isArray(data)) {
             return _.map(data, function (value, index) {
                 value.index = startIndex + index;

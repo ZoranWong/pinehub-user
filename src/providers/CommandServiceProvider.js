@@ -10,8 +10,10 @@ import ShoppingCartCommand from '@/commands/ShoppingCartCommand';
 // 扫描命令
 import ScanCommand from '@/commands/ScanCommand';
 
-import LoadChargeCardsCommand from '@/commands/LoadChargeCardsCommand';
+// 获取导航栏高度
+import GetBarHeightCommand from '../commands/BarHeightCommand';
 
+import CleanCarts from '../commands/CleanCarts';
 
 // 清空产品命令（切换分类）
 import ClearModelCommand from '@/commands/ClearModelCommand';
@@ -23,6 +25,14 @@ import PaymentByIdCommand from '@/commands/PaymentByIdCommand';
 import RegisterCommand from '@/commands/RegisterCommand';
 
 import CreateOrderByMerchandiseIdCommand from '@/commands/CreateOrderByMerchandiseIdCommand';
+
+// 获取店铺命令
+import LoadCommonlyUsedPoints from '../commands/LoadCommonlyUsedPoints';
+import LoadNearbyPoints from '../commands/LoadNearbyPoints';
+
+// 绑定用户和店铺
+import BindConsumerCommand from '../commands/BindConsumerCommand';
+
 
 export default class CommandServiceProvider extends ServiceProvider {
     constructor (app) {
@@ -42,8 +52,12 @@ export default class CommandServiceProvider extends ServiceProvider {
             AppAccessCommand,
             PaymentByIdCommand,
             RegisterCommand,
-            LoadChargeCardsCommand,
-            CreateOrderByMerchandiseIdCommand
+            CreateOrderByMerchandiseIdCommand,
+            LoadCommonlyUsedPoints,
+            LoadNearbyPoints,
+            GetBarHeightCommand,
+            CleanCarts,
+            BindConsumerCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

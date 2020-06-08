@@ -5,7 +5,7 @@
         <div id="feedBackSuccess">
             <div class="bgimg"></div>
             <em>提交成功</em>
-            <i>感谢您对快乐松的关注与支持，我们会认证处理您的反馈，尽快修复和完善相关功能。</i>
+            <i>感谢您对青松易购的关注与支持，我们会认真处理您的反馈，尽快修复和完善相关功能。</i>
         </div>
         <div id="btn" @click="submit">完成</div>
     </div>
@@ -19,7 +19,7 @@
         },
         data () {
             return {
-                title: '意见反馈',
+                title: '活动',
                 navName: 'feedback'
             };
         },
@@ -36,7 +36,7 @@
             }
         },
         created () {
-
+            console.log('这是意见反馈啦');
         }
     }
 </script>

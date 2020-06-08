@@ -1,46 +1,37 @@
-import Command from '@/commands/ShoppingCartCommand';
-export default class ActivityShoppingCartChangeMerchandiseCommand extends Command {
-	constructor(app) {
-		super(app);
-		this.model = 'model.newEvents.shoppingCarts';
-	}
-	async handle(activityId, merchandiseId, id = null, quality = 1) {
-		try {
-			let merchandise = null;
-			if(id && quality === 0) {
-				merchandise = await this.service('http.shoppingCart').deleteShoppingCart(id);
-				if(merchandise) {
-					this.deleteShoppingCart(id);
-				}
-				return;
-			} else if(id === null) {
-				merchandise = await this.service('http.shoppingCart').activityShoppingCartAddMerchandise(
-					activityId,
-					merchandiseId,
-					quality);
-				if(merchandise) {
-					this.addMerchandiseToShoppingCart(merchandise);
-				}
-			} else if(id && quality > 0) {
-				merchandise = await this.service('http.shoppingCart').activityShoppingCartChangeMerchandise(
-					activityId,
-					id,
-					merchandiseId,
-					quality);
-				if(merchandise) {
-					this.changeShoppingCartMerchandise(merchandise);
-				}
-			}
-		} catch(e) {
-			wx.showToast({
-				title: e.response.data.message,
-				icon: 'none',
-				duration: 4000
-			});
-		}
-	}
 
-	static commandName() {
-		return 'ACTIVITY_SHOPPINGCART_CHANGE_MERCHANDISE';
-	}
+import Command from '@/commands/ShoppingCartCommand';
+import _ from 'underscore'
+export default class ActivityShoppingCartChangeMerchandiseCommand extends Command {
+    async handle (item, num) {
+        if (num <= 0) {
+            let response = await this.service('http.shoppingCart').deleteItem(item.id);
+            this.model.newEvents.shoppingCarts.dispatch('removeGoodsFromCart', {
+                goods: item
+            });
+            return
+        }
+
+        if (item['stock_num'] < num) {
+            this.$application.popup.toast('库存不足', 'none', 2000);
+            return
+        }
+
+
+        let response = await this.service('http.shoppingCart').activityShoppingCartChangeMerchandise(item.id, num);
+
+
+        // console.log('----- request -----', Date.now());
+        if (response) {
+            this.model.newEvents.shoppingCarts.dispatch('changeBuyNum', {
+                id: item.id,
+                num: num
+            });
+        }
+
+        // console.log('----- set data -----', Date.now());
+    }
+
+    static commandName () {
+        return 'CHANGE_BREAKFAST_BUY_NUM_COMMAND';
+    }
 }

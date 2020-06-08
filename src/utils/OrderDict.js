@@ -10,7 +10,6 @@ const ORDER_NUMBER_PREFIX = 'PH';
 
 const UNKNOWN_PAY = 0;
 const ALI_PAY = 1;
-
 const WECHAT_PAY = 2;
 
 // 取货方式

@@ -36,28 +36,27 @@
 		box-sizing: border-box;
 		font-weight: 300;
 	}
-	
+
 	.consignee div:first-child {
 		margin: 10rpx 0rpx;
 	}
-	
+
 	.consignee .tips {
 		font-size: 22rpx;
 		border-top: 2rpx dashed #cccccc;
 		box-sizing: border-box;
 		margin-top: 28rpx;
 	}
-	
+
 	.edit-icon {
 		width: 23rpx;
 		height: 30rpx;
-		background: url(../../static/images/icon/edit-icon.png) no-repeat;
 		background-size: contain;
 		position: absolute;
 		top: 72rpx;
 		right: 0rpx;
 	}
-	
+
 	.noVisible {
 		visibility: hidden;
 	}

@@ -24,14 +24,13 @@ export default class Account extends Model {
                 return state.balance;
             },
             isMember (state) {
-                // 是否已经注册
-                return state.mobile !== null;
+                return !!state.mobile;
             },
             isShopManager (state) {
                 return state.isShopManager;
             },
-            userScore (state) {
-                return state.canUseScore;
+            availableScore (state) {
+                return state.availableScore;
             },
             overDate (state) {
                 // 是否已经过期
@@ -53,8 +52,43 @@ export default class Account extends Model {
                 return state.shop;
             },
             registered () {
-                // 是否获取到用户信息
                 return !!this.state.nickname;
+            },
+            balanceRecord () {
+                return this.state.balanceRecord
+            },
+            shopCode () {
+                return this.state.shopCode
+            },
+            sessionKey () {
+                return this.state.sessionKey
+            },
+            superiorShopId () {
+                return this.state.superiorShopId
+            },
+            userId () {
+                return this.state.userId
+            },
+            newUserCoupon () {
+                return this.state.newUserCoupon
+            },
+            newCoupons () {
+                return this.state.newCoupons
+            },
+            mobile () {
+                return this.state.mobile
+            },
+            exchangedRecords () {
+                return this.state.exchangedRecords
+            },
+            myConsumeCards () {
+                return this.state.myConsumeCards
+            },
+            cardDetails () {
+                return this.state.cardDetails
+            },
+            totalCardCount () {
+                return this.state.totalCardCount
             }
         });
     }
@@ -68,6 +102,7 @@ export default class Account extends Model {
             token: null,
             balance: 0,
             canUseScore: 0,
+            availableScore: 0,
             country: null,
             city: null,
             sex: null,
@@ -83,18 +118,34 @@ export default class Account extends Model {
             },
             vipLevel: null,
             ticketNum: 0,
-            nickname: null
+            nickname: null,
+            handlingOrderCount: null,
+            waitPickOrderCount: null,
+            waitPayOrderCount: null,
+            balanceRecord: [],
+            shopCode: '',
+            sessionKey: '',
+            superiorShopId: '',
+            userId: '',
+            newUserCoupon: false,
+            newCoupons: [],
+            exchangedRecords: [],
+            myConsumeCards: [],
+            cardDetails: [],
+            totalCardCount: 0
         };
     }
 
     // 监听数据
     listeners () {
         this.addEventListener('resetFromCache', async function ({initAccount}) {
-            console.log('-------------- reset account ----------------');
             await this.resetAccountFromCache();
-            console.log('-------------- reset account 1 ----------------');
             await initAccount();
         });
+
+        this.addEventListener('saveBalanceRecord', function ({list}) {
+            this.state.balanceRecord = list;
+        })
 
         this.addEventListener('reduceTicket', function ({count = 1}) {
             this.state.ticketNum -= count;
@@ -125,19 +176,47 @@ export default class Account extends Model {
             }
         });
 
+        this.addEventListener('saveShopCode', function ({code}) {
+            this.state.shopCode = code
+        });
+
 
         this.addEventListener('setAccount', function (userInfo) {
+            if (typeof userInfo['id'] !== 'undefined') {
+                this.state.userId = userInfo['id']
+            }
+            if (typeof userInfo['consume_card_count'] !== 'undefined') {
+                this.state.totalCardCount = userInfo['consume_card_count']
+            }
+            if (typeof userInfo['superior_shop_code'] !== 'undefined') {
+                this.state.shopCode = userInfo['superior_shop_code']
+            }
+            if (typeof userInfo['superior_shop_id'] !== 'undefined') {
+                this.state.superiorShopId = userInfo['superior_shop_id']
+            }
             if (typeof userInfo['open_id'] !== 'undefined') {
                 this.state.openId = userInfo['open_id'];
+            }
+            if (typeof userInfo['can_use_coupon_count'] !== 'undefined') {
+                this.state.canUseCouponCount = userInfo['can_use_coupon_count'];
+            }
+            if (typeof userInfo['mobile'] !== 'undefined') {
+                this.state.mobile = userInfo['mobile'];
             }
             if (typeof userInfo['union_id'] !== 'undefined') {
                 this.state.unionId = userInfo['union_id'];
             }
+            if (typeof userInfo['wait_pay_order_count'] !== 'undefined') {
+                this.state.waitPayOrderCount = userInfo['wait_pay_order_count'];
+            }
+            if (typeof userInfo['wait_pick_order_count'] !== 'undefined') {
+                this.state.waitPickOrderCount = userInfo['wait_pick_order_count'];
+            }
+            if (typeof userInfo['handling_order_count'] !== 'undefined') {
+                this.state.handlingOrderCount = userInfo['handling_order_count'];
+            }
             if (typeof userInfo['avatar'] !== 'undefined') {
                 this.state.avatar = userInfo['avatar'];
-            }
-            if (typeof userInfo['mobile'] !== 'undefined') {
-                this.state.mobile = userInfo['mobile'];
             }
             if (typeof userInfo['token'] !== 'undefined') {
                 this.state.token = userInfo['token'];
@@ -145,8 +224,8 @@ export default class Account extends Model {
             if (typeof userInfo['balance'] !== 'undefined') {
                 this.state.balance = userInfo['balance'];
             }
-            if (typeof userInfo['can_use_score'] !== 'undefined') {
-                this.state.canUseScore = userInfo['can_use_score'];
+            if (typeof userInfo['available_score'] !== 'undefined') {
+                this.state.availableScore = userInfo['available_score'];
             }
             if (typeof userInfo['country'] !== 'undefined') {
                 this.state.country = userInfo['country'];
@@ -162,10 +241,6 @@ export default class Account extends Model {
             }
             if (typeof userInfo['total_score'] !== 'undefined') {
                 this.state.totalScore = userInfo['total_score'];
-            }
-            if (typeof userInfo['shop_id'] !== 'undefined') {
-                this.state.isShopManager = (true && userInfo['shop_id']);
-                this.state.shop.id = userInfo['shop_id'];
             }
 
             if (typeof userInfo['vip_level'] !== 'undefined') {
@@ -185,5 +260,53 @@ export default class Account extends Model {
                 return false;
             }
         });
+
+        this.addEventListener('changeIntegral', function ({integral}) {
+            this.state.availableScore = this.state.availableScore - integral;
+        });
+
+        this.addEventListener('setSessionKey', function ({key}) {
+            console.log('登陆成功存session', key);
+            this.state.sessionKey = key;
+        });
+
+        this.addEventListener('hasNewUserCoupon', function (boolean) {
+            this.state.newUserCoupon = boolean;
+        });
+
+        this.addEventListener('saveNewCoupons', function ({coupons}) {
+            this.state.newCoupons = coupons
+        });
+
+        this.addEventListener('clearNewCoupons', function () {
+            this.state.newCoupons = [];
+        });
+
+        this.addEventListener('saveMyConsumeCards', function ({cards}) {
+           _.map(cards, card => {
+               this.state.myConsumeCards.push(card)
+           })
+        });
+        this.addEventListener('clearMyConsumeCards', function () {
+            this.state.myConsumeCards = []
+        });
+
+        this.addEventListener('saveExchangedRecords', function ({list}) {
+            _.map(list, item => {
+                this.state.exchangedRecords.push(item)
+            })
+        });
+        this.addEventListener('clearExchangedRecords', function () {
+            this.state.exchangedRecords = []
+        })
+
+        this.addEventListener('saveCardDetails', function ({list}) {
+            _.map(list, item => {
+                this.state.cardDetails.push(item)
+            })
+        });
+        this.addEventListener('clearCardDetails', function () {
+            this.state.cardDetails = []
+        })
     }
 }

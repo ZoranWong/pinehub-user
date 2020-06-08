@@ -4,6 +4,9 @@ export default class MerchandisesService extends ApiService {
     async list (route, query) {
         // 结果
         let response = await this.httpGet(route, query);
+
+        console.log(response, '-----------------------------');
+
         let merchandises = response.data;
         let pagination = response.meta.pagination;
         let totalNum = pagination.total;
@@ -14,8 +17,8 @@ export default class MerchandisesService extends ApiService {
     }
 
     // 获取新品预定所有商品信息 parameters = []
-    async activityMerchandises (activityId, page) {
-        let route = `/new/events/${activityId}/merchandises`;
+    async activityMerchandises (page) {
+        let route = '/api/mp/breakfast/booking/products';
         let query = {
             page: page
         }
@@ -63,5 +66,13 @@ export default class MerchandisesService extends ApiService {
             limit: limit
         };
         return await this.list(route, query);
+    }
+
+    // 早餐预定可用优惠券
+    async availableCoupons (page) {
+        let response = await this.httpGet('api/mp/breakfast/booking/coupons', {
+            page
+        });
+        return response
     }
 }

@@ -9,13 +9,12 @@ export default class FeedBackService extends ApiService {
         } else {
             // 服务器交互代码部分
             let data = {
-                comment: feedback,
-                mobile: mobile
+                content: feedback
             }
             if (mobile == null) {
                 delete data.mobile;
             }
-            response = await this.httpPost(`/feed/back/message`, data);
+            response = await this.httpPost(`api/mp/feed/back`, data);
         }
         return response.data;
     }

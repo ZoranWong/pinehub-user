@@ -2,22 +2,20 @@ import Command from '@/commands/ShoppingCartCommand';
 export default class ActivityShoppingCartClearMerchandisesCommand extends Command {
   constructor (app) {
     super(app);
-    this.model = 'model.newEvents.shoppingCarts';
   }
-  async handle (activityId) {
-    try {
-      let result = await this.service('http.shoppingCart').activityShoppingCartClearMerchandises(activityId);
-      if (result) {
-        this.store().dispatch(this.model + '/reset', {
-          activity: true
-        });
-      }
-    } catch (e) {
-      console.log('抛出异常', e);
+    async handle (type) {
+        let response = await this.service('http.store').clearBreakfastCart();
+        
+        
+        // console.log('----- request -----', Date.now());
+        if (response) {
+            this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart');
+        }
+        
+        // console.log('----- set data -----', Date.now());
     }
-  }
-
-  static commandName () {
-    return 'ACTIVITY_SHOPPINGCART_CLEAR_MERCHANDISES';
-  }
+    
+    static commandName () {
+        return 'CLEAR_BREAKFAST_CART_COMMAND';
+    }
 }

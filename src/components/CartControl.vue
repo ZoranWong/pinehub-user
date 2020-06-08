@@ -1,21 +1,17 @@
 <!--suppress ALL -->
 <template>
     <div class="cartcontrol" :class="cartcontrolWidth">
-        <div class="cart-decrease" v-show="count>0" @click="reduceCart" :reduce="reduceMerchandises"></div>
+        <div class="cart-decrease" v-show="count>0" @click.stop="reduceCart" :reduce="reduceMerchandises"></div>
         <div class="cart-count" v-show="count>0"> {{count}}</div>
-        <div class="cart-add" @click="addCart" :add="addMerchandises"></div>
+        <div class="cart-add" @click.stop="addCart" :add="addMerchandises"></div>
     </div>
 </template>
 <script>
     export default {
         props: {
-            merchandiseId: {
+            product: {
                 default: null,
-                type: Number
-            },
-            shopId: {
-                default: null,
-                type: Number
+                type: Object
             },
             batch: {
                 default: null,
@@ -25,7 +21,7 @@
                 default: null,
                 type: String
             },
-            model: {
+            cartModel: {
                 default: null,
                 type: String
             }
@@ -35,9 +31,9 @@
                 return this.count > 0 ? 'cartcontrol-width' : '';
             },
             count () {
-                if (this.model) {
+                if (this.cartModel) {
                     try {
-                        return this.model ? this.$store.getters[`${this.model}/quality`](this.merchandiseId, this.batch) : 0;
+                        return this.cartModel ? this.$store.getters[`${this.cartModel}/quality`](this.merchandiseId, this.batch) : 0;
                     } catch (e) {
                         console.log('抛出异常', e)
                         return 0;
@@ -45,13 +41,13 @@
                 }
             },
             shoppingCartId () {
-                return this.model ? this.$store.getters[`${this.model}/shoppingCartId`](this.merchandiseId, this.batch) : null;
+                return this.cartModel ? this.$store.getters[`${this.cartModel}/shoppingCartId`](this.merchandiseId, this.batch) : null;
             }
         },
         methods: {
             addCart () {
                 // 加入购物车
-                this.$emit('addCart', this.merchandiseId, this.shoppingCartId);
+                this.$emit('addCart', this.product);
             },
             reduceCart () {
                 // 移出购物车

@@ -16,7 +16,6 @@ export default class GetActivityInfoCommand extends Command {
             image: activityInfo.poster_img,
             description: activityInfo.description
         };
-        console.log(this);
         this.model.activity.dispatch('info', eventData);
         GetActivityInfoCommand.handling = false;
     }

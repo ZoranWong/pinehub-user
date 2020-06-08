@@ -1,0 +1,270 @@
+.cakes{
+    width: 100%;
+    position: relative;
+}
+
+.cakes .cakeService{
+    width: 61px;
+    height: 61px;
+    position: fixed;
+    top: 450px;
+    right: 15px;
+}
+
+.cakes .cakeService .service{
+    width: 100%;
+    height: 100%;
+}
+
+.cakes .header{
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    color: #fff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.cakes .header .images{
+    width: 76px;
+    height: 16px;
+}
+
+.cakes .banners{
+    width: 100%;
+    height: 250px;
+    background: #fff;
+    position: relative;
+}
+
+.banners .dots{
+    width: 100rpx;
+    height: 42rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 21rpx;
+    position: absolute;
+    right: 30rpx;
+    bottom: 30rpx;
+    z-index: 10000;
+    background: rgba(17,17,17,0.2);
+
+    font-size: 22rpx;
+    color: #fff;
+    font-weight: bold;
+}
+
+.banners .dots .dotsnum{
+    font-size: 28rpx;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+}
+
+.middle{
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 999;
+}
+
+.middle .allCates{
+    position: absolute;
+    top: 0;
+    z-index: 9998;
+    background: rgba(17,17,17,0.5);
+    height: 100vh;
+}
+
+.middle .allCates .cates{
+
+}
+
+.middle .middleImage{
+    width: 132px;
+    height: 30px;
+}
+
+.products {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    transition:all 1s;
+}
+
+.product{
+    width: calc(50% - 3px);
+    height: 260px;
+    background: #fff;
+    border-radius: 12.5px;
+    margin-bottom: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.selledout{
+    position: absolute;
+    width: 100%;
+    height: 165px;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selloutConent{
+    width: 50%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    font-size: 18px;
+    margin-top: 70px;
+}
+
+.product .productImg{
+    width: 100%;
+    height: 155px;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+.product .name{
+    font-size: 14px;
+    color: #111;
+    margin-bottom: 7px;
+    line-height: 15px;
+}
+
+.product .statictics{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 11px;
+}
+
+.product .statictics .data{
+    font-size: 11px;
+    color: #757575;
+    flex: 1;
+}
+.product .statictics .origin{
+    text-decoration: line-through;
+}
+.product .statictics .data:first-child{
+
+}
+
+.product .bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product .bottom .price{
+    font-size: 16px;
+    color: #fe4a2c;
+    margin: 0;
+    font-weight: 600;
+}
+
+.product .bottom .price .qi{
+    font-weight: normal!important;
+    color: #999!important;
+    font-size: 11px!important;
+}
+.product .bottom .add{
+    width: 24px;
+    height: 24px;
+}
+
+.disabledAdd{
+    font-size: 24px;
+    color: #e5e5e5;
+}
+
+.user-mobile-box{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .3);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.user-mobile-box .user_mobile_box_container{
+    position: absolute;
+    background: #FFFFFF;
+    width: 620rpx;
+    border-radius: 10rpx;
+    top: 338rpx;
+    left: 65rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.user-mobile-get-btn {
+    height: 80rpx;
+    width: 320rpx;
+    text-align: center;
+    line-height: 80rpx;
+    background: #FECE00;
+    margin-top: 80rpx;
+    margin-bottom: 40rpx;
+    display: block;
+    font-size: 32rpx;
+    font-weight: 200;
+    border: 0;
+    border-radius: 80rpx;
+    box-shadow: 0 10rpx 10rpx #fff6bd;
+}
+
+.mobile_box_tips {
+    text-align: center;
+    line-height: 96rpx;
+    border-radius: 10rpx 10rpx 0 0;
+    font-size: 29rpx;
+    font-weight: 400;
+}
+
+/*.middle{*/
+/*    width: 100%;*/
+/*    height: 60px;*/
+/*    padding: 0 25px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    background: #fff;*/
+/*    color: #fff;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+.middle .middleImage{
+    width: 132px;
+    height: 30px;
+}

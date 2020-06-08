@@ -1,226 +1,381 @@
 <!--suppress ALL -->
 <template>
-  <div v-if = "ticket" class="coupon-wrapper clearfix bgff">
-    <div class="coupon-left fl ">
-      <div class="voucher-part1 bgff ">
-        <span class="voucher-logon-name">{{ ticket.title }} </span>
-        <span class="voucher-value">{{ticket.type === 'DISCOUNT' ? ((ticket.discount * 100) + '%') : ('¥' + ticket.reduceCost) }}</span>
-      </div>
-      <div class="voucher-part2">
-        <div class="voucher-name bgff">{{ticket.type === 'DISCOUNT' ? '折扣券' : '优惠券'}}</div>
-      </div>
+    <div v-if="ticket" class="coupon-wrapper clearfix bgff">
+        <div class="new_coupons_item" @click="selectTicket(ticket)"  >
+            <div :class="isInvalid ? 'main_coupon_item disabledText' : 'main_coupon_item'">
+                <div class="left">
+                    <h4 v-if="ticket['typeDesc'] === '现金券'">￥{{ticket.benefit}}</h4>
+                    <h4 v-else>{{ticket.benefit}}折</h4>
+                    <div class="coupon_info">{{ticket.floor}}</div>
+                </div>
+                <div class="right">
+                    <div class="title">
+                        <img src="../../static/images/tickets/Cash_coupon.png" alt="" v-if="ticket['typeDesc'] === '现金券' && !isInvalid">
+                        <img src="../../static/images/tickets/Cash_coupon-02.png" alt="" v-if="ticket['typeDesc'] === '现金券' && isInvalid">
+                        <img src="../../static/images/tickets/Discount_coupon.png" alt="" v-if="ticket['typeDesc'] === '折扣券' && !isInvalid">
+                        <img src="../../static/images/tickets/Discount_coupon-02.png" alt="" v-if="ticket['typeDesc'] === '折扣券' && isInvalid">
+                        <h3>{{ticket.title}}</h3>
+                    </div>
+                    <div class="valid">
+                        {{ticket.validTime}}
+                    </div>
+                    <div class="bottom">
+                        <div class="bottomLeft" @click.stop="showMore = !showMore">
+                            使用说明
+                            <img src="../../static/images/tickets/bottom.jpg" alt="" v-if="!showMore">
+                            <img src="../../static/images/tickets/top.jpg" alt="" v-else>
+
+                        </div>
+                        <div class="diabled" v-if="isInvalid">
+                            <img src="../../static/images/empty/disabled.jpg" alt="" class="disabled" >
+                        </div>
+                        <div class="bottomRight" v-if="!isInvalid && type === 'list'">
+                            <button @click.stop="ticketDetail(ticket.id)" v-if="!ticket['record_id']">查看详情</button>
+                        </div>
+                        <div class="bottomRight" v-if="!isInvalid && type === 'receive'">
+                            <button @click.stop="receiveIt(ticket.id)" v-if="ticket['can_receive'] && ticket['remain_count'] > 0 && ticket['owned_count'] === 0">立即领取</button>
+                            <button @click.stop="useIt(ticket.id)" v-if="ticket['owned_count'] > 0">立即使用</button>
+                            <button @click.stop="nothing"  v-if="ticket['owned_count'] === 0 && ticket['remain_count'] === 0">已抢光</button>
+                            <button @click.stop="receiveIt(ticket.id)" v-if="ticket['can_receive'] && ticket['remain_count'] > 0 && ticket['owned_count'] > 0" >继续领取</button>
+                        </div>
+                    </div>
+                </div>
+                <img src="../../static/icons/jiaobiao.jpg" v-if="isSelected" class="jiaobiao" alt="">
+            </div>
+            <div class="extra_coupon_item" v-if="showMore">
+                <div class="coupon_info" v-if="!ticket['record_id']">· 适用范围: {{ticket['useCondition']}}</div>
+                <div class="coupon_info">· {{ticket['is_sharing']}}</div>
+            </div>
+        </div>
     </div>
-    <div class="coupon-right fr">
-      <p class="voucher-title">{{(ticket.leastCost > 0 ? ('满' + ticket.leastCost + '元'): '') +
-        (ticket.type === 'DISCOUNT' ? ((((ticket.discount * 100) % 10) ? (ticket.discount * 100):(ticket.discount * 10))  + '折优惠') : ('减' + ticket.reduceCost + '元'))}}</p>
-      <p class="time-limit" v-if = "ticket.beginTimestamp">
-        <span>有效期：</span>
-        <span>{{ticket.beginTimestamp}} - {{ticket.endTimestamp}}</span>
-      </p>
-      <div v-if = "ticket.status === 2" class="btn-big fr theme-color" >已使用</div>
-      <div v-else-if = "ticket.status === 1" class="btn-big fr theme-color" @click = "useTicket">立即使用</div>
-      <div v-else class="over-date">
-          <image style ="width: 136rpx; height: 136rpx; margin-left: 120rpx;" src = "../../../static/images/ticket_over_date.png"></image>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-      }
-    },
-    props: {
-      ticket: {
-        default: null,
-        type: Object
-      },
-      usedCardCode: {
-        default: null,
-        type: String
-      }
-    },
-    computed: {
-      isUsed () {
-        if (this.usedCardCode && this.ticket && this.usedCardCode === this.ticket.cardCode) {
-          return true;
-        }else{
-          return false;
-        }
-      }
-    },
-    methods: {
-      useTicket() {
-        try {
-          this.$emit('useTicket', this.ticket);
-          this.mp.storage.set('useTicket', this.ticket.id);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    },
-    mounted() {
-    }
-  }
+    import _ from 'underscore'
+	export default {
+		data () {
+			return {
+                showMore: false
+            }
+		},
+		props: {
+			ticket: {
+				default: null,
+				type: Object
+			},
+            type: {
+			    default: null,
+                type: String
+            }
+		},
+        watch: {
+            couponIds (val) {
+                if (val.length) {
+                    _.map(this.availableCoupons, (aCoupon)=>{
+
+                    })
+                }
+            }
+        },
+		computed: {
+            availableCoupons () {
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.availableCoupons
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.availableCoupons
+                } else {
+                    return this.model.user.tickets.availableCoupons
+                }
+            },
+			couponIds () {
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.couponIds
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.grouponCouponIds
+                } else {
+                    return this.model.user.order.payment.couponIds
+                }
+			},
+            isSelected(){
+				if(this.ticket){
+					return _.indexOf(this.couponIds, this.ticket['record_id']) > -1;
+                }
+				return  false;
+            },
+            isInvalid () {
+			    return this.ticket.status === '已使用' || this.ticket.status === '已过期' || this.ticket.status === '不可用'
+            }
+		},
+		methods: {
+            nothing () {
+                wx.showToast({
+                    title: '这张优惠券已经抢完啦',
+                    icon: 'none',
+                    duration: 2000
+                })
+            },
+            receiveIt (id) {
+                this.$command('RECEIVE_COUPON', id, 'list')
+            },
+            useIt () {
+                this.$command('REDIRECT_TO', 'user.store', 'push');
+            },
+			async ticketDetail (id) {
+                await this.$command('LOAD_TICKET_DETAIL',id);
+				this.$command('REDIRECT_TO', 'user.ticket.detail', 'push', {
+					query: {detail: this.ticket}
+                });
+            },
+			selectTicket (coupon) {
+                if (coupon['record_id']){
+                    if (this.isSelected) {
+
+                    } else {
+                        for (let i = 0; i< this.couponIds.length ; i++) {
+                            let id = this.couponIds[i];
+                            if (_.find(this.availableCoupons, (c)=>{
+                                return c['record_id'] === id && !c['is_sharing_preferential']
+                            })) {
+                                wx.showToast({
+                                    title: '该优惠券不可与已选择优惠券同时使用',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                                return
+                            }
+                        }
+                        if (this.couponIds.length && !coupon['is_sharing_preferential']) {
+                            wx.showToast({
+                                title: '该优惠券不可与已选择优惠券同时使用',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            return
+                        }
+                    }
+                    if (this.$route.query.type === 'groupon') {
+                        this.$command('GROUPON_ORDER_COUPON_IDS', coupon['record_id'])
+                    } else {
+                        this.$command('ORDER_COUPON_IDS', coupon['record_id'])
+                    }
+
+                } else {
+                    this.ticketDetail(coupon.id)
+                }
+			}
+		},
+		mounted () {
+		}
+
+	}
 </script>
 
 <style>
-  .coupon-wrapper {
-    position: relative;
-    width: 710rpx;
-    margin-bottom: 20rpx;
-    border-radius: 10rpx;
-    box-shadow: 0rpx 6rpx 20rpx rgba(204, 202, 202, 0.6);
-    box-sizing: border-box;
-    padding-bottom:20px;
-    margin-left:10px;
-  }
+    .selledout{
+        position: absolute;
+        width: 266rpx;
+        height: 266rpx;
+        top: 20rpx;
+        left: 20rpx;
+        background: rgba(255,255,255,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-  .coupon-left {
-    width: 260rpx;
-    box-sizing: border-box;
-    margin-left: 50rpx;
-    position: relative;
-    z-index: 2;
-  }
+    .selloutConent{
+        width: 50%;
+        height: 40rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 30px;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        font-size: 24rpx;
+        margin-top: 70rpx;
+    }
 
-  .coupon-left:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 180rpx;
-    height: 95%;
-    background-color: #f2f2f2;
-    border-radius: 10rpx;
-    transform: rotate(-15deg) translate(-20rpx, 15rpx);
-  }
+    .new_coupons_item{
+        height: 100%;
+        margin-bottom: 20rpx;
+    }
 
-  .coupon-left:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: -1;
-    width: 180rpx;
-    height: 95%;
-    background-color: #f2f2f2;
-    border-radius: 10rpx;
-    transform: rotate(15deg) translate(20rpx, 15rpx);
-  }
+    .coupon-wrapper{
+        box-sizing: border-box;
+        background: #f2f2f2;
+        width: 100%;
+    }
 
-  .voucher-part1 {
-    width: 260rpx;
-    height: 188rpx;
-    border-radius: 10rpx 10rpx 0rpx 0prx;
-    box-shadow: 0rpx 8rpx 28rpx rgba(204, 202, 202, 0.6);
-    border-bottom: 2rpx dashed #e0e0e0;
-    box-sizing: border-box;
-    text-align: center;
-  }
+    .main_coupon_item{
+        width: 100%;
+        height: 220rpx;
+        background-image: url("../../static/images/tickets/normalTickets.jpg");
+        background-size: 100% 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
 
-  .voucher-part1 span {
-    display: block;
-  }
+    .jiaobiao{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 71rpx;
+        height: 71rpx;
+    }
 
-  .voucher-part1 .voucher-logon-name {
-    font-size: 22rpx;
-    font-weight: 700;
-    padding-top: 30rpx;
-  }
+    .main_coupon_item .left{
+        width: 210rpx;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 
-  .voucher-part1 .voucher-value {
-    font-size: 68rpx;
-    font-weight: 700;
-    color: #fece00;
-    font-style: italic;
-    margin-top: 48rpx;
-    line-height: 53rpx;
-    box-sizing: content-box;
-  }
+    .main_coupon_item .left h4{
+        font-size: 60rpx;
+        color: #fb5642;
+        margin-bottom: 9rpx;
+        font-weight: bold;
+    }
 
-  .voucher-part2 {
-    width: 260rpx;
-    height: 90rpx;
-    position: relative;
-  }
+    .main_coupon_item .left .coupon_info{
+        font-size: 24rpx;
+        color: #fb5642;
+        margin-top: 9rpx;
+    }
 
-  .voucher-part2:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 20%;
-    height: 100%;
-    background: radial-gradient(circle at 0 50%, transparent 0%, transparent 20rpx, white 20rpx, white 100%);
-    border-bottom-left-radius: 10rpx;
-  }
+    .main_coupon_item .right{
+        padding: 26rpx 20rpx 26rpx 30rpx;
+        flex: 1;
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
 
-  .voucher-part2:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20%;
-    height: 100%;
-    background-image: radial-gradient(circle at 100% 50%, transparent 0%, transparent 10px, white 10px, white 100%);
-    border-bottom-right-radius: 10rpx;
-  }
+    .main_coupon_item .right .title{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
 
-  .voucher-name {
-    width: 60%;
-    position: absolute;
-    top: 0;
-    font-size: 26rpx;
-    left: 20%;
-    line-height: 90rpx;
-    text-align: center;
-    box-shadow: 0rpx 1rpx 0rpx 0rpx rgba(204, 202, 202, 0.6);
-  }
+    .main_coupon_item .right .title h3{
+        font-size: 26rpx;
+        color: #111;
+        margin-left: 20rpx;
+    }
 
-  .coupon-right {
-    width: 330rpx;
-    box-sizing: border-box;
-  }
+    .main_coupon_item .right .title img{
+        width: 101rpx;
+        height: 25rpx;
+    }
 
-  .coupon-right .voucher-title {
-    margin: 24rpx 0;
-    font-size: 24rpx;
-  }
+    .main_coupon_item .right .valid{
+        font-size: 22rpx;
+        color: #999;
+    }
 
-  .coupon-right .time-limit {
-    font-size: 26rpx;
-    margin-bottom: 24rpx;
-    color: #757575;
-  }
+    .main_coupon_item .right .bottom{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
 
-  .coupon-right .time-limit span {
-    display: block;
-  }
+    .main_coupon_item .right .bottom .bottomLeft{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 22rpx;
+        color: #999;
+    }
 
-  /*noinspection ALL*/
-  .coupon-right .btn-big {
-    width: 198rpx;
-    height: 52rpx;
-    line-height: 54rpx;
-    border-radius: 30rpx;
-    text-align: center;
-    font-size: 26rpx;
-    margin-right: 112rpx;
-    margin-bottom: 30rpx;
-  }
+    .main_coupon_item .right .bottom .bottomLeft img{
+        width: 15rpx;
+        height: 10rpx;
+        margin-left: 15rpx;
+    }
 
-  .overdue {
-    width: 80rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    background: url(../../static/images/icon/overdue.png) no-repeat;
-    background-size: contain;
-    margin-right: 50rpx;
-    margin-top: -10rpx;
-    margin-bottom: 20rpx;
-  }
+    .main_coupon_item .right .bottom .bottomRight{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .main_coupon_item .right .bottom .bottomRight button:last-child{
+        margin-left: 10rpx;
+    }
+
+    .main_coupon_item .right .bottom .diabled img{
+        width: 108rpx;
+        height: 108rpx;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+
+    .main_coupon_item .right .bottom .bottomRight button{
+        width: 130rpx;
+        height: 50rpx;
+        border: 2rpx solid #111;
+        border-radius: 25rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22rpx;
+        color: #111;
+        padding: 0;
+        background: #fff;
+    }
+
+    .extra_coupon_item{
+        width: 100%;
+        height: 132rpx;
+        box-sizing: border-box;
+        padding: 30rpx 20rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        background: #FDFAFE;
+        transform: translateY(-10rpx);
+    }
+
+    .extra_coupon_item .coupon_info{
+        font-size: 22rpx;
+        color: #757575;
+        width: 670rpx;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+
+    .disabledText{
+        background-image: url("../../static/images/tickets/disabledTickets.jpg");
+        background-size: 100% 100%;
+    }
+
+    .disabledText  h4{
+        color: #999!important;
+    }
+    .disabledText  span {
+        color: #999!important;
+    }
+
+    .disabledText h3{
+        color: #999!important;
+    }
+
+    .disabledText div{
+        color: #999!important;
+    }
+
 </style>

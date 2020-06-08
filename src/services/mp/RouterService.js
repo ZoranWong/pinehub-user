@@ -14,18 +14,22 @@ export default class RouterService extends Service {
         console.log('------- route completed --------');
     }
     push (route, options = {}) {
-        console.log('---------- page -----------', route);
+        // console.log('---------- page -----------', route);
+        console.log('---------- options -----------', options, this.routeStack, this.currentRouter);
         if (this.currentRouter === route && this.routeStack.indexOf([route, options]) > -1) {
             return;
         }
         this.$application.currentRoute = route;
+
         this.routeStack.push([route, options]);
         this.currentRouter = route;
         let page = this.routes[route];
         options['path'] = page;
+        console.log(this.$router, '^^^^^^^^^^^^^^^^^^^this $router^^^^^^^^^^^^^^^^^^^^^^');
         this.$router.push(options, () => {
             this.completed();
         });
+        this.$application.changePage(page);
     }
 
     go (n) {
@@ -34,6 +38,7 @@ export default class RouterService extends Service {
 
     replace (route, onCompleted = null, onAbort = null, onSuccess = null) {
         let page = this.routes[route];
+        this.$application.changePage(page);
         console.log('---------- page -----------', route);
         this.$application.currentRoute = route;
         let options = {};
@@ -55,7 +60,6 @@ export default class RouterService extends Service {
                 onSuccess: onSuccess
             };
         }
-        console.log(options, onCompleted);
         if (typeof options['query'] !== 'undefined') {
             page += this.service('uri').query(options['query'])
         }

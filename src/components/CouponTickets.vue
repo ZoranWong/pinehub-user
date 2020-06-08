@@ -1,26 +1,26 @@
 <!--suppress ALL -->
 <template>
-	<div class="ticket-page body">
-		<mp-title :title="title"></mp-title>
-		<div id="tab_select" v-if="tabs.length > 0">
-			<ul class="tabs">
-				<li v-for="(tab , index) in tabs " :key="index" :class="{tab_select_now:cur == index }" :style="{ width:tabNumWidth }" @click="tabSelect(index)">
-					<span class="span-inline">{{ tab.name }}</span>
-				</li>
-			</ul>
-		</div>
-		<div class="ticket-list">
-			<img v-if="totalNum == 0" id="null_ico" src="../../static/images/empty_tickets.png" />
-			<scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower" :scroll-into-view="statusType">
-				<coupon-ticket :status="statusType" v-for="(ticket, ticketIndex) in tickets" :key="ticketIndex" :usedCardCode="usedCardCode" :ticket="ticket" @useTicket="useTicket">
-				</coupon-ticket>
-			</scroll-view>
-		</div>
-	</div>
+    <div>
+        <div class="ticket-page body">
+            <CustomHeader :title="title" :needReturn="true" :backUrl="true" @back="onOk" />
+            <div class="empty_img" v-if="!coupons.length">
+                <img  src="../../static/images/empty/empty_coupon.jpg" alt="" id="empty">
+                <span>暂无优惠券哦～</span>
+            </div>
+            <div class="ticket-list" v-else :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 130) + 'rpx'}">
+                <scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
+                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="list">
+                    </coupon-ticket>
+                </scroll-view>
+                <button class="onOk" v-if="okShow" @click="onOk">选好了</button>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
-	import MpTitle from '@/components/MpTitle';
+	import CustomHeader from '@/components/CustomHeader';
 	import Ticket from '@/components/Ticket';
 	import _ from 'underscore';
 	export default {
@@ -29,16 +29,13 @@
 				title: '我的卡券',
 				name: 'Coupon',
 				cur: 0,
-				statusType: 'available'
+				coupons: [],
+				screenHeight: 0,
+				screenWidth: 0,
+                okShow: false
 			}
 		},
 		props: {
-			tabs: {
-				default: function() {
-					return [];
-				},
-				type: Array
-			},
 			loadTickets: {
 				default: null,
 				type: Function
@@ -46,75 +43,127 @@
 			model: {
 				default: null,
 				type: String
-			},
-			usedCardCode: {
-				default: null,
-				type: String
 			}
 		},
 		components: {
-			'mp-title': MpTitle,
+			CustomHeader,
 			'coupon-ticket': Ticket
 		},
 		computed: {
-			tabNumWidth() {
-				let num = this.tabs.length
-				num = (num === 'undefined') ? 1 : num;
-				return Math.floor((100 / num) * 100) / 100 + '%';
-			},
 			tickets() {
-				return this.$store.getters[`${this.model}/list`];
+				this.coupons = this.model.user.tickets.ticketsList;
+                return this.model.user.tickets.ticketsList;
 			},
+			availableCoupons () {
+			    if (this.$route.query.type === 'activity') {
+                    this.coupons = this.model.activity.availableCoupons
+                    return this.model.activity.availableCoupons
+                } else if (this.$route.query.type === 'groupon') {
+                    this.coupons = this.model.groupon.availableCoupons
+                    return this.model.groupon.availableCoupons
+                } else {
+                    this.coupons = this.model.user.tickets.availableCoupons
+                    return this.model.user.tickets.availableCoupons
+                }
+			},
+            couponIds () {
+                if (this.$route.query.type === 'activity') {
+                    return this.model.activity.couponIds
+                } else if (this.$route.query.type === 'groupon') {
+                    return this.model.groupon.grouponCouponIds
+                } else {
+                    return this.model.user.order.payment.couponIds
+                }
+            },
 			totalNum() {
-				return this.$store.getters[`${this.model}/totalNum`];
+				return this.model.user.tickets.totalNum
 			},
 			nextPage() {
-				return this.$store.getters[`${this.model}/currentPage`] + 1;
+				return this.model.user.tickets.currentPage + 1;
 			},
 			isLoadedAll() {
-				return this.$store.getters[`${this.model}/isLoadedAll`];
+				return this.model.user.tickets.isLoadedAll
+			},
+            statusBarHeight () {
+				return this.model.global.barHeight.statusBarHeight
+			},
+			navHeight () {
+				return this.model.global.barHeight.navHeight
 			}
 		},
 		methods: {
-			scroll() {
-			},
+            onOk () {
+                let type = this.$route.query.type;
+                if (this.$route.query.needReturn) {
+                    if (type === 'activity') {
+                        this.$command('REDIRECT_TO', '', 'back',{
+                            query: {
+                                type: type,
+                                actId: this.$route.query.actId
+                            }
+                        });
+                    } else if (type === 'groupon') {
+                        this.$command('REDIRECT_TO', '','back',{
+                            query: {
+                                type: type,
+                                shoppingGroupId: this.$route.query.shoppingGroupId
+                            }
+                        });
+                    } else {
+                        this.$command('REDIRECT_TO', '','back',{
+                            query: {
+                                type: type,
+                            }
+                        });
+                    }
+                } else {
+                    this.$command('REDIRECT_TO', 'userCenter', 'replace');
+                }
+            },
 			useTicket(ticket) {
 				this.$emit('useTicket', ticket);
 			},
 			scrolltolower() {
-				if(!this.isLoadedAll) {
-					this.loadTickets(this.nextPage, this.statusType);
-				}
+				if (this.$route.query.needReturn) {
+
+                } else {
+                    if(!this.isLoadedAll) {
+                        this.loadTickets(this.nextPage, this.statusType);
+                    }
+                }
 			},
-			tabSelect(num) {
-				this.cur = num;
-				switch(num) {
-					case 0:
-						this.statusType = 'available';
-						break;
-					case 1:
-						this.statusType = 'used';
-						break;
-					default:
-						this.statusType = 'all';
-						break;
-				}
-				this.$command('CLEAR_MODEL', this.model);
-				this.loadTickets(num, this.statusType);
-			}
 		},
+        onLoad () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
+        onShow () {
+            if (this.$route.query.needReturn) {
+                this.okShow = true
+            } else {
+                this.okShow = false
+            }
+        },
 		mounted() {
-			this.tabSelect(0);
+			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
+			this.screenHeight = (this.rpxRate * this.screenWitdh);
+
 		}
 	}
 </script>
 
 <style scoped>
+
 	#tab_select {
 		overflow: hidden;
 		width: 750rpx;
 		height: 74rpx;
 	}
+
 
 	#tab_select ul li {
 		font-size: 28rpx;
@@ -131,12 +180,19 @@
 		padding-top: 20rpx;
 		display: flex;
 		width: 100%;
-		height: 100%;
 		overflow: hidden;
 		box-sizing: border-box;
 		background: #f2f2f2;
 		position: relative;
 	}
+
+    .onOk{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 98rpx;
+        background: #ffcc00;
+    }
 
 	#null_ico {
 		width: 390rpx;
@@ -150,5 +206,28 @@
 
 	.ticket-list .ticket_wrapper {
 		overflow-y: auto;
+        box-sizing: border-box;
+        padding: 20rpx;
 	}
+
+    .empty_img{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .empty_img img{
+        width: 350rpx;
+        height: 240rpx;
+    }
+
+    .empty_img span{
+        color: #999;
+        font-size: 32rpx;
+        margin-bottom: 300rpx;
+    }
+
+
 </style>

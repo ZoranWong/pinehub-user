@@ -1,6 +1,7 @@
 import Model from './Model'
 import _ from 'underscore';
 import ShoppingCartTransformer from './transformers/ShoppingCart';
+import {formatMoney} from '../utils';
 
 export default class ShoppingCarts extends Model {
     constructor (application) {
@@ -44,7 +45,7 @@ export default class ShoppingCarts extends Model {
                 let list = this.list();
                 let newList = _.groupBy(list, function (n) {
                     return n.batch
-                })
+                });
                 return newList;
             },
             quality () {
@@ -71,10 +72,36 @@ export default class ShoppingCarts extends Model {
                     total += item.count;
                 })
                 return total;
+            },
+            goodInShoppingCart () {
+                return this.state.goodInShoppingCart
+            },
+            totalPrice () {
+                return this.state.totalPrice
+            },
+            showPoints () {
+                return this.state.showPoints
+            },
+            breakfastType () {
+                return this.state.breakfastType
+            },
+            cartTotalFeeFormat () {
+                return this.state.cartTotalFeeFormat
             }
         });
     }
-
+    
+    calculate (state) {
+        let data = state.goodInShoppingCart;
+        if (_.isEmpty(data)) return;
+        let totalPrice = 0;
+        _.map(data, (item) => {
+            totalPrice += (Number(item['price']) * Number(item['buy_num']))
+        });
+        
+        state.totalPrice = formatMoney(totalPrice);
+    }
+    
     data () {
         let data = _.extend(super.data(), {
             activityId: null,
@@ -83,7 +110,13 @@ export default class ShoppingCarts extends Model {
             cardId: null,
             discount: 1,
             reduceCost: 0,
-            ticketTitle: null
+            ticketTitle: null,
+            goodInShoppingCart: [],
+            totalPrice: 0,
+            selectedPoint: {},
+            showPoints: false,
+            breakfastType: '',
+            cartTotalFeeFormat: ''
         });
         this.rebuildData();
         return data;
@@ -104,6 +137,7 @@ export default class ShoppingCarts extends Model {
 
     listeners () {
         super.listeners();
+        let that = this;
         // 设置列表
         this.addEventListener('setList', (payload, state /* paylaod */) => {
             this.setList(payload, state);
@@ -112,12 +146,12 @@ export default class ShoppingCarts extends Model {
 
         // 使用优惠券
         this.addEventListener('setTicketCard', function ({
-                                                             ticketCode,
-                                                             cardId,
-                                                             discount = 1,
-                                                             reduceCost = 0,
-                                                             title = null
-                                                         }) {
+            ticketCode,
+            cardId,
+            discount = 1,
+            reduceCost = 0,
+            title = null
+        }) {
             this.state.reduceCost = reduceCost;
             this.state.discount = discount;
             this.state.ticketCode = ticketCode;
@@ -125,19 +159,42 @@ export default class ShoppingCarts extends Model {
             this.state.ticketTitle = title;
         });
 
-        this.addEventListener('addMerchandiseToShoppingCart', function (cart) {
-            let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
-            if (this.state.currentPage === 0) {
-                this.state.currentPage = 1;
+        this.addEventListener('saveBreakfastCartGoodsList', function ({products}) {
+            let items = products.data;
+            let meta = products.meta;
+            _.map(items, (i) => {
+                if (i.specifications.length) {
+                    let specDesp = [];
+                    _.map(i.specifications, (item) => {
+                        specDesp.push(item.value.value)
+                    });
+                    i['spec_desp'] = specDesp.join(',')
+                }
+            });
+            this.state.goodInShoppingCart = items;
+            this.state.cartTotalFeeFormat = meta['total_fee_format'];
+            that.calculate(this.state);
+        });
+        
+        this.addEventListener('addMerchandiseToShoppingCart', function ({goods}) {
+            let carts = this.state.goodInShoppingCart;
+            let cartIndex = _.findIndex(carts, {product_stock_id: goods['product_stock_id']});
+            if (goods.specifications.length) {
+                let specDesp = [];
+                _.map(goods.specifications, (item) => {
+                    specDesp.push(item.value.value)
+                });
+                goods['spec_desp'] = specDesp.join(',')
             }
-            if (!this.state.list[idx]) {
-                this.$application.$vm.set(this.state.list, idx, []);
+            if (cartIndex < 0) {
+                this.state.goodInShoppingCart.push(goods)
+            } else {
+                this.$application.$vm.set(carts, cartIndex, goods)
             }
-            this.state.list[idx].push(cart);
-            this.cache();
+            that.calculate(this.state);
         });
 
-        this.addEventListener('changeShoppingCartMerchandise', function (cart) {
+        this.addEventListener('changeShoppingCartMerchandise', function ({cart}) {
             let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
             if (this.state.currentPage === 0) {
                 this.state.currentPage = 1;
@@ -148,27 +205,44 @@ export default class ShoppingCarts extends Model {
                 }
             });
             this.cache();
+            that.calculate(this.state);
+        });
+    
+        this.addEventListener('removeGoodsFromCart', function ({goods}) {
+            let carts = this.state.goodInShoppingCart;
+            this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
+            that.calculate(this.state);
+        });
+    
+        this.addEventListener('changeBuyNum', function ({id, num}) {
+            let carts = this.state.goodInShoppingCart;
+            let cartIndex = _.findIndex(carts, {id: id});
+            if (cartIndex > -1) {
+                carts[cartIndex]['buy_num'] = num;
+                this.$application.$vm.set(carts, cartIndex, carts[cartIndex])
+            };
+            that.calculate(this.state);
         });
 
-        this.addEventListener('deleteMerchandiseFromShoppingCart', function ({
-                                                                                 id
-                                                                             }) {
-            let idx = this.state.currentPage > 0 ? (this.state.currentPage - 1) : 0;
-            if (this.state.currentPage === 0) {
-                this.state.currentPage = 1;
-            }
-            let list = _.filter(this.state.list[idx], function (item) {
-                return item.id !== id;
-            });
-            this.$application.$vm.set(this.state.list, idx, list);
-            this.cache();
+        this.addEventListener('deleteMerchandiseFromShoppingCart', function () {
+            this.state.goodInShoppingCart = []
         });
-
+    
+        this.addEventListener('selectPoints', function ({boolean, type}) {
+            console.log('早餐车选择自提点');
+            this.state.showPoints = boolean;
+            this.state.breakfastType = type
+        });
+        
+        this.addEventListener('saveSelectedPoint', function ({point}) {
+            this.state.selectedPoint = point;
+        });
+        
         // 清空购物车
         this.addEventListener('reset', function ({
-                                                     activity = false,
-                                                     shop = false
-                                                 }) {
+             activity = false,
+             shop = false
+        }) {
             this.state.list = [];
             if (activity) {
                 this.state.activityId = null;

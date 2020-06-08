@@ -4,20 +4,21 @@ export default class CreateOrderCommand extends Command {
     // 支付
     async createOrderSign (params, resetCart = null) {
         try {
-            let payType = params['pay_type'];
-            delete params['pay_type'];
             let order = await this.service('http.orders').createPaymentOrder(params);
             if (order.id && !this.paid) {
                 this.orderId = order.id;
             }
-            let result = await this.$command('PAYMENT_BY_ID', this.orderId, payType);
+            let result = await this.$command('PAYMENT_BY_ID', order);
             if (result) {
                 this.paid = true;
             } else {
                 this.paid = false;
             }
             if (result) {
-                this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {order_id: this.orderId}});
+                this.$command('REDIRECT_TO', 'payment.success', 'replace', {query: {
+                        order: JSON.stringify(order),
+                        type: '微信支付'
+                }});
             }
             return result;
         } catch (e) {
