@@ -44,7 +44,7 @@ export default class PaymentByIdCommand extends Command {
     // 重新支付订单
     async payOrder (timeStamp, nonceStr, packageInfo, paySign, order) {
         let result = await this.mp.payment.pay(timeStamp, nonceStr, packageInfo, paySign);
-        let error = await this.service('http.orders').error(order['order_no']);
+        let error = await this.service('http.orders').error(order['order_no'] || order['code']);
         console.log(error, '_______________-error_____________________________________-');
         console.log('-----支付-----', result);
         return result;

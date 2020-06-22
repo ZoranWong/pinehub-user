@@ -32,7 +32,7 @@
             </div>
         </div>
         <ul class="groupon_list">
-            <li class="groupon_list_item" v-for="(item,itemIndex) in shopGrouponList" :key="item.id" >
+            <li class="groupon_list_item" v-for="(item,itemIndex) in shopGrouponList" :key="itemIndex" >
                 <div class="groupon_shop_info" >
                     <i></i>
                     <span>{{item['create_time']}}</span>
@@ -79,9 +79,9 @@
         components: {
 
         },
-        data() {
+        data () {
             return {
-                title: '',
+                title: ''
             };
         },
 
@@ -89,7 +89,7 @@
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return systemInfo.windowHeight;
             },
@@ -106,17 +106,17 @@
             }
         },
         methods: {
-            back() {
-                this.$command('REDIRECT_TO','','back')
+            back () {
+                this.$command('REDIRECT_TO', '', 'back')
             },
             redirectTo (router, options = {}) {
                 this.$command('REDIRECT_TO', router, 'push', options);
-            },
+            }
         },
-        created() {
+        created () {
 
         },
-        mounted() {
+        mounted () {
             this.$command('LOAD_SHOP_DETAILS', this.$route.query.id)
         }
     }

@@ -84,8 +84,5 @@
         "navigationBarTextStyle": "black",
         "navigationStyle": "custom"
     },
-    "navigateToMiniProgramAppIdList": [
-        "wx2bee13173fa2ca54"
-    ],
     "sitemapLocation": "sitemap.json"
 }

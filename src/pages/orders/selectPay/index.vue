@@ -5,7 +5,7 @@
 
         <div class="checkout_header">
             <div class="left">
-                <h4>订单金额：{{order['settlement_total_fee_format'] || settlement_total_fee_format}}</h4>
+                <h4>订单金额：{{settlementTotalFeeFormat}}</h4>
                 <span>请您在{{minute}}:{{second}}内完成支付</span>
             </div>
             <img src="../../../../static/images/background/1.png" alt="">
@@ -48,48 +48,80 @@
 <script>
 
 
-	import CustomHeader from '../../../components/CustomHeader';
+    import CustomHeader from '../../../components/CustomHeader';
 
-	import _ from 'underscore';
+    import _ from 'underscore';
+
     export default {
         onUnload: function () {
             clearTimeout(this.countDownBar)
         },
         components: {
-			CustomHeader
+            CustomHeader
         },
         // 数据
         data () {
             return {
                 title: '收银台',
                 order: {},
-				second: 0,
+                second: 0,
                 minute: 0,
-                settlement_total_fee_format: 0,
+                settlementTotalFeeFormat: 0,
                 orderNew: null,
-                countDownBar : null, // 定时器句柄
+                type: null,
+                countDownBar: null // 定时器句柄
+            }
+        },
+        onHide () {
+            this.reset();
+        },
+        onShow () {
+            this.reset();
+            this.type = this.$route.query.type;
+            if (this.$route.query && this.$route.query.order) {
+                this.order = JSON.parse(this.$route.query.order);
+                if (this.order['order_id']) {
+                    this.order.id = this.order['order_id'];
+                    this.order['settlement_total_fee_format'] = `¥${this.order['settlement_total_fee']}`
+                }
+                this.orderNew = this.order;
+            }
+        },
+        watch: {
+            createdOrderInfo (v) {
+                if (this.order) {
+                    this.settlementTotalFeeFormat = this.order['settlement_total_fee_format'];
+                    if (this.order['auto_cancel_after_seconds'] > 0) {
+                        this.countDownServer(this.order['auto_cancel_after_seconds'])
+                    }
+                }
             }
         },
         // 算术方法
         computed: {
-			createdOrderInfo () {
-                this.order = this.$route.query.type === 'groupon'? this.model.groupon.createdOrderInfo : this.model.user.order.payment.createdOrderInfo;
-                console.log(this.order, '_____()())()())()()()()(');
-                if (this.$route.query && this.$route.query.order) {
-
-                    } else {
-                        if (this.order['auto_cancel_after_seconds']) {
-                            this.countDownServer(this.order['auto_cancel_after_seconds'])
-                        }
+            createdOrderInfo () {
+                if (this.type) {
+                    let order = this.type === 'groupon' ? this.model.groupon.createdOrderInfo : this.model.user.order.payment.createdOrderInfo;
+                    this.order = order;
                 }
-                return this.order
+                return this.order;
             },
-			userInfo () {
-				return this.model.account.userInfo;
-			}
+            userInfo () {
+                return this.model.account.userInfo;
+            }
         },
         // 普通方法
         methods: {
+            reset () {
+                this.order = null;
+                this.orderNew = null;
+                this.type = null;
+                if (this.countDownBar) {
+                    clearTimeout(this.countDownBar);
+                    this.countDownBar = null;
+                }
+                this.settlementTotalFeeFormat = 0;
+            },
             backStore () {
                 if (this.$route.query.type === 'groupon') {
                     this.$command('REDIRECT_TO', 'user.myGroupon', 'reLaunch', {
@@ -102,43 +134,45 @@
                     this.$command('REDIRECT_TO', 'index', 'reLaunch')
                 }
             },
-			countDownServer(time) {
-                let minutes = Math.floor(time  / 60),
-					seconds = Math.floor(time - minutes * 60);
-				if (time < 0) {
-					// 执行具体逻辑
-					clearTimeout(this.countDownBar);
-					return false;
-				}
+            countDownServer (time) {
+                let minutes = Math.floor(time / 60),
+                    seconds = Math.floor(time - minutes * 60);
+                if (time < 0) {
+                    // 执行具体逻辑
+                    clearTimeout(this.countDownBar);
+                    return false;
+                }
+                if (this.countDownBar) {
+                    clearTimeout(this.countDownBar);
+                }
                 this.minute = _.isNaN(this.fix(minutes, 2)) ? '00' : this.fix(minutes, 2);
-				this.second = _.isNaN(this.fix(seconds, 2)) ? '00' : this.fix(seconds, 2);
-				this.countDownBar = setTimeout(function() {
-				    time--
-					this.countDownServer(time);
-				}.bind(this), 1000);
-			},
-            fix(num, length) {
+                this.second = _.isNaN(this.fix(seconds, 2)) ? '00' : this.fix(seconds, 2);
+                this.countDownBar = setTimeout(() => {
+                    time--
+                    this.countDownServer(time);
+                }, 1000);
+            },
+            fix (num, length) {
                 return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
             },
-			payByBalance () {
-				let self = this;
-				if (this.order['settlement_total_fee'] > this.userInfo.balance) {
-					this.$command('REDIRECT_TO', 'user.recharge', 'push');
+            payByBalance () {
+                let self = this;
+                if (this.order['settlement_total_fee'] > this.userInfo.balance) {
+                    this.$command('REDIRECT_TO', 'user.recharge', 'push');
                 } else {
-					wx.showModal({
-						title: '温馨提示',
-						content: '确认使用余额支付吗？',
-						async success (res) {
-							if (res.confirm) {
-
+                    wx.showModal({
+                        title: '温馨提示',
+                        content: '确认使用余额支付吗？',
+                        async success (res) {
+                            if (res.confirm) {
                                 if (self.$route.query && self.$route.query.order) {
-                                    self.$command('PAYMENT_BY_BALANCE',self.orderNew, self.type)
+                                    self.$command('PAYMENT_BY_BALANCE', self.orderNew, self.type)
                                 } else {
-                                    self.$command('PAYMENT_BY_BALANCE',self.order, self.type)
+                                    self.$command('PAYMENT_BY_BALANCE', self.order, self.type)
                                 }
-							}
-						}
-					})
+                            }
+                        }
+                    })
                 }
             },
             payByWechat () {
@@ -150,30 +184,16 @@
             },
             payByCard () {
                 if (this.$route.query && this.$route.query.order) {
-                    this.$command('PAYMENT_BY_CARD',this.orderNew)
+                    this.$command('PAYMENT_BY_CARD', this.orderNew)
                 } else {
-                    this.$command('PAYMENT_BY_CARD',this.order)
+                    this.$command('PAYMENT_BY_CARD', this.order)
                 }
-
             }
         },
         mounted () {
-			this.$command('LOAD_ACCOUNT')
-			this.type = this.$route.query.type;
-            if (this.$route.query && this.$route.query.order) {
-				this.order = JSON.parse(this.$route.query.order);
-                if (this.order['order_id']) {
-                    this.order.id = this.order['order_id'];
-                    this.order['settlement_total_fee_format'] = `¥${this.order['settlement_total_fee']}`
-                }
-                this.orderNew = this.order;
-                this['settlement_total_fee_format'] = this.order['settlement_total_fee_format'];
-                if (this.order['auto_cancel_after_seconds']) {
-                    this.countDownServer(this.order['auto_cancel_after_seconds'])
-                }
-            }
-		}
-	}
+            this.$command('LOAD_ACCOUNT')
+        }
+    }
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -183,7 +203,7 @@
         background: #f2f2f2;
     }
 
-    .checkout_header{
+    .checkout_header {
         width: 100%;
         height: 180rpx;
         padding: 0 90rpx;
@@ -191,32 +211,32 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
     }
 
-    .checkout_header .left{
+    .checkout_header .left {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
     }
 
-    .checkout_header .left h4{
+    .checkout_header .left h4 {
         font-size: 32rpx;
         color: #111111;
     }
 
-    .checkout_header .left span{
+    .checkout_header .left span {
         font-size: 28rpx;
         color: #111111;
     }
 
-    .checkout_header img{
+    .checkout_header img {
         width: 178rpx;
         height: 144rpx;
     }
 
-    .checkout_body{
+    .checkout_body {
         margin-top: 20rpx;
         background: #fff;
         width: 100%;
@@ -224,7 +244,7 @@
         padding: 0 20rpx;
     }
 
-    .checkout_body .select{
+    .checkout_body .select {
         width: 100%;
         height: 80rpx;
         display: flex;
@@ -236,7 +256,7 @@
         box-sizing: border-box;
     }
 
-    .checkout_body .balance{
+    .checkout_body .balance {
         width: 100%;
         box-sizing: border-box;
         padding: 0 20rpx;
@@ -255,50 +275,48 @@
         color: #111111;
     }
 
-    .checkout_body .balance .left img{
+    .checkout_body .balance .left img {
         width: 48rpx;
         height: 48rpx;
         margin-right: 20rpx;
     }
 
-    .wechat{
-        width: 48rpx!important;
-        height: 39rpx!important;
+    .wechat {
+        width: 48rpx !important;
+        height: 39rpx !important;
     }
 
-    .checkout_body .balance .yue{
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+    .checkout_body .balance .yue {
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
         font-size: 48rpx;
         margin-right: 20rpx;
     }
 
-    .checkout_body .balance .wx{
+    .checkout_body .balance .wx {
         font-size: 48rpx;
         color: #60B130;
         margin-right: 20rpx;
     }
 
-    .checkout_body .balance .right{
+    .checkout_body .balance .right {
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .checkout_body .balance .not_enough{
+    .checkout_body .balance .not_enough {
         font-size: 28rpx;
         color: #ffcc00;
     }
 
 
-    .checkout_body .balance .right i{
+    .checkout_body .balance .right i {
         font-size: 22rpx;
         color: #757575;
         margin-left: 20rpx;
     }
-
-
 
 
 </style>

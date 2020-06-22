@@ -1,9 +1,11 @@
 import Command from '@/commands/Command';
 
 export default class ChangeGrouponBuyNumCommand extends Command {
-    async handle (item,shop_shopping_group_id, num) {
+    // eslint-disable-next-line camelcase
+    async handle (item, shop_shopping_group_id, num) {
         if (num <= 0) {
             let response = await this.service('http.groupon').clearProductCart(item['product_stock_id'], shop_shopping_group_id);
+            console.log(response);
             this.$command('LOAD_GROUPON_CART_COMMAND', shop_shopping_group_id);
             this.model.groupon.dispatch('removeGoodsFromCart', {
                 goods: item
@@ -17,9 +19,7 @@ export default class ChangeGrouponBuyNumCommand extends Command {
         }
 
 
-
         let response = await this.service('http.groupon').changeBuyNum(item['product_stock_id'], shop_shopping_group_id, num);
-
 
 
         // console.log('----- request -----', Date.now());

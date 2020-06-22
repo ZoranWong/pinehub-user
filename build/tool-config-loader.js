@@ -9,12 +9,14 @@ const APP_PROD_CONFIG_PATH = '../src/configs/app.prod.json';
 const APP_CONFIG_PATH = '../src/configs/app.json';
 function ToolConfigLoader (env) {
     switch (env) {
-        case 'dev': {
+        case 'dev':
+        case 'staging': {
             loadConfig(DEV_CONFIG_PATH, PROJECT_CONFIG_PATH);
             loadConfig(APP_DEV_CONFIG_PATH, APP_CONFIG_PATH);
             break;
         }
-        case 'prod': {
+        case 'prod':
+        case 'dev-staging': {
             loadConfig(PROD_CONFIG_PATH, PROJECT_CONFIG_PATH);
             loadConfig(APP_PROD_CONFIG_PATH, APP_CONFIG_PATH);
             break;

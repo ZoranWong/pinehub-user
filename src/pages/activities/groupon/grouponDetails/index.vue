@@ -147,21 +147,21 @@
 </template>
 <script>
     import _ from 'underscore';
-    import SwiperNotice from "../components/SwiperNotice";
-    import GrouponClassification from "./components/GrouponClassification";
-    import Product from "./components/Product";
-    import ShareBox from "./components/ShareBox";
-    import SharePic from "./components/SharePic";
-    import Auth from "../../../../components/Auth";
-    import GetUserMobile from "../../../../components/GetUserMobile";
-    import ShoppingCart from "../components/ShoppingCart";
+    import SwiperNotice from '../components/SwiperNotice';
+    import GrouponClassification from './components/GrouponClassification';
+    import Product from './components/Product';
+    import ShareBox from './components/ShareBox';
+    import SharePic from './components/SharePic';
+    import Auth from '../../../../components/Auth';
+    import GetUserMobile from '../../../../components/GetUserMobile';
+    import ShoppingCart from '../components/ShoppingCart';
     import wxParse from 'mpvue-wxparse'
     import moment from 'moment'
 	export default {
 		components: {
-            SwiperNotice,GrouponClassification,Product,ShareBox,SharePic,Auth,GetUserMobile,ShoppingCart,wxParse
+            SwiperNotice, GrouponClassification, Product, ShareBox, SharePic, Auth, GetUserMobile, ShoppingCart, wxParse
 		},
-		data() {
+		data () {
 			return {
                 hour: '00',
                 minute: '00',
@@ -194,7 +194,7 @@
 			};
 		},
 		watch: {
-            deadline(val) {
+            deadline (val) {
                 clearInterval(this.timer)
                 if (val > 0) {
                     let t = val;
@@ -206,7 +206,7 @@
                     }, 1000)
                 }
             },
-            registered(value) {
+            registered (value) {
                 if (value) {
                     this.getAuth = false;
                 }
@@ -214,26 +214,26 @@
                     this.showBindMobile = true
                 }
             },
-            isMember() {
+            isMember () {
                 if (this.registered && this.isMember) {
                     this.showBindMobile = false;
                     this.id && this.$command('LOAD_GROUPON_CART_COMMAND', this.grouponDetails['id'])
                 }
             },
-            accessToken(value) {
+            accessToken (value) {
                 if (value) {
                     this.$command('SIGN_IN', this.accessToken);
                 }
             },
-            id(val) {
+            id (val) {
                 if (val && this.registered && this.isMember) {
                     this.$command('LOAD_GROUPON_CART_COMMAND', val)
                 }
             },
-            userId(val) {
+            userId (val) {
                 if (val) {
                     this.$socket.userId = val;
-                    this.$socket.notification((data)=>{
+                    this.$socket.notification((data) => {
                         console.log(data, '-------- APP User notification --------');
                     });
                     this.$socket.eventListener(`groupShopping.${this.id}.orders`, 'TestEvent', (data) => {
@@ -243,7 +243,7 @@
             },
             grouponDetails (val) {
                 if (val && val.categories) {
-                    this.$command('LOAD_GROUPON_CATE_PRODUCTS',val['shopping_group_id'], val.categories[0].id)
+                    this.$command('LOAD_GROUPON_CATE_PRODUCTS', val['shopping_group_id'], val.categories[0].id)
                 }
             },
             'group.grouponDetails.id': function (val) {
@@ -252,7 +252,7 @@
         },
 		computed: {
             needBackHome () {
-                return this.options.backHome ? true : false;
+                return !!this.options.backHome;
             },
             userId () {
                 return this.model.account.userId;
@@ -275,11 +275,11 @@
             buttonPosition () {
                 return this.statusBarHeight + (this.navHeight / 2) + 'px'
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return systemInfo.windowHeight;
             },
-            cartHeight() {
+            cartHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 98 * systemInfo.windowWidth / 750;
             },
@@ -290,7 +290,7 @@
             //     this.id = this.model.groupon.grouponDetails['id']
             //     return this.model.groupon.grouponDetails
             // },
-            group(){
+            group () {
                 this.grouponDetails = this.model.groupon.grouponDetails
                 this.id = this.model.groupon.grouponDetails['id']
                 return this.model.groupon
@@ -298,7 +298,7 @@
             cateProducts () {
                 return this.model.groupon.cateProducts
             },
-            goodInShoppingCart() {
+            goodInShoppingCart () {
                 return this.model.groupon.goodInShoppingCart
             },
             deadline () {
@@ -310,7 +310,7 @@
             contact () {
                 if (!this.registered) {
                     this.getUserAuth();
-                } else if (!this.isMember){
+                } else if (!this.isMember) {
                     this.showBindMobile = true
                 } else {
                     wx.makePhoneCall({
@@ -323,18 +323,17 @@
                         }
                     })
                 }
-
             },
-            back() {
+            back () {
                 if (this.needBackHome) {
-                    this.$command('REDIRECT_TO','index','replace')
+                    this.$command('REDIRECT_TO', 'index', 'replace')
                 } else {
-                    this.$command('REDIRECT_TO','','back')
-                    //this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
+                    this.$command('REDIRECT_TO', '', 'back')
+                    // this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
             },
             goShopDetails (shop) {
-                this.$command('REDIRECT_TO','user.groupon.shopDetails','push', {
+                this.$command('REDIRECT_TO', 'user.groupon.shopDetails', 'push', {
                     query: {
                         id: shop.id
                     }
@@ -346,7 +345,7 @@
             showShareBox () {
                 if (!this.registered) {
                     this.getUserAuth();
-                } else if (!this.isMember){
+                } else if (!this.isMember) {
                     this.showBindMobile = true
                 } else {
                     this.shareBoxVisible = true
@@ -365,12 +364,11 @@
             goGrouponList () {
                 if (!this.registered) {
                     this.getUserAuth();
-                } else if (!this.isMember){
+                } else if (!this.isMember) {
                     this.showBindMobile = true
                 } else {
                     this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
                 }
-
             },
             getUserAuth () {
                 this.getAuth = true
@@ -393,7 +391,7 @@
                     }
                 });
             },
-            addToCart(item) {
+            addToCart (item) {
                 if (!this.registered) {
                     this.getUserAuth();
                 } else {
@@ -403,22 +401,22 @@
                         let goods = this.model.groupon.goodInShoppingCart;
                         let cartIndex = _.findIndex(goods, {product_stock_id: item['product_stock_id']});
                         if (cartIndex < 0) {
-                            this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND',item['product_stock_id'],this.grouponDetails['id'])
+                            this.$command('ADD_GROUPON_GOODS_TO_CART_COMMAND', item['product_stock_id'], this.grouponDetails['id'])
                         } else {
-                            this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.grouponDetails['id'],goods[cartIndex]['buy_num'] + 1)
+                            this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND', item, this.grouponDetails['id'], goods[cartIndex]['buy_num'] + 1)
                         }
                     }
                 }
-            },
+            }
 		},
         onShow () {
             this.now = moment().format('YYYY-MM-DD HH:mm:ss');
             this.$command('GET_BAR_HEIGHT');
-            let pages =  getCurrentPages();
+            let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             if (options.scene) {
+                let idString = options.scene.split('3D')[1];
                 if (options.scene.split('3D').length > 2) {
-                    let idString = options.scene.split('3D')[1];
                     options.id = idString.split('%26')[0];
                     options.shop_code = options.scene.split('3D')[2];
                 } else {
@@ -436,17 +434,17 @@
                 this.initAccount();
             }
         },
-        onHide (){
+        onHide () {
             clearInterval(this.timer)
         },
-		created() {
+		created () {
 
 		},
-		mounted() {
+		mounted () {
 
 		},
         onShareAppMessage (res) {
-            //可以先看看页面数据都有什么，得到你想要的数据
+            // 可以先看看页面数据都有什么，得到你想要的数据
             return {
                 title: this.grouponDetails['group_display_name'],
                 desc: this.grouponDetails['share_text'],
@@ -454,14 +452,14 @@
                 path: `/pages/activities/groupon/grouponDetails/main?id=${this.grouponDetails['id']}`,
                 success: function (res) {
                     // 转发成功
-                    console.log("转发成功:" + JSON.stringify(res));
+                    console.log('转发成功:' + JSON.stringify(res));
                 },
                 fail: function (res) {
                     // 转发失败
-                    console.log("转发失败:" + JSON.stringify(res));
+                    console.log('转发失败:' + JSON.stringify(res));
                 }
             }
-        },
+        }
 	}
 </script>
 

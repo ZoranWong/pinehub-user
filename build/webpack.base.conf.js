@@ -111,7 +111,8 @@ module.exports = {
                 test: /\.js$/,
                 include: [
                     resolve('src'),
-                    resolve('node_modules/mpvue-echarts')
+                    resolve('node_modules/mpvue-echarts'),
+                    resolve('node_modules/mpvue-wxparse')
                 ],
                 use: [
                     'babel-loader',

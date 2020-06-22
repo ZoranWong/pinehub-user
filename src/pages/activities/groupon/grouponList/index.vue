@@ -18,7 +18,7 @@
             })"></div>
         </div>
         <ul class="groupon_list">
-            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="item.id" >
+            <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="itemIndex" >
                 <div class="groupon_shop_info" @click="goShopDetails(item)">
                     <div class="left">
                         <img class="shop_image" src="../grouponDetails/img/back.jpeg" alt="">
@@ -65,14 +65,14 @@
 <script>
     import _ from 'underscore';
     import './css/index.css'
-    import SwiperNotice from "../components/SwiperNotice";
+    import SwiperNotice from '../components/SwiperNotice';
 
 
 	export default {
 		components: {
             SwiperNotice
 		},
-		data() {
+		data () {
 			return {
 
 			};
@@ -83,16 +83,16 @@
 		computed: {
             grouponList () {
                 return this.model.groupon.grouponList
-            },
+            }
 
 		},
 		methods: {
-            back(){
-                this.$command('REDIRECT_TO','','back')
+            back () {
+                this.$command('REDIRECT_TO', '', 'back')
             },
             async init () {
                 let result = await this.map.getLocation();
-                this.$command('LOAD_GROUPON_LIST',result[0], result[1], 1)
+                this.$command('LOAD_GROUPON_LIST', result[0], result[1], 1)
             },
             redirectTo (router, options = {}) {
                 this.$command('REDIRECT_TO', router, 'push', options);
@@ -101,7 +101,7 @@
                 // 模拟滚动条
             },
             goShopDetails (item) {
-                this.$command('REDIRECT_TO','user.groupon.shopDetails','push', {
+                this.$command('REDIRECT_TO', 'user.groupon.shopDetails', 'push', {
                     query: {
                         id: item['shop_id']
                     }
@@ -116,12 +116,11 @@
                 })
             }
 		},
-		created() {
+		created () {
 
 		},
-		mounted() {
+		mounted () {
 		    this.init()
-
         }
 	}
 </script>

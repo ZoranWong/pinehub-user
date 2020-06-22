@@ -30,7 +30,7 @@ export class Event {
 
   emit (point) {
     this.stack.forEach((item) => {
-      if (item.handler[point.type] && item.shape.isInPath(point)) {
+      if (item && item.handler[point.type] && item.shape.isInPath(point)) {
         item.handler[point.type](point, item)
       }
     })

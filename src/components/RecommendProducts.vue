@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
     <ul class="recommendProducts">
-        <li v-for="product in goods" :key="product.id" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.id}})">
+        <li v-for="(product, index) in goods" :key="index" @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: product.id}})">
             <img class="thumb" :src="product['main_image']" alt="">
             <h3>{{product.name}}</h3>
             <div class="info">
@@ -23,9 +23,9 @@
 	export default {
 		name: 'recommendProducts',
         computed: {
-            goods(){
+            goods () {
                 return this.model.user.store.goods
-            },
+            }
         },
         watch: {
 
@@ -34,7 +34,7 @@
 		    addToCart (id) {
 		        this.$emit('addToCart', id)
             },
-            redirectTo (router,options) {
+            redirectTo (router, options) {
                 this.$command('REDIRECT_TO', router, 'push', options);
             }
         }

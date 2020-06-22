@@ -9,22 +9,8 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"coverView": true,
 		"nodeModules": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"uglifyFileName": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		},
-		"useCompilerModule": false,
-		"userConfirmedUseCompilerModuleSwitch": false
+		"uglifyFileName": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.0",
@@ -51,6 +37,10 @@
 			"list": []
 		},
 		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
@@ -169,9 +159,10 @@
 				},
 				{
 					"id": 18,
-					"name": "payment",
-					"pathName": "pages/user/payment/main",
-					"query": ""
+					"name": "团购",
+					"pathName": "pages/activities/groupon/grouponList/main",
+					"query": "",
+					"scene": null
 				},
 				{
 					"id": -1,

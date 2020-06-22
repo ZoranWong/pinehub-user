@@ -9,6 +9,7 @@
         "start": "node build/dev-server.js",
         "build": "rm -rf dist && node build/build.js",
         "staging": "rm -rf dist && node build/staging.js",
+        "dev-staging": "rm -rf dist && node build/dev-staging-server.js",
         "lint": "eslint --ext .js,.vue src",
         "analyz": "NODE_ENV=production npm_config_report=true npm run build"
     },
