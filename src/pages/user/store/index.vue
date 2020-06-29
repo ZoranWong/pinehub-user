@@ -7,7 +7,6 @@
         <div id="store_header" >
             <input type="text" placeholder="请输入商品名称" id="store_search" v-model="search">
             <i class="iconfont" @click="handleSearch">&#xe65c;</i>
-<!--            <ProductSearch :products="searchResult" />-->
         </div>
         <div id="store_goods" :style="{'height' : listHeight + 'px'}">
             <ul id="store_goods_type" :style="{'height' : listHeight + 'px'}">
@@ -88,13 +87,13 @@
           GetUserMobile,
           FooterNav
       },
-      data() {
+      data () {
           return {
               title: '商城',
               navName: 'store',
-              activeTab:'',
-			  selectSpec:false,
-			  selectItem:{},
+              activeTab: '',
+			  selectSpec: false,
+			  selectItem: {},
 			  getAuth: false,
               screenHeight: 0,
               queryCateId: '',
@@ -104,29 +103,29 @@
           };
       },
       onShareAppMessage: function (res) {
-          //可以先看看页面数据都有什么，得到你想要的数据
+          // 可以先看看页面数据都有什么，得到你想要的数据
           console.log(this.shopCode, '==========>');
           return {
-              title: "青松易购预定商城",
-              desc: "青松易购小程序",
-              imageUrl: "",
+              title: '青松易购预定商城',
+              desc: '青松易购小程序',
+              imageUrl: '',
               path: `/pages/user/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {
                   // 转发成功
-                  console.log("转发成功:" + JSON.stringify(res));
+                  console.log('转发成功:' + JSON.stringify(res));
               },
               fail: function (res) {
                   // 转发失败
-                  console.log("转发失败:" + JSON.stringify(res));
+                  console.log('转发失败:' + JSON.stringify(res));
               }
           }
       },
       watch: {
-		  activeTab(val) {
+		  activeTab (val) {
               console.log('11');
-              if(val){
-                  this.$command('LOAD_STORE_COMMAND',val,1)
+              if (val) {
+                  this.$command('LOAD_STORE_COMMAND', val, 1)
               }
           },
 		  isMember (value) {
@@ -144,15 +143,14 @@
               }
           },
           categories (val) {
-              if(val && val.length && !this.queryCateId){
+              if (val && val.length && !this.queryCateId) {
                   console.log('进来了吗');
                   this.activeTab = val[0].id
-
               }
           }
       },
       computed: {
-          showOperation(item){
+          showOperation (item) {
               if (this.model.user.store.goodInShoppingCart && !this.model.user.store.goodInShoppingCart.length) {
                  return function (item) {
                      item.inputNum = 0
@@ -179,16 +177,15 @@
                           }
                       }
                   }
-
               }
           },
           shopCode () {
               return this.model.account.shopCode
           },
-          categories(){
+          categories () {
             return this.model.user.store.categories;
           },
-          goods(){
+          goods () {
 			  return this.model.user.store.goods
           },
 		  statusBarHeight () {
@@ -197,7 +194,7 @@
 		  navHeight () {
 			  return this.model.global.barHeight.navHeight
 		  },
-          headerHeight() {
+          headerHeight () {
               return this.statusBarHeight + this.navHeight;
           },
 		  registered () {
@@ -206,17 +203,17 @@
 		  isMember () {
 			  return this.model.account.isMember;
 		  },
-          mainHeight() {
+          mainHeight () {
               let systemInfo = wx.getSystemInfoSync();
               let height = systemInfo.windowHeight;
               return height - this.headerHeight;
           },
-          btnHeight() {
+          btnHeight () {
               let systemInfo = wx.getSystemInfoSync();
               return 216 * systemInfo.windowWidth / 750;
           },
-          listHeight() {
-              return this.mainHeight  - this.btnHeight
+          listHeight () {
+              return this.mainHeight - this.btnHeight
           }
       },
       onShow () {
@@ -246,11 +243,11 @@
               if (value > item.isInCartProduct['stock_num']) {
                   value = item.isInCartProduct['stock_num']
               }
-              this.$command('CHANGE_BUY_NUM_COMMAND',item['isInCartProduct'],  Number(value),'mall');
+              this.$command('CHANGE_BUY_NUM_COMMAND', item['isInCartProduct'], Number(value), 'mall');
           },
           async uploadFormId (e) {
               let formId = e.mp.detail.formId;
-              if (formId !== "the formId is a mock one"){
+              if (formId !== 'the formId is a mock one') {
                   await this.http.account.saveFormId(formId);
               } else {
                   console.log('form id 不合法')
@@ -266,15 +263,15 @@
 		  closeAuth () {
 			  this.getAuth = false
 		  },
-          tabSelect(id){
+          tabSelect (id) {
               console.log('我变我变我变我变我变我变我变我变我变我变');
               this.activeTab = id;
 			  // this.$command('LOAD_STORE_COMMAND',id, 1)
           },
-          setData(data){
+          setData (data) {
               this.data = data
           },
-        addToShoppingCart(item, num){
+        addToShoppingCart (item, num) {
             if (!this.registered) {
 		  		this.getUserAuth()
             } else {
@@ -300,20 +297,18 @@
                                 }
                             }
                             if (isInCart) {
-                                this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + num,'mall');
+                                this.$command('CHANGE_BUY_NUM_COMMAND', inCartProduct, inCartProduct['buy_num'] + num, 'mall');
                             } else {
-                                this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+                                this.$command('ADD_GOODS_TO_CART_COMMAND', item['product_entities'][0]['product_stock_id'], 1, 'mall')
                             }
 						} else {
-							this.$command('ADD_GOODS_TO_CART_COMMAND',item['product_entities'][0]['product_stock_id'],1,'mall')
+							this.$command('ADD_GOODS_TO_CART_COMMAND', item['product_entities'][0]['product_stock_id'], 1, 'mall')
 						}
-
 					}
                 }
-
             }
         },
-		  closeSelectSpec(){
+		  closeSelectSpec () {
               this.selectSpec = false
           },
 		  redirectTo (router, options = {}) {
@@ -331,10 +326,10 @@
               });
           }
       },
-      created() {
+      created () {
       },
       onShow () {
-          let pages =  getCurrentPages();
+          let pages = getCurrentPages();
           let options = pages[pages.length - 1]['options'];
           this.storeId = options['shop_code'] ? options['shop_code'] : '';
           if (this.storeId) {
@@ -342,14 +337,14 @@
                   code: this.storeId
               })
           }
-          if (this.storeId && this.registered && this.isMember ) {
+          if (this.storeId && this.registered && this.isMember) {
               this.$command('BIND_CONSUMER', this.storeId)
           }
       },
-      mounted() {
+      mounted () {
           let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
           let screenWitdh = wx.getSystemInfoSync().windowHeight;
-          this.screenHeight = (rpxRate * screenWitdh)/ 2;
+          this.screenHeight = (rpxRate * screenWitdh) / 2;
           this.initAccount()
           this.$command('LOAD_STORE_CATEGORIES_COMMAND')
           if (this.$route.query && this.$route.query.cateId) {

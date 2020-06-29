@@ -49,7 +49,8 @@
 
             <div class="extra">
                 <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">
+<!--                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">-->
+                <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -142,7 +143,7 @@
     import Module_1 from './components/Module_1';
     import Module_2 from './components/Module_2';
     import RecommendProducts from '../../../components/RecommendProducts';
-    import {Base64} from "../../../utils/beSecret";
+    import {Base64} from '../../../utils/beSecret';
     export default {
         components: {
             'footer-nav': FooterNav,
@@ -169,24 +170,24 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
-                showBindMobile: false,
+                showBindMobile: false
             };
         },
         computed: {
             shopCode () {
                 return this.model.account.shopCode
             },
-            tickets() {
+            tickets () {
                 return this.model.user.tickets.canReceiveTickets
             },
             indexBanners () {
                 return this.model.user.newIndex.indexBanners
             },
-            categories(){
+            categories () {
                 let categories = this.model.user.store.categories;
                 let cates = [];
-                _.map(categories, (cate, index)=> {
-                    if(index < 4) {
+                _.map(categories, (cate, index) => {
+                    if (index < 4) {
                         cates.push(cate)
                     }
                 })
@@ -236,15 +237,15 @@
             navHeight () {
                 return this.model.global.barHeight.navHeight
             },
-            headerHeight() {
+            headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headerHeight - this.footerHeight;
             },
-            footerHeight() {
+            footerHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 108 * systemInfo.windowWidth / 750;
             },
@@ -290,10 +291,10 @@
                 if (val) {
                     this.showBindMobile = false;
                 }
-                if (this.storeId && this.registered && this.isMember ) {
+                if (this.storeId && this.registered && this.isMember) {
                     this.bindConsumer()
                 }
-                if (this.registered && this.isMember ) {
+                if (this.registered && this.isMember) {
                     this.$command('LOAD_POP', 'PLATFORM_SEND');
                     this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
                     this.$command('LOAD_CART_COMMAND', 'mall')
@@ -302,7 +303,7 @@
             userId (val) {
                 if (val) {
                     this.$socket.userId = val;
-                    this.$socket.notification((data)=>{
+                    this.$socket.notification((data) => {
                         console.log(data, '-------- APP User notification --------');
                     });
                     this.$socket.eventListener('groupShopping.shopShoppingGroup.1.orders', 'OrderPaid', (data) => {
@@ -312,7 +313,6 @@
             }
         },
         mounted () {
-
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -321,7 +321,7 @@
             getUpdateMange();
             this.$command('LOAD_INDEX_BANNER')
             this.$command('LOAD_STORE_CATEGORIES_COMMAND');
-            let pages =  getCurrentPages();
+            let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
             if (this.storeId) {
@@ -329,7 +329,7 @@
                     code: this.storeId
                 })
             }
-            if ( this.registered && this.isMember ) {
+            if (this.registered && this.isMember) {
                 // this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
                 // console.log('进来了吗');
                 this.$command('LOAD_CART_COMMAND', 'mall')
@@ -340,19 +340,19 @@
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
-            //可以先看看页面数据都有什么，得到你想要的数据
+            // 可以先看看页面数据都有什么，得到你想要的数据
             return {
-                title: "青松易购首页",
-                desc: "青松易购小程序",
-                imageUrl: "",
+                title: '青松易购首页',
+                desc: '青松易购小程序',
+                imageUrl: '',
                 path: `/pages/user/index/main?shop_code=${this.storeId || this.shopCode}`,
                 success: function (res) {
                     // 转发成功
-                    console.log("转发成功:" + JSON.stringify(res));
+                    console.log('转发成功:' + JSON.stringify(res));
                 },
                 fail: function (res) {
                     // 转发失败
-                    console.log("转发失败:" + JSON.stringify(res));
+                    console.log('转发失败:' + JSON.stringify(res));
                 }
             }
         },
@@ -362,7 +362,7 @@
             if (this.$route.query['needRefresh']) {
                 this.initAccount();
             }
-            let pages =  getCurrentPages();
+            let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options']
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
             if (this.storeId) {
@@ -370,13 +370,12 @@
                     code: this.storeId
                 })
             }
-            if (this.storeId && this.registered && this.isMember ) {
+            if (this.storeId && this.registered && this.isMember) {
                 this.bindConsumer()
             }
 
             if (this.registered && this.isMember) {
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
-
             }
         },
         onLoad (options) {
@@ -384,8 +383,8 @@
                 let scan_url = decodeURIComponent(options.q);
                 let query = this.uri.queryParse(scan_url);
 
-                //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
-                this.storeId =query['store_id'];
+                // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
+                this.storeId = query['store_id'];
             }
             wx.onAppShow(() => {
                 this.ticketShow = true;
@@ -397,6 +396,9 @@
             },
             jumpHomeMaking () {
                 this.$command('REDIRECT_TO', 'index.homemaking', 'push')
+            },
+            jumpShoppingGroup () {
+                this.$command('REDIRECT_TO', 'user.groupon.list', 'push')
             },
             couponChange (e) {
                 let event = e.mp.detail;
@@ -427,15 +429,14 @@
                                 }
                             }
                             if (isInCart) {
-                                this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'mall');
+                                this.$command('CHANGE_BUY_NUM_COMMAND', inCartProduct, inCartProduct['buy_num'] + 1, 'mall');
                             } else {
-                                this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                                this.$command('ADD_GOODS_TO_CART_COMMAND', id, 1, 'mall')
                             }
                         } else {
-                            this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                            this.$command('ADD_GOODS_TO_CART_COMMAND', id, 1, 'mall')
                         }
                     }
-
                 }
             },
             goActDetails (act) {
@@ -484,8 +485,8 @@
             },
             bannerJump (item) {
                 if (!item['can_jump']) return;
-                if ( item['action_type'] === 'PRODUCT_DETAIL') {
-                    this.redirectTo(item['action_link'], {query: {type:'mall', good_id: item['action_args'].id}})
+                if (item['action_type'] === 'PRODUCT_DETAIL') {
+                    this.redirectTo(item['action_link'], {query: {type: 'mall', good_id: item['action_args'].id}})
                 } else {
                     let link = item['action_link'];
                     let splitLink = link.split('?');
@@ -510,7 +511,7 @@
             },
             async uploadFormId (e) {
                 let formId = e.mp.detail.formId;
-                if (formId !== "the formId is a mock one"){
+                if (formId !== 'the formId is a mock one') {
                     await this.http.account.saveFormId(formId);
                 } else {
                     console.log('form id 不合法')
@@ -534,25 +535,24 @@
                 });
             },
             AuthRouter (router) {
-                if (!this.registered ) {
+                if (!this.registered) {
                     this.getUserAuth()
-                } else if ( !this.isMember) {
+                } else if (!this.isMember) {
                     this.showBindMobile = true
                 } else {
                     this.$command('REDIRECT_TO', router, 'push');
                 }
             },
             redirectTo (router, options = {}) {
-
                 if (router === 'user.integral' && !this.registered) {
                     this.getUserAuth()
-                } else if (router === 'user.integral' && !this.isMember){
+                } else if (router === 'user.integral' && !this.isMember) {
                     wx.showToast({
                         title: '请先进行手机号授权',
                         icon: 'none'
                     })
                 } else {
-                    if (this.registered ) {
+                    if (this.registered) {
                         if (router === 'user.QingSongKungfu' && !this.isMember) {
                             this.showBindMobile = true
                         } else {

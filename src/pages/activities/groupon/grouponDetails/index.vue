@@ -92,7 +92,7 @@
                 </h3>
                 <ul class="groupon_participants_list">
                     <li class="groupon_participants_item" v-for="(user,index) in grouponDetails['regiments']" :key="index">
-                        <span class="number">{{grouponDetails['regiments'].length - index}}.</span>
+<!--                        <span class="number">{{grouponDetails['regiments'].length - index}}.</span>-->
                         <div class="right">
                             <div class="top">
                                 <div class="left">

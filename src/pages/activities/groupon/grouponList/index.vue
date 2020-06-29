@@ -17,6 +17,12 @@
                 }
             })"></div>
         </div>
+
+        <div id="store_header" >
+            <input type="text" placeholder="请输入店铺名称或者团购名称" id="store_search" v-model="search" @input="handleSearch()">
+            <i class="iconfont" >&#xe65c;</i>
+        </div>
+
         <ul class="groupon_list">
             <li class="groupon_list_item" v-for="(item,itemIndex) in grouponList" :key="itemIndex" >
                 <div class="groupon_shop_info" @click="goShopDetails(item)">
@@ -63,7 +69,7 @@
 	</div>
 </template>
 <script>
-    import _ from 'underscore';
+    import {throttle} from 'underscore';
     import './css/index.css'
     import SwiperNotice from '../components/SwiperNotice';
 
@@ -74,17 +80,20 @@
 		},
 		data () {
 			return {
-
+			    lat: 0,
+                lng: 0,
+                search: ''
 			};
 		},
 		watch: {
-
+		    search () {
+		        this.handleSearch()();
+            }
 		},
 		computed: {
             grouponList () {
                 return this.model.groupon.grouponList
             }
-
 		},
 		methods: {
             back () {
@@ -92,7 +101,15 @@
             },
             async init () {
                 let result = await this.map.getLocation();
-                this.$command('LOAD_GROUPON_LIST', result[0], result[1], 1)
+                this.lat = result[1];
+                this.lng = result[0];
+                this.$command('LOAD_GROUPON_LIST', this.lng, this.lat, 1)
+            },
+            handleSearch () {
+                return throttle(async () => {
+                    console.log('=========================== search ====================');
+                    await this.$command('LOAD_GROUPON_LIST', this.lng, this.lat, 1, this.search)
+                }, 1500);
             },
             redirectTo (router, options = {}) {
                 this.$command('REDIRECT_TO', router, 'push', options);
@@ -154,5 +171,35 @@
         color: #fff;
     }
 
+    #store_header{
+        box-sizing: border-box;
+        width: 100%;
+        height: 108rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        border-bottom: 2rpx solid #f2f2f2;
+        position: relative;
+        margin-bottom: 36rpx;
+    }
+
+    #store_header #store_search {
+        width: 630rpx;
+        height: 70rpx;
+        background: #f2f2f2;
+        border-radius: 10rpx;
+        padding: 0 40rpx;
+        font-size: 28rpx;
+    }
+
+    #store_header i{
+        position: absolute;
+        right: 70rpx;
+        top: 25rpx;
+        font-size: 40rpx;
+        color: #757575;
+        z-index: 1000;
+    }
 
 </style>

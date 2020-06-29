@@ -2,6 +2,7 @@ import Model from './Model';
 import _ from 'underscore';
 import moment from 'moment';
 import {formatMoney, returnFloat} from '../utils';
+
 export default class Activity extends Model {
     constructor (app) {
         super(app);
@@ -94,7 +95,7 @@ export default class Activity extends Model {
 
     handleGiftProducts (products, floor) {
         let text = '';
-        _.map(products, product => {
+        _.map(products, (product) => {
             text += `${product['product_entity_info'].name}、`
         });
         text = text.substring(0, text.length - 1);
@@ -116,47 +117,53 @@ export default class Activity extends Model {
     listeners () {
         super.listeners();
         this.addEventListener('saveGrouponList', function ({list}) {
-            _.map(list, item => {
-                if (_.find(this.state.grouponList, function (listItem) {
-                    return listItem.id === item.id
-                })) {
-                    return
-                }
-                let dis = Math.round(item.distance);
-                if (dis > 1000) {
-                    item.formatDistance = (dis / 1000).toFixed(1) + '千米'
-                } else {
-                    item.formatDistance = dis + '米'
-                }
-                if (item['group_products'].length > 3) {
-                    item.display_products = item['group_products'].slice(0, 3)
-                } else {
-                    item.display_products = item['group_products']
-                }
-                _.map(item['group_products'], product => {
-                    if (_.find(this.state.products, function (p) {
-                        return p.name === product.name
-                    })) return;
-                    this.state.products.push(product)
-                });
+            if (_.isEmpty(list)) {
+                this.state.grouponList = [];
+                this.state.products = [];
+            } else {
+                _.map(list, (item) => {
+                    if (_.find(this.state.grouponList, function (listItem) {
+                        return listItem.id === item.id
+                    })) {
+                        return
+                    }
+                    let dis = Math.round(item.distance);
+                    if (dis > 1000) {
+                        item.formatDistance = (dis / 1000).toFixed(1) + '千米'
+                    } else {
+                        item.formatDistance = dis + '米'
+                    }
+                    if (item['group_products'].length > 3) {
+                        item.display_products = item['group_products'].slice(0, 3)
+                    } else {
+                        item.display_products = item['group_products']
+                    }
+                    _.map(item['group_products'], (product) => {
+                        if (_.find(this.state.products, function (p) {
+                            return p.name === product.name
+                        })) return;
+                        this.state.products.push(product)
+                    });
 
-                this.state.grouponList.push(item)
-            })
+                    this.state.grouponList.push(item)
+                })
+            }
         });
 
         this.addEventListener('saveGrouponDetails', function ({details}) {
             if (details['regiments'].length) {
-                _.map(details['regiments'], user => {
+                _.map(details['regiments'], (user) => {
                     if (user['order_product']) {
                         let text = '';
-                        _.map(user['order_product'], product => {
+                        _.map(user['order_product'], (product) => {
                             text += `${product.name} X ${product.quantity}、`
                         });
                         text = text.substring(0, text.length - 1);
                         user['purchased_products'] = text || '暂无'
                     }
                 })
-            };
+            }
+            ;
             // details.deadlineTime = this.handleTimer(details['orderable_deadline']);
             if (details['has_gift']) {
                 details.giftProducts = this.handleGiftProducts(details['gift_products'], details['gift_floor']);
@@ -190,7 +197,7 @@ export default class Activity extends Model {
 
         this.addEventListener('removeGoodsFromCart', function ({goods}) {
             let carts = this.state.goodInShoppingCart;
-            this.state.goodInShoppingCart = carts.filter(i => i.id !== goods.id);
+            this.state.goodInShoppingCart = carts.filter((i) => i.id !== goods.id);
             this.calculate(this.state);
         });
 
@@ -215,7 +222,8 @@ export default class Activity extends Model {
             if (cartIndex > -1) {
                 carts[cartIndex]['buy_num'] = num;
                 this.$application.$vm.set(carts, cartIndex, carts[cartIndex])
-            };
+            }
+            ;
             this.calculate(this.state);
         });
 
@@ -224,9 +232,9 @@ export default class Activity extends Model {
         });
 
         this.addEventListener('saveGrouponOrders', function ({orders}) {
-            _.map(orders, order => {
+            _.map(orders, (order) => {
                 let totalQuantity = 0;
-                _.map(order.products, product => {
+                _.map(order.products, (product) => {
                     totalQuantity += Number(product.quantity)
                 });
                 order.trade_no = order['trade_no'].slice(-12);
@@ -283,7 +291,7 @@ export default class Activity extends Model {
 
         this.addEventListener('saveShopGrouponDetails', function ({info}) {
             let list = info['shop_shopping_groups'];
-            _.map(list, item => {
+            _.map(list, (item) => {
                 if (item['group_products'].length > 3) {
                     item.display_products = item['group_products'].slice(0, 3)
                 } else {
@@ -293,7 +301,5 @@ export default class Activity extends Model {
             this.state.shopGrouponList = list;
             this.state.shopInfo = info['shop_info']
         })
-
-
     }
 }
