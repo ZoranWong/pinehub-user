@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
     <div class="body">
         <mp-title :title="title"></mp-title>
@@ -141,7 +142,6 @@
     .detail-btn img{
         height: 26rpx;
         width: 26rpx;
-        /*margin-right: 82rpx;*/
         margin-top: 0rpx;
         margin-left: 10rpx;
     }
@@ -171,7 +171,6 @@
         margin-left: 19rpx;
         margin-right: 19rpx;
         width: 680rpx;
-        /*height: 100%;*/
         position: absolute;
         display: flex;
         white-space: nowrap;
