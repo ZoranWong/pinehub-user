@@ -70,6 +70,11 @@
                 "ticketDetail/main",
                 "couponReceiveCenter/main"
             ]
+        },{
+            "root": "pages/pineHubSecond",
+            "pages": [
+                "fastFoot/main"
+            ]
         }
     ],
     "permission": {

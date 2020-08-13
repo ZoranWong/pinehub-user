@@ -53,30 +53,25 @@
                 </div>
                 <ul id="merchant-store_orders_list">
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PAY')">
-<!--                        <i class="iconfont">&#xe67a;</i>-->
                         <img src="../../../../static/icons/waitPay.png" alt="">
                         <div class="count" v-if="userInfo['waitPayOrderCount']">{{userInfo['waitPayOrderCount']}}</div>
                         <span>待付款</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PICK')">
-<!--                        <i class="iconfont">&#xe884;</i>-->
                         <img src="../../../../static/icons/waitPick.png" alt="">
                         <div class="count" v-if="userInfo['waitPickOrderCount']">{{userInfo['waitPickOrderCount']}}</div>
                         <span>待自提</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_COMPLETED')">
-<!--                        <i class="iconfont" >&#xe60d;</i>-->
                         <img src="../../../../static/icons/completed.png" alt="">
                         <span>已完成</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_HANDLING')">
-<!--                        <i class="iconfont">&#xe7ea;</i>-->
                         <img src="../../../../static/icons/handling.png" alt="">
                         <div class="count" v-if="userInfo['handlingOrderCount']">{{userInfo['handlingOrderCount']}}</div>
                         <span>处理中</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_REFUNDED')">
-<!--                        <i class="iconfont">&#xe610;</i>-->
                         <img src="../../../../static/icons/refunded.png" alt="">
                         <span>已退款</span>
                     </li>
@@ -90,7 +85,6 @@
 
                 <li @click="jump('user.myGroupon')" class="lines">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/my_groupon.png" alt="">
                         <span>我的拼团</span>
                     </div>
@@ -98,7 +92,6 @@
                 </li>
                 <li @click="jump('user.address')" class="lines">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/shipping_address.png" alt="">
                         <span>收货地址</span>
                     </div>
@@ -113,7 +106,6 @@
                 <li @click="jump('user.feedBack')" class="lines">
                     <div class="left">
                         <img src="./image/feedback.png" alt="">
-                        <!--                        <i class="iconfont blue">&#xe609;</i>-->
                         <span>意见反馈</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
@@ -121,7 +113,6 @@
                 <li @click="connectKf" class="lines">
                     <div class="left">
                         <img src="./image/customer_service.png" alt="">
-                        <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>联系客服</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
@@ -129,17 +120,14 @@
                 <li @click="jump('user.protocol')" class="lines">
                     <div class="left">
                         <img src="./image/user_agreement.png"  alt="">
-                        <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>用户协议</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="showBind"  class="lines showBind">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/offline.png" alt="">
                         <span>服务商户</span>
-
                     </div>
                     <div class="id">ID: {{shopCode}}</div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
@@ -149,7 +137,6 @@
         <BindShop v-if="bindVisible" @close="bindVisible = false" @submit="submitBind" />
         <div id="footNavHeight"></div>
         <footer-nav :navName="navName" @getUserAuth="getUserAuth" >></footer-nav>
-
     </div>
 </template>
 
@@ -310,7 +297,6 @@
 		}
 	}
 </script>
-
 <!--suppress CssInvalidPropertyValue -->
 <style scoped>
     #footNavHeight {

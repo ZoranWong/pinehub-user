@@ -414,7 +414,8 @@
             this.$command('GET_BAR_HEIGHT');
             let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            if (options.scene) {
+            if (options.scene){
+                //scene:id=123&shop_code=qpweioru
                 let idString = options.scene.split('3D')[1];
                 if (options.scene.split('3D').length > 2) {
                     options.id = idString.split('%26')[0];
@@ -422,7 +423,6 @@
                 } else {
                     options.id = idString.split('3D')[1];
                 }
-
                 options.backHome = true
             }
             this.options = options;

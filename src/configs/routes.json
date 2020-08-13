@@ -43,5 +43,6 @@
     "selectPay": "/pages/orders/selectPay/main",
 	"user.store": "/pages/user/store/main",
 	"user.goodDetail": "/pages/user/goodDetail/main",
-    "order.feedback": "/pages/orders/orderFeedBack/main"
+    "order.feedback": "/pages/orders/orderFeedBack/main",
+    "pineHubSecond.fastFoot": "/pages/pineHubSecond/fastFoot/main"
 }

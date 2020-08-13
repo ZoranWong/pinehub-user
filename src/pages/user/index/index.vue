@@ -6,15 +6,7 @@
         <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
             <div id="index_header" >
                 <div class="banners">
-                    <swiper
-                        class="index-swiper"
-                        circular="true"
-                        :indicator-dots="false"
-                        autoplay="true"
-                        interval="3000"
-                        duration="500"
-                        @animationfinish="bannerChange"
-                        @transition="bannerTransition">
+                    <swiper class="index-swiper" circular="true" :indicator-dots="false" autoplay="true" interval="3000" duration="500" @animationfinish="bannerChange" @transition="bannerTransition">
                         <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
                             <swiper-item :key="key">
                                 <image :src="item.image" class="index-slide-image" mode="aspectFill" @click="bannerJump(item)"/>
@@ -29,10 +21,7 @@
             <div class="allCates">
                 <div class="catesHeader">
                     <h3>预定商城</h3>
-                    <span @click="goStoreCates('more')">
-                        更多
-                        <img src="../../../../static/icons/rightArrow.png" alt="">
-                    </span>
+                    <span @click="goStoreCates('more')">更多<img src="../../../../static/icons/rightArrow.png" alt=""></span>
                 </div>
                 <ul class="classifications">
                     <li v-for="(item,index) in categories" :key="index" class="cates" @click="goStoreCates(item.id)">
@@ -48,20 +37,13 @@
             </div>
 
             <div class="extra">
-                <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-<!--                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">-->
+                <!--<img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">-->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
+                <img src="./img/home-fast-foot.png" @click="redirectTo('pineHubSecond.fastFoot', {query: {id: 2}})" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
-                <swiper
-                    class="couponSwiper"
-                    circular="true"
-                    :indicator-dots="false"
-                    :autoplay="true"
-                    interval="3000"
-                    @animationfinish="couponChange"
-                    duration="1000">
+                <swiper class="couponSwiper" circular="true" :indicator-dots="false" :autoplay="true" interval="3000" @animationfinish="couponChange" duration="1000">
                     <block v-for="(item, index) in tickets" :index="index" :key="item.id" >
                         <swiper-item :key="item.id" class="couponItem" @click="goCouponCenter">
                             <div class="couponLeft">
@@ -96,10 +78,8 @@
                 <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
-                    :products="act['entry_template'][0].data" :id="act.id"
-                    :image="act['entry_template'][0].image"
-                    @do="goActDetails(act)"
-                    @addToCart="addToCart"
+                    :products="act['entry_template'][0].data" :id="act.id" :image="act['entry_template'][0].image"
+                    @do="goActDetails(act)" @addToCart="addToCart"
                 />
             </div>
 
@@ -118,16 +98,10 @@
             </div>
 
         </div>
-
-
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
-
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
-<!--        <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>-->
-
-
     </div>
 </template>
 
@@ -139,7 +113,7 @@
     import OldUserReceivedNewTickets from '../../../components/OldUserReceivedNewTickets';
     import {getUpdateMange} from '../../../utils/getUpdateManage';
     import GetUserMobile from '../../../components/GetUserMobile';
-    import _ from 'underscore'
+    import _ from 'underscore';
     import Module_1 from './components/Module_1';
     import Module_2 from './components/Module_2';
     import RecommendProducts from '../../../components/RecommendProducts';
@@ -553,7 +527,7 @@
                     })
                 } else {
                     if (this.registered) {
-                        if (router === 'user.QingSongKungfu' && !this.isMember) {
+                        if ((router === 'user.QingSongKungfu' || router === 'pineHubSecond.fastFoot') && !this.isMember) {
                             this.showBindMobile = true
                         } else {
                             this.$command('REDIRECT_TO', router, 'push', options);
@@ -802,7 +776,7 @@
 
     .extra{
         width: 100%;
-        height: 180rpx;
+        height: 200rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;

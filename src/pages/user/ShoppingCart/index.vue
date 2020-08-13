@@ -136,8 +136,6 @@
                 </div>
             </div>
         </div>
-
-
         <FooterNav :navName="navName" />
     </div>
 </template>

@@ -2,24 +2,15 @@
 <template>
     <div id="toast_area" >
         <div id="toast">
-            <div id="toast_title">
-                微信手机号授权
-            </div>
+            <div id="toast_title">微信手机号授权</div>
             <div id="toast_content">
                 <img src="../../static/icons/aHome.jpg" alt="">
                 <h3>青松易购 申请获得你的手机号：</h3>
-                <span>
-                    我们需要您的手机号来创建账
-号，累计积分
-                </span>
+                <span>我们需要您的手机号来创建账号，累计积分</span>
             </div>
             <div id="toast_bottom">
-                <button  @click="closeMobile">
-                    取消
-                </button>
-                <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                    登录
-                </button>
+                <button  @click="closeMobile">取消</button>
+                <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">登录</button>
             </div>
         </div>
     </div>
