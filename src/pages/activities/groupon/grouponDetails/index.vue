@@ -414,6 +414,8 @@
             this.$command('GET_BAR_HEIGHT');
             let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
+            this.fundebug.test('测试', 'fundebug test');
+            this.fundebug.notify('团购详情进入后页面携带参数', {message: '扫码参数', query: options});
             if (options.scene) {
                 let idString = options.scene.split('3D')[1];
                 if (options.scene.split('3D').length > 2) {

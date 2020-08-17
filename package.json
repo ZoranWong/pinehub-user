@@ -20,6 +20,7 @@
         "element-ui": "^2.4.5",
         "es6-promise": "^4.2.4",
         "flyio": "^0.6.2",
+        "fundebug-wxjs": "^1.4.1",
         "js-base64": "^2.4.8",
         "js-md5": "^0.7.3",
         "laravel-echo": "^1.6.1",
