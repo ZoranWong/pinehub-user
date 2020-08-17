@@ -10,6 +10,11 @@ export default {
             let statusBarHeight=this.model.global.barHeight.statusBarHeight;
             let navHeight=this.model.global.barHeight.navHeight;
             return parseInt(statusBarHeight)+parseInt(navHeight);
+        },
+        topHeight:function () {
+            let statusBarHeight=this.model.global.barHeight.statusBarHeight;
+            let navHeight=this.model.global.barHeight.navHeight;
+            return parseInt(statusBarHeight)+parseInt(navHeight)+32;
         }
     }
 }

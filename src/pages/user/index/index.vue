@@ -96,8 +96,10 @@
                 </div>
                 <RecommendProducts  @addToCart="addToCart" />
             </div>
-
         </div>
+        <i-modal title="距离最近门店" :visible="visible" cancel-text="查看更多" @ok="handleSure" @cancel="handleMOre">
+            <view>吉事多便利店（置地广场店）</view>
+        </i-modal>
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
@@ -132,6 +134,7 @@
         },
         data () {
             return {
+                visible:true,
                 navName: 'index',
                 inited: false,
                 ticketShow: true,
@@ -365,6 +368,14 @@
             });
         },
         methods: {
+            handleSure:function(){
+               this.visible=false;
+               this.$command('REDIRECT_TO', 'pineHubSecond.selectShopByMap', 'push')
+            },
+            handleMOre:function(){
+               this.visible=false;
+               this.$command('REDIRECT_TO', 'pineHubSecond.selectShopByMap', 'push')
+            },
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
             },

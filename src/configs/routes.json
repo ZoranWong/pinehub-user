@@ -44,5 +44,7 @@
 	"user.store": "/pages/user/store/main",
 	"user.goodDetail": "/pages/user/goodDetail/main",
     "order.feedback": "/pages/orders/orderFeedBack/main",
-    "pineHubSecond.fastFoot": "/pages/pineHubSecond/fastFoot/main"
+    "pineHubSecond.fastFoot": "/pages/pineHubSecond/fastFoot/main",
+    "pineHubSecond.selectShopByMap": "/pages/pineHubSecond/selectShopByMap/main",
+    "pineHubSecond.searchShopAddress": "/pages/pineHubSecond/searchShopAddress/main"
 }
