@@ -9,7 +9,6 @@
         {
             "root": "pages/user",
             "pages": [
-                "index/homemaking/main",
                 "storesMap/main",
                 "mall/newEvents/main",
                 "goodDetail/main",
