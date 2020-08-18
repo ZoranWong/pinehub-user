@@ -6,7 +6,18 @@
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
-        <map id="map" :longitude="longitude" :latitude="latitude" scale="14" bindcontroltap="controltap" :markers="markers" bindmarkertap="markertap" :polyline="polyline" bindregionchange="regionchange" show-location></map>
+        <map id="map" :longitude="longitude" :latitude="latitude" scale="18" :markers="markers" @markertap="markertap" @regionchange="regionchange" show-location></map>
+        <input type="text" placeholder-class="placeholder-class" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
+        <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="searchName">
+            <view v-for="(item,index) in addressList" :key="index" style="margin-top: 20px">
+                <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.name}}</view>
+                <view>
+                    <label style="color: #333333;font-size: 11pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
+                    <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
+                    <label style="color: #999999;font-size: 11pt;font-weight: 400;">{{item.address}}</label>
+                </view>
+            </view>
+        </view>
         <view class="shop-tab">
             <view @click="changeAddressList('0')" :class="{'bacColor':showNearby}">附近门店</view>
             <view @click="changeAddressList('1')" :class="{'bacColor':!showNearby}">常用门店</view>
@@ -16,7 +27,7 @@
                 <view class="left">
                     <view style="color: #333333;font-size: 16pt;font-weight: 700">{{item.name}}</view>
                     <view>
-                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{item.distance}}</label>
+                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
                         <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
                         <label style="color: #999999;font-size: 12pt;font-weight: 400;">{{item.address}}</label>
                     </view>
@@ -29,7 +40,7 @@
                 <view class="left">
                     <view style="color: #333333;font-size: 16pt;font-weight: 700">{{item.name}}</view>
                     <view>
-                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{item.distance}}</label>
+                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
                         <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
                         <label style="color: #999999;font-size: 12pt;font-weight: 400;">{{item.address}}</label>
                     </view>
@@ -49,45 +60,63 @@
         mixins:[Public],
         data() {
             return {
+                searchName:"",
                 checkedRadio:-1,
                 longitude:'113.324520',
                 latitude:'23.099994',
                 color:"#FFCC00",
                 showNearby:true,
+                customCalloutContent:{'name':"置地广场（吉事多便利店)",'time':"12:00-21:00",'distance':"295",'address':"政务区置地广场吉事多便利店"},
                 addressList:[
-                    {name:"置地广场（吉事多便利店）",distance:"距您295m",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"距您295m",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"距您295m",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"距您295m",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"距您295m",address:"政务区置地广场吉事多便利店"}
+                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
+                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
+                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
+                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
+                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"}
                 ],
                 usedAddressList:[
-                    {name:"家乐福",distance:"距您2095m",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"距您2095m",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"距您2095m",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"距您2095m",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"距您2095m",address:"政务区家乐福吉事多便利店"}
+                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
+                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
+                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
+                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
+                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"}
                 ],
                 markers: [{
-                    currentTab:'1',
+                    currentTab:'0',
                     iconPath:require('../img/mapPos.png'),
                     id: 0,
-                    latitude: 23.099994,
                     longitude: 113.324520,
+                    latitude: 23.099994,
+                    width: 40,
+                    height: 40,
+                    callout:{
+                        content:"置地广场（吉事多便利店）\n营业时间12:00-21:00\n距您295m | 政务区置地广场吉事多便利店",
+                        color:"#333333",
+                        fontSize:12,
+                        borderRadius:5,
+                        bgColor:"#ffffff",
+                        display:"BYCLICK",
+                        boxShadow:"2px 2px 10px #aaa",
+                        padding:8
+                    }
+                },{
+                    currentTab:'1',
+                    iconPath:require('../img/position.png'),
+                    id: 1,
+                    longitude: 113.324520,
+                    latitude: 23.099294,
                     width: 50,
-                    height: 50
-                }],
-                polyline: [{
-                    points: [{
-                        longitude: 113.3245211,
-                        latitude: 23.10229
-                    }, {
-                        longitude: 113.324520,
-                        latitude: 23.21229
-                    }],
-                    color:"#FF0000DD",
-                    width: 2,
-                    dottedLine: true
+                    height: 50,
+                    callout:{
+                        content:"置地广场（吉事多便利店）\n营业时间12:00-21:00\n距您295m | 政务区置地广场吉事多便利店",
+                        color:"#333333",
+                        fontSize:12,
+                        borderRadius:5,
+                        bgColor:"#ffffff",
+                        display:"BYCLICK",
+                        boxShadow:"2px 2px 10px #aaa",
+                        padding:8
+                    }
                 }]
             };
         },
@@ -109,10 +138,7 @@
                 console.log(e.type)
             },
             markertap(e) {
-                console.log(e.detail.markerId)
-            },
-            controltap(e) {
-                console.log(e.detail.controlId)
+                console.log(e.mp.markerId);
             },
             async init () {
                 let result = await this.map.getLocation();
@@ -122,6 +148,11 @@
         },
         created(){
            this.init()
+        },
+        watch:{
+            searchName:function(){
+                console.log("当前搜索值为:"+this.searchName)
+            }
         }
     }
 </script>
@@ -205,5 +236,40 @@
         font-size: 18pt;
         font-family:PingFang-SC-Medium,PingFang-SC;
         width: 92%;
+    }
+    .select-shop-Map .search-input{
+        position: absolute;
+        width: 96%;
+        left: 2%;
+        background-color: rgba(255, 255, 255, 0.6);
+        height: 35pt;
+        border-radius: 5pt;
+        background-image: url("../img/search.png");
+        background-repeat: no-repeat;
+        background-size: 20pt;
+        background-position-x: 95%;
+        background-position-y: 7.5pt;
+    }
+    .select-shop-Map .placeholder-class{
+        color: #CCCCCC;
+        font-size: 16pt;
+        margin-left: 15px;
+    }
+    .select-shop-Map .search-content>view{
+        height: auto;
+        width: 96%;
+        margin-left: 2%;
+    }
+    .select-shop-Map .search-content{
+        position: absolute;
+        height: 260pt;
+        width: 96%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        left: 2%;
+        border-radius: 12pt 12pt 0 0;
+        box-shadow: 0 5px 10px #888888;
+        background-color: #F0F0F0;
+        z-index: 10;
     }
 </style>
