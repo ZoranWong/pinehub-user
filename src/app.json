@@ -1,21 +1,25 @@
 {
     "pages": [
-        "pages/user/index/main",
-        "pages/user/index/homemaking/main",
-        "pages/user/storesMap/main",
-        "pages/user/mall/newEvents/main",
-        "pages/user/store/main",
-        "pages/user/ShoppingCart/main",
-        "pages/user/goodDetail/main",
-        "pages/user/feedBack/main",
-        "pages/user/pickup/main",
-        "pages/user/feedBack/success/main",
-        "pages/user/recharge/main",
-        "pages/user/balance/main",
-        "pages/user/consumeCards/main",
-        "pages/user/consumeCards/cardDetails/main"
+        "pages/enties/index/main",
+        "pages/enties/store/main",
+        "pages/enties/ShoppingCart/main",
+        "pages/enties/pickup/main"
     ],
     "subpackages": [
+        {
+            "root": "pages/user",
+            "pages": [
+                "storesMap/main",
+                "mall/newEvents/main",
+                "goodDetail/main",
+                "feedBack/main",
+                "feedBack/success/main",
+                "recharge/main",
+                "balance/main",
+                "consumeCards/main",
+                "consumeCards/cardDetails/main"
+            ]
+        },
         {
             "root": "pages/activities",
             "pages": [
