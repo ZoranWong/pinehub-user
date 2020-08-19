@@ -2,7 +2,6 @@
     "pages": [
         "pages/enties/index/main",
         "pages/enties/store/main",
-        "pages/enties/ShoppingCart/main",
         "pages/enties/pickup/main"
     ],
     "subpackages": [
@@ -11,13 +10,7 @@
             "pages": [
                 "storesMap/main",
                 "mall/newEvents/main",
-                "goodDetail/main",
-                "feedBack/main",
-                "feedBack/success/main",
-                "recharge/main",
-                "balance/main",
-                "consumeCards/main",
-                "consumeCards/cardDetails/main"
+                "goodDetail/main"
             ]
         },
         {
@@ -50,7 +43,13 @@
                 "addressOperation/main",
                 "userCenter/main",
                 "userPickupProtocol/main",
-                "userProtocol/main"
+                "userProtocol/main",
+                "feedBack/main",
+                "feedBack/success/main",
+                "balance/main",
+                "recharge/main",
+                "consumeCards/main",
+                "consumeCards/cardDetails/main"
             ]
         },
         {
@@ -62,7 +61,8 @@
                 "payment/main",
                 "paySuccess/main",
                 "selectPay/main",
-                "orderFeedBack/main"
+                "orderFeedBack/main",
+                "ShoppingCart/main"
             ]
         },
         {

@@ -143,7 +143,7 @@
 </template>
 
 <script>
-    import CustomHeader from '../../user/index/components/CustomHeader';
+    import CustomHeader from '../../enties/index/components/CustomHeader';
     import FooterNav from '../../../components/FooterNav';
     import _ from 'underscore'
     import RecommendProducts from '../../../components/RecommendProducts';
