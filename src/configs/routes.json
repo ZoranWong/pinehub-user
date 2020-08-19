@@ -1,5 +1,7 @@
 {
-	"index": "/pages/user/index/main",
+	"index": "/pages/enties/index/main",
+    "user.pickup": "/pages/enties/pickup/main",
+    "user.store": "/pages/enties/store/main",
 	"index.homemaking": "/pages/user/index/homemaking/main",
 	"storesMap": "/pages/user/storesMap/main",
 	"payment.success": "/pages/orders/paySuccess/main",
@@ -18,7 +20,6 @@
     "user.address": "/pages/userInfo/address/main",
     "user.addressOperation": "/pages/userInfo/addressOperation/main",
     "user.recharge": "/pages/userInfo/recharge/main",
-    "user.pickup": "/pages/user/pickup/main",
     "user.activity": "/pages/activities/activities/main",
     "user.groupon.list": "/pages/activities/groupon/grouponList/main",
     "user.groupon.details": "/pages/activities/groupon/grouponDetails/main",
@@ -41,7 +42,6 @@
 	"couponCenter": "/pages/tickets/coupon/main",
 	"payment": "/pages/orders/payment/main",
     "selectPay": "/pages/orders/selectPay/main",
-	"user.store": "/pages/user/store/main",
 	"user.goodDetail": "/pages/user/goodDetail/main",
     "order.feedback": "/pages/orders/orderFeedBack/main"
 }
