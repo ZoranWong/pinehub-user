@@ -103,7 +103,9 @@
                 let result = await this.map.getLocation();
                 this.lat = result[1];
                 this.lng = result[0];
-                this.$command('LOAD_GROUPON_LIST', this.lng, this.lat, 1)
+                await this.$command('LOAD_GROUPON_LIST', this.lng, this.lat, 1);
+                console.log('======================== load ======================');
+                this.$nextTick();
             },
             handleSearch () {
                 return throttle(async () => {

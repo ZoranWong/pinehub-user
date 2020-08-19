@@ -40,7 +40,7 @@ export default class AppServiceProvider extends ServiceProvider {
             }
         });
         _.extend(String.prototype, {
-            trim (char, type) {
+            customTrim (char, type) {
                 if (char) {
                     if (type === 'left') {
                         return this.replace(new RegExp('^\\' + char + '+', 'g'), '');

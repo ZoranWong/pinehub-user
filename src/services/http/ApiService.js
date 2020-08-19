@@ -78,7 +78,7 @@ export default class ApiService extends Service {
             //     throw '未登录或者登陆失效 ' + route;
             // }
             let request = this.request(headerAuth);
-            let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
+            let result = await request.get(route.customTrim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
             if (this.isLoadingPopupShow) {
                 wx.hideLoading();
             }
@@ -114,7 +114,7 @@ export default class ApiService extends Service {
             //     throw '未登录或者登陆失效 ' + route;
             // }
             let request = this.request(headerAuth);
-            let result = await request.get(route.trim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
+            let result = await request.get(route.customTrim('/') + this.service('uri').encodeURI(this.service('uri').query(params)));
             return result.data;
         } catch (e) {
             console.log('get method request error ', e);
@@ -146,7 +146,7 @@ export default class ApiService extends Service {
                 throw '未登录或者登陆失效';
             }
             let request = this.request(headerAuth);
-            let result = await request.post(route.trim('/'), params);
+            let result = await request.post(route.customTrim('/'), params);
             if (this.isLoadingPopupShow) {
                 wx.hideLoading();
             }
@@ -171,7 +171,7 @@ export default class ApiService extends Service {
                 throw '未登录或者登陆失效';
             }
             let request = this.request(headerAuth);
-            route = id ? (route.trim('/') + '/' + id) : route.trim('/');
+            route = id ? (route.customTrim('/') + '/' + id) : route.customTrim('/');
             let result = await request.put(route, params);
             if (this.isLoadingPopupShow) {
                 wx.hideLoading();
@@ -188,7 +188,7 @@ export default class ApiService extends Service {
     async httpDelete (route, params = [], id = null, auth = true) {
         try {
             if (id) {
-                route = route.trim('/') + '/' + id
+                route = route.customTrim('/') + '/' + id
             }
             if (this.isLoadingPopupShow) {
                 wx.showLoading({title: '提交中···'});

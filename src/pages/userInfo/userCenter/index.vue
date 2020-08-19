@@ -1,13 +1,14 @@
 <template>
     <div id="merchant-store">
-        <Auth v-if="getAuth" @close="closeAuth" />
+        <Auth v-if="getAuth" @close="closeAuth"/>
         <div id="merchant-store_header" :style="{'backgroundImage':'url(' + background + ')'}">
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
                 <div id="name_id">
                     <em v-if="registered && isMember">{{userInfo.nickname}}</em>
                     <button v-if="!registered" class="user-mobile-get-btn" @click="getUserAuth">授权登录</button>
-                    <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                    <button v-if="!isMember && registered" form-type="submit" class="user-mobile-get-btn"
+                            open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
                         手机号授权
                     </button>
                 </div>
@@ -44,7 +45,7 @@
         </div>
         <div id="merchant-store_orders_container">
             <div id="merchant-store_orders" @click="jump('user.orders', '')">
-                <div id="merchant-store_orders_header" >
+                <div id="merchant-store_orders_header">
                     <h3>我的订单</h3>
                     <span>
                         全部订单
@@ -53,30 +54,32 @@
                 </div>
                 <ul id="merchant-store_orders_list">
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PAY')">
-<!--                        <i class="iconfont">&#xe67a;</i>-->
+                        <!--                        <i class="iconfont">&#xe67a;</i>-->
                         <img src="../../../../static/icons/waitPay.png" alt="">
                         <div class="count" v-if="userInfo['waitPayOrderCount']">{{userInfo['waitPayOrderCount']}}</div>
                         <span>待付款</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'WAIT_TO_PICK')">
-<!--                        <i class="iconfont">&#xe884;</i>-->
+                        <!--                        <i class="iconfont">&#xe884;</i>-->
                         <img src="../../../../static/icons/waitPick.png" alt="">
-                        <div class="count" v-if="userInfo['waitPickOrderCount']">{{userInfo['waitPickOrderCount']}}</div>
+                        <div class="count" v-if="userInfo['waitPickOrderCount']">{{userInfo['waitPickOrderCount']}}
+                        </div>
                         <span>待自提</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_COMPLETED')">
-<!--                        <i class="iconfont" >&#xe60d;</i>-->
+                        <!--                        <i class="iconfont" >&#xe60d;</i>-->
                         <img src="../../../../static/icons/completed.png" alt="">
                         <span>已完成</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_HANDLING')">
-<!--                        <i class="iconfont">&#xe7ea;</i>-->
+                        <!--                        <i class="iconfont">&#xe7ea;</i>-->
                         <img src="../../../../static/icons/handling.png" alt="">
-                        <div class="count" v-if="userInfo['handlingOrderCount']">{{userInfo['handlingOrderCount']}}</div>
+                        <div class="count" v-if="userInfo['handlingOrderCount']">{{userInfo['handlingOrderCount']}}
+                        </div>
                         <span>处理中</span>
                     </li>
                     <li @click.stop="jump('user.orders', 'ORDER_REFUNDED')">
-<!--                        <i class="iconfont">&#xe610;</i>-->
+                        <!--                        <i class="iconfont">&#xe610;</i>-->
                         <img src="../../../../static/icons/refunded.png" alt="">
                         <span>已退款</span>
                     </li>
@@ -118,38 +121,40 @@
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-                <li @click="connectKf" class="lines">
+                <li  class="lines">
+<!--                <li @click="connectKf" class="lines">-->
                     <div class="left">
                         <img src="./image/customer_service.png" alt="">
                         <!--                        <i class="iconfont green">&#xe602;</i>-->
-                        <span>联系客服</span>
+<!--                        <span>-->
+<!--                            联系客服-->
+<!--                        </span>-->
+                        <button open-type = "contact" @contact="handleContact" style="background-color: #fff; font-size: 28rpx;padding-right:442rpx;">联系客服</button>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="jump('user.protocol')" class="lines">
                     <div class="left">
-                        <img src="./image/user_agreement.png"  alt="">
+                        <img src="./image/user_agreement.png" alt="">
                         <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>用户协议</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-                <li @click="showBind"  class="lines showBind">
+                <li @click="showBind" class="lines showBind">
                     <div class="left">
                         <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/offline.png" alt="">
                         <span>服务商户</span>
-
                     </div>
                     <div class="id">ID: {{shopCode}}</div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
             </ul>
         </div>
-        <BindShop v-if="bindVisible" @close="bindVisible = false" @submit="submitBind" />
+        <BindShop v-if="bindVisible" @close="bindVisible = false" @submit="submitBind"/>
         <div id="footNavHeight"></div>
-        <footer-nav :navName="navName" @getUserAuth="getUserAuth" >></footer-nav>
-
+        <footer-nav :navName="navName" @getUserAuth="getUserAuth">></footer-nav>
     </div>
 </template>
 
@@ -157,11 +162,14 @@
     import Auth from '../../../components/Auth';
     import FooterNav from '@/components/FooterNav';
     import BindShop from './components/BindShop';
-    import background from './image/background.png'
-	export default {
+    import background from './image/background.png';
+
+    // let plugin = requirePlugin('contactPlugin');
+    // console.log(plugin, '=================++++++++++++++++++');
+    export default {
         components: {
             'footer-nav': FooterNav,
-			Auth,
+            Auth,
             BindShop
         },
         data () {
@@ -179,7 +187,7 @@
                 return this.$imageUrl('bear.gif');
             },
             userInfo () {
-				return this.model.account.userInfo;
+                return this.model.account.userInfo;
             },
             shopCode () {
                 return this.model.account.shopCode
@@ -193,12 +201,12 @@
             userToken () {
                 return this.$store.getters['account/token'];
             },
-			isMember () {
-				return this.model.account.isMember;
-			},
-			registered () {
-				return this.model.account.registered;
-			},
+            isMember () {
+                return this.model.account.isMember;
+            },
+            registered () {
+                return this.model.account.registered;
+            },
             totalCardCount () {
                 return this.model.account.totalCardCount
             }
@@ -228,56 +236,55 @@
             submitBind (code) {
                 this.$command('BIND_CONSUMER', code, true)
             },
-			async uploadFormId (e) {
-				let formId = e.mp.detail.formId;
-				if (formId !== "the formId is a mock one"){
-					await this.http.account.saveFormId(formId);
-				} else {
-					console.log('form id 不合法')
-				}
-			},
-			getUserAuth () {
-				this.getAuth = true
-			},
-			closeAuth () {
-				this.getAuth = false
-			},
-			getPhoneNumber (e) {
-				this.$command('SET_USER_MOBILE', e);
-			},
-            jump (router, params) {
-				if (!this.registered) {
-					this.getUserAuth()
+            async uploadFormId (e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== 'the formId is a mock one') {
+                    await this.http.account.saveFormId(formId);
                 } else {
-					if (!this.isMember){
-						wx.showToast({
-							title: '请先进行手机号授权',
-							icon: 'none'
-						})
-					} else {
-						this.$command('REDIRECT_TO', router, 'push', {
-							query: {
-								status: params
-							}
-						});
+                    console.log('form id 不合法')
+                }
+            },
+            getUserAuth () {
+                this.getAuth = true
+            },
+            closeAuth () {
+                this.getAuth = false
+            },
+            getPhoneNumber (e) {
+                this.$command('SET_USER_MOBILE', e);
+            },
+            jump (router, params) {
+                if (!this.registered) {
+                    this.getUserAuth()
+                } else {
+                    if (!this.isMember) {
+                        wx.showToast({
+                            title: '请先进行手机号授权',
+                            icon: 'none'
+                        })
+                    } else {
+                        this.$command('REDIRECT_TO', router, 'push', {
+                            query: {
+                                status: params
+                            }
+                        });
                     }
-
                 }
             },
             toBalance () {
-				if (!this.registered) {
-					this.getUserAuth()
+                if (!this.registered) {
+                    this.getUserAuth()
                 } else {
-					if (!this.isMember) {
-						wx.showToast({
-							title: '请先进行手机号授权',
-							icon: 'none'
-						})
-					} else {
-						this.$command('REDIRECT_TO', 'user.balance', 'push');
-						this.$command('LOAD_CHARGE_CARDS', 0);
-					}
-				}
+                    if (!this.isMember) {
+                        wx.showToast({
+                            title: '请先进行手机号授权',
+                            icon: 'none'
+                        })
+                    } else {
+                        this.$command('REDIRECT_TO', 'user.balance', 'push');
+                        this.$command('LOAD_CHARGE_CARDS', 0);
+                    }
+                }
             },
             toConsumeCards () {
                 if (!this.registered) {
@@ -303,12 +310,15 @@
                         })
                     }
                 })
+            },
+            handleContact () {
+
             }
         },
         onShow () {
-        	this.$command('LOAD_ACCOUNT');
-		}
-	}
+            this.$command('LOAD_ACCOUNT');
+        }
+    }
 </script>
 
 <!--suppress CssInvalidPropertyValue -->
@@ -317,7 +327,7 @@
         height: 109rpx;
     }
 
-    #bindShop{
+    #bindShop {
         position: fixed;
         width: 100vw;
         height: 100%;
@@ -325,7 +335,7 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0, 0, 0, 0.6);
         z-index: 1000;
     }
 
@@ -437,21 +447,21 @@
         position: relative;
     }
 
-    #merchant-store_userinfo_otherinfo ul li:nth-child(2):after{
+    #merchant-store_userinfo_otherinfo ul li:nth-child(2):after {
         content: '';
         position: absolute;
-        width:2rpx;
-        height:50rpx;
-        background:rgba(245,245,245,1);
+        width: 2rpx;
+        height: 50rpx;
+        background: rgba(245, 245, 245, 1);
         left: 0;
     }
 
-    #merchant-store_userinfo_otherinfo ul li:nth-child(2):before{
+    #merchant-store_userinfo_otherinfo ul li:nth-child(2):before {
         content: '';
         position: absolute;
-        width:2rpx;
-        height:50rpx;
-        background:rgba(245,245,245,1);
+        width: 2rpx;
+        height: 50rpx;
+        background: rgba(245, 245, 245, 1);
         right: 0;
     }
 
@@ -490,7 +500,7 @@
     }
 
     /*我的订单*/
-    #merchant-store_orders_container{
+    #merchant-store_orders_container {
         width: 100%;
         background: #f2f2f2;
         margin-top: 82rpx;
@@ -498,7 +508,7 @@
         border-radius: 25rpx;
     }
 
-    #merchant-store_orders{
+    #merchant-store_orders {
         width: 710rpx;
         height: 100%;
         display: flex;
@@ -508,7 +518,7 @@
         border-radius: 25rpx;
     }
 
-    #merchant-store_orders_header{
+    #merchant-store_orders_header {
         width: 100%;
         height: 80rpx;
         display: flex;
@@ -519,13 +529,13 @@
         border-bottom: 2rpx solid #F5F5F5;
     }
 
-    #merchant-store_orders_header h3{
+    #merchant-store_orders_header h3 {
         font-size: 28rpx;
         color: #111111;
         font-weight: bold;
     }
 
-    #merchant-store_orders_header span{
+    #merchant-store_orders_header span {
         height: 100%;
         font-size: 24rpx;
         color: #333;
@@ -534,56 +544,56 @@
         align-items: center;
     }
 
-    #merchant-store_orders_header span i{
-      margin-left: 5rpx;
-      font-size: 24rpx;
+    #merchant-store_orders_header span i {
+        margin-left: 5rpx;
+        font-size: 24rpx;
     }
 
-    #merchant-store_orders_list{
-      width: 100%;
-      height: 158rpx;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+    #merchant-store_orders_list {
+        width: 100%;
+        height: 158rpx;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         padding: 0 20rpx;
         box-sizing: border-box;
     }
 
-    #merchant-store_orders_list li{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+    #merchant-store_orders_list li {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
 
-    #merchant-store_orders_list li .count{
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 24rpx;
-      height: 24rpx;
-      right: 33rpx;
-      top: -6rpx;
-      color: #ffcc00;
-      border: 2rpx solid #ffcc00;
-      border-radius: 50%;
-      font-size: 20rpx;
-      background: #fff;
+    #merchant-store_orders_list li .count {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24rpx;
+        height: 24rpx;
+        right: 33rpx;
+        top: -6rpx;
+        color: #ffcc00;
+        border: 2rpx solid #ffcc00;
+        border-radius: 50%;
+        font-size: 20rpx;
+        background: #fff;
     }
 
 
-    #merchant-store_orders_list li img{
+    #merchant-store_orders_list li img {
         width: 48rpx;
         height: 48rpx;
     }
 
-    #merchant-store_orders_list li span{
-      font-size: 24rpx;
-      color: #757575;
-      margin-top: 10rpx;
+    #merchant-store_orders_list li span {
+        font-size: 24rpx;
+        color: #757575;
+        margin-top: 10rpx;
     }
 
     #merchant-store_shop {
@@ -632,20 +642,21 @@
         align-items: center;
     }
 
-   .merchant-store_menu ul li:first-child{
+    .merchant-store_menu ul li:first-child {
         border-top-left-radius: 25rpx;
         border-top-right-radius: 25rpx
     }
-    .merchant-store_menu ul li:last-child{
+
+    .merchant-store_menu ul li:last-child {
         border-bottom-left-radius: 25rpx;
         border-bottom-right-radius: 25rpx
     }
 
-    .lines{
+    .lines {
         position: relative;
     }
 
-    .lines:after{
+    .lines:after {
         content: '';
         position: absolute;
         width: 630rpx;
@@ -655,38 +666,38 @@
         left: 80rpx;
     }
 
-    .merchant-store_menu ul li img{
+    .merchant-store_menu ul li img {
         /*font-size: 36rpx;*/
         width: 38rpx;
         height: 38rpx;
     }
 
-    .merchant-store_menu ul li .arrow{
+    .merchant-store_menu ul li .arrow {
         font-size: 22rpx;
         color: #757575;
     }
 
 
-    .merchant-store_menu ul li .blue{
-        background: linear-gradient(to right,#5EC4F9,#34B5F8);
+    .merchant-store_menu ul li .blue {
+        background: linear-gradient(to right, #5EC4F9, #34B5F8);
         -webkit-background-clip: text;
         color: transparent;
     }
 
-    .merchant-store_menu ul li .yellow{
+    .merchant-store_menu ul li .yellow {
         font-size: 46rpx;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
     }
 
-    .merchant-store_menu ul li .green{
-        background: linear-gradient(to right,#97EF66,#83DF50);
+    .merchant-store_menu ul li .green {
+        background: linear-gradient(to right, #97EF66, #83DF50);
         -webkit-background-clip: text;
         color: transparent;
     }
 
-   .merchant-store_menu ul li .left{
+    .merchant-store_menu ul li .left {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -722,7 +733,7 @@
         border-radius: 80rpx;
     }
 
-    .user-mobile-get-btn-getMobile{
+    .user-mobile-get-btn-getMobile {
         height: 80rpx;
         width: 320rpx;
         text-align: center;
@@ -739,11 +750,11 @@
         bottom: 60rpx;
     }
 
-    .showBind{
+    .showBind {
         position: relative;
     }
 
-    .showBind .id{
+    .showBind .id {
         position: relative;
         right: -75px;
         font-size: 28rpx;
@@ -753,14 +764,14 @@
         align-items: center;
     }
 
-    .rightArrow_imp{
-        width: 12rpx!important;
-        height: 20rpx!important;
+    .rightArrow_imp {
+        width: 12rpx !important;
+        height: 20rpx !important;
         margin-left: 21rpx;
     }
 
-    .protocol{
-        width: 32rpx!important;
+    .protocol {
+        width: 32rpx !important;
     }
 
 </style>

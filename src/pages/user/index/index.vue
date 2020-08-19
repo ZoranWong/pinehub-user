@@ -385,6 +385,9 @@
 
                 // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = query['store_id'];
+                if (query['page']) {
+                    this.$command('REDIRECT_TO', query['page'], 'push');
+                }
             }
             wx.onAppShow(() => {
                 this.ticketShow = true;

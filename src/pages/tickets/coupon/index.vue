@@ -19,15 +19,14 @@
 		components: {
 			'coupon-tickets': CouponTickets
 		},
-        computed : {
+        computed: {
         },
 		methods: {
 			loadTickets (page) {
 				this.$command('LOAD_USER_TICKETS', page);
-			},
+			}
 		},
         mounted () {
-
 			let needReturn = this.$route.query.needReturn;
 
 			if (needReturn) {

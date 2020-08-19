@@ -16,8 +16,8 @@
                 <ul>
                     <li class="header">
                         <div class="icon" @click="checkAll">
-                            <img v-if="selectedAll" src="./img/selected.png"  alt="">
-                            <img v-else src="./img/uncheck.png"  alt="">
+                            <img v-if="selectedAll" src="./img/selected.png" alt="">
+                            <img v-else src="./img/uncheck.png" alt="">
                         </div>
                         <h3>青松食品</h3>
                     </li>
@@ -40,8 +40,8 @@
                     <li v-for="product in unenoughProducts" :key="product.id">
                         <div class="top">
                             <div class="icon" @click="checkUnenough(product)">
-                                <img v-if="product.checked > 0" src="./img/selected.png"  alt="">
-                                <img v-else src="./img/uncheck.png"  alt="">
+                                <img v-if="product.checked > 0" src="img/selected.png" alt="">
+                                <img v-else src="img/uncheck.png" alt="">
                             </div>
                             <div class="product">
                                 <img :src="product.image" class="image" alt="">
@@ -58,9 +58,9 @@
 
                                         </div>
                                         <div class="right">
-                                            <img src="./img/minus.png" alt=""  >
+                                            <img src="img/minus.png" alt=""  >
                                             <input v-model="product['unenoughNum']"  type="number" :disabled="true" />
-                                            <img src="./img/add.png" alt="" >
+                                            <img src="img/add.png" alt="" >
                                         </div>
                                     </div>
                                 </div>
@@ -88,8 +88,8 @@
         <div class="settle">
             <div class="left">
                 <div class="icon" @click="checkAll">
-                    <img v-if="selectedAll" src="./img/selected.png"  alt="">
-                    <img v-else src="./img/uncheck.png"  alt="">
+                    <img v-if="selectedAll" src="img/selected.png" alt="">
+                    <img v-else src="img/uncheck.png" alt="">
                 </div>
                 <span>全选</span>
             </div>
@@ -143,14 +143,14 @@
 </template>
 
 <script>
-    import CustomHeader from '../index/components/CustomHeader';
+    import CustomHeader from '../../user/index/components/CustomHeader';
     import FooterNav from '../../../components/FooterNav';
     import _ from 'underscore'
     import RecommendProducts from '../../../components/RecommendProducts';
-    import ProductComponents from "./components/ProductComponent";
+    import ProductComponents from './components/ProductComponent';
     export default {
 		name: 'ShoppingCart',
-        data() {
+        data () {
 		    return {
 		        title: '青松易购',
                 navName: 'shoppingCart',
@@ -164,12 +164,12 @@
             }
         },
         watch: {
-            products (val,old) {
+            products (val, old) {
                 if (val.length) {
-                    let index = _.findIndex(val, product => {
+                    let index = _.findIndex(val, (product) => {
                         return !product.selected
                     });
-                    this.selectedAll = index > -1 ? false : true;
+                    this.selectedAll = !(index > -1);
                 }
             },
             invalidProducts (val) {
@@ -193,21 +193,20 @@
             //     }
             // },
         },
-        components: {CustomHeader,FooterNav,RecommendProducts,ProductComponents},
+        components: {CustomHeader, FooterNav, RecommendProducts, ProductComponents},
         computed: {
 		    total () {
                 let products = this.products;
                 let price = 0;
                 let quantity = 0;
-                _.map(products, (product)=>{
-
+                _.map(products, (product) => {
                     if (product.selected > 0) {
                         price += Number(product['price']) * Number(product['buy_num'])
                         quantity += Number(product['buy_num'])
                     }
                 });
                 price = price.toFixed(2)
-                return {price,quantity}
+                return {price, quantity}
             },
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
@@ -218,14 +217,14 @@
             navHeight () {
                 return this.model.global.barHeight.navHeight
             },
-            headerHeight() {
+            headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            btnHeight() {
+            btnHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 306 * systemInfo.windowWidth / 750;
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headerHeight - this.btnHeight;
@@ -234,11 +233,11 @@
                 this.products = this.model.user.store.goodInShoppingCart;
                 return this.model.user.store.goodInShoppingCart
             },
-            categories(){
+            categories () {
                 return this.model.user.store.categories;
-            },
+            }
         },
-        methods : {
+        methods: {
             // handlePrice (total, price) {
             //     let formatPrice = total - price;
             //     let result = formatPrice.toFixed(2)
@@ -246,25 +245,25 @@
             // },
              clearCart  () {
                 let clear = [];
-                _.map(this.products, product => {
+                _.map(this.products, (product) => {
                     if (product.selected) {
                         clear.push(product)
                     }
                 });
                 let checked = [];
-                _.map(this.unenoughProducts, product => {
+                _.map(this.unenoughProducts, (product) => {
                     if (product.checked) {
                         checked.push(product)
                     }
                 });
 
-                 if ( clear.length && checked.length) {
+                 if (clear.length && checked.length) {
                     this.$command('CLEAR_CART_COMMAND', clear);
-                     this.unenoughProducts = this.unenoughProducts.filter(product => !product.checked);
+                     this.unenoughProducts = this.unenoughProducts.filter((product) => !product.checked);
                 } else if (clear.length && !checked.length) {
                      this.$command('CLEAR_CART_COMMAND', clear);
                 } else if (!clear.length && checked.length) {
-                     this.unenoughProducts = this.unenoughProducts.filter(product => !product.checked);
+                     this.unenoughProducts = this.unenoughProducts.filter((product) => !product.checked);
                  } else {
                      wx.showToast({
                          title: '您尚未选中商品',
@@ -275,7 +274,7 @@
             checkProductStatus () {
                 this.invalidProducts = [];
                 let products = this.products;
-                _.map(products, product => {
+                _.map(products, (product) => {
                     if (product['product_status'] !== 1) {
                         this.invalidProducts.push(product)
                     }
@@ -295,7 +294,7 @@
             async checkActProductsIsEnough () {
                 let checked = [];
                 let products = this.goodInShoppingCart;
-                _.map(products, (product,index) => {
+                _.map(products, (product, index) => {
                     if (product.selected) {
                         checked.push(product.id)
                     }
@@ -304,8 +303,8 @@
                 let prevProducts = this.goodInShoppingCart;
                 let newProducts = carts.data;
                 let differentProduct = [];
-                _.map(prevProducts, pProduct => {
-                    _.map(newProducts, nProduct => {
+                _.map(prevProducts, (pProduct) => {
+                    _.map(newProducts, (nProduct) => {
                         if (pProduct.selected && nProduct.selected && pProduct.id === nProduct.id && pProduct['act_num'] !== nProduct['act_num']) {
                             differentProduct.push({
                                 name: nProduct.name,
@@ -322,7 +321,7 @@
             },
             goPayment () {
                 let selectedProduct = [];
-                _.map(this.products, product => {
+                _.map(this.products, (product) => {
                     if (product.selected > 0) {
                         let obj = {};
                         obj['cart_id'] = product.id;
@@ -330,16 +329,16 @@
                         selectedProduct.push(obj)
                     }
                 })
-                this.$command('REDIRECT_TO', 'user.order.payment', 'push',{
+                this.$command('REDIRECT_TO', 'user.order.payment', 'push', {
                     query: {type: 'mall', selectedProduct}
                 });
             },
             deleteProducts () {
                 _.map(this.invalidProducts, async (product) => {
-                    await this.$command('CHANGE_BUY_NUM_COMMAND',product, 0)
+                    await this.$command('CHANGE_BUY_NUM_COMMAND', product, 0)
                 });
                 if (this.products.length) {
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         this.checkActProductsIsEnough()
                     }, 500)
                 } else {
@@ -361,7 +360,7 @@
                                     if (tip.confirm) {
                                         wx.openSetting({
                                             success: function (data) {
-                                                if (data.authSetting["scope.userLocation"] === true) {
+                                                if (data.authSetting['scope.userLocation'] === true) {
                                                     wx.showToast({
                                                         title: '授权成功',
                                                         icon: 'success',
@@ -395,25 +394,25 @@
                 // }
                 let checked = [];
                 let products = this.goodInShoppingCart;
-                _.map(products, (product,index) => {
+                _.map(products, (product, index) => {
                     checked.push(product.id)
                 });
                 this.$command('LOAD_CART_COMMAND', 'mall', checked, true)
             },
-            changeBuyNum (item,num) {
+            changeBuyNum (item, num) {
                 let newNum = item['buy_num'] + num;
-                this.$command('CHANGE_BUY_NUM_COMMAND',item, newNum)
+                this.$command('CHANGE_BUY_NUM_COMMAND', item, newNum)
             },
             changeInputBuyNum (e, item) {
                 let value = e.target.value;
                 let stock = item['stock_num'] || item.stock;
                 if (value <= 0) value = 0;
                 if (value > stock) value = stock;
-                this.$command('CHANGE_BUY_NUM_COMMAND',item, Number(value))
+                this.$command('CHANGE_BUY_NUM_COMMAND', item, Number(value))
             },
             check (product) {
-                let checked = _.map(this.products, (item,index) => {
-                    if(product.id === item.id){
+                let checked = _.map(this.products, (item, index) => {
+                    if (product.id === item.id) {
                         item.selected = !item.selected;
                     }
                     return [item.id, item.selected]
@@ -427,7 +426,7 @@
             checkAll () {
                 let checked = [];
                 let products = this.products;
-                _.map(products, (product,index) => {
+                _.map(products, (product, index) => {
                     // product.checked = !this.selectedAll
                     // this.$set(products, index, product)
                     checked.push(product.id)
@@ -452,12 +451,12 @@
                         }
                     }
                     if (isInCart) {
-                        this.$command('CHANGE_BUY_NUM_COMMAND',inCartProduct,inCartProduct['buy_num'] + 1,'mall');
+                        this.$command('CHANGE_BUY_NUM_COMMAND', inCartProduct, inCartProduct['buy_num'] + 1, 'mall');
                     } else {
-                        this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall')
+                        this.$command('ADD_GOODS_TO_CART_COMMAND', id, 1, 'mall')
                     }
                 } else {
-                    this.$command('ADD_GOODS_TO_CART_COMMAND',id,1,'mall');
+                    this.$command('ADD_GOODS_TO_CART_COMMAND', id, 1, 'mall');
                 }
             },
             checkUnenough (product) {
@@ -467,12 +466,12 @@
         mounted () {
             this.init();
             let unenoughProducts = [];
-            _.map(this.products, product => {
+            _.map(this.products, (product) => {
                 if (product['buy_num'] > product['stock_num']) {
                     product.unenoughNum = product['buy_num'] - product['stock_num'];
                     product.checked = false
                     unenoughProducts.push(product);
-                    this.$command('CHANGE_BUY_NUM_COMMAND',product, product['stock_num'])
+                    this.$command('CHANGE_BUY_NUM_COMMAND', product, product['stock_num'])
                 }
             })
             this.unenoughProducts = unenoughProducts;

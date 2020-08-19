@@ -17,5 +17,8 @@
     },
     "socket": {
         "gateway": "https://neptune.klsfood.cn"
+    },
+    "order": {
+        "payAmount": 0
     }
 }

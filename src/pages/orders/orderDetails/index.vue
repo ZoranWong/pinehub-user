@@ -35,7 +35,7 @@
                         </h4>
                         <h4>
                             预约{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '送货' :'取货'}}时间
-                            <span>{{orderDetail['plan_pickup_time']}}</span>
+                            <span>{{orderDetail['plan_pickup_time'] ? orderDetail['plan_pickup_time'] : '8点后'}}</span>
                         </h4>
                     </div>
                     <div class="order_info_name" v-else>
@@ -126,7 +126,7 @@
 
 	export default {
         components: {
-			CustomHeader,
+			CustomHeader
         },
         data () {
             return {

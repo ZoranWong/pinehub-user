@@ -50,7 +50,7 @@
             <div class="totalContainer" >
                 <div class="productsContainer">
                     <div class="productHeader">
-                        <h4 >青松食品（宁西路28号青松集团）</h4>
+                        <h4 >{{groupDetail && groupDetail['pick_shop_info'] ? groupDetail['pick_shop_info']['name'] : '青松食品（宁西路28号青松集团）'}}</h4>
                         <img src="./imgs/tag.png" alt="">
                     </div>
                     <ul id="good_list">
@@ -119,8 +119,6 @@
                             </h5>
                         </li>
                     </ul>
-
-
                 </div>
                 <ul id="remarkBox">
                     <li>
@@ -156,20 +154,21 @@
         components: {
             CustomHeader
         },
-        data() {
+        data () {
             return {
                 title: '提交订单',
                 remark: '',
                 name: '',
                 mobile: '',
                 products: [],
-                isLoadAll: false
+                isLoadAll: false,
+                groupDetail: null
             };
         },
         watch: {
             grouponCouponIds (newVal, oldVal) {
                 if (typeof this.$route.query.shoppingGroupId !== 'undefined' && this.model.groupon.goodInShoppingCart && this.model.groupon.goodInShoppingCart.length > 0) {
-                    this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
+                    this.$command('CALCULATE_GROUPON_PRICE_COMMAND', {
                         coupon_records: newVal,
                         shop_shopping_group_id: this.$route.query.shoppingGroupId
                     });
@@ -181,28 +180,28 @@
                 } else {
                     this.products = this.products.slice(0, 3)
                 }
-            },
+            }
         },
         computed: {
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
-            goodInShoppingCart(){
-                let products = this.model.groupon.goodInShoppingCart.filter(item => item.total_fee);
+            goodInShoppingCart () {
+                let products = this.model.groupon.goodInShoppingCart.filter((item) => item.total_fee);
                 this.products = products.length > 3 ? products.slice(0, 3) : products
                 return products
             },
-            giftProducts() {
+            giftProducts () {
                 let products = this.model.groupon.goodInShoppingCart;
                 let giftProducts = [];
-                _.map(products, product => {
+                _.map(products, (product) => {
                     if (!product.total_fee) {
                         giftProducts.push(product)
                     }
                 });
                 if (giftProducts.length) {
                     let text = '';
-                    _.map(giftProducts, product => {
+                    _.map(giftProducts, (product) => {
                         text += `${product.name}、`
                     })
                     return text.substring(0, text.length - 1);
@@ -213,15 +212,15 @@
             navHeight () {
                 return this.model.global.barHeight.navHeight
             },
-            headerHeight() {
+            headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headerHeight - this.btnHeight;
             },
-            btnHeight() {
+            btnHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 0 * systemInfo.windowWidth / 750;
             },
@@ -288,7 +287,7 @@
                 let now = new Date();
                 this.createOrder()
             },
-            createOrder(){
+            createOrder () {
                 this.$command('CREATE_GROUPON_ORDER', {
                     consignee_name: this.name,
                     consignee_mobile_phone: this.mobile,
@@ -305,16 +304,18 @@
             },
             jump (router) {
                 if (this.availableCoupons.length === 0) return;
-                this.$command('REDIRECT_TO', router, 'push',{
-                    query: {needReturn: true, type: 'groupon',shoppingGroupId: this.$route.query.shoppingGroupId}
+                this.$command('REDIRECT_TO', router, 'push', {
+                    query: {needReturn: true, type: 'groupon', shoppingGroupId: this.$route.query.shoppingGroupId}
                 });
             }
         },
-        created() {
+        created () {
 
         },
         onShow () {
             let products = this.model.groupon.goodInShoppingCart;
+            this.groupDetail = this.model.groupon.grouponDetails;
+            console.log(this.groupDetail, '=========================');
             if (!products.length) {
                 this.$command('REDIRECT_TO', 'user.myGroupon', 'reLaunch', {
                     query: {
@@ -324,15 +325,15 @@
                 });
             }
         },
-        mounted() {
+        mounted () {
             let id = this.$route.query.shoppingGroupId;
             this.$command('LOAD_GROUPON_CART_COMMAND', id)
-            this.$command('CALCULATE_GROUPON_PRICE_COMMAND',{
+            this.$command('CALCULATE_GROUPON_PRICE_COMMAND', {
                 coupon_records: this.grouponCouponIds,
                 shop_shopping_group_id: id
             });
             this.mobile = this.userMobile
-            this.$command('GROUPON_AVAILABLE_COUPONS',this.$route.query.shoppingGroupId)
+            this.$command('GROUPON_AVAILABLE_COUPONS', this.$route.query.shoppingGroupId)
         }
     }
 </script>
@@ -418,7 +419,7 @@
     }
 
     .user_info li input {
-        width: 300 rpx;
+        width: 300rpx;
         font-size: 28rpx;
         color: #757575;
         text-align: right;
