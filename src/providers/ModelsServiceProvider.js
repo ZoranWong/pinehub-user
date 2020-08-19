@@ -14,7 +14,8 @@ import BarHeight from '../models/BarHeight';
 import Store from '@/models/Store';
 import OrderPayment from '../models/OrderPayment';
 import GoodDetail from '../models/GoodDetail';
-import Groupon from "../models/Groupon";
+import Groupon from '../models/Groupon';
+import StoreMap from '../models/StoreMap';
 
 export default class ModelServiceProvider extends ServiceProvider {
     register () {
@@ -34,7 +35,8 @@ export default class ModelServiceProvider extends ServiceProvider {
 
 
         // this.app.registerModel('model.storeMarket.tickets', Tickets);
-        // this.app.registerModel('model.bookingMall.tickets', Tickets);
+        // this.app.registerModel('model.bookingMall.tickets',);
+        this.app.registerModel('model.user.map', StoreMap);
         this.app.registerModel('model.newEvents.tickets', Tickets);
         this.app.registerModel('model.user.tickets', Tickets);
         this.app.registerModel('model.user.order.payment', OrderPayment);

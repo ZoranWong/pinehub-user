@@ -219,7 +219,7 @@
             CustomHeader,
             ChooseSelfRaisingPoint
         },
-        data() {
+        data () {
             return {
                 title: '提交订单',
                 pointInfo: {},
@@ -242,7 +242,7 @@
             };
         },
         watch: {
-            allProducts(val) {
+            allProducts (val) {
                 if (!this.isLoadAll) {
                     if (val.length > 3) {
                         this.products = val.slice(0, 3)
@@ -251,14 +251,14 @@
                     }
                 }
             },
-            isLoadAll(val) {
+            isLoadAll (val) {
                 if (val) {
                     this.products = this.goodInShoppingCart;
                 } else {
                     this.products = this.products.slice(0, 3)
                 }
             },
-            couponIds(val) {
+            couponIds (val) {
                 if (this.model.user.store.goodInShoppingCart && this.model.user.store.goodInShoppingCart.length > 0) {
                     this.$command('CALCULATE_PRICE_COMMAND', 'mall', {
                         coupon_records: val,
@@ -266,7 +266,7 @@
                     });
                 }
             },
-            selectedProduct(val) {
+            selectedProduct (val) {
                 if (val.length) {
                     let delivery_type = this.activeTab === 'send' ? 'HOME_DELIVERY' : 'SELF_PICK';
                     this.$command('CALCULATE_PRICE_COMMAND', this.$route.query.type, {
@@ -279,20 +279,21 @@
             }
         },
         computed: {
-            showPoints() {
+            showPoints () {
                 return this.model.user.store.showPoints
             },
-            isEnough() {
+            isEnough () {
                 console.log(this.deliveryPrice)
                 return (this.orderInfo['settlement_total_fee'] >= this.deliveryPrice && this.activeTab === 'send') || (this.orderInfo['settlement_total_fee'] >= this.config.app.order.payAmount && this.activeTab === 'pick')
             },
-            orderAmountLimit() {
+            orderAmountLimit () {
                 return this.activeTab === 'send' ? this.deliveryPrice : this.config.app.order.payAmount;
             },
-            selectedPoint() {
+            selectedPoint () {
+                console.log(this.model.user.map.selectedMapPoint, '=======================');
                 return this.model.user.map.selectedMapPoint
             },
-            goodInShoppingCart() {
+            goodInShoppingCart () {
                 if (this.type === 'mall') {
                     let products = this.model.user.store.goodInShoppingCart;
                     let ary = [];
@@ -308,54 +309,54 @@
                     return this.model.newEvents.shoppingCarts.goodInShoppingCart
                 }
             },
-            userMobile() {
+            userMobile () {
                 return this.model.account.mobile
             },
-            orderInfo() {
+            orderInfo () {
                 return this.model.user.order.payment.orderInfo
             },
-            availableCoupons() {
+            availableCoupons () {
                 return this.model.user.tickets.availableCoupons
             },
-            couponIds() {
+            couponIds () {
                 return this.model.user.order.payment.couponIds
             },
-            addresses() {
+            addresses () {
                 return this.model.user.order.payment.addresses
             },
-            statusBarHeight() {
+            statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
-            navHeight() {
+            navHeight () {
                 return this.model.global.barHeight.navHeight
             },
-            headerHeight() {
+            headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headerHeight - this.btnHeight;
             },
-            btnHeight() {
+            btnHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 0 * systemInfo.windowWidth / 750;
             }
         },
         methods: {
-            closePoints() {
+            closePoints () {
                 this.showPoints = false
             },
-            async getDeliveryPrice() {
+            async getDeliveryPrice () {
                 console.log(`------------ delivery price load ----------`);
                 let result = await this.http.store.getDeliveryPrice();
                 console.log(`------------ delivery price load ----------`, result);
                 this.deliveryPrice = result['delivery_threshold']
             },
-            extraProducts() {
+            extraProducts () {
                 this.isLoadAll = !this.isLoadAll;
             },
-            changeTab(tab) {
+            changeTab (tab) {
                 this.activeTab = tab;
                 if (tab === 'send') {
                     this.background = right;
@@ -365,7 +366,7 @@
                     this.backgroundPosition = 'left center';
                 }
             },
-            selectAddressPoint() {
+            selectAddressPoint () {
                 this.$command('REDIRECT_TO', 'user.address', 'push', {
                     query: {
                         needReturn: true,
@@ -373,7 +374,7 @@
                     }
                 });
             },
-            selectPoint() {
+            selectPoint () {
                 if (this.type === 'mall') {
                     this.model.user.store.dispatch('selectPoints', {
                         boolean: true,
@@ -390,7 +391,7 @@
                     });
                 }
             },
-            check() {
+            check () {
                 if (!this.isEnough) {
                     return
                 }
@@ -445,7 +446,7 @@
                     this.createOrder(type)
                 }
             },
-            createOrder() {
+            createOrder () {
                 this.showTips = false;
                 let type = this.activeTab === 'send' ? 'HOME_DELIVERY' : 'SELF_PICK';
                 if (type === 'HOME_DELIVERY') {
@@ -469,26 +470,26 @@
                     }, this.type);
                 }
             },
-            getDate() {
+            getDate () {
                 var tomorrow = new Date();
                 tomorrow.setTime(tomorrow.getTime() + 24 * 60 * 60 * 1000);
                 var tomorrowStr = tomorrow.getFullYear() + '-' + (tomorrow.getMonth() + 1) + '-' + tomorrow.getDate();
                 this.tomorrowStr = tomorrowStr
             },
-            jump(router) {
+            jump (router) {
                 if (this.availableCoupons.length === 0) return;
                 this.$command('REDIRECT_TO', router, 'push', {
                     query: {needReturn: true, type: this.type}
                 });
             },
-            go(router) {
+            go (router) {
                 this.$command('REDIRECT_TO', router, 'push');
             }
         },
-        created() {
+        created () {
             this.getDeliveryPrice();
         },
-        onShow() {
+        onShow () {
             this.allProducts = []
             let selectedProduct = [];
             let products = this.model.user.store.goodInShoppingCart;
@@ -510,7 +511,7 @@
             })
             this.selectedProduct = selectedProduct;
         },
-        mounted() {
+        mounted () {
             this.getDate();
             let type = this.$route.query.type;
             let id = this.$route.query.id;
