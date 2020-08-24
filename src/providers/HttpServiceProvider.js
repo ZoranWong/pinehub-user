@@ -16,6 +16,7 @@ import ActivityService from '../services/http/ActivityService'
 import NewIndexService from '../services/http/NewIndexService';
 import WebSocketService from "../services/websocket/WebSocketService";
 import GrouponService from "../services/http/GrouponService";
+import SocietyFoodService from "../services/http/SocietyFoodService";
 
 export default class HttpServiceProvider extends ServiceProvider {
     register () {
@@ -40,5 +41,6 @@ export default class HttpServiceProvider extends ServiceProvider {
         this.app.register('http.activities', ActivityService);
         this.app.register('http.newIndex', NewIndexService);
         this.app.register('$socket', WebSocketService);
+        this.app.register('http.societyFood', SocietyFoodService);
     }
 }

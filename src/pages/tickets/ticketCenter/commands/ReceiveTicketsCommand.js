@@ -28,7 +28,6 @@ export default class ReceiveTicketsCommand extends Command {
     }
 
     refresh () {
-        console.log('111111111111');
         this.$command('LOAD_CAN_RECEIVE_TICKETS', 1);
     }
 

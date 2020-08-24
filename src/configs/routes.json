@@ -44,7 +44,7 @@
     "selectPay": "/pages/orders/selectPay/main",
 	"user.goodDetail": "/pages/user/goodDetail/main",
     "order.feedback": "/pages/orders/orderFeedBack/main",
-    "pineHubSecond.fastFoot": "/pages/pineHubSecond/fastFoot/main",
-    "pineHubSecond.selectShopByMap": "/pages/pineHubSecond/selectShopByMap/main",
-    "pineHubSecond.searchShopAddress": "/pages/pineHubSecond/searchShopAddress/main"
+    "societyFood.fastFoot": "/pages/societyFood/fastFoot/main",
+    "societyFood.selectShopByMap": "/pages/societyFood/selectShopByMap/main",
+    "societyFood.searchShopAddress": "/pages/societyFood/searchShopAddress/main"
 }

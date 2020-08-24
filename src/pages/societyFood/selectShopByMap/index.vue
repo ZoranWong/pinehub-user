@@ -19,8 +19,8 @@
             </view>
         </view>
         <view class="shop-tab">
-            <view @click="changeAddressList('0')" :class="{'bacColor':showNearby}">附近门店</view>
-            <view @click="changeAddressList('1')" :class="{'bacColor':!showNearby}">常用门店</view>
+            <view @click="changeAddressList('0')" style="border-radius: 13pt 0 0 0" :class="{'bacColor':showNearby}">附近门店</view>
+            <view @click="changeAddressList('1')" style="border-radius: 0 13pt 0 0" :class="{'bacColor':!showNearby}">常用门店</view>
         </view>
         <view class="shop-address-list" v-if="showNearby">
             <view class="shop-address-tab" v-for="(item,index) in addressList" :key="index">
@@ -49,7 +49,7 @@
             </view>
         </view>
         <view class="footer-btn">
-            <button>确定</button>
+            <button :class="{'disabled':checkedRadio==-1}" @click="saveAddress">确定</button>
         </view>
     </div>
 </template>
@@ -121,6 +121,12 @@
             };
         },
         methods:{
+            saveAddress:function(){
+                if(this.checkedRadio==-1){
+                    return false;
+                }
+                console.log("保存用户地址")
+            },
             changeAddressList:function(val){
                 this.showNearby=val=='0'?true:false;
                 this.checkedRadio=-1;
@@ -188,14 +194,12 @@
         padding: 0;
     }
     .shop-tab{
-        border-radius: 12.5pt 12.5pt 0 0;
-        background-color: #F5F5F5;
         height: 40pt;
         width: 100%;
-        margin-top: -10px;
         justify-content: center;
         align-items: center;
         display: flex;
+        margin-top: -10px;
         position: absolute;
     }
     .shop-tab view{
@@ -205,6 +209,15 @@
         font-family:PingFang-SC-Bold,PingFang-SC;
         width: 50%;
         text-align: center;
+        background-color: #d9d9d9;
+        height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .shop-tab .bacColor{
+        font-weight: 700 !important;
+        background-color: #ffffff !important;
     }
     .select-shop-Map #map{
         width: 100%;
@@ -217,12 +230,9 @@
         width: 11px;
         height: 20px;
     }
-    .bacColor{
-        font-weight: 700 !important;
-    }
     .select-shop-Map .footer-btn{
         width: 100%;
-        height: 77pt;
+        height: 70pt;
         justify-content: center;
         align-items: center;
         display: flex;
@@ -236,6 +246,8 @@
         font-size: 18pt;
         font-family:PingFang-SC-Medium,PingFang-SC;
         width: 92%;
+        height: 49px;
+        line-height: 49px;
     }
     .select-shop-Map .search-input{
         position: absolute;
@@ -271,5 +283,9 @@
         box-shadow: 0 5px 10px #888888;
         background-color: #F0F0F0;
         z-index: 10;
+    }
+    .select-shop-Map .disabled{
+        background:rgba(221,221,221,1) !important;
+        color: #BBBBBB !important;
     }
 </style>

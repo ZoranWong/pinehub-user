@@ -39,7 +39,7 @@
             <div class="extra">
                 <!--<img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">-->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
-                <img src="./img/home-fast-foot.png" @click="redirectTo('pineHubSecond.fastFoot', {query: {id: 2}})" alt="">
+                <img src="./img/home-fast-foot.png" @click="redirectTo('societyFood.fastFoot', {query: {id: 2}})" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -314,6 +314,7 @@
                     this.bindConsumer()
                 }
             }
+            this.getCurrentPos();
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -355,6 +356,7 @@
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
         },
+
         onLoad (options) {
             if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
@@ -368,13 +370,27 @@
             });
         },
         methods: {
+            getCurrentPos:function(){
+                wx.getLocation({
+                    type: 'wgs84',
+                    success: (res)=> {
+                        let latitude = res.latitude
+                        let longitude = res.longitude
+                        let param={
+                            lat:latitude,//当前位置的 纬度
+                            lng:longitude//当前位置的 经度
+                        }
+                        this.$command('SF_LAST_ADDRESS', param)
+                    }
+                })
+            },
             handleSure:function(){
                this.visible=false;
-               this.$command('REDIRECT_TO', 'pineHubSecond.selectShopByMap', 'push')
+               this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push')
             },
             handleMOre:function(){
                this.visible=false;
-               this.$command('REDIRECT_TO', 'pineHubSecond.selectShopByMap', 'push')
+               this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push')
             },
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
@@ -538,7 +554,7 @@
                     })
                 } else {
                     if (this.registered) {
-                        if ((router === 'user.QingSongKungfu' || router === 'pineHubSecond.fastFoot') && !this.isMember) {
+                        if ((router === 'user.QingSongKungfu' || router === 'societyFood.fastFoot') && !this.isMember) {
                             this.showBindMobile = true
                         } else {
                             this.$command('REDIRECT_TO', router, 'push', options);

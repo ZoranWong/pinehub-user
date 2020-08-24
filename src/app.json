@@ -75,7 +75,7 @@
                 "couponReceiveCenter/main"
             ]
         },{
-            "root": "pages/pineHubSecond",
+            "root": "pages/societyFood",
             "pages": [
                 "fastFoot/main",
                 "selectShopByMap/main",
