@@ -518,8 +518,6 @@
                     console.log('form id 不合法')
                 }
             },
-            follow () {
-            },
             getUserAuth () {
                 this.showAuth = true
             },
