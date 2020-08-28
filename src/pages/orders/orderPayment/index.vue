@@ -1,17 +1,17 @@
 <!--suppress ALL -->
 <template>
 	<div id="order_payment">
-        <CustomHeader :title="title" :needReturn="true" :backColor="'#ffcc00'" :needClear="true" />
-        <div class="background">
-            <div class="top"></div>
-            <div class="bottom"></div>
+        <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
+        <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
+            <div class="back-icon" @click="backLastPage"><img src="./imgs/back.png" alt=""></div>
         </div>
-
+        <div class="background"><div class="top"></div><div class="bottom"></div></div>
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
             <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
                 <div :class="activeTab === 'pick'? 'tabItem active': 'tabItem'" @click="changeTab('pick')">预定自提</div>
                 <div :class="activeTab === 'send'? 'tabItem active':'tabItem'"  @click="changeTab('send')">同城配送</div>
             </div>
+
             <div class="sendContainer" v-if="activeTab === 'send'">
                 <div class="top">
                     <div class="topLeft " @click="selectAddressPoint" v-if="!addresses.id">
@@ -39,7 +39,9 @@
                     <span>晚上9点前下单，次日即可送达。疫情期间请戴好口罩哦！</span>
                 </div>
             </div>
-            <div class="pickContainer" v-if="activeTab === 'pick'" >
+
+
+            <div class="pickContainer" v-if="activeTab === 'pick'">
                 <img src="./imgs/map.png" alt="" class="hideImg">
                 <div class="top">
                     <div class="topLeft">
@@ -84,7 +86,6 @@
                     </h4>
                 </div>
             </div>
-
             <div class="productsContainer">
                 <div class="productHeader">
                     <h4 v-if="activeTab === 'send'">青松食品（宁西路28号青松集团）</h4>
@@ -112,7 +113,6 @@
                         <span v-else>点击收起</span>
                         <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
                         <img  v-else src="./imgs/bottom-arrow.png" alt="">
-
                     </div>
                 </ul>
 
@@ -150,9 +150,13 @@
                         </h5>
                     </li>
                 </ul>
-
-
             </div>
+
+
+
+
+
+
             <ul id="remarkBox">
                 <li>
                     <h3>备注 <span class="xuantian">(选填)</span></h3>
@@ -173,13 +177,10 @@
                      {{orderInfo['settlement_total_fee'] || 0}}
                     <span v-if="activeTab === 'send'">（满{{deliveryPrice}}元可免费配送）</span>
                     <span v-else>（起订金额10元）</span>
-<!--                    <span v-if="activeTab === 'pick' && orderInfo['total_preferential_fee']">（已优惠{{orderInfo['total_preferential_fee']}}元）</span>-->
                 </span>
                 <h4 @click="check" :class="!isEnough  ? 'disabledButton': ''">提交订单</h4>
             </div>
-
         </div>
-
         <div class="pickupTips" v-if="showTips">
             <div class="pickupTipsContainer">
                 <div class="header">提示</div>
@@ -201,7 +202,6 @@
 	</div>
 </template>
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
     import ChooseSelfRaisingPoint from '../../../components/ChooseSelfRaisingPoint';
 	import {formatMoney} from '../../../utils';
     import _ from 'underscore'
@@ -211,7 +211,7 @@
 
 	export default {
 		components: {
-			CustomHeader,ChooseSelfRaisingPoint
+			ChooseSelfRaisingPoint
 		},
 		data() {
 			return {
@@ -286,22 +286,11 @@
                 if (this.type === 'mall') {
                     let products = this.model.user.store.goodInShoppingCart;
                     let ary = [];
-                    // let selectedProduct = [];
                     _.map(products, product => {
-                        // _.map(this.selectedProduct, p=>{
-                        //     if (p['cart_id'] === product.id) {
-                        //         ary.push(product)
-                        //     }
-                        // })
                         if (product.selected > 0) {
                             ary.push(product);
-                            // selectedProduct.push({
-                            //     cart_id: product.id,
-                            //     remark: '123'
-                            // })
                         }
                     })
-                    // this.selectedProduct = selectedProduct;
                     this.allProducts = ary;
                     return this.allProducts
                 } else if (this.type === 'breakfast')  {
@@ -344,6 +333,9 @@
             }
 		},
 		methods: {
+            backLastPage:function () {
+                this.$command('REDIRECT_TO', '', 'back')
+            },
             closePoints () {
                 this.showPoints = false
             },
@@ -1235,8 +1227,25 @@
         position: absolute;
         right: 30rpx;
     }
-
-
+    #order_payment #nav_bar{
+        justify-content: left;
+    }
+    #order_payment .back-icon{
+        width: 60rpx;
+        height: 60rpx;
+        border-radius: 50%;
+        background: rgba(17,17,17,0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        z-index: 100;
+        float: left;
+    }
+    #order_payment .back-icon ._img{
+        width: 32rpx;
+        height: 32rpx;
+    }
     #order_payment #do_payment{
         box-sizing: border-box;
         height: 98rpx;

@@ -45,6 +45,5 @@
 	"user.goodDetail": "/pages/user/goodDetail/main",
     "order.feedback": "/pages/orders/orderFeedBack/main",
     "societyFood.fastFoot": "/pages/societyFood/fastFoot/main",
-    "societyFood.selectShopByMap": "/pages/societyFood/selectShopByMap/main",
-    "societyFood.searchShopAddress": "/pages/societyFood/searchShopAddress/main"
+    "societyFood.selectShopByMap": "/pages/societyFood/selectShopByMap/main"
 }

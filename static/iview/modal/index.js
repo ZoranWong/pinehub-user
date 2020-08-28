@@ -35,6 +35,14 @@ Component({
         actionMode: {
             type: String,
             value: 'horizontal'
+        },
+        okColor:{
+            type: String,
+            value: ''
+        },
+        cancelColor:{
+            type: String,
+            value: ''
         }
     },
 

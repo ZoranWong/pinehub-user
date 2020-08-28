@@ -209,7 +209,7 @@
                 this.showview = false
             },
             async handleSearch(value) {
-                let result = await this.map.getCenterLocation();
+                let result = await this.map.getCenterLocation("checkedMap");
                 this.$command('SEARCH_POINTS', this.myLatitude, this.myLongitude, this.$route.query.type, 1, value);
                 this.changeBackground('left', true)
             },
@@ -222,7 +222,7 @@
 
             },
             async regionchangeend(e) {
-                let result = await this.map.getCenterLocation();
+                let result = await this.map.getCenterLocation("checkedMap");
                 this.$command('LOAD_NEARBY', result[0], result[1], this.$route.query.type, this.myLongitude, this.myLatitude);
                 // this.$command('LOAD_COMMONLY_USED',result[0],result[1], this.$route.query.type)
             },

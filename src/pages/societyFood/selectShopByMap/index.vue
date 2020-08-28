@@ -6,13 +6,13 @@
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
-        <map id="map" :longitude="longitude" :latitude="latitude" scale="18" :markers="markers" @markertap="markertap" @regionchange="regionchange" show-location></map>
+        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="13" :include-points="markers" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
         <input type="text" placeholder-class="placeholder-class" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
-        <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="searchName">
-            <view v-for="(item,index) in addressList" :key="index" style="margin-top: 20px">
-                <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.name}}</view>
+        <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="showSearchContent">
+            <view v-for="(item,index) in searchAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item.location)">
+                <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.title}}</view>
                 <view>
-                    <label style="color: #333333;font-size: 11pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
+                    <label style="color: #333333;font-size: 11pt;font-weight: 400;letter-spacing: 1px">{{"距您"+item.distance+"m"}}</label>
                     <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
                     <label style="color: #999999;font-size: 11pt;font-weight: 400;">{{item.address}}</label>
                 </view>
@@ -22,30 +22,17 @@
             <view @click="changeAddressList('0')" style="border-radius: 13pt 0 0 0" :class="{'bacColor':showNearby}">附近门店</view>
             <view @click="changeAddressList('1')" style="border-radius: 0 13pt 0 0" :class="{'bacColor':!showNearby}">常用门店</view>
         </view>
-        <view class="shop-address-list" v-if="showNearby">
+        <view class="shop-address-list">
             <view class="shop-address-tab" v-for="(item,index) in addressList" :key="index">
                 <view class="left">
-                    <view style="color: #333333;font-size: 16pt;font-weight: 700">{{item.name}}</view>
+                    <view style="color: #333333;font-size: 16px;font-weight: 700">{{item.shops.shop_name}}</view>
                     <view>
-                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
+                        <label style="color: #333333;font-size: 12px;font-weight: 400;letter-spacing: 1px">{{"距您"+item.shops.distance+"m"}}</label>
                         <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
-                        <label style="color: #999999;font-size: 12pt;font-weight: 400;">{{item.address}}</label>
+                        <label style="color: #999999;font-size: 12px;font-weight: 400;">{{item.shops.shop_address}}</label>
                     </view>
                 </view>
-                <i-radio class="right" :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index)"></i-radio>
-            </view>
-        </view>
-        <view class="shop-address-list" v-else>
-            <view class="shop-address-tab" v-for="(item,index) in usedAddressList" :key="index">
-                <view class="left">
-                    <view style="color: #333333;font-size: 16pt;font-weight: 700">{{item.name}}</view>
-                    <view>
-                        <label style="color: #333333;font-size: 12pt;font-weight: 400">{{"距您"+item.distance+"m"}}</label>
-                        <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
-                        <label style="color: #999999;font-size: 12pt;font-weight: 400;">{{item.address}}</label>
-                    </view>
-                </view>
-                <i-radio class="right" :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index)"></i-radio>
+                <i-radio class="right" :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index,item.shops.shop_id)"></i-radio>
             </view>
         </view>
         <view class="footer-btn">
@@ -61,63 +48,20 @@
         data() {
             return {
                 searchName:"",
+                showSearchContent:false,
                 checkedRadio:-1,
-                longitude:'113.324520',
-                latitude:'23.099994',
+                currentShopId:"",
+                longitude:'',
+                latitude:'',
                 color:"#FFCC00",
                 showNearby:true,
                 customCalloutContent:{'name':"置地广场（吉事多便利店)",'time':"12:00-21:00",'distance':"295",'address':"政务区置地广场吉事多便利店"},
-                addressList:[
-                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"},
-                    {name:"置地广场（吉事多便利店）",distance:"295",address:"政务区置地广场吉事多便利店"}
-                ],
-                usedAddressList:[
-                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"},
-                    {name:"家乐福",distance:"2095",address:"政务区家乐福吉事多便利店"}
-                ],
-                markers: [{
-                    currentTab:'0',
-                    iconPath:require('../img/mapPos.png'),
-                    id: 0,
-                    longitude: 113.324520,
-                    latitude: 23.099994,
-                    width: 40,
-                    height: 40,
-                    callout:{
-                        content:"置地广场（吉事多便利店）\n营业时间12:00-21:00\n距您295m | 政务区置地广场吉事多便利店",
-                        color:"#333333",
-                        fontSize:12,
-                        borderRadius:5,
-                        bgColor:"#ffffff",
-                        display:"BYCLICK",
-                        boxShadow:"2px 2px 10px #aaa",
-                        padding:8
-                    }
-                },{
-                    currentTab:'1',
-                    iconPath:require('../img/position.png'),
-                    id: 1,
-                    longitude: 113.324520,
-                    latitude: 23.099294,
-                    width: 50,
-                    height: 50,
-                    callout:{
-                        content:"置地广场（吉事多便利店）\n营业时间12:00-21:00\n距您295m | 政务区置地广场吉事多便利店",
-                        color:"#333333",
-                        fontSize:12,
-                        borderRadius:5,
-                        bgColor:"#ffffff",
-                        display:"BYCLICK",
-                        boxShadow:"2px 2px 10px #aaa",
-                        padding:8
-                    }
-                }]
+                addressList:[],
+                usedAddressList:[],
+                markerIcon:require('../img/location.png'),
+                initMarks:{currentTab:'0', iconPath:require('../img/mapPos.png'), id: 0, longitude:0, latitude: 0, width: 40, height: 40},
+                markers: [],
+                searchAddressList:[]
             };
         },
         methods:{
@@ -125,14 +69,16 @@
                 if(this.checkedRadio==-1){
                     return false;
                 }
-                console.log("保存用户地址")
+                this.$command('REDIRECT_TO', 'index', 'reLaunch',{query:{shop_id:this.currentShopId}});
             },
             changeAddressList:function(val){
                 this.showNearby=val=='0'?true:false;
                 this.checkedRadio=-1;
+                this.initSearch();
             },
-            handleRadioChange:function(index){
+            handleRadioChange:function(index,shop_id){
                 this.checkedRadio=index;
+                this.currentShopId=shop_id;
             },
             handleChange:function(val){
                 console.log("当前Tab:"+val.target.key)
@@ -140,16 +86,67 @@
             backPage:function () {
                 this.$command('REDIRECT_TO', '', 'back')
             },
+
             regionchange(e) {
-                console.log(e.type)
+                let causedBy=e.mp.causedBy;
+                if(causedBy!="scale"){
+                    this.getMapLocation();
+                }
+            },
+            selectedPos:function(location){
+                this.markers[0].latitude=location.lat;
+                this.markers[0].longitude=location.lng;
+                this.latitude=location.lat;
+                this.longitude=location.lng;
+                this.showSearchContent=false;
+            },
+            async getMapLocation(){
+                let result = await this.map.getCenterLocation("shopMap");
+                console.log("地图视野发生变化后的经纬度"+JSON.stringify(result));
+                this.markers[0].latitude=result[1];
+                this.markers[0].longitude=result[0];
+                this.latitude=result[1];
+                this.longitude=result[0];
+            },
+            async searchMapAddress(){
+                this.searchAddressList=[];
+                let result=await this.map.getSuggestion(this.searchName);
+                if(result){//姚公庙
+                    for (let i = 0; i <result.length ; i++) {
+                        let lat=result[i].location.lat;
+                        let lng=result[i].location.lng;
+                        result[i]["distance"]=this.distance(lat,lng);
+                    }
+                    this.searchAddressList=result;
+                }
+            },
+            distance:function(lat, lng) {
+                var La1 = parseInt(this.latitude) * Math.PI / 180.0;
+                var La2 = lat * Math.PI / 180.0;
+                var La3 = La1 - La2;
+                var Lb3 = parseInt(this.longitude) * Math.PI / 180.0 - lng * Math.PI / 180.0;
+                var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
+                s = s * 6378.137;//地球半径
+                s = Math.round(s * 10000) / 10000;
+                return Math.ceil(s);
             },
             markertap(e) {
-                console.log(e.mp.markerId);
+                console.log("点击地图标记点"+JSON.stringify(e.mp));
             },
-            async init () {
-                let result = await this.map.getLocation();
-                this.latitude=result.latitude;
-                this.longitude=result.longitude;
+            initSearch:function(){
+                let param={
+                    status:this.showNearby?1:2,
+                    lat:this.latitude,
+                    lng:this.longitude
+                }
+                this.$command('SF_SHOP_LIST', param,this);
+            },
+            init () {
+                this.latitude=this.$route.query.latitude;
+                this.longitude=this.$route.query.longitude;
+                this.initMarks.latitude=this.$route.query.latitude;
+                this.initMarks.longitude=this.$route.query.longitude;
+                this.initSearch()
             }
         },
         created(){
@@ -157,7 +154,13 @@
         },
         watch:{
             searchName:function(){
-                console.log("当前搜索值为:"+this.searchName)
+                if(!this.searchName){
+                    this.showSearchContent=false;
+                    this.searchAddressList=[];
+                    return false;
+                }
+                this.searchMapAddress();
+                this.showSearchContent=true;
             }
         }
     }
@@ -219,7 +222,7 @@
         font-weight: 700 !important;
         background-color: #ffffff !important;
     }
-    .select-shop-Map #map{
+    .select-shop-Map #shopMap{
         width: 100%;
         height: 300px;
     }
@@ -254,17 +257,17 @@
         width: 96%;
         left: 2%;
         background-color: rgba(255, 255, 255, 0.6);
-        height: 35pt;
+        height: 35px;
         border-radius: 5pt;
         background-image: url("../img/search.png");
         background-repeat: no-repeat;
-        background-size: 20pt;
+        background-size: 20px;
         background-position-x: 95%;
-        background-position-y: 7.5pt;
+        background-position-y: 7.5px;
     }
     .select-shop-Map .placeholder-class{
         color: #CCCCCC;
-        font-size: 16pt;
+        font-size: 16px;
         margin-left: 15px;
     }
     .select-shop-Map .search-content>view{

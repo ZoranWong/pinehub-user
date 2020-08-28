@@ -36,8 +36,8 @@ export default class SocietyFoodService extends ApiService {
         return response;
     };
     // 获取购物车商品列表
-    async getSocietyFoodCartShopList (shopId) {
-        let response = await this.httpPost('/api/mp/society_food/get/'+shopId+'/carts');
+    async getSocietyFoodCartShopList (shopId,param) {
+        let response = await this.httpGet('/api/mp/society_food/get/'+shopId+'/carts',param);
         return response;
     };
     // 删除购物车内某商品

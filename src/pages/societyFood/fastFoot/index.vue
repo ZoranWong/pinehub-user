@@ -10,56 +10,81 @@
         </div>
         <div class="shop-info-show" :style="{'top': topHeight+ 'px'}">
             <div class="shop-one">
-                <div class="content-word">吉事多便利店（置地广场店）</div>
-                <div class="head-img"><img src="../img/headImg.jpg" alt=""></div>
+                <div class="content-word">{{itemObj.shop_name}}</div>
+                <div class="head-img">
+                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../img/headImg.jpg" alt="">
+                </div>
             </div>
             <div class="shop-two">
                 <div class="position-img"><img src="../../../../static/icons/addresses.png" alt=""></div>
-                <div class="content-word">政务区置地广场吉事多便利店</div>
+                <div class="content-word">{{fixedDelivery.address}}</div>
             </div>
             <div class="shop-three">
-                <div class="content-word">公告：今日到店自提，免费送饮料一瓶（口味任意选择）</div>
+                <div class="content-word">公告：{{itemObj.announcement}}</div>
             </div>
             <div class="shop-four">
                 <button style="margin-left: 15pt">
-                    <img src="../img/headImg.jpg" alt="">
+                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../img/headImg.jpg" alt="">
                     <label>联系门店</label>
                 </button>
                 <button style="margin-left: 10pt">
-                    <img src="../img/headImg.jpg" alt="">
+                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../img/headImg.jpg" alt="">
                     <label>分享好友</label>
                 </button>
             </div>
             <div class="shop-five">
-                <div class="content-word">送餐上门</div>
-                <div class="content-word" style="margin-left: 10pt">预定自提</div>
+                <div class="content-word" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')">送餐上门</div>
+                <div class="content-word" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')" style="margin-left: 10pt">预定自提</div>
             </div>
             <div class="shop-six">
-                <div class="content-word">立即订餐方便快捷，预定明日更优惠</div>
+                <div class="content-word" v-if="itemObj.state">立即订餐方便快捷，预定明日更优惠</div>
+                <div class="content-word" v-else>门店休息中，换一家看看吧</div>
             </div>
         </div>
         <div class="product-list" :style="{'marginTop': (topHeight+59) + 'px'}">
             <div class="change-btn">
-                <view :class="{'selectTab':status === '1'}" @click="selectProject('1')">立即点餐</view>
+                <view :class="{'selectTab':status === '1'}" @click="selectProject('1')">立即订餐</view>
                 <view :class="{'selectTab':status === '2'}" @click="selectProject('2')">明日预定</view>
                 <view class="more-product" @click="searchMoreProduct">查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt=""></view>
             </div>
             <div class="product-info-show">
-                <view class="product-list-detail" v-for="(item,index) in productList" :key="index">
-                    <view class="product-img"><img :src="item.url"></view>
+                <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="index" v-if="status=='1'">
+                    <view class="product-img"><img :src="item.product_avatar"></view>
                     <view class="product-info">
-                        <view class="pro-name">{{item.name}}</view>
-                        <view class="pro-merit">{{item.merit}}</view>
+                        <view class="pro-name">{{item.product_name}}</view>
+                        <view class="pro-merit">{{item.product_intro}}</view>
                         <view class="pro-sales">销量 {{item.sales}}</view>
                         <view class="pro-price">
                             <view class="left">
-                                <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥39.8</span>
-                                <span style="color: #999999;text-decoration:line-through;font-size: 12px">¥45</span>
+                                <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
+                                <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
                             </view>
                             <view class="right">
-                                <img src="../../../../static/icons/minus.png" style="border-color: #ffcc00" alt="" @click.stop="addToShoppingCart()">
-                                <view style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">1</view>
-                                <img src="../../../../static/icons/add.png" alt="" @click.stop="addToShoppingCart()">
+                                <img src="../../../../static/icons/minus.png" v-if="item.count>0" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
+                                <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
+                                <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="index" v-if="status=='2'">
+                    <view class="product-img"><img :src="item.avatar"></view>
+                    <view class="product-info">
+                        <view class="pro-name">{{item.name}}</view>
+                        <view class="pro-merit">{{item.intro}}</view>
+                        <view class="pro-sales">销量 {{item.virtual_sales}}</view>
+                        <view class="pro-price">
+                            <view class="left">
+                                <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
+                                <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
+                            </view>
+                            <view class="right">
+                                <img v-if="item.count>0" src="../../../../static/icons/minus.png" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
+                                <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
+                                <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
                             </view>
                         </view>
                     </view>
@@ -67,7 +92,7 @@
             </div>
             <div class="order-food-info">
                 <label style="color: #111111;font-size: 15pt">订餐情况</label>
-                <label style="color: #999999;font-size: 12pt">（5人已订餐）</label>
+                <label style="color: #999999;font-size: 12pt">（{{orderInfoList.length}}人已订餐）</label>
             </div>
             <div class="order-info-content" v-for="(item,index) in orderInfoList" :key="index">
                 <view class="content-title">
@@ -83,20 +108,34 @@
                 </view>
                 <view class="content-order">红烧牛肉饭 x1、笋干烧肉饭 x2、辣子鸡丁饭 x1、土豆牛肉 饭 x1、毛豆烧肉饭 x3</view>
             </div>
-            <div class="click-search-more">点击查看更多…</div>
+            <div class="click-search-more" @click="searchMoreOrderInfo" v-if="showMoreBtn">点击查看更多…</div>
         </div>
-        <div class="order-settlement">
-            <view class="order-pay-info">
-                <i-badge count="3" overflow-count="99">
-                    <view class="demo-badge"><img src="../img/book.png"/></view>
-                </i-badge>
-                <view>
-                    <view style="color: #111111;font-size: 17pt;font-weight: 700">¥102.1</view>
-                    <view style="color: #999999;font-size: 11pt">满10元起订</view>
+        <view style="height: 20pt;">
+            <div class="order-settlement" v-if="status=='1'">
+                <view class="order-pay-info">
+                    <i-badge :count="onceOrderCount" overflow-count="99">
+                        <view class="demo-badge"><img src="../img/book.png"/></view>
+                    </i-badge>
+                    <view>
+                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{oncePrice}}</view>
+                        <view style="color: #999999;font-size: 11pt">满{{money}}元起订</view>
+                    </view>
                 </view>
-            </view>
-            <button>去结算</button>
-        </div>
+                <button @click="completePayment">去结算</button>
+            </div>
+            <div class="order-settlement" v-else>
+                <view class="order-pay-info">
+                    <i-badge :count="reserveOrderCount" overflow-count="99">
+                        <view class="demo-badge"><img src="../img/book.png"/></view>
+                    </i-badge>
+                    <view>
+                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reservePrice}}</view>
+                        <view style="color: #999999;font-size: 11pt">满{{money}}元起订</view>
+                    </view>
+                </view>
+                <button @click="completePayment">去结算</button>
+            </div>
+        </view>
     </div>
 </template>
 
@@ -106,33 +145,246 @@
         mixins:[Public],
         data() {
             return {
+                selectedStyle:"0",
                 status:"1",
-                productList:[
-                    {url:require('../img/productImg.jpg'), name:"巧克力慕斯蛋糕", merit:"料足味佳健康又实惠", sales:186},
-                    {url:require('../img/productImg.jpg'), name:"巧克力慕斯蛋糕", merit:"料足味佳健康又实惠", sales:186},
-                    {url:require('../img/productImg.jpg'), name:"巧克力慕斯蛋糕", merit:"料足味佳健康又实惠", sales:186}
-                ],
-                orderInfoList:[
-                    {url:require('../img/headImg.jpg'), name:"德玛西亚", time:"2分钟前", price:186},
-                    {url:require('../img/headImg.jpg'), name:"战争学院", time:"2分钟前", price:186},
-                    {url:require('../img/headImg.jpg'), name:"德莱厄斯", time:"2分钟前", price:186}
-                ]
+                onceOrderCount:0,
+                reserveOrderCount:0,
+                oncePrice:0,
+                reservePrice:0,
+                money:10,
+                itemObj:{},
+                showMoreBtn:false,
+                fixedDelivery:{},//配送信息
+                orderInfoList:[],//订餐情况
+                atOnceProList:[],//立即订餐商品列表
+                reserveProList:[],//明日预定商品列表
+                atOnceCartList:[],//立即订餐购物车列表
+                reserveCartList:[],//明日预定购物车列表
             };
         },
         methods:{
+            //去结算
+            completePayment:function(){
+                if(this.status=='1'){
+                    if(this.oncePrice<this.money){
+                        wx.showToast({
+                            title: '满'+this.money+'元起送',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
+                }else {
+                    if(this.reservePrice<this.money){
+                        wx.showToast({
+                            title: '满'+this.money+'元起送',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
+                }
+                if(this.selectedStyle=="0"){
+                    wx.showToast({
+                        title: '请选择送餐上门或者预定自提',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    return false;
+                }
+                let self = this;
+                wx.getSetting({
+                    async success (res) {
+                        if (res.authSetting && res.authSetting['scope.userLocation']) {
+                            self.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                                query: {type: self.itemObj.home_delivery_type, actId: self.actId}
+                            });
+                        } else {
+                            wx.showModal({
+                                title: '是否授权当前位置',
+                                content: '需要获取您的地理位置，请确认授权，否则将无法下单',
+                                success: function (tip) {
+                                    if (tip.confirm) {
+                                        wx.openSetting({
+                                            success: function (data) {
+                                                if (data.authSetting["scope.userLocation"] === true) {
+                                                    wx.showToast({
+                                                        title: '授权成功',
+                                                        icon: 'success',
+                                                        duration: 1000
+                                                    })
+                                                    self.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
+                                                        query: {type: self.itemObj.home_delivery_type, actId: self.actId}
+                                                    });
+                                                } else {
+                                                    wx.showToast({
+                                                        title: '授权失败',
+                                                        icon: 'none',
+                                                        duration: 1000
+                                                    })
+                                                }
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            },
             backPage:function () {
                 this.$command('REDIRECT_TO', '', 'back')
             },
+            selectedFun:function(sign){
+                this.selectedStyle=sign;
+            },
             selectProject:function (status) {
                 this.status=status;
+                if(status=='1'){
+                    let orderInfoList=this.itemObj.order_now.orders;
+                    if(orderInfoList.length>3){
+                        this.showMoreBtn=true;
+                        this.orderInfoList=orderInfoList.slice(0,3);
+                    }else {
+                        this.showMoreBtn=false;
+                        this.orderInfoList=orderInfoList;
+                    }
+                }else {
+                    let orderInfoList=this.itemObj.order_tomorrow.orders;
+                    if(orderInfoList.length>3){
+                        this.showMoreBtn=true;
+                        this.orderInfoList=orderInfoList.slice(0,3);
+                    }else {
+                        this.showMoreBtn=false;
+                        this.orderInfoList=orderInfoList;
+                    }
+                }
             },
-            //查看更多
+            //查看更多商品
             searchMoreProduct:function () {
-                
+                this.$command('REDIRECT_TO', "user.store", 'push');
             },
-            addToShoppingCart:function () {
-                
+            //查看更多订餐信息
+            searchMoreOrderInfo:function () {
+                if(this.status=='1'){
+                    this.orderInfoList=this.itemObj.order_now.orders;
+                }else {
+                    this.orderInfoList=this.itemObj.order_tomorrow.orders;
+                }
+            },
+            //添加点餐
+            addOrderFood:function (item,index) {
+                let shopId=this.itemObj.shop_id;
+                let productId=item.product_stock_id;
+                if(this.status=='1'){
+                    let count=this.atOnceProList[index].count;
+                    if(count>0){
+                        this.updateCart(shopId,productId,6,count+1);
+                    }else{
+                        this.addCart(shopId,productId,6);
+                    }
+                    this.onceOrderCount++;
+                    this.oncePrice=this.oncePrice+item.retail_price;
+                    this.atOnceProList[index].count=count+1;
+                }else {
+                    let count=this.reserveProList[index].count;
+                    if(count>0){
+                        this.updateCart(shopId,productId,7,count+1);
+                    }else{
+                        this.addCart(shopId,productId,7);
+                    }
+                    this.reserveOrderCount++;
+                    this.reservePrice=this.reservePrice+item.retail_price;
+                    this.reserveProList[index].count=count+1;
+                }
+            },
+            //减少订餐
+            minusOrderFood:function (item,index) {
+                let shopId=this.itemObj.shop_id;
+                let productId=item.product_stock_id;
+                if(this.status=='1'){
+                    let count=this.atOnceProList[index].count;
+                    if(count>1){
+                        this.updateCart(shopId,productId,6,count-1);
+                    }else{
+                        this.deleteCart(shopId,productId,6);
+                    }
+                    this.onceOrderCount--;
+                    this.oncePrice=this.oncePrice-item.retail_price;
+                    this.atOnceProList[index].count=count-1;
+                }else {
+                    param.cart_type=7;
+                    let count=this.reserveProList[index].count;
+                    if(count>1){
+                        this.updateCart(shopId,productId,7,count-1);
+                    }else{
+                        this.deleteCart(shopId,productId,7);
+                    }
+                    this.reserveOrderCount--;
+                    this.reservePrice=this.reservePrice-item.retail_price;
+                    this.reserveProList[index].count=count-1;
+                }
+            },
+            deleteCart:function(shopId,productId,type){
+                let param={
+                    shop_id:shopId,
+                    product_stock_id:productId,
+                    cart_type:type
+                }
+                this.$command('SF_DEL_CART_SHOP');
+            },
+            addCart:function(shopId,productId,type){
+                let param={
+                    shop_id:shopId,
+                    product_stock_id:productId,
+                    cart_type:type
+                }
+                this.$command('SF_ADD_CART',param);
+            },
+            updateCart:function(shopId,productId,type,count){
+                let param={
+                    shop_id:shopId,
+                    product_stock_id:productId,
+                    cart_type:type,
+                    buy_num:count
+                }
+                this.$command('SF_UPDATE_CART',param);
+            },
+            async initSearch () {
+                let shopId=this.$route.query.shopId;
+                await this.$command('SF_SHOP_DETAIL',shopId,this);
+                await this.$command('SF_TOMORROW_SHOP_LIST',this);
+                await this.$command('SF_GET_CART_SHOP_LIST',shopId,this);
+                if(this.atOnceCartList){
+                    for (let i = 0; i <this.atOnceCartList.length ; i++) {
+                        let productStockId=this.atOnceCartList[i].product_stock_id;
+                        for (let j = 0; j <this.atOnceProList.length ; j++) {
+                            let shopStockId=this.atOnceProList[j].product_stock_id;
+                            let count=this.atOnceProList[j].count;
+                            if(productStockId==shopStockId){
+                                this.atOnceProList[j].count=this.atOnceCartList[i].buy_num;
+                                this.oncePrice=this.oncePrice+this.atOnceCartList[i].total_fee;
+                            }
+                        }
+                    }
+                }
+                if(this.reserveCartList){
+                    for (let i = 0; i <this.reserveCartList.length ; i++) {
+                        let productStockId=this.reserveCartList[i].product_stock_id;
+                        for (let j = 0; j <this.reserveProList.length ; j++) {
+                            let shopStockId=this.reserveProList[j].product_stock_id;
+                            let count=this.reserveProList[j].count;
+                            if(productStockId==shopStockId){
+                                this.reserveProList[j].count=this.reserveCartList[i].buy_num;
+                                this.reservePrice=this.reservePrice+this.reserveCartList[i].total_fee;
+                            }
+                        }
+                    }
+                }
             }
+        },
+        created() {
+            this.initSearch();
         }
     }
 </script>
@@ -196,6 +448,8 @@
         padding-top: 15pt;
         padding-left: 15pt;
         float: left;
+        white-space: normal;
+        width: 70%;
     }
     .shop-one .head-img{
         width:54px;
@@ -244,6 +498,9 @@
         justify-content: left;
         align-items: center;
         display: flex;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 90%;
     }
     .shop-four{
         width: 100%;
@@ -470,11 +727,14 @@
         width: 100%;
         height: 53pt;
         bottom: 0;
+        position: fixed;
+        z-index: 100000;
+        background: #e5e5e5;
     }
     .order-settlement button{
         margin-right: 15px;
         height: 38pt;
-        margin-top: 7.5pt;
+        top: 7.5pt;
         width: 130px;
         background: -webkit-linear-gradient(top,#FDE068,#FFCC00);
         color: #111111;
@@ -531,4 +791,9 @@
          /*动画播放的次数*/
          -webkit-animation-duration:5s;
      }
+    .selectedStyle{
+        background-color: #5cadff;
+        color: #ffffff !important;
+        border: 0 !important;
+    }
 </style>

@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div class="body">
+    <div class="body home-page">
         <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
         <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
@@ -39,7 +39,7 @@
             <div class="extra">
                 <!--<img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">-->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
-                <img src="./img/home-fast-foot.png" @click="redirectTo('societyFood.fastFoot', {query: {id: 2}})" alt="">
+                <img src="./img/home-fast-foot.png" @click="boxLunchOrder" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -97,8 +97,8 @@
                 <RecommendProducts  @addToCart="addToCart" />
             </div>
         </div>
-        <i-modal title="距离最近门店" :visible="visible" cancel-text="查看更多" @ok="handleSure" @cancel="handleMOre">
-            <view>吉事多便利店（置地广场店）</view>
+        <i-modal :title="modalTitle" class="home-modal" :okColor="color" :visible="visible" :cancel-text="cancelText" :ok-text="okText" @ok="handleSure" @cancel="handleMOre">
+            <view>{{NearByshopName}}</view>
         </i-modal>
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
@@ -134,7 +134,9 @@
         },
         data () {
             return {
-                visible:true,
+                latitude:"",
+                longitude:"",
+                color:"#FFCC00",
                 navName: 'index',
                 inited: false,
                 ticketShow: true,
@@ -147,7 +149,14 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
-                showBindMobile: false
+                showBindMobile: false,
+                visible:false,
+                NearByshopName:'您附近没有门店哦～',
+                okText:"查看更多",
+                cancelText:"随便看看",
+                modalTitle:"很遗憾！",
+                shopObj:{},
+                shopId:""
             };
         },
         computed: {
@@ -314,7 +323,6 @@
                     this.bindConsumer()
                 }
             }
-            this.getCurrentPos();
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -356,7 +364,6 @@
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
         },
-
         onLoad (options) {
             if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
@@ -365,32 +372,57 @@
                 // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = query['store_id'];
             }
+            if(options.shop_id){
+                this.shopId=options.shop_id;
+            }
             wx.onAppShow(() => {
                 this.ticketShow = true;
             });
+            wx.getLocation({
+                type: 'wgs84',
+                success: (res)=> {
+                    let latitude = res.latitude
+                    let longitude = res.longitude
+                    this.latitude=latitude;
+                    this.longitude=longitude;
+                    let param={
+                        lat:latitude,//当前位置的 纬度
+                        lng:longitude//当前位置的 经度
+                    }
+                    this.$command('SF_LAST_ADDRESS',param,this);
+                }
+            })
         },
         methods: {
-            getCurrentPos:function(){
-                wx.getLocation({
-                    type: 'wgs84',
-                    success: (res)=> {
-                        let latitude = res.latitude
-                        let longitude = res.longitude
-                        let param={
-                            lat:latitude,//当前位置的 纬度
-                            lng:longitude//当前位置的 经度
-                        }
-                        this.$command('SF_LAST_ADDRESS', param)
+            boxLunchOrder:function(){
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
+                    query: {
+                        shopId:this.shopId,
                     }
-                })
+                });
             },
             handleSure:function(){
-               this.visible=false;
-               this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push')
+                this.visible=false;
+                this.shopId=this.shopObj.shop_id;
+                if(this.okText!="确定"){
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                        query: {
+                            latitude: this.latitude,
+                            longitude: this.longitude
+                        }
+                    });
+                }
             },
             handleMOre:function(){
-               this.visible=false;
-               this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push')
+                this.visible=false;
+                if(this.cancelText!="随便看看"){
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                        query: {
+                            latitude: this.latitude,
+                            longitude: this.longitude
+                        }
+                    });
+                }
             },
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
@@ -585,12 +617,7 @@
 </script>
 
 <style scoped>
-    /*#footNav_height {*/
-    /*    height: 109rpx;*/
-    /*}*/
-
-
-    #receivedNewTickets{
+    .home-page #receivedNewTickets{
         width: 100%;
         height: 100%;
         position: fixed;
@@ -604,17 +631,16 @@
         align-items: center;
         z-index: 10000;
     }
-
     page{
         overflow-y: auto;
     }
-    .body {
+    .home-page  {
         width: 750rpx;
         background: #F6F5F8;
         box-sizing: border-box;
         overflow: hidden;
     }
-    #index_header {
+    .home-page #index_header {
         background: #f6f6f6;
 
         /*新增代码*/
@@ -624,13 +650,13 @@
         position: relative;
     }
     /*新增代码*/
-    .mainContainer{
+    .home-page .mainContainer{
         overflow-y: auto;
         overflow-x: hidden;
         box-sizing: border-box;
         padding:  0 20rpx;
     }
-    #products_search{
+    .home-page #products_search{
         width: 710rpx;
         height: 60rpx;
         display: flex;
@@ -645,7 +671,7 @@
         background: rgba(255,255,255,0.8);
         padding: 0 30rpx;
     }
-    .welcome{
+    .home-page .welcome{
         font-size: 28rpx;
         color: #999;
         display: flex;
@@ -653,23 +679,12 @@
         align-items: center;
     }
 
-    .welcome .iconfont{
+    .home-page .welcome .iconfont{
         display: inline-block;
         margin-right: 20rpx;
         font-size: 32rpx;
         color: #999;
     }
-    /*#products_search .search{*/
-    /*    position: absolute;*/
-    /*    left: 30rpx;*/
-    /*}*/
-    /*#product_search_input{*/
-    /*    width: 100%;*/
-    /*    padding: 0 80rpx;*/
-    /*    background:rgba(255,255,255,1);*/
-    /*    font-size: 28rpx;*/
-    /*    color: #999;*/
-    /*}*/
     #index_header .banners{
         width: 710rpx;
         height: 330rpx;
@@ -677,7 +692,7 @@
         overflow: hidden;
         margin: 20rpx 0;
     }
-    .customDots{
+    .home-page .customDots{
         position: absolute;
         left: 10rpx;
         bottom: 22rpx;
@@ -687,7 +702,7 @@
         justify-content: center;
         align-items: center;
     }
-    .dots{
+    .home-page .dots{
         display: inline-block;
         width: 15rpx;
         height: 5rpx;
@@ -695,7 +710,7 @@
         border-radius: 3rpx;
         margin-right: 10rpx;
     }
-    .activeDots{
+    .home-page .activeDots{
         width: 10rpx;
         height: 10rpx;
         border-radius: 50%;
@@ -703,17 +718,6 @@
         position: relative;
         border: 5rpx solid #fff;
     }
-    /*.activeDots:after{*/
-    /*    content: "";*/
-    /*    width: 8rpx;*/
-    /*    height: 8rpx;*/
-    /*    background: transparent;*/
-    /*    border-radius: 50%;*/
-    /*    position: absolute;*/
-    /*    left: calc(50% - 4rpx);*/
-    /*    top: calc(50% - 4rpx);*/
-    /*    z-index: 99999;*/
-    /*}*/
     #index_header .banners .index-swiper{
         width: 100%;
         height: 100%;
@@ -725,7 +729,7 @@
         border-radius: 20rpx;
         overflow: hidden;
     }
-    .allCates{
+    .home-page .allCates{
         display: flex;
         justify-content: center;
         align-items: center;
@@ -738,7 +742,7 @@
         padding-bottom: 50rpx;
     }
 
-    .allCates .catesHeader{
+    .home-page .allCates .catesHeader{
         margin: 39rpx 0;
         display: flex;
         justify-content: space-between;
@@ -747,27 +751,25 @@
         width: 100%;
     }
 
-    .allCates .catesHeader h3{
+    .home-page .allCates .catesHeader h3{
         font-size: 32rpx;
         color: #111;
         margin: 0;
     }
 
-    .allCates .catesHeader span{
+    .home-page .allCates .catesHeader span{
         display: flex;
         justify-content: flex-start;
         align-items: center;
         font-size: 26rpx;
         color: #757575;
     }
-    .allCates .catesHeader span img{
+    .home-page .allCates .catesHeader span img{
         width: 8rpx;
         height: 13rpx;
         margin-left: 12rpx;
     }
-
-
-    .classifications{
+    .home-page .classifications{
         width: 100%;
         background: #fff;
         box-sizing: border-box;
@@ -775,31 +777,29 @@
         justify-content: center;
         align-items: center;
     }
-    .classifications .cates{
+    .home-page .classifications .cates{
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         flex: 1;
     }
-    .classifications .cates img{
+    .home-page .classifications .cates img{
         width: 108rpx;
         height: 108rpx;
         margin-bottom: 20rpx;
     }
-    .classifications .cates span{
+    .home-page .classifications .cates span{
         font-size: 24rpx;
         color: #333;
     }
-    .activities{
+    .home-page .activities{
         width: 710rpx;
         height: 180rpx;
         border-radius: 20rpx;
         margin-top: 15rpx;
     }
-
-
-    .extra{
+    .home-page .extra{
         width: 100%;
         height: 200rpx;
         display: flex;
@@ -808,13 +808,12 @@
         margin-top: 20rpx;
     }
 
-    .extra img{
+    .home-page .extra img{
         width: 345rpx;
         height: 100%;
         border-radius: 25rpx;
     }
-
-    .coupons{
+    .home-page .coupons{
         width: 100%;
         height: 180rpx;
         border-radius: 25rpx;
@@ -822,12 +821,10 @@
         margin-top: 20rpx;
         position: relative;
     }
-
-    .couponSwiper{
+    .home-page .couponSwiper{
         height: 180rpx;
     }
-
-    .coupons .couponItem{
+    .home-page .coupons .couponItem{
         width: 100%;
         box-sizing: border-box;
         padding: 25rpx 20rpx;
@@ -835,8 +832,7 @@
         justify-content: space-between;
         align-items: center;
     }
-
-    .coupons .couponItem .couponLeft{
+    .home-page .coupons .couponItem .couponLeft{
         width: 120rpx;
         height: 130rpx;
         background: url("./img/coupon.png") center center no-repeat;
@@ -849,8 +845,7 @@
         padding: 28rpx 0;
         box-sizing: border-box;
     }
-
-    .coupons .couponItem .couponLeft h3{
+    .home-page .coupons .couponItem .couponLeft h3{
         width: 100%;
         font-size: 50rpx;
         color: #fff;
@@ -860,17 +855,17 @@
         align-items: flex-end;
     }
 
-    .coupons .couponItem .couponLeft h3 em{
+    .home-page .coupons .couponItem .couponLeft h3 em{
         font-size: 22rpx;
         margin-bottom: 10rpx;
     }
 
-    .coupons .couponItem .couponLeft span{
+    .home-page .coupons .couponItem .couponLeft span{
         font-size: 20rpx;
         color: #fff;
     }
 
-    .coupons .couponItem .couponRight{
+    .home-page .coupons .couponItem .couponRight{
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
@@ -879,13 +874,13 @@
         margin-left: 20rpx;
     }
 
-    .coupons .couponItem .couponRight h3{
+    .home-page .coupons .couponItem .couponRight h3{
         font-size: 28rpx;
         color: #111;
         font-weight: bold;
     }
 
-    .coupons .couponItem .couponRight .tag{
+    .home-page .coupons .couponItem .couponRight .tag{
         padding: 0 9rpx;
         color: #fb5e69;
         font-size: 22rpx;
@@ -893,19 +888,19 @@
         border-radius: 5rpx;
     }
 
-    .coupons .couponItem .couponRight .bottom{
+    .home-page .coupons .couponItem .couponRight .bottom{
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
     }
 
-    .coupons .couponItem .couponRight .bottom span{
+    .home-page .coupons .couponItem .couponRight .bottom span{
         font-size: 22rpx;
         color: #999;
     }
 
-    .coupons .couponItem .couponRight .bottom button{
+    .home-page .coupons .couponItem .couponRight .bottom button{
         width: 130rpx;
         height: 50rpx;
         display: flex;
@@ -920,27 +915,14 @@
         margin: 0;
     }
 
-    .couponBanner{
+    .home-page .couponBanner{
         width: 710rpx;
         height: 150rpx;
         margin-left: 20rpx;
         border-radius: 20rpx;
         margin-top: 20rpx;
     }
-
-    .activityContainer{
-
-    }
-
-
-
-
-
-    .recommend{
-
-    }
-
-    .recommend .recommendHeader{
+    .home-page .recommend .recommendHeader{
         width: 100%;
         height: 100rpx;
         display: flex;
@@ -948,13 +930,13 @@
         align-items: center;
     }
 
-    .recommend .recommendHeader .left{
+    .home-page .recommend .recommendHeader .left{
         display: flex;
         justify-content: flex-start;
         align-items: center;
     }
 
-    .recommend .recommendHeader .left span{
+    .home-page .recommend .recommendHeader .left span{
         width: 8rpx;
         height: 38rpx;
         background: #ffcc00;
@@ -963,41 +945,22 @@
         display: inline-block;
     }
 
-    .recommend .recommendHeader .left h3{
+    .home-page .recommend .recommendHeader .left h3{
         font-size: 36rpx;
         color: #111;
     }
 
-    .recommend .recommendHeader .right{
-
-    }
-
-    .recommend .recommendHeader .right span{
+    .home-page .recommend .recommendHeader .right span{
         font-size: 24rpx;
         color: #757575;
     }
 
-    .recommend .recommendHeader .right img{
+    .home-page .recommend .recommendHeader .right img{
         width: 7rpx;
         height: 13rpx;
         margin-left: 10rpx;
     }
-
-
-
-
-
-    /*新增代码截止*/
-    /*#index_logo {*/
-    /*    background: url(../../../../static/images/icon/logo.png) no-repeat top center;*/
-    /*    background-size: 100%;*/
-    /*    width: 218rpx;*/
-    /*    height: 92rpx;*/
-    /*    margin: 40rpx auto 0;*/
-    /*}*/
-    .user-info-box,
-    .user-mobile-box,
-    .user-score-box {
+    .user-info-box, .user-mobile-box, .user-score-box {
         height: 300rpx;
         width: 670rpx;
         margin: 0 auto;
@@ -1007,9 +970,6 @@
         text-align: center;
         box-shadow: 0px 10px 10px 0px rgba(204,202,202,0.2);
     }
-
-
-
     .user-info-get-btn,
     .user-mobile-get-btn {
         height: 80rpx;
@@ -1025,7 +985,7 @@
         border-radius: 80rpx;
         box-shadow: 0 10rpx 10rpx #fff6bd;
     }
-    .score {
+    .home-page .score {
         position: relative;
         display: inline-block;
         height: 80rpx;
@@ -1035,7 +995,7 @@
         font-size: 128rpx;
         font-weight: 500;
     }
-    .user-score-box .score i {
+    .home-page .user-score-box .score i {
         position: absolute;
         top: 0;
         right: -68rpx;
@@ -1043,7 +1003,7 @@
         font-weight: 200;
         line-height: 32rpx;
     }
-    .tips {
+    .home-page .tips {
         text-align: center;
         font-size: 26rpx;
         font-weight: 200;
@@ -1056,7 +1016,7 @@
         justify-content: space-between;
         align-items: center;
     }
-    .newActivity{
+    .home-page .newActivity{
         margin-top: 40rpx;
         padding: 0 40rpx;
         width: calc(100% - 80rpx);
@@ -1073,16 +1033,14 @@
         margin-top: 15rpx;
         padding: 5rpx 80rpx;
     }
-    .newActivity .left{
-    }
-    .newActivity .left h4{
+    .home-page .newActivity .left h4{
         color: #111;
         margin: 0;
         font-size: 36rpx;
         margin-bottom: 10rpx;
         font-weight: bold;
     }
-    .newActivity .left h5{
+    .home-page .newActivity .left h5{
         width: 160rpx;
         margin: 0;
         color: #fff;
@@ -1092,11 +1050,11 @@
         margin-top: 10rpx;
         background: linear-gradient(to right, #FDE068, #FFCC00);
     }
-    .newActivity .left h5 span{
+    .home-page .newActivity .left h5 span{
         font-weight: 1000;
         margin-left: 20rpx;
     }
-    .newActivity img {
+    .home-page .newActivity img {
         width: 66px;
         height: 66px;
     }
@@ -1197,8 +1155,7 @@
         text-align: center;
         line-height: 68rpx;
     }
-
-    .couponDots{
+    .home-page .couponDots{
         width: 100rpx;
         height: 42rpx;
         display: flex;
@@ -1214,8 +1171,7 @@
         color: #fff;
         font-weight: bold;
     }
-
-    .couponDots span{
+    .home-page .couponDots span{
         font-size: 28rpx;
     }
 
