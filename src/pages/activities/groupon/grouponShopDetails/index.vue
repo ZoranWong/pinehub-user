@@ -365,7 +365,8 @@
     .groupon_status_text{
         font-size: 28rpx;
         color: #333;
-        width: 84rpx;
+        width: 98rpx;
+        text-align: center;
     }
 
     .groupon_status_arrow{

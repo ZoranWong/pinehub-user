@@ -1,6 +1,6 @@
 <template>
     <div id="orderpay">
-        <CustomHeader :title="title" :needReturn="false" />
+        <CustomHeader :title="title" :needReturn="false"/>
 
         <div class="order-success">
             <div id="orderpay_success">
@@ -8,7 +8,8 @@
                     <i class="iconfont">&#xe656;</i>
                 </div>
                 <em>支付成功</em>
-                <i class="amount">¥ {{completedOrder['settlement_total_fee'] ? completedOrder['settlement_total_fee']: "0.00"}}</i>
+                <i class="amount">¥ {{completedOrder && completedOrder['settlement_total_fee'] ?
+                    completedOrder['settlement_total_fee']: "0.00"}}</i>
             </div>
         </div>
         <div class="order-detail">
@@ -36,18 +37,20 @@
         <div id="active_banner" v-if="imgUrl">
             <img :src="imgUrl" @click="goUrl()"/>
         </div>
-        <pay-toast v-if="cards.length > 0" :show = "showToast" @close = "close" :balance = "balance"></pay-toast>
-        <official-account @bindload="follow" style="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
+        <pay-toast v-if="cards.length > 0" :show="showToast" @close="close" :balance="balance"></pay-toast>
+        <official-account @bindload="follow"
+                          style="bottom: 16rpx;width: 100%;position: absolute;left: 0"></official-account>
     </div>
 </template>
 
 <script>
-	import CustomHeader from '../../../components/CustomHeader';
+    import CustomHeader from '../../../components/CustomHeader';
 
-	import PayToast from './PayToast';
+    import PayToast from './PayToast';
+
     export default {
         components: {
-			CustomHeader,
+            CustomHeader,
             'pay-toast': PayToast
         },
         data () {
@@ -59,10 +62,11 @@
                 imgUrl: null,
                 getFoodsTime: null,
                 order: null,
-                payType: '余额支付',
                 showToast: false,
-				completedOrder: {},
-				paymentType: ''
+                completedOrder: {
+                    settlement_total_fee: '0.00'
+                },
+                paymentType: '余额支付'
             };
         },
         computed: {
@@ -88,14 +92,14 @@
             }
         },
         methods: {
-			async uploadFormId (e) {
-				let formId = e.mp.detail.formId;
-				if (formId !== "the formId is a mock one"){
-					await this.http.account.saveFormId(formId);
-				} else {
-					console.log('form id 不合法')
-				}
-			},
+            async uploadFormId (e) {
+                let formId = e.mp.detail.formId;
+                if (formId !== 'the formId is a mock one') {
+                    await this.http.account.saveFormId(formId);
+                } else {
+                    console.log('form id 不合法')
+                }
+            },
             close () {
                 this.showToast = false;
             },
@@ -103,19 +107,14 @@
 
             },
             index () {
-				console.log(this.$route.query, '|||||||||||||||');
-				if (this.$route.query.orderType === 'mall') {
-					this.model.user.store.dispatch('clearShoppingCart', []);
-					this.model.user.store.dispatch('selectPoints', false, 'mall');
+                console.log(this.$route.query, '|||||||||||||||');
+                if (this.$route.query.orderType === 'mall') {
+                    this.model.user.store.dispatch('clearShoppingCart', []);
+                    this.model.user.store.dispatch('selectPoints', false, 'mall');
                 } else if (this.type === 'breakfast') {
-					this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart', []);
-					this.model.newEvents.shoppingCarts.dispatch('selectPoints', false, 'breakfast');
-                } else if (this.type === '活动') {
-
+                    this.model.newEvents.shoppingCarts.dispatch('deleteMerchandiseFromShoppingCart', []);
+                    this.model.newEvents.shoppingCarts.dispatch('selectPoints', false, 'breakfast');
                 }
-
-
-
                 this.$command('REDIRECT_TO', 'index', 'replace');
             },
             async getOrderInfo () {
@@ -128,15 +127,17 @@
 
             }
         },
-        mounted () {
+        onShow () {
             this.getOrderInfo();
             this.getAdvertisement();
             setTimeout(() => {
                 this.showToast = true;
             }, 1500);
-			this.completedOrder = JSON.parse(this.$route.query.order);
-			this.paymentType = this.$route.query.type || '微信支付'
-		}
+            let completedOrder = JSON.parse(this.$route.query.order);
+            this.completedOrder = completedOrder;
+            this.paymentType = typeof this.$route.query.type !== 'undefined' ? this.$route.query.type : '微信支付';
+            console.log('----------- pay order success --------', this.completedOrder, this.paymentType, this.$route.query);
+        }
     }
 </script>
 
@@ -189,7 +190,7 @@
 
     #success_ico i {
         font-size: 158rpx;
-        background: linear-gradient(to right,#FDE068,#FFCC00);
+        background: linear-gradient(to right, #FDE068, #FFCC00);
         -webkit-background-clip: text;
         color: transparent;
     }
@@ -216,7 +217,7 @@
     .btn {
         font-size: 32rpx;
         font-weight: 200;
-       display: flex;
+        display: flex;
         justify-content: center;
         align-items: center;
         color: #111111;
@@ -308,11 +309,12 @@
     .order-detail .item.opt-btn {
         height: 120rpx;
     }
-    .shop-name{
-        text-align:center;
-        font-size:46rpx;
-        font-weight:360;
-        margin-top:-46rpx;
-        margin-bottom:38rpx;
+
+    .shop-name {
+        text-align: center;
+        font-size: 46rpx;
+        font-weight: 360;
+        margin-top: -46rpx;
+        margin-bottom: 38rpx;
     }
 </style>

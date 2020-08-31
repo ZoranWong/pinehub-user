@@ -55,7 +55,6 @@
                 latitude:'',
                 color:"#FFCC00",
                 showNearby:true,
-                customCalloutContent:{'name':"置地广场（吉事多便利店)",'time':"12:00-21:00",'distance':"295",'address':"政务区置地广场吉事多便利店"},
                 addressList:[],
                 usedAddressList:[],
                 markerIcon:require('../img/location.png'),
@@ -149,7 +148,7 @@
                 this.initSearch()
             }
         },
-        created(){
+        mounted(){
            this.init()
         },
         watch:{

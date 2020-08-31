@@ -2,8 +2,8 @@
     <div class="productComponents">
         <div class="top">
             <div class="icon" @click="check(product)">
-                <img v-if="product.selected > 0" src="../img/selected.png"  alt="">
-                <img v-else src="../img/uncheck.png"  alt="">
+                <img v-if="product.selected > 0" src="../img/selected.png" alt="">
+                <img v-else src="../img/uncheck.png" alt="">
             </div>
             <div class="product">
                 <img :src="product.image" class="image" alt="">
@@ -20,7 +20,7 @@
 
                         </div>
                         <div class="right">
-                            <img src="../img/minus.png" alt=""  @click="changeBuyNum(product,-1)">
+                            <img src="../img/minus.png" alt="" @click="changeBuyNum(product,-1)">
                             <input v-model="product['buy_num']"  type="number" @change="(e)=>changeInputBuyNum(e,product)" />
                             <img src="../img/add.png" alt="" @click="changeBuyNum(product,1)">
                         </div>
@@ -40,7 +40,7 @@
 
 <script>
     export default {
-        name: "ProductComponents",
+        name: 'ProductComponents',
         props: ['product'],
         computed: {
             formatPrice () {

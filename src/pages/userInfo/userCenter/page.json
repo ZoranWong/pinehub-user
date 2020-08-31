@@ -1,5 +1,5 @@
 {
-  "window": {
-    "navigationBarBackgroundColor": "linear-gradient(to right,#FDE068,#FFCC00)"
-  }
+    "window": {
+        "navigationBarBackgroundColor": "linear-gradient(to right,#FDE068,#FFCC00)"
+    }
 }

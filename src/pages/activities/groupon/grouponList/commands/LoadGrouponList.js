@@ -6,9 +6,11 @@ export default class LoadGrouponList extends Command {
             this.model.groupon.dispatch('saveGrouponList', {list: null});
         }
         let response = await this.service('http.groupon').showLoading(page === 1).getGrouponList(lng, lat, page, search);
+        let list = response.data;
         this.model.groupon.dispatch('saveGrouponList', {
-            list: response.data
+            list: list
         });
+        this.$forceUpdate();
         if (response.meta['pagination']['total_pages'] > page) {
             await new Promise((resolve) => {
                 setTimeout(async () => {

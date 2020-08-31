@@ -117,9 +117,13 @@ export default class Activity extends Model {
     listeners () {
         super.listeners();
         this.addEventListener('saveGrouponList', function ({list}) {
-            if (_.isEmpty(list)) {
-                this.state.grouponList = [];
-                this.state.products = [];
+            if (_.isEmpty(list) && this.state.grouponList.length) {
+                while (this.state.grouponList.length) {
+                    this.state.grouponList.pop()
+                }
+                while (this.state.products.length) {
+                    this.state.products.pop();
+                }
             } else {
                 _.map(list, (item) => {
                     if (_.find(this.state.grouponList, function (listItem) {
@@ -144,7 +148,7 @@ export default class Activity extends Model {
                         })) return;
                         this.state.products.push(product)
                     });
-
+                    console.log('------------------------- save group list -----------------');
                     this.state.grouponList.push(item)
                 })
             }

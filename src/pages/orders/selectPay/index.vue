@@ -18,7 +18,8 @@
                     <span>余额支付 (￥{{userInfo.balance}})</span>
                 </div>
                 <div class="right">
-                    <span class="not_enough" v-if="order['settlement_total_fee'] > userInfo.balance">余额不足，点击充值</span>
+                    <span class="not_enough"
+                          v-if="order && order['settlement_total_fee'] > userInfo.balance">余额不足，点击充值</span>
                     <i class="iconfont">&#xe6a3;</i>
                 </div>
             </div>
@@ -31,7 +32,7 @@
                     <i class="iconfont">&#xe6a3;</i>
                 </div>
             </div>
-            <div class="balance" @click="payByCard">
+            <div class="balance" @click="payByCard" v-if="type !== 'groupon'">
                 <div class="left">
                     <img src="../../../../static/icons/cardPay.png" alt="">
                     <span>消费卡支付</span>
@@ -60,10 +61,10 @@
             CustomHeader
         },
         // 数据
-        data () {
+        data() {
             return {
                 title: '收银台',
-                order: {},
+                order: null,
                 second: 0,
                 minute: 0,
                 settlementTotalFeeFormat: 0,
@@ -72,10 +73,10 @@
                 countDownBar: null // 定时器句柄
             }
         },
-        onHide () {
+        onHide() {
             this.reset();
         },
-        onShow () {
+        onShow() {
             this.reset();
             this.type = this.$route.query.type;
             if (this.$route.query && this.$route.query.order) {
@@ -88,7 +89,7 @@
             }
         },
         watch: {
-            createdOrderInfo (v) {
+            createdOrderInfo(v) {
                 if (this.order) {
                     this.settlementTotalFeeFormat = this.order['settlement_total_fee_format'];
                     if (this.order['auto_cancel_after_seconds'] > 0) {
@@ -99,20 +100,20 @@
         },
         // 算术方法
         computed: {
-            createdOrderInfo () {
+            createdOrderInfo() {
                 if (this.type) {
                     let order = this.type === 'groupon' ? this.model.groupon.createdOrderInfo : this.model.user.order.payment.createdOrderInfo;
                     this.order = order;
                 }
                 return this.order;
             },
-            userInfo () {
+            userInfo() {
                 return this.model.account.userInfo;
             }
         },
         // 普通方法
         methods: {
-            reset () {
+            reset() {
                 this.order = null;
                 this.orderNew = null;
                 this.type = null;
@@ -122,7 +123,7 @@
                 }
                 this.settlementTotalFeeFormat = 0;
             },
-            backStore () {
+            backStore() {
                 if (this.$route.query.type === 'groupon') {
                     this.$command('REDIRECT_TO', 'user.myGroupon', 'reLaunch', {
                         query: {
@@ -134,7 +135,7 @@
                     this.$command('REDIRECT_TO', 'index', 'reLaunch')
                 }
             },
-            countDownServer (time) {
+            countDownServer(time) {
                 let minutes = Math.floor(time / 60),
                     seconds = Math.floor(time - minutes * 60);
                 if (time < 0) {
@@ -152,18 +153,18 @@
                     this.countDownServer(time);
                 }, 1000);
             },
-            fix (num, length) {
+            fix(num, length) {
                 return ('' + num).length < length ? ((new Array(length + 1)).join('0') + num).slice(-length) : '' + num;
             },
-            payByBalance () {
+            payByBalance() {
                 let self = this;
-                if (this.order['settlement_total_fee'] > this.userInfo.balance) {
+                if (this.order && this.order['settlement_total_fee'] > this.userInfo.balance) {
                     this.$command('REDIRECT_TO', 'user.recharge', 'push');
                 } else {
                     wx.showModal({
                         title: '温馨提示',
                         content: '确认使用余额支付吗？',
-                        async success (res) {
+                        async success(res) {
                             if (res.confirm) {
                                 if (self.$route.query && self.$route.query.order) {
                                     self.$command('PAYMENT_BY_BALANCE', self.orderNew, self.type)
@@ -175,14 +176,14 @@
                     })
                 }
             },
-            payByWechat () {
+            payByWechat() {
                 if (this.$route.query && this.$route.query.order) {
                     this.$command('PAYMENT_BY_ID', this.orderNew)
                 } else {
                     this.$command('PAYMENT_BY_ID', this.order)
                 }
             },
-            payByCard () {
+            payByCard() {
                 if (this.$route.query && this.$route.query.order) {
                     this.$command('PAYMENT_BY_CARD', this.orderNew)
                 } else {
@@ -190,7 +191,7 @@
                 }
             }
         },
-        mounted () {
+        mounted() {
             this.$command('LOAD_ACCOUNT')
         }
     }

@@ -42,6 +42,7 @@ export default class SocietyFoodService extends ApiService {
     };
     // 删除购物车内某商品
     async delSocietyFoodCartShop (param) {
+        console.log("社会餐删除购物车商品参数"+JSON.stringify(param))
         let response = await this.httpDelete('/api/mp/society_food/del/carts',param);
         return response;
     };

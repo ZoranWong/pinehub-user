@@ -18,7 +18,7 @@
             </div>
             <div class="shop-two">
                 <div class="position-img"><img src="../../../../static/icons/addresses.png" alt=""></div>
-                <div class="content-word">{{fixedDelivery.address}}</div>
+                <div class="content-word">{{itemObj.shop_address}}</div>
             </div>
             <div class="shop-three">
                 <div class="content-word">公告：{{itemObj.announcement}}</div>
@@ -36,8 +36,8 @@
                 </button>
             </div>
             <div class="shop-five">
-                <div class="content-word" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')">送餐上门</div>
-                <div class="content-word" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')" style="margin-left: 10pt">预定自提</div>
+                <div class="content-word" v-if="itemObj.support_home_delivery" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')">送餐上门</div>
+                <div class="content-word" v-if="itemObj.support_self_pick" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')" style="margin-left: 10pt">预定自提</div>
             </div>
             <div class="shop-six">
                 <div class="content-word" v-if="itemObj.state">立即订餐方便快捷，预定明日更优惠</div>
@@ -145,8 +145,9 @@
         mixins:[Public],
         data() {
             return {
-                selectedStyle:"0",
+                selectedStyle:"2",
                 status:"1",
+                shopId:"",
                 onceOrderCount:0,
                 reserveOrderCount:0,
                 oncePrice:0,
@@ -184,7 +185,7 @@
                         return false;
                     }
                 }
-                if(this.selectedStyle=="0"){
+                if((this.itemObj.support_self_pick || this.itemObj.support_home_delivery) && this.selectedStyle=="0"){
                     wx.showToast({
                         title: '请选择送餐上门或者预定自提',
                         icon: 'none',
@@ -192,12 +193,12 @@
                     })
                     return false;
                 }
-                let self = this;
+                let that = this;
                 wx.getSetting({
                     async success (res) {
                         if (res.authSetting && res.authSetting['scope.userLocation']) {
-                            self.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                                query: {type: self.itemObj.home_delivery_type, actId: self.actId}
+                            that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {
+                                query: {"deliveryType":that.selectedStyle,"shopDetail":that.itemObj,"orderType":that.status}
                             });
                         } else {
                             wx.showModal({
@@ -207,14 +208,14 @@
                                     if (tip.confirm) {
                                         wx.openSetting({
                                             success: function (data) {
-                                                if (data.authSetting["scope.userLocation"] === true) {
+                                                if (data.authSetting['scope.userLocation'] === true) {
                                                     wx.showToast({
                                                         title: '授权成功',
                                                         icon: 'success',
                                                         duration: 1000
                                                     })
-                                                    self.$command('REDIRECT_TO', 'user.activity.payment', 'push',{
-                                                        query: {type: self.itemObj.home_delivery_type, actId: self.actId}
+                                                    that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {
+                                                        query: {"deliveryType":that.selectedStyle,"shopDetail":that.itemObj,"orderType":that.status}
                                                     });
                                                 } else {
                                                     wx.showToast({
@@ -276,8 +277,17 @@
             addOrderFood:function (item,index) {
                 let shopId=this.itemObj.shop_id;
                 let productId=item.product_stock_id;
+                let stockNum=item.stock_num;//库存数量
                 if(this.status=='1'){
                     let count=this.atOnceProList[index].count;
+                    if((count+1)>stockNum){
+                        wx.showToast({
+                            title: '已超出库存不能添加',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     if(count>0){
                         this.updateCart(shopId,productId,6,count+1);
                     }else{
@@ -288,6 +298,14 @@
                     this.atOnceProList[index].count=count+1;
                 }else {
                     let count=this.reserveProList[index].count;
+                    if((count+1)>stockNum){
+                        wx.showToast({
+                            title: '已超出库存不能添加',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     if(count>0){
                         this.updateCart(shopId,productId,7,count+1);
                     }else{
@@ -313,7 +331,6 @@
                     this.oncePrice=this.oncePrice-item.retail_price;
                     this.atOnceProList[index].count=count-1;
                 }else {
-                    param.cart_type=7;
                     let count=this.reserveProList[index].count;
                     if(count>1){
                         this.updateCart(shopId,productId,7,count-1);
@@ -331,7 +348,7 @@
                     product_stock_id:productId,
                     cart_type:type
                 }
-                this.$command('SF_DEL_CART_SHOP');
+                this.$command('SF_DEL_CART_SHOP',param);
             },
             addCart:function(shopId,productId,type){
                 let param={
@@ -352,9 +369,12 @@
             },
             async initSearch () {
                 let shopId=this.$route.query.shopId;
+                this.shopId=shopId;
                 await this.$command('SF_SHOP_DETAIL',shopId,this);
                 await this.$command('SF_TOMORROW_SHOP_LIST',this);
                 await this.$command('SF_GET_CART_SHOP_LIST',shopId,this);
+                this.onceOrderCount=0;
+                this.reserveOrderCount=0;
                 if(this.atOnceCartList){
                     for (let i = 0; i <this.atOnceCartList.length ; i++) {
                         let productStockId=this.atOnceCartList[i].product_stock_id;
@@ -362,8 +382,10 @@
                             let shopStockId=this.atOnceProList[j].product_stock_id;
                             let count=this.atOnceProList[j].count;
                             if(productStockId==shopStockId){
+                                this.atOnceProList[j]["stock_num"]=this.atOnceCartList[i].stock_num;
                                 this.atOnceProList[j].count=this.atOnceCartList[i].buy_num;
                                 this.oncePrice=this.oncePrice+this.atOnceCartList[i].total_fee;
+                                this.onceOrderCount=this.onceOrderCount+this.atOnceCartList[i].buy_num;
                             }
                         }
                     }
@@ -375,15 +397,17 @@
                             let shopStockId=this.reserveProList[j].product_stock_id;
                             let count=this.reserveProList[j].count;
                             if(productStockId==shopStockId){
+                                this.reserveProList[j]["stock_num"]=this.reserveCartList[i].stock_num;
                                 this.reserveProList[j].count=this.reserveCartList[i].buy_num;
                                 this.reservePrice=this.reservePrice+this.reserveCartList[i].total_fee;
+                                this.reserveOrderCount=this.reserveOrderCount+this.reserveCartList[i].buy_num;
                             }
                         }
                     }
                 }
             }
         },
-        created() {
+        mounted() {
             this.initSearch();
         }
     }

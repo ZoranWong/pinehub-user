@@ -17,5 +17,8 @@
     },
     "socket": {
         "gateway": "https://www.neptune.kingdomcloud.cn/"
+    },
+    "order": {
+        "payAmount": 10
     }
 }

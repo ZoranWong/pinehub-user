@@ -11,7 +11,7 @@
                 <li v-for="item in cards" @click="selectedCard(item.id)" :key ="item.id" :class="item.id === checked ? 'active-card' : ''">
                     <h3>{{item.price}}元</h3>
                     <span>送{{item['gift_amount']}}元</span>
-                    <img src="./img/payIcon.jpg" alt="" v-if="item.id === checked">
+                    <img src="img/payIcon.jpg" alt="" v-if="item.id === checked">
                 </li>
             </ul>
             <div class="no-cards" v-else>
@@ -62,12 +62,12 @@
 				this.type = type
             },
 			createRechargeOrder () {
-				if(!this.checked) return;
+				if (!this.checked) return;
                 this.$command('CREATE_RECHARGE_ORDER', this.checked)
             },
 			async uploadFormId (e) {
 				let formId = e.mp.detail.formId;
-				if (formId !== "the formId is a mock one"){
+				if (formId !== 'the formId is a mock one') {
 					await this.http.account.saveFormId(formId);
 				} else {
 					console.log('form id 不合法')

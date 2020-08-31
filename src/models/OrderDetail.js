@@ -71,8 +71,8 @@ export default class Orders extends Model {
                     }
                 }
             } else {
-                orderDetail['plan_pickup_date'] = addDate(orderDetail['paid_at'], 1) || '暂无';
-                orderDetail['plan_pickup_time'] = '暂无';
+                orderDetail['plan_pickup_date'] = orderDetail['expect_receive_date'] || '暂无';
+                orderDetail['plan_pickup_time'] = `${orderDetail['expect_receive_time_start']} -- ${orderDetail['expect_receive_time_end']}`;
             }
 
             if (orderDetail.order_type === 'ACTIVITY_PRODUCT_ORDER') {

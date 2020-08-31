@@ -18,7 +18,7 @@
 <script>
     export default {
         name: 'CustomHeader',
-        props: ['title','needReturn', 'backColor', 'backUrl', 'needClear'],
+        props: ['title', 'needReturn', 'backColor', 'backUrl', 'needClear'],
         data () {
             return {
                 barHeight: 0,
@@ -32,25 +32,25 @@
                 this.background = this.backColor
             }
         },
-        methods:{
-            async back(){
+        methods: {
+            async back () {
                 if (this.backUrl) {
                     this.$emit('back');
                     return
                 }
                 if (this.needBackHome) {
-                    this.$command('REDIRECT_TO','index','replace')
+                    this.$command('REDIRECT_TO', 'index', 'replace')
                 } else {
 		            if (this.needClear) {
-                        await this.$command('REDIRECT_TO','user.shoppingCart','replace')
+                        await this.$command('REDIRECT_TO', 'user.shoppingCart', 'replace')
                         this.model.user.order.payment.dispatch('clearIds');
                     } else {
-                        this.$command('REDIRECT_TO','','back')
+                        this.$command('REDIRECT_TO', '', 'back')
                     }
                 }
             }
         },
-        computed : {
+        computed: {
             statusBarHeight () {
                 return this.model.global.barHeight.statusBarHeight
             },
@@ -60,10 +60,10 @@
         },
         mounted () {
             console.log('----- 头部渲染 -----');
-            let pages =  getCurrentPages();
+            let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options']
-            this.needBackHome = options.backHome ? true : false;
-            this.needClear = options['needClear'] ? true : false;
+            this.needBackHome = !!options.backHome;
+            this.needClear = !!options['needClear'];
             if (this.backColor) {
                 this.background = this.backColor
             } else {

@@ -32,6 +32,7 @@ import LoadNearbyPoints from '../commands/LoadNearbyPoints';
 
 // 绑定用户和店铺
 import BindConsumerCommand from '../commands/BindConsumerCommand';
+import SelectedPointCommand from '../pages/user/storesMap/commands/SelectedPointCommand';
 
 
 export default class CommandServiceProvider extends ServiceProvider {
@@ -57,7 +58,8 @@ export default class CommandServiceProvider extends ServiceProvider {
             LoadNearbyPoints,
             GetBarHeightCommand,
             CleanCarts,
-            BindConsumerCommand
+            BindConsumerCommand,
+            SelectedPointCommand
         ];
         for (let key in commands) {
             this.app.registerCommand(commands[key].commandName(), commands[key]);

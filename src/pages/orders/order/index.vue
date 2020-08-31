@@ -12,7 +12,10 @@
                     enable-back-to-top="true"
                     :scroll-into-view="scrollTo"
                     :style="{width: '1826rpx' }">
-                    <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs" :class="{tab_select_now:statusType === tab.key}" :key="tab.key" @click="tabSelect(tab)">{{tab.name}}</view>
+                    <view :id="tab.key" class="scroll-view-item_H" v-for="tab in tabs"
+                          :class="{tab_select_now:statusType === tab.key}"
+                          :key="tab.key"
+                          @click="tabSelect(tab)">{{tab.name}}</view>
                 </scroll-view>
             </view>
 
@@ -39,7 +42,7 @@
 			'orders': UserOrders,
 			'footer-nav': FooterNav
 		},
-		data() {
+		data () {
 			return {
 				title: '我的订单',
 				navName: 'my',
@@ -64,23 +67,23 @@
 			};
 		},
 		watch: {
-			test(nv, ov) {
-				if(nv && nv !== ov) {}
+			test (nv, ov) {
+				if (nv && nv !== ov) {}
 			}
 		},
 		computed: {
-			tabNumWidth() {
+			tabNumWidth () {
 				let num = this.tabs.length
 				num = (typeof num === 'undefined') ? 1 : num;
 				return Math.floor((100 / num) * 100) / 100 + '%';
 			},
-			orders() {
+			orders () {
                 return this.model.user.orders.list;
 			},
-			totalNum() {
+			totalNum () {
 				return this.$store.getters['model.user.orders/totalNum'];
 			},
-			currentPage() {
+			currentPage () {
 				let page = this.$store.getters['model.user.orders/currentPage'];
 				return page;
 			},
@@ -92,27 +95,31 @@
 			}
 		},
 		methods: {
-			loadOrders(status) {
+			loadOrders (status) {
 				this.$store.dispatch('model.user.orders/reset');
 				this.$command('LOAD_USER_ORDERS', status, 1);
 			},
-			tabSelect(tab) {
+			tabSelect (tab) {
 				this.statusType = tab.key
+                this.scrollTo = tab.key;
 				this.$command('CLEAR_MODEL', 'model.user.orders');
+                this.$forceUpdate();
+                console.log('----------- order list status change -----------', this.statusType);
 				this.loadOrders(this.statusType);
 			},
-			async next() {
+			async next () {
 				await this.$command('LOAD_USER_ORDERS', this.statusType, this.currentPage + 1, this.pageCount);
 				return true;
 			}
 		},
-		created() {
+		created () {
 			this.rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
 			this.screenWitdh = wx.getSystemInfoSync().windowHeight;
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
 		},
-		mounted() {
-			let paramsStatus = this.$route.query.status || '';
+		onShow () {
+			let paramsStatus = typeof this.$route.query.status !== 'undefined' ? this.$route.query.status : '';
+			console.log('----------- order list status init -----------', paramsStatus)
 			this.statusType = paramsStatus;
 			this.scrollTo = paramsStatus;
 			this.loadOrders(this.statusType);

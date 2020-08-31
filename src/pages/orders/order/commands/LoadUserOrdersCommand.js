@@ -1,9 +1,8 @@
 import Command from '@/commands/Command';
 
 export default class MyOrderCommand extends Command {
-    async handle (status, page = 1, limit = 5, type) {
-        console.log(type);
-        console.log('--------start get orders --------');
+    async handle (status, page = 1, limit = 5, type = null) {
+        console.log('--------start get orders --------', type);
         if (page > 1) {
             let currentPage = this.store().getters['model.user.orders/currentPage'];
             let totalNum = this.store().getters['model.user.orders/totalNum'];
@@ -27,8 +26,10 @@ export default class MyOrderCommand extends Command {
                 status: status
             });
         }
-
-        // console.log('----- set data -----', Date.now());
+        if (page === 1) {
+            this.$forceUpdate();
+        }
+        console.log('----- set data -----', Date.now());
     }
 
     static commandName () {

@@ -37,7 +37,6 @@
             </div>
 
             <div class="extra">
-                <!--<img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">-->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
                 <img src="./img/home-fast-foot.png" @click="boxLunchOrder" alt="">
             </div>
@@ -371,6 +370,9 @@
 
                 // 提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = query['store_id'];
+                if (query['page']) {
+                    this.$command('REDIRECT_TO', query['page'], 'push');
+                }
             }
             if(options.shop_id){
                 this.shopId=options.shop_id;
@@ -395,6 +397,13 @@
         },
         methods: {
             boxLunchOrder:function(){
+                if(!this.shopObj || !this.shopObj.shop_id){
+                    wx.showToast({
+                        title: '抱歉,您附近没有门店',
+                        icon: 'none'
+                    })
+                    return false;
+                }
                 this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
                     query: {
                         shopId:this.shopId,
