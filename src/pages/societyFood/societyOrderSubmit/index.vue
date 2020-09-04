@@ -12,11 +12,11 @@
                 <div class="tabItem" :class="{'active':activeTab === 'send'}" @click="changeTab('send')">送餐上门</div>
             </div>
             <div class="sendContainer" v-if="activeTab === 'send'">
-
-                <div class="top" v-if="shopDetail.home_delivery_type!='FIXED_ADD'">
+                <div class="top" v-if="shopDetail.home_delivery_type=='FIXED_ADD'">
                     <div class="topLeft " @click="selectAddressPoint" v-if="!addresses.id">
                         <img src="../../../../static/icons/location.png" alt="">
-                        <span>请选择收货地址</span>
+                        <span v-if="addressList && addressList.length>0">请选择收货地址</span>
+                        <span v-else @click="insertFoodAddress">请选择收货地址</span>
                     </div>
                     <div class="topLeft1" @click="selectAddressPoint" v-else>
                         <div class="pay_shop_info_address">
@@ -188,7 +188,7 @@
                 <view class='frame'>
                     <view class='title-wrapper'>选择收货地址</view>
                     <view class="modal-close" @click="closeAddressTab"><img src='../../../../static/icons/cateClose.jpg'></img></view>
-                    <view style="width: 96%;margin-left: 2%">
+                    <view style="width: 96%;margin-left: 2%;height: 297px;overflow-x: hidden;overflow-y: auto">
                         <view class="address-list-show" v-for="(item,index) in addressList" :key="index">
                             <i-radio :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index,item)"></i-radio>
                             <view class="address-middle">
@@ -207,6 +207,7 @@
                             <view class="address-btn" @click="editAddress(item)">编辑</view>
                         </view>
                     </view>
+                    <view class="operation" style="margin-top: 10px"><button @click="insertFoodAddress">新增送餐地址</button></view>
                 </view>
             </view>
         </view>
@@ -305,6 +306,9 @@
             }
         },
         methods: {
+            insertFoodAddress:function(){
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push');
+            },
             showFixed:function(){
                 this.showFixedAddress=true;
             },
@@ -713,7 +717,6 @@
         border-top-right-radius: 10rpx;
         z-index: 3;
         height: 400px;
-        padding-bottom: 20px;
     }
     .wrap{position: fixed;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;}
 
@@ -1622,7 +1625,7 @@
         align-items: center;
     }
 
-    .pickupTips .operation button {
+    .operation button {
         flex: 1;
         margin-right: 10rpx;
         color: #FFCC00;

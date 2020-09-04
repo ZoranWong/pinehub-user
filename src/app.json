@@ -83,7 +83,9 @@
                 "societyOrderList/main",
                 "addOrEditAddress/main",
                 "couponList/main",
-                "societyCouponDetail/main"
+                "societyCouponDetail/main",
+                "societyOrderDetail/main",
+                "societyInsertAddress/main"
             ]
         }
     ],

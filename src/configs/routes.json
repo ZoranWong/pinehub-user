@@ -50,5 +50,7 @@
     "societyFood.societyOrderList": "/pages/societyFood/societyOrderList/main",
     "societyFood.addOrEditAddress": "/pages/societyFood/addOrEditAddress/main",
     "societyFood.couponList": "/pages/societyFood/couponList/main",
-    "societyFood.societyCouponDetail": "/pages/societyFood/societyCouponDetail/main"
+    "societyFood.societyCouponDetail": "/pages/societyFood/societyCouponDetail/main",
+    "societyFood.societyOrderDetail": "/pages/societyFood/societyOrderDetail/main",
+    "societyFood.societyInsertAddress": "/pages/societyFood/societyInsertAddress/main"
 }

@@ -90,7 +90,6 @@
 
         <div class="merchant-store_menu">
             <ul class="mesnus">
-
                 <li @click="jump('user.myGroupon')" class="lines">
                     <div class="left">
                         <img src="./image/my_groupon.png" alt="">
@@ -107,13 +106,11 @@
                 </li>
                 <li @click="jump('user.address')" class="lines">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/shipping_address.png" alt="">
                         <span>收货地址</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-
             </ul>
         </div>
 

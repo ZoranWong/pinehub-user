@@ -7,7 +7,7 @@
             </div>
         </div>
         <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="13" :include-points="markers" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
-        <input type="text" placeholder-class="placeholder-class" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
+        <input type="text" placeholder-class="placeholder-class"  placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
         <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="showSearchContent">
             <view v-for="(item,index) in searchAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item.location)">
                 <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.title}}</view>
@@ -266,8 +266,7 @@
     }
     .select-shop-Map .placeholder-class{
         color: #CCCCCC;
-        font-size: 16px;
-        margin-left: 15px;
+        font-size: 15px;
     }
     .select-shop-Map .search-content>view{
         height: auto;

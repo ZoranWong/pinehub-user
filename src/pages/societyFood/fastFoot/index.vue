@@ -414,6 +414,10 @@
 </script>
 
 <style scoped>
+    .fast-foot-list{
+        width: 100%;
+        height: 100%;
+    }
     .fast-foot-title{
         width: 100%;
         height: 149pt;
@@ -591,7 +595,7 @@
     }
     .product-list{
         width: 100%;
-        height: auto;
+        height: 88vh
     }
     .change-btn{
         width: 100%;
@@ -692,12 +696,10 @@
     }
     .order-food-info{
         width: 100%;
-        height: 51px;
+        height: 50px;
         justify-content: left;
-        align-items: center;
         display: flex;
         padding-left: 15px;
-        margin-bottom: 10px;
     }
     .order-info-content{
         width: 100%;
