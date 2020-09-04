@@ -38,7 +38,7 @@
 
             <div class="extra">
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
-                <img src="./img/home-fast-foot.png" @click="boxLunchOrder" alt="">
+                <img src="../../../fast-food.png" @click="boxLunchOrder" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
