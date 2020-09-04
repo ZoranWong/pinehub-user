@@ -90,24 +90,27 @@
 
         <div class="merchant-store_menu">
             <ul class="mesnus">
-
                 <li @click="jump('user.myGroupon')" class="lines">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/my_groupon.png" alt="">
                         <span>我的拼团</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
+                <li @click="jump('societyFood.societyOrderList')" class="lines">
+                    <div class="left">
+                        <img src="./image/my_groupon.png" alt="">
+                        <span>社会餐订单</span>
+                    </div>
+                    <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </li>
                 <li @click="jump('user.address')" class="lines">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/shipping_address.png" alt="">
                         <span>收货地址</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
-
             </ul>
         </div>
 
@@ -116,19 +119,13 @@
                 <li @click="jump('user.feedBack')" class="lines">
                     <div class="left">
                         <img src="./image/feedback.png" alt="">
-                        <!--                        <i class="iconfont blue">&#xe609;</i>-->
                         <span>意见反馈</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li  class="lines">
-<!--                <li @click="connectKf" class="lines">-->
                     <div class="left">
                         <img src="./image/customer_service.png" alt="">
-                        <!--                        <i class="iconfont green">&#xe602;</i>-->
-<!--                        <span>-->
-<!--                            联系客服-->
-<!--                        </span>-->
                         <button open-type = "contact" @contact="handleContact" style="background-color: #fff; font-size: 28rpx;padding-right:442rpx;">联系客服</button>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
@@ -136,14 +133,12 @@
                 <li @click="jump('user.protocol')" class="lines">
                     <div class="left">
                         <img src="./image/user_agreement.png" alt="">
-                        <!--                        <i class="iconfont green">&#xe602;</i>-->
                         <span>用户协议</span>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
                 <li @click="showBind" class="lines showBind">
                     <div class="left">
-                        <!--                        <i class="iconfont yellow">&#xe80b;</i>-->
                         <img src="./image/offline.png" alt="">
                         <span>服务商户</span>
                     </div>

@@ -109,7 +109,7 @@
               title: '青松易购预定商城',
               desc: '青松易购小程序',
               imageUrl: '',
-              path: `/pages/user/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
+              path: `/pages/enties/store/main?backHome=${true}&shop_code=${this.storeId || this.shopCode}`,
 
               success: function (res) {
                   // 转发成功
@@ -342,7 +342,7 @@
           }
       },
       mounted () {
-          letrpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+          let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
           let screenWitdh = wx.getSystemInfoSync().windowHeight;
           this.screenHeight = (rpxRate * screenWitdh) / 2;
           this.initAccount()

@@ -97,10 +97,7 @@
                 <span class="total">合计:</span>
                 <em>￥</em>
                 <h4>{{cartTotalFeeFormat}}</h4>
-                <button
-                    :class="total.quantity === 0? 'disabled': ''"
-                    @click="settle"
-                >去结算 <span v-if="total.quantity">({{total.quantity}})</span></button>
+                <button :class="total.quantity === 0? 'disabled': ''" @click="settle">去结算 <span v-if="total.quantity">({{total.quantity}})</span></button>
             </div>
         </div>
 
@@ -136,8 +133,6 @@
                 </div>
             </div>
         </div>
-
-
         <FooterNav :navName="navName" />
     </div>
 </template>

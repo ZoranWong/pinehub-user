@@ -43,5 +43,14 @@
 	"payment": "/pages/orders/payment/main",
     "selectPay": "/pages/orders/selectPay/main",
 	"user.goodDetail": "/pages/user/goodDetail/main",
-    "order.feedback": "/pages/orders/orderFeedBack/main"
+    "order.feedback": "/pages/orders/orderFeedBack/main",
+    "societyFood.fastFoot": "/pages/societyFood/fastFoot/main",
+    "societyFood.selectShopByMap": "/pages/societyFood/selectShopByMap/main",
+    "societyFood.societyOrderSubmit": "/pages/societyFood/societyOrderSubmit/main",
+    "societyFood.societyOrderList": "/pages/societyFood/societyOrderList/main",
+    "societyFood.addOrEditAddress": "/pages/societyFood/addOrEditAddress/main",
+    "societyFood.couponList": "/pages/societyFood/couponList/main",
+    "societyFood.societyCouponDetail": "/pages/societyFood/societyCouponDetail/main",
+    "societyFood.societyOrderDetail": "/pages/societyFood/societyOrderDetail/main",
+    "societyFood.societyInsertAddress": "/pages/societyFood/societyInsertAddress/main"
 }

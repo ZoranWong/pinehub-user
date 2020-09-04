@@ -31,6 +31,10 @@
 
             // 调用API从本地缓存中获取数据 1212
             console.log('========= mp app created =========');
+        },
+        onError (err) {
+            var fundebug = require('fundebug-wxjs')
+            fundebug.notifyError(err)
         }
     }
 </script>

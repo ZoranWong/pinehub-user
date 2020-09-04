@@ -8,8 +8,7 @@
         </div>
 
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
-            <div id="tabs"
-                 :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
+            <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
                 <div :class="activeTab === 'pick'? 'tabItem active': 'tabItem'" @click="changeTab('pick')">预定自提</div>
                 <div :class="activeTab === 'send'? 'tabItem active':'tabItem'" @click="changeTab('send')">同城配送</div>
             </div>
@@ -116,14 +115,13 @@
                         <span v-else>点击收起</span>
                         <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
                         <img v-else src="./imgs/bottom-arrow.png" alt="">
-
                     </div>
                 </ul>
 
                 <ul id="total">
                     <li>
                         <h3>商品总价</h3>
-                        <span class="small"> <i>￥</i>{{orderInfo['total_fee'] || 0}}</span>
+                        <span class="small"><i>￥</i>{{orderInfo['total_fee'] || 0}}</span>
                     </li>
                     <li>
                         <h3>
@@ -155,9 +153,9 @@
                         </h5>
                     </li>
                 </ul>
-
-
             </div>
+
+
             <ul id="remarkBox">
                 <li>
                     <h3>备注 <span class="xuantian">(选填)</span></h3>
@@ -227,14 +225,14 @@
                 type: '',
                 showTips: false,
                 activeTab: 'pick',
-                background: left,
+                background:require('./imgs/left.png'),
                 backgroundPosition: 'left center',
                 products: [],
                 allProducts: [],
                 isLoadAll: false,
                 remark: '',
                 deliveryPrice: 0,
-                mapBackground: mapBack,
+                mapBackground:require('./imgs/map.png'),
                 agreement: true,
                 mobile: '',
                 focusStatus: false,
@@ -392,25 +390,26 @@
                 }
             },
             check () {
+
                 if (!this.isEnough) {
                     return
                 }
+
                 if (this.type === 'mall' && !this.addresses.id && this.activeTab === 'send') {
                     wx.showToast({
                         title: '请选择收货地址',
                         icon: 'none'
                     });
                     return
-                }
-                ;
+                };
+
                 if (!this.agreement) {
                     wx.showToast({
                         title: '请先同意预定自提服务协议',
                         icon: 'none'
                     });
                     return
-                }
-                ;
+                };
 
                 let reg = /^1(3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\d{8}$/;
                 if (this.activeTab === 'pick') {
@@ -428,8 +427,7 @@
                         icon: 'none'
                     });
                     return
-                }
-                ;
+                };
                 if (!this.orderInfo['settlement_total_fee']) {
                     wx.showToast({
                         title: '订单信息有误，请稍后再提交',
@@ -515,14 +513,11 @@
             this.getDate();
             let type = this.$route.query.type;
             let id = this.$route.query.id;
-            // let selectedProduct = this.$route.query.selectedProduct;
-            // this.selectedProduct = selectedProduct;
             this.type = type;
             this.mobile = this.userMobile
             if (id) {
                 this.$command('ORDER_COUPON_IDS', id)
             }
-
             this.$command('AVAILABLE_COUPONS', type);
             this.$command('LOAD_DEFAULT_USER_ADDRESS', 'mall')
         }

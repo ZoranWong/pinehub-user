@@ -129,7 +129,7 @@
                 this.$command('CHANGE_GROUPON_BUY_NUM_COMMAND',item,this.shoppingGroupId, Number(value))
             },
             settle(){
-                if (!this.isEnough) return ;
+                if (!this.isEnough) return;
 			    let self = this;
 			    wx.getSetting({
                     async success (res) {

@@ -47,7 +47,7 @@ export default class ApiService extends Service {
             }
         }
         wx.showToast({
-            title: message,
+            title: "信息"+JSON.stringify(message),
             icon: 'none',
             duration: 2000
         })

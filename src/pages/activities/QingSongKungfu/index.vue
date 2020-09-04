@@ -10,9 +10,6 @@
             class="scroll_wrapper"
         >
             <div class="cakes" >
-<!--                <div class="header">-->
-<!--                    <img class="images" src="img/22305823.jpg" alt="">-->
-<!--                </div>-->
                 <div class="banners">
                     <swiper
                         class="swiper"
@@ -38,7 +35,6 @@
                 </div>
 
                 <div class="middle">
-<!--                        <img class="middleImage" src="./img/964024279.jpg" alt="">-->
                     <Classification
                         :actId="actId"
                         :top="toTop"
@@ -69,12 +65,9 @@
                     </li>
                 </ul>
 
-
-
                 <div class="cakeService" @touchstart="start" @touchmove="move" @touchend="end" :style="{'right': right +'px', 'top': top+'px'}">
                     <img class="service" src="../../../../static/icons/cakeService.png" alt="" @click="connectKf">
                 </div>
-
 
                 <Specification
                     :selectSpec="selectSpec"

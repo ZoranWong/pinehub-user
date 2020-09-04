@@ -7,7 +7,7 @@ export default class PopupService extends Service {
                 resolve(true)
             }, duration);
             wx.showToast({
-                title: title,
+                title: "信息"+title,
                 icon: icon,
                 duration: duration,
                 mask: mask,
