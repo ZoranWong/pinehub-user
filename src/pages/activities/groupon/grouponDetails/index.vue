@@ -13,12 +13,11 @@
             <!--        <SwiperNotice />-->
             <div class="detail_header" v-if="grouponDetails['pick_shop_info']"  @click="goShopDetails(grouponDetails['pick_shop_info'])">
 <!--                <img src="./img/background.jpeg" alt="" class="image">-->
-
                 <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
                 <div class="shop_info">
-                    <img src="../images/name.png" alt="">
+                    <!-- <img src="../images/name.png" alt="">
                     <span>{{grouponDetails['pick_shop_info']['keeper_name']}}</span>
-                    <i></i>
+                    <i></i> -->
                     <img src="../images/place.png" alt="">
                     <span>{{grouponDetails['pick_shop_info']['complete_address']}}</span>
                 </div>
@@ -42,7 +41,10 @@
             <div class="details">
                 <div class="top">
                     <h3>{{grouponDetails['group_display_name']}}</h3>
-                    <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
+                    <div>
+                        <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
+                    </div>
+                    
                 </div>
 
                 <div class="bottom">
@@ -621,7 +623,7 @@
 
     .details{
         width: 100%;
-        height: 150rpx;
+        /* height: 150rpx; */
         box-sizing: border-box;
         padding: 24rpx 50rpx;
         border-bottom: 2rpx solid #F2F2F2;

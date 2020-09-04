@@ -6,7 +6,7 @@ export default class MyConsumeCardsCommand extends Command {
         }
         let response = await this.service('http.account').consumerCards();
         this.model.account.dispatch('saveMyConsumeCards', {
-            cards: response.data
+            cards: response.data,
         });
         if (response.meta['pagination']['total_pages'] > page) {
             await this.$command('LOAD_MY_CONSUME_CARDS', page + 1)

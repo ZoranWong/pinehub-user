@@ -11,9 +11,9 @@
                 <div class="shop_info_content">
                     <h4>{{shopInfo.name}}</h4>
                     <div class="shop_info_details">
-                        <img src="./image/1.png" alt="">
+                        <!-- <img src="./image/1.png" alt="">
                         <span>{{shopInfo['keeper_name']}}</span>
-                        <i></i>
+                        <i></i> -->
                         <img src="./image/2.png" alt="">
                         <span>{{shopInfo['address']}}</span>
                     </div>

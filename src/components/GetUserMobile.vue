@@ -2,15 +2,15 @@
 <template>
     <div id="toast_area" >
         <div id="toast">
+             
             <div id="toast_title">
-                微信手机号授权
+                授权手机号
             </div>
             <div id="toast_content">
                 <img src="../../static/icons/aHome.jpg" alt="">
                 <h3>青松易购 申请获得你的手机号：</h3>
                 <span>
-                    我们需要您的手机号来创建账
-号，累计积分
+                    我们需要您的手机号来创建账号，累计积分
                 </span>
             </div>
             <div id="toast_bottom">
@@ -18,7 +18,7 @@
                     取消
                 </button>
                 <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
-                    登录
+                    确认授权
                 </button>
             </div>
         </div>
@@ -68,16 +68,18 @@
         background: #FFFFFF;
         width: 630rpx;
         border-radius: 10rpx;
+        /* position: fixed;
+        bottom:0px; */
     }
 
-    #toast_title {
+    #toast_title{
         width: 100%;
         height: 120rpx;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 36rpx;
-        color: #111;
+        color: #FFDC35;
         font-weight: bold;
         border-bottom: 2rpx solid #f2f2f2;
     }
@@ -153,7 +155,7 @@
     }
 
     #toast_bottom button:last-child{
-        color: #69B35F;
+        color: #FFDC35;
         border-left: 2rpx solid #f2f2f2;
     }
 

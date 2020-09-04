@@ -89,6 +89,15 @@ export default class Account extends Model {
             },
             totalCardCount () {
                 return this.state.totalCardCount
+            },
+            notActivecards () {
+                return this.state.notActivecards;
+            },
+            getActivationCards(){
+                return this.state.getActivationCards
+            },
+            consumerCardIds() {
+                return this.state.consumerCardIds;
             }
         });
     }
@@ -131,8 +140,11 @@ export default class Account extends Model {
             newCoupons: [],
             exchangedRecords: [],
             myConsumeCards: [],
+            getActivationCards:[],
+            notActivecards: [],
             cardDetails: [],
-            totalCardCount: 0
+            totalCardCount: 0,
+            consumerCardIds:[]
         };
     }
 
@@ -160,6 +172,16 @@ export default class Account extends Model {
             this.state.ticketNum += count;
             try {
                 return this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
+        this.addEventListener('addConsumerCardId', ({id}) => {
+            this.state.consumerCardIds.push(id);
+            console.log("未激活消费卡的id缓存")
+            try {
+                this.service('mp.storage').set('account', this.state);
             } catch (e) {
                 return false;
             }
@@ -281,6 +303,25 @@ export default class Account extends Model {
         this.addEventListener('clearNewCoupons', function () {
             this.state.newCoupons = [];
         });
+        // notActivecard
+
+        this.addEventListener('saveAcquisitionNotActive',function({notActivecards}){
+            this.state.notActivecards = notActivecards;
+            try {
+                return this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        })
+        this.addEventListener('clearAcquisitionNotActive',function(){
+            
+            this.state.notActivecards = [];
+            try {
+                return this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        })
 
         this.addEventListener('saveMyConsumeCards', function ({cards}) {
            _.map(cards, card => {
@@ -296,6 +337,19 @@ export default class Account extends Model {
                 this.state.exchangedRecords.push(item)
             })
         });
+
+        this.addEventListener('saveGetActiveCard', function ({getActivationCards}) {
+           
+            this.state.getActivationCards=getActivationCards;
+            // try {
+            //     return this.service('mp.storage').set('account', this.state);
+            // } catch (e) {
+            //     return false;
+            // }
+        });
+
+
+
         this.addEventListener('clearExchangedRecords', function () {
             this.state.exchangedRecords = []
         })

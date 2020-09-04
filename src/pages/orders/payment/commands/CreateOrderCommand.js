@@ -1,21 +1,32 @@
 import Command from '@/commands/CreateOrderCommand';
 
-export default class CreateOrderCommand extends Command {
-    async handle (receiverName, receiverMobile, storeId, receiverAddress, paymentAmount, isBalance = false, ticketCode = null, cardId = null, comment = '') {
+export default class CreateOrderCommand extends Command {//isBalance
+    async handle (receiverName, receiverMobile, storeId, receiverAddress, paymentAmount,  payType = 'wx', cardId = null, coupon = null, comment = '') {
         try {
             let params = {
                 shop_id: storeId,
                 total_fee: paymentAmount,
-                pay_type: isBalance ? 'balance' : 'wx'
+                // pay_type: isBalance ? 'balance' : 'wx'
+                pay_type:payType
             };
             // let result = await super.createOrderSign(params);
             let result = await this.service('http.orders').createCodeScanOrder(params);
-            console.log(result, 'code scan result');
+            console.log(result, 'code scan result', payType);
             if (result) {
-                if (isBalance) {
-                    this.$command('PAYMENT_BY_BALANCE', result)
-                } else {
-                    this.$command('PAYMENT_BY_ID', result)
+                switch(payType) {
+                    case 'wx': {
+                        this.$command('PAYMENT_BY_ID', result)
+                        break;
+                    }
+                    case 'balance': {
+                        this.$command('PAYMENT_BY_BALANCE', result)
+                        break;
+                    }
+                    case 'consumer_card': {
+                        console.log("============== cunsomer_card ==============");
+                        this.$command('PAYMENT_BY_CONSUMER_CARD', result, cardId);
+                        break;
+                    }
                 }
                 // this.$command('REDIRECT_TO', 'payment.success', 'replace', {
                 //     query: {

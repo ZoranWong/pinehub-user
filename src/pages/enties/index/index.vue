@@ -3,6 +3,10 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
+
+        <Coupon :consumerCard='consumerCard' v-if="consumerCard"  @close="closeCoupon"></Coupon>
+        <!-- <Coupon   @close="closeCoupon"></Coupon> -->
+
         <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
             <div id="index_header" >
                 <div class="banners">
@@ -49,7 +53,7 @@
 
             <div class="extra">
                 <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-<!--                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">-->
+
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
             </div>
 
@@ -119,19 +123,18 @@
 
         </div>
 
-
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
 
         <footer-nav :navName="navName" @getUserAuth="getUserAuth"></footer-nav>
 <!--        <official-account @bindload="follow" style ="bottom: 120rpx;width: 100%;position: absolute;left: 0"></official-account>-->
-
-
     </div>
 </template>
 
 <script>
+    import Coupon from '../../../components/LabourUnionCoupon'
+
     import FooterNav from '@/components/FooterNav';
     import CustomHeader from './components/CustomHeader';
     import Auth from '../../../components/Auth';
@@ -149,6 +152,7 @@
             'footer-nav': FooterNav,
             CustomHeader,
             Auth,
+            Coupon,
             ReceivedNewTickets,
             OldUserReceivedNewTickets,
             GetUserMobile,
@@ -170,10 +174,16 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
+
+                consumerCard: null,
+
                 showBindMobile: false
             };
         },
         computed: {
+            myConsumeCards () {
+                return this.model.account.myConsumeCards;
+            },
             shopCode () {
                 return this.model.account.shopCode
             },
@@ -197,10 +207,12 @@
                 return this.$imageUrl('bear01.gif');
             },
             hasToken () {
+                console.log("============================= has token =================");
                 let overDate = this.model.account.overDate;
                 return overDate ? overDate > Date.now() : false;
             },
             registered () {
+                console.log("============================= 1213123123 ==============", [this.model.account.registered]);
                 return this.model.account.registered;
             },
             isAuth () {
@@ -260,6 +272,9 @@
             },
             newCoupons () {
                 return this.model.account.newCoupons
+            },
+            notActivecards(){
+                return this.model.account.notActivecards;
             }
         },
         watch: {
@@ -269,6 +284,7 @@
                 }
             },
             accessToken (value) {
+                console.log("=============== access token ==========");
                 if (value) {
                     this.$command('SIGN_IN', this.accessToken);
                 }
@@ -276,9 +292,11 @@
             hasToken (value) {
                 if (this.hasToken) {
                     this.$command('LOAD_ACCOUNT', false);
+                 
                 }
             },
             registered (value) {
+                console.log("========================= registered ===============", [value, this.isMember]);
                 if (value) {
                     this.closeAuth()
                 }
@@ -290,6 +308,7 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
+                    this.$command('ACQUISTION_NOT_ACTIVE')//是否有激活卡
                 }
                 if (this.storeId && this.registered && this.isMember) {
                     this.bindConsumer()
@@ -310,9 +329,29 @@
                         console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
                     });
                 }
+            },
+            notActivecards (val) {
+                // 有消费卡可以领取，处理相关业务
+                if(val.length>0){
+                    // 判断请求回来的消费卡id是否存在缓存id数组里面的，不存在弹出领取通知
+                    this.getcoupon = true;
+                    // }
+                    for (let index = 0; index < this.model.account.notActivecards.length; index++) {
+                        const card = this.model.account.notActivecards[index];
+                        if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
+                            this.consumerCard = card;
+                            // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
+                            return;
+                        } 
+                    }
+                    
+                }
             }
         },
         mounted () {
+            // console.log(this.notActivecards, "是否有激活卡")
+            //this.$command('LOAD_MY_CONSUME_CARDS')//激活卡
+            // console.log(this.myConsumeCards,11111111111111111)
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -337,6 +376,17 @@
                     this.bindConsumer()
                 }
             }
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '这是一个模态弹窗',
+            //     success (res) {
+            //         if (res.confirm) {
+            //         console.log('用户点击确定')
+            //         } else if (res.cancel) {
+            //         console.log('用户点击取消')
+            //         }
+            //     }
+            //     })
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -377,6 +427,7 @@
             if (this.registered && this.isMember) {
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
+          
         },
         onLoad (options) {
             if (options.q) {
@@ -394,6 +445,11 @@
             });
         },
         methods: {
+            // 获取优惠券
+            closeCoupon(){
+                this.consumerCard = null;
+            },
+
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
             },
@@ -935,11 +991,6 @@
     .activityContainer{
 
     }
-
-
-
-
-
     .recommend{
 
     }

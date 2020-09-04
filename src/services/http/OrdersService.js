@@ -13,6 +13,13 @@ export default class OrdersService extends ApiService {
         return response;
     }
 
+    // 工会早餐车使用消费卡
+    async paymentByConsumeCard (order,recordId) {
+        console.log("------------------------工会早餐车使用消费卡-----",order,recordId)
+        let response = await this.httpPost(`/api/mp/orders/${order}/${recordId}/consume_card/new/pay`);
+        return response;
+    }
+
     // 获取订单列表
     async userOrders (status, page = 1, limit = 15) {
         let response = await this.httpGet('api/mp/orders', {
@@ -40,7 +47,7 @@ export default class OrdersService extends ApiService {
         return response.data;
     }
 
-    // 穿件扫码付订单
+    // 创建扫码付订单
     async createCodeScanOrder (params) {
         console.log('----- payment order ---------', params);
         let response = await this.httpPost('api/mp/scan/orders', params);
