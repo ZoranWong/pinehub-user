@@ -481,11 +481,11 @@
                 this.$command('SF_CART_AMOUNT',param,this);
             },
             getSendTime:function (home_delivery_time,off_work_time) {
-                let deliveryHH=home_delivery_time.substr(0,2);
+                let deliveryHH=home_delivery_time.substr(11,2);
                 if(deliveryHH.indexOf("0")==0){
                     deliveryHH=deliveryHH.substr(1,1);
                 }
-                let deliveryMin=home_delivery_time.substr(3,2);
+                let deliveryMin=home_delivery_time.substr(14,2);
                 if(deliveryMin.indexOf("0")==0){
                     deliveryMin=deliveryMin.substr(1,1);
                 }
