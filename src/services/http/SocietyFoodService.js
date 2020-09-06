@@ -72,8 +72,8 @@ export default class SocietyFoodService extends ApiService {
         return response;
     };
     // 用户更新收货地址
-    async updateUserAddress(addressId) {
-        let response = await this.httpPut('/api/mp/society_food/update/user/'+addressId+'/address');
+    async updateUserAddress(addressId,param) {
+        let response = await this.httpPut('/api/mp/society_food/update/user/'+addressId+'/address',param);
         return response;
     };
     // 用户新增收货地址

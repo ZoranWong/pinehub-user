@@ -16,7 +16,7 @@
                 </view>
             </view>
             <view v-if="!showMapInput" class="society-address" :style="{'height': (mapHeight-150) + 'px'}">
-                <view class="selected-map-show" v-if="!mapTitle">
+                <view class="selected-map-show" v-if="!mapAddress">
                     <view class="map-btn">
                         <span @click="selectMapPoint">选择收货地址</span>
                         <img class="img" alt="" src="../../../../static/icons/yellowArrow.png">
@@ -92,10 +92,12 @@
                 searchMapAddressList:[],
                 mapTitle:"",
                 mapAddress:"",
+                isDefault:true,
                 selectedTag:"家",
                 addressId:"",
                 stillSave:"1",
                 shopDetail:"",
+                addressObject:"",
                 addressDistance:0,
                 showMapInput:false,
                 showConfirm:false
@@ -168,14 +170,19 @@
                     city_code:this.cityCode,
                     area_code:this.areaCode,
                     detail_address:this.mapAddress+this.houseNumber,
-                    is_default:true,
+                    is_default:this.isDefault,
                     tag:this.selectedTag,
                     lat:this.latitude,
-                    lng:this.longitude,
-                    shop_id:this.shopDetail.shopId,
-                    is_still_save:this.stillSave//是否仍然保存 0：否，1：是
+                    lng:this.longitude
                 }
+                if(this.addressObject && this.addressObject.id){
+                    this.$command('SF_UPDATE_USER_ADDRESS',this.addressObject.id,param,this);
+                    return false;
+                }
+                param["shop_id"]=this.shopDetail.shopId;
+                param["is_still_save"]=this.stillSave;
                 this.$command('SF_INSERT_USER_ADDRESS', param,this);
+
             },
             checkSocietyAddress:function () {
                 if(!this.provinceCode){
@@ -194,7 +201,14 @@
                 }
                 if(!this.telephone){
                     wx.showToast({
-                        title: '请填写电话',
+                        title: '请填写手机号',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(this.telephone.length!=11){
+                    wx.showToast({
+                        title: '手机号格式不正确',
                         icon: 'none'
                     });
                     return false;
@@ -227,9 +241,30 @@
                 success: (res)=> {
                     this.latitude=res.latitude;
                     this.longitude=res.longitude;
+                    console.log("当前位置经纬度2="+res.latitude+"==="+res.longitude);
                 }
             })
+            this.addressObject="";
             this.shopDetail=this.$route.query.shopDetail;
+            let addressObject=this.$route.query.address;
+            this.addressObject=addressObject;
+            if(addressObject){
+                this.mapAddress=addressObject.detail_address;
+                this.telephone=addressObject.consignee_mobile_phone;
+                this.provinceCode=addressObject.province.name;
+                this.cityCode=addressObject.city.name;
+                this.areaCode=addressObject.area.name;
+                this.contactsPeople=addressObject.consignee_name;
+                this.addressDistance=this.distance(addressObject.lat,addressObject.lng);
+                this.isDefault=addressObject.is_default;
+                this.selectedTag="家";
+                if(addressObject.tag=="company"){
+                    this.selectedTag="公司";
+                }
+                if(addressObject.tag=="school"){
+                    this.selectedTag="学校";
+                }
+            }
         },
         watch:{
             searchName:function(){

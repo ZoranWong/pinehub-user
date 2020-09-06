@@ -12,11 +12,10 @@
                 <div class="tabItem" :class="{'active':activeTab === 'send'}" @click="changeTab('send')">送餐上门</div>
             </div>
             <div class="sendContainer" v-if="activeTab === 'send'">
-                <div class="top" v-if="shopDetail.home_delivery_type=='FIXED_ADD'">
+                <div class="top" v-if="shopDetail.home_delivery_type!='FIXED_ADD'">
                     <div class="topLeft " @click="selectAddressPoint" v-if="!addresses.id">
                         <img src="../../../../static/icons/location.png" alt="">
-                        <span v-if="addressList && addressList.length>0">请选择收货地址</span>
-                        <span v-else @click="insertFoodAddress">请选择收货地址</span>
+                        <span @click="insertFoodAddress">请选择收货地址</span>
                     </div>
                     <div class="topLeft1" @click="selectAddressPoint" v-else>
                         <div class="pay_shop_info_address">
@@ -39,7 +38,7 @@
                     <div class="top">
                         <div class="topLeft " @click="showFixed">
                             <img src="../../../../static/icons/location.png" alt="">
-                            <span v-if="!currentAddress">请选择收货地址</span>
+                            <span v-if="!currentAddress">请选择固定地址</span>
                             <span v-if="currentAddress">{{currentAddress}}</span>
                         </div>
                         <view class="select-fixed-address" v-if="showFixedAddress">
@@ -306,9 +305,7 @@
             }
         },
         methods: {
-            insertFoodAddress:function(){
-                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push',{query:{"shopDetail":this.shopDetail}});
-            },
+
             showFixed:function(){
                 this.showFixedAddress=true;
             },
@@ -318,8 +315,11 @@
                 this.currentAddress=item.address;
                 this.currentAddressId=item.shop_fixed_address_id;
             },
+            insertFoodAddress:function(){
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push',{query:{"shopDetail":this.shopDetail}});
+            },
             editAddress:function(item){
-                this.$command('REDIRECT_TO', 'societyFood.addOrEditAddress', 'push', {query: {"address":item}});
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push', {query: {"address":item,"shopDetail":this.shopDetail}});
             },
             //选择送餐上门时查看地址列表
             selectAddressPoint:function () {
@@ -547,10 +547,11 @@
             wx.getLocation({
                 type: 'wgs84',
                 success: (res)=> {
-                    let latitude = res.latitude
-                    let longitude = res.longitude
+                    let latitude = res.latitude;
+                    let longitude = res.longitude;
                     this.latitude=latitude;
                     this.longitude=longitude;
+                    console.log("当前位置经纬度1="+latitude+"==="+longitude);
                 }
             })
             this.showAddressTab=false;

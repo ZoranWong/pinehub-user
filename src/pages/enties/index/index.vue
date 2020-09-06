@@ -391,6 +391,7 @@
                         lat:latitude,//当前位置的 纬度
                         lng:longitude//当前位置的 经度
                     }
+                    console.log("当前位置经纬度0="+res.latitude+"==="+res.longitude);
                     this.$command('SF_LAST_ADDRESS',param,this);
                 }
             })
