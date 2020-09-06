@@ -23,7 +23,7 @@
                     </view>
                 </view>
                 <view class="selected-map-show" v-else style="justify-content: left">
-                    <view style="margin-left: 2%">
+                    <view style="margin-left: 2%" @click="selectMapPoint">
                         <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{mapTitle}}</view>
                         <view style="color: #999999;font-size: 11pt;">{{mapAddress}}</view>
                     </view>
@@ -35,9 +35,9 @@
                     </view>
                     <view>
                         <view class="address-title">标签</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('1')">家</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('2')">公司</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('3')">学校</view>
+                        <view class="btn" :class="{'tag':selectedTag=='家'}" @click="selectedBtn('家')">家</view>
+                        <view class="btn" :class="{'tag':selectedTag=='公司'}" @click="selectedBtn('公司')">公司</view>
+                        <view class="btn" :class="{'tag':selectedTag=='学校'}" @click="selectedBtn('学校')">学校</view>
                     </view>
                     <view>
                         <view class="address-title">联系人</view>
@@ -53,11 +53,14 @@
                         <input v-model="telephone" placeholder-style="padding-left:2px;color: #999999;" placeholder="请填写收货人手机号"/>
                     </view>
                     <view style="justify-content: center;margin-top: 5px">
-                       <button style="width: 96%;line-height: 40px;height: 40px">保存地址</button>
+                       <button style="width: 96%;line-height: 40px;height: 40px" @click="checkSocietyAddress">保存地址</button>
                     </view>
                 </view>
             </view>
         </div>
+        <i-modal title="提示" :visible="showConfirm" @ok="radiusSave" @cancel="radiusCancel" cancel-text="调整地址" ok-text="仍然保存">
+            <view>您的地址超出该门店配送范围了哦</view>
+        </i-modal>
     </div>
 
 </template>
@@ -75,6 +78,9 @@
                 houseNumber:"",
                 addressLabel:"",
                 contactsPeople:"",
+                provinceCode:"",
+                cityCode:"",
+                areaCode:"",
                 sex:"0",
                 telephone:"",
                 screenWitdh: 0,
@@ -86,8 +92,13 @@
                 searchMapAddressList:[],
                 mapTitle:"",
                 mapAddress:"",
-                selectedTag:"",
-                showMapInput:false
+                selectedTag:"家",
+                addressId:"",
+                stillSave:"1",
+                shopDetail:"",
+                addressDistance:0,
+                showMapInput:false,
+                showConfirm:false
             };
         },
         computed: {
@@ -102,10 +113,6 @@
                 this.sex=sign;
             },
             selectedBtn:function(sign){
-                if(this.selectedTag==sign){
-                    this.selectedTag="";
-                    return false;
-                }
                 this.selectedTag=sign;
             },
             distance:function(lat, lng) {
@@ -129,16 +136,85 @@
                     }
                     this.searchMapAddressList=result;
                 }
+                console.log("地图搜索地址"+ JSON.stringify(this.searchMapAddressList))
             },
             selectedPos:function (item) {
                 this.latitude=item.location.lat;
                 this.longitude=item.location.lng;
+                this.provinceCode=item.province;
+                this.cityCode=item.city;
+                this.areaCode=item.district;
+                this.addressDistance=item.distance;
                 this.mapTitle=item.title;
                 this.mapAddress=item.address;
                 this.showMapInput=false;
             },
             selectMapPoint:function () {
                 this.showMapInput=true;
+            },
+            radiusCancel:function () {
+                this.showConfirm=false;
+            },
+            radiusSave:function () {
+                this.stillSave="1";
+                this.showConfirm=false;
+                this.saveSocietyAddress();
+            },
+            saveSocietyAddress:function(){
+                let param={
+                    consignee_name:this.contactsPeople,
+                    consignee_mobile_phone:this.telephone,
+                    province_code:this.provinceCode,
+                    city_code:this.cityCode,
+                    area_code:this.areaCode,
+                    detail_address:this.mapAddress+this.houseNumber,
+                    is_default:true,
+                    tag:this.selectedTag,
+                    lat:this.latitude,
+                    lng:this.longitude,
+                    shop_id:this.shopDetail.shopId,
+                    is_still_save:this.stillSave//是否仍然保存 0：否，1：是
+                }
+                this.$command('SF_INSERT_USER_ADDRESS', param,this);
+            },
+            checkSocietyAddress:function () {
+                if(!this.provinceCode){
+                    wx.showToast({
+                        title: '请选择地址',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.contactsPeople){
+                    wx.showToast({
+                        title: '请填写联系人',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.telephone){
+                    wx.showToast({
+                        title: '请填写电话',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.houseNumber){
+                    wx.showToast({
+                        title: '请填写门牌号',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                let rangeDelivery=this.shopDetail.range_delivery;
+                let radius=parseInt(rangeDelivery.radius);
+                if(radius<this.addressDistance){
+                    this.showConfirm=true;
+                    this.stillSave="0";
+                    return false;
+                }
+                this.stillSave="1";
+                this.saveSocietyAddress();
             }
         },
         mounted () {
@@ -153,6 +229,7 @@
                     this.longitude=res.longitude;
                 }
             })
+            this.shopDetail=this.$route.query.shopDetail;
         },
         watch:{
             searchName:function(){

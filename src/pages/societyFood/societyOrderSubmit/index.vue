@@ -307,7 +307,7 @@
         },
         methods: {
             insertFoodAddress:function(){
-                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push');
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push',{query:{"shopDetail":this.shopDetail}});
             },
             showFixed:function(){
                 this.showFixedAddress=true;
@@ -571,7 +571,7 @@
             this.shopDetail=shopDetail;
             if(shopDetail){
                 this.fixedDelivery=shopDetail.fixed_delivery;
-                this.rangeDelivery=shopDetail.range_delivery[0];
+                this.rangeDelivery=shopDetail.range_delivery;
             }
             if(shopDetail.home_delivery_type!="FIXED_ADD"){
                 this.deliveryFee=parseInt(this.rangeDelivery.delivery_fee);
