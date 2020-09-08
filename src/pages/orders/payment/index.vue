@@ -130,9 +130,9 @@
                             console.log("-------------=======++++++++=======-------------", this.consumerCardIds);
                             // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
                             return;
-                        } 
+                        }
                     }
-                    
+
                 }
             }
         },
