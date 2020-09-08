@@ -170,9 +170,6 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
-<<<<<<< Updated upstream
-                showBindMobile: false
-=======
                 showBindMobile: false,
                 visible:false,
                 NearByshopName:'您附近没有门店哦～',
@@ -181,7 +178,6 @@
                 modalTitle:"很遗憾！",
                 shopObj:{},
                 shopId:""
->>>>>>> Stashed changes
             };
         },
         computed: {
@@ -271,15 +267,12 @@
             },
             newCoupons () {
                 return this.model.account.newCoupons
-<<<<<<< Updated upstream
-=======
             },
             notActivecards(){
                 return this.model.account.notActivecards;
             },
             consumerCard() {
                 return this.model.account.consumerCard;
->>>>>>> Stashed changes
             }
         },
         watch: {
@@ -330,8 +323,6 @@
                         console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
                     });
                 }
-<<<<<<< Updated upstream
-=======
             },
             notActivecards (val) {
                 // 有消费卡可以领取，处理相关业务
@@ -349,11 +340,10 @@
                             this.model.account.dispatch('addConsumerCard', {card: card});
                             // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
                             return;
-                        } 
+                        }
                     }
-                    
+
                 }
->>>>>>> Stashed changes
             }
         },
         mounted () {
@@ -439,10 +429,6 @@
             wx.onAppShow(() => {
                 this.ticketShow = true;
             });
-<<<<<<< Updated upstream
-        },
-        methods: {
-=======
             wx.getLocation({
                 type: 'wgs84',
                 success: (res)=> {
@@ -501,7 +487,6 @@
                     });
                 }
             },
->>>>>>> Stashed changes
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
             },
