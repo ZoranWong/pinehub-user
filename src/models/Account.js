@@ -98,6 +98,9 @@ export default class Account extends Model {
             },
             consumerCardIds() {
                 return this.state.consumerCardIds;
+            },
+            consumerCard() {
+                return this.state.consumerCard;
             }
         });
     }
@@ -140,11 +143,14 @@ export default class Account extends Model {
             newCoupons: [],
             exchangedRecords: [],
             myConsumeCards: [],
+            cardDetails: [],
+
             getActivationCards:[],
             notActivecards: [],
-            cardDetails: [],
+            
             totalCardCount: 0,
-            consumerCardIds:[]
+            consumerCardIds:[],
+            consumerCard: null
         };
     }
 
@@ -172,6 +178,16 @@ export default class Account extends Model {
             this.state.ticketNum += count;
             try {
                 return this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
+        this.addEventListener('addConsumerCard', ({card}) => {
+            this.state.consumerCard = card;
+   
+            try {
+                this.service('mp.storage').set('account', this.state);
             } catch (e) {
                 return false;
             }
@@ -303,25 +319,37 @@ export default class Account extends Model {
         this.addEventListener('clearNewCoupons', function () {
             this.state.newCoupons = [];
         });
-        // notActivecard
 
-        this.addEventListener('saveAcquisitionNotActive',function({notActivecards}){
-            this.state.notActivecards = notActivecards;
-            try {
-                return this.service('mp.storage').set('account', this.state);
-            } catch (e) {
-                return false;
-            }
-        })
-        this.addEventListener('clearAcquisitionNotActive',function(){
+
+        // this.addEventListener('saveAcquisitionNotActive',function({notActivecards}){
+        //     this.state.notActivecards = notActivecards;
+        //     try {
+        //         return this.service('mp.storage').set('account', this.state);
+        //     } catch (e) {
+        //         return false;
+        //     }
+        // })
+        // this.addEventListener('clearAcquisitionNotActive',function(){
             
-            this.state.notActivecards = [];
-            try {
-                return this.service('mp.storage').set('account', this.state);
-            } catch (e) {
-                return false;
-            }
-        })
+        //     this.state.notActivecards = [];
+        //     try {
+        //         return this.service('mp.storage').set('account', this.state);
+        //     } catch (e) {
+        //         return false;
+        //     }
+        // })
+
+
+
+        // this.addEventListener('saveGetActiveCard', function ({getActivationCards}) {
+           
+        //     this.state.getActivationCards=getActivationCards;
+        //     // try {
+        //     //     return this.service('mp.storage').set('account', this.state);
+        //     // } catch (e) {
+        //     //     return false;
+        //     // }
+        // });
 
         this.addEventListener('saveMyConsumeCards', function ({cards}) {
            _.map(cards, card => {
@@ -337,19 +365,6 @@ export default class Account extends Model {
                 this.state.exchangedRecords.push(item)
             })
         });
-
-        this.addEventListener('saveGetActiveCard', function ({getActivationCards}) {
-           
-            this.state.getActivationCards=getActivationCards;
-            // try {
-            //     return this.service('mp.storage').set('account', this.state);
-            // } catch (e) {
-            //     return false;
-            // }
-        });
-
-
-
         this.addEventListener('clearExchangedRecords', function () {
             this.state.exchangedRecords = []
         })
