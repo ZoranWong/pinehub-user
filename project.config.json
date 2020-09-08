@@ -6,34 +6,11 @@
   "setting": {
     "urlCheck": true,
     "es6": true,
-    "enhance": true,
     "postcss": true,
-    "preloadBackgroundData": false,
     "minified": true,
     "newFeature": true,
-    "coverView": true,
     "nodeModules": true,
-    "autoAudits": true,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
-    "useApiHook": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "bundle": true,
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": []
+    "uglifyFileName": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.6.0",
@@ -47,19 +24,23 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
     "plugin": {
       "current": -1,
       "list": []
     },
     "game": {
+      "current": -1,
+      "list": []
+    },
+    "gamePlugin": {
+      "current": -1,
+      "list": []
+    },
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
       "current": -1,
       "list": []
     },
@@ -193,6 +174,13 @@
           "name": "ticket",
           "pathName": "pages/user/ticket/main",
           "query": "id=239",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/orders/payment/main",
+          "pathName": "pages/orders/payment/main",
+          "query": "shop_code=109",
           "scene": null
         }
       ]

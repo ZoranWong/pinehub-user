@@ -299,6 +299,7 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
+                    console.log('==========是否有激活卡   调取没啊=======================')
                     this.$command('ACQUISTION_NOT_ACTIVE')//是否有激活卡
                 }
                 if (this.storeId && this.registered && this.isMember) {

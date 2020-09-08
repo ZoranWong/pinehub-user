@@ -168,6 +168,7 @@
                 await this.$command('APP_ACCESS');
                 // await this.$command('SIGN_IN', this.accessToken);
                 if(this.isMember){
+                    this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
                     this.$command('GET_ACTIVE_CARD', this);
                 }
 
