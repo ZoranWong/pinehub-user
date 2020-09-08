@@ -64,8 +64,8 @@ export default class TencentMapService extends Service {
     }
 
     // 地图拖拽
-    getCenterLocation () {
-        let map = wx.createMapContext('checkedMap');
+    getCenterLocation (id) {
+        let map = wx.createMapContext(id);
         return new Promise((resolve, reject) => {
             map.getCenterLocation({
                 type: 'gcj02',
@@ -82,20 +82,19 @@ export default class TencentMapService extends Service {
 
     // 搜索地图建议
     getSuggestion (e) {
-        console.log(e, '_____________________--');
         return new Promise((resolve, reject) => {
             this.map.getSuggestion({
                 keyword: e,
                 region: '合肥',
                 page_size: 8,
                 success: function (res) {
-                    resolve(res)
+                    resolve(res.data)
                 },
                 fail: function (error) {
-                    console.error(error + '失败');
+                    resolve(false);
                 },
                 complete: function (res) {
-                    console.log(res);
+                    resolve(res.data)
                 }
             })
         })

@@ -15,8 +15,6 @@
             </view>
         </div>
         <div id="tab_content" :style="{'height': mainHeight + 'px'}">
-
-
             <div class="empty_img_groupon" v-if="!orders.length">
                 <img src="../../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>

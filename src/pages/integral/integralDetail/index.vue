@@ -2,7 +2,6 @@
 <template>
 	<div id="integral_detail" v-if="detailData">
         <CustomHeader :title="title" :needReturn="true" />
-
         <div class="integral_item" >
             <div class="left">
                 <div class="empty"></div>

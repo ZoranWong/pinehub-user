@@ -36,6 +36,7 @@ export default class AccountService extends ApiService {
         });
         return response;
     }
+    // 获取我的消费卡列表
     async consumerCards () {
         let response = await this.httpGet(`/api/mp/consume_cards/mine`);
         return response;
@@ -48,7 +49,22 @@ export default class AccountService extends ApiService {
         let response = await this.httpGet(`/api/mp/consume_cards/mine/${id}/amount_change_logs`);
         return response;
     }
-
+   
+    async cardActives (recordId) {
+        let response = await this.httpGet(`/api/mp/consume_cards/${recordId}/activate`);
+        return response;
+    }
+    // 获取未激活消费卡
+    async noActiveCard () {
+        let response = await this.httpGet(`/api/mp/consume_cards/pop`);
+        return response;
+    }
+    // 获取已激活的消费卡
+    async getActivationCard () {
+        console.log("获取已激活的消费卡")
+        let response = await this.httpGet(`/api/mp/consume_cards/mine/active`);
+        return response;
+    }
 
     async orderRecords (page, limit) {
         console.log(`---------------------- order records ----------------`);
@@ -64,7 +80,7 @@ export default class AccountService extends ApiService {
         let response = await this.httpPut(api);
         return response.data;
     }
-
+	// 优惠券弹框
     async popup (mode) {
         let response = await this.httpGet(`/api/mp/coupons/popup/all?release_mode=${mode}`);
         console.log(response, '===================>');

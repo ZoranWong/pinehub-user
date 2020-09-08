@@ -153,7 +153,6 @@
                     }
                 });
             },
-
             btnClick (type, order) {
                 console.log(order, '......................');
                 this.$command('ORDER_STATUS_UPDATE', type, order);

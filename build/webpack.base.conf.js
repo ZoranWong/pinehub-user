@@ -63,6 +63,10 @@ module.exports = {
             //   }
             // },
             {
+                test: /.less$/,
+                loader: "style-loader!css-loader!less-loader"
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader'

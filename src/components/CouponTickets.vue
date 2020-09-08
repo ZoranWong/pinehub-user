@@ -9,8 +9,7 @@
             </div>
             <div class="ticket-list" v-else :style="{height: (screenHeight  - (statusBarHeight + navHeight) - 130) + 'rpx'}">
                 <scroll-view class="ticket_wrapper" :scroll-y="1" @scroll="scroll" @scrolltolower="scrolltolower">
-                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="list">
-                    </coupon-ticket>
+                    <coupon-ticket v-for="(ticket, ticketIndex) in coupons" :key="ticketIndex"  :ticket="ticket" @useTicket="useTicket" type="list"/>
                 </scroll-view>
                 <button class="onOk" v-if="okShow" @click="onOk">选好了</button>
             </div>

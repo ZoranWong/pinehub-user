@@ -5,10 +5,11 @@
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
             <div id="back_icon" v-if="needReturn" @click="back" >
                 <span  class="backHome"  v-if="needBackHome"><i class="iconfont"  >&#xe664;</i>回到首页</span>
-                <img class="leftArrow" src="../../static/icons/leftArrow.png" v-else alt="">
+                
+                <img class="leftArrow" src="../../static/icons/leftArrow.png" v-if="!needBackHome && title !='快乐松扫码付'" alt="">
             </div>
             <div id="nav_title">
-                {{title}}
+             {{title}}
             </div>
         </div>
     </div>

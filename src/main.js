@@ -25,3 +25,8 @@ application.run(function () {
         'background:#aaa;color:#bada55');
 });
 
+let fundebug = require('fundebug-wxjs')
+fundebug.init({
+    apikey : 'def8e9015521868b5698a51bcfad2dd3884a092527f2e72f945c6a18107c104a'
+})
+

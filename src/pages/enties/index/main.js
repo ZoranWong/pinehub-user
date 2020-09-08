@@ -1,10 +1,12 @@
 import App from './index';
 import Vue from 'vue';
-// import ActivityService from '@/services/http/ActivityService';
 import SetUserMobileCommand from './commands/SetUserMobileCommand';
-// import GetActivityInfoCommand from '@/commands/GetActivityInfoCommand';
 import LoadTicketsCommand from './commands/LoadTicketsCommand';
 import ReceiveTicketCommand from './commands/ReceiveTicketCommand';
+
+
+// import ActivateConsumerCardCommand from "../../../commands/ActivateConsumerCardCommand"//激活消费卡
+import MyConsumeCardsCommand from '../../userInfo/consumeCards/command/MyConsumeCardsCommand'
 import '../../../styles/iconfont.css'
 import LoadActivitiesCommand from './commands/LoadActivitiesCommand';
 import LoadIndexBannerCommand from './commands/LoadIndexBannerCommand';
@@ -12,7 +14,8 @@ import NewIndex from '../../../models/NewIndex';
 import LoadPop from './commands/LoadPop';
 import LoadCanReceiveTicketsCommand from '../../tickets/ticketCenter/commands/LoadCanReceiveTicketsCommand';
 import ReceiveTicketsCommand from '../../tickets/ticketCenter/commands/ReceiveTicketsCommand';
-import LoadActivitiesProductsCommand from "./commands/LoadActivitiesProductsCommand";
+import LoadActivitiesProductsCommand from './commands/LoadActivitiesProductsCommand';
+import AcquisitionNotActiveCommand from './commands/AcquisitionNotActiveCommand'
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -24,6 +27,7 @@ if (application) {
         this.registerCommand(SetUserMobileCommand.commandName(), SetUserMobileCommand);
         this.registerCommand(LoadActivitiesCommand.commandName(), LoadActivitiesCommand);
         this.registerCommand(LoadIndexBannerCommand.commandName(), LoadIndexBannerCommand);
+        this.registerCommand(AcquisitionNotActiveCommand.commandName(), AcquisitionNotActiveCommand)// 获取未激活
         this.registerCommand(LoadCanReceiveTicketsCommand.commandName(), LoadCanReceiveTicketsCommand);
         this.registerCommand(LoadPop.commandName(), LoadPop);
         this.registerCommand(ReceiveTicketsCommand.commandName(), ReceiveTicketsCommand);

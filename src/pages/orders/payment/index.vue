@@ -3,7 +3,8 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
         <Auth v-if="getAuth" @close="closeAuth" @pay="pay" :slug="slug" />
-        <div v-if="!isMember && registered" class="bgff user-mobile-box">
+        <Coupon :consumerCard='consumerCard' v-if="showConsumerCardPopup"  @close="closeCoupon"></Coupon>
+        <div v-if="needBindMobile" class="bgff user-mobile-box">
             <div class="user_mobile_box_container">
                 <form report-submit="true" @submit="uploadFormId">
                     <button form-type="submit" class="user-mobile-get-btn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
@@ -41,32 +42,40 @@
                 <button type="primary" @click="paymentPopup">立即支付</button>
             </div>
         </div>
-        <payment-popup :amount = "paymentAmount" :show = "paymentPopupShow" @wxPay = "wxPay" @balancePay = "balancePay" @close = "closePopup" @charge = "charge"></payment-popup>
+        <payment-popup :getActivationCards='getActivationCards'  :amount = "paymentAmount" :show = "paymentPopupShow" @consumeCardsPay="consumeCardsPay" @wxPay = "wxPay" @balancePay = "balancePay" @close = "closePopup" @charge = "charge"></payment-popup>
     </div>
 </template>
 <script>
     import PaymentPopup from './PaymentPopup';
 	import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
+    import Coupon from '../../../components/LabourUnionCoupon'
 	export default {
         data: {
             shopName: '福年来早餐车',
             storeId: null,
             ticketCode: null,
             mobile: null,
-            paymentAmount: null,
+            paymentAmount: "",
             address: null,
             paymentPopupShow: false,
             title: '快乐松扫码付',
 			getAuth: false,
-			slug: 'payment'
+            slug: 'payment'
         },
         components: {
             'payment-popup': PaymentPopup,
 			CustomHeader,
-			Auth
+            Auth,
+            Coupon
         },
         computed: {
+            consumerCard () {
+                return this.model.account.consumerCard;
+            },
+            showConsumerCardPopup () {
+                return this.model.account.showConsumerCardPopup;
+            },
             logo () {
                 return this.$store.getters['model.app/logo']
             },
@@ -85,7 +94,17 @@
             },
 			registered () {
 				return this.model.account.registered;
-			}
+            },
+            needBindMobile () {
+                return !this.isMember && this.registered;
+            },
+            getActivationCards(){
+                return this.model.account.getActivationCards
+                return"1111"
+            },
+            notActivecards(){
+                return this.model.account.notActivecards;
+            }
 
         },
         watch: {
@@ -93,9 +112,38 @@
                 if (value) {
                     this.getAuth = false;
                 }
+            },
+            accessToken (value) {
+                if(value)
+                    this.$command('SIGN_IN', this.accessToken);
+            },
+            async isMember(value) {
+                if(value) {
+                   await this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
+                   await this.$command('GET_ACTIVE_CARD',this);
+                }
+            },
+            notActivecards (val) {
+                // 有消费卡可以领取，处理相关业务
+                if(val.length>0 ){
+                    // 缓存未激活消费卡id 不在弹出
+                    for (let index = 0; index < this.model.account.notActivecards.length; index++) {
+                        const card = this.model.account.notActivecards[index];
+                        if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
+                            this.model.account.dispatch('addConsumerCard', {card: card})
+                            // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
+                            return;
+                        }
+                    }
+
+                }
             }
         },
         methods: {
+            // 获取优惠券
+            closeCoupon(){
+                this.model.account.dispatch('addConsumerCard', {card: null});
+            },
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);
 			},
@@ -118,7 +166,12 @@
                 this.paymentPopupShow = false;
                 this.disPay = false;
                 await this.$command('APP_ACCESS');
-                await this.$command('SIGN_IN', this.accessToken);
+                // await this.$command('SIGN_IN', this.accessToken);
+                if(this.isMember){
+                    this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
+                    this.$command('GET_ACTIVE_CARD', this);
+                }
+
                 let store = await this.http.store.store(this.storeId);
                 this.shopName = store['name'];
                 this.mobile = store['mobile'];
@@ -127,12 +180,12 @@
             async paymentPopup () {
                 if (!this.registered) {
                     this.getUserAuth()
-                } else {
+                } else if(this.isMember){
                     this.pay()
                 }
             },
             async pay () {
-                if (this.paymentAmount) {
+                if (this.paymentAmount && this.isMember) {
                     this.paymentPopupShow = true;
 					this.disPay = true;
 					await this.$command('LOAD_CHARGE_CARDS', this.paymentAmount ? this.paymentAmount : 0);
@@ -148,10 +201,13 @@
                 this.$command('LOAD_ACCOUNT');
             },
             balancePay (amount) {
-                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, true);
-            },
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, 'balance');
+            },//充值卡支付
             wxPay (amount) {
-                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, false);
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, 'wx');
+            },
+            consumeCardsPay(amount, cosumerCardId){
+                this.$command('CREATE_OFF_LINE_ORDER', this.shopName, this.mobile, this.storeId, this.address, amount, 'consumer_card', cosumerCardId);
             }
         },
         mounted () {
@@ -168,6 +224,12 @@
                 //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = scan_url.match(/\d+/)[0];
             }
+        },
+        created(){
+            //  this.$command('GET_ACTIVE_CARD',this);//已激活消费卡
+        },
+        onHide() {
+            console.log("--------------------- hide ---------------------")
         }
     }
 </script>
@@ -257,6 +319,7 @@
         font-weight: 200;
         height: 100rpx;
         margin-bottom: 30rpx;
+        margin-top: 10rpx;
         margin-left: 30rpx;
     }
 

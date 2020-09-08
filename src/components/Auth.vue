@@ -3,7 +3,7 @@
     <div id="toast_area" >
         <div id="toast">
             <div id="toast_title">
-                用户授权登陆
+                授权登陆
             </div>
             <div id="toast_content">
                 <img src="../../static/icons/aHome.jpg" alt="">
@@ -70,7 +70,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
     #toast_area {
         position: fixed;
         height: 100%;
@@ -99,7 +99,7 @@
         justify-content: center;
         align-items: center;
         font-size: 36rpx;
-        color: #111;
+        color: #69B35F;
         font-weight: bold;
         border-bottom: 2rpx solid #f2f2f2;
     }

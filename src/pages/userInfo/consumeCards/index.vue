@@ -3,7 +3,7 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" :back-color="'#fff'" />
         <div class="container" :style="{height: mainHeight + 'px'}">
-            <div class="page-section-spacing" v-if="myConsumeCards.length">
+            <!-- <div class="page-section-spacing" v-if="myConsumeCards.length">
                 <ul class="scroll-view_H" :style="{width: myConsumeCards.length * 670 + 'rpx' }">
                     <li v-for="(tab,index) in myConsumeCards" class="scroll-view-item_H" :key="index" @click="cardDetails(tab['record_id'])">
                         <div  v-if="tab['card_remain_amount']" >
@@ -16,7 +16,33 @@
                         <img v-else src="https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/meiqian.png" alt="">
                     </li>
                 </ul>
-            </div>
+            </div> -->
+            <!-- 工会券 -->
+
+                <div class="page-section-spacing " v-if="myConsumeCards.length">
+                    <swiper   class="scroll-view_H">
+                        <swiper-item  v-for="(tab,index) in myConsumeCards" :key="index"  style="position: relative;height:500rpx;margin-left:10px">
+                            <img v-if="tab['state'] ===1" style="width:340px;height:300rpx;border-radius: 5px;" src="../../../../static/icons/card.png" alt="">
+                            <img v-else style="width:340px;height:300rpx;border-radius: 5px;" src="../../../../static/icons/h_card.png" alt="">
+                                <div class="breakfast">
+                                    <div style="width:340px">
+                                        <h2 style="font-size:30px;display: inline-block;">{{tab['card_name']}}</h2>
+                                        <h3 style="font-size:20px;display: inline-block;position: absolute;right:25px" >{{tab['state_desc']}}</h3>
+                                    </div>
+                                    <p style="font-size:11px">CONSUMER CARD</p>
+                                    <h3 v-if="tab['state'] ===1" style="font-size:20px">可享受<span style="color:red">无门槛</span>现金抵用券</h3>
+                                    <h3 v-else style="font-size:20px">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
+                                    <p style="font-size:13px" >有效期：{{tab.start_time}}至{{tab['end_time']}}</p>
+                                    <div class="card-bottom">
+                                        <span class="money">￥{{tab['card_remain_amount']}}<span style="color:#999999;font-size:20px">现金抵用</span></span>
+                                        <span  :class="tab['state'] !=1 ? 'uncomactive' : 'comactive'" v-if="tab['state']!=0" @click="consumptionDetails(tab['record_id'])">消费明细</span>
+                                        <span  class="comactive" v-else  @click="Active(tab['record_id'])">确定激活</span>
+                                    </div>
+                                </div>
+
+                        </swiper-item >
+                    </swiper>
+                </div>
 
             <div class="exchange">
                 <input type="text" v-model="code" placeholder="请输入兑换码">
@@ -31,7 +57,7 @@
                             <h4>{{item['card_name']}}</h4>
                             <span>{{item['exchange_time']}}</span>
                         </div>
-                        <h5>兑换成功</h5>
+                        <h5>{{item['state']===0 ? '待激活' : '已激活'}}</h5>
                     </li>
                 </ul>
                 <div class="empty" v-else>
@@ -54,7 +80,7 @@
           return {
               title: '我的消费卡',
               exchangeVisible: false,
-              code: ''
+              code: '',
           };
         },
         components: {
@@ -88,6 +114,21 @@
             }
         },
         methods: {
+            // 确认激活
+            async Active(id){
+                await this.$command('ACTIVATECARD',id);
+                // this.onShow();
+                await this.$command('LOAD_EXCHANGE_RECORDS')
+                await this.$command('LOAD_MY_CONSUME_CARDS')
+            },
+            // 消费明细
+            consumptionDetails(id){
+                 this.$command('REDIRECT_TO', 'user.cardDetails', 'push', {
+                    query: {
+                        id: id
+                    }
+                });
+            },
             exchangeCode () {
                 this.$command('EXCHANGE', this.code)
             },
@@ -109,6 +150,46 @@
 	}
 </script>
 <style>
+    .breakfast{
+        position: absolute;
+        top: 10px;
+        margin-left: 20rpx;
+    }
+    .card-bottom{
+        width: 100%;
+        /* position: relative; */
+        overflow: hidden;
+        margin-top: 30px;
+        margin-left: -10px;
+
+
+    }
+  .money{
+        font-size: 30px;
+    }
+    .comactive{
+        color: #CE814F;
+        font-size: 20px;
+        border: 1px #CE814F solid;
+        border-radius: 50px;
+        float: right;
+        padding: 5rpx 10rpx;
+    }
+    .uncomactive{
+        color: #ADADAD;
+        font-size: 20px;
+        border: 1px #ADADAD solid;
+        border-radius: 50px;
+        float: right;
+        /* margin-left: 200rpx; */
+        padding: 5rpx 10rpx;
+    }
+    .back_img{
+        background:url(../../../../static/icons/card.png) no-repeat;
+        /* background: url(https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/meiqian.png) no-repeat; */
+    }
+
+
 
     .body{
         background-color: #fff;
@@ -124,9 +205,13 @@
         overflow-x: auto;
         border-bottom: 2rpx solid #F2F2F2;
         box-sizing: border-box;
-        padding-left: 40rpx;
+        padding-left: 15rpx;
         padding-top: 20rpx;
     }
+    /* .page-section-spacing img{
+        width: 100%;
+        height:300px ;
+    } */
 
     .page-section-spacing::-webkit-scrollbar{
         width: 0;
@@ -136,13 +221,18 @@
 
 
     .scroll-view_H{
-        overflow-x: auto;
-        overflow-y: hidden;
+        /* overflow-x: auto; */
+        /* overflow-y: hidden; */
+        height: 400rpx;
+        width: 100%;
         display: flex;
         white-space: nowrap;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+    }
+    .scroll-view_H li:first-child{
+        margin-left: -10px !important;
     }
 
     .scroll-view-item_H{
