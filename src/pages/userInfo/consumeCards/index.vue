@@ -88,6 +88,21 @@
             }
         },
         methods: {
+            // 确认激活
+            async Active(id){
+                await this.$command('ACTIVATECARD',id);
+                // this.onShow();
+                await this.$command('LOAD_EXCHANGE_RECORDS')
+                await this.$command('LOAD_MY_CONSUME_CARDS') 
+            },
+            // 消费明细
+            consumptionDetails(id){
+                 this.$command('REDIRECT_TO', 'user.cardDetails', 'push', {
+                    query: {
+                        id: id
+                    }
+                });
+            },
             exchangeCode () {
                 this.$command('EXCHANGE', this.code)
             },

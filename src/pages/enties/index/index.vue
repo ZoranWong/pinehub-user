@@ -170,7 +170,18 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
+<<<<<<< Updated upstream
                 showBindMobile: false
+=======
+                showBindMobile: false,
+                visible:false,
+                NearByshopName:'您附近没有门店哦～',
+                okText:"查看更多",
+                cancelText:"随便看看",
+                modalTitle:"很遗憾！",
+                shopObj:{},
+                shopId:""
+>>>>>>> Stashed changes
             };
         },
         computed: {
@@ -260,6 +271,15 @@
             },
             newCoupons () {
                 return this.model.account.newCoupons
+<<<<<<< Updated upstream
+=======
+            },
+            notActivecards(){
+                return this.model.account.notActivecards;
+            },
+            consumerCard() {
+                return this.model.account.consumerCard;
+>>>>>>> Stashed changes
             }
         },
         watch: {
@@ -310,6 +330,30 @@
                         console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
                     });
                 }
+<<<<<<< Updated upstream
+=======
+            },
+            notActivecards (val) {
+                // 有消费卡可以领取，处理相关业务
+                if(val.length>0){
+                    // 判断请求回来的消费卡id是否存在缓存id数组里面的，不存在弹出领取通知
+                    // this.getcoupon = true;
+                    // }
+                    for (let index = 0; index < this.model.account.notActivecards.length; index++) {
+                        const card = this.model.account.notActivecards[index];
+                        console.log("==================================== 00000000000000000000000000 ======================", [
+                            card,
+                            this.model.account.consumerCardIds.indexOf(card['record_id'])
+                        ]);
+                        if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
+                            this.model.account.dispatch('addConsumerCard', {card: card});
+                            // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
+                            return;
+                        } 
+                    }
+                    
+                }
+>>>>>>> Stashed changes
             }
         },
         mounted () {
@@ -378,6 +422,9 @@
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
         },
+        onHide() {
+             this.model.account.dispatch('addConsumerCard', {card: null});
+        },
         onLoad (options) {
             if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
@@ -392,8 +439,69 @@
             wx.onAppShow(() => {
                 this.ticketShow = true;
             });
+<<<<<<< Updated upstream
         },
         methods: {
+=======
+            wx.getLocation({
+                type: 'wgs84',
+                success: (res)=> {
+                    let latitude = res.latitude
+                    let longitude = res.longitude
+                    this.latitude=latitude;
+                    this.longitude=longitude;
+                    let param={
+                        lat:latitude,//当前位置的 纬度
+                        lng:longitude//当前位置的 经度
+                    }
+                    // this.$command('SF_LAST_ADDRESS',param,this);
+                }
+            })
+        },
+        methods: {
+            // 获取优惠券
+            closeCoupon(){
+                this.model.account.dispatch("addConsumerCard", {card: null});
+            },
+
+            boxLunchOrder:function(){
+                if(!this.shopObj || !this.shopObj.shop_id){
+                    wx.showToast({
+                        title: '抱歉,您附近没有门店',
+                        icon: 'none'
+                    })
+                    return false;
+                }
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
+                    query: {
+                        shopId:this.shopId,
+                    }
+                });
+            },
+            handleSure:function(){
+                this.visible=false;
+                this.shopId=this.shopObj.shop_id;
+                if(this.okText!="确定"){
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                        query: {
+                            latitude: this.latitude,
+                            longitude: this.longitude
+                        }
+                    });
+                }
+            },
+            handleMOre:function(){
+                this.visible=false;
+                if(this.cancelText!="随便看看"){
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                        query: {
+                            latitude: this.latitude,
+                            longitude: this.longitude
+                        }
+                    });
+                }
+            },
+>>>>>>> Stashed changes
             goCouponCenter () {
                 this.$command('REDIRECT_TO', 'ticketCenter', 'push')
             },

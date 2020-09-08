@@ -5,6 +5,13 @@ import SetUserMobileCommand from './commands/SetUserMobileCommand';
 // import GetActivityInfoCommand from '@/commands/GetActivityInfoCommand';
 import LoadTicketsCommand from './commands/LoadTicketsCommand';
 import ReceiveTicketCommand from './commands/ReceiveTicketCommand';
+<<<<<<< Updated upstream
+=======
+
+// import ActivateConsumerCardCommand from "../../../commands/ActivateConsumerCardCommand"//激活消费卡
+import MyConsumeCardsCommand from '../../userInfo/consumeCards/command/MyConsumeCardsCommand'
+
+>>>>>>> Stashed changes
 import '../../../styles/iconfont.css'
 import LoadActivitiesCommand from './commands/LoadActivitiesCommand';
 import LoadIndexBannerCommand from './commands/LoadIndexBannerCommand';
@@ -20,6 +27,17 @@ if (application) {
         // this.registerCommand(GetActivityInfoCommand.commandName(), GetActivityInfoCommand);
         this.registerModel('model.user.newIndex', NewIndex);
         this.registerCommand(LoadTicketsCommand.commandName(), LoadTicketsCommand);
+<<<<<<< Updated upstream
+=======
+
+        // this.registerCommand(ActivateConsumerCardCommand.commandName(), ActivateConsumerCardCommand);//激活消费卡
+        this.registerCommand(MyConsumeCardsCommand.commandName(), MyConsumeCardsCommand);//
+        this.registerCommand(ClearActive.commandName(), ClearActive);//
+
+        this.registerCommand(AcquisitionNotActiveCommand.commandName(), AcquisitionNotActiveCommand);//
+
+
+>>>>>>> Stashed changes
         this.registerCommand(ReceiveTicketCommand.commandName(), ReceiveTicketCommand);
         this.registerCommand(SetUserMobileCommand.commandName(), SetUserMobileCommand);
         this.registerCommand(LoadActivitiesCommand.commandName(), LoadActivitiesCommand);

@@ -59,7 +59,12 @@
             paymentPopupShow: false,
             title: '快乐松扫码付',
 			getAuth: false,
+<<<<<<< Updated upstream
 			slug: 'payment'
+=======
+            slug: 'payment'
+            // activationCards:[]
+>>>>>>> Stashed changes
         },
         components: {
             'payment-popup': PaymentPopup,
@@ -67,6 +72,9 @@
 			Auth
         },
         computed: {
+            consumerCard () {
+                return this.model.account.consumerCard;
+            },
             logo () {
                 return this.$store.getters['model.app/logo']
             },
@@ -93,9 +101,45 @@
                 if (value) {
                     this.getAuth = false;
                 }
+<<<<<<< Updated upstream
             }
         },
         methods: {
+=======
+            },
+            accessToken (value) {
+                if(value)
+                    this.$command('SIGN_IN', this.accessToken);
+            },
+            async isMember(value) {
+                if(value) {
+                   await this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
+                   await this.$command('GET_ACTIVE_CARD',this);
+                }
+            },
+            notActivecards (val) {
+                // 有消费卡可以领取，处理相关业务
+                if(val.length>0 ){
+                    // 缓存未激活消费卡id 不在弹出
+                    for (let index = 0; index < this.model.account.notActivecards.length; index++) {
+                        const card = this.model.account.notActivecards[index];
+                        if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
+                             this.model.account.dispatch("addConsumerCard", {card: card});
+                            console.log("-------------=======++++++++=======-------------", this.consumerCardIds);
+                            // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
+                            return;
+                        } 
+                    }
+                    
+                }
+            }
+        },
+        methods: {
+            // 获取优惠券
+            closeCoupon(){
+                this.model.account.dispatch("addConsumerCard", {card: null});
+            },
+>>>>>>> Stashed changes
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);
 			},
@@ -168,6 +212,15 @@
                 //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = scan_url.match(/\d+/)[0];
             }
+<<<<<<< Updated upstream
+=======
+        },
+        onHide() {
+            this.model.account.dispatch('addConsumerCard', {card: null});
+        },
+        created(){
+            //  this.$command('GET_ACTIVE_CARD',this);//已激活消费卡
+>>>>>>> Stashed changes
         }
     }
 </script>

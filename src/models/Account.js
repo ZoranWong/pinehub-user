@@ -89,6 +89,18 @@ export default class Account extends Model {
             },
             totalCardCount () {
                 return this.state.totalCardCount
+            },
+            notActivecards () {
+                return this.state.notActivecards;
+            },
+            getActivationCards(){
+                return this.state.getActivationCards
+            },
+            consumerCardIds() {
+                return this.state.consumerCardIds;
+            },
+            consumerCard() {
+                return this.state.consumerCard;
             }
         });
     }
@@ -132,7 +144,13 @@ export default class Account extends Model {
             exchangedRecords: [],
             myConsumeCards: [],
             cardDetails: [],
+<<<<<<< Updated upstream
             totalCardCount: 0
+=======
+            totalCardCount: 0,
+            consumerCardIds:[],
+            consumerCard: null
+>>>>>>> Stashed changes
         };
     }
 
@@ -165,6 +183,29 @@ export default class Account extends Model {
             }
         });
 
+<<<<<<< Updated upstream
+=======
+        this.addEventListener('addConsumerCard', ({card}) => {
+            this.state.consumerCard = card;
+   
+            try {
+                this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
+        this.addEventListener('addConsumerCardId', ({id}) => {
+            this.state.consumerCardIds.push(id);
+            console.log("未激活消费卡的id缓存")
+            try {
+                this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
+>>>>>>> Stashed changes
         this.addEventListener('setStoreInfo', async function ({storeInfo, sellAmountECharts, buyNumECharts}) {
             storeInfo.sellAmountECharts = sellAmountECharts;
             storeInfo.buyNumECharts = buyNumECharts;
