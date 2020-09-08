@@ -15,6 +15,7 @@ import LoadPop from './commands/LoadPop';
 import LoadCanReceiveTicketsCommand from '../../tickets/ticketCenter/commands/LoadCanReceiveTicketsCommand';
 import ReceiveTicketsCommand from '../../tickets/ticketCenter/commands/ReceiveTicketsCommand';
 import LoadActivitiesProductsCommand from './commands/LoadActivitiesProductsCommand';
+import AcquisitionNotActiveCommand from './commands/AcquisitionNotActiveCommand'
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -26,6 +27,7 @@ if (application) {
         this.registerCommand(SetUserMobileCommand.commandName(), SetUserMobileCommand);
         this.registerCommand(LoadActivitiesCommand.commandName(), LoadActivitiesCommand);
         this.registerCommand(LoadIndexBannerCommand.commandName(), LoadIndexBannerCommand);
+        this.registerCommand(AcquisitionNotActiveCommand.commandName(), AcquisitionNotActiveCommand)// 获取未激活
         this.registerCommand(LoadCanReceiveTicketsCommand.commandName(), LoadCanReceiveTicketsCommand);
         this.registerCommand(LoadPop.commandName(), LoadPop);
         this.registerCommand(ReceiveTicketsCommand.commandName(), ReceiveTicketsCommand);
