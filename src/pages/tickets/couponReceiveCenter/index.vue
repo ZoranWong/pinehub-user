@@ -204,11 +204,11 @@
     }
 
     .user-mobile-box {
-        height: 300 rpx;
-        width: 670 rpx;
+        height: 300rpx;
+        width: 670rpx;
         margin: 0 auto;
-        margin-top: -90 rpx;
-        border-radius: 16 rpx;
+        margin-top: -90rpx;
+        border-radius: 16rpx;
         overflow: hidden;
         text-align: center;
         box-shadow: 0px 10px 10px 0px rgba(204, 202, 202, 0.2);
@@ -230,10 +230,10 @@
     .user-mobile-box .user_mobile_box_container {
         position: absolute;
         background: #FFFFFF;
-        width: 620 rpx;
-        border-radius: 10 rpx;
-        top: 338 rpx;
-        left: 65 rpx;
+        width: 620rpx;
+        border-radius: 10rpx;
+        top: 338rpx;
+        left: 65rpx;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -241,26 +241,26 @@
     }
 
     .user-mobile-get-btn {
-        height: 80 rpx;
-        width: 320 rpx;
+        height: 80rpx;
+        width: 320rpx;
         text-align: center;
-        line-height: 80 rpx;
+        line-height: 80rpx;
         background: #FECE00;
-        margin-top: 80 rpx;
-        margin-bottom: 40 rpx;
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
         display: block;
-        font-size: 32 rpx;
+        font-size: 32rpx;
         font-weight: 200;
         border: 0;
-        border-radius: 80 rpx;
-        box-shadow: 0 10 rpx 10 rpx #fff6bd;
+        border-radius: 80rpx;
+        box-shadow: 0 10rpx 10rpx #fff6bd;
     }
 
     .mobile_box_tips {
         text-align: center;
-        line-height: 96 rpx;
-        border-radius: 10 rpx 10 rpx 0 0;
-        font-size: 29 rpx;
+        line-height: 96rpx;
+        border-radius: 10rpx 10rpx 0 0;
+        font-size: 29rpx;
         font-weight: 400;
     }
 
@@ -276,14 +276,14 @@
     .coupon-wrapper {
         box-sizing: border-box;
         background: #f2f2f2;
-        padding: 20 rpx;
+        padding: 20rpx;
 
     }
 
 
     .new_coupons_item {
         height: 100%;
-        margin-bottom: 20 rpx;
+        margin-bottom: 20rpx;
     }
 
     .coupon-wrapper {
@@ -294,7 +294,7 @@
 
     .main_coupon_item {
         width: 100%;
-        height: 220 rpx;
+        height: 220rpx;
         background-image: url("../../../../static/images/tickets/normalTickets.jpg");
         background-size: 100% 100%;
         display: flex;
@@ -303,7 +303,7 @@
     }
 
     .main_coupon_item .left {
-        width: 210 rpx;
+        width: 210rpx;
         height: 100%;
         display: flex;
         justify-content: center;
@@ -312,20 +312,20 @@
     }
 
     .main_coupon_item .left h4 {
-        font-size: 60 rpx;
+        font-size: 60rpx;
         color: #fb5642;
-        margin-bottom: 9 rpx;
+        margin-bottom: 9rpx;
         font-weight: bold;
     }
 
     .main_coupon_item .left .coupon_info {
-        font-size: 24 rpx;
+        font-size: 24rpx;
         color: #fb5642;
-        margin-top: 9 rpx;
+        margin-top: 9rpx;
     }
 
     .main_coupon_item .right {
-        padding: 26 rpx 20 rpx 26 rpx 30 rpx;
+        padding: 26rpx 20rpx 26rpx 30rpx;
         flex: 1;
         height: 100%;
         box-sizing: border-box;
@@ -343,18 +343,18 @@
     }
 
     .main_coupon_item .right .title h3 {
-        font-size: 26 rpx;
+        font-size: 26rpx;
         color: #111;
-        margin-left: 20 rpx;
+        margin-left: 20rpx;
     }
 
     .main_coupon_item .right .title img {
-        width: 101 rpx;
-        height: 25 rpx;
+        width: 101rpx;
+        height: 25rpx;
     }
 
     .main_coupon_item .right .valid {
-        font-size: 22 rpx;
+        font-size: 22rpx;
         color: #999;
     }
 
@@ -370,14 +370,14 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        font-size: 22 rpx;
+        font-size: 22rpx;
         color: #999;
     }
 
     .main_coupon_item .right .bottom .bottomLeft img {
-        width: 15 rpx;
-        height: 10 rpx;
-        margin-left: 15 rpx;
+        width: 15rpx;
+        height: 10rpx;
+        margin-left: 15rpx;
     }
 
     .main_coupon_item .right .bottom .bottomRight {
@@ -387,26 +387,26 @@
     }
 
     .main_coupon_item .right .bottom .bottomRight button:last-child {
-        margin-left: 10 rpx;
+        margin-left: 10rpx;
     }
 
     .main_coupon_item .right .bottom .diabled img {
-        width: 108 rpx;
-        height: 108 rpx;
+        width: 108rpx;
+        height: 108rpx;
         position: absolute;
         right: 0;
         bottom: 0;
     }
 
     .main_coupon_item .right .bottom .bottomRight button {
-        width: 130 rpx;
-        height: 50 rpx;
-        border: 2 rpx solid #111;
-        border-radius: 25 rpx;
+        width: 130rpx;
+        height: 50rpx;
+        border: 2rpx solid #111;
+        border-radius: 25rpx;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 22 rpx;
+        font-size: 22rpx;
         color: #111;
         padding: 0;
         background: #fff;
@@ -414,21 +414,21 @@
 
     .extra_coupon_item {
         width: 100%;
-        height: 132 rpx;
+        height: 132rpx;
         box-sizing: border-box;
-        padding: 30 rpx 20 rpx;
+        padding: 30rpx 20rpx;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
         background: #FDFAFE;
-        transform: translateY(-10 rpx);
+        transform: translateY(-10rpx);
     }
 
     .extra_coupon_item .coupon_info {
-        font-size: 22 rpx;
+        font-size: 22rpx;
         color: #757575;
-        width: 670 rpx;
+        width: 670rpx;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -459,19 +459,19 @@
         width: 100%;
         box-sizing: border-box;
         text-align: left;
-        margin: 50 rpx 0;
-        padding: 0 40 rpx;
+        margin: 50rpx 0;
+        padding: 0 40rpx;
     }
 
     .integral_item_info h4 {
-        font-size: 28 rpx;
+        font-size: 28rpx;
         color: #111;
         font-weight: normal;
-        margin-bottom: 15 rpx;
+        margin-bottom: 15rpx;
     }
 
     .integral_item_info span {
-        font-size: 26 rpx;
+        font-size: 26rpx;
         color: #757575;
     }
 

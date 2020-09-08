@@ -72,7 +72,7 @@
                 title: '添加收货地址',
                 address: {},
                 screenHeight: 0,
-                rpxRate: 1,
+               rpxRate: 1,
                 screenWitdh: 0,
                 addressTags: false,
                 regions: [],

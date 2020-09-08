@@ -3,7 +3,7 @@ import Vue from 'vue';
 import CreateOrderCommand from './commands/CreateOrderCommand';
 import GetShopInfoCommand from './commands/GetShopInfoCommand';
 import MyConsumeCardsCommand from '../../userInfo/consumeCards/command/MyConsumeCardsCommand'
-import GetActiveCardCommand from '../../userInfo/consumeCards/command/GetActiveCardCommand'
+import GetActiveCardCommand from '../../../commands/GetActiveCardCommand'
 
 import AcquisitionNotActiveCommand from '../../enties/index/commands/AcquisitionNotActiveCommand'
 

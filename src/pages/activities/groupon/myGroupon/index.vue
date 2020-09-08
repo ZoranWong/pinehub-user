@@ -49,7 +49,7 @@
                     {name: '未成团', key: 1},
                 ],
                 screenHeight: 0,
-                rpxRate: 1,
+               rpxRate: 1,
                 screenWitdh: 0,
                 statusDesc: '待成团',
             };
