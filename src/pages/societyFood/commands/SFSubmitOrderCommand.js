@@ -4,9 +4,9 @@ export default class SFSubmitOrderCommand extends Command {
         try {
             let result = await this.service('http.societyFood').onSubmitOrder(param);
             console.log("社会餐提交订单"+JSON.stringify(result.data.order_id));
-            that.$command('REDIRECT_TO', 'selectPay', 'push', {
+            that.$command('REDIRECT_TO', 'societyFood.societyOrderDetail', 'push', {
                 query: {
-                    order:JSON.stringify(result.data)
+                    id:JSON.stringify(result.data.order_id)
                 }
             })
             that.$command('GET_PAYMENT_PARAMS',result.data.order_id);

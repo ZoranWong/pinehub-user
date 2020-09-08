@@ -36,8 +36,8 @@
                 </button>
             </div>
             <div class="shop-five">
-                <div class="content-word" v-if="itemObj.support_home_delivery" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')">送餐上门</div>
-                <div class="content-word" v-if="itemObj.support_self_pick" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')" style="margin-left: 10pt">预定自提</div>
+                <div class="content-word" v-if="itemObj.support_home_delivery" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')" style="margin-right: 10pt">送餐上门</div>
+                <div class="content-word" v-if="itemObj.support_self_pick" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')">预定自提</div>
             </div>
             <div class="shop-six">
                 <div class="content-word" v-if="itemObj.state">立即订餐方便快捷，预定明日更优惠</div>
@@ -343,12 +343,7 @@
                 }
             },
             deleteCart:function(shopId,productId,type){
-                let param={
-                    shop_id:shopId,
-                    product_stock_id:productId,
-                    cart_type:type
-                }
-                this.$command('SF_DEL_CART_SHOP',param);
+                this.$command('SF_DEL_CART_SHOP',shopId,productId,type);
             },
             addCart:function(shopId,productId,type){
                 let param={
@@ -620,6 +615,7 @@
         position: absolute;
         width:25pt;
         height:3pt;
+        left: calc(50% - 12.5pt);;
         background:rgba(255,204,0,1);
         border-radius:1.5pt;
         bottom: 0;

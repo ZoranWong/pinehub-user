@@ -15,7 +15,7 @@
                 <div class="top" v-if="shopDetail.home_delivery_type!='FIXED_ADD'">
                     <div class="topLeft " @click="selectAddressPoint" v-if="!addresses.id">
                         <img src="../../../../static/icons/location.png" alt="">
-                        <span @click="insertFoodAddress">请选择收货地址</span>
+                        <span>请选择收货地址</span>
                     </div>
                     <div class="topLeft1" @click="selectAddressPoint" v-else>
                         <div class="pay_shop_info_address">
@@ -62,8 +62,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
             <div class="pickContainer" v-if="activeTab === 'pick'">
                 <img src="../img/map.png" alt="" class="hideImg">
                 <div class="top">
@@ -574,7 +574,7 @@
                 this.fixedDelivery=shopDetail.fixed_delivery;
                 this.rangeDelivery=shopDetail.range_delivery;
             }
-            if(shopDetail.home_delivery_type!="FIXED_ADD"){
+            if(shopDetail.home_delivery_type!="FIXED_ADD" && this.rangeDelivery.delivery_fee){
                 this.deliveryFee=parseInt(this.rangeDelivery.delivery_fee);
             }
             if(deliveryType=="1"){
