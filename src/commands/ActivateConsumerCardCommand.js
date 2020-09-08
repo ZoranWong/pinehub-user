@@ -8,9 +8,9 @@ export default class ActivateConsumerCardCommand extends Command {
                 icon: 'success',
                 duration: 1000
             });
-            console.log("========我日文化节=====")
+            // console.log("========我日文化节=====")
             await this.$command('GET_ACTIVE_CARD', this);
-            console.log("========丰富的非======")
+            // console.log("========丰富的非======")
         }
     }
 

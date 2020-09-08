@@ -62,27 +62,35 @@
 <script>
 	export default {
         name: 'LabourUnionCoupon',
-        props:{
-            consumerCard:Object
+        props: {
+            consumerCard: Object
         },
-        data(){
-            return{
+        data () {
+            return {
 
             }
         },
         methods: {
-            closeCoupon(){
+            closeCoupon () {
+                console.log('-------------------------- on show ----------', [this.consumerCard]);
+                this.model.account.dispatch('addConsumerCardId', {id: this.consumerCard['record_id']});
                 this.$emit('close');
             },
-            async confirm(id){
-                await  this.$command('ACTIVATECARD',id)
+            async confirm (id) {
+                this.model.account.dispatch('addConsumerCardId', {id: this.consumerCard['record_id']});
+                await this.$command('ACTIVATECARD', id)
                 await this.$command('CLEAR_ACTIVE');
                 this.$emit('close');
             }
         },
-        mounted(){
-          console.log("===================== consumer popup ================");
-          this.model.account.dispatch('addConsumerCardId', {id: this.consumerCard['record_id']});
+        mounted () {
+          console.log('===================== consumer popup ================', this.model.account);
+        },
+        onShow () {
+          console.log('-------------------------- on show ----------')
+        },
+        onHide () {
+            console.log('on hide --------------------');
         }
 	}
 </script>
@@ -107,7 +115,7 @@
   border-radius: 5px;
   height:340rpx;
   margin:5rpx 35rpx;
-  -moz-box-shadow:0px 2px 20px #cccccc; 
+  -moz-box-shadow:0px 2px 20px #cccccc;
   -webkit-box-shadow:0px 2px 20px #cccccc;
    box-shadow:0px 2px 20px #cccccc;
 }
