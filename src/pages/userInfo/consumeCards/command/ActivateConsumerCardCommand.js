@@ -1,5 +1,5 @@
 import Command from '@/commands/Command';
-export default class ActivateConsumerCard extends Command {
+export default class ActivateConsumerCardCommand extends Command {
     async handle (recordId) {
         let response = await this.service('http.account').cardActives(recordId);
         if (response && response.message) {
@@ -8,8 +8,9 @@ export default class ActivateConsumerCard extends Command {
                 icon: 'success',
                 duration: 1000
             });
-            await this.$command('LOAD_EXCHANGE_RECORDS')
-            await this.$command('LOAD_MY_CONSUME_CARDS') 
+            console.log("========我日文化节=====")
+            await this.$command('GET_ACTIVE_CARD', this);
+            console.log("========丰富的非======")
         }
     }
 
