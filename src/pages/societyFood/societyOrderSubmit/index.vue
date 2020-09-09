@@ -3,7 +3,7 @@
     <div id="order_payment">
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div class="back-icon" @click="backPage"><img src="../img/back.png" alt=""></div>
+            <div class="back-icon" style="margin-left: 15px" @click="backPage"><img src="../img/back.png" alt=""></div>
         </div>
         <div class="background"><div class="top"></div><div class="bottom"></div></div>
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">

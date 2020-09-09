@@ -398,36 +398,37 @@
         },
         methods: {
             boxLunchOrder:function(){
+                this.visible=true;
                 if(!this.shopObj || !this.shopObj.shop_id){
                     wx.showToast({
                         title: '抱歉,您附近没有门店',
                         icon: 'none'
                     })
-                    this.visible=true;
                     return false;
                 }
-                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
-                    query: {
-                        shopId:this.shopId,
-                    }
-                });
             },
             handleSure:function(){
                 this.visible=false;
                 this.shopId=this.shopObj.shop_id;
                 if(this.okText!="确定"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch',{
                         query: {
                             latitude: this.latitude,
                             longitude: this.longitude
                         }
                     });
+                    return false;
                 }
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'reLaunch',{
+                    query: {
+                        shopId:this.shopId,
+                    }
+                });
             },
             handleMOre:function(){
                 this.visible=false;
                 if(this.cancelText!="随便看看"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch',{
                         query: {
                             latitude: this.latitude,
                             longitude: this.longitude

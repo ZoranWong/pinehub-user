@@ -5,6 +5,7 @@ export default class SFShopDetailCommand extends Command {
             let result = await this.service('http.societyFood').getSocietyFoodShopDetail(shopId);
             console.log("社会餐获取门店详情"+JSON.stringify(result.data));
             that.itemObj=result.data;
+            that.money=result.data.amount_fee;
             that.fixedDelivery=result.data.fixed_delivery[0];
             let atOnceProList=result.data.order_now.products;
             for (let i = 0; i <atOnceProList.length ; i++) {

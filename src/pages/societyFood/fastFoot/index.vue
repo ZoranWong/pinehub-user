@@ -98,15 +98,17 @@
                 <view class="content-title">
                     <view class="customer-info">
                         <view>5.</view>
-                        <view class="head-img"><img :src="item.url" alt=""></view>
+                        <view class="head-img"><img :src="item.user_avatar" alt=""></view>
                         <view>
-                            <view style="color: #111111;font-size: 14pt">{{item.name}}</view>
+                            <view style="color: #111111;font-size: 14pt">{{item.user_nickname}}</view>
                             <view style="color: #999999;font-size: 10pt">{{item.time}}</view>
                         </view>
                     </view>
-                    <view style="float: right;color: #999999;font-size: 14pt;margin-right: 15pt;height: inherit;line-height: 34pt">¥ {{item.price}}</view>
+                    <view style="float: right;color: #999999;font-size: 14pt;margin-right: 15pt;height: inherit;line-height: 34pt">¥ {{item.total_fee}}</view>
                 </view>
-                <view class="content-order">红烧牛肉饭 x1、笋干烧肉饭 x2、辣子鸡丁饭 x1、土豆牛肉 饭 x1、毛豆烧肉饭 x3</view>
+                <view class="content-order">
+                    <span v-for="(obj,sign) in item.order_products" :key="index+sign">{{obj.product_name+'X'+obj.quantity}}</span>
+                </view>
             </div>
             <div class="click-search-more" @click="searchMoreOrderInfo" v-if="showMoreBtn">点击查看更多…</div>
         </div>
@@ -118,7 +120,7 @@
                     </i-badge>
                     <view>
                         <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{oncePrice}}</view>
-                        <view style="color: #999999;font-size: 11pt">满{{money}}元起订</view>
+                        <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
                 <button @click="completePayment">去结算</button>
@@ -130,7 +132,7 @@
                     </i-badge>
                     <view>
                         <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reservePrice}}</view>
-                        <view style="color: #999999;font-size: 11pt">满{{money}}元起订</view>
+                        <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
                 <button @click="completePayment">去结算</button>
@@ -152,7 +154,7 @@
                 reserveOrderCount:0,
                 oncePrice:0,
                 reservePrice:0,
-                money:10,
+                money:0,
                 itemObj:{},
                 showMoreBtn:false,
                 fixedDelivery:{},//配送信息
@@ -167,6 +169,14 @@
             //去结算
             completePayment:function(){
                 if(this.status=='1'){
+                    if(this.oncePrice<=0){
+                        wx.showToast({
+                            title: '起送金额必须大于0元',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     if(this.oncePrice<this.money){
                         wx.showToast({
                             title: '满'+this.money+'元起送',
@@ -176,6 +186,14 @@
                         return false;
                     }
                 }else {
+                    if(this.reservePrice<=0){
+                        wx.showToast({
+                            title: '起送金额必须大于0元',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     if(this.reservePrice<this.money){
                         wx.showToast({
                             title: '满'+this.money+'元起送',
@@ -234,7 +252,7 @@
                 })
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', '', 'back')
+                this.$command('REDIRECT_TO','index','replace')
             },
             selectedFun:function(sign){
                 this.selectedStyle=sign;
@@ -282,7 +300,7 @@
                     let count=this.atOnceProList[index].count;
                     if((count+1)>stockNum){
                         wx.showToast({
-                            title: '已超出库存不能添加',
+                            title: '立即点餐已超出库存不能添加',
                             icon: 'none',
                             duration: 2000
                         })
@@ -298,14 +316,6 @@
                     this.atOnceProList[index].count=count+1;
                 }else {
                     let count=this.reserveProList[index].count;
-                    if((count+1)>stockNum){
-                        wx.showToast({
-                            title: '已超出库存不能添加',
-                            icon: 'none',
-                            duration: 2000
-                        })
-                        return false;
-                    }
                     if(count>0){
                         this.updateCart(shopId,productId,7,count+1);
                     }else{
@@ -377,7 +387,6 @@
                             let shopStockId=this.atOnceProList[j].product_stock_id;
                             let count=this.atOnceProList[j].count;
                             if(productStockId==shopStockId){
-                                this.atOnceProList[j]["stock_num"]=this.atOnceCartList[i].stock_num;
                                 this.atOnceProList[j].count=this.atOnceCartList[i].buy_num;
                                 this.oncePrice=this.oncePrice+this.atOnceCartList[i].total_fee;
                                 this.onceOrderCount=this.onceOrderCount+this.atOnceCartList[i].buy_num;
@@ -392,7 +401,6 @@
                             let shopStockId=this.reserveProList[j].product_stock_id;
                             let count=this.reserveProList[j].count;
                             if(productStockId==shopStockId){
-                                this.reserveProList[j]["stock_num"]=this.reserveCartList[i].stock_num;
                                 this.reserveProList[j].count=this.reserveCartList[i].buy_num;
                                 this.reservePrice=this.reservePrice+this.reserveCartList[i].total_fee;
                                 this.reserveOrderCount=this.reserveOrderCount+this.reserveCartList[i].buy_num;
@@ -735,6 +743,7 @@
         margin-left: 25pt;
         margin-right: 15pt;
         padding: 15pt 0 15pt 15pt;
+        display: flex;
     }
     .click-search-more{
         width: 100%;
@@ -762,6 +771,7 @@
         color: #111111;
         font-size: 16pt;
         border-radius: 19pt;
+        float: right;
     }
     .order-settlement .order-pay-info{
         width: auto;

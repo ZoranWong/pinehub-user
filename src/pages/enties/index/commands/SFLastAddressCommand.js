@@ -16,7 +16,6 @@ export default class SFLastAddressCommand extends Command {
                     that.modalTitle="上次选择的门店"
                 }
             }
-            that.visible=true;
         } catch (e) {
             throw e;
         }
