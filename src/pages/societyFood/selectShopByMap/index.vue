@@ -18,9 +18,9 @@
                 </view>
             </view>
         </view>
-        <view class="shop-tab">
-            <view @click="changeAddressList('0')" style="border-radius: 13pt 0 0 0" :class="{'bacColor':showNearby}">附近门店</view>
-            <view @click="changeAddressList('1')" style="border-radius: 0 13pt 0 0" :class="{'bacColor':!showNearby}">常用门店</view>
+        <view class="shop-tab" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
+            <div class="tabItem" :class="{'active':showNearby}" @click="changeAddressList('0')">附近门店</div>
+            <div class="tabItem" :class="{'active':!showNearby}" @click="changeAddressList('1')">常用门店</div>
         </view>
         <view class="shop-address-list">
             <view class="shop-address-tab" v-for="(item,index) in addressList" :key="index">
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+    let left = require('../img/left.png')
+    let right = require('../img/right.png')
     import Public from "../js/Public";
     export default {
         mixins:[Public],
@@ -50,6 +52,8 @@
                 searchName:"",
                 showSearchContent:false,
                 checkedRadio:-1,
+                background:require('../img/left.png'),
+                backgroundPosition: 'left center',
                 currentShopId:"",
                 longitude:'',
                 latitude:'',
@@ -78,6 +82,13 @@
             changeAddressList:function(val){
                 this.showNearby=val=='0'?true:false;
                 this.checkedRadio=-1;
+                if (val === '1') {
+                    this.background = right;
+                    this.backgroundPosition = 'right center';
+                } else {
+                    this.background = left;
+                    this.backgroundPosition = 'left center';
+                }
                 this.initSearch();
             },
             handleRadioChange:function(index,shop_id){
@@ -175,19 +186,17 @@
         width: 100%;
         overflow-x: hidden;
         overflow-y: auto;
-        max-height: 400pt;
+        max-height: 300px;
     }
     .shop-address-tab{
         margin-left: 15px;
         width: auto;
         height: auto;
-        margin-top: 40pt;
-        padding-top: 15pt;
-        padding-bottom: 30pt;
     }
     .shop-address-tab .left{
         float: left;
         width: 85%;
+        margin-bottom: 15px;
     }
     .shop-address-tab .right{
         float: right;
@@ -201,30 +210,24 @@
         padding: 0;
     }
     .shop-tab{
-        height: 40pt;
         width: 100%;
+        height: 40px;
+        background-size: 345px 100%;
+        background-repeat: no-repeat;
+        display: flex;
         justify-content: center;
         align-items: center;
-        display: flex;
-        margin-top: -10px;
-        position: absolute;
     }
-    .shop-tab view{
-        color: #111111;
-        font-size: 16pt;
-        font-weight: 400;
-        font-family:PingFang-SC-Bold,PingFang-SC;
+    .shop-tab .tabItem {
         width: 50%;
-        text-align: center;
-        background-color: #d9d9d9;
-        height: inherit;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 14px;
+        color: #111;
     }
-    .shop-tab .bacColor{
-        font-weight: 700 !important;
-        background-color: #ffffff !important;
+    .shop-tab .active {
+        font-weight: bold;
     }
     .select-shop-Map #shopMap{
         width: 100%;

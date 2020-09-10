@@ -6,14 +6,14 @@
            <div class="back-icon" @click="backPage"><img src="../img/back.png" alt=""></div>
         </div>
         <div class="fast-foot-title" :style="{'marginTop': '-'+imgHeight + 'px'}">
-            <img src="../img/headImg.jpg" alt="">
+            <img src="../../../../static/icons/headImg.jpg" alt="">
         </div>
         <div class="shop-info-show" :style="{'top': topHeight+ 'px'}">
             <div class="shop-one">
                 <div class="content-word">{{itemObj.shop_name}}</div>
                 <div class="head-img">
                     <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../img/headImg.jpg" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
                 </div>
             </div>
             <div class="shop-two">
@@ -24,14 +24,14 @@
                 <div class="content-word">公告：{{itemObj.announcement}}</div>
             </div>
             <div class="shop-four">
-                <button style="margin-left: 15pt">
+                <button style="margin-left: 15pt" @click="contactCustomerService(itemObj.shop_phone)">
                     <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../img/headImg.jpg" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
                     <label>联系门店</label>
                 </button>
-                <button style="margin-left: 10pt">
+                <button style="margin-left: 10pt" open-type="share">
                     <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../img/headImg.jpg" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
                     <label>分享好友</label>
                 </button>
             </div>
@@ -44,52 +44,50 @@
                 <div class="content-word" v-else>门店休息中，换一家看看吧</div>
             </div>
         </div>
-        <div class="product-list" :style="{'marginTop': (topHeight+59) + 'px'}">
-            <div class="change-btn">
-                <view :class="{'selectTab':status === '1'}" @click="selectProject('1')">立即订餐</view>
-                <view :class="{'selectTab':status === '2'}" @click="selectProject('2')">明日预定</view>
-                <view class="more-product" @click="searchMoreProduct">查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt=""></view>
-            </div>
-            <div class="product-info-show">
-                <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="index" v-if="status=='1'">
-                    <view class="product-img"><img :src="item.product_avatar"></view>
-                    <view class="product-info">
-                        <view class="pro-name">{{item.product_name}}</view>
-                        <view class="pro-merit">{{item.product_intro}}</view>
-                        <view class="pro-sales">销量 {{item.sales}}</view>
-                        <view class="pro-price">
-                            <view class="left">
-                                <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
-                                <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
-                            </view>
-                            <view class="right">
-                                <img src="../../../../static/icons/minus.png" v-if="item.count>0" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
-                                <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
-                                <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
-                            </view>
+        <div class="change-btn">
+            <view :class="{'selectTab':status === '1'}" @click="selectProject('1')">立即订餐</view>
+            <view :class="{'selectTab':status === '2'}" @click="selectProject('2')">明日预定</view>
+            <view class="more-product" @click="searchMoreProduct">查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt=""></view>
+        </div>
+        <scroll-view scroll-y class="scroll-view_H">
+            <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="index" v-if="status=='1'">
+                <view class="product-img"><img :src="item.product_avatar"></view>
+                <view class="product-info">
+                    <view class="pro-name">{{item.product_name}}</view>
+                    <view class="pro-merit">{{item.product_intro}}</view>
+                    <view class="pro-sales">销量 {{item.sales}}</view>
+                    <view class="pro-price">
+                        <view class="left">
+                            <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
+                            <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
+                        </view>
+                        <view class="right">
+                            <img src="../../../../static/icons/minus.png" v-if="item.count>0" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
+                            <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
+                            <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
                         </view>
                     </view>
                 </view>
-                <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="index" v-if="status=='2'">
-                    <view class="product-img"><img :src="item.avatar"></view>
-                    <view class="product-info">
-                        <view class="pro-name">{{item.name}}</view>
-                        <view class="pro-merit">{{item.intro}}</view>
-                        <view class="pro-sales">销量 {{item.virtual_sales}}</view>
-                        <view class="pro-price">
-                            <view class="left">
-                                <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
-                                <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
-                            </view>
-                            <view class="right">
-                                <img v-if="item.count>0" src="../../../../static/icons/minus.png" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
-                                <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
-                                <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
-                            </view>
+            </view>
+            <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="index" v-if="status=='2'">
+                <view class="product-img"><img :src="item.avatar"></view>
+                <view class="product-info">
+                    <view class="pro-name">{{item.name}}</view>
+                    <view class="pro-merit">{{item.intro}}</view>
+                    <view class="pro-sales">销量 {{item.virtual_sales}}</view>
+                    <view class="pro-price">
+                        <view class="left">
+                            <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
+                            <span v-if="item.show_market_price" style="color: #999999;text-decoration:line-through;font-size: 12px">¥{{item.market_price}}</span>
+                        </view>
+                        <view class="right">
+                            <img v-if="item.count>0" src="../../../../static/icons/minus.png" style="border-color: #ffcc00" alt="" @click="minusOrderFood(item,index)">
+                            <view v-if="item.count>0" style="height: auto;width: 30px;text-align: center;font-size: 16px;color: #333333">{{item.count}}</view>
+                            <img src="../../../../static/icons/add.png" alt="" @click="addOrderFood(item,index)">
                         </view>
                     </view>
                 </view>
-            </div>
+            </view>
             <div class="order-food-info">
                 <label style="color: #111111;font-size: 15pt">订餐情况</label>
                 <label style="color: #999999;font-size: 12pt">（{{orderInfoList.length}}人已订餐）</label>
@@ -111,8 +109,8 @@
                 </view>
             </div>
             <div class="click-search-more" @click="searchMoreOrderInfo" v-if="showMoreBtn">点击查看更多…</div>
-        </div>
-        <view style="height: 20pt;">
+        </scroll-view>
+        <view>
             <div class="order-settlement" v-if="status=='1'">
                 <view class="order-pay-info">
                     <i-badge :count="onceOrderCount" overflow-count="99">
@@ -157,6 +155,7 @@
                 money:0,
                 itemObj:{},
                 showMoreBtn:false,
+                isCompletePayment:true,//可以结算
                 fixedDelivery:{},//配送信息
                 orderInfoList:[],//订餐情况
                 atOnceProList:[],//立即订餐商品列表
@@ -166,8 +165,43 @@
             };
         },
         methods:{
+            onShareAppMessage: function (res) {
+                let that =this;
+                return {
+                    title: '社会餐小程序', // 转发后 所显示的title
+                    path: '/pages/fastFoot/index?shopId='+ this.shopId, // 相对的路径
+                    success: function (res) {
+                        // 转发成功
+                        console.log("转发成功:" + JSON.stringify(res));
+                    },
+                    fail: function (res) {
+                        // 转发失败
+                        console.log("转发失败:" + JSON.stringify(res));
+                    }
+                }
+            },
+            getSelfPickTime:function(){
+                let offWorkDate=this.itemObj.off_work_time;
+                offWorkDate=offWorkDate.substr(0,5);//下班时间
+                let offWorkTime=parseInt(offWorkDate.substr(0,2))*60+parseInt(offWorkDate.substr(3,2));
+                let date=new Date();
+                let HH=date.getHours();
+                let minute=date.getMinutes();
+                let currentTime=HH*60+minute;//当前时间
+                if(offWorkTime<=currentTime){
+                    this.isCompletePayment=false;
+                }
+            },
             //去结算
             completePayment:function(){
+                if(this.status=='1' && !this.isCompletePayment){
+                    wx.showToast({
+                        title: '门店已下班,您可预订明日',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    return false;
+                }
                 if(this.status=='1'){
                     if(this.oncePrice<=0){
                         wx.showToast({
@@ -408,6 +442,7 @@
                         }
                     }
                 }
+                this.getSelfPickTime();
             }
         },
         mounted() {
@@ -419,11 +454,12 @@
 <style scoped>
     .fast-foot-list{
         width: 100%;
-        height: 100%;
+        height: 100vh;
+        overflow: hidden;
     }
     .fast-foot-title{
         width: 100%;
-        height: 149pt;
+        height: 200px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -457,9 +493,8 @@
     }
     .shop-info-show{
         width:96%;
-        height:192pt;
+        height:256px;
         left: 2%;
-        top:89pt;
         background:rgba(255,255,255,1);
         box-shadow:0 0 10px 0 rgba(204,204,204,0.6);
         border-radius:12.5px;
@@ -596,14 +631,13 @@
         font-weight:Medium;
         color:#333333;
     }
-    .product-list{
-        width: 100%;
-        height: 88vh
-    }
     .change-btn{
         width: 100%;
         height: 44px;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 176px;
     }
     .change-btn view{
         width: 33.3%;
@@ -638,9 +672,11 @@
         height: 7pt;
         margin-left: 5pt;
     }
-    .product-info-show{
+    .scroll-view_H{
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: calc(100vh - 490px);
         width: 100%;
-        height: auto;
     }
     .product-list-detail{
         width: 100%;
@@ -756,7 +792,7 @@
     }
     .order-settlement{
         width: 100%;
-        height: 53pt;
+        height: 70px;
         bottom: 0;
         position: fixed;
         z-index: 100000;

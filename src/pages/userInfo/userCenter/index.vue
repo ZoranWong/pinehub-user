@@ -126,7 +126,7 @@
                 <li  class="lines">
                     <div class="left">
                         <img src="./image/customer_service.png" alt="">
-                        <button open-type = "contact" @contact="handleContact" style="background-color: #fff; font-size: 28rpx;padding-right:442rpx;">联系客服</button>
+                        <button open-type = "contact" @contact="handleContact" style="background-color: #fff; font-size: 14px;padding-right:221px;">联系客服</button>
                     </div>
                     <img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </li>
