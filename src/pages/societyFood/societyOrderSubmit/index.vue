@@ -388,6 +388,9 @@
             //切换自提与上门
             changeTab (tab) {
                 this.activeTab = tab;
+                if(!(this.shopDetail.support_home_delivery && this.shopDetail.support_self_pick)){
+                   return false;
+                }
                 if (tab === 'send') {
                     this.background = right;
                     this.backgroundPosition = 'right center';

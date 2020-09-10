@@ -331,6 +331,14 @@
                 let productId=item.product_stock_id;
                 let stockNum=item.stock_num;//库存数量
                 if(this.status=='1'){
+                    if(this.reserveOrderCount>0){
+                        wx.showToast({
+                            title: '不能同时点立即订餐与预订明日,请先删除预订明日购物车商品',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     let count=this.atOnceProList[index].count;
                     if((count+1)>stockNum){
                         wx.showToast({
@@ -346,9 +354,18 @@
                         this.addCart(shopId,productId,6);
                     }
                     this.onceOrderCount++;
-                    this.oncePrice=this.oncePrice+item.retail_price;
+                    let oncePrice=this.oncePrice+item.retail_price;
+                    this.oncePrice=oncePrice.toFixed(2);
                     this.atOnceProList[index].count=count+1;
                 }else {
+                    if(this.onceOrderCount>0){
+                        wx.showToast({
+                            title: '不能同时点立即订餐与预订明日,请先删除立即订餐购物车商品',
+                            icon: 'none',
+                            duration: 2000
+                        })
+                        return false;
+                    }
                     let count=this.reserveProList[index].count;
                     if(count>0){
                         this.updateCart(shopId,productId,7,count+1);
@@ -356,7 +373,8 @@
                         this.addCart(shopId,productId,7);
                     }
                     this.reserveOrderCount++;
-                    this.reservePrice=this.reservePrice+item.retail_price;
+                    let reservePrice=this.reservePrice+item.retail_price;
+                    this.reservePrice=reservePrice.toFixed(2);
                     this.reserveProList[index].count=count+1;
                 }
             },
@@ -372,7 +390,8 @@
                         this.deleteCart(shopId,productId,6);
                     }
                     this.onceOrderCount--;
-                    this.oncePrice=this.oncePrice-item.retail_price;
+                    let oncePrice=this.oncePrice-item.retail_price;
+                    this.oncePrice=oncePrice.toFixed(2);
                     this.atOnceProList[index].count=count-1;
                 }else {
                     let count=this.reserveProList[index].count;
@@ -382,7 +401,8 @@
                         this.deleteCart(shopId,productId,7);
                     }
                     this.reserveOrderCount--;
-                    this.reservePrice=this.reservePrice-item.retail_price;
+                    let reservePrice=this.reservePrice-item.retail_price;
+                    this.reservePrice=reservePrice.toFixed(2);
                     this.reserveProList[index].count=count-1;
                 }
             },
