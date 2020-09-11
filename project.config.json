@@ -1,16 +1,32 @@
 {
-    "description": "项目配置文件",
-    "packOptions": {
-        "ignore": []
-    },
-    "setting": {
-        "urlCheck": true,
-        "es6": true,
-        "postcss": true,
-        "minified": true,
-        "newFeature": true,
-        "nodeModules": true,
-        "uglifyFileName": false
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "nodeModules": true,
+    "uglifyFileName": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.6.0",
+  "appid": "wx67127c10ce9c598c",
+  "projectname": "%E5%BF%AB%E4%B9%90%E6%9D%BE",
+  "miniprogramRoot": "dist/",
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
     },
     "compileType": "miniprogram",
     "libVersion": "2.6.0",
