@@ -47,19 +47,23 @@
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
     "plugin": {
       "current": -1,
       "list": []
     },
     "game": {
+      "current": -1,
+      "list": []
+    },
+    "gamePlugin": {
+      "current": -1,
+      "list": []
+    },
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
       "current": -1,
       "list": []
     },
@@ -193,6 +197,12 @@
           "name": "ticket",
           "pathName": "pages/user/ticket/main",
           "query": "id=239",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "pages/userInfo/consumeCards/main",
+          "pathName": "pages/userInfo/consumeCards/main",
           "scene": null
         }
       ]
