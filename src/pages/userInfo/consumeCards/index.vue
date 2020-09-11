@@ -33,6 +33,7 @@
                                     <h3 v-if="tab['state'] ===1" style="font-size:20px">可享受<span style="color:red">无门槛</span>现金抵用券</h3>
                                     <h3 v-else style="font-size:20px">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
                                     <p style="font-size:13px" >有效期：{{tab.start_time}}至{{tab['end_time']}}</p>
+                                    <p style="font-size:13px">使用场景：{{tab.used_scene}}</p>
                                     <div class="card-bottom">
                                         <span class="money">￥{{tab['card_remain_amount']}}<span style="color:#999999;font-size:20px">现金抵用</span></span>
                                         <span  :class="tab['state'] !=1 ? 'uncomactive' : 'comactive'" v-if="tab['state']!=0" @click="consumptionDetails(tab['record_id'])">消费明细</span>
@@ -159,7 +160,7 @@
         width: 100%;
         /* position: relative; */
         overflow: hidden;
-        margin-top: 30px;
+        margin-top: 25rpx;
         margin-left: -10px;
 
 

@@ -47,6 +47,7 @@
             可享受
             <span style="color:red">无门槛</span>现金抵用券
           </h3>
+          <p style="font-size:13px">使用场景：{{consumerCard.used_scene}}</p>
         </div>
         <div class="purpose">
           <span style="font-weight: 700;margin:0 10px;">￥{{consumerCard['card_remain_amount']}}</span><span style="color:#ccc">现金抵用</span>
