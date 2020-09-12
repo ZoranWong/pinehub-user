@@ -23,15 +23,15 @@
                     <swiper   class="scroll-view_H">
                         <swiper-item  v-for="(tab,index) in myConsumeCards" :key="index"  style="position: relative;height:500rpx;margin-left:10px">
                             <img v-if="tab['state'] ===1" style="width:340px;height:300rpx;border-radius: 5px;" src="../../../../static/icons/card.png" alt="">
-                            <img v-else style="width:340px;height:300rpx;border-radius: 5px;" src="../../../../static/icons/h_card.png" alt="">
+                            <img v-else style="width:340px;height:320rpx;border-radius: 5px;" src="../../../../static/icons/h_card.png" alt="">
                                 <div class="breakfast">
                                     <div style="width:340px">
-                                        <h2 style="font-size:30px;display: inline-block;">{{tab['card_name']}}</h2>
-                                        <h3 style="font-size:20px;display: inline-block;position: absolute;right:25px" >{{tab['state_desc']}}</h3>
+                                        <h2 style="font-size:25px;display: inline-block;">{{tab['card_name']}}</h2>
+                                        <h3 style="font-size:18px;display: inline-block;position: absolute;right:20px" >{{tab['state_desc']}}</h3>
                                     </div>
                                     <p style="font-size:11px">CONSUMER CARD</p>
                                     <h3 v-if="tab['state'] ===1" style="font-size:20px">可享受<span style="color:red">无门槛</span>现金抵用券</h3>
-                                    <h3 v-else style="font-size:20px">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
+                                    <h3 v-else style="font-size:18px">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
                                     <p style="font-size:13px" >有效期：{{tab.start_time}}至{{tab['end_time']}}</p>
                                     <p style="font-size:13px">使用场景：{{tab.used_scene}}</p>
                                     <div class="card-bottom">
@@ -160,7 +160,7 @@
         width: 100%;
         /* position: relative; */
         overflow: hidden;
-        margin-top: 25rpx;
+        margin-top: 50rpx;
         margin-left: -10px;
 
 
@@ -224,7 +224,7 @@
     .scroll-view_H{
         /* overflow-x: auto; */
         /* overflow-y: hidden; */
-        height: 400rpx;
+        height: 420rpx;
         width: 100%;
         display: flex;
         white-space: nowrap;
