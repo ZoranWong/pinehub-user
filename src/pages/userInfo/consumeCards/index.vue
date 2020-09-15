@@ -18,9 +18,8 @@
                 </ul>
             </div> -->
             <!-- 工会券 -->
-           
+
                 <div class="page-section-spacing " v-if="myConsumeCards.length">
-                    <!-- //v-if="myConsumeCards.length" -->
                     <swiper   class="scroll-view_H">
                         <swiper-item  v-for="(tab,index) in myConsumeCards" :key="index"  style="position: relative;height:500rpx;margin-left:10px">
                             <img v-if="tab['state'] ===1" style="width:340px;height:300rpx;border-radius: 5px;" src="../../../../static/icons/card.png" alt="">
@@ -40,7 +39,7 @@
                                         <span  class="comactive" v-else  @click="Active(tab['record_id'])">确定激活</span>
                                     </div>
                                 </div>
-                                
+
                         </swiper-item >
                     </swiper>
                 </div>
@@ -116,10 +115,11 @@
         },
         methods: {
             // 确认激活
-            Active(id){
-                this.$command('ACTIVATECARD',id);
+            async Active(id){
+                await this.$command('ACTIVATECARD',id);
                 // this.onShow();
-
+                await this.$command('LOAD_EXCHANGE_RECORDS')
+                await this.$command('LOAD_MY_CONSUME_CARDS')
             },
             // 消费明细
             consumptionDetails(id){
@@ -146,7 +146,7 @@
         mounted () {
         	this.$command('LOAD_EXCHANGE_RECORDS')
         	this.$command('LOAD_MY_CONSUME_CARDS')
-        }
+		}
 	}
 </script>
 <style>
@@ -161,8 +161,8 @@
         overflow: hidden;
         margin-top: 30px;
         margin-left: -10px;
-        
-        
+
+
     }
   .money{
         font-size: 30px;
@@ -189,7 +189,7 @@
         /* background: url(https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/meiqian.png) no-repeat; */
     }
 
-    
+
 
     .body{
         background-color: #fff;

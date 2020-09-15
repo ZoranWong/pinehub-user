@@ -4,7 +4,7 @@
         <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
 
-        <Coupon :consumerCard='consumerCard' v-if="consumerCard"  @close="closeCoupon"></Coupon>
+        <Coupon :consumerCard='consumerCard' v-if="showConsumerCardPopup"  @close="closeCoupon"></Coupon>
         <!-- <Coupon   @close="closeCoupon"></Coupon> -->
 
         <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
@@ -41,8 +41,9 @@
             </div>
 
             <div class="extra">
+                <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
+<!--                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">-->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
-                <img src="../../../fast-food.png" @click="boxLunchOrder" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -81,8 +82,10 @@
                 <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
-                    :products="act['entry_template'][0].data" :id="act.id" :image="act['entry_template'][0].image"
-                    @do="goActDetails(act)" @addToCart="addToCart"
+                    :products="act['entry_template'][0].data" :id="act.id"
+                    :image="act['entry_template'][0].image"
+                    @do="goActDetails(act)"
+                    @addToCart="addToCart"
                 />
             </div>
 
@@ -155,8 +158,6 @@
                 alpha: 1,
                 timer: null,
                 showAuth: false,
-
-                consumerCard: null,
                 showBindMobile: false,
                 visible:false,
                 NearByshopName:'您附近没有门店哦～',
@@ -168,9 +169,6 @@
             };
         },
         computed: {
-            myConsumeCards () {
-                return this.model.account.myConsumeCards;
-            },
             shopCode () {
                 return this.model.account.shopCode
             },
@@ -262,6 +260,12 @@
             },
             notActivecards(){
                 return this.model.account.notActivecards;
+            },
+            consumerCard() {
+                return this.model.account.consumerCard;
+            },
+            showConsumerCardPopup () {
+                return this.model.account.showConsumerCardPopup;
             }
         },
         watch: {
@@ -279,7 +283,7 @@
             hasToken (value) {
                 if (this.hasToken) {
                     this.$command('LOAD_ACCOUNT', false);
-                 
+
                 }
             },
             registered (value) {
@@ -295,6 +299,7 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
+                    console.log('==========是否有激活卡   调取没啊=======================')
                     this.$command('ACQUISTION_NOT_ACTIVE')//是否有激活卡
                 }
                 if (this.storeId && this.registered && this.isMember) {
@@ -321,24 +326,25 @@
                 // 有消费卡可以领取，处理相关业务
                 if(val.length>0){
                     // 判断请求回来的消费卡id是否存在缓存id数组里面的，不存在弹出领取通知
-                    this.getcoupon = true;
+                    // this.getcoupon = true;
                     // }
                     for (let index = 0; index < this.model.account.notActivecards.length; index++) {
                         const card = this.model.account.notActivecards[index];
+                        console.log("============================ consumer card 0 ========================", [
+                            this.model.account.consumerCardIds.indexOf(card['record_id'])
+                        ])
                         if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
-                            this.consumerCard = card;
+                            console.log("============================ consumer card 1 ========================", card)
+                            this.model.account.dispatch('addConsumerCard', {card: card});
                             // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
                             return;
-                        } 
+                        }
                     }
-                    
+
                 }
             }
         },
         mounted () {
-            // console.log(this.notActivecards, "是否有激活卡")
-            //this.$command('LOAD_MY_CONSUME_CARDS')//激活卡
-            // console.log(this.myConsumeCards,11111111111111111)
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -363,17 +369,6 @@
                     this.bindConsumer()
                 }
             }
-            // wx.showModal({
-            //     title: '提示',
-            //     content: '这是一个模态弹窗',
-            //     success (res) {
-            //         if (res.confirm) {
-            //         console.log('用户点击确定')
-            //         } else if (res.cancel) {
-            //         console.log('用户点击取消')
-            //         }
-            //     }
-            //     })
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -414,7 +409,9 @@
             if (this.registered && this.isMember) {
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
-          
+        },
+        onHide() {
+             this.model.account.dispatch('addConsumerCard', {card: null});
         },
         onLoad (options) {
             if (options.q) {
@@ -426,9 +423,6 @@
                 if (query['page']) {
                     this.$command('REDIRECT_TO', query['page'], 'push');
                 }
-            }
-            if(options.shop_id){
-                this.shopId=options.shop_id;
             }
             wx.onAppShow(() => {
                 this.ticketShow = true;
@@ -444,14 +438,14 @@
                         lat:latitude,//当前位置的 纬度
                         lng:longitude//当前位置的 经度
                     }
-                    this.$command('SF_LAST_ADDRESS',param,this);
+                    // this.$command('SF_LAST_ADDRESS',param,this);
                 }
             })
         },
         methods: {
             // 获取优惠券
             closeCoupon(){
-                this.consumerCard = null;
+                this.model.account.dispatch("addConsumerCard", {card: null});
             },
 
             boxLunchOrder:function(){
@@ -651,7 +645,7 @@
                     })
                 } else {
                     if (this.registered) {
-                        if ((router === 'user.QingSongKungfu' || router === 'societyFood.fastFoot') && !this.isMember) {
+                        if (router === 'user.QingSongKungfu' && !this.isMember) {
                             this.showBindMobile = true
                         } else {
                             this.$command('REDIRECT_TO', router, 'push', options);

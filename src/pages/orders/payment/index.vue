@@ -3,7 +3,7 @@
     <div class="body">
         <CustomHeader :title="title" :needReturn="true" />
         <Auth v-if="getAuth" @close="closeAuth" @pay="pay" :slug="slug" />
-        <Coupon :consumerCard='consumerCard' v-if="consumerCard"  @close="closeCoupon"></Coupon>
+        <Coupon :consumerCard='consumerCard' v-if="showConsumerCardPopup"  @close="closeCoupon"></Coupon>
         <div v-if="needBindMobile" class="bgff user-mobile-box">
             <div class="user_mobile_box_container">
                 <form report-submit="true" @submit="uploadFormId">
@@ -61,9 +61,7 @@
             paymentPopupShow: false,
             title: '快乐松扫码付',
 			getAuth: false,
-            slug: 'payment',
-            consumerCard: null,
-            // activationCards:[]
+            slug: 'payment'
         },
         components: {
             'payment-popup': PaymentPopup,
@@ -72,6 +70,12 @@
             Coupon
         },
         computed: {
+            consumerCard () {
+                return this.model.account.consumerCard;
+            },
+            showConsumerCardPopup () {
+                return this.model.account.showConsumerCardPopup;
+            },
             logo () {
                 return this.$store.getters['model.app/logo']
             },
@@ -126,8 +130,7 @@
                     for (let index = 0; index < this.model.account.notActivecards.length; index++) {
                         const card = this.model.account.notActivecards[index];
                         if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
-                            this.consumerCard = card;
-                            console.log("-------------=======++++++++=======-------------", this.consumerCardIds);
+                            this.model.account.dispatch('addConsumerCard', {card: card})
                             // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
                             return;
                         }
@@ -139,7 +142,7 @@
         methods: {
             // 获取优惠券
             closeCoupon(){
-                this.consumerCard = null;
+                this.model.account.dispatch('addConsumerCard', {card: null});
             },
 			getPhoneNumber (e) {
 				this.$command('SET_USER_MOBILE', e);
@@ -165,6 +168,7 @@
                 await this.$command('APP_ACCESS');
                 // await this.$command('SIGN_IN', this.accessToken);
                 if(this.isMember){
+                    this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
                     this.$command('GET_ACTIVE_CARD', this);
                 }
 
@@ -220,8 +224,12 @@
                 //提取链接中的数字，也就是链接中的参数id，/\d+/ 为正则表达式
                 this.storeId = scan_url.match(/\d+/)[0];
             }
-        },created(){
+        },
+        created(){
             //  this.$command('GET_ACTIVE_CARD',this);//已激活消费卡
+        },
+        onHide() {
+            console.log("--------------------- hide ---------------------")
         }
     }
 </script>

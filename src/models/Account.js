@@ -93,11 +93,17 @@ export default class Account extends Model {
             notActivecards () {
                 return this.state.notActivecards;
             },
-            getActivationCards(){
+            getActivationCards () {
                 return this.state.getActivationCards
             },
-            consumerCardIds() {
+            consumerCardIds () {
                 return this.state.consumerCardIds;
+            },
+            consumerCard () {
+                return this.state.consumerCard;
+            },
+            showConsumerCardPopup () {
+                return this.state.consumerCard && this.state.consumerCardIds.indexOf(this.state.consumerCard['record_id']) === -1;
             }
         });
     }
@@ -140,11 +146,14 @@ export default class Account extends Model {
             newCoupons: [],
             exchangedRecords: [],
             myConsumeCards: [],
-            getActivationCards:[],
-            notActivecards: [],
             cardDetails: [],
+
+            getActivationCards: [],
+            notActivecards: [],
+
             totalCardCount: 0,
-            consumerCardIds:[]
+            consumerCardIds: [],
+            consumerCard: null
         };
     }
 
@@ -177,9 +186,24 @@ export default class Account extends Model {
             }
         });
 
+        this.addEventListener('addConsumerCard', ({card}) => {
+            this.state.consumerCard = card;
+
+            try {
+                this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
         this.addEventListener('addConsumerCardId', ({id}) => {
+            console.log("============= 99999999999999 ==========", [this.state.consumerCardIds.indexOf(id)])
+            if (this.state.consumerCardIds.indexOf(id) !== -1) {
+                return;
+            }
             this.state.consumerCardIds.push(id);
-            console.log("未激活消费卡的id缓存")
+            console.log('未激活消费卡的id缓存', id)
+
             try {
                 this.service('mp.storage').set('account', this.state);
             } catch (e) {
@@ -303,9 +327,9 @@ export default class Account extends Model {
         this.addEventListener('clearNewCoupons', function () {
             this.state.newCoupons = [];
         });
-        // notActivecard
 
-        this.addEventListener('saveAcquisitionNotActive',function({notActivecards}){
+
+        this.addEventListener('saveAcquisitionNotActive', function ({notActivecards}) {
             this.state.notActivecards = notActivecards;
             try {
                 return this.service('mp.storage').set('account', this.state);
@@ -313,8 +337,7 @@ export default class Account extends Model {
                 return false;
             }
         })
-        this.addEventListener('clearAcquisitionNotActive',function(){
-            
+        this.addEventListener('clearAcquisitionNotActive', function () {
             this.state.notActivecards = [];
             try {
                 return this.service('mp.storage').set('account', this.state);
@@ -323,8 +346,19 @@ export default class Account extends Model {
             }
         })
 
+
+
+        this.addEventListener('saveGetActiveCard', function ({getActivationCards}) {
+            this.state.getActivationCards = getActivationCards;
+            try {
+                return this.service('mp.storage').set('account', this.state);
+            } catch (e) {
+                return false;
+            }
+        });
+
         this.addEventListener('saveMyConsumeCards', function ({cards}) {
-           _.map(cards, card => {
+           _.map(cards, (card) => {
                this.state.myConsumeCards.push(card)
            })
         });
@@ -333,29 +367,16 @@ export default class Account extends Model {
         });
 
         this.addEventListener('saveExchangedRecords', function ({list}) {
-            _.map(list, item => {
+            _.map(list, (item) => {
                 this.state.exchangedRecords.push(item)
             })
         });
-
-        this.addEventListener('saveGetActiveCard', function ({getActivationCards}) {
-           
-            this.state.getActivationCards=getActivationCards;
-            // try {
-            //     return this.service('mp.storage').set('account', this.state);
-            // } catch (e) {
-            //     return false;
-            // }
-        });
-
-
-
         this.addEventListener('clearExchangedRecords', function () {
             this.state.exchangedRecords = []
         })
 
         this.addEventListener('saveCardDetails', function ({list}) {
-            _.map(list, item => {
+            _.map(list, (item) => {
                 this.state.cardDetails.push(item)
             })
         });

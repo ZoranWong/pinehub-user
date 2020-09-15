@@ -21,6 +21,7 @@
                             <i>账户余额</i>
                         </li>
                         <li @click="toConsumeCards">
+                            <s class="my_card_new" v-if="notActivecards.length>0"></s>
                             <em>{{totalCardCount || 0}}</em>
                             <i>消费卡</i>
                         </li>
@@ -204,6 +205,9 @@
             },
             totalCardCount () {
                 return this.model.account.totalCardCount
+            },
+            notActivecards(){
+                return this.model.account.notActivecards;
             }
         },
         watch: {
@@ -292,6 +296,7 @@
                         })
                     } else {
                         this.$command('REDIRECT_TO', 'user.cards', 'push');
+                        this.$command('ACQUISTION_NOT_ACTIVE')//是否有消费卡可领取
                     }
                 }
             },
