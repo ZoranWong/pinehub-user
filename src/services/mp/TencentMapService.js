@@ -85,8 +85,8 @@ export default class TencentMapService extends Service {
         return new Promise((resolve, reject) => {
             this.map.getSuggestion({
                 keyword: e,
-                region: '合肥',
-                page_size: 8,
+                region: '全国',
+                page_size: 10,
                 success: function (res) {
                     resolve(res.data)
                 },

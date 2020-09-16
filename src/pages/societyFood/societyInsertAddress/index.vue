@@ -125,7 +125,7 @@
                 var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
                 s = s * 6378.137;//地球半径
                 s = Math.round(s * 10000) / 10000;
-                return Math.ceil(s);
+                return s.toFixed(2);
             },
             async searchMapAddress(){
                 this.searchMapAddressList=[];
@@ -173,14 +173,14 @@
                     is_default:this.isDefault,
                     tag:this.selectedTag,
                     lat:this.latitude,
-                    lng:this.longitude
+                    lng:this.longitude,
+                    shop_id:this.shopDetail.shop_id,
+                    is_still_save:this.stillSave
                 }
                 if(this.addressObject && this.addressObject.id){
                     this.$command('SF_UPDATE_USER_ADDRESS',this.addressObject.id,param,this);
                     return false;
                 }
-                param["shop_id"]=this.shopDetail.shopId;
-                param["is_still_save"]=this.stillSave;
                 this.$command('SF_INSERT_USER_ADDRESS', param,this);
 
             },
@@ -248,12 +248,18 @@
             this.shopDetail=this.$route.query.shopDetail;
             let addressObject=this.$route.query.address;
             this.addressObject=addressObject;
+            this.mapAddress="";
+            this.telephone="";
+            this.contactsPeople="";
+            this.addressDistance=0;
+            this.isDefault=true;
+            this.selectedTag="家";
+            this.provinceCode="";
+            this.cityCode="";
+            this.areaCode="";
             if(addressObject){
                 this.mapAddress=addressObject.detail_address;
                 this.telephone=addressObject.consignee_mobile_phone;
-                this.provinceCode=addressObject.province.name;
-                this.cityCode=addressObject.city.name;
-                this.areaCode=addressObject.area.name;
                 this.contactsPeople=addressObject.consignee_name;
                 this.addressDistance=this.distance(addressObject.lat,addressObject.lng);
                 this.isDefault=addressObject.is_default;
@@ -264,6 +270,9 @@
                 if(addressObject.tag=="school"){
                     this.selectedTag="学校";
                 }
+                this.provinceCode=addressObject.province.name;
+                this.cityCode=addressObject.city.name;
+                this.areaCode=addressObject.area.name;
             }
         },
         watch:{

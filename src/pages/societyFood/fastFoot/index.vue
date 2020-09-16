@@ -45,17 +45,19 @@
             </div>
         </div>
         <div class="change-btn">
-            <view :class="{'selectTab':status === '1'}" @click="selectProject('1')">立即订餐</view>
-            <view :class="{'selectTab':status === '2'}" @click="selectProject('2')">明日预定</view>
+            <view :class="{'selectTab':status === '1' && itemObj.state}" @click="selectProject('1')">立即订餐</view>
+            <view :class="{'selectTab':status === '2' && itemObj.state}" @click="selectProject('2')">明日预定</view>
             <view class="more-product" @click="searchMoreProduct">查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt=""></view>
         </div>
         <scroll-view scroll-y class="scroll-view_H">
-            <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="index" v-if="status=='1'">
-                <view class="product-img"><img :src="item.product_avatar"></view>
+            <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="item.product_stock_id" v-if="status=='1'">
+                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id}})">
+                    <img :src="item.product_avatar">
+                </view>
                 <view class="product-info">
                     <view class="pro-name">{{item.product_name}}</view>
                     <view class="pro-merit">{{item.product_intro}}</view>
-                    <view class="pro-sales">销量 {{item.sales}}</view>
+                    <view class="pro-sales">销量 {{item.sales}} <span v-if="item.stock_num<=5">剩余分数 {{item.stock_num}}</span></view>
                     <view class="pro-price">
                         <view class="left">
                             <span style="color: #FC3C2F;margin-right: 5px;font-size: 16px">¥{{item.retail_price}}</span>
@@ -69,8 +71,10 @@
                     </view>
                 </view>
             </view>
-            <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="index" v-if="status=='2'">
-                <view class="product-img"><img :src="item.avatar"></view>
+            <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="item.product_id" v-if="status=='2'">
+                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id}})">
+                    <img :src="item.avatar">
+                </view>
                 <view class="product-info">
                     <view class="pro-name">{{item.name}}</view>
                     <view class="pro-merit">{{item.intro}}</view>
@@ -95,7 +99,6 @@
             <div class="order-info-content" v-for="(item,index) in orderInfoList" :key="index">
                 <view class="content-title">
                     <view class="customer-info">
-                        <view>5.</view>
                         <view class="head-img"><img :src="item.user_avatar" alt=""></view>
                         <view>
                             <view style="color: #111111;font-size: 14pt">{{item.user_nickname}}</view>
@@ -105,7 +108,7 @@
                     <view style="float: right;color: #999999;font-size: 14pt;margin-right: 15pt;height: inherit;line-height: 34pt">¥ {{item.total_fee}}</view>
                 </view>
                 <view class="content-order">
-                    <span v-for="(obj,sign) in item.order_products" :key="index+sign">{{obj.product_name+'X'+obj.quantity}}</span>
+                    <span>{{item.historyOrder}}</span>
                 </view>
             </div>
             <div class="click-search-more" @click="searchMoreOrderInfo" v-if="showMoreBtn">点击查看更多…</div>
@@ -117,7 +120,7 @@
                         <view class="demo-badge"><img src="../img/book.png"/></view>
                     </i-badge>
                     <view>
-                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{oncePrice}}</view>
+                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{onceOrderCount<=0?0:oncePrice}}</view>
                         <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
@@ -129,7 +132,7 @@
                         <view class="demo-badge"><img src="../img/book.png"/></view>
                     </i-badge>
                     <view>
-                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reservePrice}}</view>
+                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reserveOrderCount<=0?0:reservePrice}}</view>
                         <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
@@ -165,6 +168,9 @@
             };
         },
         methods:{
+            redirectTo (router, options = {}) {
+                this.$command('REDIRECT_TO', router, 'push', options);
+            },
             onShareAppMessage: function (res) {
                 let that =this;
                 return {
@@ -194,6 +200,14 @@
             },
             //去结算
             completePayment:function(){
+                if(!this.itemObj.state){
+                    wx.showToast({
+                        title: '门店休息中,换一家看看吧',
+                        icon: 'success',
+                        duration: 1000
+                    })
+                    return false;
+                }
                 if(this.status=='1' && !this.isCompletePayment){
                     wx.showToast({
                         title: '门店已下班,您可预订明日',
@@ -237,7 +251,7 @@
                         return false;
                     }
                 }
-                if((this.itemObj.support_self_pick || this.itemObj.support_home_delivery) && this.selectedStyle=="0"){
+                if(this.selectedStyle=="0"){
                     wx.showToast({
                         title: '请选择送餐上门或者预定自提',
                         icon: 'none',
@@ -286,12 +300,20 @@
                 })
             },
             backPage:function () {
-                this.$command('REDIRECT_TO','index','replace')
+                this.$command('REDIRECT_TO', 'index', 'reLaunch')
             },
             selectedFun:function(sign){
                 this.selectedStyle=sign;
             },
             selectProject:function (status) {
+                if(!this.itemObj.state){
+                    wx.showToast({
+                        title: '门店休息中,换一家看看吧',
+                        icon: 'success',
+                        duration: 1000
+                    })
+                    return false;
+                }
                 this.status=status;
                 if(status=='1'){
                     let orderInfoList=this.itemObj.order_now.orders;
@@ -315,18 +337,41 @@
             },
             //查看更多商品
             searchMoreProduct:function () {
-                this.$command('REDIRECT_TO', "user.store", 'push');
+                wx.getLocation({
+                    type: 'wgs84',
+                    success: (res)=> {
+                        let latitude = res.latitude
+                        let longitude = res.longitude
+                        this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
+                    }
+                })
             },
             //查看更多订餐信息
             searchMoreOrderInfo:function () {
+                let orderInfoList=this.itemObj.order_tomorrow.orders;
                 if(this.status=='1'){
-                    this.orderInfoList=this.itemObj.order_now.orders;
-                }else {
-                    this.orderInfoList=this.itemObj.order_tomorrow.orders;
+                    let orderInfoList=this.itemObj.order_now.orders;
                 }
+                this.orderInfoList=orderInfoList;
             },
             //添加点餐
             addOrderFood:function (item,index) {
+                if(!this.itemObj.state){
+                    wx.showToast({
+                        title: '门店休息中,换一家看看吧',
+                        icon: 'success',
+                        duration: 1000
+                    })
+                    return false;
+                }
+                if(this.status=='1' && !this.isCompletePayment){
+                    wx.showToast({
+                        title: '门店已下班,您可预订明日',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                    return false;
+                }
                 let shopId=this.itemObj.shop_id;
                 let productId=item.product_stock_id;
                 let stockNum=item.stock_num;//库存数量
@@ -353,9 +398,6 @@
                     }else{
                         this.addCart(shopId,productId,6);
                     }
-                    this.onceOrderCount++;
-                    let oncePrice=this.oncePrice+item.retail_price;
-                    this.oncePrice=oncePrice.toFixed(2);
                     this.atOnceProList[index].count=count+1;
                 }else {
                     if(this.onceOrderCount>0){
@@ -372,9 +414,6 @@
                     }else{
                         this.addCart(shopId,productId,7);
                     }
-                    this.reserveOrderCount++;
-                    let reservePrice=this.reservePrice+item.retail_price;
-                    this.reservePrice=reservePrice.toFixed(2);
                     this.reserveProList[index].count=count+1;
                 }
             },
@@ -389,9 +428,7 @@
                     }else{
                         this.deleteCart(shopId,productId,6);
                     }
-                    this.onceOrderCount--;
-                    let oncePrice=this.oncePrice-item.retail_price;
-                    this.oncePrice=oncePrice.toFixed(2);
+                    let oncePrice=parseInt(this.oncePrice)-item.retail_price;
                     this.atOnceProList[index].count=count-1;
                 }else {
                     let count=this.reserveProList[index].count;
@@ -400,14 +437,11 @@
                     }else{
                         this.deleteCart(shopId,productId,7);
                     }
-                    this.reserveOrderCount--;
-                    let reservePrice=this.reservePrice-item.retail_price;
-                    this.reservePrice=reservePrice.toFixed(2);
                     this.reserveProList[index].count=count-1;
                 }
             },
             deleteCart:function(shopId,productId,type){
-                this.$command('SF_DEL_CART_SHOP',shopId,productId,type);
+                this.$command('SF_DEL_CART_SHOP',shopId,productId,type,this);
             },
             addCart:function(shopId,productId,type){
                 let param={
@@ -415,7 +449,7 @@
                     product_stock_id:productId,
                     cart_type:type
                 }
-                this.$command('SF_ADD_CART',param);
+                this.$command('SF_ADD_CART',param,this);
             },
             updateCart:function(shopId,productId,type,count){
                 let param={
@@ -424,16 +458,53 @@
                     cart_type:type,
                     buy_num:count
                 }
-                this.$command('SF_UPDATE_CART',param);
+                this.$command('SF_UPDATE_CART',param,this);
+            },
+            setOrderInfo:function(){
+                for (let i = 0; i <this.itemObj.order_now.orders.length ; i++) {
+                    let historyOrder=null;
+                    let orderProducts=this.itemObj.order_now.orders[i].order_products;
+                    for (let j = 0; j <orderProducts.length; j++) {
+                        let productName=orderProducts[j].product_name;
+                        let quantity=orderProducts[j].quantity;
+                        if(!historyOrder){
+                            historyOrder=productName+" X "+quantity
+                        }else {
+                            historyOrder=historyOrder+"、"+productName+" X "+quantity
+                        }
+                    }
+                    this.itemObj.order_now.orders[i]["historyOrder"]=historyOrder;
+                }
+                for (let i = 0; i <this.itemObj.order_tomorrow.orders.length ; i++) {
+                    let historyOrder=null;
+                    let orderProducts=this.itemObj.order_tomorrow.orders[i].order_products;
+                    for (let j = 0; j <orderProducts.length; j++) {
+                        let productName=orderProducts[j].product_name;
+                        let quantity=orderProducts[j].quantity;
+                        if(!historyOrder){
+                            historyOrder=productName+" X "+quantity
+                        }else {
+                            historyOrder=historyOrder+"、"+productName+" X "+quantity
+                        }
+                    }
+                    this.itemObj.order_tomorrow.orders[i]["historyOrder"]=historyOrder;
+                }
+                if(this.itemObj.order_now.orders.length>3){
+                    this.showMoreBtn=true;
+                    this.orderInfoList=this.itemObj.order_now.orders.slice(0,3);
+                }else {
+                    this.showMoreBtn=false;
+                    this.orderInfoList=this.itemObj.order_now.orders;
+                }
             },
             async initSearch () {
                 let shopId=this.$route.query.shopId;
-                this.shopId=shopId;
-                await this.$command('SF_SHOP_DETAIL',shopId,this);
+                if(shopId){
+                    this.shopId=shopId;
+                }
+                await this.$command('SF_SHOP_DETAIL',this.shopId,this);
                 await this.$command('SF_TOMORROW_SHOP_LIST',this);
-                await this.$command('SF_GET_CART_SHOP_LIST',shopId,this);
-                this.onceOrderCount=0;
-                this.reserveOrderCount=0;
+                await this.$command('SF_GET_CART_SHOP_LIST',this.shopId,this);
                 if(this.atOnceCartList){
                     for (let i = 0; i <this.atOnceCartList.length ; i++) {
                         let productStockId=this.atOnceCartList[i].product_stock_id;
@@ -462,10 +533,18 @@
                         }
                     }
                 }
+                this.oncePrice=this.oncePrice.toFixed(2);
+                this.reservePrice=this.reservePrice.toFixed(2);
+                this.setOrderInfo();
                 this.getSelfPickTime();
             }
         },
-        mounted() {
+        onShow(){
+            this.status="1";
+            this.onceOrderCount=0;
+            this.reserveOrderCount=0;
+            this.oncePrice=0;
+            this.reservePrice=0;
             this.initSearch();
         }
     }
@@ -506,6 +585,7 @@
         position: absolute;
         z-index: 100;
         float: left;
+        margin-left: 15px;
     }
     .back-icon ._img{
         width: 32rpx;
@@ -513,7 +593,7 @@
     }
     .shop-info-show{
         width:96%;
-        height:256px;
+        height:225px;
         left: 2%;
         background:rgba(255,255,255,1);
         box-shadow:0 0 10px 0 rgba(204,204,204,0.6);
@@ -657,7 +737,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 176px;
+        margin-top: 153px;
     }
     .change-btn view{
         width: 33.3%;
@@ -695,7 +775,7 @@
     .scroll-view_H{
         overflow-x: hidden;
         overflow-y: auto;
-        height: calc(100vh - 490px);
+        height: calc(100vh - 470px);
         width: 100%;
     }
     .product-list-detail{
@@ -759,7 +839,8 @@
         height: 50px;
         justify-content: left;
         display: flex;
-        padding-left: 15px;
+        padding-left: 23px;
+        padding-top: 10PX;
     }
     .order-info-content{
         width: 100%;

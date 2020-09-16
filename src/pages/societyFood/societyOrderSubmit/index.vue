@@ -8,8 +8,8 @@
         <div class="background"><div class="top"></div><div class="bottom"></div></div>
         <div class="totalContainer" :style="{height: mainHeight + 'px', overflow: 'auto'}">
             <div id="tabs" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
-                <div class="tabItem" v-if="shopDetail.support_self_pick" :class="{'active':activeTab === 'pick'}" @click="changeTab('pick')">到店自提</div>
-                <div class="tabItem" v-if="shopDetail.support_home_delivery" :class="{'active':activeTab === 'send'}" @click="changeTab('send')">送餐上门</div>
+                <div class="tabItem" v-if="shopDetail.support_self_pick" :class="{'active':activeTab == 'pick'}" @click="changeTab('pick')">到店自提</div>
+                <div class="tabItem" v-if="shopDetail.support_home_delivery" :class="{'active':activeTab == 'send'}" @click="changeTab('send')">送餐上门</div>
             </div>
             <div class="sendContainer" v-if="activeTab === 'send'">
                 <div class="top" v-if="shopDetail.home_delivery_type!='FIXED_ADD'">
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="topRight" v-if="shopAddress">
+                    <div class="topRight" v-if="shopAddress" @click="showShopInfo">
                         <span>距您{{distanceForYou}}</span>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                         <span v-if="!isLoadAll">展开更多</span>
                         <span v-else>点击收起</span>
                         <img v-if="isLoadAll" src="../img/top-arrow.png" alt="">
-                        <img v-else src="../img/bottom-arrow.png" alt="">
+                        <img v-else src="../../../../static/images/bottom-arrow.png" alt="">
                     </div>
                 </ul>
                 <ul id="total">
@@ -198,7 +198,7 @@
                 <view class='frame'>
                     <view class='title-wrapper'>选择收货地址</view>
                     <view class="modal-close" @click="closeAddressTab"><img src='../../../../static/icons/cateClose.jpg'></img></view>
-                    <view style="width: 96%;margin-left: 2%;height: 297px;overflow-x: hidden;overflow-y: auto">
+                    <view style="width: 96%;margin-left: 2%;height: 297px;overflow-x: hidden;overflow-y: auto" v-if="addressList.length>0">
                         <view class="address-list-show" v-for="(item,index) in addressList" :key="index">
                             <i-radio :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index,item)"></i-radio>
                             <view class="address-middle">
@@ -217,11 +217,16 @@
                             <view class="address-btn" @click="editAddress(item)">编辑</view>
                         </view>
                     </view>
+                    <view v-else class="no-data-style"  :style="{'backgroundImage':'url(' + emptyPoint + ')'}"></view>
                     <view class="operation" style="margin-top: 10px"><button @click="insertFoodAddress">新增送餐地址</button></view>
                 </view>
             </view>
         </view>
-
+        <i-modal class="home-modal" :visible="shopInfoVisible" :show-ok="showBtn" @cancel="handleClose">
+            <view>{{shopInfo.name}}</view>
+            <view>距您{{distanceForYou}}</view>
+            <view>{{shopInfo.address}}</view>
+        </i-modal>
     </div>
 </template>
 <script>
@@ -234,7 +239,10 @@
     export default {
         data () {
             return {
+                emptyPoint:require("../../../../static/images/empty/empty_point.jpg"),
                 showAddressTab:false,
+                shopInfoVisible:false,
+                showBtn:false,
                 checkedRadio:-1,
                 title: '提交订单',
                 addresses:{},
@@ -263,7 +271,7 @@
                 type: '',
                 showTips: false,
                 showPoints:false,
-                activeTab: 'pick',
+                activeTab: '',
                 background:require('../img/left.png'),
                 backgroundPosition: 'left center',
                 products: [],
@@ -275,8 +283,7 @@
                 couponTatal:0,
                 showTimeOut:false,
                 distanceForYou:"",
-                selfPickTime:"",
-                selectedProduct: []
+                selfPickTime:""
             };
         },
         computed: {
@@ -306,6 +313,12 @@
             }
         },
         methods: {
+            showShopInfo:function(){
+                this.shopInfoVisible=true;
+            },
+            handleClose:function(){
+                this.shopInfoVisible=false;
+            },
             getDistance:function() {
                 var La1 = parseInt(this.latitude) * Math.PI / 180.0;
                 var La2 = (this.shopDetail.shop_lat) * Math.PI / 180.0;
@@ -314,7 +327,7 @@
                 var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
                 s = s * 6378.137;//地球半径
                 s = Math.round(s * 10000) / 10000;
-                this.distanceForYou=Math.ceil(s)+"m";
+                this.distanceForYou=s.toFixed(2);+"m";
             },
             getSelfPickTime:function(){
                 let homeDeliveryDate=this.shopDetail.home_delivery_time;//配送时间
@@ -371,7 +384,7 @@
                 this.showAddressTab=false;
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', '', 'back')
+                this.$command('REDIRECT_TO', 'index', 'reLaunch')
             },
             //关闭地图展示
             closePoints () {
@@ -489,6 +502,9 @@
                     param["user_address_id"]=this.addresses.id;
                     param["shop_range_address_id"]=this.rangeDelivery.shop_range_address_id;
                 }
+                if(this.couponList && this.couponList.length>0){
+                    param["coupon_records"]=this.couponList;
+                }
                 this.$command('SF_SUBMIT_ORDER',param,this)
             },
             getDate () {
@@ -582,26 +598,31 @@
                 }
             }
         },
-        onShow () {
-            this.allProducts = []
-            let selectedProduct = [];
+        onShow(){
+            let shopDetail=this.$route.query.shopDetail;
+            if(shopDetail){
+                this.$command('SF_USER_GOODS_ADDRESS',shopDetail.shop_id,this);
+            }
+        },
+        onLoad(){
+            this.couponList = []
             this.showAddressTab=false;
             this.userInfo=this.model.account.userInfo;
-            this.createOrderId="";
-        },
-        mounted () {
-            this.getDate();
             let deliveryType=this.$route.query.deliveryType;//配送方式
             this.orderType=this.$route.query.orderType;
             let shopDetail=this.$route.query.shopDetail;
             let home_delivery_time=shopDetail.home_delivery_time;
             let off_work_time=shopDetail.off_work_time;
+            this.getSendTime(home_delivery_time,off_work_time);
             let coupon=this.$route.query.coupon;
             if(coupon && coupon.length>0){
                 this.couponList=coupon;
             }
             this.shopDetail=shopDetail;
-            if(!(shopDetail.support_home_delivery && shopDetail.support_self_pick)){
+            if(shopDetail.support_home_delivery && shopDetail.support_self_pick){
+                this.background=left;
+                this.backgroundPosition='left center';
+            }else {
                 this.background="";
                 this.backgroundPosition="";
             }
@@ -613,11 +634,14 @@
                 this.deliveryFee=parseInt(this.rangeDelivery.delivery_fee);
             }
             if(deliveryType=="1"){
-                this.activeTab="send";
+                this.changeTab("send");
             }
             if(deliveryType=="2"){
-                this.activeTab="pick";
+                this.changeTab("pick");
             }
+        },
+        mounted () {
+            this.getDate();
             let param={
                 shop_id:this.shopDetail.shop_id,
                 cart_type:this.orderType=="1"?6:7
@@ -635,8 +659,6 @@
             this.getCalculate();
             this.getSelfPickTime();
             this.$command('SF_CAN_USE_COUPONS',param,this);
-            this.$command('SF_USER_GOODS_ADDRESS',this.shopDetail.shop_id,this);
-            this.getSendTime(home_delivery_time,off_work_time);
         }
     }
 </script>
@@ -713,8 +735,7 @@
         line-height: 16px;
         text-align: center;
         margin-right: 7px;
-        width: 32px;
-        margin-left: 5px;
+        width: max-content;
     }
     .address-list-show .address-middle>view{
         width: 100%;
@@ -1674,10 +1695,9 @@
 
     .operation button {
         flex: 1;
-        margin-right: 10rpx;
-        color: #FFCC00;
-        border-radius: 10rpx;
-        background: #fff;
+        color: rgba(0,0,0,.6);
+        background: #FFCC00;
+        border-radius: 1px;
         border: 1px solid #ffcc00;
         font-size: 32rpx;
     }
@@ -1687,6 +1707,10 @@
         background: #FFCC00;
         color: #fff;
     }
-
-
+    .no-data-style{
+        height: 308px;
+        width: 99%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
 </style>

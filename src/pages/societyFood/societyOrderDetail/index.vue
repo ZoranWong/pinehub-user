@@ -32,7 +32,7 @@
                         <h4>
                             <span v-if="orderDetail['delivery_type']=='HOME_DELIVERY'">送餐上门时间</span>
                             <span v-else>自提时间</span>
-                            <span>{{orderDetail['pick_date']}}</span>
+                            <span>{{orderDetail['expect_receive_date']+" "+orderDetail['expect_receive_time_start']+"-"+orderDetail['expect_receive_time_end']}}</span>
                         </h4>
                     </div>
                 </div>

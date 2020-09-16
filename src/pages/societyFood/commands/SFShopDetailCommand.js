@@ -4,21 +4,23 @@ export default class SFShopDetailCommand extends Command {
         try {
             let result = await this.service('http.societyFood').getSocietyFoodShopDetail(shopId);
             console.log("社会餐获取门店详情"+JSON.stringify(result.data));
-            that.itemObj=result.data;
-            that.money=result.data.amount_fee;
-            that.fixedDelivery=result.data.fixed_delivery[0];
-            let atOnceProList=result.data.order_now.products;
+            let itemObj=result.data;
+            that.money=itemObj.amount_fee;
+            that.fixedDelivery=itemObj.fixed_delivery[0];
+            let atOnceProList=itemObj.order_now.products;
             for (let i = 0; i <atOnceProList.length ; i++) {
                 atOnceProList[i]["count"]=0;
             }
             that.atOnceProList=atOnceProList;
-            let orderInfoList=result.data.order_now.orders;
-            if(orderInfoList.length>3){
-                that.showMoreBtn=true;
-                that.orderInfoList=orderInfoList.slice(0,3);
-            }else {
-                that.showMoreBtn=false;
-                that.orderInfoList=orderInfoList;
+            that.itemObj=itemObj;
+            if(itemObj.support_self_pick){
+                that.selectedStyle="2"
+            }
+            if(itemObj.support_home_delivery){
+                that.selectedStyle="1"
+            }
+            if(itemObj.support_home_delivery && itemObj.support_self_pick){
+                that.selectedStyle="0"
             }
         } catch (e) {
             throw e;

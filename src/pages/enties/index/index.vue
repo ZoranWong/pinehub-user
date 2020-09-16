@@ -322,6 +322,17 @@
                     this.bindConsumer()
                 }
             }
+            setTimeout(()=>{
+                let categories = this.model.user.store.categories;
+                let cates = [];
+                _.map(categories, (cate, index) => {
+                    if (index < 4) {
+                        cates.push(cate)
+                    }
+                })
+                console.log(cates)
+            }, 1000)
+
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -330,7 +341,7 @@
                 title: '青松易购首页',
                 desc: '青松易购小程序',
                 imageUrl: '',
-                path: `/pages/user/index/main?shop_code=${this.storeId || this.shopCode}`,
+                path: `/pages/enties/index/main?shop_code=${this.storeId || this.shopCode}`,
                 success: function (res) {
                     // 转发成功
                     console.log('转发成功:' + JSON.stringify(res));
@@ -411,12 +422,7 @@
                 this.visible=false;
                 this.shopId=this.shopObj.shop_id;
                 if(this.okText!="确定"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch',{
-                        query: {
-                            latitude: this.latitude,
-                            longitude: this.longitude
-                        }
-                    });
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                     return false;
                 }
                 this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'reLaunch',{
@@ -428,12 +434,7 @@
             handleMOre:function(){
                 this.visible=false;
                 if(this.cancelText!="随便看看"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch',{
-                        query: {
-                            latitude: this.latitude,
-                            longitude: this.longitude
-                        }
-                    });
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                 }
             },
             goCouponCenter () {

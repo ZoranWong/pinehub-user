@@ -46,7 +46,7 @@
                 {
                     "id": 0,
                     "name": "首页",
-                    "pathName": "pages/user/index/main",
+                    "pathName": "pages/enties/index/main",
                     "query": ""
                 },
                 {

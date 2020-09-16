@@ -2,11 +2,11 @@
     <div class="select-shop-Map">
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div class="back-icon" @click="backPage">
+            <div class="back-icon" @click="backPage" style="margin-left: 15px">
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
-        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="13" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
+        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="14" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
         <input type="text" placeholder-class="placeholder-class"  placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
         <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="showSearchContent">
             <view v-for="(item,index) in searchAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item.location)">
@@ -55,14 +55,14 @@
                 background:require('../img/left.png'),
                 backgroundPosition: 'left center',
                 currentShopId:"",
-                longitude:'',
-                latitude:'',
+                longitude:117.175296,
+                latitude:31.786548,
                 color:"#FFCC00",
                 showNearby:true,
                 addressList:[],
                 usedAddressList:[],
                 markerIcon:require('../img/location.png'),
-                initMarks:{currentTab:'0', iconPath:require('../img/mapPos.png'), id: 0, longitude:0, latitude: 0, width: 40, height: 40},
+                initMarks:{currentTab:'0', iconPath:require('../img/mapPos.png'), id: 0, latitude: 31.786548, longitude: 117.175296,width: 40, height: 40},
                 markers: [],
                 searchAddressList:[]
             };
@@ -99,7 +99,7 @@
                 console.log("当前Tab:"+val.target.key)
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', '', 'back')
+                this.$command('REDIRECT_TO', 'index', 'replace')
             },
 
             regionchange(e) {
@@ -143,7 +143,7 @@
                 var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
                 s = s * 6378.137;//地球半径
                 s = Math.round(s * 10000) / 10000;
-                return Math.ceil(s);
+                return s.toFixed(2);
             },
             markertap(e) {
                 console.log("点击地图标记点"+JSON.stringify(e.mp));
@@ -157,11 +157,22 @@
                 this.$command('SF_SHOP_LIST', param,this);
             },
             init () {
-                this.latitude=this.$route.query.latitude;
-                this.longitude=this.$route.query.longitude;
-                this.initMarks.latitude=this.$route.query.latitude;
-                this.initMarks.longitude=this.$route.query.longitude;
-                this.initSearch()
+                this.checkedRadio=-1;
+                wx.getLocation({
+                    type: 'wgs84',
+                    isHighAccuracy:true,
+                    highAccuracyExpireTime:4000,
+                    success: (res)=> {
+                        let latitude = res.latitude
+                        let longitude = res.longitude
+                        this.latitude=latitude;
+                        this.longitude=longitude;
+                        this.initMarks.latitude=latitude;
+                        this.initMarks.longitude=longitude;
+                        this.initSearch();
+                    }
+                })
+
             }
         },
         mounted(){

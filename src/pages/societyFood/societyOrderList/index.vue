@@ -29,7 +29,7 @@
                             <img :src="item.thumbnail" alt="">
                             <div id="good_info">
                                 <h3>{{item.name}}</h3>
-                                <em v-if="item.spec_value">{{item.spec_value}}</em>
+                                <em v-if="item.specValue">{{item.specValue}}</em>
                                 <div id="good_info_price">
                                     <h3>￥{{item.settlement_total_fee}}</h3>
                                     <em>X {{item.quantity}}</em>
