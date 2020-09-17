@@ -1,6 +1,7 @@
 <template>
     <div id="merchant-store">
-        <Auth v-if="getAuth" @close="closeAuth"/>
+        <!-- v-if="getAuth" -->
+        <Auth  @close="closeAuth"/>
         <div id="merchant-store_header" :style="{'backgroundImage':'url(' + background + ')'}">
             <div id="merchant-store_userinfo_baseinfo">
                 <img :src="userInfo.avatar"/>
