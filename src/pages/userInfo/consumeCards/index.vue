@@ -27,7 +27,7 @@
                                 <div class="breakfast">
                                     <div style="width:340px">
                                         <h2 style="font-size:25px;display: inline-block;">{{tab['card_name']}}</h2>
-                                        <h3 style="font-size:18px;display: inline-block;position: absolute;right:20px" >{{tab['state_desc']}}</h3>
+                                        <h3 style="font-size:14px;display: inline-block;position: absolute;right:15px" >{{tab['state_desc']}}</h3>
                                     </div>
                                     <p style="font-size:11px">CONSUMER CARD</p>
                                     <h3 v-if="tab['state'] ===1" style="font-size:20px">可享受<span style="color:red">无门槛</span>现金抵用券</h3>
@@ -154,7 +154,7 @@
     .breakfast{
         position: absolute;
         top: 10px;
-        margin-left: 20rpx;
+        margin-left: 15rpx;
     }
     .card-bottom{
         width: 100%;
