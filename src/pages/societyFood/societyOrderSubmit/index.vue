@@ -372,10 +372,10 @@
                 this.currentAddressId=item.shop_fixed_address_id;
             },
             insertFoodAddress:function(){
-                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push',{query:{"shopDetail":this.shopDetail}});
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push',{query:{"shopDetail":this.shopDetail,"activeTab":this.activeTab}});
             },
             editAddress:function(item){
-                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push', {query: {"address":item,"shopDetail":this.shopDetail}});
+                this.$command('REDIRECT_TO', 'societyFood.societyInsertAddress', 'push', {query: {"address":item,"shopDetail":this.shopDetail,"activeTab":this.activeTab}});
             },
             //选择送餐上门时查看地址列表
             selectAddressPoint:function () {
@@ -626,10 +626,13 @@
             }
         },
         onShow(){
-            this.changeTab('pick');
             let shopDetail=this.$route.query.shopDetail;
+            let activeTab=this.$route.query.activeTab;
             if(shopDetail){
                 this.$command('SF_USER_GOODS_ADDRESS',shopDetail.shop_id,this);
+            }
+            if(activeTab){
+                this.changeTab(activeTab);
             }
         },
         onLoad(){

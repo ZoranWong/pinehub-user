@@ -97,6 +97,7 @@
                 addressId:"",
                 stillSave:"1",
                 shopDetail:"",
+                activeTab:"",
                 addressObject:"",
                 addressDistance:0,
                 showMapInput:false,
@@ -244,6 +245,7 @@
             })
             this.addressObject="";
             this.shopDetail=this.$route.query.shopDetail;
+            this.activeTab=this.$route.query.activeTab;
             let addressObject=this.$route.query.address;
             this.addressObject=addressObject;
             this.mapAddress="";
