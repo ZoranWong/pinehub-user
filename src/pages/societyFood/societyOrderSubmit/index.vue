@@ -326,14 +326,13 @@
                 this.shopInfoVisible=false;
             },
             getDistance:function() {
-                var La1 = parseInt(this.latitude) * Math.PI / 180.0;
+                var La1 =this.latitude * Math.PI / 180.0;
                 var La2 = (this.shopDetail.shop_lat) * Math.PI / 180.0;
                 var La3 = La1 - La2;
-                var Lb3 = parseInt(this.longitude) * Math.PI / 180.0 - (this.shopDetail.shop_lng )* Math.PI / 180.0;
+                var Lb3 = this.longitude * Math.PI / 180.0 - (this.shopDetail.shop_lng )* Math.PI / 180.0;
                 var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
-                s = s * 6378.137;//地球半径
-                s = Math.round(s * 10000) / 10000;
-                this.distanceForYou=s.toFixed(2);+"m";
+                s = s * 6378137;//地球半径
+                this.distanceForYou= Math.round(s)+"m";
             },
             getSelfPickTime:function(){
                 let homeDeliveryDate=this.shopDetail.home_delivery_time;//配送时间

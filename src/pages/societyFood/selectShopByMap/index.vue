@@ -126,24 +126,15 @@
                 this.searchAddressList=[];
                 let result=await this.map.getSuggestion(this.searchName);
                 if(result){//姚公庙
+                    let list=[];
                     for (let i = 0; i <result.length ; i++) {
                         let lat=result[i].location.lat;
                         let lng=result[i].location.lng;
-                        console.log("查询地址经度:"+lat+"维度:"+lng);
-                        result[i]["distance"]=this.distance(lat,lng);
+                        let distance=this.distance(lat,lng);
+                        list.push({'distance':distance,'index':i});
                     }
-                    this.searchAddressList=result;
+                    this.searchAddressList=this.arraySort(list,result);
                 }
-            },
-            distance:function(lat, lng) {
-                var La1 = parseInt(this.latitude) * Math.PI / 180.0;
-                var La2 = lat * Math.PI / 180.0;
-                var La3 = La1 - La2;
-                var Lb3 = parseInt(this.longitude) * Math.PI / 180.0 - lng * Math.PI / 180.0;
-                var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
-                s = s * 6378.137;//地球半径
-                s = Math.round(s * 10000) / 10000;
-                return s.toFixed(2);
             },
             markertap(e) {
                 console.log("点击地图标记点"+JSON.stringify(e.mp));
