@@ -37,7 +37,7 @@ export default class TencentMapService extends Service {
                 },
                 success: function (res) {
                     // console.log(res);
-                    resolve(res.result.address_component.city);
+                    resolve(res.result.address_component);
                 },
                 fail: function (error) {
                     // console.log(error);

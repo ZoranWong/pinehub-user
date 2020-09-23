@@ -203,14 +203,16 @@
                             <i-radio :color="color" :checked="checkedRadio==item.id" @change="handleRadioChange(item)"></i-radio>
                             <view class="address-middle">
                                 <view>
-                                    <img class="icons" src="../../../../static/icons/company.png" alt="" v-if="item.tag === 'company'">
-                                    <img class="icons" src="../../../../static/icons/school.png" alt="" v-if="item.tag === 'school'">
-                                    <img class="icons" src="../../../../static/icons/home.png" alt="" v-if="item.tag === 'home'">
+                                    <view class="icons-show">
+                                        <img class="icons" src="../../../../static/icons/company.png" alt="" v-if="item.tag === 'company'">
+                                        <img class="icons" src="../../../../static/icons/school.png" alt="" v-if="item.tag === 'school'">
+                                        <img class="icons" src="../../../../static/icons/home.png" alt="" v-if="item.tag === 'home'">
+                                    </view>
                                     <span style="color: #FC3C2F" v-if="item.tag != 'company' && item.tag != 'school' && item.tag != 'home'">{{item.consignee_name.substr(0,1)}}</span>
                                     <view style="font-size: 15px;color: #111111">{{item.detail_address}}</view>
                                 </view>
                                 <view style="color: #757575;font-size: 13px;">
-                                    <span style="margin-left: 10px">{{item.consignee_name}}</span>
+                                    <span style="margin-left: 37px">{{item.consignee_name}}</span>
                                     <span style="margin-left: 10px">{{item.consignee_mobile_phone}}</span>
                                 </view>
                             </view>
@@ -733,6 +735,7 @@
         justify-content: left;
         align-items: center;
         display: flex;
+        padding-top: 10px;
     }
     .address-list-show .address-btn{
         height: inherit;
@@ -773,6 +776,13 @@
         height: 20px !important;
         margin-left: 7px;
         margin-right: 10px;
+    }
+    .icons-show{
+        width: 40px;
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
     }
     .pay_shop_info_address .icons{
         width: 20px !important;

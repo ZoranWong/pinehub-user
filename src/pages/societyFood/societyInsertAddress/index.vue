@@ -4,17 +4,6 @@
         <CustomHeader title="社会餐新增地址" :needReturn="true" />
         <div class="insert-society-address" :style="{'height': mapHeight + 'px'}">
             <map class="address-map" :longitude="longitude" :latitude="latitude" scale="13" show-location></map>
-            <input type="text" v-if="showMapInput" placeholder-class="placeholder-class" placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
-            <view class="search-map-content" v-if="showMapInput && searchMapAddressList.length>0">
-                <view v-for="(item,index) in searchMapAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item)">
-                    <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.title}}</view>
-                    <view>
-                        <label style="color: #333333;font-size: 11pt;font-weight: 400;letter-spacing: 1px">{{"距您"+item.distance+"m"}}</label>
-                        <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
-                        <label style="color: #999999;font-size: 11pt;font-weight: 400;">{{item.address}}</label>
-                    </view>
-                </view>
-            </view>
             <view v-if="!showMapInput" class="society-address" :style="{'height': (mapHeight-150) + 'px'}">
                 <view class="selected-map-show" v-if="!mapAddress">
                     <view class="map-btn">
@@ -88,10 +77,10 @@
                 screenHeight: 0,
                 longitude:'',
                 latitude:'',
-                searchName:"",
-                searchMapAddressList:[],
                 mapTitle:"",
                 mapAddress:"",
+                saveLatitude:"",
+                saveLongitude:"",
                 isDefault:true,
                 selectedTag:"家",
                 addressId:"",
@@ -118,33 +107,32 @@
             selectedBtn:function(sign){
                 this.selectedTag=sign;
             },
-            async searchMapAddress(){
-                this.searchMapAddressList=[];
-                let result=await this.map.getSuggestion(this.searchName);
-                if(result){//姚公庙
-                    let list=[];
-                    for (let i = 0; i <result.length ; i++) {
-                        let lat=result[i].location.lat;
-                        let lng=result[i].location.lng;
-                        let distance=this.distance(lat,lng);
-                        list.push({'distance':distance,'index':i});
-                    }
-                    this.searchMapAddressList=this.arraySort(list,result);
-                }
-            },
-            selectedPos:function (item) {
-                this.latitude=item.location.lat;
-                this.longitude=item.location.lng;
-                this.provinceCode=item.province;
-                this.cityCode=item.city;
-                this.areaCode=item.district;
-                this.addressDistance=item.distance;
-                this.mapTitle=item.title;
+            async selectedPos (item) {
+                let latitude=item.latitude;
+                let longitude=item.longitude;
+                let temp=await this.map.searchLocationToCity(latitude,longitude);
+                this.provinceCode=temp.province;
+                this.cityCode=temp.city;
+                this.areaCode=temp.district;
+                this.addressDistance=this.distance(latitude,longitude);
+                this.mapTitle=item.name;
                 this.mapAddress=item.address;
+                this.saveLatitude=latitude;
+                this.saveLongitude=longitude;
                 this.showMapInput=false;
             },
             selectMapPoint:function () {
                 this.showMapInput=true;
+                wx.chooseLocation({
+                    success:(res) => {
+                        console.log("借口哦调用成功"+JSON.stringify(res));
+                        this.selectedPos(res);
+                    },
+                    fail:(res)=>{
+                        this.showMapInput=false;
+                        console.log("借口哦调用失败"+JSON.stringify(res))
+                    }
+                })
             },
             radiusCancel:function () {
                 this.showConfirm=false;
@@ -171,8 +159,8 @@
                     detail_address:this.mapAddress+this.houseNumber,
                     is_default:this.isDefault,
                     tag:tag,
-                    lat:this.latitude,
-                    lng:this.longitude,
+                    lat:this.saveLatitude,
+                    lng:this.saveLongitude,
                     shop_id:this.shopDetail.shop_id,
                     is_still_save:this.stillSave
                 }
@@ -240,16 +228,17 @@
                 success: (res)=> {
                     this.latitude=res.latitude;
                     this.longitude=res.longitude;
-                    console.log("当前位置经纬度2="+res.latitude+"==="+res.longitude);
                 }
-            })
+            });
             this.addressObject="";
             this.shopDetail=this.$route.query.shopDetail;
             this.activeTab=this.$route.query.activeTab;
             let addressObject=this.$route.query.address;
             this.addressObject=addressObject;
+            this.showMapInput=false;
             this.mapAddress="";
             this.telephone="";
+            this.houseNumber="";
             this.contactsPeople="";
             this.addressDistance=0;
             this.isDefault=true;
@@ -273,15 +262,6 @@
                 this.provinceCode=addressObject.province.name;
                 this.cityCode=addressObject.city.name;
                 this.areaCode=addressObject.area.name;
-            }
-        },
-        watch:{
-            searchName:function(){
-                if(!this.searchName){
-                    this.searchMapAddressList=[];
-                    return false;
-                }
-                this.searchMapAddress();
             }
         }
     }
@@ -339,10 +319,12 @@
     }
     .selected-map-show{
         width: 100%;
-        height: 65px;
+        min-height: 65px;
         justify-content: center;
         align-items: center;
         display: flex;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
     .selected-map-show .map-btn{
         width: 96%;
