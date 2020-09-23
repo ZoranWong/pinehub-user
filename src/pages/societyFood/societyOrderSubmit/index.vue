@@ -199,8 +199,8 @@
                     <view class='title-wrapper'>选择收货地址</view>
                     <view class="modal-close" @click="closeAddressTab"><img src='../../../../static/icons/cateClose.jpg'></img></view>
                     <view style="width: 96%;margin-left: 2%;height: 297px;overflow-x: hidden;overflow-y: auto" v-if="addressList.length>0">
-                        <view class="address-list-show" v-for="(item,index) in addressList" :key="index">
-                            <i-radio :color="color" :checked="checkedRadio==index" @change="handleRadioChange(index,item)"></i-radio>
+                        <view class="address-list-show" v-for="(item,index) in addressList" :key="index" @longtap="handleLongPress(item.id)">
+                            <i-radio :color="color" :checked="checkedRadio==item.id" @change="handleRadioChange(item)"></i-radio>
                             <view class="address-middle">
                                 <view>
                                     <img class="icons" src="../../../../static/icons/company.png" alt="" v-if="item.tag === 'company'">
@@ -227,6 +227,9 @@
             <view>距您{{distanceForYou}}</view>
             <view>{{shopInfo.address}}</view>
         </i-modal>
+        <i-modal :visible="isDelete" @ok="handleDelete" @cancel="handleCancel">
+            <view>是否确定删除该地址</view>
+        </i-modal>
     </div>
 </template>
 <script>
@@ -243,6 +246,8 @@
                 showAddressTab:false,
                 shopInfoVisible:false,
                 showBtn:false,
+                isDelete:false,
+                deleteAddressId:"",
                 checkedRadio:-1,
                 title: '提交订单',
                 addresses:{},
@@ -271,7 +276,8 @@
                 type: '',
                 showTips: false,
                 showPoints:false,
-                activeTab: '',
+                activeTab: 'pick',
+                color:"#FFCC00",
                 background:require('../img/left.png'),
                 backgroundPosition: 'left center',
                 products: [],
@@ -376,9 +382,28 @@
             selectAddressPoint:function () {
                 this.showAddressTab=true;
             },
-            handleRadioChange:function(index,item){
-                this.checkedRadio=index;
+            handleRadioChange:function(item){
+                if(item.is_up_range!=0){
+                    wx.showToast({
+                        title: '该地址已超出配送范围',
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    return false
+                }
+                this.checkedRadio=item.id;
                 this.addresses=item;
+            },
+            handleLongPress:function(addressId){
+                this.isDelete=true;
+                this.deleteAddressId=addressId;
+            },
+            handleDelete:function(){
+                this.isDelete=false;
+                this.$command('SF_DEL_GOODS_ADDRESS',this.deleteAddressId,this);
+            },
+            handleCancel:function(){
+                this.isDelete=false;
             },
             closeAddressTab:function(){
                 this.showAddressTab=false;
@@ -421,14 +446,16 @@
                         if(!this.currentAddressId){
                             wx.showToast({
                                 title: '请选择地址',
-                                icon: 'none'
+                                icon: 'none',
+                                duration: 2000
                             });
                             return false;
                         }
                         if(!this.currentDetailAddress){
                             wx.showToast({
                                 title: '请填写详细地址',
-                                icon: 'none'
+                                icon: 'none',
+                                duration: 2000
                             });
                             return false;
                         }
@@ -437,7 +464,8 @@
                         if(!this.addresses || !this.addresses.id){
                             wx.showToast({
                                 title: '请选择地址',
-                                icon: 'none'
+                                icon: 'none',
+                                duration: 2000
                             });
                             return false;
                         }
@@ -599,6 +627,7 @@
             }
         },
         onShow(){
+            this.changeTab('pick');
             let shopDetail=this.$route.query.shopDetail;
             if(shopDetail){
                 this.$command('SF_USER_GOODS_ADDRESS',shopDetail.shop_id,this);
@@ -608,9 +637,8 @@
             this.couponList = []
             this.showAddressTab=false;
             this.userInfo=this.model.account.userInfo;
-            let deliveryType=this.$route.query.deliveryType;//配送方式
-            this.orderType=this.$route.query.orderType;
             let shopDetail=this.$route.query.shopDetail;
+            this.orderType=shopDetail.orderType;
             let home_delivery_time=shopDetail.home_delivery_time;
             let off_work_time=shopDetail.off_work_time;
             this.getSendTime(home_delivery_time,off_work_time);
@@ -632,12 +660,6 @@
             }
             if(shopDetail.home_delivery_type!="FIXED_ADD" && this.rangeDelivery.delivery_fee){
                 this.deliveryFee=parseInt(this.rangeDelivery.delivery_fee);
-            }
-            if(deliveryType=="1"){
-                this.changeTab("send");
-            }
-            if(deliveryType=="2"){
-                this.changeTab("pick");
             }
         },
         mounted () {
@@ -987,8 +1009,7 @@
     .pickContainer {
         width: 100%;
         background: #fff;
-        border-radius: 25rpx;
-        border-top-left-radius: 0;
+        border-radius: 1px;
         box-sizing: border-box;
         padding: 40rpx 0;
         background-size: 350rpx 280rpx;

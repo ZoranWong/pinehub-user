@@ -5,7 +5,7 @@
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
            <div class="back-icon" @click="backPage"><img src="../img/back.png" alt=""></div>
         </div>
-        <div class="fast-foot-title" :style="{'marginTop': '-'+imgHeight + 'px'}">
+        <div class="fast-foot-title" :style="{'marginTop': '-'+(imgHeight+10) + 'px'}">
             <img src="../../../../static/icons/headImg.jpg" alt="">
         </div>
         <div class="shop-info-show" :style="{'top': topHeight+ 'px'}">
@@ -36,8 +36,8 @@
                 </button>
             </div>
             <div class="shop-five">
-                <div class="content-word" v-if="itemObj.support_home_delivery" :class="{'selectedStyle':selectedStyle=='1'}" @click="selectedFun('1')" style="margin-right: 10pt">送餐上门</div>
-                <div class="content-word" v-if="itemObj.support_self_pick" :class="{'selectedStyle':selectedStyle=='2'}" @click="selectedFun('2')">预定自提</div>
+                <div class="content-word" v-if="itemObj.support_home_delivery" style="margin-right: 10pt">送餐上门</div>
+                <div class="content-word" v-if="itemObj.support_self_pick">预定自提</div>
             </div>
             <div class="shop-six">
                 <div class="content-word" v-if="itemObj.state">立即订餐方便快捷，预定明日更优惠</div>
@@ -51,7 +51,7 @@
         </div>
         <scroll-view scroll-y class="scroll-view_H">
             <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="item.product_stock_id" v-if="status=='1'">
-                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id}})">
+                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id,pageName:'fastFoot'}})">
                     <img :src="item.product_avatar">
                 </view>
                 <view class="product-info">
@@ -72,7 +72,7 @@
                 </view>
             </view>
             <view class="product-list-detail" v-for="(item,index) in reserveProList" :key="item.product_id" v-if="status=='2'">
-                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id}})">
+                <view class="product-img"  @click="redirectTo('user.goodDetail', {query: {type:'mall', good_id: item.product_id,pageName:'fastFoot'}})">
                     <img :src="item.avatar">
                 </view>
                 <view class="product-info">
@@ -148,7 +148,6 @@
         mixins:[Public],
         data() {
             return {
-                selectedStyle:"2",
                 status:"1",
                 shopId:"",
                 onceOrderCount:0,
@@ -251,21 +250,12 @@
                         return false;
                     }
                 }
-                if(this.selectedStyle=="0"){
-                    wx.showToast({
-                        title: '请选择送餐上门或者预定自提',
-                        icon: 'none',
-                        duration: 2000
-                    })
-                    return false;
-                }
                 let that = this;
+                that.itemObj["orderType"]=that.status;
                 wx.getSetting({
                     async success (res) {
                         if (res.authSetting && res.authSetting['scope.userLocation']) {
-                            that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {
-                                query: {"deliveryType":that.selectedStyle,"shopDetail":that.itemObj,"orderType":that.status}
-                            });
+                            that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {query: {"shopDetail":that.itemObj}});
                         } else {
                             wx.showModal({
                                 title: '是否授权当前位置',
@@ -280,9 +270,7 @@
                                                         icon: 'success',
                                                         duration: 1000
                                                     })
-                                                    that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {
-                                                        query: {"deliveryType":that.selectedStyle,"shopDetail":that.itemObj,"orderType":that.status}
-                                                    });
+                                                    that.$command('REDIRECT_TO', 'societyFood.societyOrderSubmit', 'push', {query: {"shopDetail":that.itemObj}});
                                                 } else {
                                                     wx.showToast({
                                                         title: '授权失败',
@@ -301,9 +289,6 @@
             },
             backPage:function () {
                 this.$command('REDIRECT_TO', 'index', 'reLaunch')
-            },
-            selectedFun:function(sign){
-                this.selectedStyle=sign;
             },
             selectProject:function (status) {
                 if(!this.itemObj.state){
@@ -846,13 +831,13 @@
         width: 100%;
         height: auto;
         overflow: hidden;
-        margin-bottom: 30pt;
+        margin-bottom: 20px;
     }
     .order-info-content .content-title{
         width: 100%;
         height: 34pt;
         overflow: hidden;
-        margin-bottom: 8pt;
+        margin-bottom: 8px;
     }
     .order-info-content .customer-info{
         justify-content: left;
@@ -879,7 +864,7 @@
         font-size: 11pt;
         margin-left: 25pt;
         margin-right: 15pt;
-        padding: 15pt 0 15pt 15pt;
+        padding: 10px 0 10px 10px;
         display: flex;
     }
     .click-search-more{
@@ -960,9 +945,4 @@
          /*动画播放的次数*/
          -webkit-animation-duration:5s;
      }
-    .selectedStyle{
-        background-color: #5cadff;
-        color: #ffffff !important;
-        border: 0 !important;
-    }
 </style>

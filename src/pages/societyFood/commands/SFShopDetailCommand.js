@@ -13,15 +13,6 @@ export default class SFShopDetailCommand extends Command {
             }
             that.atOnceProList=atOnceProList;
             that.itemObj=itemObj;
-            if(itemObj.support_self_pick){
-                that.selectedStyle="2"
-            }
-            if(itemObj.support_home_delivery){
-                that.selectedStyle="1"
-            }
-            if(itemObj.support_home_delivery && itemObj.support_self_pick){
-                that.selectedStyle="0"
-            }
         } catch (e) {
             throw e;
         }

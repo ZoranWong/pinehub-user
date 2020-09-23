@@ -7,6 +7,7 @@ import SFSubmitOrderCommand from "../commands/SFSubmitOrderCommand";
 import SFCartAmountCommand from "../commands/SFCartAmountCommand";
 import SFUserGoodsAddressCommand from "../commands/SFUserGoodsAddressCommand";
 import CreatePayOrderCommand from "../../orders/orderPayment/commands/CreatePayOrderCommand";
+import SFDelGoodsAddressCommand from "../commands/SFDelGoodsAddressCommand";
 const application = wx.$app;
 if (application) {
     application.setComponent(App).run(function () {
@@ -17,6 +18,7 @@ if (application) {
         this.registerCommand(SFCartAmountCommand.commandName(), SFCartAmountCommand);
         this.registerCommand(SFUserGoodsAddressCommand.commandName(), SFUserGoodsAddressCommand);
         this.registerCommand(CreatePayOrderCommand.commandName(), CreatePayOrderCommand);
+        this.registerCommand(SFDelGoodsAddressCommand.commandName(), SFDelGoodsAddressCommand);
     }, function () {
         this.currentPage = new Vue(this.mountComponent);
     });

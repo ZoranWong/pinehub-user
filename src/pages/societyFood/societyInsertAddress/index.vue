@@ -163,6 +163,13 @@
                 this.saveSocietyAddress();
             },
             saveSocietyAddress:function(){
+                let tag="home";
+                if(this.selectedTag=="学校"){
+                    tag="school";
+                }
+                if(this.selectedTag=="公司"){
+                    tag="company";
+                }
                 let param={
                     consignee_name:this.contactsPeople,
                     consignee_mobile_phone:this.telephone,
@@ -171,7 +178,7 @@
                     area_code:this.areaCode,
                     detail_address:this.mapAddress+this.houseNumber,
                     is_default:this.isDefault,
-                    tag:this.selectedTag,
+                    tag:tag,
                     lat:this.latitude,
                     lng:this.longitude,
                     shop_id:this.shopDetail.shop_id,

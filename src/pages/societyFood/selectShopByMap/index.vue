@@ -117,7 +117,6 @@
             },
             async getMapLocation(){
                 let result = await this.map.getCenterLocation("shopMap");
-                console.log("地图视野发生变化后的经纬度"+JSON.stringify(result));
                 this.markers[0].latitude=result[1];
                 this.markers[0].longitude=result[0];
                 this.latitude=result[1];
@@ -130,6 +129,7 @@
                     for (let i = 0; i <result.length ; i++) {
                         let lat=result[i].location.lat;
                         let lng=result[i].location.lng;
+                        console.log("查询地址经度:"+lat+"维度:"+lng);
                         result[i]["distance"]=this.distance(lat,lng);
                     }
                     this.searchAddressList=result;

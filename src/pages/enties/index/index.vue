@@ -298,6 +298,21 @@
             }
         },
         mounted () {
+            wx.getLocation({
+                type: 'wgs84',
+                success: (res)=> {
+                    let latitude = res.latitude
+                    let longitude = res.longitude
+                    this.latitude=latitude;
+                    this.longitude=longitude;
+                    let param={
+                        lat:latitude,//当前位置的 纬度
+                        lng:longitude//当前位置的 经度
+                    }
+                    console.log("当前位置经纬度0="+res.latitude+"==="+res.longitude);
+                    this.$command('SF_LAST_ADDRESS',param,this);
+                }
+            })
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -373,21 +388,6 @@
             if (this.registered && this.isMember) {
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
-            wx.getLocation({
-                type: 'wgs84',
-                success: (res)=> {
-                    let latitude = res.latitude
-                    let longitude = res.longitude
-                    this.latitude=latitude;
-                    this.longitude=longitude;
-                    let param={
-                        lat:latitude,//当前位置的 纬度
-                        lng:longitude//当前位置的 经度
-                    }
-                    console.log("当前位置经纬度0="+res.latitude+"==="+res.longitude);
-                    this.$command('SF_LAST_ADDRESS',param,this);
-                }
-            })
         },
         onLoad (options) {
             if (options.q) {
