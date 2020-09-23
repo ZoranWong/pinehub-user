@@ -130,7 +130,6 @@
                     }
                     this.searchMapAddressList=this.arraySort(list,result);
                 }
-
             },
             selectedPos:function (item) {
                 this.latitude=item.location.lat;
