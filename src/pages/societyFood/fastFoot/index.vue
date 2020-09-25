@@ -10,7 +10,7 @@
         </div>
         <div class="shop-info-show" :style="{'top': topHeight+ 'px'}">
             <div class="shop-one">
-                <div class="content-word">{{itemObj.shop_name}}</div>
+                <div class="content-word">{{shop_name}}</div>
                 <div class="head-img">
                     <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
                     <img v-else src="../../../../static/icons/headImg.jpg" alt="">
@@ -165,6 +165,15 @@
                 atOnceCartList:[],//立即订餐购物车列表
                 reserveCartList:[],//明日预定购物车列表
             };
+        },
+        computed:{
+            shop_name(){
+                let shopName=this.itemObj.shop_name;
+                if(shopName && shopName.length>10){
+                    shopName=shopName.substr(0,12)+"...";
+                }
+                return shopName;
+            }
         },
         methods:{
             redirectTo (router, options = {}) {
@@ -570,7 +579,6 @@
         position: absolute;
         z-index: 100;
         float: left;
-        margin-left: 15px;
     }
     .back-icon ._img{
         width: 32rpx;
