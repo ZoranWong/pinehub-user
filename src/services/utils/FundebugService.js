@@ -12,12 +12,14 @@ export default class FundebugService extends Service{
     }
 
     notify(name, options) {
+        console.log("notify日志已打出="+name)
         let message = options['message'];
         delete options['message'];
         this.client.notify(name, message, {metaData: options});
     }
 
     error(name, options) {
+        console.log("error日志已打出="+name)
         let err = options['err'];
         delete options['err'];
         options['name'] = name;
@@ -25,6 +27,7 @@ export default class FundebugService extends Service{
     }
 
     test(name, message) {
+        console.log("test日志已打出="+name)
         this.client.test(name, message);
     }
 }

@@ -414,9 +414,7 @@
             this.$command('GET_BAR_HEIGHT');
             let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            this.onError("options"+options);
-            this.onError("options.string"+options.toString());
-            this.onError("options.scene"+options.scene.toString());
+            this.utils.fundebug.notify("options.scene",options);
             if (options.scene){
                 //scene:id=123&shop_code=qpweioru
                 let idString = options.scene.split('3D')[1];
