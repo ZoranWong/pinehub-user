@@ -5,7 +5,7 @@
         <div class="product_info">
             <h4>{{product.name}}</h4>
             <h5>{{product.intro}}</h5>
-            <span>销量:{{product['sell_num']}}</span>
+            <span>销量:{{product['stock']}}</span>
             <div class="bottom">
                 <div class="left">
                     <i>¥</i>
