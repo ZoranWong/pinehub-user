@@ -652,11 +652,16 @@
             }
             this.shopDetail=shopDetail;
             if(shopDetail.support_home_delivery && shopDetail.support_self_pick){
-                this.background=left;
-                this.backgroundPosition='left center';
+                this.changeTab('pick');
             }else {
-                this.background="";
-                this.backgroundPosition="";
+                this.background = "";
+                this.backgroundPosition = '';
+                if(shopDetail.support_home_delivery){
+                    this.activeTab="send";
+                }
+                if(shopDetail.support_self_pick){
+                    this.activeTab="pick";
+                }
             }
             if(shopDetail){
                 this.fixedDelivery=shopDetail.fixed_delivery;

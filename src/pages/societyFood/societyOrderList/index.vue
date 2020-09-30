@@ -39,7 +39,7 @@
                         <li id="total">共{{order.order_items.length || 0}}件商品 预付款:￥<span>{{order.settlement_total_fee}}</span></li>
                     </ul>
                     <div class="order_info_btn">
-                        <button form-type="submit" v-if="order.payment_state!=4" @click="btnClick('pay', order)" class="yellow">去支付</button>
+                        <button form-type="submit" v-if="order.payment_state!=4 && statusType!=4" @click="btnClick('pay', order)" class="yellow">去支付</button>
                     </div>
                 </div>
             </scroll-view>

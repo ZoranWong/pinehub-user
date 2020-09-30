@@ -100,7 +100,7 @@
             </div>
             <div id="order_total_price">
                 <span>实付款 ￥{{orderDetail['settlement_total_fee']}}</span>
-                <h3 v-if="orderDetail['payment_state']!=4" @click="btnClick('pay', orderDetail)" >去支付</h3>
+                <h3 v-if="orderDetail['payment_state']!=4 && orderDetail['state_desc']!='已取消'" @click="btnClick('pay', orderDetail)" >去支付</h3>
             </div>
         </div>
     </div>
