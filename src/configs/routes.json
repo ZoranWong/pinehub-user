@@ -1,6 +1,6 @@
 {
 	"index": "/pages/enties/index/main",
-    "user.pickup": "/pages/enties/pickup/main",
+    "user.pickup": "/pages/other/pickup/main",
     "user.store": "/pages/enties/store/main",
 	"index.homemaking": "/pages/user/index/homemaking/main",
 	"storesMap": "/pages/user/storesMap/main",

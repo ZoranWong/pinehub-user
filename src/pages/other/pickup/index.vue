@@ -5,17 +5,33 @@
         <CustomHeader :title="title" :needReturn="false" />
 
         <div id="pickup_container">
-            <div id="pickup_header" v-if="background" :style="{'backgroundImage':'url(' + background + ')'}">
-                <span @click="changeBackground('left')">常规订单</span>
-                <span @click="changeBackground('right')">拼团订单</span>
+            <div id="pickup_header" v-if="background">
+                <span @click="changeBackground('left')" :class="{selected:position === 'left'}">社会餐订单</span>
+                <span @click="changeBackground('middle')" :class="{selected:position === 'middle'}">常规订单</span>
+                <span @click="changeBackground('right')" :class="{selected:position === 'right'}">拼团订单</span>
             </div>
         </div>
         <ul id="pickup_info">
-            <swiper
-                v-if="position === 'left' && shop_order.length"
-                class="swiper"
-                @change="bannerChange"
-                :circular="true">
+            <swiper v-if="position === 'left' && ordersList.length" class="swiper" @change="bannerChange" :circular="true">
+                <block v-for="(item, index) in ordersList" :key="index">
+                    <swiper-item class="swiperItem" :item-id="item.id">
+                        <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
+                        <h4>自提点联系电话: <span class="connentShop" @click="connectShop(item)"> {{item.shop ? item.shop['keeper_mobile'] : '暂无该店铺电话，请联系客服'}}</span></h4>
+                        <img  style="width: 400rpx;height: 400rpx" v-if="gateway" :src="gateway + '/qrcode?content=' + item.params.content + '&size=' + item.params.size + '&margin=' + item.params.margin " alt="">
+                        <div class="order_info">
+                            <span>订单编号: {{item['order_no']}}</span>
+                            <span>取货时间: {{item['pick_date']}}  {{item.shop ? item.shop['business_hours_start'] + '-' + item.shop['business_hours_end'] : ''}}</span>
+                        </div>
+                    </swiper-item>
+                </block>
+            </swiper>
+            <ul id="empty_pickup_info" v-if="position === 'left' && !ordersList.length">
+                <li >
+                    <img src="../../../../static/images/empty/empty_point.jpg" alt="">
+                    <span>您还没有社会餐订单需要自提哦 快到商城下单吧</span>
+                </li>
+            </ul>
+            <swiper v-if="position === 'middle' && shop_order.length" class="swiper" @change="bannerChange" :circular="true">
                 <block v-for="(item, index) in shop_order" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
@@ -34,11 +50,7 @@
                     <span>您还没有订单需要自提哦 快到商城下单吧</span>
                 </li>
             </ul>
-            <swiper
-                v-if="position === 'right' && all.length"
-                class="swiper"
-                @change="bannerChange"
-                :circular="true">
+            <swiper v-if="position === 'right' && all.length" class="swiper" @change="bannerChange" :circular="true">
                 <block v-for="(item, index) in all" :key="index">
                     <swiper-item class="swiperItem" :item-id="item.id">
                         <h3>请您前往【{{item.shop ? item.shop.name : '自提点'}}】进行自提</h3>
@@ -59,7 +71,10 @@
             </ul>
         </ul>
 
-        <div class="total_amount" v-if="shop_order.length && position === 'left'" >
+        <div class="total_amount" v-if="ordersList.length && position === 'left'" >
+            <span>{{current}}/{{total}}</span>
+        </div>
+        <div class="total_amount" v-if="shop_order.length && position === 'middle'" >
             <span>{{current}}/{{total}}</span>
         </div>
         <div class="total_amount" v-if="all.length && position === 'right'">
@@ -98,6 +113,7 @@
 				qrcode :null,
                 drawTime: null,
 				shop_order: [],
+                ordersList:[],
 				breakfast_order: [],
                 totalOrders: [],
                 code: '',
@@ -128,7 +144,15 @@
         },
         computed: {
             total () {
-                return this.position === 'left' ? this.shop_order.length : this.all.length
+                if(this.position === 'left'){
+                    return this.ordersList.length
+                }
+                if(this.position === 'middle'){
+                    return this.shop_order.length
+                }
+                if(this.position === 'right'){
+                    return this.all.length
+                }
             },
 			pickupOrders () {
                 this.totalOrders = this.model.user.pickup.pickupOrders;
@@ -152,7 +176,6 @@
             handleOrders (orders) {
                 this.shop_order = [];
                 this.breakfast_order = [];
-
                 this.orders = orders;
                 _.map(this.orders, (order)=>{
                     if (order.channel && order.channel.slug === 'BREAKFAST_CAR') {
@@ -184,12 +207,7 @@
             this.changeBackground('left')
             this.gateway = this.config.app.http.gateway;
             this.$command('GET_GROUPON_ORDERS', 4);
-            // this.qrcode = drawQrcode({
-			// 	width: 200,
-			// 	height: 200,
-			// 	canvasId: 'myQrcode',
-			// 	text: `{"order_id": 0}`
-			// })
+            this.$command('SF_MY_LIST',{status:2},this);
             if (this.$route.query.order) {
                 this.breakfast_order = [];
                 this.shop_order = [];
@@ -213,8 +231,6 @@
 					this.shop_order.push(order)
                     this.position = 'left'
                     this.background = bg1;
-                    // this.currentOrderId = this.shop_order[0].id;
-                    // this.drawTime = (new Date).getTime();
 				}
             } else {
                 if (_.isEmpty(this.orders)) {
@@ -232,6 +248,7 @@
             this.orders = [];
             this.shop_order = [];
             this.breakfast_order = [];
+            this.ordersList = [];
         },
         beforeMount () {
             this.current = 1;
@@ -244,6 +261,9 @@
 </script>
 
 <style>
+    .selected{
+        color: #ffcc00 !important;
+    }
     page {
         height: 100%;
         background:linear-gradient(270deg,rgba(255,204,0,1),rgba(253,224,104,1));

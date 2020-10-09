@@ -18,7 +18,7 @@
                     <div class="name">{{goodDetail.name}}</div>
                 </div>
                 <div v-if="showOperation(goodDetail)"></div>
-                <div class="operation">
+                <div class="operation" v-if="showCartInfo">
 <!--                    <img src="../../../../static/icons/minus.png" class="minus" alt="" v-if="goodDetail.isInCart" @click.stop="addToShoppingCart(goodDetail, -1)" />-->
 <!--                    <input type="number" v-if="goodDetail.isInCart" :value="goodDetail.inputNum" class="input" @blur="(e)=>changeItemBuyNum(e, goodDetail)"  >-->
                     <div v-if="stockInfo === '尚有库存'">
@@ -69,7 +69,7 @@
         </div>
 
 
-        <div class="allCarts" @click="goShopppingCart" v-if="options.type !== 'activity'">
+        <div class="allCarts" @click="goShopppingCart" v-if="options.type !== 'activity' && showCartInfo">
             <img src="../../../../static/icons/white_cart.png" alt="">
             <span v-if="total.quantity > 0">
                    {{total.quantity}}
@@ -110,6 +110,7 @@
         	return {
 				title: '商品详情',
 				selectSpec:false,
+                showCartInfo:true,
 				selectItem:{},
                 options: {},
 				screenWitdh: 0,
@@ -451,6 +452,11 @@
 			this.screenHeight = (this.rpxRate * this.screenWitdh);
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
+            this.showCartInfo=true;
+            let pageName=options["pageName"];
+			if(pageName && pageName=="fastFoot"){
+                this.showCartInfo=false;
+            }
             this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
 			this.actPrice = (options['price'] || options['price'] === 0) || '暂无';
             this.stockInfo = options['stockInfo'] ? options['stockInfo'] : '尚有库存'

@@ -72,7 +72,7 @@
                 title: '添加收货地址',
                 address: {},
                 screenHeight: 0,
-              rpxRate: 1,
+             rpxRate: 1,
                 screenWitdh: 0,
                 addressTags: false,
                 regions: [],
@@ -154,7 +154,7 @@
             this.addressId = '';
             let address = this.$route.query.address;
             if (address) {
-                this.addressId=address.address_id;
+                this.addressId=address.id;
                 this.forms = {
                     consignee_name: address['consignee_name'],   // 收货人姓名
                     consignee_mobile_phone: address['consignee_mobile_phone'], // 收货人手机号

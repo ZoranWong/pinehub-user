@@ -29,7 +29,7 @@
                             <img :src="item.thumbnail" alt="">
                             <div id="good_info">
                                 <h3>{{item.name}}</h3>
-                                <em v-if="item.spec_value">{{item.spec_value}}</em>
+                                <em v-if="item.specValue">{{item.specValue}}</em>
                                 <div id="good_info_price">
                                     <h3>￥{{item.settlement_total_fee}}</h3>
                                     <em>X {{item.quantity}}</em>
@@ -39,7 +39,7 @@
                         <li id="total">共{{order.order_items.length || 0}}件商品 预付款:￥<span>{{order.settlement_total_fee}}</span></li>
                     </ul>
                     <div class="order_info_btn">
-                        <button form-type="submit" v-if="order.payment_state!=4" @click="btnClick('pay', order)" class="yellow">去支付</button>
+                        <button form-type="submit" v-if="order.payment_state!=4 && statusType!=4" @click="btnClick('pay', order)" class="yellow">去支付</button>
                     </div>
                 </div>
             </scroll-view>

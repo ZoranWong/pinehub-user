@@ -12,6 +12,23 @@ export default class SFMyListCommand extends Command {
                     }else {
                         ordersList[i]["orderNo"]=ordersList[i].order_no;
                     }
+                    for (let j = 0; j <ordersList[i].order_items.length ; j++) {
+                        let specValue=ordersList[i].order_items[j].spec_value;
+                        let value="";
+                        for(let key in specValue){
+                            value+=key+":"+specValue[key]
+                        }
+                        ordersList[i].order_items[j]["specValue"]=value;
+                    }
+                    //仅在取货界面需要的参数
+                    let time = new Date().getTime();
+                    let content = {
+                        "order_id": ordersList[i]['id'], 'time': time
+                    };
+                    let params = {
+                        content: Base64.encode(JSON.stringify(content)), margin: 0, size: 200
+                    };
+                    ordersList[i].params = params;
                 }
                 that.ordersList=ordersList;
             }

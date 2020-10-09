@@ -5,7 +5,7 @@
         <div class="product_info">
             <h4>{{product.name}}</h4>
             <h5>{{product.intro}}</h5>
-            <span>销量:{{product['sell_num']}}</span>
+            <span>销量:{{sales}}</span>
             <div class="bottom">
                 <div class="left">
                     <i>¥</i>
@@ -26,6 +26,18 @@
         methods:{
             addToCart () {
                 this.$emit('addToCart', this.product)
+            }
+        },
+        computed: {
+            sales(){
+                let count=0;
+                if(this.product['total_sales']){
+                    count=count+this.product['total_sales'];
+                }
+                if(this.product['virtual_sales']){
+                    count=count+this.product['virtual_sales'];
+                }
+                return count;
             }
         }
     }

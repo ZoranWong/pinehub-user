@@ -2,11 +2,11 @@
     <div class="select-shop-Map">
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div class="back-icon" @click="backPage">
+            <div class="back-icon" @click="backPage" style="margin-left: 15px">
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
-        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="13" :include-points="markers" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
+        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="14" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
         <input type="text" placeholder-class="placeholder-class"  placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
         <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="showSearchContent">
             <view v-for="(item,index) in searchAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item.location)">
@@ -18,9 +18,9 @@
                 </view>
             </view>
         </view>
-        <view class="shop-tab">
-            <view @click="changeAddressList('0')" style="border-radius: 13pt 0 0 0" :class="{'bacColor':showNearby}">附近门店</view>
-            <view @click="changeAddressList('1')" style="border-radius: 0 13pt 0 0" :class="{'bacColor':!showNearby}">常用门店</view>
+        <view class="shop-tab" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
+            <div class="tabItem" :class="{'active':showNearby}" @click="changeAddressList('0')">附近门店</div>
+            <div class="tabItem" :class="{'active':!showNearby}" @click="changeAddressList('1')">常用门店</div>
         </view>
         <view class="shop-address-list">
             <view class="shop-address-tab" v-for="(item,index) in addressList" :key="index">
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+    let left = require('../img/left.png')
+    let right = require('../img/right.png')
     import Public from "../js/Public";
     export default {
         mixins:[Public],
@@ -50,15 +52,17 @@
                 searchName:"",
                 showSearchContent:false,
                 checkedRadio:-1,
+                background:require('../img/left.png'),
+                backgroundPosition: 'left center',
                 currentShopId:"",
-                longitude:'',
-                latitude:'',
+                longitude:117.175296,
+                latitude:31.786548,
                 color:"#FFCC00",
                 showNearby:true,
                 addressList:[],
                 usedAddressList:[],
                 markerIcon:require('../img/location.png'),
-                initMarks:{currentTab:'0', iconPath:require('../img/mapPos.png'), id: 0, longitude:0, latitude: 0, width: 40, height: 40},
+                initMarks:{currentTab:'0', iconPath:require('../img/mapPos.png'), id: 0, latitude: 31.786548, longitude: 117.175296,width: 40, height: 40},
                 markers: [],
                 searchAddressList:[]
             };
@@ -68,11 +72,23 @@
                 if(this.checkedRadio==-1){
                     return false;
                 }
-                this.$command('REDIRECT_TO', 'index', 'reLaunch',{query:{shop_id:this.currentShopId}});
+                // this.$command('REDIRECT_TO', 'index', 'reLaunch',{query:{shop_id:this.currentShopId}});
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
+                    query: {
+                        shopId:this.currentShopId,
+                    }
+                });
             },
             changeAddressList:function(val){
                 this.showNearby=val=='0'?true:false;
                 this.checkedRadio=-1;
+                if (val === '1') {
+                    this.background = right;
+                    this.backgroundPosition = 'right center';
+                } else {
+                    this.background = left;
+                    this.backgroundPosition = 'left center';
+                }
                 this.initSearch();
             },
             handleRadioChange:function(index,shop_id){
@@ -83,7 +99,7 @@
                 console.log("当前Tab:"+val.target.key)
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', '', 'back')
+                this.$command('REDIRECT_TO', 'index', 'replace')
             },
 
             regionchange(e) {
@@ -101,7 +117,6 @@
             },
             async getMapLocation(){
                 let result = await this.map.getCenterLocation("shopMap");
-                console.log("地图视野发生变化后的经纬度"+JSON.stringify(result));
                 this.markers[0].latitude=result[1];
                 this.markers[0].longitude=result[0];
                 this.latitude=result[1];
@@ -111,23 +126,15 @@
                 this.searchAddressList=[];
                 let result=await this.map.getSuggestion(this.searchName);
                 if(result){//姚公庙
+                    let list=[];
                     for (let i = 0; i <result.length ; i++) {
                         let lat=result[i].location.lat;
                         let lng=result[i].location.lng;
-                        result[i]["distance"]=this.distance(lat,lng);
+                        let distance=this.distance(lat,lng);
+                        list.push({'distance':distance,'index':i});
                     }
-                    this.searchAddressList=result;
+                    this.searchAddressList=this.arraySort(list,result);
                 }
-            },
-            distance:function(lat, lng) {
-                var La1 = parseInt(this.latitude) * Math.PI / 180.0;
-                var La2 = lat * Math.PI / 180.0;
-                var La3 = La1 - La2;
-                var Lb3 = parseInt(this.longitude) * Math.PI / 180.0 - lng * Math.PI / 180.0;
-                var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
-                s = s * 6378.137;//地球半径
-                s = Math.round(s * 10000) / 10000;
-                return Math.ceil(s);
             },
             markertap(e) {
                 console.log("点击地图标记点"+JSON.stringify(e.mp));
@@ -141,11 +148,22 @@
                 this.$command('SF_SHOP_LIST', param,this);
             },
             init () {
-                this.latitude=this.$route.query.latitude;
-                this.longitude=this.$route.query.longitude;
-                this.initMarks.latitude=this.$route.query.latitude;
-                this.initMarks.longitude=this.$route.query.longitude;
-                this.initSearch()
+                this.checkedRadio=-1;
+                wx.getLocation({
+                    type: 'wgs84',
+                    isHighAccuracy:true,
+                    highAccuracyExpireTime:4000,
+                    success: (res)=> {
+                        let latitude = res.latitude
+                        let longitude = res.longitude
+                        this.latitude=latitude;
+                        this.longitude=longitude;
+                        this.initMarks.latitude=latitude;
+                        this.initMarks.longitude=longitude;
+                        this.initSearch();
+                    }
+                })
+
             }
         },
         mounted(){
@@ -170,19 +188,17 @@
         width: 100%;
         overflow-x: hidden;
         overflow-y: auto;
-        max-height: 400pt;
+        max-height: 300px;
     }
     .shop-address-tab{
         margin-left: 15px;
         width: auto;
         height: auto;
-        margin-top: 40pt;
-        padding-top: 15pt;
-        padding-bottom: 30pt;
     }
     .shop-address-tab .left{
         float: left;
         width: 85%;
+        margin-bottom: 15px;
     }
     .shop-address-tab .right{
         float: right;
@@ -196,30 +212,24 @@
         padding: 0;
     }
     .shop-tab{
-        height: 40pt;
         width: 100%;
+        height: 40px;
+        background-size: 345px 100%;
+        background-repeat: no-repeat;
+        display: flex;
         justify-content: center;
         align-items: center;
-        display: flex;
-        margin-top: -10px;
-        position: absolute;
     }
-    .shop-tab view{
-        color: #111111;
-        font-size: 16pt;
-        font-weight: 400;
-        font-family:PingFang-SC-Bold,PingFang-SC;
+    .shop-tab .tabItem {
         width: 50%;
-        text-align: center;
-        background-color: #d9d9d9;
-        height: inherit;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 14px;
+        color: #111;
     }
-    .shop-tab .bacColor{
-        font-weight: 700 !important;
-        background-color: #ffffff !important;
+    .shop-tab .active {
+        font-weight: bold;
     }
     .select-shop-Map #shopMap{
         width: 100%;

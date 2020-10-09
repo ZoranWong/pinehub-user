@@ -1,8 +1,7 @@
 {
     "pages": [
         "pages/enties/index/main",
-        "pages/enties/store/main",
-        "pages/enties/pickup/main"
+        "pages/enties/store/main"
     ],
     "subpackages": [
         {
@@ -86,6 +85,12 @@
                 "societyCouponDetail/main",
                 "societyOrderDetail/main",
                 "societyInsertAddress/main"
+            ]
+        },
+        {
+            "root": "pages/other",
+            "pages": [
+                "pickup/main"
             ]
         }
     ],

@@ -4,26 +4,15 @@
         <CustomHeader title="社会餐新增地址" :needReturn="true" />
         <div class="insert-society-address" :style="{'height': mapHeight + 'px'}">
             <map class="address-map" :longitude="longitude" :latitude="latitude" scale="13" show-location></map>
-            <input type="text" v-if="showMapInput" placeholder-class="placeholder-class" placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
-            <view class="search-map-content" v-if="showMapInput && searchMapAddressList.length>0">
-                <view v-for="(item,index) in searchMapAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item)">
-                    <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{item.title}}</view>
-                    <view>
-                        <label style="color: #333333;font-size: 11pt;font-weight: 400;letter-spacing: 1px">{{"距您"+item.distance+"m"}}</label>
-                        <label style="color: #999999;margin-left: 5px;margin-right: 5px">|</label>
-                        <label style="color: #999999;font-size: 11pt;font-weight: 400;">{{item.address}}</label>
-                    </view>
-                </view>
-            </view>
             <view v-if="!showMapInput" class="society-address" :style="{'height': (mapHeight-150) + 'px'}">
-                <view class="selected-map-show" v-if="!mapTitle">
+                <view class="selected-map-show" v-if="!mapAddress">
                     <view class="map-btn">
                         <span @click="selectMapPoint">选择收货地址</span>
                         <img class="img" alt="" src="../../../../static/icons/yellowArrow.png">
                     </view>
                 </view>
                 <view class="selected-map-show" v-else style="justify-content: left">
-                    <view style="margin-left: 2%">
+                    <view style="margin-left: 2%" @click="selectMapPoint">
                         <view style="color: #333333;font-size: 12pt;font-weight: 500;">{{mapTitle}}</view>
                         <view style="color: #999999;font-size: 11pt;">{{mapAddress}}</view>
                     </view>
@@ -35,9 +24,9 @@
                     </view>
                     <view>
                         <view class="address-title">标签</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('1')">家</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('2')">公司</view>
-                        <view class="btn" :class="{'tag':selectedTag=='1'}" @click="selectedBtn('3')">学校</view>
+                        <view class="btn" :class="{'tag':selectedTag=='家'}" @click="selectedBtn('家')">家</view>
+                        <view class="btn" :class="{'tag':selectedTag=='公司'}" @click="selectedBtn('公司')">公司</view>
+                        <view class="btn" :class="{'tag':selectedTag=='学校'}" @click="selectedBtn('学校')">学校</view>
                     </view>
                     <view>
                         <view class="address-title">联系人</view>
@@ -53,11 +42,14 @@
                         <input v-model="telephone" placeholder-style="padding-left:2px;color: #999999;" placeholder="请填写收货人手机号"/>
                     </view>
                     <view style="justify-content: center;margin-top: 5px">
-                       <button style="width: 96%;line-height: 40px;height: 40px">保存地址</button>
+                       <button style="width: 96%;line-height: 40px;height: 40px" @click="checkSocietyAddress">保存地址</button>
                     </view>
                 </view>
             </view>
         </div>
+        <i-modal title="提示" :visible="showConfirm" @ok="radiusSave" @cancel="radiusCancel" cancel-text="调整地址" ok-text="仍然保存">
+            <view>您的地址超出该门店配送范围了哦</view>
+        </i-modal>
     </div>
 
 </template>
@@ -75,19 +67,30 @@
                 houseNumber:"",
                 addressLabel:"",
                 contactsPeople:"",
+                provinceCode:"",
+                cityCode:"",
+                areaCode:"",
                 sex:"0",
                 telephone:"",
                 screenWitdh: 0,
-              rpxRate: 1,
+             rpxRate: 1,
                 screenHeight: 0,
                 longitude:'',
                 latitude:'',
-                searchName:"",
-                searchMapAddressList:[],
                 mapTitle:"",
                 mapAddress:"",
-                selectedTag:"",
-                showMapInput:false
+                saveLatitude:"",
+                saveLongitude:"",
+                isDefault:true,
+                selectedTag:"家",
+                addressId:"",
+                stillSave:"1",
+                shopDetail:"",
+                activeTab:"",
+                addressObject:"",
+                addressDistance:0,
+                showMapInput:false,
+                showConfirm:false
             };
         },
         computed: {
@@ -102,43 +105,117 @@
                 this.sex=sign;
             },
             selectedBtn:function(sign){
-                if(this.selectedTag==sign){
-                    this.selectedTag="";
-                    return false;
-                }
                 this.selectedTag=sign;
             },
-            distance:function(lat, lng) {
-                var La1 = parseInt(this.latitude) * Math.PI / 180.0;
-                var La2 = lat * Math.PI / 180.0;
-                var La3 = La1 - La2;
-                var Lb3 = parseInt(this.longitude) * Math.PI / 180.0 - lng * Math.PI / 180.0;
-                var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
-                s = s * 6378.137;//地球半径
-                s = Math.round(s * 10000) / 10000;
-                return Math.ceil(s);
-            },
-            async searchMapAddress(){
-                this.searchMapAddressList=[];
-                let result=await this.map.getSuggestion(this.searchName);
-                if(result){//姚公庙
-                    for (let i = 0; i <result.length ; i++) {
-                        let lat=result[i].location.lat;
-                        let lng=result[i].location.lng;
-                        result[i]["distance"]=this.distance(lat,lng);
-                    }
-                    this.searchMapAddressList=result;
-                }
-            },
-            selectedPos:function (item) {
-                this.latitude=item.location.lat;
-                this.longitude=item.location.lng;
-                this.mapTitle=item.title;
+            async selectedPos (item) {
+                let latitude=item.latitude;
+                let longitude=item.longitude;
+                let temp=await this.map.searchLocationToCity(latitude,longitude);
+                this.provinceCode=temp.province;
+                this.cityCode=temp.city;
+                this.areaCode=temp.district;
+                this.addressDistance=this.distance(latitude,longitude);
+                this.mapTitle=item.name;
                 this.mapAddress=item.address;
+                this.saveLatitude=latitude;
+                this.saveLongitude=longitude;
                 this.showMapInput=false;
             },
             selectMapPoint:function () {
                 this.showMapInput=true;
+                wx.chooseLocation({
+                    success:(res) => {
+                        console.log("借口哦调用成功"+JSON.stringify(res));
+                        this.selectedPos(res);
+                    },
+                    fail:(res)=>{
+                        this.showMapInput=false;
+                        console.log("借口哦调用失败"+JSON.stringify(res))
+                    }
+                })
+            },
+            radiusCancel:function () {
+                this.showConfirm=false;
+            },
+            radiusSave:function () {
+                this.stillSave="1";
+                this.showConfirm=false;
+                this.saveSocietyAddress();
+            },
+            saveSocietyAddress:function(){
+                let tag="home";
+                if(this.selectedTag=="学校"){
+                    tag="school";
+                }
+                if(this.selectedTag=="公司"){
+                    tag="company";
+                }
+                let param={
+                    consignee_name:this.contactsPeople,
+                    consignee_mobile_phone:this.telephone,
+                    province_code:this.provinceCode,
+                    city_code:this.cityCode,
+                    area_code:this.areaCode,
+                    detail_address:this.mapAddress+this.houseNumber,
+                    is_default:this.isDefault,
+                    tag:tag,
+                    lat:this.saveLatitude,
+                    lng:this.saveLongitude,
+                    shop_id:this.shopDetail.shop_id,
+                    is_still_save:this.stillSave
+                }
+                if(this.addressObject && this.addressObject.id){
+                    this.$command('SF_UPDATE_USER_ADDRESS',this.addressObject.id,param,this);
+                    return false;
+                }
+                this.$command('SF_INSERT_USER_ADDRESS', param,this);
+
+            },
+            checkSocietyAddress:function () {
+                if(!this.provinceCode){
+                    wx.showToast({
+                        title: '请选择地址',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.contactsPeople){
+                    wx.showToast({
+                        title: '请填写联系人',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.telephone){
+                    wx.showToast({
+                        title: '请填写手机号',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(this.telephone.length!=11){
+                    wx.showToast({
+                        title: '手机号格式不正确',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                if(!this.houseNumber){
+                    wx.showToast({
+                        title: '请填写门牌号',
+                        icon: 'none'
+                    });
+                    return false;
+                }
+                let rangeDelivery=this.shopDetail.range_delivery;
+                let radius=parseInt(rangeDelivery.radius);
+                if(radius<this.addressDistance){
+                    this.showConfirm=true;
+                    this.stillSave="0";
+                    return false;
+                }
+                this.stillSave="1";
+                this.saveSocietyAddress();
             }
         },
         mounted () {
@@ -152,15 +229,39 @@
                     this.latitude=res.latitude;
                     this.longitude=res.longitude;
                 }
-            })
-        },
-        watch:{
-            searchName:function(){
-                if(!this.searchName){
-                    this.searchMapAddressList=[];
-                    return false;
+            });
+            this.addressObject="";
+            this.shopDetail=this.$route.query.shopDetail;
+            this.activeTab=this.$route.query.activeTab;
+            let addressObject=this.$route.query.address;
+            this.addressObject=addressObject;
+            this.showMapInput=false;
+            this.mapAddress="";
+            this.telephone="";
+            this.houseNumber="";
+            this.contactsPeople="";
+            this.addressDistance=0;
+            this.isDefault=true;
+            this.selectedTag="家";
+            this.provinceCode="";
+            this.cityCode="";
+            this.areaCode="";
+            if(addressObject){
+                this.mapAddress=addressObject.detail_address;
+                this.telephone=addressObject.consignee_mobile_phone;
+                this.contactsPeople=addressObject.consignee_name;
+                this.addressDistance=this.distance(addressObject.lat,addressObject.lng);
+                this.isDefault=addressObject.is_default;
+                this.selectedTag="家";
+                if(addressObject.tag=="company"){
+                    this.selectedTag="公司";
                 }
-                this.searchMapAddress();
+                if(addressObject.tag=="school"){
+                    this.selectedTag="学校";
+                }
+                this.provinceCode=addressObject.province.name;
+                this.cityCode=addressObject.city.name;
+                this.areaCode=addressObject.area.name;
             }
         }
     }
@@ -218,10 +319,12 @@
     }
     .selected-map-show{
         width: 100%;
-        height: 65px;
+        min-height: 65px;
         justify-content: center;
         align-items: center;
         display: flex;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
     .selected-map-show .map-btn{
         width: 96%;
