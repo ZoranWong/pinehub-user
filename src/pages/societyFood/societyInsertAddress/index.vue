@@ -78,7 +78,7 @@
                 sex:"0",
                 telephone:"",
                 screenWitdh: 0,
-               rpxRate: 1,
+              rpxRate: 1,
                 screenHeight: 0,
                 longitude:'',
                 latitude:'',
