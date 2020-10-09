@@ -15,7 +15,7 @@
                     <div  @click="changePayType('consumer_card')" style="margin-bottom: 5px;">
                         <div id="pay-type-desc" >
                             消费卡支付<span style="color:red;margin-left:5px" v-if="selectedPayType === 'consumer_card' ">
-                                {{selectedCusumerCard['card_name']}}余额：{{selectedCusumerCard['card_remain_amount']}}
+                                余额：{{selectedCusumerCard['card_remain_amount']}}
                                 </span>
                         </div>
                         <div id="pay-amount" v-if="getActivationCards.length > 0">  -¥ {{amount}}</div>
@@ -340,7 +340,7 @@
 
      #cusumer_card_list .card-list .unselect-card{
         display: inline-block;
-        width: 250rpx;
+        width: 320rpx;
         height: 150rpx;
         line-height: 75rpx;
         margin-left: 10rpx;
@@ -354,7 +354,7 @@
     }
      #cusumer_card_list .card-list .select-card{
          display: inline-block;
-        width: 250rpx;
+        width: 320rpx;
         height: 150rpx;
         line-height: 75rpx;
         margin-left: 10rpx;
@@ -365,7 +365,7 @@
         word-wrap: break-word;
         border-radius: 5px;
         border: 2px solid #FFCC00;
-        background: url(../../../../static/images/icon/selected-02.png) no-repeat 210rpx 110rpx;
+        background: url(../../../../static/images/icon/selected-02.png) no-repeat 280rpx 110rpx;
         /*   */
         background-size: 20px 20px;
     }
