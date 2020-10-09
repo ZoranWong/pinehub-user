@@ -54,6 +54,7 @@ var webpackConfig = merge(baseWebpackConfig, {
                 safe: true
             }
         }),
+        //
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common/vendor',
             minChunks: function (module, count) {
@@ -61,13 +62,11 @@ var webpackConfig = merge(baseWebpackConfig, {
                 return (
                     module.resource &&
                     /\.js$/.test(module.resource) &&
-                    module.resource.indexOf('node_modules') >= 0
-                ) || count > 1
+                    (module.resource.indexOf('node_modules') >= 0
+                        || module.resource.indexOf('iview') >= 0
+                        || module.resource.indexOf('jssdk') >= 0)
+                ) || count > 2
             }
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common/manifest',
-            chunks: ['common/vendor']
         }),
 
         // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
