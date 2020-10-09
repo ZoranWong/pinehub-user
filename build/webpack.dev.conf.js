@@ -12,6 +12,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const ToolConfigLoader = require('./tool-config-loader');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // add hot-reload related code to entry chunks
 // Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -79,7 +80,11 @@ var webpackConfig = merge(baseWebpackConfig, {
         //   inject: true
         // }),
         new FriendlyErrorsPlugin(),
-        new ToolConfigLoader('dev')
+        new ToolConfigLoader('dev'),
+        new BundleAnalyzerPlugin({
+            analyzerPort: 9800,
+            openAnalyzer: false
+        })
     ]
 })
 
