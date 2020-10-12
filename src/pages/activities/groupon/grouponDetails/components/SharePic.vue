@@ -11,9 +11,9 @@
     import {Render} from '../core/index'
     import {constants, Canvas} from '../core/utils'
     export default {
-        name: "SharePic",
+        name: 'SharePic',
         props: ['show', 'text', 'name', 'id', 'pic'],
-        data() {
+        data () {
             return {
                 code: '',
                 gateway: '',
@@ -26,18 +26,17 @@
         },
         computed: {
           canvasId () {
-              return 'canvas_'+this.id
+              return 'canvas_' + this.id
           }
         },
         watch: {
             show (val) {
                 if (val) {
-
                     let path = 'pages/activities/groupon/grouponDetails/main';
-                    this.image = `${this.gateway}/wxa/getwxacode?scene=id=${this.id}&page=${path}`;
+                    let scene = encodeURIComponent(`id=${this.id}`);
+                    this.image = `${this.gateway}/wxa/getwxacode?scene=${scene}&page=${path}`;
                     this.renderInstance = new Canvas(this.width, this.height, this.canvasId)
                     this.updateCanvas()
-
                 }
             },
             canvasId () {
@@ -52,14 +51,14 @@
 
             },
             onImgOk () {
-                let self= this;
+                let self = this;
                 wx.canvasToTempFilePath({
                     x: 0,
                     y: 0,
                     width: 270,
                     height: 445,
                     canvasId: this.canvasId,
-                    success: function(res) {
+                    success: function (res) {
                         wx.saveImageToPhotosAlbum({
                             filePath: res.tempFilePath,
                             success (res) {
@@ -74,7 +73,6 @@
                         })
                     }
                 })
-
             },
             renderCanvas (h) {
                 if (!this.name) {
@@ -82,13 +80,13 @@
                 };
                 let text = this.text;
                 if (text.length > 20) {
-                    let text_front = text.substring(0,20);
+                    let text_front = text.substring(0, 20);
                     let text_behind = text.substring(20);
                     return h('view', {
                         style: {
                             width: 270,
                             height: 445,
-                            fill: '#ffffff',
+                            fill: '#ffffff'
                         }
                     }, [
                         h('image', {
@@ -117,7 +115,7 @@
                                 left: 15,
                                 top: 298,
                                 fill: '#757575',
-                                fontSize: 12,
+                                fontSize: 12
                             }
                         }, text_front),
                         h('text', {
@@ -125,7 +123,7 @@
                                 left: 15,
                                 top: 315,
                                 fill: '#757575',
-                                fontSize: 12,
+                                fontSize: 12
                             }
                         }, text_behind),
                         h('image', {
@@ -149,14 +147,14 @@
                                 width: 75,
                                 height: 75
                             }
-                        }),
+                        })
                     ])
                 } else {
                     return h('view', {
                         style: {
                             width: 270,
                             height: 445,
-                            fill: '#ffffff',
+                            fill: '#ffffff'
                         }
                     }, [
                         h('image', {
@@ -211,12 +209,11 @@
                                 width: 75,
                                 height: 75
                             }
-                        }),
+                        })
                     ])
                 }
-
             },
-            updateCanvas() {
+            updateCanvas () {
                 constants.scrollTop += constants.top
                 let vnode = this.renderCanvas.call(this._renderProxy, this.$createElement)
                 this.render = new Render(this.renderInstance, vnode, this.width, this.height)
@@ -224,16 +221,16 @@
                 // console.log(constants.IN_BROWSER);
                 // this.renderInstance.add(offScreenCanvas)
                 // return vnode
-            },
+            }
         },
-        onHide() {
-            if(this.render) {
+        onHide () {
+            if (this.render) {
                 this.render.clearCanvas();
                 this.render = null;
             }
             this.renderInstance = null;
         },
-        mounted() {
+        mounted () {
             this.gateway = this.config['app']['http']['gateway'];
         }
     }
