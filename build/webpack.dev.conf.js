@@ -81,7 +81,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         new FriendlyErrorsPlugin(),
         new ToolConfigLoader('dev'),
         new BundleAnalyzerPlugin({
-            analyzerPort: 9800,
+            analyzerPort: 9801,
             openAnalyzer: false
         })
     ]

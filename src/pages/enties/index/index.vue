@@ -7,7 +7,7 @@
             <div id="index_header" >
                 <div class="banners">
                     <swiper class="index-swiper" circular="true" :indicator-dots="false" autoplay="true" interval="3000" duration="500" @animationfinish="bannerChange" @transition="bannerTransition">
-                        <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
+                        <block v-for="(item, index) in indexBanners" :index="index" :key="index" >
                             <swiper-item :key="key">
                                 <image :src="item.image" class="index-slide-image" mode="aspectFill" @click="bannerJump(item)"/>
                             </swiper-item>
