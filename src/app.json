@@ -108,18 +108,8 @@
     },
     "sitemapLocation": "sitemap.json",
     "usingComponents": {
-        "i-card": "/static/iview/card/index",
-        "i-button": "/static/iview/button/index",
         "i-badge": "/static/iview/badge/index",
         "i-modal": "/static/iview/modal/index",
-        "i-toast": "/static/iview/toast/index",
-        "i-message": "/static/iview/message/index",
-        "i-tabs": "/static/iview/tabs/index",
-        "i-tab": "/static/iview/tab/index",
-        "i-radio-group": "/static/iview/radio-group/index",
-        "i-radio": "/static/iview/radio/index",
-        "i-input": "/static/iview/input/index",
-        "i-action-sheet": "/static/iview/action-sheet/index",
-        "i-drawer": "/static/iview/drawer/index"
+        "i-radio": "/static/iview/radio/index"
     }
 }

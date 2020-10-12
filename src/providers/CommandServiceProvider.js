@@ -13,7 +13,7 @@ import ScanCommand from '@/commands/ScanCommand';
 // 获取导航栏高度
 import GetBarHeightCommand from '../commands/BarHeightCommand';
 
-import CleanCarts from '../commands/CleanCarts';
+// import CleanCarts from '../commands/CleanCarts';
 
 // 清空产品命令（切换分类）
 import ClearModelCommand from '@/commands/ClearModelCommand';
@@ -59,7 +59,7 @@ export default class CommandServiceProvider extends ServiceProvider {
             LoadCommonlyUsedPoints,
             LoadNearbyPoints,
             GetBarHeightCommand,
-            CleanCarts,
+            // CleanCarts,
             BindConsumerCommand,
             SelectedPointCommand,
             ActivateConsumerCardCommand,

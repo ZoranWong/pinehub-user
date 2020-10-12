@@ -100,7 +100,7 @@ module.exports = {
                         enabled: true, // 表示不啟用這一個圖片優化器
                     },
                     pngquant: {
-                        quality: [0.65, 0.9],
+                        quality: [0.65, 0.8],
                         speed: 4,
                     },
                     gifsicle: {
@@ -164,7 +164,7 @@ module.exports = {
             {
                 from: path.resolve(__dirname, '../static'),
                 to: path.resolve(__dirname, '../dist/static'),
-                ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
+                ignore: ['.*', 'jssdk/*', 'images/icon/*.*', 'iview/*']
             }
         ])
     ]
