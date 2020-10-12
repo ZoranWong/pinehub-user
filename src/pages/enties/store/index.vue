@@ -264,7 +264,7 @@
 			  this.getAuth = false
 		  },
           tabSelect (id) {
-            //   console.log('我变我变我变我变我变我变我变我变我变我变');
+              console.log('我变我变我变我变我变我变我变我变我变我变');
               this.activeTab = id;
 			  // this.$command('LOAD_STORE_COMMAND',id, 1)
           },
@@ -342,7 +342,7 @@
           }
       },
       mounted () {
-          letrpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+          let rpxRate = 750 / wx.getSystemInfoSync().windowWidth;
           let screenWitdh = wx.getSystemInfoSync().windowHeight;
           this.screenHeight = (rpxRate * screenWitdh) / 2;
           this.initAccount()
