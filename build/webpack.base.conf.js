@@ -7,6 +7,7 @@ var MpvuePlugin = require('webpack-mpvue-asset-plugin')
 var glob = require('glob')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var relative = require('relative')
+var webpack = require('webpack');
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -166,6 +167,7 @@ module.exports = {
                 to: path.resolve(__dirname, '../dist/static'),
                 ignore: ['.*', 'jssdk/*', 'images/icon/*.*', 'iview/*']
             }
-        ])
+        ]),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn|us/),
     ]
 }
