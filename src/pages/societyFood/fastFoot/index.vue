@@ -25,13 +25,13 @@
             </div>
             <div class="shop-four">
                 <button style="margin-left: 15pt" @click="contactCustomerService(itemObj.shop_phone)">
-                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
+                    <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
                     <label>联系门店</label>
                 </button>
                 <button style="margin-left: 10pt" open-type="share">
-                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
+                    <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
                     <label>分享好友</label>
                 </button>
             </div>

@@ -630,6 +630,10 @@
 </script>
 
 <style scoped>
+
+    .home-modal {
+        font-weight: 800 !important;
+    }
     .home-page #receivedNewTickets{
         width: 100%;
         height: 100%;
