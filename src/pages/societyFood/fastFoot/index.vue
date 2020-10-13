@@ -100,7 +100,7 @@
             </view>
             <div class="order-food-info">
                 <label style="color: #111111;font-size: 32rpx">订餐情况</label>
-                <label style="color: #999999;font-size: 24rpx">（{{orderInfoList.length}}人已订餐）</label>
+                <label style="color: #999999;font-size: 24rpx;margin-top:5rpx">（{{orderInfoList.length}}人已订餐）</label>
             </div>
             <div class="order-info-content" v-for="(item,index) in orderInfoList" :key="index">
                 <view class="content-title">
@@ -676,14 +676,14 @@
         margin-top: 15pt;
     }
     .shop-four button{
-        background: -webkit-linear-gradient(top,#FEE7B5,#F2D18D);
-        width: 84pt;
-        height: 25pt;
+        background: -webkit-linear-gradient(top,#fee7b5,#f2d18d);
+        width: 168rpx;
+        height: 50rpx;
         margin-right: unset;
         margin-left: unset;
-        line-height: 25pt;
+        line-height: 50rpx;
         padding-left: 0;
-        border-radius: 5pt;
+        border-radius: 10rpx;
     }
     .shop-four button label{
         font-size:15px;
