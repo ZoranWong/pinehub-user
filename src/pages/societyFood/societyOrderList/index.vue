@@ -10,11 +10,11 @@
             </view>
         </div>
         <div id="tab_content" :style="{'height': mainHeight + 'px'}">
-            <div class="empty_img_groupon" v-if="ordersList.length==0">
+            <div class="empty_img_groupon" v-if="ordersList.length == 0">
                 <img src="../../../../static/images/empty/empty_order.jpg" alt="" id="empty">
                 <span>暂无订单哦～</span>
             </div>
-            <scroll-view class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :scroll-y="true">
+            <scroll-view v-else class="orders-wrapper" @scroll = "onScroll" :lower-threshold="10" :scroll-y="true">
                 <div class="order_info" :id = "order.id" v-for="(order, index) in ordersList" :key="index">
                     <div class="order_info_sn" @click="orderDetail(order.id)">
                         <div class="left">
@@ -47,19 +47,19 @@
 	</div>
 </template>
 <script>
-    import CustomHeader from "../../../components/CustomHeader";
+    import CustomHeader from '../../../components/CustomHeader';
     import SocietyOrders from './SocietyOrders';
 	export default {
 		components: {
             CustomHeader,
             SocietyOrders
 		},
-		data() {
+		data () {
 			return {
                 title: '社会餐订单',
                 statusType: 4,
-                currentName:'全部订单',
-                ordersList:[],
+                currentName: '全部订单',
+                ordersList: [],
                 tabs: [
                     {name: '待支付', key: 0},
                     {name: '待配送', key: 1},
@@ -69,7 +69,7 @@
                 ],
                 screenHeight: 0,
                 screenWitdh: 0,
-                statusDesc: '待配送',
+                statusDesc: '待配送'
             };
 		},
 		computed: {
@@ -79,32 +79,32 @@
             navHeight () {
                 return this.model.global.barHeight.navHeight
             },
-            headerHeight() {
+            headerHeight () {
                 return this.statusBarHeight + this.navHeight;
             },
-            mainHeight() {
+            mainHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 let height = systemInfo.windowHeight;
                 return height - this.headerHeight - this.btnHeight;
             },
-            btnHeight() {
+            btnHeight () {
                 let systemInfo = wx.getSystemInfoSync();
                 return 88 * systemInfo.windowWidth / 750;
             }
 		},
 		methods: {
             orderDetail (id) {
-                this.$command('REDIRECT_TO', 'societyFood.societyOrderDetail', 'push',{query: {id: id}});
+                this.$command('REDIRECT_TO', 'societyFood.societyOrderDetail', 'push', {query: {id: id}});
             },
             btnClick (type, order) {
                 this.$command('ORDER_STATUS_UPDATE', type, order);
             },
             selectTab (statusType) {
                 this.statusType = statusType;
-                let param={
-                    status:statusType
+                let param = {
+                    status: statusType
                 }
-                this.$command('SF_MY_LIST',param,this);
+                this.$command('SF_MY_LIST', param, this);
             },
             back () {
                 this.$command('REDIRECT_TO', '', 'back')
@@ -115,7 +115,7 @@
                 let count = 0;
                 this.orders.map((order) => {
                     if (this.setOrderItemVisible(order, minTop, maxTop)) {
-                        count ++;
+                        count++;
                     }
                 });
             },
@@ -128,7 +128,7 @@
             this.screenWitdh = wx.getSystemInfoSync().windowHeight;
             this.screenHeight = (this.rpxRate * this.screenWitdh);
         },
-        mounted() {
+        mounted () {
 		   this.selectTab(0);
         }
     }
