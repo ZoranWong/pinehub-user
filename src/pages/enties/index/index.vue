@@ -96,9 +96,9 @@
                 <RecommendProducts  @addToCart="addToCart" />
             </div>
         </div>
-        <!-- <i-modal :title="modalTitle" class="home-modal" :okColor="color" :visible="visible" :cancel-text="cancelText" :ok-text="okText" @ok="handleSure" @cancel="handleMOre">
+        <i-modal :title="modalTitle" class="home-modal" :okColor="color" :visible="visible" :cancel-text="cancelText" :ok-text="okText" @ok="handleSure" @cancel="handleMOre">
             <view>{{NearByshopName}}</view>
-        </i-modal> -->
+        </i-modal>
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
@@ -409,18 +409,19 @@
         },
         methods: {
             boxLunchOrder:function(){
-                // this.visible=true;
-                this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
-                // if(!this.shopObj || !this.shopObj.shop_id){
-                //     wx.showToast({
-                //         title: '抱歉,您附近没有门店',
-                //         icon: 'none'
-                //     })
-                //     return false;
-                // }
+                this.visible=true;
+                console.log(this.shopObj,99999999999)
+                // this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
+                if(!this.shopObj || !this.shopObj.shop_id){
+                    wx.showToast({
+                        title: '抱歉,您附近没有门店',
+                        icon: 'none'
+                    })
+                    return false;
+                }
             },
             handleSure:function(){
-                // this.visible=false;
+                this.visible=false;
                 this.shopId=this.shopObj.shop_id;
                 if(this.okText!="确定"){
                     this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
@@ -433,7 +434,7 @@
                 });
             },
             handleMOre:function(){
-                // this.visible=false;
+                this.visible=false;
                 if(this.cancelText!="随便看看"){
                     this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                 }
