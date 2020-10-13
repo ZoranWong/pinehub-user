@@ -415,16 +415,18 @@
             let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
             this.utils.fundebug.notify('options.scene', options);
-            console.log(options);
             if (options.scene) {
+                // options.scene = decodeURIComponent(options)
+                options.scene = decodeURIComponent(options.scene);
+                options = _.extend(options, this.uri.queryParse(options.scene));
                 // scene:id=123&shop_code=qpweioru
-                let idString = options.scene.split('3D')[1];
-                if (options.scene.split('3D').length > 2) {
-                    options.id = idString.split('%26')[0];
-                    options.shop_code = options.scene.split('3D')[2];
-                } else {
-                    options.id = idString.split('3D')[1];
-                }
+                // let idString = options.scene.split('3D')[1];
+                // if (options.scene.split('3D').length > 2) {
+                //     options.id = idString.split('%26')[0];
+                //     options.shop_code = options.scene.split('3D')[2];
+                // } else {
+                //     options.id = idString.split('3D')[1];
+                // }
                 options.backHome = true
             }
             this.options = options;
@@ -440,8 +442,12 @@
             clearInterval(this.timer)
         },
 		created () {
-
-		},
+        },
+        onLoad (options) {
+            // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+            // const scene = decodeURIComponent(query.scene);
+            console.log(options);
+        },
 		mounted () {
 
 		},

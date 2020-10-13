@@ -34,6 +34,7 @@
                 if (val) {
                     let path = 'pages/activities/groupon/grouponDetails/main';
                     let scene = encodeURIComponent(`id=${this.id}`);
+                    console.log(scene);
                     this.image = `${this.gateway}/wxa/getwxacode?scene=${scene}&page=${path}`;
                     this.renderInstance = new Canvas(this.width, this.height, this.canvasId)
                     this.updateCanvas()
