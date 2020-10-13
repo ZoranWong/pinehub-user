@@ -25,14 +25,16 @@
             </div>
             <div class="shop-four">
                 <button style="margin-left: 15pt" @click="contactCustomerService(itemObj.shop_phone)">
-                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
-                    <label>联系门店</label>
+                    <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
+                    <!-- <label>联系门店</label> -->
+                    <img src="../img/contact.png" alt="">
                 </button>
                 <button style="margin-left: 10pt" open-type="share">
-                    <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
-                    <img v-else src="../../../../static/icons/headImg.jpg" alt="">
-                    <label>分享好友</label>
+                    <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
+                    <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
+                    <!-- <label>分享好友</label> -->
+                    <img src="../img/onshery.png" alt="">
                 </button>
             </div>
             <div class="shop-five">
@@ -47,7 +49,11 @@
         <div class="change-btn">
             <view :class="{'selectTab':status === '1' && itemObj.state}" @click="selectProject('1')">立即订餐</view>
             <view :class="{'selectTab':status === '2' && itemObj.state}" @click="selectProject('2')">明日预定</view>
-            <view class="more-product" @click="searchMoreProduct">查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt=""></view>
+            <view class="more-product" @click="searchMoreProduct">
+                <view class="more-product-btn">
+                查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
+                </view>
+            </view>
         </div>
         <scroll-view scroll-y class="scroll-view_H">
             <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="item.product_stock_id" v-if="status=='1'">
@@ -93,8 +99,8 @@
                 </view>
             </view>
             <div class="order-food-info">
-                <label style="color: #111111;font-size: 15pt">订餐情况</label>
-                <label style="color: #999999;font-size: 12pt">（{{orderInfoList.length}}人已订餐）</label>
+                <label style="color: #111111;font-size: 32rpx">订餐情况</label>
+                <label style="color: #999999;font-size: 24rpx">（{{orderInfoList.length}}人已订餐）</label>
             </div>
             <div class="order-info-content" v-for="(item,index) in orderInfoList" :key="index">
                 <view class="content-title">
@@ -113,14 +119,14 @@
             </div>
             <div class="click-search-more" @click="searchMoreOrderInfo" v-if="showMoreBtn">点击查看更多…</div>
         </scroll-view>
-        <view>
+        <view class="order-settlement-box">
             <div class="order-settlement" v-if="status=='1'">
                 <view class="order-pay-info">
                     <i-badge :count="onceOrderCount" overflow-count="99">
-                        <view class="demo-badge"><img src="../img/book.png"/></view>
+                        <view class="demo-badge"><img src="../img/buyCard.png"/></view>
                     </i-badge>
                     <view>
-                        <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{onceOrderCount<=0?0:oncePrice}}</view>
+                        <view style="color: #111111;font-size: 40rpx;font-weight: 800">¥{{onceOrderCount<=0?0:oncePrice}}</view>
                         <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
@@ -129,7 +135,7 @@
             <div class="order-settlement" v-else>
                 <view class="order-pay-info">
                     <i-badge :count="reserveOrderCount" overflow-count="99">
-                        <view class="demo-badge"><img src="../img/book.png"/></view>
+                        <view class="demo-badge"><img src="../img/buyCard.png"/></view>
                     </i-badge>
                     <view>
                         <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reserveOrderCount<=0?0:reservePrice}}</view>
@@ -638,7 +644,7 @@
     .shop-two .position-img{
         width:12px;
         height:12px;
-        background: -webkit-linear-gradient(top,#FDE068,#FFCC00);
+        /* background: -webkit-linear-gradient(top,#FDE068,#FFCC00); */
         justify-content: center;
         align-items: center;
         display: flex;
@@ -686,7 +692,7 @@
     }
     .shop-four button ._img{
         height: inherit;
-        width: 25px;
+        width: 100%;
         border-radius: 5pt;
         float: left;
     }
@@ -739,7 +745,7 @@
         align-items: center;
         display: flex;
         color: #757575;
-        font-size: 14pt;
+        font-size: 32rpx;
     }
     .selectTab{
         position: relative;
@@ -756,9 +762,25 @@
         bottom: 0;
     }
     .more-product{
+        /* height: 70rpx !important; */
+        /* margin-right: 10rpx;
+        border: 1px solid #ccc;
+        border-radius: 20rpx;
+        justify-content: center;
+        align-items: center;
+        display: flex; */
+    }
+    .more-product-btn{
+        margin-right: 10rpx;
+        border: 2rpx solid #333333;
+        border-radius: 16rpx;
         justify-content: center;
         align-items: center;
         display: flex;
+        color: #333333 !important;
+        width: 187rpx !important;
+        height: 56rpx !important;
+        font-size: 26rpx !important;
     }
     .more-product ._img{
         width: 4pt;
@@ -829,7 +851,7 @@
     }
     .order-food-info{
         width: 100%;
-        height: 50px;
+        /* height: 50px; */
         justify-content: left;
         display: flex;
         padding-left: 23px;
@@ -884,24 +906,34 @@
         font-size: 12pt;
         margin-bottom: 40pt;
     }
-    .order-settlement{
+    .order-settlement-box{
+        border-top: 1px #ccc solid;
         width: 100%;
-        height: 70px;
+        /* height: 70px; */
         bottom: 0;
         position: fixed;
         z-index: 100000;
-        background: #e5e5e5;
+        /* background: #e5e5e5; */
+        background: #ffffff;
+        padding: 15rpx;
     }
+    /* .order-settlement{
+        margin-top: 15rpx;
+        margin-bottom: 15rpx;
+
+    } */
     .order-settlement button{
-        margin-right: 15px;
-        height: 38pt;
-        top: 7.5pt;
-        width: 130px;
+        margin-right: 30rpx;
+        /* top: 15rpx; */
+        width: 260rpx;
         background: -webkit-linear-gradient(top,#FDE068,#FFCC00);
         color: #111111;
-        font-size: 16pt;
-        border-radius: 19pt;
+        font-size: 32rpx;
+        border-radius: 48rpx;
         float: right;
+        font-weight: 800;
+        padding-top: 8rpx;
+        padding-bottom: 8rpx;
     }
     .order-settlement .order-pay-info{
         width: auto;
@@ -913,20 +945,20 @@
         margin-left: 5px;
     }
     .order-settlement .order-pay-info ._i-badge{
-        width: 53pt;
-        height: 53pt;
+            /* width: 53pt;
+            height: 53pt; */
         margin-right: 10px;
         justify-content: cenetr;
         align-items: center;
         display: flex;
     }
     .demo-badge{
-        height: 53pt;
-        width: 53pt;
+        height: 106rpx;
+        width: 106rpx;
     }
     .demo-badge ._img{
-        height: 53pt;
-        width: 53pt;
+        height: 100%;
+        width: 100%;
     }
     @keyframes scaleDraw {
         /*定义关键帧、scaleDrew是需要绑定到选择器的关键帧名称*/

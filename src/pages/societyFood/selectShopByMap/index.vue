@@ -285,14 +285,15 @@
     }
     .select-shop-Map .search-content{
         position: absolute;
-        height: 260pt;
-        width: 96%;
+        /* height: 260pt; */
+        height: 490pt;
+        width: 100%;
         overflow-y: auto;
         overflow-x: hidden;
-        left: 2%;
+        /* left: 2%; */
         border-radius: 12pt 12pt 0 0;
-        box-shadow: 0 5px 10px #888888;
-        background-color: #F0F0F0;
+        /* box-shadow: 0 5px 10px #888888; */
+        background-color: #FFFFFF;
         z-index: 10;
     }
     .select-shop-Map .disabled{
