@@ -37,6 +37,7 @@
             </div>
 
             <div class="extra">
+                <!-- <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt=""> -->
                 <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
                 <img src="../../../fast-food.png" @click="boxLunchOrder" alt="">
             </div>
