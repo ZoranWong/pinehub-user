@@ -1,9 +1,9 @@
 {
     "model": "mp",
-    "env": "prod",
+    "env": "dev",
     "mock": false,
     "appId": "kdy5df6e803b3ea6",
-    "appSecret": "iy2tgGBhSVnVxC0fTXtN0kddYo5wOzza",
+    "appSecret": "Kw2OEar0aLI8Dyssm1r4zhifSTDDkPuW",
     "mapKey": "HJ4BZ-A7UK3-RTP3T-YS7MZ-WCPYO-XVBOD",
     "staticHost": "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com",
     "imgPath": "https://kingdomcloud.oss-cn-hangzhou.aliyuncs.com/mp_images/",
@@ -13,10 +13,10 @@
         "3": "第三批次"
     },
     "http": {
-        "gateway": "https://www.neptune.kingdomcloud.cn/"
+        "gateway": "https://neptune.klsfood.cn"
     },
     "socket": {
-        "gateway": "https://www.neptune.kingdomcloud.cn/"
+        "gateway": "https://neptune.klsfood.cn"
     },
     "order": {
         "payAmount": 50

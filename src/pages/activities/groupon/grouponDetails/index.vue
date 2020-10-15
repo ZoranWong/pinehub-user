@@ -627,7 +627,7 @@
 
     .details{
         width: 100%;
-        height: 150rpx;
+        /* height: 150rpx; */
         box-sizing: border-box;
         padding: 24rpx 50rpx;
         border-bottom: 2rpx solid #F2F2F2;
@@ -643,6 +643,7 @@
         font-size: 32rpx;
         color: #111;
         font-weight: bold;
+        width: 95%;
     }
     .details .top img{
         width: 150rpx;

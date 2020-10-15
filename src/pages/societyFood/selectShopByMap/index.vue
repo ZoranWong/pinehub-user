@@ -2,7 +2,7 @@
     <div class="select-shop-Map">
         <div id="status_bar" :style="{'height': statusBarHeight + 'px'}" ></div>
         <div id="nav_bar" :style="{'height': navHeight + 'px'}" >
-            <div class="back-icon" @click="backPage" style="margin-left: 15px">
+            <div class="back-icon" @click="backPage" style="margin-left: 20px">
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
@@ -19,8 +19,8 @@
             </view>
         </view>
         <view class="shop-tab" :style="{'backgroundImage':'url(' + background + ')', backgroundPosition: backgroundPosition}">
-            <div class="tabItem" :class="{'active':showNearby}" @click="changeAddressList('0')">附近门店</div>
-            <div class="tabItem" :class="{'active':!showNearby}" @click="changeAddressList('1')">常用门店</div>
+            <div class="tabItem" style="margin-left:15rpx" :class="{'active':showNearby}" @click="changeAddressList('0')">附近门店</div>
+            <div class="tabItem" style="margin-right:15rpx" :class="{'active':!showNearby}" @click="changeAddressList('1')">常用门店</div>
         </view>
         <view class="shop-address-list">
             <view class="shop-address-tab" v-for="(item,index) in addressList" :key="index">
@@ -189,6 +189,7 @@
         overflow-x: hidden;
         overflow-y: auto;
         max-height: 300px;
+        margin-top: 20rpx;
     }
     .shop-address-tab{
         margin-left: 15px;

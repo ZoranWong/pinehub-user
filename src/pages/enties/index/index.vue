@@ -37,7 +37,8 @@
             </div>
 
             <div class="extra">
-                <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
+                <img src="../../../../static/icons/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
+                <!-- <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup"> -->
                 <img src="../../../fast-food.png" @click="boxLunchOrder" alt="">
             </div>
 
@@ -409,7 +410,8 @@
         },
         methods: {
             boxLunchOrder:function(){
-                // this.visible=true;
+                this.visible=true;
+                // console.log(this.shopObj,99999999999)
                 this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                 // if(!this.shopObj || !this.shopObj.shop_id){
                 //     wx.showToast({
@@ -420,7 +422,7 @@
                 // }
             },
             handleSure:function(){
-                // this.visible=false;
+                this.visible=false;
                 this.shopId=this.shopObj.shop_id;
                 if(this.okText!="确定"){
                     this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
@@ -433,7 +435,7 @@
                 });
             },
             handleMOre:function(){
-                // this.visible=false;
+                this.visible=false;
                 if(this.cancelText!="随便看看"){
                     this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                 }
