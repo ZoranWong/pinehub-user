@@ -23,7 +23,7 @@
                     @markertap="bindmarkertap"
                     show-location>
                     <cover-view id="locatePosition" @click="nowLocation">
-                        <cover-image src="/static/images/icon/nowposition.png" style="position: absolute;top: 0;left: 0;height: 50rpx;width: 50rpx;pointer-events: none"></cover-image>
+                        <cover-image src="../../../../static/images/icon/nowposition.png" style="position: absolute;top: 0;left: 0;height: 50rpx;width: 50rpx;pointer-events: none"></cover-image>
                     </cover-view>
                 </map>
                 <div id="location_points">

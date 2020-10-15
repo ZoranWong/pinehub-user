@@ -96,12 +96,12 @@
             </div>
 
             <div class="productsContainer">
-                <div class="productHeader">
+                <!-- <div class="productHeader">
                     <h4 v-if="activeTab === 'send'">青松食品（宁西路28号青松集团）</h4>
                     <h4 v-if="activeTab === 'pick' && !shopAddress">青松食品（宁西路28号青松集团）</h4>
                     <h4 v-if="activeTab === 'pick' && shopAddress">{{shopAddress}}</h4>
                     <img src="../img/tag.png" alt="">
-                </div>
+                </div> -->
                 <ul id="good_list">
                     <li v-for="(item,index) in buyShopList" :key="index">
                         <div class="left">
@@ -410,7 +410,8 @@
                 this.showAddressTab=false;
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                // this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'reLaunch')
             },
             //关闭地图展示
             closePoints () {

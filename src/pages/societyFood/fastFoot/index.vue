@@ -24,13 +24,13 @@
                 <div class="content-word">公告：{{itemObj.announcement}}</div>
             </div>
             <div class="shop-four">
-                <button style="margin-left: 15pt" @click="contactCustomerService(itemObj.shop_phone)">
+                <button style="margin-left: 30rpx" @click="contactCustomerService(itemObj.shop_phone)">
                     <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
                     <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
                     <!-- <label>联系门店</label> -->
                     <img src="../img/contact.png" alt="">
                 </button>
-                <button style="margin-left: 10pt" open-type="share">
+                <button style="margin-left: 20rpx" open-type="share">
                     <!-- <img v-if="itemObj.shop_avatar" :src="itemObj.shop_avatar" alt="">
                     <img v-else src="../../../../static/icons/headImg.jpg" alt=""> -->
                     <!-- <label>分享好友</label> -->
@@ -303,7 +303,8 @@
                 })
             },
             backPage:function () {
-                this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                // this.$command('REDIRECT_TO', 'index', 'reLaunch')
+                this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch')
             },
             selectProject:function (status) {
                 if(!this.itemObj.state){
@@ -673,10 +674,10 @@
         justify-content: left;
         align-items: center;
         display: flex;
-        margin-top: 15pt;
+        /* margin-top: 15pt; */
     }
     .shop-four button{
-        background: -webkit-linear-gradient(top,#fee7b5,#f2d18d);
+        background:none;
         width: 168rpx;
         height: 50rpx;
         margin-right: unset;
@@ -685,14 +686,17 @@
         padding-left: 0;
         border-radius: 10rpx;
     }
-    .shop-four button label{
+    .button-hover{
+        background-color: none;
+    }
+    /* .shop-four button label{
         font-size:15px;
         font-family:PingFang-SC-Medium,PingFang-SC;
         color:#563C21;
-    }
+    } */
     .shop-four button ._img{
         height: inherit;
-        width: 100%;
+        width: 168rpx;
         border-radius: 5pt;
         float: left;
     }
