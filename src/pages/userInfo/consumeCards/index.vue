@@ -26,16 +26,6 @@
                             <img v-else style="width:340px;height:320rpx;border-radius: 5px;" src="../../../../static/icons/h_card.png" alt="">
                                 <div class="breakfast">
                                     <div style="width:340px">
-<<<<<<< HEAD
-                                        <h2 style="font-size:25px;display: inline-block;">{{tab['card_name']}}</h2>
-                                        <h3 style="font-size:14px;display: inline-block;position: absolute;right:15px" >{{tab['state_desc']}}</h3>
-                                    </div>
-                                    <p style="font-size:11px">CONSUMER CARD</p>
-                                    <h3 v-if="tab['state'] ===1" style="font-size:20px">可享受<span style="color:red">无门槛</span>现金抵用券</h3>
-                                    <h3 v-else style="font-size:18px">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
-                                    <p style="font-size:13px" >有效期：{{tab.start_time}}至{{tab['end_time']}}</p>
-                                    <p style="font-size:13px">使用场景：{{tab.used_scene}}</p>
-=======
                                         <h2 style="font-size:50rpx;display: inline-block;">{{tab['card_name']}}</h2>
                                         <h3 style="font-size:30rpx;display: inline-block;position: absolute;right:50rpx" >{{tab['state_desc']}}</h3>
                                     </div>
@@ -44,7 +34,6 @@
                                     <h3 v-else style="font-size:40rpx">可享受<span style="color:#ADADAD">无门槛</span>现金抵用卡</h3>
                                     <p style="font-size:26rpx" >有效期：{{tab['start_time']}}至{{tab['end_time']}}</p>
                                     <p style="font-size:26rpx">使用场景：{{tab.used_scene}}</p>
->>>>>>> hotfix-showmapbug
                                     <div class="card-bottom">
                                         <span class="money">￥{{tab['card_remain_amount']}}<span style="color:#999999;font-size:40rpx">现金抵用</span></span>
                                         <span  :class="tab['state'] !=1 ? 'uncomactive' : 'comactive'" v-if="tab['state']!=0" @click="consumptionDetails(tab['record_id'])">消费明细</span>
@@ -171,11 +160,7 @@
         width: 100%;
         /* position: relative; */
         overflow: hidden;
-<<<<<<< HEAD
-        margin-top: 50rpx;
-=======
         margin-top: 25rpx;
->>>>>>> hotfix-showmapbug
         margin-left: -10px;
 
 
