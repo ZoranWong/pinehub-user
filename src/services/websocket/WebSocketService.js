@@ -1,6 +1,6 @@
 import Service from '../Service';
 import Echo from 'laravel-echo'
-import th from "element-ui/src/locale/lang/th";
+// import th from "element-ui/src/locale/lang/th";
 
 const io = require('weapp.socket.io');
 

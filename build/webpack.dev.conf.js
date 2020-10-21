@@ -12,6 +12,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const ToolConfigLoader = require('./tool-config-loader');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // add hot-reload related code to entry chunks
 // Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -53,6 +54,7 @@ var webpackConfig = merge(baseWebpackConfig, {
                 safe: true
             }
         }),
+        //
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common/vendor',
             minChunks: function (module, count) {
@@ -60,13 +62,11 @@ var webpackConfig = merge(baseWebpackConfig, {
                 return (
                     module.resource &&
                     /\.js$/.test(module.resource) &&
-                    module.resource.indexOf('node_modules') >= 0
-                ) || count > 1
+                    (module.resource.indexOf('node_modules') >= 0
+                        || module.resource.indexOf('iview') >= 0
+                        || module.resource.indexOf('jssdk') >= 0)
+                ) || count > 2
             }
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common/manifest',
-            chunks: ['common/vendor']
         }),
 
         // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
@@ -79,7 +79,11 @@ var webpackConfig = merge(baseWebpackConfig, {
         //   inject: true
         // }),
         new FriendlyErrorsPlugin(),
-        new ToolConfigLoader('dev')
+        new ToolConfigLoader('dev'),
+        new BundleAnalyzerPlugin({
+            analyzerPort: 9801,
+            openAnalyzer: false
+        })
     ]
 })
 

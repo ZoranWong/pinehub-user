@@ -76,34 +76,37 @@ var webpackConfig = merge(baseWebpackConfig, {
                 return (
                     module.resource &&
                     /\.js$/.test(module.resource) &&
-                    module.resource.indexOf('node_modules') >= 0
+                    (module.resource.indexOf('node_modules') >= 0
+                        || module.resource.indexOf('iview') >= 0
+                        || module.resource.indexOf('jssdk') >= 0)
                 ) || count > 2
             }
         }),
         // extract webpack runtime and module manifest to its own file in order to
         // prevent vendor hash from being updated whenever app bundle is updated
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common/manifest',
-            chunks: ['common/vendor0', 'common/vendor1', 'common/vendor2']
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'common/manifest',
+        //     chunks: ['common/vendor0', 'common/vendor1', 'common/vendor2']
+        // }),
         new ToolConfigLoader('prod')
     ]
 })
 
 if (config.build.productionGzip) {
+    console.log('------- compression --------')
     var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
     webpackConfig.plugins.push(
         new CompressionWebpackPlugin({
-            asset: '[path].gz[query]',
+            filename: '[path].gz[query]',
             algorithm: 'gzip',
             test: new RegExp(
                 '\\.(' +
                 config.build.productionGzipExtensions.join('|') +
                 ')$'
             ),
-            threshold: 10240,
-            minRatio: 0.8
+            threshold: 1024,
+            minRatio: 0.6
         })
     )
 }

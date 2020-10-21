@@ -3,15 +3,11 @@
     <div class="body home-page">
         <CustomHeader :title="title" :needReturn="false" />
         <Auth v-if="showAuth" @close="closeAuth" />
-
-        <Coupon :consumerCard='consumerCard' v-if="showConsumerCardPopup"  @close="closeCoupon"></Coupon>
-        <!-- <Coupon   @close="closeCoupon"></Coupon> -->
-
         <div class="mainContainer" :style="{'height' : mainHeight + 'px'}">
             <div id="index_header" >
                 <div class="banners">
                     <swiper class="index-swiper" circular="true" :indicator-dots="false" autoplay="true" interval="3000" duration="500" @animationfinish="bannerChange" @transition="bannerTransition">
-                        <block v-for="(item, index) in indexBanners" :index="index" :key="key" >
+                        <block v-for="(item, index) in indexBanners" :index="index" :key="index" >
                             <swiper-item :key="key">
                                 <image :src="item.image" class="index-slide-image" mode="aspectFill" @click="bannerJump(item)"/>
                             </swiper-item>
@@ -41,9 +37,9 @@
             </div>
 
             <div class="extra">
-                <img src="./img/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
-<!--                <img @click="jumpHomeMaking" src="./img/homemaking.png" alt="">-->
-                <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup">
+                <img src="../../../../static/icons/custom_cake.png" @click="redirectTo('user.QingSongKungfu', {query: {id: 2}})" alt="">
+                <!-- <img src="./img/shoppinggroup.png" alt="" @click="jumpShoppingGroup"> -->
+                <img src="../../../fast-food.png" @click="boxLunchOrder" alt="">
             </div>
 
             <div class="coupons" v-if="tickets.length">
@@ -82,10 +78,8 @@
                 <Module_1 v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_1'" :image="act['entry_template'][0].image" :id="act.id" @do="goActDetails(act)" />
                 <Module_2
                     v-if="act['entry_template'].length && act['entry_template'][0].name === 'module_2'"
-                    :products="act['entry_template'][0].data" :id="act.id"
-                    :image="act['entry_template'][0].image"
-                    @do="goActDetails(act)"
-                    @addToCart="addToCart"
+                    :products="act['entry_template'][0].data" :id="act.id" :image="act['entry_template'][0].image"
+                    @do="goActDetails(act)" @addToCart="addToCart"
                 />
             </div>
 
@@ -103,9 +97,9 @@
                 <RecommendProducts  @addToCart="addToCart" />
             </div>
         </div>
-        <i-modal :title="modalTitle" class="home-modal" :okColor="color" :visible="visible" :cancel-text="cancelText" :ok-text="okText" @ok="handleSure" @cancel="handleMOre">
+        <!-- <i-modal :title="modalTitle" class="home-modal" :okColor="color" :visible="visible" :cancel-text="cancelText" :ok-text="okText" @ok="handleSure" @cancel="handleMOre">
             <view>{{NearByshopName}}</view>
-        </i-modal>
+        </i-modal> -->
         <GetUserMobile v-if="showBindMobile" @close="closeGetUserMobile" />
         <ReceivedNewTickets v-if="newUserCoupon" @close="closePop" />
         <OldUserReceivedNewTickets v-if="newCoupons.length" :coupons="newCoupons" @close="closeNewPop" />
@@ -114,8 +108,6 @@
 </template>
 
 <script>
-    import Coupon from '../../../components/LabourUnionCoupon'
-
     import FooterNav from '@/components/FooterNav';
     import CustomHeader from './components/CustomHeader';
     import Auth from '../../../components/Auth';
@@ -133,7 +125,6 @@
             'footer-nav': FooterNav,
             CustomHeader,
             Auth,
-            Coupon,
             ReceivedNewTickets,
             OldUserReceivedNewTickets,
             GetUserMobile,
@@ -192,12 +183,10 @@
                 return this.$imageUrl('bear01.gif');
             },
             hasToken () {
-                console.log("============================= has token =================");
                 let overDate = this.model.account.overDate;
                 return overDate ? overDate > Date.now() : false;
             },
             registered () {
-                console.log("============================= 1213123123 ==============", [this.model.account.registered]);
                 return this.model.account.registered;
             },
             isAuth () {
@@ -257,15 +246,6 @@
             },
             newCoupons () {
                 return this.model.account.newCoupons
-            },
-            notActivecards(){
-                return this.model.account.notActivecards;
-            },
-            consumerCard() {
-                return this.model.account.consumerCard;
-            },
-            showConsumerCardPopup () {
-                return this.model.account.showConsumerCardPopup;
             }
         },
         watch: {
@@ -275,7 +255,6 @@
                 }
             },
             accessToken (value) {
-                console.log("=============== access token ==========");
                 if (value) {
                     this.$command('SIGN_IN', this.accessToken);
                 }
@@ -283,11 +262,9 @@
             hasToken (value) {
                 if (this.hasToken) {
                     this.$command('LOAD_ACCOUNT', false);
-
                 }
             },
             registered (value) {
-                console.log("========================= registered ===============", [value, this.isMember]);
                 if (value) {
                     this.closeAuth()
                 }
@@ -299,8 +276,6 @@
             isMember (val) {
                 if (val) {
                     this.showBindMobile = false;
-                    console.log('==========是否有激活卡   调取没啊=======================')
-                    this.$command('ACQUISTION_NOT_ACTIVE')//是否有激活卡
                 }
                 if (this.storeId && this.registered && this.isMember) {
                     this.bindConsumer()
@@ -321,30 +296,24 @@
                         console.log(data, '--------------- APP SOCKET TEST EVENT ------------');
                     });
                 }
-            },
-            notActivecards (val) {
-                // 有消费卡可以领取，处理相关业务
-                if(val.length>0){
-                    // 判断请求回来的消费卡id是否存在缓存id数组里面的，不存在弹出领取通知
-                    // this.getcoupon = true;
-                    // }
-                    for (let index = 0; index < this.model.account.notActivecards.length; index++) {
-                        const card = this.model.account.notActivecards[index];
-                        console.log("============================ consumer card 0 ========================", [
-                            this.model.account.consumerCardIds.indexOf(card['record_id'])
-                        ])
-                        if(this.model.account.consumerCardIds.indexOf(card['record_id']) === -1) {
-                            console.log("============================ consumer card 1 ========================", card)
-                            this.model.account.dispatch('addConsumerCard', {card: card});
-                            // this.model.account.dispatch('addConsumerCardId', {id: card['record_id']});
-                            return;
-                        }
-                    }
-
-                }
             }
         },
         mounted () {
+            wx.getLocation({
+                type: 'wgs84',
+                success: (res)=> {
+                    let latitude = res.latitude
+                    let longitude = res.longitude
+                    this.latitude=latitude;
+                    this.longitude=longitude;
+                    let param={
+                        lat:latitude,//当前位置的 纬度
+                        lng:longitude//当前位置的 经度
+                    }
+                    console.log("当前位置经纬度0="+res.latitude+"==="+res.longitude);
+                    this.$command('SF_LAST_ADDRESS',param,this);
+                }
+            })
             wx.getSetting({
                 success (res) {
                     console.log(res, 'wx.getSetting');
@@ -369,6 +338,17 @@
                     this.bindConsumer()
                 }
             }
+            setTimeout(()=>{
+                let categories = this.model.user.store.categories;
+                let cates = [];
+                _.map(categories, (cate, index) => {
+                    if (index < 4) {
+                        cates.push(cate)
+                    }
+                })
+                console.log(cates)
+            }, 1000)
+
         },
         onShareAppMessage: function (res) {
             console.log(this.shopCode, '==========>');
@@ -377,7 +357,7 @@
                 title: '青松易购首页',
                 desc: '青松易购小程序',
                 imageUrl: '',
-                path: `/pages/user/index/main?shop_code=${this.storeId || this.shopCode}`,
+                path: `/pages/enties/index/main?shop_code=${this.storeId || this.shopCode}`,
                 success: function (res) {
                     // 转发成功
                     console.log('转发成功:' + JSON.stringify(res));
@@ -410,9 +390,6 @@
                 this.$command('LOAD_POP', 'PLATFORM_SEND');
             }
         },
-        onHide() {
-             this.model.account.dispatch('addConsumerCard', {card: null});
-        },
         onLoad (options) {
             if (options.q) {
                 let scan_url = decodeURIComponent(options.q);
@@ -424,65 +401,43 @@
                     this.$command('REDIRECT_TO', query['page'], 'push');
                 }
             }
+            if(options.shop_id){
+                this.shopId=options.shop_id;
+            }
             wx.onAppShow(() => {
                 this.ticketShow = true;
             });
-            wx.getLocation({
-                type: 'wgs84',
-                success: (res)=> {
-                    let latitude = res.latitude
-                    let longitude = res.longitude
-                    this.latitude=latitude;
-                    this.longitude=longitude;
-                    let param={
-                        lat:latitude,//当前位置的 纬度
-                        lng:longitude//当前位置的 经度
-                    }
-                    // this.$command('SF_LAST_ADDRESS',param,this);
-                }
-            })
         },
         methods: {
-            // 获取优惠券
-            closeCoupon(){
-                this.model.account.dispatch("addConsumerCard", {card: null});
-            },
-
             boxLunchOrder:function(){
-                if(!this.shopObj || !this.shopObj.shop_id){
-                    wx.showToast({
-                        title: '抱歉,您附近没有门店',
-                        icon: 'none'
-                    })
-                    return false;
-                }
-                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'push',{
-                    query: {
-                        shopId:this.shopId,
-                    }
-                });
+                this.visible=true;
+                // console.log(this.shopObj,99999999999)
+                this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
+                // if(!this.shopObj || !this.shopObj.shop_id){
+                //     wx.showToast({
+                //         title: '抱歉,您附近没有门店',
+                //         icon: 'none'
+                //     })
+                //     return false;
+                // }
             },
             handleSure:function(){
                 this.visible=false;
                 this.shopId=this.shopObj.shop_id;
                 if(this.okText!="确定"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
-                        query: {
-                            latitude: this.latitude,
-                            longitude: this.longitude
-                        }
-                    });
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
+                    return false;
                 }
+                this.$command('REDIRECT_TO', 'societyFood.fastFoot', 'reLaunch',{
+                    query: {
+                        shopId:this.shopId,
+                    }
+                });
             },
             handleMOre:function(){
                 this.visible=false;
                 if(this.cancelText!="随便看看"){
-                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'push',{
-                        query: {
-                            latitude: this.latitude,
-                            longitude: this.longitude
-                        }
-                    });
+                    this.$command('REDIRECT_TO', 'societyFood.selectShopByMap', 'reLaunch');
                 }
             },
             goCouponCenter () {
@@ -645,7 +600,7 @@
                     })
                 } else {
                     if (this.registered) {
-                        if (router === 'user.QingSongKungfu' && !this.isMember) {
+                        if ((router === 'user.QingSongKungfu' || router === 'societyFood.fastFoot') && !this.isMember) {
                             this.showBindMobile = true
                         } else {
                             this.$command('REDIRECT_TO', router, 'push', options);
@@ -678,6 +633,10 @@
 </script>
 
 <style scoped>
+
+    .home-modal {
+        font-weight: 800 !important;
+    }
     .home-page #receivedNewTickets{
         width: 100%;
         height: 100%;

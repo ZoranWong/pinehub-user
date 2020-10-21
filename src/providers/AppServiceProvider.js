@@ -13,7 +13,7 @@ import TencentMapService from '@/services/mp/TencentMapService';
 import StorageService from '@/services/mp/StorageService';
 import PaymentService from '@/services/mp/PaymentService';
 import _ from 'underscore';
-import FundebugService from "../services/utils/FundebugService";
+import FundebugService from "@/services/utils/FundebugService";
 
 export default class AppServiceProvider extends ServiceProvider {
     constructor (app) {
@@ -67,7 +67,7 @@ export default class AppServiceProvider extends ServiceProvider {
         this.app.register('map', TencentMapService);
         this.app.register('mp.storage', StorageService);
         this.app.register('mp.payment', PaymentService);
-        this.app.register('fundebug', FundebugService);
+        this.app.register('utils.fundebug', FundebugService);
     }
 
     boot () {

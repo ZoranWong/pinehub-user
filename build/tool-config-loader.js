@@ -42,7 +42,7 @@ function loadConfig (configPath, distConfigPath) {
 }
 
 ToolConfigLoader.prototype.apply = compiler => {
-    console.log(compiler);
+    // console.log(compiler);
 }
 
 module.exports = ToolConfigLoader;

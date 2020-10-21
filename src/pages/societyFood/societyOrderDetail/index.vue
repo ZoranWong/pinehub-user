@@ -28,22 +28,11 @@
             <div id="pick_up_info">
                 <i class="iconfont location">&#xe65e;</i>
                 <div class="order_info">
-                    <div class="order_info_name" v-if="!orderDetail['tipInfo_tomorrow']">
+                    <div class="order_info_name">
                         <h4>
-                            预约{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '送货' :'取货'}}日期
-                            <span>{{orderDetail['plan_pickup_date']}}</span>
-                        </h4>
-                        <h4>
-                            预约{{orderDetail['order_type'] === 'ACTIVITY_PRODUCT_ORDER' ? '送货' :'取货'}}时间
-                            <span>{{orderDetail['plan_pickup_time'] ? orderDetail['plan_pickup_time'] : '8点后'}}</span>
-                        </h4>
-                    </div>
-                    <div class="order_info_name" v-else>
-                        <h4>
-                            <span>{{orderDetail['tipInfo_tomorrow']}}</span>
-                        </h4>
-                        <h4>
-                            <span>{{orderDetail['tipInfo_other']}}</span>
+                            <span v-if="orderDetail['delivery_type']=='HOME_DELIVERY'">送餐上门时间</span>
+                            <span v-else>自提时间</span>
+                            <span>{{orderDetail['expect_receive_date']+" "+orderDetail['expect_receive_time_start']+"-"+orderDetail['expect_receive_time_end']}}</span>
                         </h4>
                     </div>
                 </div>
@@ -111,7 +100,7 @@
             </div>
             <div id="order_total_price">
                 <span>实付款 ￥{{orderDetail['settlement_total_fee']}}</span>
-                <h3 v-if="orderDetail['payment_state']!=4" @click="btnClick('pay', orderDetail)" >去支付</h3>
+                <h3 v-if="orderDetail['payment_state']!=4 && orderDetail['state_desc']!='已取消'" @click="btnClick('pay', orderDetail)" >去支付</h3>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ var MpvuePlugin = require('webpack-mpvue-asset-plugin')
 var glob = require('glob')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var relative = require('relative')
+var webpack = require('webpack');
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -89,9 +90,33 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'image-webpack-loader',
+                options: {
+                    disable: process.env.NODE_ENV === 'production' ? false : true,
+                    mozjpeg: {
+                        progressive: true,
+                        quality: 65,
+                    },
+                    optipng: {
+                        enabled: true, // 表示不啟用這一個圖片優化器
+                    },
+                    pngquant: {
+                        quality: [0.65, 0.8],
+                        speed: 4,
+                    },
+                    gifsicle: {
+                        interlaced: false,
+                    },
+                    webp: {
+                        quality: 75, // 配置選項表示啟用 WebP 優化器
+                    },
+                }
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 10000,
+                    limit: 8192,
                     name: utils.assetsPath('img/[name].[ext]')
                 }
             },
@@ -140,8 +165,9 @@ module.exports = {
             {
                 from: path.resolve(__dirname, '../static'),
                 to: path.resolve(__dirname, '../dist/static'),
-                ignore: ['.*', 'jssdk/*', 'images/icon/*.*']
+                ignore: ['.*', 'jssdk/*', 'images/icon/*.*', 'iview/*']
             }
-        ])
+        ]),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn|us/),
     ]
 }

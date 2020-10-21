@@ -41,9 +41,8 @@ export default class SocietyFoodService extends ApiService {
         return response;
     };
     // 删除购物车内某商品
-    async delSocietyFoodCartShop (param) {
-        console.log("社会餐删除购物车商品参数"+JSON.stringify(param))
-        let response = await this.httpDelete('/api/mp/society_food/del/carts',param);
+    async delSocietyFoodCartShop (shopId,productId,type) {
+        let response = await this.httpDelete('/api/mp/society_food/del/carts/'+type+'/'+shopId+'/'+productId);
         return response;
     };
     // 我的社会餐订单列表
@@ -72,8 +71,8 @@ export default class SocietyFoodService extends ApiService {
         return response;
     };
     // 用户更新收货地址
-    async updateUserAddress(addressId) {
-        let response = await this.httpPut('/api/mp/society_food/update/user/'+addressId+'/address');
+    async updateUserAddress(addressId,param) {
+        let response = await this.httpPut('/api/mp/society_food/update/user/'+addressId+'/address',param);
         return response;
     };
     // 用户新增收货地址

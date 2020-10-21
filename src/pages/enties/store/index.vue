@@ -69,7 +69,7 @@
 <script>
 	import CustomHeader from '../../../components/CustomHeader';
     import Auth from '../../../components/Auth';
-	import ShoppingCart from '@/components/ShoppingCart';
+	// import ShoppingCart from '@/components/ShoppingCart';
 	import ChooseSelfRaisingPoint from '@/components/ChooseSelfRaisingPoint';
 	import SelectSpecification from '@/components/SelectSpecification';
 	import _ from 'underscore'
@@ -79,7 +79,7 @@
   export default {
       components: {
 		  CustomHeader,
-          ShoppingCart,
+        //   ShoppingCart,
           SelectSpecification,
 		  ChooseSelfRaisingPoint,
 		  Auth,

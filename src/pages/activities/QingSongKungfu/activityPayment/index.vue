@@ -210,9 +210,9 @@
 			let type = this.$route.query.type;
 			let id = this.$route.query.id;
 			let actId = this.$route.query.actId || '';
-            letrpxRate = 750 / wx.getSystemInfoSync().windowWidth;
+			let rate = 750 / wx.getSystemInfoSync().windowWidth;
             let screenWitdh = wx.getSystemInfoSync().windowHeight;
-            this.screenHeight = (rpxRate * screenWitdh)/ 2;
+            this.screenHeight = (rate * screenWitdh)/ 2;
 			this.type = type;
 			this.actId = actId;
 			if (id) {

@@ -13,11 +13,12 @@
             <!--        <SwiperNotice />-->
             <div class="detail_header" v-if="grouponDetails['pick_shop_info']"  @click="goShopDetails(grouponDetails['pick_shop_info'])">
 <!--                <img src="./img/background.jpeg" alt="" class="image">-->
+
                 <h3>{{grouponDetails['pick_shop_info']['name']}}</h3>
                 <div class="shop_info">
-                    <!-- <img src="../images/name.png" alt="">
+                    <img src="../images/name.png" alt="">
                     <span>{{grouponDetails['pick_shop_info']['keeper_name']}}</span>
-                    <i></i> -->
+                    <i></i>
                     <img src="../images/place.png" alt="">
                     <span>{{grouponDetails['pick_shop_info']['complete_address']}}</span>
                 </div>
@@ -41,10 +42,7 @@
             <div class="details">
                 <div class="top">
                     <h3>{{grouponDetails['group_display_name']}}</h3>
-                    <div>
-                        <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
-                    </div>
-                    
+                    <img src="../images/more_shoppinggroup.png" alt="" @click="goGrouponList">
                 </div>
 
                 <div class="bottom">
@@ -416,18 +414,19 @@
             this.$command('GET_BAR_HEIGHT');
             let pages = getCurrentPages();
             let options = pages[pages.length - 1]['options'];
-            // this.onError("options"+options);
-            // this.onError("options.string"+options.toString());
-            // this.onError("options.scene"+options.scene.toString());
-            if (options.scene){
-                //scene:id=123&shop_code=qpweioru
-                let idString = options.scene.split('3D')[1];
-                if (options.scene.split('3D').length > 2) {
-                    options.id = idString.split('%26')[0];
-                    options.shop_code = options.scene.split('3D')[2];
-                } else {
-                    options.id = idString.split('3D')[1];
-                }
+            this.utils.fundebug.notify('options.scene', options);
+            if (options.scene) {
+                // options.scene = decodeURIComponent(options)
+                options.scene = decodeURIComponent(options.scene);
+                options = _.extend(options, this.uri.queryParse(options.scene));
+                // scene:id=123&shop_code=qpweioru
+                // let idString = options.scene.split('3D')[1];
+                // if (options.scene.split('3D').length > 2) {
+                //     options.id = idString.split('%26')[0];
+                //     options.shop_code = options.scene.split('3D')[2];
+                // } else {
+                //     options.id = idString.split('3D')[1];
+                // }
                 options.backHome = true
             }
             this.options = options;
@@ -443,8 +442,12 @@
             clearInterval(this.timer)
         },
 		created () {
-
-		},
+        },
+        onLoad (options) {
+            // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+            // const scene = decodeURIComponent(query.scene);
+            console.log(options);
+        },
 		mounted () {
 
 		},
@@ -640,6 +643,7 @@
         font-size: 32rpx;
         color: #111;
         font-weight: bold;
+        width: 95%;
     }
     .details .top img{
         width: 150rpx;

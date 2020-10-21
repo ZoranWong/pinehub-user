@@ -72,7 +72,7 @@
                             <span v-if="!isLoadAll">展开更多</span>
                             <span v-else>点击收起</span>
                             <img v-if="isLoadAll" src="./imgs/top-arrow.png" alt="">
-                            <img  v-else src="./imgs/bottom-arrow.png" alt="">
+                            <img  v-else src="../../../../../static/images/bottom-arrow.png" alt="">
 
                         </div>
                     </ul>
