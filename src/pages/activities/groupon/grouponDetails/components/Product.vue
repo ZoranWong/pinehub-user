@@ -5,12 +5,17 @@
         <div class="product_info">
             <h4>{{product.name}}</h4>
             <h5>{{product.intro}}</h5>
+            <p style="border: 1px solid red;border-radius: 5rpx;color: red;width:130rpx;font-size:25rpx;text-align:center">特惠抢购</p>
             <span>销量:{{sales}}</span>
             <div class="bottom">
                 <div class="left">
                     <i>¥</i>
-                    <h3>{{product['retail_price']}}</h3>
-                    <span v-if="product['show_market_price']">￥{{product['market_price']}}</span>
+                    <!-- <h3>{{product['retail_price']}}</h3>group_price -->
+                    <h3>{{product['group_price']}}</h3>
+                    <!-- <span v-if="product['show_market_price']">￥{{product['market_price']}}</span> -->
+                    <span >￥{{product['retail_price']}}</span>
+
+                    <span style="text-decoration: none;" v-if="product['everybody_limit_num']>0">限购{{product['everybody_limit_num']}}份</span>
                 </div>
                 <img v-if="deadlineTime > 0 && product.stock > 0" src="../../../../../../static/icons/add.png" @click="addToCart" alt="">
                 <img v-else src="../../../../../../static/icons/disabledAdd.jpg"  alt="">
@@ -44,6 +49,11 @@
 </script>
 
 <style scoped>
+.a{
+    
+    
+    
+}
     .product {
         width: 100%;
         box-sizing: border-box;

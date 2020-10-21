@@ -36,6 +36,9 @@
                     <!-- <label>分享好友</label> -->
                     <img src="../img/onshery.png" alt="">
                 </button>
+                <button style="margin-left: 20rpx"   @click="searchMoreProduct">
+                    <img src="../../../../static/icons/lookmore.png" alt="">    
+                 </button>
             </div>
             <div class="shop-five">
                 <div class="content-word" v-if="itemObj.support_home_delivery" style="margin-right: 10pt">送餐上门</div>
@@ -47,13 +50,13 @@
             </div>
         </div>
         <div class="change-btn">
-            <view :class="{'selectTab':status === '1' && itemObj.state}" @click="selectProject('1')">立即订餐</view>
-            <view :class="{'selectTab':status === '2' && itemObj.state}" @click="selectProject('2')">明日预定</view>
-            <view class="more-product" @click="searchMoreProduct">
+            <view :class="{'selectTab':status === '1' && itemObj.state}" @click="selectProject('1')"><img src="../../../../static/icons/goods.png">现货购买</view>
+            <view :class="{'selectTab':status === '2' && itemObj.state}" @click="selectProject('2')"><img src="../../../../static/icons/reserve.png">明日预定</view>
+            <!-- <view class="more-product" @click="searchMoreProduct">
                 <view class="more-product-btn">
                 查看更多<img src="../../../../static/icons/rightArrow.png" class="rightArrow_imp" alt="">
                 </view>
-            </view>
+            </view> -->
         </div>
         <scroll-view scroll-y class="scroll-view_H">
             <view class="product-list-detail" v-for="(item,index) in atOnceProList" :key="item.product_stock_id" v-if="status=='1'">
@@ -123,26 +126,31 @@
             <div class="order-settlement" v-if="status=='1'">
                 <view class="order-pay-info">
                     <i-badge :count="onceOrderCount" overflow-count="99">
-                        <view class="demo-badge"><img src="../img/buyCard.png"/></view>
+                        <view class="demo-badge" v-if="onceOrderCount >0"><img src="../../../../static/icons/cards.png"/></view>
+                        <view class="demo-badge" v-else><img src="../../../../static/icons/nocard.png"/></view>
                     </i-badge>
                     <view>
                         <view style="color: #111111;font-size: 40rpx;font-weight: 800">¥{{onceOrderCount<=0?0:oncePrice}}</view>
                         <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
-                <button @click="completePayment">去结算</button>
+                <button v-if="onceOrderCount >0" @click="completePayment">去结算</button>
+                <button style="background:#999999" v-else @click="completePayment">去结算</button>
+
             </div>
             <div class="order-settlement" v-else>
                 <view class="order-pay-info">
                     <i-badge :count="reserveOrderCount" overflow-count="99">
-                        <view class="demo-badge"><img src="../img/buyCard.png"/></view>
+                        <view class="demo-badge" v-if="reserveOrderCount >0"><img src="../../../../static/icons/cards.png"/></view>
+                        <view class="demo-badge" v-else><img src="../../../../static/icons/nocard.png"/></view>
                     </i-badge>
                     <view>
                         <view style="color: #111111;font-size: 17pt;font-weight: 700">¥{{reserveOrderCount<=0?0:reservePrice}}</view>
                         <view style="color: #999999;font-size: 11pt" v-if="money>0">满{{money}}元起订</view>
                     </view>
                 </view>
-                <button @click="completePayment">去结算</button>
+                <button v-if="reserveOrderCount >0" @click="completePayment">去结算</button>
+                <button style="background:#999999" v-else @click="completePayment">去结算</button>
             </div>
         </view>
     </div>
@@ -754,13 +762,19 @@
     .selectTab{
         position: relative;
         color: #111111 !important;
+        font-weight: 800;
+    }
+    .change-btn img{
+        width: 50rpx;
+        height: 50rpx;
+        margin-right: 10rpx;
     }
     .selectTab:after {
         content:  '';
         position: absolute;
-        width:25pt;
-        height:3pt;
-        left: calc(50% - 12.5pt);;
+        width:135rpx;
+        height:6rpx;
+        left: calc(50% - 45rpx);;
         background:rgba(255,204,0,1);
         border-radius:1.5pt;
         bottom: 0;
