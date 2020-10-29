@@ -13,7 +13,7 @@
                     <!-- <h3>{{product['retail_price']}}</h3>group_price -->
                     <h3>{{product['group_price']}}</h3>
                     <!-- <span v-if="product['show_market_price']">￥{{product['market_price']}}</span> -->
-                    <span >￥{{product['retail_price']}}</span>
+                    <span v-if="product['retail_price']>product['group_price']">￥{{product['retail_price']}}</span>
 
                     <span style="text-decoration: none;" v-if="product['everybody_limit_num']>0">限购{{product['everybody_limit_num']}}份</span>
                 </div>
