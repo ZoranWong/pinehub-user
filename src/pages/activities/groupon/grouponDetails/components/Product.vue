@@ -5,7 +5,7 @@
         <div class="product_info">
             <h4>{{product.name}}</h4>
             <h5>{{product.intro}}</h5>
-            <p style="border: 1px solid red;border-radius: 5rpx;color: red;width:130rpx;font-size:25rpx;text-align:center">特惠抢购</p>
+            <p   style="border: 1px solid red;border-radius: 5rpx;color: red;width:130rpx;font-size:25rpx;text-align:center" v-if="product['everybody_limit_num']>0">特惠抢购</p>
             <span>销量:{{sales}}</span>
             <div class="bottom">
                 <div class="left">
