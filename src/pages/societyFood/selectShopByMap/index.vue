@@ -6,7 +6,14 @@
                 <img class="leftArrow" src="../../../../static/icons/leftArrow.png" alt="">
             </div>
         </div>
-        <map id="shopMap" :longitude="longitude" :latitude="latitude" scale="14" :markers="markers" @markertap="markertap" @regionchange="regionchange"  @end="regionchange" show-location></map>
+        <map id="shopMap"
+            :longitude="longitude" 
+            :latitude="latitude" scale="14"
+            :markers="markers" 
+            @markertap="markertap"
+            @regionchange="regionchange"
+            @end="regionchange" show-location>
+        </map>
         <input type="text" placeholder-class="placeholder-class"  placeholder-style="padding-left:10px" :style="{'top': (imgHeight+15) + 'px'}" v-model="searchName" class="search-input" placeholder="请输入地点名称">
         <view class="search-content" :style="{'top': (imgHeight+55) + 'px'}" v-if="showSearchContent">
             <view v-for="(item,index) in searchAddressList" :key="index" style="margin-top: 20px" @click="selectedPos(item.location)">
