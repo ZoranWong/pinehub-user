@@ -33,15 +33,19 @@
       "list": []
     },
     "plugin": {
+      "current": -1,
       "list": []
     },
     "game": {
+      "current": -1,
       "list": []
     },
     "gamePlugin": {
+      "current": -1,
       "list": []
     },
     "miniprogram": {
+      "current": 20,
       "list": [
         {
           "id": 0,
@@ -174,8 +178,8 @@
         },
         {
           "id": -1,
-          "name": "pages/user/goodDetail/main",
-          "pathName": "pages/user/goodDetail/main",
+          "name": "pages/activities/groupon/grouponList/main",
+          "pathName": "pages/activities/groupon/grouponList/main",
           "scene": null
         }
       ]
