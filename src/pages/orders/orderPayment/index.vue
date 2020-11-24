@@ -36,7 +36,7 @@
                 <div class="middle"></div>
                 <div class="bottom">
                     <h4>次日送达</h4>
-                    <span>晚上9点前下单，次日即可送达，仅限合肥地区。疫情期间请戴好口罩哦！</span>
+                    <span>早上9点前下单，次日可以送达，仅限合肥市区。</span>
                 </div>
             </div>
             <div class="pickContainer" v-if="activeTab === 'pick'">
