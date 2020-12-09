@@ -213,8 +213,9 @@
         mounted () {
 			let pages =  getCurrentPages();
 			let options = pages[pages.length - 1]['options']
-			this.options = options;
-			this.storeId = options['shop_code'] ? options['shop_code'] : this.storeId;
+            this.options = options;
+            this.storeId = options['code'] ? options['code'] : this.storeId;
+            console.log(this.storeId ,'商户信息')
 			this.$command('GET_SHOP_INFO', this.storeId)
 			this.init();
         },
