@@ -40,7 +40,7 @@
         "qrcodejs2": "0.0.2",
         "query-string": "^6.12.1",
         "strip-ansi": "^4.0.0",
-        "underscore": "^1.9.1",
+        "underscore": "^1.12.1",
         "underscore.string": "^3.3.4",
         "vnode2canvas": "^0.2.1",
         "vue": "^2.6.12",
