@@ -91,7 +91,7 @@
         "image-webpack-loader": "^7.0.1",
         "imagemin": "^7.0.1",
         "imagemin-mozjpeg": "^9.0.0",
-        "karma": "^3.1.0",
+        "karma": "^6.3.14",
         "mockjs": "^1.0.1-beta3",
         "mpvue-loader": "^1.4.0",
         "mpvue-template-compiler": "^1.4.0",
